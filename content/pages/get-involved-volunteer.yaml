@@ -1,0 +1,53 @@
+meta:
+  badge: "Get Involved"
+  title: "Volunteer & Intern With Us"
+  tagline: "Donate your time. Transform a life."
+  seoTitle: "Volunteer With TIDE Foundation"
+  seoDescription: "Intern or volunteer with TIDE Foundation — teach, create materials, support teachers, or help with operations."
+
+intro:
+  body: "Whether it's a couple of hours a week or a full-time internship, your contribution helps reform education for thousands of children across India."
+  quote: "Helping People + Working With Peers = A Great Learning Experience"
+  ctaLabel: "Apply via Google Form"
+  ctaHref: "https://docs.google.com/forms"
+
+opportunities:
+  sectionBadge: "How You Can Help"
+  sectionTitle: "Volunteer Opportunities"
+  items:
+    - iconKey: "BookOpen"
+      title: "Direct Teaching"
+      desc: "Work directly with children in classrooms, after-school programs, or community centres."
+    - iconKey: "FileEdit"
+      title: "Educational Materials"
+      desc: "Create worksheets, curriculum content, and learning resources for our programs."
+    - iconKey: "Users"
+      title: "Teacher Training"
+      desc: "Support our teacher empowerment initiatives and professional development sessions."
+    - iconKey: "Building2"
+      title: "School Improvement"
+      desc: "Assist in school-level improvement projects and community engagement."
+    - iconKey: "Briefcase"
+      title: "Administration"
+      desc: "Contribute to organisational operations, communications, and strategic projects."
+
+gallery:
+  sectionBadge: "Life at TIDE"
+  sectionTitle: "Moments from the field"
+  images:
+    - src: "/assets/images/get-involved-volunteer/gallery-01.jpg"
+      label: "TIDE volunteer 1"
+    - src: "/assets/images/get-involved-volunteer/gallery-02.jpg"
+      label: "TIDE volunteer 2"
+    - src: "/assets/images/get-involved-volunteer/gallery-03.jpg"
+      label: "TIDE volunteer 3"
+    - src: "/assets/images/get-involved-volunteer/gallery-04.jpg"
+      label: "TIDE volunteer 4"
+    - src: "/assets/images/get-involved-volunteer/gallery-05.jpg"
+      label: "TIDE volunteer 5"
+    - src: "/assets/images/get-involved-volunteer/gallery-07.jpg"
+      label: "TIDE volunteer 6"
+    - src: "/assets/images/get-involved-volunteer/gallery-08.jpg"
+      label: "TIDE volunteer 7"
+    - src: "/assets/images/get-involved-volunteer/gallery-09.jpg"
+      label: "TIDE volunteer 8"

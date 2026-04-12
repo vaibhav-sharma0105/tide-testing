@@ -1,0 +1,62 @@
+meta:
+  badge: "Resources"
+  title: "Annual Reports"
+  tagline: "Transparency in every year of our journey."
+  seoTitle: "Annual Reports — TIDE Foundation"
+  seoDescription: "TIDE Foundation annual reports from 2014 to present — a decade of accountability and learning."
+
+section:
+  sectionBadge: "Transparency"
+  sectionTitle: "10 Years of Documentation"
+  sectionSubtitle: "Every report reflects our commitment to accountability and learning."
+  footerNote: "For full PDF downloads, visit tideinternational.org or email info@tideinternational.org"
+
+reports:
+  - year: "2025–26"
+    label: "Latest Report"
+    photo: "/assets/images/resources-annual-reports/report-2025-26.png"
+    href: "https://tideinternational.org/resources/annual-reports/"
+    highlight: true
+    wide: false
+  - year: "2023–24"
+    label: "Annual Report"
+    photo: "/assets/images/resources-annual-reports/report-2023-24.png"
+    href: "https://tideinternational.org/resources/annual-reports/"
+    highlight: false
+    wide: false
+  - year: "2022–23"
+    label: "Annual Report"
+    photo: "/assets/images/resources-annual-reports/report-2022-23.png"
+    href: "https://tideinternational.org/resources/annual-reports/"
+    highlight: false
+    wide: false
+  - year: "2021–22"
+    label: "Annual Report"
+    photo: "/assets/images/resources-annual-reports/report-2021-22.png"
+    href: "https://tideinternational.org/resources/annual-reports/"
+    highlight: false
+    wide: false
+  - year: "2020–21"
+    label: "Annual Report"
+    photo: "/assets/images/resources-annual-reports/report-2020-21.png"
+    href: "https://tideinternational.org/resources/annual-reports/"
+    highlight: false
+    wide: false
+  - year: "2019–20"
+    label: "Annual Report"
+    photo: "/assets/images/resources-annual-reports/report-2019-20.png"
+    href: "https://tideinternational.org/resources/annual-reports/"
+    highlight: false
+    wide: false
+  - year: "5-Year Report (2014–2019)"
+    label: "Impact Report"
+    photo: "/assets/images/resources-annual-reports/report-2014-19.png"
+    href: "https://tideinternational.org/resources/annual-reports/"
+    highlight: false
+    wide: true
+  - year: "2014–15"
+    label: "Inaugural Report"
+    photo: "/assets/images/resources-annual-reports/report-2014-15.png"
+    href: "https://tideinternational.org/resources/annual-reports/"
+    highlight: false
+    wide: false

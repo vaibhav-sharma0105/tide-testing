@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "badge": "Get Involved",
+    "title": "Donate Now",
+    "tagline": "Every rupee builds a better classroom.",
+    "seoTitle": "Donate — TIDE Foundation",
+    "seoDescription": "Support TIDE Foundation. Your donation directly funds programs reaching 40,000+ people across India."
+  },
+  "support": {
+    "title": "Support TIDE Foundation",
+    "body": "Your donation directly funds programs that reach 40,000+ people across India. To make a donation or learn about CSR partnerships, please reach out to us directly.",
+    "impactPoints": [
+      "40,000+ lives impacted across Gujarat",
+      "6 independent programs supported",
+      "80G tax exemption available for Indian donors",
+      "CSR partnership opportunities available"
+    ],
+    "donorPoster": "/assets/images/get-involved-donate/qr-donate-poster.png",
+    "posterCaption": "Scan the QR code to donate directly, or contact us for bank transfer details and CSR arrangements.",
+    "contactLabel": "Contact to Donate",
+    "contactHref": "mailto:info@tideinternational.org?subject=Donation Enquiry",
+    "whatsappLabel": "WhatsApp Us",
+    "whatsappHref": "https://wa.me/917041094082"
+  }
+}

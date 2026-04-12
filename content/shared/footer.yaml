@@ -1,0 +1,61 @@
+tagline: "Improving access to holistic education since 2014."
+together: "Together in Development and Education"
+rights: "© 2025 TIDE Foundation. All rights reserved."
+logo: "/assets/images/shared/tide-logo.png"
+
+columns:
+  - title: "About"
+    links:
+      - label: "Why TIDE?"
+        to: "/about/why-tide"
+      - label: "Our Team"
+        to: "/about/our-team"
+      - label: "Our Partners"
+        to: "/about/our-partners"
+      - label: "Our Results"
+        to: "/about/our-results"
+
+  - title: "Projects"
+    links:
+      - label: "Block ETI"
+        to: "/projects/block-eti"
+      - label: "BetterED"
+        to: "/projects/bettered"
+      - label: "EmpowerEd"
+        to: "/projects/empowered"
+      - label: "CompletEd"
+        to: "/projects/completed"
+      - label: "Other Projects"
+        to: "/projects/other-projects"
+
+  - title: "Get Involved"
+    links:
+      - label: "Volunteer With Us"
+        to: "/get-involved/volunteer"
+      - label: "Donate"
+        to: "/get-involved/donate"
+      - label: "Work With Us"
+        to: "/get-involved/work-with-us"
+      - label: "Organise MCCx"
+        to: "/get-involved/mccx"
+
+  - title: "Resources"
+    links:
+      - label: "Saral Kadam"
+        to: "/resources/saral-kadam"
+      - label: "Annual Reports"
+        to: "/resources/annual-reports"
+      - label: "Publications"
+        to: "/resources/publications"
+      - label: "THRIvE"
+        to: "/thrive"
+      - label: "Contact"
+        to: "/contact"
+
+social:
+  - platform: "facebook"
+    href: "https://facebook.com/togetherindevelopmentandeducation"
+  - platform: "instagram"
+    href: "https://instagram.com/tide_foundation_"
+  - platform: "linkedin"
+    href: "https://linkedin.com/company/13326412"

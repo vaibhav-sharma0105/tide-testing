@@ -1,0 +1,88 @@
+meta:
+  badge: "Resources"
+  title: "Our Publications"
+  tagline: "Research, insights, and ideas from the TIDE community."
+  seoTitle: "Publications — TIDE Foundation"
+  seoDescription: "Academic, applied, and public scholarship from the TIDE team — 15+ publications and presentations."
+
+section:
+  sectionBadge: "Research & Writing"
+  sectionTitle: "15+ Publications & Presentations"
+  sectionSubtitle: "Academic, applied, and public scholarship from the TIDE team."
+
+# type values: book | article | video | talk | materials
+# href: null if no link available
+# internal: true if href is an internal React Router path
+publications:
+  - type: "book"
+    title: "Learning to Live Together Harmoniously: Spiritual Perspectives from Indian Classrooms"
+    publisher: "Palgrave, Macmillan & Springer"
+    href: "https://link.springer.com/book/9783031235382"
+    internal: false
+    photo: "/assets/images/resources-publications/publication-1.jpg"
+  - type: "book"
+    title: "Case Study on Best Practices During COVID-19"
+    publisher: "Education for All in Times of Crisis (Routledge, 2021)"
+    href: "https://www.doi.org/10.4324/9781003155591"
+    internal: false
+    photo: "/assets/images/resources-publications/blog-covid.png"
+  - type: "book"
+    title: "Case Study on Social Activism in Education"
+    publisher: "Rewilding Education (Routledge, 2023)"
+    href: null
+    internal: false
+    photo: "/assets/images/resources-publications/case-study-covid.png"
+  - type: "article"
+    title: "Sample Chapter on Integrating Social Emotional Learning"
+    publisher: "NISSEM"
+    href: "https://tideinternational.org/wp-content/uploads/2023/01/Sample-textbook_revise2.pdf"
+    internal: false
+    photo: null
+  - type: "article"
+    title: "A Vision for Indian Education System"
+    publisher: "Kedavani Vimarsh 1(1), 27–28 — Patel, J."
+    href: null
+    internal: false
+    photo: "/assets/images/resources-publications/vision-education.png"
+  - type: "article"
+    title: "Researching Happiness Curricula"
+    publisher: "Mind & Life Institute"
+    href: null
+    internal: false
+    photo: "/assets/images/resources-publications/happiness-study.jpg"
+  - type: "article"
+    title: "Early Updates from Happiness Curricula Study"
+    publisher: "Mind & Life Media"
+    href: null
+    internal: false
+    photo: "/assets/images/resources-publications/mli-logo.png"
+  - type: "article"
+    title: "Citizens in the Making: Inside the Schools that Prioritise Harmonious Living"
+    publisher: "Cambridge Education News"
+    href: null
+    internal: false
+    photo: "/assets/images/resources-publications/citizens-in-making.png"
+  - type: "video"
+    title: "Miracle of Ideas — Public Talks Series"
+    publisher: "YouTube Playlist — Editions 2017, 2023, 2024"
+    href: null
+    internal: false
+    photo: "/assets/images/resources-publications/moi-poster.png"
+  - type: "talk"
+    title: "Education for Harmony: Insights from Indian Thinkers and Practitioners"
+    publisher: "IIMA Seminar — Dr. Jwalin Patel"
+    href: null
+    internal: false
+    photo: "/assets/images/resources-publications/iima-seminar.jpg"
+  - type: "talk"
+    title: "Presentation at Cambridge Education, London"
+    publisher: "Voices of the Next Generation: Shaping the Future in Education"
+    href: null
+    internal: false
+    photo: "/assets/images/resources-publications/cambridge-presentation.jpg"
+  - type: "materials"
+    title: "Saral Kadam Booklets"
+    publisher: "14 open-source visual learning booklets for foundational mathematics"
+    href: "/resources/saral-kadam"
+    internal: true
+    photo: "/assets/images/resources-publications/saral-kadam-booklets.jpg"

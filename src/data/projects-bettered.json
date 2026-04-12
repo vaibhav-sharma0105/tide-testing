@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "badge": "Projects",
+    "title": "BetterED",
+    "tagline": "After-school education for underserved communities.",
+    "seoTitle": "BetterED — TIDE Foundation",
+    "seoDescription": "BetterED addresses learning gaps through structured after-school programs in urban slums."
+  },
+  "stats": [
+    {
+      "value": "12",
+      "label": "Slums Served"
+    },
+    {
+      "value": "1225",
+      "label": "Children Reached"
+    },
+    {
+      "value": "5",
+      "label": "Days/Week"
+    },
+    {
+      "value": "2014",
+      "label": "Founded"
+    }
+  ],
+  "overview": {
+    "title": "Overview",
+    "body": "BetterED addresses learning gaps through structured after-school programs in urban slums — evolving from weekly games sessions to a comprehensive five-to-six-day-a-week educational model.",
+    "reach": "12 slums · 1,225 children",
+    "focus": "Life skills, arts, dance, theatre, public speaking and storytelling",
+    "goal": "A scalable, volunteer-driven intervention that can reach hundreds of schools citywide.",
+    "photo1": "/assets/images/projects-bettered/gallery-01.jpg",
+    "photo2": "/assets/images/projects-bettered/gallery-02.jpg"
+  },
+  "evolution": {
+    "sectionBadge": "Journey",
+    "sectionTitle": "Program Evolution",
+    "sectionSubtitle": "How BetterED grew from play to purpose",
+    "phases": [
+      {
+        "phase": "Phase 1",
+        "desc": "Once-weekly recreational games sessions",
+        "icon": "🎮"
+      },
+      {
+        "phase": "Phase 2",
+        "desc": "Doubt-solving and life skills classes — twice weekly",
+        "icon": "📚"
+      },
+      {
+        "phase": "Phase 3",
+        "desc": "Five to six days per week comprehensive education",
+        "icon": "🏫"
+      },
+      {
+        "phase": "Post-Pandemic",
+        "desc": "Life skills, integrated holistic education, and physical education",
+        "icon": "🌱"
+      }
+    ]
+  },
+  "gallery": {
+    "sectionBadge": "Gallery",
+    "sectionTitle": "BetterED in Action",
+    "images": [
+      {
+        "src": "/assets/images/projects-bettered/gallery-03.jpg",
+        "label": "BetterED gallery 1"
+      },
+      {
+        "src": "/assets/images/projects-bettered/gallery-04.jpg",
+        "label": "BetterED gallery 2"
+      },
+      {
+        "src": "/assets/images/projects-bettered/gallery-05.jpg",
+        "label": "BetterED gallery 3"
+      },
+      {
+        "src": "/assets/images/projects-bettered/gallery-06.jpg",
+        "label": "BetterED gallery 4"
+      },
+      {
+        "src": "/assets/images/projects-bettered/gallery-07.jpg",
+        "label": "BetterED gallery 5"
+      },
+      {
+        "src": "/assets/images/projects-bettered/gallery-08.jpg",
+        "label": "BetterED gallery 6"
+      },
+      {
+        "src": "/assets/images/projects-bettered/gallery-09.jpg",
+        "label": "BetterED gallery 7"
+      },
+      {
+        "src": "/assets/images/projects-bettered/gallery-10.jpg",
+        "label": "BetterED gallery 8"
+      },
+      {
+        "src": "/assets/images/projects-bettered/gallery-11.jpg",
+        "label": "BetterED gallery 9"
+      }
+    ]
+  }
+}

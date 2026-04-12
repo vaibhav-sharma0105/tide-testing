@@ -1,0 +1,28 @@
+meta:
+  badge: "Projects"
+  title: "Block Educational Transformation Initiative"
+  tagline: "Systemic change at the block level."
+  seoTitle: "Block ETI — TIDE Foundation"
+  seoDescription: "A comprehensive initiative working at the government school block level to transform foundational learning, life skills, and teacher empowerment."
+
+overview:
+  title: "Overview"
+  body: "A comprehensive initiative working at the government school block level to transform foundational learning, life skills, and teacher empowerment — at scale."
+
+subPrograms:
+  sectionBadge: "Sub-Programs"
+  sectionTitle: "Three Pillars"
+  sectionSubtitle: "Each sub-program targets a distinct root cause at the block level"
+  items:
+    - name: "सरल कदम (Saral Kadam)"
+      desc: "Foundational mathematics through 14 visual, self-directed learning booklets for government school students."
+      iconKey: "BookOpen"
+      to: "/resources/saral-kadam"
+    - name: "Disha"
+      desc: "Life skills and social-emotional development programme operating across schools, orphanages and communities."
+      iconKey: "Heart"
+      to: null
+    - name: "EmpowerEd Sanand"
+      desc: "Teacher empowerment and professional development initiative running at the block level in Sanand."
+      iconKey: "Users"
+      to: null

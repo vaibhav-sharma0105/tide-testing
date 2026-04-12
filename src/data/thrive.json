@@ -1,0 +1,177 @@
+{
+  "meta": {
+    "badge": "Research",
+    "title": "THRIvE Research Centre",
+    "fullName": "Transformative Holistic Research for Integral and Inclusive Education",
+    "tagline": "Where rigorous inquiry meets real-world impact.",
+    "seoTitle": "THRIvE Research Centre — TIDE Foundation",
+    "seoDescription": "THRIvE is committed to creating transformative, inclusive, and equitable education systems through deep inquiry and strategic collaboration."
+  },
+  "about": {
+    "sectionBadge": "About",
+    "sectionTitle": "About THRIvE",
+    "body": "THRIvE is committed to creating transformative, inclusive, and equitable education systems through deep inquiry, strategic collaboration, holistic approaches, and actionable insights."
+  },
+  "leaders": {
+    "sectionBadge": "Co-Directors",
+    "sectionTitle": "Leadership",
+    "members": [
+      {
+        "name": "Dr. Jwalin Patel",
+        "role": "Co-Director · PhD, University of Cambridge",
+        "photo": "/assets/images/thrive/team-jwalin-patel.jpg"
+      },
+      {
+        "name": "Dr. Seema Nath",
+        "role": "Co-Director · PhD, University of Cambridge · Associate Director, Ummeed Child Development Center",
+        "photo": null
+      },
+      {
+        "name": "Dr. Rohini Sen",
+        "role": "Co-Director · PhD candidate, University of Warwick · Associate Professor, Jindal Global Law School",
+        "photo": "/assets/images/thrive/team-rohini-sen.jpg"
+      }
+    ]
+  },
+  "researchTeam": {
+    "sectionBadge": "Team",
+    "sectionTitle": "Research Associates",
+    "sectionSubtitle": "The team driving THRIvE's on-ground investigations",
+    "members": [
+      {
+        "name": "Sangeeta Bhatt",
+        "role": "Research Associate",
+        "photo": "/assets/images/thrive/team-sangeeta-bhatt.jpg"
+      },
+      {
+        "name": "Mansi Nanda",
+        "role": "Research Associate",
+        "photo": "/assets/images/thrive/team-mansi-nanda.jpg"
+      },
+      {
+        "name": "Muskan Khanna",
+        "role": "Research Associate",
+        "photo": "/assets/images/thrive/team-muskan-khanna.jpg"
+      },
+      {
+        "name": "Murari Jha",
+        "role": "Research Associate",
+        "photo": "/assets/images/thrive/team-murari-jha.jpg"
+      },
+      {
+        "name": "Magdhi Diksha",
+        "role": "Research Associate",
+        "photo": "/assets/images/thrive/team-magdhi-diksha.jpg"
+      },
+      {
+        "name": "Paran Amitava",
+        "role": "Research Associate",
+        "photo": "/assets/images/thrive/team-paran-amitava.jpg"
+      },
+      {
+        "name": "Thilanka Wijesinghe",
+        "role": "Research Associate",
+        "photo": "/assets/images/thrive/team-thilanka-wijesinghe.jpg"
+      }
+    ]
+  },
+  "principles": {
+    "sectionBadge": "Approach",
+    "sectionTitle": "Core Principles",
+    "items": [
+      {
+        "iconKey": "BookOpen",
+        "title": "Knowledge Generation",
+        "desc": "Producing evidence-based research to guide systemic improvements."
+      },
+      {
+        "iconKey": "Microscope",
+        "title": "Deep Exploratory Research",
+        "desc": "Examining stakeholder experiences and systemic factors influencing behaviour."
+      },
+      {
+        "iconKey": "TrendingUp",
+        "title": "Implementation Research",
+        "desc": "Investigating why policies and interventions succeed or fail."
+      },
+      {
+        "iconKey": "Lightbulb",
+        "title": "Actionable Research",
+        "desc": "Ensuring insights drive tangible educational change."
+      },
+      {
+        "iconKey": "Link2",
+        "title": "Sustainable Collaborations",
+        "desc": "Building long-term partnerships that foster institutional innovation."
+      },
+      {
+        "iconKey": "Users",
+        "title": "Capacity Building",
+        "desc": "Equipping educators with research skills for sustainable change."
+      }
+    ]
+  },
+  "researchProjects": {
+    "sectionBadge": "Research",
+    "sectionTitle": "Current Research Projects",
+    "sectionSubtitle": "Active investigations shaping the future of Indian education",
+    "items": [
+      {
+        "title": "Happiness Curriculum Study",
+        "desc": "Exploring teacher and student experiences with social-emotional development curricula.",
+        "photo": "/assets/images/thrive/research-happiness-curriculum.png"
+      },
+      {
+        "title": "PRABHAV",
+        "desc": "Examining teacher agency as a catalyst for educational change across India.",
+        "photo": "/assets/images/thrive/research-prabhav.png"
+      },
+      {
+        "title": "Teachers with Disabilities",
+        "desc": "Investigating professional experiences and identity among disabled educators.",
+        "photo": "/assets/images/thrive/research-twd.png"
+      },
+      {
+        "title": "Social Changemakers Program",
+        "desc": "Autoethnographic study of student engagement in immersive social justice projects.",
+        "photo": "/assets/images/thrive/research-scf.jpg"
+      },
+      {
+        "title": "Model City Council",
+        "desc": "Qualitative study of collaborative sustainability discussions and civic education.",
+        "photo": "/assets/images/thrive/research-mcc.png"
+      }
+    ]
+  },
+  "conferences": {
+    "sectionBadge": "Impact",
+    "sectionTitle": "Conferences & Publications",
+    "sectionSubtitle": "Sharing THRIvE's findings on global stages and in peer-reviewed research.",
+    "images": [
+      {
+        "src": "/assets/images/thrive-happiness/bg-cies-2024-poster.jpg",
+        "label": "CIES 2024 Poster"
+      },
+      {
+        "src": "/assets/images/thrive-happiness/bg-cies-2024-talk.png",
+        "label": "CIES 2024 Talk"
+      },
+      {
+        "src": "/assets/images/thrive-happiness/bg-selebrating-summit.png",
+        "label": "SEL Celebrating Summit"
+      },
+      {
+        "src": "/assets/images/thrive-happiness/bg-sel-paper.jpeg",
+        "label": "SEL Research Paper"
+      },
+      {
+        "src": "/assets/images/thrive-happiness/bg-templeton-conf.png",
+        "label": "Templeton Conference"
+      },
+      {
+        "src": "/assets/images/thrive-happiness/bg-blog-research.png",
+        "label": "Research Blog"
+      }
+    ]
+  }
+}

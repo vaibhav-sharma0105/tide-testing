@@ -1,0 +1,66 @@
+# Navigation — edit labels here to update all nav menus
+# DO NOT change "to" paths — they are React Router routes
+
+items:
+  - label: "About Us"
+    children:
+      - label: "Why TIDE?"
+        to: "/about/why-tide"
+        desc: "Our story, vision & values"
+      - label: "Our Team"
+        to: "/about/our-team"
+        desc: "Meet the people behind TIDE"
+      - label: "Our Partners"
+        to: "/about/our-partners"
+        desc: "70+ school & university partners"
+      - label: "Our Results"
+        to: "/about/our-results"
+        desc: "Impact data & outcomes"
+
+  - label: "Projects"
+    children:
+      - label: "Block Educational Transformation Initiative"
+        to: "/projects/block-eti"
+        desc: "Systemic change in govt. schools"
+      - label: "BetterED"
+        to: "/projects/bettered"
+        desc: "Life skills in 12 urban slums"
+      - label: "EmpowerEd"
+        to: "/projects/empowered"
+        desc: "Teacher professional development"
+      - label: "CompletEd"
+        to: "/projects/completed"
+        desc: "Fellowships & civic education"
+      - label: "Other Projects"
+        to: "/projects/other-projects"
+        desc: "More initiatives & programs"
+
+  - label: "Get Involved"
+    children:
+      - label: "Volunteer / Intern With Us"
+        to: "/get-involved/volunteer"
+        desc: "Intern or volunteer with us"
+      - label: "Work With Us"
+        to: "/get-involved/work-with-us"
+        desc: "Full-time & part-time roles"
+      - label: "Organise your MCCx"
+        to: "/get-involved/mccx"
+        desc: "Organise a Model City Council"
+
+  - label: "THRIvE Research Centre"
+    to: "/thrive"
+
+  - label: "Resources"
+    children:
+      - label: "Saral Kadam Materials"
+        to: "/resources/saral-kadam"
+        desc: "Foundational learning booklets"
+      - label: "Annual Reports"
+        to: "/resources/annual-reports"
+        desc: "Reports from 2014 to present"
+      - label: "Our Publications"
+        to: "/resources/publications"
+        desc: "Research papers & articles"
+
+  - label: "Contact Us"
+    to: "/contact"

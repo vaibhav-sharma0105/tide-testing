@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "badge": "Get Involved",
+    "title": "Organise Your MCCx",
+    "tagline": "Bring Model City Council to your community.",
+    "seoTitle": "Organise an MCCx — TIDE Foundation",
+    "seoDescription": "Model City Council puts young people in the role of city councillors — debating real civic issues and experiencing democratic participation."
+  },
+  "whatIs": {
+    "title": "What is Model City Council?",
+    "body1": "Model City Council (MCC) is a public engagement event that puts young people in the role of city councillors — debating real civic issues, proposing sustainable solutions, and experiencing democratic participation first-hand.",
+    "body2": "Want to organise an MCC event at your school, college, or organisation? Get in touch with us to learn how.",
+    "ctaLabel": "Get in Touch",
+    "ctaHref": "mailto:info@tideinternational.org?subject=MCCx Organisation Enquiry",
+    "photos": [
+      {
+        "src": "/assets/images/projects-mcc/mccx-2025-au.jpg",
+        "label": "Ahmedabad University 2025"
+      },
+      {
+        "src": "/assets/images/projects-mcc/mccx-2025-ggis.jpg",
+        "label": "GGIS 2025"
+      },
+      {
+        "src": "/assets/images/projects-mcc/mcc-2024-navjeevan.jpeg",
+        "label": "Navjeevan 2024"
+      },
+      {
+        "src": "/assets/images/projects-mcc/mcc-4-copy.png",
+        "label": "MCC Session"
+      }
+    ]
+  },
+  "steps": {
+    "sectionBadge": "Process",
+    "sectionTitle": "How to Organise an MCCx",
+    "sectionSubtitle": "Four simple steps to bring Model City Council to your community.",
+    "items": [
+      {
+        "iconKey": "Mail",
+        "title": "Express Interest",
+        "desc": "Reach out to us via email or WhatsApp to indicate your interest in hosting an MCCx."
+      },
+      {
+        "iconKey": "Users",
+        "title": "Coordinator Call",
+        "desc": "A TIDE team member will connect with you to understand your context and co-design the event."
+      },
+      {
+        "iconKey": "Lightbulb",
+        "title": "Plan & Prepare",
+        "desc": "We provide an organiser kit: agenda templates, facilitator guides, and topic briefings."
+      },
+      {
+        "iconKey": "Vote",
+        "title": "Host the Event",
+        "desc": "Run the MCCx at your school, college, or organisation with TIDE support throughout."
+      }
+    ]
+  }
+}

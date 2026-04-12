@@ -1,0 +1,46 @@
+meta:
+  badge: "Projects"
+  title: "EmpowerEd"
+  tagline: "Empower. Enrich. Educate."
+  seoTitle: "EmpowerEd — TIDE Foundation"
+  seoDescription: "EmpowerEd develops bottom-up, collaborative interventions to educate and empower educators."
+
+overview:
+  title: "Overview"
+  body: "EmpowerEd develops bottom-up, collaborative interventions to educate, enrich and empower educators. It treats teachers as experts — not recipients — of professional development."
+  logo: "/assets/images/projects-empowered/ee-logo.jpeg"
+  heroPhoto: "/assets/images/projects-empowered/Build-teacher-agency.jpg"
+
+components:
+  - title: "Community of Practitioners"
+    desc: "Fortnightly dialogue sessions, small-group projects, action research, reading groups, and best-practice documentation."
+    iconKey: "Users"
+  - title: "Immersive Teacher Empowerment App"
+    desc: "Rich storytelling and game-based decision-making scenarios rooted in diverse household experiences."
+    iconKey: "BookOpen"
+
+objectives:
+  sectionBadge: "Our Approach"
+  sectionTitle: "Five Objectives"
+  sectionSubtitle: "The pillars that guide EmpowerEd's work with teachers"
+  items:
+    - label: "Build teacher agency"
+      photo: "/assets/images/projects-empowered/Build-teacher-agency.jpg"
+    - label: "Share best practices"
+      photo: "/assets/images/projects-empowered/Share-best-practices.jpg"
+    - label: "Facilitate dialogic & experiential learning"
+      photo: "/assets/images/projects-empowered/Dialogic-and-experiential-learning.jpg"
+    - label: "Create professional learning communities"
+      photo: "/assets/images/projects-empowered/Createp-rofessional-learning-communities.jpg"
+    - label: "Generate systemic change"
+      photo: "/assets/images/projects-empowered/Create-systemic-change.jpg"
+
+timeline:
+  sectionBadge: "Roadmap"
+  sectionTitle: "Implementation Timeline"
+  sectionSubtitle: "A phased approach to scaling teacher empowerment"
+  phases:
+    - "Phase 1 (Jul–Nov 2022): Planning & design"
+    - "Phase 2 (Nov 2022–Jun 2024): Pre-pilot with ~50 teachers; app pilot with ~10,000 teachers"
+    - "Phase 3 (Jun 2024–Jun 2025): Scale to ~100,000 teachers across one Indian state"
+    - "Phase 4 (Jun 2025–Jun 2028): Expand to 10–30 million teachers across India and internationally"

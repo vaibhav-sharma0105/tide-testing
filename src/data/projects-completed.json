@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "badge": "Projects",
+    "title": "CompletEd",
+    "tagline": "Education through, as, and for social justice.",
+    "seoTitle": "CompletEd — TIDE Foundation",
+    "seoDescription": "CompletEd engages students and communities in social change through four distinct sub-programs."
+  },
+  "stats": [
+    {
+      "value": "4",
+      "label": "Sub-Programs"
+    },
+    {
+      "value": "1028",
+      "label": "People Engaged"
+    },
+    {
+      "value": "5",
+      "label": "Workshops Run"
+    },
+    {
+      "value": "3",
+      "label": "MOI Editions"
+    }
+  ],
+  "overview": {
+    "title": "Overview",
+    "body": "CompletEd engages students and communities in social change through four distinct sub-programs, fostering civic awareness, leadership, and a commitment to the Sustainable Development Goals."
+  },
+  "programs": {
+    "sectionBadge": "Sub-Programs",
+    "sectionTitle": "Four Pillars of CompletEd",
+    "items": [
+      {
+        "key": "scf",
+        "title": "Social Changemakers Fellowship",
+        "desc": "A prestigious program fostering social leadership among young people.",
+        "logo": "/assets/images/projects-completed/bg-scf-logo.png",
+        "colorKey": "violet"
+      },
+      {
+        "key": "sdg",
+        "title": "SDG Drives",
+        "desc": "Volunteering initiatives directly aligned with the UN Sustainable Development Goals.",
+        "logo": "/assets/images/projects-completed/bg-sdg-logo.png",
+        "colorKey": "emerald"
+      },
+      {
+        "key": "mcc",
+        "title": "Model City Council",
+        "desc": "A public engagement event promoting civic participation and collaborative problem-solving.",
+        "logo": "/assets/images/projects-completed/bg-mcc-logo.png",
+        "colorKey": "blue"
+      },
+      {
+        "key": "moi",
+        "title": "Miracle of Ideas",
+        "desc": "A platform showcasing innovative solutions — editions in 2017, 2023, and 2024.",
+        "logo": "/assets/images/projects-completed/bg-moi-logo.jpg",
+        "colorKey": "amber"
+      }
+    ]
+  },
+  "moiBrochure": {
+    "sectionBadge": "Miracle of Ideas 2023",
+    "sectionTitle": "MOI Brochure",
+    "sectionSubtitle": "Inside the 2023 edition of Miracle of Ideas.",
+    "pages": [
+      {
+        "src": "/assets/images/projects-moi2023/brochure-p1.jpg",
+        "label": "MOI 2023 Brochure — Page 1"
+      },
+      {
+        "src": "/assets/images/projects-moi2023/brochure-p2.jpg",
+        "label": "MOI 2023 Brochure — Page 2"
+      },
+      {
+        "src": "/assets/images/projects-moi2023/brochure-p3.jpg",
+        "label": "MOI 2023 Brochure — Page 3"
+      }
+    ]
+  },
+  "scfProgram": {
+    "sectionBadge": "Social Changemakers Fellowship",
+    "sectionTitle": "SCF Program Design",
+    "sectionSubtitle": "How the fellowship is structured and what it aims to achieve.",
+    "diagrams": [
+      {
+        "src": "/assets/images/projects-scf/areas-of-work.png",
+        "label": "Areas of Work"
+      },
+      {
+        "src": "/assets/images/projects-scf/timeline-diagram.png",
+        "label": "Program Timeline"
+      }
+    ],
+    "fellowsBadge": "Fellows",
+    "fellowsTitle": "SCF Fellows",
+    "fellowsSubtitle": "Young people driving social change through education and community action.",
+    "fellows": [
+      {
+        "name": "Aarushi Patel",
+        "photo": "/assets/images/projects-scf-team/aarushi-patel.png"
+      },
+      {
+        "name": "Anaya Patel",
+        "photo": "/assets/images/projects-scf-team/anaya-patel.png"
+      },
+      {
+        "name": "Arav Gupta",
+        "photo": "/assets/images/projects-scf-team/arav-gupta.png"
+      },
+      {
+        "name": "Arth Patel",
+        "photo": "/assets/images/projects-scf-team/arth-patel.png"
+      },
+      {
+        "name": "Havisha Chokshi",
+        "photo": "/assets/images/projects-scf-team/havisha-chokshi.png"
+      },
+      {
+        "name": "Hiya Patel",
+        "photo": "/assets/images/projects-scf-team/hiya-patel.png"
+      },
+      {
+        "name": "Prisha Arora",
+        "photo": "/assets/images/projects-scf-team/prisha-arora.png"
+      },
+      {
+        "name": "Samaya Bhowmick",
+        "photo": "/assets/images/projects-scf-team/samaya-bhowmick.jpg"
+      },
+      {
+        "name": "Tanay Sanghvi",
+        "photo": "/assets/images/projects-scf-team/tanay-sanghvi.png"
+      },
+      {
+        "name": "Yashvit Sancheti",
+        "photo": "/assets/images/projects-scf-team/yashvit-sancheti.png"
+      }
+    ]
+  },
+  "moi2024": {
+    "sectionBadge": "Miracle of Ideas 2024",
+    "sectionTitle": "MOI 2024 Highlights",
+    "sectionSubtitle": "The latest edition — exhibitions, panel talks, interventions and more.",
+    "highlights": [
+      {
+        "src": "/assets/images/projects-moi2024/icon-exhibition.png",
+        "label": "Exhibition"
+      },
+      {
+        "src": "/assets/images/projects-moi2024/icon-panel-talks.png",
+        "label": "Panel Talks"
+      },
+      {
+        "src": "/assets/images/projects-moi2024/icon-interventions.png",
+        "label": "Interventions"
+      },
+      {
+        "src": "/assets/images/projects-moi2024/icon-mcc.png",
+        "label": "MCC"
+      }
+    ],
+    "poster": "/assets/images/projects-moi2024/signup-poster.png"
+  }
+}

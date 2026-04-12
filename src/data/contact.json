@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "badge": "Contact",
+    "title": "Get in Touch",
+    "tagline": "We'd love to hear from you.",
+    "seoTitle": "Contact TIDE Foundation",
+    "seoDescription": "Get in touch with TIDE Foundation — Ahmedabad, Gujarat, India."
+  },
+  "info": {
+    "address": "8 Deepawali Centre (1st Floor), Opp Old High Court, Nr Income Tax Circle, Ahmedabad 380014, Gujarat, India",
+    "phones": [
+      "+91 99798 82648",
+      "+91 70410 94082"
+    ],
+    "email": "info@tideinternational.org",
+    "officeHours": "Monday – Friday, 9:00 AM – 6:00 PM"
+  },
+  "social": [
+    {
+      "platform": "facebook",
+      "href": "https://facebook.com/togetherindevelopmentandeducation"
+    },
+    {
+      "platform": "instagram",
+      "href": "https://instagram.com/tide_foundation_"
+    },
+    {
+      "platform": "linkedin",
+      "href": "https://linkedin.com/company/13326412"
+    }
+  ],
+  "cta": {
+    "whatsappLabel": "WhatsApp Us",
+    "whatsappHref": "https://wa.me/917041094082",
+    "emailLabel": "Email Us",
+    "emailHref": "mailto:info@tideinternational.org"
+  },
+  "map": {
+    "label": "Ahmedabad, Gujarat, India",
+    "mapsUrl": "https://maps.google.com/?q=8+Deepawali+Centre+Ahmedabad",
+    "mapsLabel": "View on Google Maps →"
+  },
+  "form": {
+    "title": "Send a Message",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "Your email",
+    "messagePlaceholder": "Your message",
+    "submitLabel": "Send Message"
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "meta": {
+    "badge": "Resources",
+    "title": "Saral Kadam Materials",
+    "tagline": "Open-source foundational mathematics for every child.",
+    "seoTitle": "Saral Kadam — TIDE Foundation",
+    "seoDescription": "14 visual, self-directed learning booklets for foundational numeracy — free to use and share."
+  },
+  "about": {
+    "title": "About Saral Kadam",
+    "overview": "14 visual, graphical, self and peer-directed learning booklets for foundational numeracy — free to use, free to share.",
+    "available": "Currently available in Gujarati. English and Hindi translations in progress.",
+    "request": "Worksheets and test papers available on request — email us at info@tideinternational.org",
+    "mainPhoto": "/assets/images/resources-publications/saral-kadam-booklets.jpg",
+    "diagramPhoto": "/assets/images/resources-saral-kadam-program/diagram.png",
+    "ctaLabel": "Request Materials",
+    "ctaHref": "mailto:info@tideinternational.org"
+  },
+  "booklets": {
+    "sectionBadge": "Materials",
+    "sectionTitle": "14 Booklets Across 4 Levels",
+    "sectionSubtitle": "Visual, self-directed learning for foundational numeracy — free to download and share.",
+    "downloadCtaTitle": "Get the Full Booklet Set",
+    "downloadCtaBody": "All 14 Saral Kadam booklets are freely available. Worksheets and test papers available on request. Currently in Gujarati — English and Hindi coming soon.",
+    "downloadCtaLabel": "Request Full Set",
+    "downloadCtaHref": "mailto:info@tideinternational.org?subject=Saral Kadam Materials Request",
+    "levels": [
+      {
+        "key": "level0",
+        "title": "Level 0",
+        "colorKey": "blue",
+        "booklets": [
+          {
+            "title": "Introduction to numbers",
+            "img": "/assets/images/resources-saral-kadam/L0B1.png"
+          },
+          {
+            "title": "Counting",
+            "img": "/assets/images/resources-saral-kadam/LOB2.png"
+          }
+        ]
+      },
+      {
+        "key": "level1",
+        "title": "Level 1",
+        "colorKey": "emerald",
+        "booklets": [
+          {
+            "title": "Patterns",
+            "img": "/assets/images/resources-saral-kadam/L1B1.png"
+          },
+          {
+            "title": "Counting",
+            "img": "/assets/images/resources-saral-kadam/L1B2.png"
+          },
+          {
+            "title": "Place value",
+            "img": "/assets/images/resources-saral-kadam/L1B3.png"
+          },
+          {
+            "title": "Zero",
+            "img": "/assets/images/resources-saral-kadam/L1B4.png"
+          }
+        ]
+      },
+      {
+        "key": "level2",
+        "title": "Level 2",
+        "colorKey": "violet",
+        "booklets": [
+          {
+            "title": "Shapes",
+            "img": "/assets/images/resources-saral-kadam/L2B1.png"
+          },
+          {
+            "title": "Give and take",
+            "img": "/assets/images/resources-saral-kadam/L2B2.png"
+          },
+          {
+            "title": "Addition and subtraction",
+            "img": "/assets/images/resources-saral-kadam/L2B3.png"
+          },
+          {
+            "title": "Carry forward and borrowing",
+            "img": "/assets/images/resources-saral-kadam/L2B4.png"
+          }
+        ]
+      },
+      {
+        "key": "level3",
+        "title": "Level 3",
+        "colorKey": "amber",
+        "booklets": [
+          {
+            "title": "Measurement",
+            "img": "/assets/images/resources-saral-kadam/L3B1.png"
+          },
+          {
+            "title": "Multiples and tables",
+            "img": "/assets/images/resources-saral-kadam/L3B2.png"
+          },
+          {
+            "title": "Multiplication",
+            "img": "/assets/images/resources-saral-kadam/L3B3.png"
+          },
+          {
+            "title": "Division",
+            "img": "/assets/images/resources-saral-kadam/L3B4.png"
+          }
+        ]
+      }
+    ]
+  },
+  "programGallery": {
+    "sectionBadge": "Saral Kadam in Action",
+    "sectionTitle": "Program Highlights",
+    "sectionSubtitle": "Saral Kadam being used across government school communities.",
+    "photos": [
+      {
+        "src": "/assets/images/resources-saral-kadam-program/SKP-books-2.jpeg",
+        "label": "Saral Kadam program 1"
+      },
+      {
+        "src": "/assets/images/resources-saral-kadam-program/SKP-1.jpg",
+        "label": "Saral Kadam program 2"
+      },
+      {
+        "src": "/assets/images/resources-saral-kadam-program/SKP-2.jpg",
+        "label": "Saral Kadam program 3"
+      },
+      {
+        "src": "/assets/images/resources-saral-kadam-program/SKP-3.jpg",
+        "label": "Saral Kadam program 4"
+      },
+      {
+        "src": "/assets/images/resources-saral-kadam-program/SKP-4.jpg",
+        "label": "Saral Kadam program 5"
+      },
+      {
+        "src": "/assets/images/resources-saral-kadam-program/SKP-5.jpg",
+        "label": "Saral Kadam program 6"
+      },
+      {
+        "src": "/assets/images/resources-saral-kadam-program/Fangadi-SKP-Prediwali-2022-1-scaled.jpg",
+        "label": "Saral Kadam program 7"
+      },
+      {
+        "src": "/assets/images/resources-saral-kadam-program/Fangadi-SKP-Prediwali-2022-2-scaled.jpg",
+        "label": "Saral Kadam program 8"
+      },
+      {
+        "src": "/assets/images/resources-saral-kadam-program/Fangadi-SKP-Prediwali-2022-3-scaled.jpg",
+        "label": "Saral Kadam program 9"
+      },
+      {
+        "src": "/assets/images/resources-saral-kadam-program/Lekhambha-SKP-prediwali-2022-1-scaled.jpg",
+        "label": "Saral Kadam program 10"
+      },
+      {
+        "src": "/assets/images/resources-saral-kadam-program/Lekhambha-SKP-prediwali-2022-2-scaled.jpg",
+        "label": "Saral Kadam program 11"
+      },
+      {
+        "src": "/assets/images/resources-saral-kadam-program/Lekhambha-SKP-prediwali-2022-5-scaled.jpg",
+        "label": "Saral Kadam program 12"
+      },
+      {
+        "src": "/assets/images/resources-saral-kadam-program/Popatpura-SKP-prediwali-2022-scaled.jpg",
+        "label": "Saral Kadam program 13"
+      }
+    ]
+  }
+}

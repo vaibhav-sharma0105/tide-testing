@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "badge": "Projects",
+    "title": "Other Projects",
+    "tagline": "Further initiatives in TIDE's portfolio.",
+    "seoTitle": "Other Projects — TIDE Foundation",
+    "seoDescription": "Beyond the six core projects, TIDE Foundation has run CollegeDev, Prerak, RefugEd, Disha, MOI, and more."
+  },
+  "intro": "Beyond our six core projects, TIDE Foundation has run and continues to develop additional initiatives responding to specific educational needs in Ahmedabad and beyond.",
+  "knownProjects": {
+    "items": [
+      {
+        "name": "CollegeDev",
+        "desc": "Higher education support programme that has engaged 1,056 college-going students across the city.",
+        "stats": "1,056 students",
+        "iconKey": "GraduationCap",
+        "photos": [
+          "/assets/images/projects-other/1.-colDev4.jpg",
+          "/assets/images/projects-other/2.-colDev1.jpg",
+          "/assets/images/projects-other/colDev3.jpg",
+          "/assets/images/projects-other/colDev5.jpg"
+        ]
+      },
+      {
+        "name": "Prerak",
+        "desc": "School improvement programme working across 26 schools, 2 remand homes, reaching 14,402 children and 695 teachers.",
+        "stats": "14,402 children · 695 teachers",
+        "iconKey": "Heart",
+        "photos": [
+          "/assets/images/projects-other/1.-Prerak-Gibpura-1.jpg",
+          "/assets/images/projects-other/2.-Prerak-Gibpura1-1.jpg",
+          "/assets/images/projects-other/3.-Prerak-Shela5-1.jpg",
+          "/assets/images/projects-other/5.-Prerak-Gibpura4-2.jpg"
+        ]
+      },
+      {
+        "name": "RefugEd",
+        "desc": "A past initiative providing educational support to Syrian refugee families resettling in Ahmedabad.",
+        "stats": "5 families",
+        "iconKey": "Globe",
+        "photos": []
+      }
+    ]
+  },
+  "disha": {
+    "sectionBadge": "Disha",
+    "sectionTitle": "Disha — Life Skills & Community Education",
+    "sectionSubtitle": "Social-emotional development across schools, orphanages, and communities.",
+    "body": "Disha has reached 2,082 children across 10 schools, 5 orphanages, 1 village, and 1 slum. The program focuses on life skills, social activism, and community values through experiential activities and celebrations like pre-Diwali events in partnership with local communities.",
+    "photos": [
+      {
+        "src": "/assets/images/projects-disha/1.-Sk-Yateemkhana.jpg",
+        "label": "Disha program 1"
+      },
+      {
+        "src": "/assets/images/projects-disha/2.-Sk-Odhav-Social-activism-works.jpg",
+        "label": "Disha program 2"
+      },
+      {
+        "src": "/assets/images/projects-disha/3.-Sk-Yateemkhana1.jpg",
+        "label": "Disha program 3"
+      },
+      {
+        "src": "/assets/images/projects-disha/4.-Sk-Yateemkhana2.jpg",
+        "label": "Disha program 4"
+      },
+      {
+        "src": "/assets/images/projects-disha/Fangdi-prediwali-2022-1-scaled.jpg",
+        "label": "Disha program 5"
+      },
+      {
+        "src": "/assets/images/projects-disha/Fangdi-prediwali-2022-2-scaled.jpg",
+        "label": "Disha program 6"
+      }
+    ]
+  },
+  "moi": {
+    "sectionBadge": "Miracle of Ideas",
+    "sectionTitle": "Miracle of Ideas (MOI)",
+    "sectionSubtitle": "A platform showcasing innovative solutions — editions in 2017, 2023, and 2024.",
+    "photos": [
+      {
+        "src": "/assets/images/projects-moi/moi-photo.jpg",
+        "label": "MOI Session"
+      },
+      {
+        "src": "/assets/images/projects-moi/moi-poster.jpg",
+        "label": "MOI Poster"
+      }
+    ]
+  },
+  "prabhav": {
+    "sectionBadge": "Prabhav · Schools2030",
+    "sectionTitle": "Prabhav & Schools2030",
+    "sectionSubtitle": "Research-driven school improvement initiatives in partnership with global education networks.",
+    "body": "Prabhav is TIDE's research initiative studying the impact of holistic education interventions. As part of the global Schools2030 network — a programme by the Aga Khan Foundation — TIDE contributes on-ground data and insights on transformative learning environments.",
+    "poster": "/assets/images/projects-prabhav/schools2030-poster.png"
+  }
+}
