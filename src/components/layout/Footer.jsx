@@ -32,7 +32,7 @@ export default function Footer() {
             <Link to="/" className="inline-flex items-center gap-3 group mb-6 block">
               <div className="w-12 h-12 rounded-xl overflow-hidden shadow-float">
                 <img
-                  src="/assets/images/shared/tide-logo.png"
+                  src={`${import.meta.env.BASE_URL}assets/images/shared/tide-logo.png`}
                   alt="TIDE Foundation"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />

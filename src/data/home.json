@@ -41,7 +41,7 @@
     "items": [
       {
         "to": "/projects/block-eti",
-        "photo": "/assets/images/home/gallery-1.jpg",
+        "photo": "assets/images/home/gallery-1.jpg",
         "iconKey": "Globe",
         "title": "Block ETI",
         "badge": "Government Schools",
@@ -49,7 +49,7 @@
       },
       {
         "to": "/projects/bettered",
-        "photo": "/assets/images/projects-bettered/gallery-01.jpg",
+        "photo": "assets/images/projects-bettered/gallery-01.jpg",
         "iconKey": "BookOpen",
         "title": "BetterED",
         "badge": "1,225 Children",
@@ -57,7 +57,7 @@
       },
       {
         "to": "/projects/empowered",
-        "photo": "/assets/images/projects-empowered/Build-teacher-agency.jpg",
+        "photo": "assets/images/projects-empowered/Build-teacher-agency.jpg",
         "iconKey": "GraduationCap",
         "title": "EmpowerEd",
         "badge": "Teacher-led",
@@ -65,7 +65,7 @@
       },
       {
         "to": "/projects/completed",
-        "photo": "/assets/images/home/gallery-2.jpg",
+        "photo": "assets/images/home/gallery-2.jpg",
         "iconKey": "Heart",
         "title": "CompletEd",
         "badge": "1,028 People",
@@ -73,7 +73,7 @@
       },
       {
         "to": "/thrive",
-        "photo": "/assets/images/thrive/research-happiness-curriculum.png",
+        "photo": "assets/images/thrive/research-happiness-curriculum.png",
         "iconKey": "Lightbulb",
         "title": "THRIvE",
         "badge": "Research",
@@ -81,7 +81,7 @@
       },
       {
         "to": "/projects/other-projects",
-        "photo": "/assets/images/projects-other/EEP.jpg",
+        "photo": "assets/images/projects-other/EEP.jpg",
         "iconKey": "Users",
         "title": "Other Projects",
         "badge": "More Work",
@@ -90,16 +90,16 @@
     ]
   },
   "gallery": [
-    "/assets/images/home/slider-1.jpg",
-    "/assets/images/get-involved-volunteer/gallery-01.jpg",
-    "/assets/images/home/slider-2.jpg",
-    "/assets/images/home/gallery-3.jpg",
-    "/assets/images/projects-bettered/gallery-03.jpg",
-    "/assets/images/get-involved-volunteer/gallery-04.jpg",
-    "/assets/images/home/slider-3.jpg",
-    "/assets/images/projects-bettered/gallery-07.jpg",
-    "/assets/images/get-involved-volunteer/gallery-08.jpg",
-    "/assets/images/projects-bettered/gallery-09.jpg"
+    "assets/images/home/slider-1.jpg",
+    "assets/images/get-involved-volunteer/gallery-01.jpg",
+    "assets/images/home/slider-2.jpg",
+    "assets/images/home/gallery-3.jpg",
+    "assets/images/projects-bettered/gallery-03.jpg",
+    "assets/images/get-involved-volunteer/gallery-04.jpg",
+    "assets/images/home/slider-3.jpg",
+    "assets/images/projects-bettered/gallery-07.jpg",
+    "assets/images/get-involved-volunteer/gallery-08.jpg",
+    "assets/images/projects-bettered/gallery-09.jpg"
   ],
   "testimonial": {
     "quote": "TIDE doesn't just run programs — it builds ecosystems. Their work with our teachers changed how our entire school thinks about education.",

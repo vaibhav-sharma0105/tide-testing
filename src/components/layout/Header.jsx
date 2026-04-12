@@ -98,7 +98,7 @@ export default function Header() {
         <Link to="/" className="flex items-center gap-3 flex-shrink-0 group">
           <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 shadow-sm">
             <img
-              src="/assets/images/shared/tide-logo.png"
+              src={`${import.meta.env.BASE_URL}assets/images/shared/tide-logo.png`}
               alt="TIDE Foundation"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />

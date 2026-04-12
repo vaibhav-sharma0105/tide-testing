@@ -18,7 +18,7 @@
       "publisher": "Palgrave, Macmillan & Springer",
       "href": "https://link.springer.com/book/9783031235382",
       "internal": false,
-      "photo": "/assets/images/resources-publications/publication-1.jpg"
+      "photo": "assets/images/resources-publications/publication-1.jpg"
     },
     {
       "type": "book",
@@ -26,7 +26,7 @@
       "publisher": "Education for All in Times of Crisis (Routledge, 2021)",
       "href": "https://www.doi.org/10.4324/9781003155591",
       "internal": false,
-      "photo": "/assets/images/resources-publications/blog-covid.png"
+      "photo": "assets/images/resources-publications/blog-covid.png"
     },
     {
       "type": "book",
@@ -34,7 +34,7 @@
       "publisher": "Rewilding Education (Routledge, 2023)",
       "href": null,
       "internal": false,
-      "photo": "/assets/images/resources-publications/case-study-covid.png"
+      "photo": "assets/images/resources-publications/case-study-covid.png"
     },
     {
       "type": "article",
@@ -50,7 +50,7 @@
       "publisher": "Kedavani Vimarsh 1(1), 27–28 — Patel, J.",
       "href": null,
       "internal": false,
-      "photo": "/assets/images/resources-publications/vision-education.png"
+      "photo": "assets/images/resources-publications/vision-education.png"
     },
     {
       "type": "article",
@@ -58,7 +58,7 @@
       "publisher": "Mind & Life Institute",
       "href": null,
       "internal": false,
-      "photo": "/assets/images/resources-publications/happiness-study.jpg"
+      "photo": "assets/images/resources-publications/happiness-study.jpg"
     },
     {
       "type": "article",
@@ -66,7 +66,7 @@
       "publisher": "Mind & Life Media",
       "href": null,
       "internal": false,
-      "photo": "/assets/images/resources-publications/mli-logo.png"
+      "photo": "assets/images/resources-publications/mli-logo.png"
     },
     {
       "type": "article",
@@ -74,7 +74,7 @@
       "publisher": "Cambridge Education News",
       "href": null,
       "internal": false,
-      "photo": "/assets/images/resources-publications/citizens-in-making.png"
+      "photo": "assets/images/resources-publications/citizens-in-making.png"
     },
     {
       "type": "video",
@@ -82,7 +82,7 @@
       "publisher": "YouTube Playlist — Editions 2017, 2023, 2024",
       "href": null,
       "internal": false,
-      "photo": "/assets/images/resources-publications/moi-poster.png"
+      "photo": "assets/images/resources-publications/moi-poster.png"
     },
     {
       "type": "talk",
@@ -90,7 +90,7 @@
       "publisher": "IIMA Seminar — Dr. Jwalin Patel",
       "href": null,
       "internal": false,
-      "photo": "/assets/images/resources-publications/iima-seminar.jpg"
+      "photo": "assets/images/resources-publications/iima-seminar.jpg"
     },
     {
       "type": "talk",
@@ -98,7 +98,7 @@
       "publisher": "Voices of the Next Generation: Shaping the Future in Education",
       "href": null,
       "internal": false,
-      "photo": "/assets/images/resources-publications/cambridge-presentation.jpg"
+      "photo": "assets/images/resources-publications/cambridge-presentation.jpg"
     },
     {
       "type": "materials",
@@ -106,7 +106,7 @@
       "publisher": "14 open-source visual learning booklets for foundational mathematics",
       "href": "/resources/saral-kadam",
       "internal": true,
-      "photo": "/assets/images/resources-publications/saral-kadam-booklets.jpg"
+      "photo": "assets/images/resources-publications/saral-kadam-booklets.jpg"
     }
   ]
 }

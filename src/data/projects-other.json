@@ -15,10 +15,10 @@
         "stats": "1,056 students",
         "iconKey": "GraduationCap",
         "photos": [
-          "/assets/images/projects-other/1.-colDev4.jpg",
-          "/assets/images/projects-other/2.-colDev1.jpg",
-          "/assets/images/projects-other/colDev3.jpg",
-          "/assets/images/projects-other/colDev5.jpg"
+          "assets/images/projects-other/1.-colDev4.jpg",
+          "assets/images/projects-other/2.-colDev1.jpg",
+          "assets/images/projects-other/colDev3.jpg",
+          "assets/images/projects-other/colDev5.jpg"
         ]
       },
       {
@@ -27,10 +27,10 @@
         "stats": "14,402 children · 695 teachers",
         "iconKey": "Heart",
         "photos": [
-          "/assets/images/projects-other/1.-Prerak-Gibpura-1.jpg",
-          "/assets/images/projects-other/2.-Prerak-Gibpura1-1.jpg",
-          "/assets/images/projects-other/3.-Prerak-Shela5-1.jpg",
-          "/assets/images/projects-other/5.-Prerak-Gibpura4-2.jpg"
+          "assets/images/projects-other/1.-Prerak-Gibpura-1.jpg",
+          "assets/images/projects-other/2.-Prerak-Gibpura1-1.jpg",
+          "assets/images/projects-other/3.-Prerak-Shela5-1.jpg",
+          "assets/images/projects-other/5.-Prerak-Gibpura4-2.jpg"
         ]
       },
       {
@@ -49,27 +49,27 @@
     "body": "Disha has reached 2,082 children across 10 schools, 5 orphanages, 1 village, and 1 slum. The program focuses on life skills, social activism, and community values through experiential activities and celebrations like pre-Diwali events in partnership with local communities.",
     "photos": [
       {
-        "src": "/assets/images/projects-disha/1.-Sk-Yateemkhana.jpg",
+        "src": "assets/images/projects-disha/1.-Sk-Yateemkhana.jpg",
         "label": "Disha program 1"
       },
       {
-        "src": "/assets/images/projects-disha/2.-Sk-Odhav-Social-activism-works.jpg",
+        "src": "assets/images/projects-disha/2.-Sk-Odhav-Social-activism-works.jpg",
         "label": "Disha program 2"
       },
       {
-        "src": "/assets/images/projects-disha/3.-Sk-Yateemkhana1.jpg",
+        "src": "assets/images/projects-disha/3.-Sk-Yateemkhana1.jpg",
         "label": "Disha program 3"
       },
       {
-        "src": "/assets/images/projects-disha/4.-Sk-Yateemkhana2.jpg",
+        "src": "assets/images/projects-disha/4.-Sk-Yateemkhana2.jpg",
         "label": "Disha program 4"
       },
       {
-        "src": "/assets/images/projects-disha/Fangdi-prediwali-2022-1-scaled.jpg",
+        "src": "assets/images/projects-disha/Fangdi-prediwali-2022-1-scaled.jpg",
         "label": "Disha program 5"
       },
       {
-        "src": "/assets/images/projects-disha/Fangdi-prediwali-2022-2-scaled.jpg",
+        "src": "assets/images/projects-disha/Fangdi-prediwali-2022-2-scaled.jpg",
         "label": "Disha program 6"
       }
     ]
@@ -80,11 +80,11 @@
     "sectionSubtitle": "A platform showcasing innovative solutions — editions in 2017, 2023, and 2024.",
     "photos": [
       {
-        "src": "/assets/images/projects-moi/moi-photo.jpg",
+        "src": "assets/images/projects-moi/moi-photo.jpg",
         "label": "MOI Session"
       },
       {
-        "src": "/assets/images/projects-moi/moi-poster.jpg",
+        "src": "assets/images/projects-moi/moi-poster.jpg",
         "label": "MOI Poster"
       }
     ]
@@ -94,6 +94,6 @@
     "sectionTitle": "Prabhav & Schools2030",
     "sectionSubtitle": "Research-driven school improvement initiatives in partnership with global education networks.",
     "body": "Prabhav is TIDE's research initiative studying the impact of holistic education interventions. As part of the global Schools2030 network — a programme by the Aga Khan Foundation — TIDE contributes on-ground data and insights on transformative learning environments.",
-    "poster": "/assets/images/projects-prabhav/schools2030-poster.png"
+    "poster": "assets/images/projects-prabhav/schools2030-poster.png"
   }
 }

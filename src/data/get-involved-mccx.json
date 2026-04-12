@@ -14,19 +14,19 @@
     "ctaHref": "mailto:info@tideinternational.org?subject=MCCx Organisation Enquiry",
     "photos": [
       {
-        "src": "/assets/images/projects-mcc/mccx-2025-au.jpg",
+        "src": "assets/images/projects-mcc/mccx-2025-au.jpg",
         "label": "Ahmedabad University 2025"
       },
       {
-        "src": "/assets/images/projects-mcc/mccx-2025-ggis.jpg",
+        "src": "assets/images/projects-mcc/mccx-2025-ggis.jpg",
         "label": "GGIS 2025"
       },
       {
-        "src": "/assets/images/projects-mcc/mcc-2024-navjeevan.jpeg",
+        "src": "assets/images/projects-mcc/mcc-2024-navjeevan.jpeg",
         "label": "Navjeevan 2024"
       },
       {
-        "src": "/assets/images/projects-mcc/mcc-4-copy.png",
+        "src": "assets/images/projects-mcc/mcc-4-copy.png",
         "label": "MCC Session"
       }
     ]

@@ -19,7 +19,7 @@
       {
         "name": "Dr. Jwalin Patel",
         "role": "Co-Director · PhD, University of Cambridge",
-        "photo": "/assets/images/thrive/team-jwalin-patel.jpg"
+        "photo": "assets/images/thrive/team-jwalin-patel.jpg"
       },
       {
         "name": "Dr. Seema Nath",
@@ -29,7 +29,7 @@
       {
         "name": "Dr. Rohini Sen",
         "role": "Co-Director · PhD candidate, University of Warwick · Associate Professor, Jindal Global Law School",
-        "photo": "/assets/images/thrive/team-rohini-sen.jpg"
+        "photo": "assets/images/thrive/team-rohini-sen.jpg"
       }
     ]
   },
@@ -41,37 +41,37 @@
       {
         "name": "Sangeeta Bhatt",
         "role": "Research Associate",
-        "photo": "/assets/images/thrive/team-sangeeta-bhatt.jpg"
+        "photo": "assets/images/thrive/team-sangeeta-bhatt.jpg"
       },
       {
         "name": "Mansi Nanda",
         "role": "Research Associate",
-        "photo": "/assets/images/thrive/team-mansi-nanda.jpg"
+        "photo": "assets/images/thrive/team-mansi-nanda.jpg"
       },
       {
         "name": "Muskan Khanna",
         "role": "Research Associate",
-        "photo": "/assets/images/thrive/team-muskan-khanna.jpg"
+        "photo": "assets/images/thrive/team-muskan-khanna.jpg"
       },
       {
         "name": "Murari Jha",
         "role": "Research Associate",
-        "photo": "/assets/images/thrive/team-murari-jha.jpg"
+        "photo": "assets/images/thrive/team-murari-jha.jpg"
       },
       {
         "name": "Magdhi Diksha",
         "role": "Research Associate",
-        "photo": "/assets/images/thrive/team-magdhi-diksha.jpg"
+        "photo": "assets/images/thrive/team-magdhi-diksha.jpg"
       },
       {
         "name": "Paran Amitava",
         "role": "Research Associate",
-        "photo": "/assets/images/thrive/team-paran-amitava.jpg"
+        "photo": "assets/images/thrive/team-paran-amitava.jpg"
       },
       {
         "name": "Thilanka Wijesinghe",
         "role": "Research Associate",
-        "photo": "/assets/images/thrive/team-thilanka-wijesinghe.jpg"
+        "photo": "assets/images/thrive/team-thilanka-wijesinghe.jpg"
       }
     ]
   },
@@ -119,27 +119,27 @@
       {
         "title": "Happiness Curriculum Study",
         "desc": "Exploring teacher and student experiences with social-emotional development curricula.",
-        "photo": "/assets/images/thrive/research-happiness-curriculum.png"
+        "photo": "assets/images/thrive/research-happiness-curriculum.png"
       },
       {
         "title": "PRABHAV",
         "desc": "Examining teacher agency as a catalyst for educational change across India.",
-        "photo": "/assets/images/thrive/research-prabhav.png"
+        "photo": "assets/images/thrive/research-prabhav.png"
       },
       {
         "title": "Teachers with Disabilities",
         "desc": "Investigating professional experiences and identity among disabled educators.",
-        "photo": "/assets/images/thrive/research-twd.png"
+        "photo": "assets/images/thrive/research-twd.png"
       },
       {
         "title": "Social Changemakers Program",
         "desc": "Autoethnographic study of student engagement in immersive social justice projects.",
-        "photo": "/assets/images/thrive/research-scf.jpg"
+        "photo": "assets/images/thrive/research-scf.jpg"
       },
       {
         "title": "Model City Council",
         "desc": "Qualitative study of collaborative sustainability discussions and civic education.",
-        "photo": "/assets/images/thrive/research-mcc.png"
+        "photo": "assets/images/thrive/research-mcc.png"
       }
     ]
   },
@@ -149,27 +149,27 @@
     "sectionSubtitle": "Sharing THRIvE's findings on global stages and in peer-reviewed research.",
     "images": [
       {
-        "src": "/assets/images/thrive-happiness/bg-cies-2024-poster.jpg",
+        "src": "assets/images/thrive-happiness/bg-cies-2024-poster.jpg",
         "label": "CIES 2024 Poster"
       },
       {
-        "src": "/assets/images/thrive-happiness/bg-cies-2024-talk.png",
+        "src": "assets/images/thrive-happiness/bg-cies-2024-talk.png",
         "label": "CIES 2024 Talk"
       },
       {
-        "src": "/assets/images/thrive-happiness/bg-selebrating-summit.png",
+        "src": "assets/images/thrive-happiness/bg-selebrating-summit.png",
         "label": "SEL Celebrating Summit"
       },
       {
-        "src": "/assets/images/thrive-happiness/bg-sel-paper.jpeg",
+        "src": "assets/images/thrive-happiness/bg-sel-paper.jpeg",
         "label": "SEL Research Paper"
       },
       {
-        "src": "/assets/images/thrive-happiness/bg-templeton-conf.png",
+        "src": "assets/images/thrive-happiness/bg-templeton-conf.png",
         "label": "Templeton Conference"
       },
       {
-        "src": "/assets/images/thrive-happiness/bg-blog-research.png",
+        "src": "assets/images/thrive-happiness/bg-blog-research.png",
         "label": "Research Blog"
       }
     ]

@@ -48,35 +48,35 @@
     "sectionTitle": "Moments from the field",
     "images": [
       {
-        "src": "/assets/images/get-involved-volunteer/gallery-01.jpg",
+        "src": "assets/images/get-involved-volunteer/gallery-01.jpg",
         "label": "TIDE volunteer 1"
       },
       {
-        "src": "/assets/images/get-involved-volunteer/gallery-02.jpg",
+        "src": "assets/images/get-involved-volunteer/gallery-02.jpg",
         "label": "TIDE volunteer 2"
       },
       {
-        "src": "/assets/images/get-involved-volunteer/gallery-03.jpg",
+        "src": "assets/images/get-involved-volunteer/gallery-03.jpg",
         "label": "TIDE volunteer 3"
       },
       {
-        "src": "/assets/images/get-involved-volunteer/gallery-04.jpg",
+        "src": "assets/images/get-involved-volunteer/gallery-04.jpg",
         "label": "TIDE volunteer 4"
       },
       {
-        "src": "/assets/images/get-involved-volunteer/gallery-05.jpg",
+        "src": "assets/images/get-involved-volunteer/gallery-05.jpg",
         "label": "TIDE volunteer 5"
       },
       {
-        "src": "/assets/images/get-involved-volunteer/gallery-07.jpg",
+        "src": "assets/images/get-involved-volunteer/gallery-07.jpg",
         "label": "TIDE volunteer 6"
       },
       {
-        "src": "/assets/images/get-involved-volunteer/gallery-08.jpg",
+        "src": "assets/images/get-involved-volunteer/gallery-08.jpg",
         "label": "TIDE volunteer 7"
       },
       {
-        "src": "/assets/images/get-involved-volunteer/gallery-09.jpg",
+        "src": "assets/images/get-involved-volunteer/gallery-09.jpg",
         "label": "TIDE volunteer 8"
       }
     ]

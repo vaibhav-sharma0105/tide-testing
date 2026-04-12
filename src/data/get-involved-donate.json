@@ -15,7 +15,7 @@
       "80G tax exemption available for Indian donors",
       "CSR partnership opportunities available"
     ],
-    "donorPoster": "/assets/images/get-involved-donate/qr-donate-poster.png",
+    "donorPoster": "assets/images/get-involved-donate/qr-donate-poster.png",
     "posterCaption": "Scan the QR code to donate directly, or contact us for bank transfer details and CSR arrangements.",
     "contactLabel": "Contact to Donate",
     "contactHref": "mailto:info@tideinternational.org?subject=Donation Enquiry",

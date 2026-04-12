@@ -9,8 +9,8 @@
   "overview": {
     "title": "Overview",
     "body": "EmpowerEd develops bottom-up, collaborative interventions to educate, enrich and empower educators. It treats teachers as experts — not recipients — of professional development.",
-    "logo": "/assets/images/projects-empowered/ee-logo.jpeg",
-    "heroPhoto": "/assets/images/projects-empowered/Build-teacher-agency.jpg"
+    "logo": "assets/images/projects-empowered/ee-logo.jpeg",
+    "heroPhoto": "assets/images/projects-empowered/Build-teacher-agency.jpg"
   },
   "components": [
     {
@@ -31,23 +31,23 @@
     "items": [
       {
         "label": "Build teacher agency",
-        "photo": "/assets/images/projects-empowered/Build-teacher-agency.jpg"
+        "photo": "assets/images/projects-empowered/Build-teacher-agency.jpg"
       },
       {
         "label": "Share best practices",
-        "photo": "/assets/images/projects-empowered/Share-best-practices.jpg"
+        "photo": "assets/images/projects-empowered/Share-best-practices.jpg"
       },
       {
         "label": "Facilitate dialogic & experiential learning",
-        "photo": "/assets/images/projects-empowered/Dialogic-and-experiential-learning.jpg"
+        "photo": "assets/images/projects-empowered/Dialogic-and-experiential-learning.jpg"
       },
       {
         "label": "Create professional learning communities",
-        "photo": "/assets/images/projects-empowered/Createp-rofessional-learning-communities.jpg"
+        "photo": "assets/images/projects-empowered/Createp-rofessional-learning-communities.jpg"
       },
       {
         "label": "Generate systemic change",
-        "photo": "/assets/images/projects-empowered/Create-systemic-change.jpg"
+        "photo": "assets/images/projects-empowered/Create-systemic-change.jpg"
       }
     ]
   },

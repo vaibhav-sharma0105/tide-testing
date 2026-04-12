@@ -8,6 +8,7 @@ import data from '../data/home.json'
 
 /* ── Icon + color map (visual config, not content) ─────────────────── */
 const ICON_MAP = { Globe, BookOpen, GraduationCap, Heart, Lightbulb, Users }
+const B = import.meta.env.BASE_URL  // '/tide-testing/' on GitHub Pages, '/' locally
 const PROGRAM_COLORS = [
   'from-blue-600 to-primary',
   'from-emerald-600 to-teal-600',
@@ -47,7 +48,7 @@ export default function Home() {
 
         {/* Background photo with parallax */}
         <motion.div style={{ y: heroY }} className="absolute inset-0 -top-[10%] -bottom-[10%]">
-          <img src="/assets/images/home/slider-1.jpg" alt="" className="w-full h-full object-cover object-center" />
+          <img src={`${B}assets/images/home/slider-1.jpg`} alt="" className="w-full h-full object-cover object-center" />
         </motion.div>
 
         {/* Overlay */}
@@ -115,7 +116,7 @@ export default function Home() {
                 transition={{ delay: 0.6, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
                 className="animate-float absolute top-0 right-0 w-52 h-64 rounded-2xl overflow-hidden shadow-float border-2 border-white/20"
               >
-                <img src="/assets/images/projects-bettered/gallery-07.jpg" alt="" className="w-full h-full object-cover" />
+                <img src={`${B}assets/images/projects-bettered/gallery-07.jpg`} alt="" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 photo-overlay rounded-2xl" />
               </motion.div>
               <motion.div
@@ -125,7 +126,7 @@ export default function Home() {
                 className="absolute bottom-0 left-0 w-44 h-56 rounded-2xl overflow-hidden shadow-float border-2 border-white/20"
                 style={{ animationDelay: '2s' }}
               >
-                <img src="/assets/images/get-involved-volunteer/gallery-04.jpg" alt="" className="w-full h-full object-cover" />
+                <img src={`${B}assets/images/get-involved-volunteer/gallery-04.jpg`} alt="" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 photo-overlay rounded-2xl" />
               </motion.div>
               <motion.div
@@ -185,10 +186,10 @@ export default function Home() {
             <motion.div {...fadeIn(0.15)} className="order-1 lg:order-2 relative">
               <div className="relative h-[480px] md:h-[540px]">
                 <div className="absolute right-0 top-0 w-[75%] h-[85%] rounded-3xl overflow-hidden shadow-float">
-                  <img src="/assets/images/home/why-tide.jpg" alt="TIDE Foundation classroom" className="w-full h-full object-cover" />
+                  <img src={`${B}assets/images/home/why-tide.jpg`} alt="TIDE Foundation classroom" className="w-full h-full object-cover" />
                 </div>
                 <div className="absolute left-0 bottom-0 w-[52%] h-[55%] rounded-2xl overflow-hidden shadow-float border-4 border-tide-bg">
-                  <img src="/assets/images/home/join-us.jpg" alt="Join TIDE" className="w-full h-full object-cover" />
+                  <img src={`${B}assets/images/home/join-us.jpg`} alt="Join TIDE" className="w-full h-full object-cover" />
                 </div>
                 <motion.div
                   initial={{ opacity: 0, scale: 0.85 }}
@@ -211,7 +212,7 @@ export default function Home() {
       ══════════════════════════════════════════════════════════════ */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/assets/images/home/bg-counter.jpg" alt="" className="w-full h-full object-cover object-center" />
+          <img src={`${B}assets/images/home/bg-counter.jpg`} alt="" className="w-full h-full object-cover object-center" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(13,33,55,0.93) 0%, rgba(13,33,55,0.82) 100%)' }} />
         </div>
         <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: 'linear-gradient(90deg, transparent 0%, #F59E0B 30%, #F59E0B 70%, transparent 100%)' }} />
@@ -354,7 +355,7 @@ export default function Home() {
               <div className="flex items-center gap-4">
                 <div className="relative flex-shrink-0">
                   <div className="w-14 h-14 rounded-xl overflow-hidden shadow-md border-2 border-white">
-                    <img src="/assets/images/home/testimonial-quote.png" alt={data.testimonial.author} className="w-full h-full object-cover" />
+                    <img src={`${B}assets/images/home/testimonial-quote.png`} alt={data.testimonial.author} className="w-full h-full object-cover" />
                   </div>
                   <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full gradient-accent flex items-center justify-center shadow-sm">
                     <Quote className="w-3 h-3 text-white" />
@@ -379,7 +380,7 @@ export default function Home() {
       ══════════════════════════════════════════════════════════════ */}
       <section className="relative overflow-hidden min-h-[420px] flex items-center">
         <div className="absolute inset-0">
-          <img src="/assets/images/home/bg-contact-strip.jpg" alt="" className="w-full h-full object-cover" />
+          <img src={`${B}assets/images/home/bg-contact-strip.jpg`} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/50" />
         </div>
 

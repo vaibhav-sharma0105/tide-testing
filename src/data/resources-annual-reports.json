@@ -16,7 +16,7 @@
     {
       "year": "2025–26",
       "label": "Latest Report",
-      "photo": "/assets/images/resources-annual-reports/report-2025-26.png",
+      "photo": "assets/images/resources-annual-reports/report-2025-26.png",
       "href": "https://tideinternational.org/resources/annual-reports/",
       "highlight": true,
       "wide": false
@@ -24,7 +24,7 @@
     {
       "year": "2023–24",
       "label": "Annual Report",
-      "photo": "/assets/images/resources-annual-reports/report-2023-24.png",
+      "photo": "assets/images/resources-annual-reports/report-2023-24.png",
       "href": "https://tideinternational.org/resources/annual-reports/",
       "highlight": false,
       "wide": false
@@ -32,7 +32,7 @@
     {
       "year": "2022–23",
       "label": "Annual Report",
-      "photo": "/assets/images/resources-annual-reports/report-2022-23.png",
+      "photo": "assets/images/resources-annual-reports/report-2022-23.png",
       "href": "https://tideinternational.org/resources/annual-reports/",
       "highlight": false,
       "wide": false
@@ -40,7 +40,7 @@
     {
       "year": "2021–22",
       "label": "Annual Report",
-      "photo": "/assets/images/resources-annual-reports/report-2021-22.png",
+      "photo": "assets/images/resources-annual-reports/report-2021-22.png",
       "href": "https://tideinternational.org/resources/annual-reports/",
       "highlight": false,
       "wide": false
@@ -48,7 +48,7 @@
     {
       "year": "2020–21",
       "label": "Annual Report",
-      "photo": "/assets/images/resources-annual-reports/report-2020-21.png",
+      "photo": "assets/images/resources-annual-reports/report-2020-21.png",
       "href": "https://tideinternational.org/resources/annual-reports/",
       "highlight": false,
       "wide": false
@@ -56,7 +56,7 @@
     {
       "year": "2019–20",
       "label": "Annual Report",
-      "photo": "/assets/images/resources-annual-reports/report-2019-20.png",
+      "photo": "assets/images/resources-annual-reports/report-2019-20.png",
       "href": "https://tideinternational.org/resources/annual-reports/",
       "highlight": false,
       "wide": false
@@ -64,7 +64,7 @@
     {
       "year": "5-Year Report (2014–2019)",
       "label": "Impact Report",
-      "photo": "/assets/images/resources-annual-reports/report-2014-19.png",
+      "photo": "assets/images/resources-annual-reports/report-2014-19.png",
       "href": "https://tideinternational.org/resources/annual-reports/",
       "highlight": false,
       "wide": true
@@ -72,7 +72,7 @@
     {
       "year": "2014–15",
       "label": "Inaugural Report",
-      "photo": "/assets/images/resources-annual-reports/report-2014-15.png",
+      "photo": "assets/images/resources-annual-reports/report-2014-15.png",
       "href": "https://tideinternational.org/resources/annual-reports/",
       "highlight": false,
       "wide": false
