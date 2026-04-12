@@ -1,6 +1,25 @@
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
+import { Component } from 'react'
 import Layout from './components/layout/Layout'
+
+class ErrorBoundary extends Component {
+  constructor(props) { super(props); this.state = { error: null } }
+  static getDerivedStateFromError(e) { return { error: e } }
+  render() {
+    if (this.state.error) {
+      return (
+        <div style={{ padding: '2rem', fontFamily: 'monospace', color: '#c00', background: '#fff', minHeight: '100vh' }}>
+          <h1 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Runtime Error</h1>
+          <pre style={{ whiteSpace: 'pre-wrap', background: '#fee', padding: '1rem', borderRadius: '4px' }}>
+            {this.state.error?.message}{'\n\n'}{this.state.error?.stack}
+          </pre>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
 
 import Home from './pages/Home'
 import WhyTide from './pages/about/WhyTide'
@@ -24,6 +43,7 @@ import Contact from './pages/Contact'
 
 export default function App() {
   return (
+    <ErrorBoundary>
     <HelmetProvider>
       <HashRouter>
         <Layout>
@@ -51,5 +71,6 @@ export default function App() {
         </Layout>
       </HashRouter>
     </HelmetProvider>
+    </ErrorBoundary>
   )
 }
