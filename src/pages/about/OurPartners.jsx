@@ -10,7 +10,7 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.45, delay, ease: [0.4, 0, 0.2, 1] },
 })
 
-const BASE = '/assets/images/about-our-partners/'
+const BASE = `${import.meta.env.BASE_URL}assets/images/about-our-partners/`
 
 export default function OurPartners() {
   return (
