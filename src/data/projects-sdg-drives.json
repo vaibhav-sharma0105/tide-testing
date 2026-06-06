@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "badge": "CompletEd · SDG Drives",
+    "title": "SDG Drives",
+    "tagline": "A year-long volunteering initiative aligned with the UN Sustainable Development Goals.",
+    "seoTitle": "SDG Drives — TIDE Foundation",
+    "seoDescription": "SDG Drives is a year-long volunteer initiative by TIDE Foundation, covering 9 SDGs over 9 months through campus ambassadors, school reps, and independent volunteers."
+  },
+  "overview": {
+    "title": "Overview of Sustainable Development Goals",
+    "body": "The United Nations adopted 17 Sustainable Development Goals in 2015 as part of the 2030 Agenda for Sustainable Development. These goals address poverty, hunger, health, education, gender equality, clean water and sanitation, affordable and clean energy, economic growth, industry innovation, reduced inequalities, sustainable cities, responsible consumption, climate action, life below water, life on land, peace, justice and strong institutions, and global partnerships for development.",
+    "image": "assets/images/projects-sdg-drives/un-sdg-goals.png",
+    "imageAlt": "UN Sustainable Development Goals — 17 Goals to Transform Our World"
+  },
+  "idea": {
+    "title": "The Idea",
+    "body": "SDG Drives is a year-long volunteer initiative that covers 9 SDGs over 9 months, with two drives run every month. The program engages schools, colleges, and corporations to take meaningful action on the Sustainable Development Goals through structured, community-led activities.",
+    "sdgList": "SDG 3 (Good Health & Well-being) · SDG 4 (Quality Education) · SDG 5 (Gender Equality) · SDG 6 (Clean Water & Sanitation) · SDG 7 (Affordable & Clean Energy) · SDG 11 (Sustainable Cities) · SDG 12 (Responsible Consumption) · SDG 13 (Climate Action) · SDG 15 (Life on Land)",
+    "contactNote": "Schools, colleges and corporations can participate by reaching us at info@tideinternational.org"
+  },
+  "objectives": {
+    "sectionBadge": "Our Objectives",
+    "sectionTitle": "What We Aim to Achieve",
+    "items": [
+      {
+        "title": "Spreading Awareness",
+        "desc": "Educating participants and communities about the 17 UN Sustainable Development Goals and their relevance to everyday life.",
+        "iconKey": "Globe"
+      },
+      {
+        "title": "Leadership in Students",
+        "desc": "Cultivating a generation of young leaders who take initiative in solving real-world social and environmental challenges.",
+        "iconKey": "Users"
+      },
+      {
+        "title": "Social Responsibility",
+        "desc": "Instilling a deep sense of duty towards communities and the environment in every participant.",
+        "iconKey": "Heart"
+      },
+      {
+        "title": "Fundamental Duties",
+        "desc": "Encouraging an inclination towards the fundamental duties of citizens as enshrined in the Indian Constitution.",
+        "iconKey": "BookOpen"
+      },
+      {
+        "title": "Empathy",
+        "desc": "Building the capacity to understand and share the feelings of others across different social and economic backgrounds.",
+        "iconKey": "Lightbulb"
+      }
+    ]
+  },
+  "execution": {
+    "sectionBadge": "Execution Plan",
+    "sectionTitle": "How SDG Drives Works",
+    "ambassadorTitle": "Campus Ambassador Team Structure",
+    "ambassadorNote": "Applicable for college / university students",
+    "ambassadorRoles": [
+      "Sponsorship Head",
+      "Logistics Head",
+      "Marketing Head"
+    ],
+    "timeline": [
+      {
+        "duration": "July – September",
+        "frequency": "Twice monthly",
+        "sdgs": "SDG 3, 4, 5"
+      },
+      {
+        "duration": "October – December",
+        "frequency": "Twice monthly",
+        "sdgs": "SDG 6, 7, 11"
+      },
+      {
+        "duration": "January – March",
+        "frequency": "Twice monthly",
+        "sdgs": "SDG 12, 13, 15"
+      }
+    ],
+    "independentTitle": "Independent Volunteer Pathway",
+    "independentBody": "Not affiliated with a campus? You can still participate as an independent volunteer and contribute to SDG drives throughout the year on your own schedule."
+  },
+  "padlet": {
+    "sectionBadge": "In Action",
+    "title": "Sustainability in Action",
+    "subtitle": "Explore our SDG Drives activities, goals, and stories from the ground.",
+    "url": "https://padlet.com/jwalin10/sustainability-in-action-our-goals-our-world-298p6w36455b1bp5",
+    "fallbackLabel": "Open the SDG Drives Padlet board",
+    "iframeTitle": "SDG Drives — Sustainability in Action Padlet Board"
+  },
+  "register": {
+    "sectionBadge": "Get Involved",
+    "title": "How to Register?",
+    "subtitle": "For campus ambassadors, school representatives, and independent volunteers",
+    "formUrl": "https://forms.gle/JffeT5fUYJd9a4Gp9",
+    "formLabel": "Register Now"
+  },
+  "downloads": {
+    "sectionBadge": "Resources",
+    "title": "Download the Detailed Documents",
+    "items": [
+      {
+        "label": "TIDE SDG Drives — Detailed Document",
+        "href": "https://tideinternational.org/wp-content/uploads/2024/05/TIDE-SDG-Drives-Detailed-Doc.pdf"
+      },
+      {
+        "label": "Campus Ambassador — Job Description",
+        "href": "https://tideinternational.org/wp-content/uploads/2024/05/TIDE-SDG-Drives-JD-Campus-Ambassador.pdf"
+      }
+    ]
+  }
+}

@@ -1,40 +1,102 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, ArrowRight, Heart } from 'lucide-react'
+import { Menu, X, ChevronDown, ChevronRight, ArrowRight, Heart } from 'lucide-react'
 import LanguageSwitcher from '../ui/LanguageSwitcher'
 import navData from '../../data/navigation.json'
 
 /* ── Dropdown ──────────────────────────────────────────────────────────── */
 function Dropdown({ items, onClose }) {
+  const [openSub, setOpenSub] = useState(null)
+  const subTimer = useRef(null)
+
+  const handleSubEnter = (to) => { clearTimeout(subTimer.current); setOpenSub(to) }
+  const handleSubLeave = () => { subTimer.current = setTimeout(() => setOpenSub(null), 100) }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 10, scale: 0.97 }}
       transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
-      className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 bg-white rounded-2xl shadow-float border border-tide-border/60 py-2 z-50 overflow-hidden"
+      className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 bg-white rounded-2xl shadow-float border border-tide-border/60 py-2 z-50 overflow-visible"
     >
       {/* top accent bar */}
-      <div className="absolute top-0 left-0 right-0 h-0.5 gradient-primary-soft rounded-t-2xl" />
-      {items.map((item) => (
-        <Link
-          key={item.to}
-          to={item.to}
-          onClick={onClose}
-          className="group flex items-start gap-3 px-4 py-3 mx-2 rounded-xl hover:bg-primary-faint transition-colors duration-150"
-        >
-          <div className="mt-0.5 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary mt-2 flex-shrink-0 transition-colors" />
-          <div>
-            <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
-              {item.label}
-            </div>
-            {item.desc && (
-              <div className="text-xs font-body text-tide-muted mt-0.5 leading-snug">{item.desc}</div>
-            )}
+      <div className="absolute top-0 left-0 right-0 h-0.5 gradient-primary-soft rounded-t-2xl pointer-events-none" />
+
+      {items.map((item) =>
+        item.subItems ? (
+          <div
+            key={item.to}
+            className="relative"
+            onMouseEnter={() => handleSubEnter(item.to)}
+            onMouseLeave={handleSubLeave}
+          >
+            <Link
+              to={item.to}
+              onClick={onClose}
+              className="group flex items-start gap-3 px-4 py-3 mx-2 rounded-xl hover:bg-primary-faint transition-colors duration-150"
+            >
+              <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
+                  {item.label}
+                </div>
+                {item.desc && (
+                  <div className="text-xs font-body text-tide-muted mt-0.5 leading-snug">{item.desc}</div>
+                )}
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-tide-muted mt-1.5 flex-shrink-0" />
+            </Link>
+
+            <AnimatePresence>
+              {openSub === item.to && (
+                <motion.div
+                  initial={{ opacity: 0, x: -8, scale: 0.97 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: -8, scale: 0.97 }}
+                  transition={{ duration: 0.15, ease: [0.4, 0, 0.2, 1] }}
+                  role="menu"
+                  className="absolute left-full top-0 ml-2 w-52 bg-white rounded-2xl shadow-float border border-tide-border/60 py-2 z-50 overflow-hidden"
+                >
+                  <div className="absolute top-0 left-0 right-0 h-0.5 gradient-primary-soft rounded-t-2xl pointer-events-none" />
+                  {item.subItems.map(sub => (
+                    <Link
+                      key={sub.to}
+                      to={sub.to}
+                      onClick={onClose}
+                      role="menuitem"
+                      className="group flex items-center gap-3 px-4 py-3 mx-2 rounded-xl hover:bg-primary-faint transition-colors duration-150"
+                    >
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
+                      <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
+                        {sub.label}
+                      </div>
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        </Link>
-      ))}
+        ) : (
+          <Link
+            key={item.to}
+            to={item.to}
+            onClick={onClose}
+            className="group flex items-start gap-3 px-4 py-3 mx-2 rounded-xl hover:bg-primary-faint transition-colors duration-150"
+          >
+            <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
+            <div>
+              <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
+                {item.label}
+              </div>
+              {item.desc && (
+                <div className="text-xs font-body text-tide-muted mt-0.5 leading-snug">{item.desc}</div>
+              )}
+            </div>
+          </Link>
+        )
+      )}
     </motion.div>
   )
 }
@@ -242,18 +304,37 @@ export default function Header() {
                           >
                             <div className="pl-4 pb-1 space-y-0.5">
                               {item.children.map((child) => (
-                                <Link
-                                  key={child.to}
-                                  to={child.to}
-                                  className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-body transition-colors ${
-                                    location.pathname.startsWith(child.to)
-                                      ? 'text-primary font-semibold bg-primary-faint'
-                                      : 'text-tide-muted hover:text-tide-text hover:bg-tide-subtle'
-                                  }`}
-                                >
-                                  <span className="w-1 h-1 rounded-full bg-current opacity-50 flex-shrink-0" />
-                                  {child.label}
-                                </Link>
+                                <div key={child.to}>
+                                  <Link
+                                    to={child.to}
+                                    className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-body transition-colors ${
+                                      location.pathname.startsWith(child.to)
+                                        ? 'text-primary font-semibold bg-primary-faint'
+                                        : 'text-tide-muted hover:text-tide-text hover:bg-tide-subtle'
+                                    }`}
+                                  >
+                                    <span className="w-1 h-1 rounded-full bg-current opacity-50 flex-shrink-0" />
+                                    {child.label}
+                                  </Link>
+                                  {child.subItems && (
+                                    <div className="pl-6 space-y-0.5">
+                                      {child.subItems.map(sub => (
+                                        <Link
+                                          key={sub.to}
+                                          to={sub.to}
+                                          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-body transition-colors ${
+                                            location.pathname === sub.to
+                                              ? 'text-primary font-semibold bg-primary-faint'
+                                              : 'text-tide-muted hover:text-tide-text hover:bg-tide-subtle'
+                                          }`}
+                                        >
+                                          <span className="w-0.5 h-0.5 rounded-full bg-current opacity-40 flex-shrink-0" />
+                                          {sub.label}
+                                        </Link>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
                               ))}
                             </div>
                           </motion.div>

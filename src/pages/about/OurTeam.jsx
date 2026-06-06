@@ -3,9 +3,11 @@ import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/about-our-team.json'
 
+const getInitials = name => name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+
 /* ── Portrait card ────────────────────────────��────────────────────── */
 function PortraitCard({ name, role, bio, photo, suffix, delay = 0, size = 'md' }) {
-  const initials  = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+  const initials  = getInitials(name)
   const ratioClass = size === 'lg' ? 'aspect-[4/5]' : 'aspect-[3/4]'
 
   return (
@@ -47,7 +49,7 @@ function PortraitCard({ name, role, bio, photo, suffix, delay = 0, size = 'md' }
 
 /* ── Advisor card ────────────────────────────────────────────────── */
 function AdvisorCard({ name, role, photo, delay = 0 }) {
-  const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+  const initials = getInitials(name)
 
   return (
     <motion.div

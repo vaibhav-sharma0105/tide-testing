@@ -31,6 +31,7 @@ import BetterED from './pages/projects/BetterED'
 import EmpowerEd from './pages/projects/EmpowerEd'
 import CompletEd from './pages/projects/CompletEd'
 import OtherProjects from './pages/projects/OtherProjects'
+import SdgDrives from './pages/projects/SdgDrives'
 import Volunteer from './pages/get-involved/Volunteer'
 import Donate from './pages/get-involved/Donate'
 import WorkWithUs from './pages/get-involved/WorkWithUs'
@@ -40,6 +41,10 @@ import SaralKadam from './pages/resources/SaralKadam'
 import AnnualReports from './pages/resources/AnnualReports'
 import Publications from './pages/resources/Publications'
 import Contact from './pages/Contact'
+import AblHome           from './pages/resources/AblHome'
+import AblResourceCenter from './pages/resources/AblResourceCenter'
+import AblDetail         from './pages/resources/AblDetail'
+import AblContribute     from './pages/resources/AblContribute'
 
 export default function App() {
   return (
@@ -58,6 +63,7 @@ export default function App() {
             <Route path="/projects/empowered" element={<EmpowerEd />} />
             <Route path="/projects/completed" element={<CompletEd />} />
             <Route path="/projects/other-projects" element={<OtherProjects />} />
+            <Route path="/projects/sdg-drives" element={<SdgDrives />} />
             <Route path="/get-involved/volunteer" element={<Volunteer />} />
             <Route path="/get-involved/donate" element={<Donate />} />
             <Route path="/get-involved/work-with-us" element={<WorkWithUs />} />
@@ -66,6 +72,10 @@ export default function App() {
             <Route path="/resources/saral-kadam" element={<SaralKadam />} />
             <Route path="/resources/annual-reports" element={<AnnualReports />} />
             <Route path="/resources/publications" element={<Publications />} />
+            <Route path="/resources/abl-resources" element={<AblHome />} />
+            <Route path="/resources/abl-resources/resource-center" element={<AblResourceCenter />} />
+            <Route path="/resources/abl-resources/resource-center/:id" element={<AblDetail />} />
+            <Route path="/resources/abl-resources/contribute" element={<AblContribute />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </Layout>

@@ -1,85 +1,111 @@
 # TIDE Foundation Website — Claude Context
 
 ## Project Overview
-A world-class, award-winning React static site rebuild of [tideinternational.org](https://tideinternational.org/) for TIDE Foundation (Together in Development and Education), an NGO based in Ahmedabad, India focused on educational reform.
+React static site rebuild of [tideinternational.org](https://tideinternational.org/) for TIDE Foundation (Together in Development and Education), an NGO based in Ahmedabad, India focused on educational reform.
 
 ## Tech Stack
-- **Vite 5 + React 18** — static site, `npm run build` → `dist/`
-- **React Router v6** (HashRouter — works on any static host without server config)
+- **Vite 8 + React 19** — static site, `npm run build` → `dist/`
+- **React Router v7** (HashRouter — works on any static host without server config)
 - **Tailwind CSS v3** — utility-first styling
-- **Framer Motion** — animations and page transitions
+- **Framer Motion 12** — animations and page transitions
 - **i18next + react-i18next** — trilingual: English (default), Hindi, Gujarati
 - **Lucide React** — icons
 - **react-helmet-async** — SEO meta tags
 
 ## Deployment
-Simple static: `npm run build` → upload `dist/` to Netlify/Vercel/GitHub Pages.
+- `npm run build` → `dist/` → GitHub Pages at `/tide-testing/`
+- CI: `.github/workflows/deploy.yml` (build → upload `dist/` → deploy pages)
+- Base path toggled via `GITHUB_ACTIONS` env in `vite.config.js`
+- Secrets required in GitHub: `VITE_ABL_API_URL`, `VITE_ABL_CONTRIBUTE_FORM_URL`
 
 ## Design System
 - **Primary:** `#3B7CB8` (TIDE teal-blue)
 - **Accent:** `#F4A435` (amber — CTAs, highlights)
 - **Background:** `#FAFAF8` (warm white)
 - **Text:** `#1A1A2E` (near-black)
-- **Headings font:** Playfair Display (EN) / Noto Serif Devanagari (HI) / Noto Serif Gujarati (GU)
-- **Body font:** Plus Jakarta Sans (EN) / Noto Sans Devanagari (HI) / Noto Sans Gujarati (GU)
+- **Headings:** Playfair Display (EN) / Noto Serif Devanagari (HI) / Noto Serif Gujarati (GU)
+- **Body:** Plus Jakarta Sans (EN) / Noto Sans Devanagari (HI) / Noto Sans Gujarati (GU)
+- Full token map in `tailwind.config.js`
 
-## Folder Structure
+## Repository Structure
 ```
 src/
   components/
-    layout/        # Header, Footer, Layout
-    ui/            # Button, Card, Section, Badge, AnimatedCounter, TodoPlaceholder, LanguageSwitcher
+    layout/    # Header, Footer, Layout
+    ui/        # Button, Card, Badge, SectionHeader, PageHero, AnimatedCounter,
+               # Lightbox, LanguageSwitcher, SocialIcons, TodoPlaceholder
+    abl/       # ResourceCard, ResourceGrid, ResourceFilters, Pagination,
+               # AblNavBar, DriveImage, ResourceTypeBadge, ImageLightbox
   pages/
-    Home.jsx
+    Home.jsx / Contact.jsx / THRIvE.jsx
     about/         # WhyTide, OurTeam, OurPartners, OurResults
-    projects/      # BlockETI, BetterED, EmpowerEd, CompletEd, OtherProjects
+    projects/      # BlockETI, BetterED, EmpowerEd, CompletEd, SdgDrives, OtherProjects
     get-involved/  # Volunteer, Donate, WorkWithUs, OrganizeMCCx
     resources/     # SaralKadam, AnnualReports, Publications
-    THRIvE.jsx
-    Contact.jsx
-  i18n/
-    index.js
-    locales/en/translation.json
-    locales/hi/translation.json
-    locales/gu/translation.json
+                   # AblHome, AblResourceCenter, AblDetail, AblContribute
   hooks/
-    useScrollAnimation.js
-  App.jsx
-  main.jsx
-  index.css
+    useScrollAnimation.js   # IntersectionObserver scroll-in animations
+    useLightbox.js          # Lightbox open/close/prev/next state
+    useABLData.js           # Fetch + 15-min sessionStorage cache for ABL API
+  config/
+    abl.js                  # ABL API URL, cache TTL, tab style map
+  utils/
+    driveUtils.js           # Google Drive URL → thumbnail/preview/download transforms
+    filterResources.js      # Pure filter function for ABL resource center
+  i18n/
+    index.js + locales/en|hi|gu/translation.json
+  App.jsx        # HashRouter + all 24 routes + ErrorBoundary
+  main.jsx       # Entry point, i18n init
+  index.css      # Global styles + Tailwind base
+
+content/
+  pages/         # One YAML per CMS page (20 files) — edit these to change content
+  shared/        # navigation.yaml, footer.yaml
+
+src/data/        # AUTO-GENERATED JSON — never edit directly
+
+scripts/
+  yaml-to-json.js      # YAML → JSON sync engine (runs via predev/prebuild)
+  validate-content.js  # Validates YAML syntax + image paths
+  bootstrap-yaml.js    # Generates YAML skeletons from translation.json
+
+docs/
+  ABL-RESOURCE-LIBRARY-SPEC.md   # Full ABL feature spec + Apps Script code
+  ABL-APPSCRIPT-SETUP-GUIDE.md   # GAS backend setup guide
 ```
 
-## Pages (19 total)
-| Route | Component | Status |
-|-------|-----------|--------|
-| `/` | Home | — |
-| `/about/why-tide` | WhyTide | — |
-| `/about/our-team` | OurTeam | — |
-| `/about/our-partners` | OurPartners | — |
-| `/about/our-results` | OurResults | — |
-| `/projects/block-eti` | BlockETI | TODO content |
-| `/projects/bettered` | BetterED | — |
-| `/projects/empowered` | EmpowerEd | — |
-| `/projects/completed` | CompletEd | — |
-| `/projects/other-projects` | OtherProjects | TODO content |
-| `/get-involved/volunteer` | Volunteer | — |
-| `/get-involved/donate` | Donate | TODO content |
-| `/get-involved/work-with-us` | WorkWithUs | TODO content |
-| `/get-involved/mccx` | OrganizeMCCx | TODO content |
-| `/thrive` | THRIvE | — |
-| `/resources/saral-kadam` | SaralKadam | — |
-| `/resources/annual-reports` | AnnualReports | — |
-| `/resources/publications` | Publications | — |
-| `/contact` | Contact | — |
+## Pages (24 total)
+| Route | Component | Data Source | Status |
+|-------|-----------|-------------|--------|
+| `/` | Home | `home.json` | ✓ |
+| `/about/why-tide` | WhyTide | `about-why-tide.json` | ✓ |
+| `/about/our-team` | OurTeam | `about-our-team.json` | ✓ |
+| `/about/our-partners` | OurPartners | `about-our-partners.json` | ✓ |
+| `/about/our-results` | OurResults | `about-our-results.json` | ✓ |
+| `/projects/block-eti` | BlockETI | `projects-block-eti.json` | TODO content |
+| `/projects/bettered` | BetterED | `projects-bettered.json` | ✓ |
+| `/projects/empowered` | EmpowerEd | `projects-empowered.json` | ✓ |
+| `/projects/completed` | CompletEd | `projects-completed.json` | ✓ |
+| `/projects/sdg-drives` | SdgDrives | `projects-sdg-drives.json` | ✓ |
+| `/projects/other-projects` | OtherProjects | `projects-other.json` | ✓ |
+| `/get-involved/volunteer` | Volunteer | `get-involved-volunteer.json` | ✓ |
+| `/get-involved/donate` | Donate | `get-involved-donate.json` | TODO content |
+| `/get-involved/work-with-us` | WorkWithUs | `get-involved-work-with-us.json` | TODO content |
+| `/get-involved/mccx` | OrganizeMCCx | `get-involved-mccx.json` | TODO content |
+| `/thrive` | THRIvE | `thrive.json` | ✓ |
+| `/resources/saral-kadam` | SaralKadam | `resources-saral-kadam.json` | ✓ |
+| `/resources/annual-reports` | AnnualReports | `resources-annual-reports.json` | ✓ |
+| `/resources/publications` | Publications | `resources-publications.json` | ✓ |
+| `/resources/abl-resources` | AblHome | Apps Script API | ✓ |
+| `/resources/abl-resources/resource-center` | AblResourceCenter | Apps Script API | ✓ |
+| `/resources/abl-resources/resource-center/:id` | AblDetail | Apps Script API | ✓ |
+| `/resources/abl-resources/contribute` | AblContribute | Static + env config | ✓ |
+| `/contact` | Contact | `contact.json` | ✓ |
 
 ## TODO Placeholders
-Pages marked "TODO content" use `<TodoPlaceholder>` component — a subtle amber banner at the bottom indicating content needs updating. All placeholder sections are marked with `{/* TODO: replace with real content */}` comments.
+Pages marked "TODO content" use `<TodoPlaceholder>` — amber banner at the bottom. Sections also marked `{/* TODO: replace with real content */}`.
 
-## Source Content
-All content crawled from tideinternational.org. See memory file `content_crawl.md` for full content reference.
-
-## Content Management System (CMS)
-
+## CMS Pipeline
 All page content is managed through YAML files. **Never edit `src/data/` directly** — it is auto-generated.
 
 ### Pipeline
@@ -89,46 +115,61 @@ content/*.yaml  →  scripts/yaml-to-json.js  →  src/data/*.json  →  React i
 
 ### Commands
 ```bash
-npm run content:sync       # YAML → JSON (runs automatically via predev/prebuild)
+npm run content:sync       # YAML → JSON (also runs automatically via predev/prebuild)
 npm run content:validate   # Check YAML syntax + image path existence
 npm run content:bootstrap  # Generate shared YAML from translation.json (safe to re-run)
 npm run dev                # auto-syncs then starts Vite dev server
 npm run build              # auto-syncs then builds to dist/
 ```
 
-### Structure
-```
-content/
-  pages/    # one YAML file per page (21 files)
-  shared/   # navigation.yaml, footer.yaml
-src/data/   # auto-generated JSON (committed to git, do not edit)
-scripts/
-  yaml-to-json.js      # sync engine
-  validate-content.js  # YAML + image validation
-  bootstrap-yaml.js    # initial shared file generator
-```
-
-### Component import pattern
+### Import pattern
 ```jsx
-// Top-level page
+// Top-level page (src/pages/PageName.jsx)
 import data from '../data/page-name.json'
-// Sub-directory page
-import data from '../../data/category-page.json'
+// Sub-directory page (src/pages/about/WhyTide.jsx)
+import data from '../../data/about-why-tide.json'
 ```
 
 ### Non-serializable values
-Icons and Tailwind color variants are kept in component files as lookup maps:
-- `iconKey: "BookOpen"` in YAML → `ICONS[item.iconKey]` in JSX
-- `colorKey: "blue"` in YAML → `COLOR_MAP[item.colorKey]` in JSX
+Icons and Tailwind color variants cannot be stored in JSON. Keep them in component files as lookup maps:
+```jsx
+// YAML: iconKey: "BookOpen"   →   JSX: ICONS[item.iconKey]
+// YAML: colorKey: "blue"      →   JSX: COLOR_MAP[item.colorKey]
+```
 
-### Full docs
-See `CONTENT-GUIDE.md` for the non-technical user guide.
+See `CONTENT-GUIDE.md` for the non-technical user guide.  
 See `.claude/skills/content-management.md` for the full agent skill reference.
 
+## ABL Resource Library
+The ABL (Activity-Based Learning) feature has a separate data pipeline — no YAML files.
+
+### Data flow
+```
+Google Sheet (private) → Google Apps Script Web App → useABLData() → React
+                                                              ↓
+                                              sessionStorage cache (15-min TTL)
+```
+
+### Configuration
+```bash
+# .env.development (gitignored — create locally)
+VITE_ABL_API_URL=https://script.google.com/macros/s/.../exec
+VITE_ABL_CONTRIBUTE_FORM_URL=https://forms.gle/...
+```
+Add both as GitHub Actions repository secrets for production builds.
+
+### Key files
+- `src/config/abl.js` — all ABL constants and tab config
+- `src/hooks/useABLData.js` — fetch + cache hook
+- `src/utils/driveUtils.js` — Drive URL transforms
+- `src/utils/filterResources.js` — pure filter function
+- `src/components/abl/` — 8 UI components
+- `docs/ABL-RESOURCE-LIBRARY-SPEC.md` — full spec + Apps Script code
+
 ## Resuming Work
-- Check this file for architecture overview
-- Check `memory/project_tide_context.md` for project status
-- Check `memory/content_crawl.md` for all page content
-- Check `memory/design_decisions.md` for design system decisions
-- Run `npm run dev` to start dev server
-- Run `npm run build` to build for production
+1. Read this file for orientation
+2. Read `AGENTS.md` for detailed component/pattern reference
+3. Check `memory/project_tide_context.md` for project status
+4. Check `memory/content_crawl.md` for page content reference
+5. Run `npm run dev` to start the dev server
+6. Run `npm run build` to verify the build

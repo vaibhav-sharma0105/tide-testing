@@ -1,0 +1,161 @@
+import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import PageHero from '../../components/ui/PageHero'
+import AblNavBar from '../../components/abl/AblNavBar'
+import SectionHeader from '../../components/ui/SectionHeader'
+import AnimatedCounter from '../../components/ui/AnimatedCounter'
+import Button from '../../components/ui/Button'
+import ResourceTypeBadge from '../../components/abl/ResourceTypeBadge'
+import { useABLData } from '../../hooks/useABLData'
+import { TAB_STYLE_MAP } from '../../config/abl'
+
+function formatDate(iso) {
+  if (!iso) return '—'
+  try {
+    return new Date(iso).toLocaleString('en-IN', {
+      day: 'numeric', month: 'short', year: 'numeric',
+      hour: '2-digit', minute: '2-digit',
+    })
+  } catch { return '—' }
+}
+
+export default function AblHome() {
+  const { data, loading, error } = useABLData()
+
+  return (
+    <>
+      <PageHero
+        badge="Resources · ABL"
+        title="ABL Resource Library"
+        subtitle="A curated library of Activity-Based Learning resources for Grades 1–5, developed and used by TIDE Foundation educators."
+        gradient
+      />
+      <AblNavBar />
+
+      {/* Stats bar */}
+      <section className="py-10 bg-white border-b border-tide-border">
+        <div className="max-w-5xl mx-auto px-4 md:px-8 lg:px-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            {loading ? (
+              Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="animate-pulse flex flex-col items-center gap-3">
+                  <div className="h-10 w-20 bg-tide-subtle rounded" />
+                  <div className="h-3 w-24 bg-tide-subtle rounded" />
+                </div>
+              ))
+            ) : (
+              <>
+                <AnimatedCounter value={data?.meta?.total ?? 0}  label="Total Resources" />
+                <AnimatedCounter value={data?.tabs?.length ?? 0} label="Resource Types"  />
+                <div className="text-center">
+                  <div className="font-display text-4xl md:text-5xl font-bold leading-none text-primary">1–5</div>
+                  <div className="mt-2.5 text-xs font-body font-semibold uppercase tracking-widest text-tide-muted">Grades Covered</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xs font-body font-semibold uppercase tracking-widest text-tide-muted mb-1">Last Synced</div>
+                  <div className="text-sm font-body text-tide-text">{formatDate(data?.lastUpdated)}</div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* About ABL */}
+      <section className="section-padding bg-tide-bg">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-primary-light text-primary border border-primary/20">
+              About ABL
+            </span>
+            <h2 className="font-display text-3xl font-semibold text-tide-text mb-5">What is Activity-Based Learning?</h2>
+            <p className="font-body text-tide-muted leading-relaxed mb-6">
+              Activity-Based Learning (ABL) is a child-centred pedagogical approach in which students
+              learn by doing — through games, worksheets, manipulatives, and hands-on activities —
+              rather than passive instruction. TIDE Foundation has developed a rich library of ABL
+              materials for Grades 1–5 across multiple subjects and languages.
+            </p>
+            <Button to="/resources/abl-resources/resource-center">
+              Browse All Resources →
+            </Button>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="rounded-2xl bg-white border border-tide-border p-8 space-y-4"
+          >
+            <h3 className="font-display text-lg font-semibold text-tide-text">Why ABL Works</h3>
+            {[
+              'Engages all learning styles — visual, kinesthetic, and auditory',
+              'Improves concept retention through hands-on practice',
+              'Adaptable to mixed-ability classrooms',
+              'Designed for Gujarati, Hindi, and English medium schools',
+            ].map(item => (
+              <div key={item} className="flex items-start gap-3">
+                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                <p className="text-sm font-body text-tide-muted">{item}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Resource type cards */}
+      <section className="section-padding bg-white border-t border-tide-border">
+        <div className="max-w-5xl mx-auto">
+          <SectionHeader badge="Browse by Type" title="Explore Resource Types" />
+
+          {loading && (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="animate-pulse bg-tide-subtle rounded-2xl h-36" />
+              ))}
+            </div>
+          )}
+
+          {error && (
+            <p className="text-sm font-body text-tide-muted text-center py-8">{error}</p>
+          )}
+
+          {!loading && !error && data && (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {data.tabs.map((tab, i) => {
+                const style = TAB_STYLE_MAP[tab] ?? TAB_STYLE_MAP._default
+                return (
+                  <motion.div
+                    key={tab}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: i * 0.08 }}
+                  >
+                    <Link
+                      to={`/resources/abl-resources/resource-center?type=${encodeURIComponent(tab)}`}
+                      className="block bg-tide-bg rounded-2xl p-6 border border-tide-border hover:border-primary/30 hover:bg-primary-light transition-all duration-200 group"
+                    >
+                      <ResourceTypeBadge type={tab} />
+                      <div className="mt-3 font-display text-xl font-semibold text-tide-text group-hover:text-primary transition-colors">
+                        {style.pluralLabel}
+                      </div>
+                      <div className="text-sm font-body text-tide-muted mt-1">
+                        {data.meta?.counts?.[tab] ?? 0} resources
+                      </div>
+                    </Link>
+                  </motion.div>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+    </>
+  )
+}

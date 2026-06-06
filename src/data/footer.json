@@ -45,6 +45,10 @@
           "to": "/projects/completed"
         },
         {
+          "label": "SDG Drives",
+          "to": "/projects/sdg-drives"
+        },
+        {
           "label": "Other Projects",
           "to": "/projects/other-projects"
         }
@@ -85,6 +89,10 @@
         {
           "label": "Publications",
           "to": "/resources/publications"
+        },
+        {
+          "label": "ABL Resources",
+          "to": "/resources/abl-resources"
         },
         {
           "label": "THRIvE",

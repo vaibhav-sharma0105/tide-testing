@@ -25,6 +25,8 @@ columns:
         to: "/projects/empowered"
       - label: "CompletEd"
         to: "/projects/completed"
+      - label: "SDG Drives"
+        to: "/projects/sdg-drives"
       - label: "Other Projects"
         to: "/projects/other-projects"
 
@@ -47,6 +49,8 @@ columns:
         to: "/resources/annual-reports"
       - label: "Publications"
         to: "/resources/publications"
+      - label: "ABL Resources"
+        to: "/resources/abl-resources"
       - label: "THRIvE"
         to: "/thrive"
       - label: "Contact"
