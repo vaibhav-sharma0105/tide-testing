@@ -63,7 +63,7 @@ function AdvisorCard({ name, role, photo, delay = 0 }) {
     >
       <div className="w-24 flex-shrink-0 overflow-hidden relative">
         {photo ? (
-          <img src={photo} alt={name} className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.06]" />
+          <img src={imgSrc(photo)} alt={name} className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.06]" />
         ) : (
           <div className="w-full h-full gradient-primary flex items-center justify-center">
             <span className="font-display text-white font-bold text-xl opacity-50">{initials}</span>
