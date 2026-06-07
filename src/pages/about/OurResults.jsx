@@ -3,6 +3,7 @@ import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import AnimatedCounter from '../../components/ui/AnimatedCounter'
 import data from '../../data/about-our-results.json'
+import { useTranslation } from 'react-i18next'
 
 const COLOR_MAP = {
   blue:    'bg-blue-50 border-blue-200',
@@ -14,10 +15,21 @@ const COLOR_MAP = {
   orange:  'bg-orange-50 border-orange-200',
 }
 
+const PROGRAM_KEYS = {
+  'Saral Kadam': 'saralKadam',
+  'Prerak': 'prerak',
+  'BetterED': 'bettered',
+  'Disha': 'disha',
+  'CollegeDev': 'collegedev',
+  'CompletEd': 'completed',
+  'RefugEd': 'refuged',
+}
+
 export default function OurResults() {
+  const { t } = useTranslation()
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.subtitle} />
+      <PageHero badge={data.meta.badge} title={t('about.results.title', data.meta.title)} subtitle={t('about.results.subtitle', data.meta.subtitle)} />
 
       <section className="py-16 bg-white border-b border-tide-border">
         <div className="max-w-5xl mx-auto px-4 md:px-8">
@@ -43,10 +55,10 @@ export default function OurResults() {
                 className={`rounded-2xl p-6 border ${COLOR_MAP[p.colorKey] || 'bg-tide-subtle border-tide-border'} flex flex-col sm:flex-row sm:items-center gap-4`}
               >
                 <div className="sm:w-1/3">
-                  <h3 className="font-display text-lg font-semibold text-tide-text">{p.name}</h3>
+                  <h3 className="font-display text-lg font-semibold text-tide-text">{PROGRAM_KEYS[p.name] ? t(`about.results.${PROGRAM_KEYS[p.name]}`, p.name) : p.name}</h3>
                 </div>
                 <div className="sm:w-2/3">
-                  <p className="font-body text-tide-muted text-sm leading-relaxed">{p.stats}</p>
+                  <p className="font-body text-tide-muted text-sm leading-relaxed">{PROGRAM_KEYS[p.name] ? t(`about.results.${PROGRAM_KEYS[p.name]}Stats`, p.stats) : p.stats}</p>
                 </div>
               </motion.div>
             ))}

@@ -4,6 +4,7 @@ import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import Card from '../../components/ui/Card'
 import data from '../../data/projects-empowered.json'
+import { useTranslation } from 'react-i18next'
 
 const ICONS = {
   Users:    <Users className="w-6 h-6" />,
@@ -17,10 +18,18 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.6, delay, ease: [0.4, 0, 0.2, 1] },
 })
 
+const COMPONENT_KEYS = [
+  { title: 'component1', desc: 'component1desc' },
+  { title: 'component2', desc: 'component2desc' },
+]
+
+const PHASE_KEYS = ['phase1', 'phase2', 'phase3', 'phase4']
+
 export default function EmpowerEd() {
+  const { t } = useTranslation()
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} gradient />
+      <PageHero badge={data.meta.badge} title={t('projects.empowered.title', data.meta.title)} subtitle={t('projects.empowered.tagline', data.meta.tagline)} gradient />
 
       {/* Overview */}
       <section className="section-padding bg-tide-bg">
@@ -28,7 +37,7 @@ export default function EmpowerEd() {
           <div className="grid md:grid-cols-2 gap-12">
             <motion.div {...fadeUp()}>
               <h2 className="font-display text-3xl font-semibold text-tide-text mb-5">{data.overview.title}</h2>
-              <p className="text-tide-muted font-body leading-relaxed mb-8">{data.overview.body}</p>
+              <p className="text-tide-muted font-body leading-relaxed mb-8">{t('projects.empowered.overview', data.overview.body)}</p>
               <div className="space-y-5">
                 {data.components.map((c, i) => (
                   <Card key={c.title} delay={i * 0.12} className="p-6">
@@ -37,8 +46,8 @@ export default function EmpowerEd() {
                         {ICONS[c.iconKey] || <Users className="w-6 h-6" />}
                       </div>
                       <div>
-                        <h3 className="font-display font-semibold text-tide-text mb-2">{c.title}</h3>
-                        <p className="text-sm font-body text-tide-muted leading-relaxed">{c.desc}</p>
+                        <h3 className="font-display font-semibold text-tide-text mb-2">{COMPONENT_KEYS[i] ? t(`projects.empowered.${COMPONENT_KEYS[i].title}`, c.title) : c.title}</h3>
+                        <p className="text-sm font-body text-tide-muted leading-relaxed">{COMPONENT_KEYS[i] ? t(`projects.empowered.${COMPONENT_KEYS[i].desc}`, c.desc) : c.desc}</p>
                       </div>
                     </div>
                   </Card>
@@ -105,7 +114,7 @@ export default function EmpowerEd() {
                     {i + 1}
                   </div>
                   <div className="bg-white rounded-2xl p-5 flex-1 border border-tide-border">
-                    <p className="font-body text-tide-text text-sm leading-relaxed">{phase}</p>
+                    <p className="font-body text-tide-text text-sm leading-relaxed">{PHASE_KEYS[i] ? t(`projects.empowered.${PHASE_KEYS[i]}`, phase) : phase}</p>
                   </div>
                 </motion.div>
               ))}

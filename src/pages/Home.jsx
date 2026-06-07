@@ -2,6 +2,8 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, BookOpen, Users, Heart, Lightbulb, GraduationCap, Globe, Quote } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 import Button from '../components/ui/Button'
 import AnimatedCounter from '../components/ui/AnimatedCounter'
 import data from '../data/home.json'
@@ -34,6 +36,7 @@ const fadeIn = (delay = 0) => ({
 
 /* ═══════════════════════════════════════════════════════════════════ */
 export default function Home() {
+  const { t } = useTranslation()
   const heroRef = useRef(null)
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const heroY       = useTransform(scrollYProgress, [0, 1], ['0%', '25%'])
@@ -41,6 +44,13 @@ export default function Home() {
 
   return (
     <>
+      <Helmet>
+        <title>{data.meta.seoTitle}</title>
+        <meta name="description" content={data.meta.seoDescription} />
+        <meta property="og:title" content={data.meta.seoTitle} />
+        <meta property="og:description" content={data.meta.seoDescription} />
+      </Helmet>
+
       {/* ══════════════════════════════════════════════════════════════
           HERO — full-viewport photo with parallax
       ══════════════════════════════════════════════════════════════ */}
@@ -63,45 +73,41 @@ export default function Home() {
         >
           <div className="max-w-3xl">
             <motion.div {...fadeUp(0.1)} className="mb-6">
-              <span className="badge-white">Together in Development &amp; Education</span>
+              <span className="badge-white">{t('home.hero.badge', data.hero.badge)}</span>
             </motion.div>
 
             <motion.h1
               {...fadeUp(0.2)}
               className="font-display text-5xl md:text-6xl lg:text-[5.25rem] font-bold text-white leading-[1.05] tracking-tight text-balance"
             >
-              {data.hero.tagline}{' '}
-              <em className="not-italic text-accent">{data.hero.taglineHighlight}</em>
+              {t('home.hero.tagline', data.hero.tagline)}{' '}
+              <em className="not-italic text-accent">{t('home.hero.taglineHighlight', data.hero.taglineHighlight)}</em>
             </motion.h1>
 
             <motion.p {...fadeUp(0.3)} className="mt-6 text-lg md:text-xl text-white/80 leading-relaxed max-w-xl">
-              {data.hero.description}
+              {t('home.hero.description', data.hero.description)}
             </motion.p>
 
             <motion.div {...fadeUp(0.4)} className="mt-10 flex flex-wrap gap-4">
               <Button to="/about/why-tide" size="lg"
                 className="bg-white text-primary hover:bg-primary-faint font-semibold shadow-float px-8 py-4"
               >
-                {data.hero.ctaLabel} <ArrowRight className="w-4 h-4" />
+                {t('home.hero.cta', data.hero.ctaLabel)} <ArrowRight className="w-4 h-4" />
               </Button>
               <Button to="/get-involved/volunteer" size="lg"
                 className="gradient-accent text-white border-none shadow-float px-8 py-4"
               >
-                {data.hero.ctaSecondaryLabel}
+                {t('home.hero.ctaSecondary', data.hero.ctaSecondaryLabel)}
               </Button>
             </motion.div>
 
             <motion.div {...fadeUp(0.5)} className="mt-12 flex flex-wrap gap-3">
-              {[
-                { n: '40,000+', l: 'lives changed' },
-                { n: '10 yrs',  l: 'of impact' },
-                { n: '70+',     l: 'partners' },
-              ].map((s) => (
-                <div key={s.l}
+              {data.hero.pills.map((s) => (
+                <div key={s.label}
                   className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/12 border border-white/20 backdrop-blur-sm"
                 >
-                  <span className="font-display font-bold text-white text-sm">{s.n}</span>
-                  <span className="text-white/60 text-xs font-body">{s.l}</span>
+                  <span className="font-display font-bold text-white text-sm">{s.value}</span>
+                  <span className="text-white/60 text-xs font-body">{s.label}</span>
                 </div>
               ))}
             </motion.div>
@@ -136,7 +142,7 @@ export default function Home() {
                 className="absolute bottom-24 right-4 glass rounded-2xl px-4 py-3 shadow-float"
               >
                 <div className="font-display font-bold text-primary text-xl leading-none">6</div>
-                <div className="text-xs text-tide-muted font-body mt-0.5">Active programmes</div>
+                <div className="text-xs text-tide-muted font-body mt-0.5">{t('home.hero.floatProjects', data.hero.floatProjects)}</div>
               </motion.div>
             </div>
           </div>
@@ -149,7 +155,7 @@ export default function Home() {
           transition={{ delay: 1.5 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         >
-          <span className="text-white/50 text-xs font-body tracking-widest uppercase">Scroll</span>
+          <span className="text-white/50 text-xs font-body tracking-widest uppercase">{t('home.hero.scroll', data.hero.scroll)}</span>
           <motion.div
             animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
@@ -165,20 +171,20 @@ export default function Home() {
         <div className="max-w-7xl mx-auto container-wide">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             <motion.div {...fadeUp(0)} className="order-2 lg:order-1">
-              <span className="badge-primary mb-5 block w-fit">{data.mission.sectionBadge}</span>
-              <h2 className="display-lg text-tide-text">{data.mission.title}</h2>
-              <p className="body-lg mt-5">{data.mission.body}</p>
+              <span className="badge-primary mb-5 block w-fit">{t('home.mission.badge', data.mission.sectionBadge)}</span>
+              <h2 className="display-lg text-tide-text">{t('home.mission.title', data.mission.title)}</h2>
+              <p className="body-lg mt-5">{t('home.mission.body', data.mission.body)}</p>
               <blockquote className="mt-8 pl-6 border-l-4 border-accent relative">
                 <Quote className="absolute -top-1 -left-1 w-5 h-5 text-accent opacity-60" />
                 <p className="font-display text-xl italic text-tide-text leading-snug">
-                  "{data.mission.quote}"
+                  "{t('home.mission.quote', data.mission.quote)}"
                 </p>
               </blockquote>
               <div className="mt-8">
                 <Button to="/about/why-tide" variant="ghost"
                   className="text-primary hover:bg-primary-faint px-0 font-semibold"
                 >
-                  Learn why we do this <ArrowRight className="w-4 h-4" />
+                  {t('home.mission.learnMore', data.mission.learnMore)} <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>
             </motion.div>
@@ -186,10 +192,10 @@ export default function Home() {
             <motion.div {...fadeIn(0.15)} className="order-1 lg:order-2 relative">
               <div className="relative h-[480px] md:h-[540px]">
                 <div className="absolute right-0 top-0 w-[75%] h-[85%] rounded-3xl overflow-hidden shadow-float">
-                  <img src={`${B}assets/images/home/why-tide.jpg`} alt="TIDE Foundation classroom" className="w-full h-full object-cover" />
+                  <img src={`${B}assets/images/home/why-tide.jpg`} alt={data.mission.image1Alt} className="w-full h-full object-cover" />
                 </div>
                 <div className="absolute left-0 bottom-0 w-[52%] h-[55%] rounded-2xl overflow-hidden shadow-float border-4 border-tide-bg">
-                  <img src={`${B}assets/images/home/join-us.jpg`} alt="Join TIDE" className="w-full h-full object-cover" />
+                  <img src={`${B}assets/images/home/join-us.jpg`} alt={data.mission.image2Alt} className="w-full h-full object-cover" />
                 </div>
                 <motion.div
                   initial={{ opacity: 0, scale: 0.85 }}
@@ -199,7 +205,7 @@ export default function Home() {
                   className="absolute top-6 left-6 gradient-accent text-white rounded-2xl px-4 py-3 shadow-float"
                 >
                   <div className="font-display font-bold text-2xl leading-none">2014</div>
-                  <div className="text-xs font-body mt-0.5 text-white/80">Founded in Ahmedabad</div>
+                  <div className="text-xs font-body mt-0.5 text-white/80">{t('home.hero.floatFounded', data.hero.floatFounded)}</div>
                 </motion.div>
               </div>
             </motion.div>
@@ -221,18 +227,13 @@ export default function Home() {
           <motion.div {...fadeUp()} className="text-center mb-12">
             <span className="inline-flex items-center gap-2 text-[10px] font-body font-bold uppercase tracking-[0.22em] text-accent">
               <span className="h-px w-8 bg-accent/60 inline-block" />
-              Our Impact in Numbers
+              {t('home.impact.sectionLabel', data.impact.sectionLabel)}
               <span className="h-px w-8 bg-accent/60 inline-block" />
             </span>
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-y md:divide-y-0 md:divide-x divide-white/10">
-            {[
-              { value: '40000+', label: 'Lives Impacted',        detail: 'across Gujarat since 2014' },
-              { value: '200+',   label: 'Volunteers & Interns',  detail: 'from universities across India' },
-              { value: '70+',    label: 'Partner Organisations', detail: 'schools, NGOs & institutions' },
-              { value: '10',     label: 'Years of Service',      detail: 'of continuous grassroots impact' },
-            ].map((s, i) => (
+            {data.impact.stats.map((s, i) => (
               <motion.div key={s.label} {...fadeUp(i * 0.1)} className="text-center px-6 py-6 md:py-2 group">
                 <AnimatedCounter value={s.value} label="" light numClassName="font-display font-bold text-5xl md:text-6xl leading-none text-white mb-2" />
                 <div className="h-[2px] w-10 mx-auto mb-3 rounded-full bg-accent opacity-70 group-hover:w-16 group-hover:opacity-100 transition-all duration-400" />
@@ -250,9 +251,9 @@ export default function Home() {
       <section className="section-padding bg-white">
         <div className="max-w-7xl mx-auto container-wide">
           <motion.div {...fadeUp()} className="text-center mb-14">
-            <span className="badge-primary mb-4 mx-auto">Our Programmes</span>
-            <h2 className="display-md text-tide-text mt-3">{data.programs.sectionTitle}</h2>
-            <p className="body-md max-w-xl mx-auto mt-4">{data.programs.sectionSubtitle}</p>
+            <span className="badge-primary mb-4 mx-auto">{t('home.programs.badge', data.programs.sectionBadge)}</span>
+            <h2 className="display-md text-tide-text mt-3">{t('home.programs.title', data.programs.sectionTitle)}</h2>
+            <p className="body-md max-w-xl mx-auto mt-4">{t('home.programs.subtitle', data.programs.sectionSubtitle)}</p>
           </motion.div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -274,7 +275,7 @@ export default function Home() {
                       <h3 className="font-display text-lg font-bold text-white leading-tight">{p.title}</h3>
                       <p className="text-sm text-white/75 font-body mt-1.5 leading-relaxed line-clamp-2">{p.desc}</p>
                       <div className="mt-3 flex items-center gap-1 text-accent text-sm font-semibold font-body translate-y-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                        Explore <ArrowRight className="w-3.5 h-3.5" />
+                        {t('home.programs.explore', data.programs.explore)} <ArrowRight className="w-3.5 h-3.5" />
                       </div>
                     </div>
                   </Link>
@@ -292,27 +293,27 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-8 mb-10">
           <motion.div {...fadeUp()} className="flex items-end justify-between">
             <div>
-              <span className="badge-white mb-3 block w-fit">Our Work in Photos</span>
-              <h2 className="display-md text-white">Moments from the field</h2>
+              <span className="badge-white mb-3 block w-fit">{t('home.gallery.badge', data.gallery.badge)}</span>
+              <h2 className="display-md text-white">{t('home.gallery.title', data.gallery.title)}</h2>
             </div>
             <Link to="/get-involved/volunteer" className="hidden md:flex items-center gap-2 text-sm font-body font-semibold text-white/60 hover:text-white transition-colors">
-              View all <ArrowRight className="w-4 h-4" />
+              {t('home.gallery.viewAll', data.gallery.viewAll)} <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
         </div>
 
         <div className="flex gap-4 pl-4 md:pl-8 overflow-x-auto snap-x-mandatory pb-4 scrollbar-none"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          {data.gallery.map((src, i) => (
+          {data.gallery.items.map((item, i) => (
             <motion.div
-              key={src}
+              key={item.src}
               initial={{ opacity: 0, scale: 0.94 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: '-40px' }}
               transition={{ delay: i * 0.04, duration: 0.5 }}
               className="flex-shrink-0 snap-start w-[260px] md:w-[320px] h-[220px] md:h-[280px] rounded-2xl overflow-hidden"
             >
-              <img src={src} alt={`TIDE field work ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              <img src={item.src} alt={item.alt} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
             </motion.div>
           ))}
           <div className="flex-shrink-0 w-4 md:w-8" />
@@ -344,12 +345,12 @@ export default function Home() {
             >
               <div className="flex items-center gap-3 mb-8">
                 <div className="h-px flex-1" style={{ background: 'linear-gradient(to right, transparent, rgba(245,158,11,0.45))' }} />
-                <span className="text-[10px] font-body font-bold uppercase tracking-[0.22em] text-amber-600/80">Voices from the field</span>
+                <span className="text-[10px] font-body font-bold uppercase tracking-[0.22em] text-amber-600/80">{t('home.testimonial.sectionLabel', data.testimonial.sectionLabel)}</span>
                 <div className="h-px flex-1" style={{ background: 'linear-gradient(to left, transparent, rgba(245,158,11,0.45))' }} />
               </div>
 
               <blockquote className="font-display text-xl md:text-2xl font-normal leading-[1.72] italic mb-10" style={{ color: '#3D2200', letterSpacing: '0.01em' }}>
-                "{data.testimonial.quote}"
+                "{t('home.testimonial.quote', data.testimonial.quote)}"
               </blockquote>
 
               <div className="flex items-center gap-4">
@@ -363,10 +364,10 @@ export default function Home() {
                 </div>
                 <div>
                   <div className="font-display font-bold text-base leading-tight" style={{ color: '#2C1800' }}>
-                    {data.testimonial.author}
+                    {t('home.testimonial.name', data.testimonial.author)}
                   </div>
                   <div className="font-body text-sm mt-0.5" style={{ color: '#8B5E1A' }}>
-                    {data.testimonial.role}
+                    {t('home.testimonial.role', data.testimonial.role)}
                   </div>
                 </div>
               </div>
@@ -388,19 +389,19 @@ export default function Home() {
           <div className="max-w-7xl mx-auto container-wide">
             <div className="max-w-xl">
               <motion.div {...fadeUp()}>
-                <span className="badge-white mb-5 block w-fit">Get Involved</span>
-                <h2 className="display-md text-white">{data.cta.sectionTitle}</h2>
-                <p className="body-lg mt-4 text-white/75">{data.cta.body}</p>
+                <span className="badge-white mb-5 block w-fit">{t('home.cta.badge', data.cta.badge)}</span>
+                <h2 className="display-md text-white">{t('home.cta.title', data.cta.sectionTitle)}</h2>
+                <p className="body-lg mt-4 text-white/75">{t('home.cta.body', data.cta.body)}</p>
                 <div className="mt-8 flex flex-wrap gap-4">
                   <Button to="/get-involved/volunteer" size="lg"
                     className="bg-white text-primary hover:bg-primary-faint font-semibold shadow-float"
                   >
-                    {data.cta.volunteerLabel} <ArrowRight className="w-4 h-4" />
+                    {t('home.cta.volunteer', data.cta.volunteerLabel)} <ArrowRight className="w-4 h-4" />
                   </Button>
                   <Button to="/get-involved/donate" size="lg"
                     className="gradient-accent text-white border-none shadow-float"
                   >
-                    <Heart className="w-4 h-4" /> {data.cta.donateLabel}
+                    <Heart className="w-4 h-4" /> {t('home.cta.donate', data.cta.donateLabel)}
                   </Button>
                 </div>
               </motion.div>

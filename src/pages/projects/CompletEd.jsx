@@ -5,6 +5,7 @@ import AnimatedCounter from '../../components/ui/AnimatedCounter'
 import Lightbox from '../../components/ui/Lightbox'
 import { useLightbox } from '../../hooks/useLightbox'
 import data from '../../data/projects-completed.json'
+import { useTranslation } from 'react-i18next'
 
 const PROGRAM_COLORS = {
   violet: { bg: 'bg-violet-50', accent: 'from-violet-600 to-purple-700' },
@@ -21,12 +22,13 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function CompletEd() {
+  const { t } = useTranslation()
   const brochure = useLightbox(data.moiBrochure.pages.length)
   const fellows  = useLightbox(data.scfProgram.fellows.length)
 
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} gradient />
+      <PageHero badge={data.meta.badge} title={t('projects.completed.title', data.meta.title)} subtitle={t('projects.completed.tagline', data.meta.tagline)} gradient />
 
       {/* Stats */}
       <section className="py-14 bg-white border-b border-tide-border">
@@ -44,7 +46,7 @@ export default function CompletEd() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fadeUp()} className="max-w-2xl mb-16">
             <h2 className="font-display text-3xl font-semibold text-tide-text mb-5">{data.overview.title}</h2>
-            <p className="text-tide-muted font-body leading-relaxed">{data.overview.body}</p>
+            <p className="text-tide-muted font-body leading-relaxed">{t('projects.completed.overview', data.overview.body)}</p>
           </motion.div>
 
           <SectionHeader badge={data.programs.sectionBadge} title={data.programs.sectionTitle} />
@@ -63,8 +65,8 @@ export default function CompletEd() {
                     </div>
                     <div className={`w-2 h-12 rounded-full bg-gradient-to-b ${colors.accent} opacity-60`} />
                   </div>
-                  <h3 className="font-display text-xl font-semibold text-tide-text mb-2">{p.title}</h3>
-                  <p className="text-sm font-body text-tide-muted leading-relaxed">{p.desc}</p>
+                  <h3 className="font-display text-xl font-semibold text-tide-text mb-2">{t(`projects.completed.${p.key}`, p.title)}</h3>
+                  <p className="text-sm font-body text-tide-muted leading-relaxed">{t(`projects.completed.${p.key}Desc`, p.desc)}</p>
                 </motion.div>
               )
             })}

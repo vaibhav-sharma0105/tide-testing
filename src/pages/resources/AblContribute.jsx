@@ -1,25 +1,37 @@
 import { motion } from 'framer-motion'
 import { ClipboardList, CheckCircle2, BookOpen } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import Button from '../../components/ui/Button'
 import { CONTRIBUTE_FORM_URL } from '../../config/abl'
-
-const STEPS = [
-  { step: 1, icon: ClipboardList, title: 'Fill the Form',  desc: 'Share details about your resource, including photos, concept, grades, and language.' },
-  { step: 2, icon: CheckCircle2,  title: 'TIDE Reviews',   desc: 'Our team reviews and verifies the resource for quality and accuracy before publishing.' },
-  { step: 3, icon: BookOpen,      title: 'Gets Published', desc: 'Approved resources are added to the library and become available to all educators.' },
-]
+import ablContributeData from '../../data/abl-contribute.json'
 
 const formReady = CONTRIBUTE_FORM_URL && CONTRIBUTE_FORM_URL !== 'REPLACE_WITH_GOOGLE_FORM_URL'
 
+const STEP_ICONS = [ClipboardList, CheckCircle2, BookOpen]
+
 export default function AblContribute() {
+  const { t } = useTranslation()
+
+  const STEPS = ablContributeData.steps.map((s, i) => ({
+    step: i + 1,
+    icon: STEP_ICONS[i],
+    title: s.title,
+    desc: s.desc,
+  }))
+
   return (
     <>
+      <Helmet>
+        <title>{ablContributeData.meta.seoTitle}</title>
+        <meta name="description" content={ablContributeData.meta.seoDescription} />
+      </Helmet>
       <PageHero
-        badge="Resources · ABL"
-        title="Contribute a Resource"
-        subtitle="Help grow the ABL library. Share a resource you've used in your classroom and it will be reviewed by the TIDE team."
+        badge={ablContributeData.meta.badge}
+        title={t('abl.contribute.title', ablContributeData.meta.title)}
+        subtitle={t('abl.contribute.subtitle', ablContributeData.meta.subtitle)}
         gradient
       />
       <AblNavBar />
@@ -34,11 +46,9 @@ export default function AblContribute() {
             transition={{ duration: 0.6 }}
             className="text-center mb-14"
           >
-            <h2 className="font-display text-3xl font-semibold text-tide-text mb-4">Share What Works</h2>
+            <h2 className="font-display text-3xl font-semibold text-tide-text mb-4">{t('abl.contribute.shareTitle', ablContributeData.shareSection.title)}</h2>
             <p className="font-body text-tide-muted leading-relaxed">
-              TIDE's ABL resource library grows through the collective wisdom of educators. If you have
-              a worksheet, game, kit, or flashcard set that has worked well in your classroom, share it
-              with the community and help other teachers discover what works.
+              {t('abl.contribute.shareBody', ablContributeData.shareSection.body)}
             </p>
           </motion.div>
 
@@ -71,17 +81,17 @@ export default function AblContribute() {
           >
             {formReady ? (
               <Button href={CONTRIBUTE_FORM_URL} external size="lg">
-                Open Contribution Form ↗
+                {t('abl.contribute.cta', ablContributeData.cta)} ↗
               </Button>
             ) : (
               <div className="inline-flex flex-col items-center gap-2">
                 <span className="px-5 py-3 rounded-full bg-tide-subtle text-tide-muted text-sm font-body font-semibold border border-tide-border cursor-not-allowed">
-                  Open Contribution Form ↗
+                  {t('abl.contribute.cta', ablContributeData.cta)} ↗
                 </span>
-                <span className="text-xs font-body text-accent font-semibold">Form link coming soon.</span>
+                <span className="text-xs font-body text-accent font-semibold">{t('abl.contribute.ctaPending', ablContributeData.ctaPending)}</span>
               </div>
             )}
-            <p className="text-xs font-body text-tide-muted mt-3">Opens in a new tab. Form data is handled by Google Forms.</p>
+            <p className="text-xs font-body text-tide-muted mt-3">{t('abl.contribute.disclaimer', ablContributeData.disclaimer)}</p>
           </motion.div>
 
         </div>

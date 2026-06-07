@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { PlayCircle, ExternalLink, ArrowLeft, BookOpen, Expand } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import ResourceTypeBadge from '../../components/abl/ResourceTypeBadge'
@@ -28,26 +29,27 @@ function GradeChip({ grade }) {
   )
 }
 
-const backLink = (
-  <Link
-    to="/resources/abl-resources/resource-center"
-    className="inline-flex items-center gap-2 text-sm font-body font-medium text-tide-muted hover:text-primary transition-colors mb-8"
-  >
-    <ArrowLeft className="w-4 h-4" /> Back to Resource Center
-  </Link>
-)
-
 export default function AblDetail() {
+  const { t } = useTranslation()
   const { id } = useParams()
   const { allResources, loading, error } = useABLData()
   const [lightboxOpen, setLightboxOpen] = useState(false)
+
+  const backLink = (
+    <Link
+      to="/resources/abl-resources/resource-center"
+      className="inline-flex items-center gap-2 text-sm font-body font-medium text-tide-muted hover:text-primary transition-colors mb-8"
+    >
+      <ArrowLeft className="w-4 h-4" /> {t('abl.detail.back', 'Back to Resource Center')}
+    </Link>
+  )
 
   const resource = allResources.find(r => r.id === id)
 
   if (loading) {
     return (
       <>
-        <PageHero badge="Resources · ABL" title="Loading…" gradient />
+        <PageHero badge="Resources · ABL" title={t('abl.resourceCenter.loading', 'Loading…')} gradient />
         <AblNavBar />
         <section className="section-padding bg-tide-bg">
           <div className="max-w-5xl mx-auto">
@@ -69,7 +71,7 @@ export default function AblDetail() {
   if (error || !resource) {
     return (
       <>
-        <PageHero badge="Resources · ABL" title="Resource Not Found" gradient />
+        <PageHero badge="Resources · ABL" title={t('abl.detail.notFound', 'Resource Not Found')} gradient />
         <AblNavBar />
         <section className="section-padding bg-tide-bg">
           <div className="max-w-5xl mx-auto text-center py-10">
@@ -131,7 +133,7 @@ export default function AblDetail() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary text-white text-sm font-body font-semibold hover:bg-primary/90 transition-colors"
                     >
-                      <PlayCircle className="w-4 h-4" /> Watch Video
+                      <PlayCircle className="w-4 h-4" /> {t('abl.detail.watchVideo', 'Watch Video')}
                     </a>
                   )}
                   {resource.canvaUrl && (
@@ -141,7 +143,7 @@ export default function AblDetail() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-tide-border text-tide-text text-sm font-body font-semibold hover:border-primary hover:text-primary transition-colors"
                     >
-                      <ExternalLink className="w-4 h-4" /> View in Canva
+                      <ExternalLink className="w-4 h-4" /> {t('abl.detail.viewCanva', 'View in Canva')}
                     </a>
                   )}
                   {resource.referenceLink && (
@@ -151,7 +153,7 @@ export default function AblDetail() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-tide-border text-tide-text text-sm font-body font-semibold hover:border-primary hover:text-primary transition-colors"
                     >
-                      <ExternalLink className="w-4 h-4" /> Source Reference
+                      <ExternalLink className="w-4 h-4" /> {t('abl.detail.sourceRef', 'Source Reference')}
                     </a>
                   )}
                 </div>
@@ -162,11 +164,11 @@ export default function AblDetail() {
                 <dl className="space-y-5">
                   <div><ResourceTypeBadge type={resource.type} /></div>
 
-                  <MetaField label="Concept" value={resource.concept} />
+                  <MetaField label={t('abl.detail.concept', 'Concept')} value={resource.concept} />
 
                   {languages.length > 0 && (
                     <div>
-                      <dt className="text-xs font-body font-semibold uppercase tracking-widest text-tide-muted mb-1">Language</dt>
+                      <dt className="text-xs font-body font-semibold uppercase tracking-widest text-tide-muted mb-1">{t('abl.detail.language', 'Language')}</dt>
                       <dd className="flex flex-wrap gap-1.5">
                         {languages.map(l => (
                           <span key={l} className="inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full border bg-tide-subtle text-tide-muted border-tide-border">
@@ -179,7 +181,7 @@ export default function AblDetail() {
 
                   {resource.grades?.length > 0 && (
                     <div>
-                      <dt className="text-xs font-body font-semibold uppercase tracking-widest text-tide-muted mb-1">Grades</dt>
+                      <dt className="text-xs font-body font-semibold uppercase tracking-widest text-tide-muted mb-1">{t('abl.detail.grades', 'Grades')}</dt>
                       <dd className="flex flex-wrap">
                         {resource.grades.map(g => <GradeChip key={g} grade={g} />)}
                       </dd>
@@ -196,7 +198,7 @@ export default function AblDetail() {
                     </details>
                   ))}
 
-                  <MetaField label="Ownership" value={resource.ownership ?? '—'} />
+                  <MetaField label={t('abl.detail.ownership', 'Ownership')} value={resource.ownership ?? '—'} />
 
                   {resource.storageLocation && (
                     <p className="text-xs text-tide-muted">Storage: {resource.storageLocation}</p>

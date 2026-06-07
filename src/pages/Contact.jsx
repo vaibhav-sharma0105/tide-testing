@@ -4,6 +4,7 @@ import { FacebookIcon, InstagramIcon, LinkedinIcon } from '../components/ui/Soci
 import PageHero from '../components/ui/PageHero'
 import Button from '../components/ui/Button'
 import data from '../data/contact.json'
+import { useTranslation } from 'react-i18next'
 
 const SOCIAL_ICONS = {
   facebook:  <FacebookIcon className="w-4 h-4" />,
@@ -12,9 +13,10 @@ const SOCIAL_ICONS = {
 }
 
 export default function Contact() {
+  const { t } = useTranslation()
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} />
+      <PageHero badge={data.meta.badge} title={t('contact.title', data.meta.title)} subtitle={t('contact.tagline', data.meta.tagline)} />
 
       <section className="section-padding bg-tide-bg">
         <div className="max-w-5xl mx-auto">
@@ -77,10 +79,10 @@ export default function Contact() {
 
               <div className="mt-8 flex flex-col gap-3">
                 <Button href={data.cta.whatsappHref} external size="md" variant="secondary">
-                  <MessageCircle className="w-4 h-4" /> {data.cta.whatsappLabel}
+                  <MessageCircle className="w-4 h-4" /> {t('contact.whatsapp', data.cta.whatsappLabel)}
                 </Button>
                 <Button href={data.cta.emailHref} size="md">
-                  <Mail className="w-4 h-4" /> {data.cta.emailLabel}
+                  <Mail className="w-4 h-4" /> {t('contact.email', data.cta.emailLabel)}
                 </Button>
               </div>
             </motion.div>
@@ -99,19 +101,19 @@ export default function Contact() {
                   className="space-y-5"
                 >
                   <div>
-                    <label className="block text-xs font-body font-semibold text-tide-muted uppercase tracking-wide mb-2">{data.form.namePlaceholder}</label>
-                    <input name="name" required type="text" placeholder={data.form.namePlaceholder} className="w-full px-4 py-3 rounded-xl border border-tide-border bg-tide-bg font-body text-sm text-tide-text placeholder-tide-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" />
+                    <label className="block text-xs font-body font-semibold text-tide-muted uppercase tracking-wide mb-2">{t('contact.namePlaceholder', data.form.namePlaceholder)}</label>
+                    <input name="name" required type="text" placeholder={t('contact.namePlaceholder', data.form.namePlaceholder)} className="w-full px-4 py-3 rounded-xl border border-tide-border bg-tide-bg font-body text-sm text-tide-text placeholder-tide-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" />
                   </div>
                   <div>
-                    <label className="block text-xs font-body font-semibold text-tide-muted uppercase tracking-wide mb-2">{data.form.emailPlaceholder}</label>
-                    <input name="email" required type="email" placeholder={data.form.emailPlaceholder} className="w-full px-4 py-3 rounded-xl border border-tide-border bg-tide-bg font-body text-sm text-tide-text placeholder-tide-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" />
+                    <label className="block text-xs font-body font-semibold text-tide-muted uppercase tracking-wide mb-2">{t('contact.emailPlaceholder', data.form.emailPlaceholder)}</label>
+                    <input name="email" required type="email" placeholder={t('contact.emailPlaceholder', data.form.emailPlaceholder)} className="w-full px-4 py-3 rounded-xl border border-tide-border bg-tide-bg font-body text-sm text-tide-text placeholder-tide-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" />
                   </div>
                   <div>
-                    <label className="block text-xs font-body font-semibold text-tide-muted uppercase tracking-wide mb-2">{data.form.messagePlaceholder}</label>
-                    <textarea name="message" required rows={5} placeholder={data.form.messagePlaceholder} className="w-full px-4 py-3 rounded-xl border border-tide-border bg-tide-bg font-body text-sm text-tide-text placeholder-tide-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition resize-none" />
+                    <label className="block text-xs font-body font-semibold text-tide-muted uppercase tracking-wide mb-2">{t('contact.messagePlaceholder', data.form.messagePlaceholder)}</label>
+                    <textarea name="message" required rows={5} placeholder={t('contact.messagePlaceholder', data.form.messagePlaceholder)} className="w-full px-4 py-3 rounded-xl border border-tide-border bg-tide-bg font-body text-sm text-tide-text placeholder-tide-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition resize-none" />
                   </div>
                   <Button type="submit" size="lg" className="w-full justify-center">
-                    {data.form.submitLabel}
+                    {t('contact.send', data.form.submitLabel)}
                   </Button>
                 </form>
               </div>

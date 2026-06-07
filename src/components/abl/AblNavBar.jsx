@@ -1,15 +1,17 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const TABS = [
-  { label: 'Home',            to: '/resources/abl-resources',                key: 'home'            },
-  { label: 'Resource Center', to: '/resources/abl-resources/resource-center', key: 'resource-center' },
-  { label: 'Contribute',      to: '/resources/abl-resources/contribute',      key: 'contribute'      },
+  { i18nKey: 'home',           label: 'Home',            to: '/resources/abl-resources',                activeSlug: 'home'            },
+  { i18nKey: 'resourceCenter', label: 'Resource Center', to: '/resources/abl-resources/resource-center', activeSlug: 'resource-center' },
+  { i18nKey: 'contribute',     label: 'Contribute',      to: '/resources/abl-resources/contribute',      activeSlug: 'contribute'      },
 ]
 
 export default function AblNavBar() {
+  const { t } = useTranslation()
   const { pathname } = useLocation()
 
-  const activeKey = pathname.includes('/contribute')
+  const activeSlug = pathname.includes('/contribute')
     ? 'contribute'
     : pathname.includes('/resource-center')
     ? 'resource-center'
@@ -21,15 +23,15 @@ export default function AblNavBar() {
         <div className="flex items-center gap-1 overflow-x-auto py-2" style={{ scrollbarWidth: 'none' }}>
           {TABS.map(tab => (
             <Link
-              key={tab.key}
+              key={tab.i18nKey}
               to={tab.to}
               className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm font-body font-medium transition-colors duration-150 ${
-                activeKey === tab.key
+                activeSlug === tab.activeSlug
                   ? 'bg-primary text-white shadow-sm'
                   : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
               }`}
             >
-              {tab.label}
+              {t(`abl.nav.${tab.i18nKey}`, tab.label)}
             </Link>
           ))}
         </div>

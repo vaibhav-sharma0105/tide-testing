@@ -2,11 +2,14 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown, ChevronRight, ArrowRight, Heart } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import LanguageSwitcher from '../ui/LanguageSwitcher'
 import navData from '../../data/navigation.json'
+import { MULTILINGUAL_ENABLED } from '../../config/features'
 
 /* ── Dropdown ──────────────────────────────────────────────────────────── */
 function Dropdown({ items, onClose }) {
+  const { t } = useTranslation()
   const [openSub, setOpenSub] = useState(null)
   const subTimer = useRef(null)
 
@@ -40,10 +43,10 @@ function Dropdown({ items, onClose }) {
               <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
-                  {item.label}
+                  {item.i18nKey ? t(`nav.${item.i18nKey}`, item.label) : item.label}
                 </div>
-                {item.desc && (
-                  <div className="text-xs font-body text-tide-muted mt-0.5 leading-snug">{item.desc}</div>
+                {item.descKey && (
+                  <div className="text-xs font-body text-tide-muted mt-0.5 leading-snug">{t(`nav.${item.descKey}`, item.desc)}</div>
                 )}
               </div>
               <ChevronRight className="w-3.5 h-3.5 text-tide-muted mt-1.5 flex-shrink-0" />
@@ -70,7 +73,7 @@ function Dropdown({ items, onClose }) {
                     >
                       <div className="w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
                       <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
-                        {sub.label}
+                        {sub.i18nKey ? t(`nav.${sub.i18nKey}`, sub.label) : sub.label}
                       </div>
                     </Link>
                   ))}
@@ -88,10 +91,10 @@ function Dropdown({ items, onClose }) {
             <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
             <div>
               <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
-                {item.label}
+                {item.i18nKey ? t(`nav.${item.i18nKey}`, item.label) : item.label}
               </div>
-              {item.desc && (
-                <div className="text-xs font-body text-tide-muted mt-0.5 leading-snug">{item.desc}</div>
+              {item.descKey && (
+                <div className="text-xs font-body text-tide-muted mt-0.5 leading-snug">{t(`nav.${item.descKey}`, item.desc)}</div>
               )}
             </div>
           </Link>
@@ -103,6 +106,7 @@ function Dropdown({ items, onClose }) {
 
 /* ── Header ────────────────────────────────────────────────────────────── */
 export default function Header() {
+  const { t } = useTranslation()
   const location = useLocation()
   const [scrolled, setScrolled]       = useState(false)
   const [atTop, setAtTop]             = useState(true)
@@ -110,6 +114,8 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState(null)
   const [mobileExpanded, setMobileExpanded] = useState(null)
   const leaveTimer = useRef(null)
+
+  const isABL = location.pathname.startsWith('/resources/abl-resources')
 
   /* scroll detection */
   useEffect(() => {
@@ -193,7 +199,7 @@ export default function Header() {
                       : scrolled ? 'text-tide-muted hover:text-tide-text' : 'text-white/80 hover:text-white'
                   }`}
                 >
-                  {item.label}
+                  {item.i18nKey ? t(`nav.${item.i18nKey}`, item.label) : item.label}
                   {isActive(item) && scrolled && (
                     <motion.div
                       layoutId="nav-underline"
@@ -209,7 +215,7 @@ export default function Header() {
                       : scrolled ? 'text-tide-muted hover:text-tide-text' : 'text-white/80 hover:text-white'
                   }`}
                 >
-                  {item.label}
+                  {item.i18nKey ? t(`nav.${item.i18nKey}`, item.label) : item.label}
                   <ChevronDown className={`w-3.5 h-3.5 opacity-60 transition-transform duration-200 ${openDropdown === idx ? 'rotate-180' : ''}`} />
                   {isActive(item) && scrolled && (
                     <motion.div
@@ -230,9 +236,11 @@ export default function Header() {
 
         {/* ── Right side ─────────────────────────────────────────────── */}
         <div className="flex items-center gap-2.5 flex-shrink-0">
-          <div className={`transition-all duration-300 ${scrolled ? '' : 'lang-light'}`}>
-            <LanguageSwitcher light={!scrolled} />
-          </div>
+          {MULTILINGUAL_ENABLED && !isABL && (
+            <div className={`transition-all duration-300 ${scrolled ? '' : 'lang-light'}`}>
+              <LanguageSwitcher light={!scrolled} />
+            </div>
+          )}
 
           <Link
             to="/get-involved/donate"
@@ -241,7 +249,7 @@ export default function Header() {
                        transition-all duration-200"
           >
             <Heart className="w-3.5 h-3.5" />
-            Donate
+            {t('common.donate', navData.donateLabel)}
           </Link>
 
           {/* Mobile hamburger */}
@@ -282,7 +290,7 @@ export default function Header() {
                           : 'text-tide-text hover:bg-tide-subtle'
                       }`}
                     >
-                      {item.label}
+                      {item.i18nKey ? t(`nav.${item.i18nKey}`, item.label) : item.label}
                     </Link>
                   ) : (
                     <>
@@ -290,7 +298,7 @@ export default function Header() {
                         onClick={() => setMobileExpanded(mobileExpanded === idx ? null : idx)}
                         className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-body font-semibold text-tide-text hover:bg-tide-subtle transition-colors"
                       >
-                        {item.label}
+                        {item.i18nKey ? t(`nav.${item.i18nKey}`, item.label) : item.label}
                         <ChevronDown className={`w-4 h-4 text-tide-muted transition-transform duration-200 ${mobileExpanded === idx ? 'rotate-180' : ''}`} />
                       </button>
                       <AnimatePresence>
@@ -314,7 +322,7 @@ export default function Header() {
                                     }`}
                                   >
                                     <span className="w-1 h-1 rounded-full bg-current opacity-50 flex-shrink-0" />
-                                    {child.label}
+                                    {child.i18nKey ? t(`nav.${child.i18nKey}`, child.label) : child.label}
                                   </Link>
                                   {child.subItems && (
                                     <div className="pl-6 space-y-0.5">
@@ -329,7 +337,7 @@ export default function Header() {
                                           }`}
                                         >
                                           <span className="w-0.5 h-0.5 rounded-full bg-current opacity-40 flex-shrink-0" />
-                                          {sub.label}
+                                          {sub.i18nKey ? t(`nav.${sub.i18nKey}`, sub.label) : sub.label}
                                         </Link>
                                       ))}
                                     </div>
@@ -350,7 +358,7 @@ export default function Header() {
                   className="flex items-center justify-center gap-2 w-full py-3.5 text-sm font-body font-semibold
                              gradient-accent text-white rounded-full shadow-sm"
                 >
-                  <Heart className="w-4 h-4" /> Donate to TIDE
+                  <Heart className="w-4 h-4" /> {t('common.donateToTide', navData.donateMobileLabel)}
                 </Link>
               </div>
             </div>

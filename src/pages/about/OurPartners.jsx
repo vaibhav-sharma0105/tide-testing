@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/about-our-partners.json'
+import { useTranslation } from 'react-i18next'
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 16 },
@@ -12,10 +13,19 @@ const fadeUp = (delay = 0) => ({
 
 const BASE = `${import.meta.env.BASE_URL}assets/images/about-our-partners/`
 
+const CATEGORY_KEYS = {
+  'Beneficiaries (Schools & Institutions)': 'beneficiaries',
+  'Volunteer Partners': 'volunteerPartners',
+  'Collaborating NGOs & Organisations': 'collaboratingNGOs',
+  'Knowledge, Research & Funding Partners': 'researchFunding',
+  'Other Supporters': 'otherSupporters',
+}
+
 export default function OurPartners() {
+  const { t } = useTranslation()
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.subtitle} />
+      <PageHero badge={data.meta.badge} title={t('about.partners.title', data.meta.title)} subtitle={t('about.partners.subtitle', data.meta.subtitle)} />
 
       {/* Partner logo showcase */}
       <section className="section-padding bg-white border-b border-tide-border">
@@ -53,7 +63,7 @@ export default function OurPartners() {
                 {...fadeUp(si * 0.06)}
                 className="font-display text-xl font-semibold text-tide-text mb-6 pb-3 border-b border-tide-border"
               >
-                {section.title}
+                {CATEGORY_KEYS[section.title] ? t(`about.partners.${CATEGORY_KEYS[section.title]}`, section.title) : section.title}
               </motion.h3>
               <div className="flex flex-wrap gap-2.5">
                 {section.partners.map((p, pi) => (

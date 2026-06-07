@@ -2,6 +2,7 @@ import { useState, useCallback, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SlidersHorizontal, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import ResourceFilters from '../../components/abl/ResourceFilters'
@@ -36,6 +37,7 @@ function filtersToSearch(filters, page) {
 }
 
 export default function AblResourceCenter() {
+  const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
   const gridRef  = useRef(null)
@@ -89,8 +91,8 @@ export default function AblResourceCenter() {
     <>
       <PageHero
         badge="Resources · ABL"
-        title="Resource Center"
-        subtitle="Browse all Activity-Based Learning resources. Filter by type, grade, language, and more."
+        title={t('abl.resourceCenter.title', 'Resource Center')}
+        subtitle={t('abl.resourceCenter.subtitle', 'Browse all Activity-Based Learning resources. Filter by type, grade, language, and more.')}
         gradient
       />
       <AblNavBar />
@@ -119,7 +121,7 @@ export default function AblResourceCenter() {
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-tide-border bg-white text-sm font-body font-semibold text-tide-text hover:border-primary/40 transition-colors shadow-sm"
                 >
                   <SlidersHorizontal className="w-4 h-4" />
-                  Filters
+                  {t('abl.resourceCenter.filterType', 'Filters')}
                   {activeFilterCount > 0 && (
                     <span className="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center">
                       {activeFilterCount}
@@ -127,15 +129,15 @@ export default function AblResourceCenter() {
                   )}
                 </button>
                 <p className="text-sm font-body text-tide-muted">
-                  {loading ? 'Loading…' : `${filtered.length} result${filtered.length !== 1 ? 's' : ''}`}
+                  {loading ? t('abl.resourceCenter.loading', 'Loading…') : `${filtered.length} ${filtered.length !== 1 ? t('abl.resourceCenter.resources', 'resources') : t('abl.resourceCenter.resources', 'resource')}`}
                 </p>
               </div>
 
               {/* Desktop result count */}
               <p className="hidden lg:block text-sm font-body text-tide-muted mb-5">
                 {loading
-                  ? 'Loading…'
-                  : `Showing ${pageItems.length} of ${filtered.length} resource${filtered.length !== 1 ? 's' : ''}`
+                  ? t('abl.resourceCenter.loading', 'Loading…')
+                  : `${t('abl.resourceCenter.showing', 'Showing')} ${pageItems.length} ${t('abl.pagination.of', 'of')} ${filtered.length} ${t('abl.resourceCenter.resources', 'resources')}`
                 }
               </p>
 
@@ -179,7 +181,7 @@ export default function AblResourceCenter() {
               className="fixed left-0 top-0 bottom-0 w-80 max-w-[90vw] bg-tide-bg z-50 overflow-y-auto lg:hidden shadow-2xl"
             >
               <div className="flex items-center justify-between px-5 py-4 border-b border-tide-border bg-white">
-                <span className="font-display font-semibold text-tide-text">Filters</span>
+                <span className="font-display font-semibold text-tide-text">{t('abl.resourceCenter.filterType', 'Filters')}</span>
                 <button
                   onClick={() => setMobileFiltersOpen(false)}
                   aria-label="Close filters"

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Mail, Phone, Heart } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { FacebookIcon, InstagramIcon, LinkedinIcon } from '../ui/SocialIcons'
 import footerData from '../../data/footer.json'
 import contactData from '../../data/contact.json'
@@ -11,6 +12,7 @@ const SOCIAL_ICONS = {
 }
 
 export default function Footer() {
+  const { t } = useTranslation()
 
   return (
     <footer className="bg-navy text-white relative overflow-hidden">
@@ -83,20 +85,22 @@ export default function Footer() {
               to="/get-involved/donate"
               className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-body font-semibold rounded-full gradient-accent text-white shadow-sm hover:shadow-glow-amber hover:scale-[1.03] transition-all duration-200"
             >
-              <Heart className="w-3.5 h-3.5" /> Support our work
+              <Heart className="w-3.5 h-3.5" /> {t('common.supportWork', footerData.supportWork)}
             </Link>
           </div>
 
           {/* Nav columns from data */}
           {footerData.columns.map(col => (
             <div key={col.title}>
-              <h4 className="font-body text-[11px] font-bold text-white/40 uppercase tracking-[0.12em] mb-5">{col.title}</h4>
+              <h4 className="font-body text-[11px] font-bold text-white/40 uppercase tracking-[0.12em] mb-5">
+                {col.i18nKey ? t(`footer.columns.${col.i18nKey}`, col.title) : col.title}
+              </h4>
               <ul className="space-y-3">
                 {col.links.map(item => (
                   <li key={item.to}>
                     <Link to={item.to} className="font-body text-white/65 hover:text-white text-sm transition-colors duration-150 flex items-center gap-1.5 group">
                       <span className="w-1 h-1 rounded-full bg-white/25 group-hover:bg-accent transition-colors flex-shrink-0" />
-                      {item.label}
+                      {item.i18nKey ? t(`nav.${item.i18nKey}`, item.label) : item.label}
                     </Link>
                   </li>
                 ))}
@@ -109,10 +113,10 @@ export default function Footer() {
         {/* ── Bottom bar ── */}
         <div className="mt-14 pt-7 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-body text-white/35 text-xs">
-            © {new Date().getFullYear()} TIDE Foundation. All rights reserved.
+            {t('footer.rights', footerData.rights)}
           </p>
           <p className="font-body text-white/35 text-xs flex items-center gap-1.5">
-            Made with <Heart className="w-3 h-3 text-accent" /> for education in India
+            {t('footer.madeWithLove', footerData.madeWithLove)}
           </p>
         </div>
       </div>

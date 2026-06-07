@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import DriveImage from './DriveImage'
 import ResourceTypeBadge from './ResourceTypeBadge'
 
 export default function ResourceCard({ resource }) {
+  const { t } = useTranslation()
   const grades      = resource.grades ?? []
   const shownGrades = grades.slice(0, 3)
   const extraGrades = grades.length - 3
@@ -65,7 +67,7 @@ export default function ResourceCard({ resource }) {
 
         <div className="flex items-center gap-1.5 mt-1">
           <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isOwned ? 'bg-primary' : 'bg-tide-muted'}`} />
-          <span className="text-xs font-body text-tide-muted">{isOwned ? 'TIDE Resource' : 'External Resource'}</span>
+          <span className="text-xs font-body text-tide-muted">{isOwned ? t('abl.resourceCard.tideResource', 'TIDE Resource') : t('abl.resourceCard.externalResource', 'External Resource')}</span>
         </div>
       </div>
     </Link>

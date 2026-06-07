@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/about-our-team.json'
+import { useTranslation } from 'react-i18next'
 
 const getInitials = name => name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
 
@@ -79,18 +80,19 @@ function AdvisorCard({ name, role, photo, delay = 0 }) {
 
 /* ══════════════════════════════════════════���═══════════════════════ */
 export default function OurTeam() {
+  const { t } = useTranslation()
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.subtitle} />
+      <PageHero badge={data.meta.badge} title={t('about.team.title', data.meta.title)} subtitle={t('about.team.subtitle', data.meta.subtitle)} />
 
       <section className="section-padding bg-tide-bg">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <SectionHeader
             badge={data.coreTeam.sectionBadge}
-            title={data.coreTeam.sectionTitle}
+            title={t('about.team.coreTeam', data.coreTeam.sectionTitle)}
             subtitle={data.coreTeam.sectionSubtitle}
           />
-          <p className="text-xs font-body text-tide-muted mb-8 -mt-6 italic">Hover over a photo to read about each person.</p>
+          <p className="text-xs font-body text-tide-muted mb-8 -mt-6 italic">{t('common.hoverForBio', 'Hover over a photo to read about each person.')}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-5 md:gap-6">
             {data.coreTeam.members.map((m, i) => (
               <PortraitCard key={m.name} {...m} delay={i * 0.06} />
@@ -103,7 +105,7 @@ export default function OurTeam() {
         <div className="max-w-5xl mx-auto px-4 md:px-8">
           <SectionHeader
             badge={data.advisoryBoard.sectionBadge}
-            title={data.advisoryBoard.sectionTitle}
+            title={t('about.team.advisors', data.advisoryBoard.sectionTitle)}
             subtitle={data.advisoryBoard.sectionSubtitle}
           />
           <div className="grid sm:grid-cols-2 gap-4">

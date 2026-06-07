@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import SectionHeader from '../../components/ui/SectionHeader'
@@ -8,6 +10,7 @@ import Button from '../../components/ui/Button'
 import ResourceTypeBadge from '../../components/abl/ResourceTypeBadge'
 import { useABLData } from '../../hooks/useABLData'
 import { TAB_STYLE_MAP } from '../../config/abl'
+import ablData from '../../data/abl-home.json'
 
 function formatDate(iso) {
   if (!iso) return '—'
@@ -20,14 +23,19 @@ function formatDate(iso) {
 }
 
 export default function AblHome() {
+  const { t } = useTranslation()
   const { data, loading, error } = useABLData()
 
   return (
     <>
+      <Helmet>
+        <title>{ablData.meta.seoTitle}</title>
+        <meta name="description" content={ablData.meta.seoDescription} />
+      </Helmet>
       <PageHero
-        badge="Resources · ABL"
-        title="ABL Resource Library"
-        subtitle="A curated library of Activity-Based Learning resources for Grades 1–5, developed and used by TIDE Foundation educators."
+        badge={ablData.meta.badge}
+        title={t('abl.home.title', ablData.meta.title)}
+        subtitle={t('abl.home.subtitle', ablData.meta.subtitle)}
         gradient
       />
       <AblNavBar />
@@ -45,14 +53,14 @@ export default function AblHome() {
               ))
             ) : (
               <>
-                <AnimatedCounter value={data?.meta?.total ?? 0}  label="Total Resources" />
-                <AnimatedCounter value={data?.tabs?.length ?? 0} label="Resource Types"  />
+                <AnimatedCounter value={data?.meta?.total ?? 0}  label={t('abl.home.totalResources', ablData.stats.totalResources)} />
+                <AnimatedCounter value={data?.tabs?.length ?? 0} label={t('abl.resourceCard.type', ablData.stats.resourceTypes)}  />
                 <div className="text-center">
                   <div className="font-display text-4xl md:text-5xl font-bold leading-none text-primary">1–5</div>
-                  <div className="mt-2.5 text-xs font-body font-semibold uppercase tracking-widest text-tide-muted">Grades Covered</div>
+                  <div className="mt-2.5 text-xs font-body font-semibold uppercase tracking-widest text-tide-muted">{t('abl.home.gradeCovered', ablData.stats.gradeCovered)}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-xs font-body font-semibold uppercase tracking-widest text-tide-muted mb-1">Last Synced</div>
+                  <div className="text-xs font-body font-semibold uppercase tracking-widest text-tide-muted mb-1">{t('abl.home.lastSynced', ablData.stats.lastSynced)}</div>
                   <div className="text-sm font-body text-tide-text">{formatDate(data?.lastUpdated)}</div>
                 </div>
               </>
@@ -71,17 +79,14 @@ export default function AblHome() {
             transition={{ duration: 0.6 }}
           >
             <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-primary-light text-primary border border-primary/20">
-              About ABL
+              {t('abl.home.aboutBadge', ablData.about.badge)}
             </span>
-            <h2 className="font-display text-3xl font-semibold text-tide-text mb-5">What is Activity-Based Learning?</h2>
+            <h2 className="font-display text-3xl font-semibold text-tide-text mb-5">{t('abl.home.aboutTitle', ablData.about.title)}</h2>
             <p className="font-body text-tide-muted leading-relaxed mb-6">
-              Activity-Based Learning (ABL) is a child-centred pedagogical approach in which students
-              learn by doing — through games, worksheets, manipulatives, and hands-on activities —
-              rather than passive instruction. TIDE Foundation has developed a rich library of ABL
-              materials for Grades 1–5 across multiple subjects and languages.
+              {t('abl.home.aboutBody', ablData.about.body)}
             </p>
             <Button to="/resources/abl-resources/resource-center">
-              Browse All Resources →
+              {t('abl.home.browseButton', ablData.about.browseButton)} →
             </Button>
           </motion.div>
 
@@ -92,16 +97,11 @@ export default function AblHome() {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="rounded-2xl bg-white border border-tide-border p-8 space-y-4"
           >
-            <h3 className="font-display text-lg font-semibold text-tide-text">Why ABL Works</h3>
-            {[
-              'Engages all learning styles — visual, kinesthetic, and auditory',
-              'Improves concept retention through hands-on practice',
-              'Adaptable to mixed-ability classrooms',
-              'Designed for Gujarati, Hindi, and English medium schools',
-            ].map(item => (
-              <div key={item} className="flex items-start gap-3">
+            <h3 className="font-display text-lg font-semibold text-tide-text">{t('abl.home.whyTitle', ablData.about.whyTitle)}</h3>
+            {ablData.about.whyPoints.map(point => (
+              <div key={point} className="flex items-start gap-3">
                 <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                <p className="text-sm font-body text-tide-muted">{item}</p>
+                <p className="text-sm font-body text-tide-muted">{point}</p>
               </div>
             ))}
           </motion.div>
@@ -111,7 +111,7 @@ export default function AblHome() {
       {/* Resource type cards */}
       <section className="section-padding bg-white border-t border-tide-border">
         <div className="max-w-5xl mx-auto">
-          <SectionHeader badge="Browse by Type" title="Explore Resource Types" />
+          <SectionHeader badge={t('abl.home.resourceTypesBadge', ablData.resourceTypes.badge)} title={t('abl.home.resourceTypesTitle', ablData.resourceTypes.title)} />
 
           {loading && (
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -146,7 +146,7 @@ export default function AblHome() {
                         {style.pluralLabel}
                       </div>
                       <div className="text-sm font-body text-tide-muted mt-1">
-                        {data.meta?.counts?.[tab] ?? 0} resources
+                        {data.meta?.counts?.[tab] ?? 0} {t('abl.home.resourcesCount', ablData.resourceTypes.resourcesCount)}
                       </div>
                     </Link>
                   </motion.div>

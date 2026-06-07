@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { ABL_PAGE_SIZE } from '../../config/abl'
 
 function pageRange(current, total) {
@@ -9,6 +10,7 @@ function pageRange(current, total) {
 }
 
 export default function Pagination({ total, page, perPage = ABL_PAGE_SIZE, onChange }) {
+  const { t } = useTranslation()
   const totalPages = Math.ceil(total / perPage)
   if (totalPages <= 1) return null
 
@@ -19,18 +21,18 @@ export default function Pagination({ total, page, perPage = ABL_PAGE_SIZE, onCha
   return (
     <nav className="mt-10 flex flex-col items-center gap-4" aria-label="Pagination">
       <p className="text-sm font-body text-tide-muted">
-        Showing {startItem}–{endItem} of {total} resources
+        {t('abl.resourceCenter.showing', 'Showing')} {startItem}–{endItem} {t('abl.pagination.of', 'of')} {total} {t('abl.resourceCenter.resources', 'resources')}
       </p>
       <div className="flex items-center gap-1">
         <button
           onClick={() => page > 1 && onChange(page - 1)}
           aria-disabled={page === 1}
-          aria-label="Previous page"
+          aria-label={t('abl.pagination.previous', 'Previous page')}
           className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-body font-medium transition-colors ${
             page === 1 ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
           }`}
         >
-          <ChevronLeft className="w-4 h-4" /> Prev
+          <ChevronLeft className="w-4 h-4" /> {t('abl.pagination.previous', 'Prev')}
         </button>
 
         {pages.map((p, i) =>
@@ -60,7 +62,7 @@ export default function Pagination({ total, page, perPage = ABL_PAGE_SIZE, onCha
             page === totalPages ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
           }`}
         >
-          Next <ChevronRight className="w-4 h-4" />
+          {t('abl.pagination.next', 'Next')} <ChevronRight className="w-4 h-4" />
         </button>
       </div>
     </nav>

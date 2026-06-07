@@ -3,6 +3,7 @@ import { Heart, Mail, ArrowRight, CheckCircle2 } from 'lucide-react'
 import PageHero from '../../components/ui/PageHero'
 import Button from '../../components/ui/Button'
 import data from '../../data/get-involved-donate.json'
+import { useTranslation } from 'react-i18next'
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
@@ -12,9 +13,10 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function Donate() {
+  const { t } = useTranslation()
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} gradient />
+      <PageHero badge={data.meta.badge} title={t('getInvolved.donate.title', data.meta.title)} subtitle={t('getInvolved.donate.tagline', data.meta.tagline)} gradient />
 
       <section className="section-padding bg-tide-bg">
         <div className="max-w-5xl mx-auto">

@@ -7,6 +7,7 @@ import Button from '../../components/ui/Button'
 import Lightbox from '../../components/ui/Lightbox'
 import { useLightbox } from '../../hooks/useLightbox'
 import data from '../../data/get-involved-volunteer.json'
+import { useTranslation } from 'react-i18next'
 
 const ICONS = {
   BookOpen:  <BookOpen className="w-6 h-6" />,
@@ -24,23 +25,24 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function Volunteer() {
+  const { t } = useTranslation()
   const { lightboxIndex, isLightboxOpen, openLightbox, closeLightbox, prevLightbox, nextLightbox } = useLightbox(data.gallery.images.length)
 
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} gradient />
+      <PageHero badge={data.meta.badge} title={t('getInvolved.volunteer.title', data.meta.title)} subtitle={t('getInvolved.volunteer.tagline', data.meta.tagline)} gradient />
 
       {/* Hero section */}
       <section className="section-padding bg-tide-bg">
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
             <motion.div {...fadeUp()}>
-              <p className="text-tide-muted font-body leading-relaxed text-lg mb-6">{data.intro.body}</p>
+              <p className="text-tide-muted font-body leading-relaxed text-lg mb-6">{t('getInvolved.volunteer.body', data.intro.body)}</p>
               <blockquote className="pl-5 border-l-4 border-accent mb-8">
-                <p className="font-display text-xl italic text-tide-text">"{data.intro.quote}"</p>
+                <p className="font-display text-xl italic text-tide-text">"{t('getInvolved.volunteer.equation', data.intro.quote)}"</p>
               </blockquote>
               <Button href={data.intro.ctaHref} external size="lg">
-                {data.intro.ctaLabel} <ArrowRight className="w-4 h-4" />
+                {t('getInvolved.volunteer.cta', data.intro.ctaLabel)} <ArrowRight className="w-4 h-4" />
               </Button>
             </motion.div>
             <motion.div {...fadeUp(0.15)}>

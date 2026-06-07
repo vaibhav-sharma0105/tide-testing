@@ -6,6 +6,7 @@ import SectionHeader from '../../components/ui/SectionHeader'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import data from '../../data/projects-sdg-drives.json'
+import { useTranslation } from 'react-i18next'
 
 const ICONS = {
   Globe:     <Globe className="w-6 h-6" />,
@@ -23,11 +24,12 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function SdgDrives() {
+  const { t } = useTranslation()
   const [padletLoaded, setPadletLoaded] = useState(false)
 
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} gradient />
+      <PageHero badge={data.meta.badge} title={t('projects.sdgDrives.title', data.meta.title)} subtitle={t('projects.sdgDrives.tagline', data.meta.tagline)} gradient />
 
       {/* Overview + The Idea */}
       <section className="section-padding bg-tide-bg">
@@ -37,7 +39,7 @@ export default function SdgDrives() {
           <div className="grid md:grid-cols-2 gap-10 items-center mb-14">
             <motion.div {...fadeUp()}>
               <h2 className="font-display text-3xl font-semibold text-tide-text mb-5">{data.overview.title}</h2>
-              <p className="text-tide-muted font-body leading-relaxed">{data.overview.body}</p>
+              <p className="text-tide-muted font-body leading-relaxed">{t('projects.sdgDrives.overview', data.overview.body)}</p>
             </motion.div>
             <motion.div {...fadeUp(0.15)} className="flex justify-center">
               <img

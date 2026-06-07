@@ -7,13 +7,15 @@ import AnimatedCounter from '../../components/ui/AnimatedCounter'
 import Lightbox from '../../components/ui/Lightbox'
 import { useLightbox } from '../../hooks/useLightbox'
 import data from '../../data/projects-bettered.json'
+import { useTranslation } from 'react-i18next'
 
 export default function BetterED() {
+  const { t } = useTranslation()
   const { lightboxIndex, isLightboxOpen, openLightbox, closeLightbox, prevLightbox, nextLightbox } = useLightbox(data.gallery.images.length)
 
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} gradient />
+      <PageHero badge={data.meta.badge} title={t('projects.bettered.title', data.meta.title)} subtitle={t('projects.bettered.tagline', data.meta.tagline)} gradient />
 
       {/* Stats */}
       <section className="py-14 bg-white border-b border-tide-border">
@@ -32,12 +34,12 @@ export default function BetterED() {
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
               <h2 className="font-display text-3xl font-semibold text-tide-text mb-5">{data.overview.title}</h2>
-              <p className="text-tide-muted font-body leading-relaxed">{data.overview.body}</p>
+              <p className="text-tide-muted font-body leading-relaxed">{t('projects.bettered.overview', data.overview.body)}</p>
               <div className="mt-8 space-y-4">
                 {[
-                  { icon: <MapPin className="w-5 h-5" />, label: 'Reach',       value: data.overview.reach },
-                  { icon: <Zap className="w-5 h-5" />,    label: 'Focus Areas', value: data.overview.focus },
-                  { icon: <Target className="w-5 h-5" />, label: 'Goal',        value: data.overview.goal },
+                  { icon: <MapPin className="w-5 h-5" />, label: 'Reach',       value: t('projects.bettered.reach', data.overview.reach) },
+                  { icon: <Zap className="w-5 h-5" />,    label: 'Focus Areas', value: t('projects.bettered.focus', data.overview.focus) },
+                  { icon: <Target className="w-5 h-5" />, label: 'Goal',        value: t('projects.bettered.goal', data.overview.goal) },
                 ].map(item => (
                   <div key={item.label} className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0 mt-0.5">{item.icon}</div>

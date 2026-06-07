@@ -2,104 +2,132 @@
   "tagline": "Improving access to holistic education since 2014.",
   "together": "Together in Development and Education",
   "rights": "© 2025 TIDE Foundation. All rights reserved.",
+  "supportWork": "Support our work",
+  "madeWithLove": "Made with love for education in India",
+  "donateLabel": "Donate",
+  "donateMobileLabel": "Donate to TIDE",
   "logo": "assets/images/shared/tide-logo.png",
   "columns": [
     {
       "title": "About",
+      "i18nKey": "about",
       "links": [
         {
           "label": "Why TIDE?",
+          "i18nKey": "whyTide",
           "to": "/about/why-tide"
         },
         {
           "label": "Our Team",
+          "i18nKey": "ourTeam",
           "to": "/about/our-team"
         },
         {
           "label": "Our Partners",
+          "i18nKey": "ourPartners",
           "to": "/about/our-partners"
         },
         {
           "label": "Our Results",
+          "i18nKey": "ourResults",
           "to": "/about/our-results"
         }
       ]
     },
     {
       "title": "Projects",
+      "i18nKey": "projects",
       "links": [
         {
           "label": "Block ETI",
+          "i18nKey": "blockETI",
           "to": "/projects/block-eti"
         },
         {
           "label": "BetterED",
+          "i18nKey": "bettered",
           "to": "/projects/bettered"
         },
         {
           "label": "EmpowerEd",
+          "i18nKey": "empowered",
           "to": "/projects/empowered"
         },
         {
           "label": "CompletEd",
+          "i18nKey": "completed",
           "to": "/projects/completed"
         },
         {
           "label": "SDG Drives",
+          "i18nKey": "sdgDrives",
           "to": "/projects/sdg-drives"
         },
         {
           "label": "Other Projects",
+          "i18nKey": "otherProjects",
           "to": "/projects/other-projects"
         }
       ]
     },
     {
       "title": "Get Involved",
+      "i18nKey": "getInvolved",
       "links": [
         {
           "label": "Volunteer With Us",
+          "i18nKey": "volunteer",
           "to": "/get-involved/volunteer"
         },
         {
           "label": "Donate",
+          "i18nKey": "donate",
           "to": "/get-involved/donate"
         },
         {
           "label": "Work With Us",
+          "i18nKey": "workWithUs",
           "to": "/get-involved/work-with-us"
         },
         {
           "label": "Organise MCCx",
+          "i18nKey": "mccx",
           "to": "/get-involved/mccx"
         }
       ]
     },
     {
       "title": "Resources",
+      "i18nKey": "resources",
       "links": [
         {
           "label": "Saral Kadam",
+          "i18nKey": "saralKadam",
           "to": "/resources/saral-kadam"
         },
         {
           "label": "Annual Reports",
+          "i18nKey": "annualReports",
           "to": "/resources/annual-reports"
         },
         {
           "label": "Publications",
+          "i18nKey": "publications",
           "to": "/resources/publications"
         },
         {
           "label": "ABL Resources",
+          "i18nKey": "abl",
           "to": "/resources/abl-resources"
         },
         {
           "label": "THRIvE",
+          "i18nKey": "thrive",
           "to": "/thrive"
         },
         {
           "label": "Contact",
+          "i18nKey": "contact",
           "to": "/contact"
         }
       ]

@@ -6,6 +6,7 @@ import Card from '../components/ui/Card'
 import Lightbox from '../components/ui/Lightbox'
 import { useLightbox } from '../hooks/useLightbox'
 import data from '../data/thrive.json'
+import { useTranslation } from 'react-i18next'
 
 const ICONS = {
   BookOpen:   <BookOpen className="w-5 h-5" />,
@@ -60,17 +61,27 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.6, delay, ease: [0.4, 0, 0.2, 1] },
 })
 
+const LEADER_KEYS = {
+  'Dr. Jwalin Patel':  { name: 'jwalin',  role: 'jwalinRole'  },
+  'Dr. Seema Nath':    { name: 'seema',   role: 'seemaRole'   },
+  'Dr. Rohini Sen':    { name: 'rohini',  role: 'rohiniRole'  },
+}
+
+const PRINCIPLE_KEYS = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
+const PROJECT_KEYS   = ['p1', 'p2', 'p3', 'p4', 'p5']
+
 export default function THRIvE() {
+  const { t } = useTranslation()
   const { lightboxIndex, isLightboxOpen, openLightbox, closeLightbox, prevLightbox, nextLightbox } = useLightbox(data.conferences.images.length)
 
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.fullName} gradient />
+      <PageHero badge={data.meta.badge} title={t('thrive.title', data.meta.title)} subtitle={t('thrive.fullName', data.meta.fullName)} gradient />
 
       {/* Tagline band */}
       <section className="py-12 bg-primary-light border-b border-primary/10">
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center">
-          <p className="font-display text-2xl md:text-3xl italic text-primary font-medium">"{data.meta.tagline}"</p>
+          <p className="font-display text-2xl md:text-3xl italic text-primary font-medium">"{t('thrive.tagline', data.meta.tagline)}"</p>
         </div>
       </section>
 
@@ -81,15 +92,18 @@ export default function THRIvE() {
             <motion.div {...fadeUp()}>
               <span className="badge-primary mb-4 block w-fit">{data.about.sectionBadge}</span>
               <h2 className="font-display text-3xl font-semibold text-tide-text mb-5">{data.about.sectionTitle}</h2>
-              <p className="text-tide-muted font-body leading-relaxed">{data.about.body}</p>
+              <p className="text-tide-muted font-body leading-relaxed">{t('thrive.overview', data.about.body)}</p>
             </motion.div>
             <motion.div {...fadeUp(0.15)}>
               <span className="badge-primary mb-4 block w-fit">{data.leaders.sectionBadge}</span>
-              <h2 className="font-display text-2xl font-semibold text-tide-text mb-6">{data.leaders.sectionTitle}</h2>
+              <h2 className="font-display text-2xl font-semibold text-tide-text mb-6">{t('thrive.leadership.title', data.leaders.sectionTitle)}</h2>
               <div className="grid grid-cols-3 gap-3">
-                {data.leaders.members.map((l, i) => (
-                  <PersonCard key={l.name} name={l.name} role={l.role} photo={l.photo} delay={i * 0.07} />
-                ))}
+                {data.leaders.members.map((l, i) => {
+                  const lk = LEADER_KEYS[l.name]
+                  return (
+                    <PersonCard key={l.name} name={lk ? t(`thrive.leadership.${lk.name}`, l.name) : l.name} role={lk ? t(`thrive.leadership.${lk.role}`, l.role) : l.role} photo={l.photo} delay={i * 0.07} />
+                  )
+                })}
               </div>
             </motion.div>
           </div>
@@ -112,15 +126,15 @@ export default function THRIvE() {
       {/* Core Principles */}
       <section className="section-padding bg-tide-subtle">
         <div className="max-w-5xl mx-auto">
-          <SectionHeader badge={data.principles.sectionBadge} title={data.principles.sectionTitle} center />
+          <SectionHeader badge={data.principles.sectionBadge} title={t('thrive.principles.title', data.principles.sectionTitle)} center />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {data.principles.items.map((p, i) => (
               <Card key={p.title} delay={i * 0.07} className="p-6">
                 <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center mb-4">
                   {ICONS[p.iconKey] || <BookOpen className="w-5 h-5" />}
                 </div>
-                <h3 className="font-display font-semibold text-tide-text mb-2">{p.title}</h3>
-                <p className="text-sm font-body text-tide-muted leading-relaxed">{p.desc}</p>
+                <h3 className="font-display font-semibold text-tide-text mb-2">{PRINCIPLE_KEYS[i] ? t(`thrive.principles.${PRINCIPLE_KEYS[i]}`, p.title) : p.title}</h3>
+                <p className="text-sm font-body text-tide-muted leading-relaxed">{PRINCIPLE_KEYS[i] ? t(`thrive.principles.${PRINCIPLE_KEYS[i]}desc`, p.desc) : p.desc}</p>
               </Card>
             ))}
           </div>
@@ -130,7 +144,7 @@ export default function THRIvE() {
       {/* Research Projects */}
       <section className="section-padding bg-tide-bg">
         <div className="max-w-5xl mx-auto">
-          <SectionHeader badge={data.researchProjects.sectionBadge} title={data.researchProjects.sectionTitle} subtitle={data.researchProjects.sectionSubtitle} />
+          <SectionHeader badge={data.researchProjects.sectionBadge} title={t('thrive.projects.title', data.researchProjects.sectionTitle)} subtitle={data.researchProjects.sectionSubtitle} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {data.researchProjects.items.map((p, i) => (
               <motion.div
@@ -146,8 +160,8 @@ export default function THRIvE() {
                   </span>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h3 className="font-display font-semibold text-white text-sm leading-tight mb-1">{p.title}</h3>
-                  <p className="text-white/70 text-xs font-body leading-relaxed line-clamp-2">{p.desc}</p>
+                  <h3 className="font-display font-semibold text-white text-sm leading-tight mb-1">{PROJECT_KEYS[i] ? t(`thrive.projects.${PROJECT_KEYS[i]}`, p.title) : p.title}</h3>
+                  <p className="text-white/70 text-xs font-body leading-relaxed line-clamp-2">{PROJECT_KEYS[i] ? t(`thrive.projects.${PROJECT_KEYS[i]}desc`, p.desc) : p.desc}</p>
                 </div>
               </motion.div>
             ))}

@@ -4,6 +4,7 @@ import PageHero from '../../components/ui/PageHero'
 import Button from '../../components/ui/Button'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/get-involved-mccx.json'
+import { useTranslation } from 'react-i18next'
 
 const ICONS = {
   Mail:     <Mail className="w-5 h-5" />,
@@ -20,9 +21,10 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function OrganizeMCCx() {
+  const { t } = useTranslation()
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} gradient />
+      <PageHero badge={data.meta.badge} title={t('getInvolved.mccx.title', data.meta.title)} subtitle={t('getInvolved.mccx.tagline', data.meta.tagline)} gradient />
 
       <section className="section-padding bg-tide-bg">
         <div className="max-w-5xl mx-auto">

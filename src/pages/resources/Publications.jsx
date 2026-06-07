@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/resources-publications.json'
+import { useTranslation } from 'react-i18next'
 
 /* Visual config — can't be stored in JSON */
 const TYPE_ICONS = {
@@ -32,9 +33,10 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function Publications() {
+  const { t } = useTranslation()
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} />
+      <PageHero badge={data.meta.badge} title={t('resources.publications.title', data.meta.title)} subtitle={t('resources.publications.tagline', data.meta.tagline)} />
 
       <section className="section-padding bg-tide-bg">
         <div className="max-w-5xl mx-auto">

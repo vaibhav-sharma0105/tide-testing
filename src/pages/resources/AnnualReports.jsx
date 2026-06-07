@@ -3,6 +3,7 @@ import { ExternalLink } from 'lucide-react'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/resources-annual-reports.json'
+import { useTranslation } from 'react-i18next'
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 16 },
@@ -12,9 +13,10 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function AnnualReports() {
+  const { t } = useTranslation()
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} />
+      <PageHero badge={data.meta.badge} title={t('resources.annualReports.title', data.meta.title)} subtitle={t('resources.annualReports.tagline', data.meta.tagline)} />
 
       <section className="section-padding bg-tide-bg">
         <div className="max-w-5xl mx-auto">

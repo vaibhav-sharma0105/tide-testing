@@ -1,0 +1,22 @@
+meta:
+  badge: "Resources · ABL"
+  title: "Contribute a Resource"
+  subtitle: "Help grow the ABL library. Share a resource you've used in your classroom and it will be reviewed by the TIDE team."
+  seoTitle: "Contribute to ABL Library — TIDE Foundation"
+  seoDescription: "Share your teaching materials with the TIDE ABL resource library."
+
+shareSection:
+  title: "Share What Works"
+  body: "TIDE's ABL resource library grows through the collective wisdom of educators. If you have a worksheet, game, kit, or flashcard set that has worked well in your classroom, share it with the community and help other teachers discover what works."
+
+steps:
+  - title: "Fill the Form"
+    desc: "Share details about your resource, including photos, concept, grades, and language."
+  - title: "TIDE Reviews"
+    desc: "Our team reviews and verifies the resource for quality and accuracy before publishing."
+  - title: "Gets Published"
+    desc: "Approved resources are added to the library and become available to all educators."
+
+cta: "Open Contribution Form"
+ctaPending: "Form link coming soon."
+disclaimer: "Opens in a new tab. Form data is handled by Google Forms."

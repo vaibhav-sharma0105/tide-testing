@@ -6,6 +6,7 @@ import SectionHeader from '../../components/ui/SectionHeader'
 import Lightbox from '../../components/ui/Lightbox'
 import { useLightbox } from '../../hooks/useLightbox'
 import data from '../../data/projects-other.json'
+import { useTranslation } from 'react-i18next'
 
 const ICONS = {
   GraduationCap: <GraduationCap className="w-6 h-6" />,
@@ -21,12 +22,13 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function OtherProjects() {
+  const { t } = useTranslation()
   const disha = useLightbox(data.disha.photos.length)
   const moi   = useLightbox(data.moi.photos.length)
 
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} />
+      <PageHero badge={data.meta.badge} title={t('projects.other.title', data.meta.title)} subtitle={t('projects.other.tagline', data.meta.tagline)} />
 
       <section className="section-padding bg-tide-bg">
         <div className="max-w-5xl mx-auto">

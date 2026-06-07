@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, X, ChevronDown } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { TAB_STYLE_MAP } from '../../config/abl'
 
 const GRADES = ['GRADE 1', 'GRADE 2', 'GRADE 3', 'GRADE 4', 'GRADE 5']
@@ -33,6 +34,7 @@ function FilterSection({ title, children, open, onToggle }) {
 }
 
 export default function ResourceFilters({ allResources, filters, onChange, onClear, tabs, data }) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState({ type: true, grades: true, language: false, ownership: false })
   const toggle = (key) => setOpen(prev => ({ ...prev, [key]: !prev[key] }))
 
@@ -57,14 +59,14 @@ export default function ResourceFilters({ allResources, filters, onChange, onCle
 
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-tide-border">
-        <span className="font-display text-sm font-semibold text-tide-text">Filters</span>
+        <span className="font-display text-sm font-semibold text-tide-text">{t('abl.resourceCenter.filterType', 'Filters')}</span>
         {activeCount > 0 && (
           <button
             onClick={onClear}
             className="flex items-center gap-1.5 text-xs font-body text-tide-muted hover:text-primary transition-colors duration-150"
           >
             <X className="w-3 h-3" />
-            Clear ({activeCount})
+            {t('abl.resourceCenter.clearFilters', 'Clear')} ({activeCount})
           </button>
         )}
       </div>
@@ -77,19 +79,20 @@ export default function ResourceFilters({ allResources, filters, onChange, onCle
             type="text"
             value={filters.search}
             onChange={e => onChange({ ...filters, search: e.target.value })}
-            placeholder="Search resources…"
-            aria-label="Search resources"
+            placeholder={t('abl.resourceCenter.searchPlaceholder', 'Search resources…')}
+            aria-label={t('abl.resourceCenter.searchPlaceholder', 'Search resources')}
+
             className="w-full pl-8 pr-3 py-2 rounded-lg border border-tide-border bg-tide-subtle text-sm font-body placeholder:text-tide-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
           />
         </div>
       </div>
 
       {/* Resource Type */}
-      <FilterSection title="Resource Type" open={open.type} onToggle={() => toggle('type')}>
+      <FilterSection title={t('abl.resourceCenter.filterType', 'Resource Type')} open={open.type} onToggle={() => toggle('type')}>
         <div className="space-y-0.5">
           {/* All */}
           <RadioRow
-            label="All types"
+            label={t('abl.resourceCenter.filterAll', 'All types')}
             count={allResources.length}
             active={!filters.type}
             onClick={() => onChange({ ...filters, type: '' })}
@@ -111,7 +114,7 @@ export default function ResourceFilters({ allResources, filters, onChange, onCle
       </FilterSection>
 
       {/* Grades */}
-      <FilterSection title="Grades" open={open.grades} onToggle={() => toggle('grades')}>
+      <FilterSection title={t('abl.resourceCenter.filterGrade', 'Grades')} open={open.grades} onToggle={() => toggle('grades')}>
         <div className="flex flex-wrap gap-2">
           {GRADES.map(g => {
             const active = filters.grades.includes(g)
@@ -139,30 +142,30 @@ export default function ResourceFilters({ allResources, filters, onChange, onCle
 
       {/* Language */}
       {languages.length > 1 && (
-        <FilterSection title="Language" open={open.language} onToggle={() => toggle('language')}>
+        <FilterSection title={t('abl.resourceCenter.filterLanguage', 'Language')} open={open.language} onToggle={() => toggle('language')}>
           <select
             value={filters.language}
             onChange={e => onChange({ ...filters, language: e.target.value })}
-            aria-label="Filter by language"
+            aria-label={t('abl.resourceCenter.filterLanguage', 'Filter by language')}
             className={inputCls}
           >
-            <option value="">All Languages</option>
+            <option value="">{t('abl.resourceCenter.filterAll', 'All Languages')}</option>
             {languages.map(l => <option key={l} value={l}>{l}</option>)}
           </select>
         </FilterSection>
       )}
 
       {/* Ownership */}
-      <FilterSection title="Ownership" open={open.ownership} onToggle={() => toggle('ownership')}>
+      <FilterSection title={t('abl.resourceCenter.filterOwnership', 'Ownership')} open={open.ownership} onToggle={() => toggle('ownership')}>
         <select
           value={filters.ownership}
           onChange={e => onChange({ ...filters, ownership: e.target.value })}
-          aria-label="Filter by ownership"
+          aria-label={t('abl.resourceCenter.filterOwnership', 'Filter by ownership')}
           className={inputCls}
         >
-          <option value="">All Resources</option>
-          <option value="TIDE">TIDE Owned</option>
-          {hasExternal && <option value="external">External</option>}
+          <option value="">{t('abl.resourceCenter.filterAll', 'All Resources')}</option>
+          <option value="TIDE">{t('abl.resourceCenter.filterTide', 'TIDE Owned')}</option>
+          {hasExternal && <option value="external">{t('abl.resourceCenter.filterExternal', 'External')}</option>}
         </select>
       </FilterSection>
     </div>

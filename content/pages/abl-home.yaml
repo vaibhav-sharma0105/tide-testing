@@ -1,0 +1,29 @@
+meta:
+  badge: "Resources · ABL"
+  title: "ABL Resource Library"
+  subtitle: "A curated library of Activity-Based Learning resources for Grades 1–5, developed and used by TIDE Foundation educators."
+  seoTitle: "ABL Resource Library — TIDE Foundation"
+  seoDescription: "Browse Activity-Based Learning resources for Grades 1–5 developed by TIDE Foundation educators."
+
+stats:
+  totalResources: "Total Resources"
+  resourceTypes: "Resource Types"
+  gradeCovered: "Grades Covered"
+  lastSynced: "Last Synced"
+
+about:
+  badge: "About ABL"
+  title: "What is Activity-Based Learning?"
+  body: "Activity-Based Learning (ABL) is a child-centred pedagogical approach in which students learn by doing — through games, worksheets, manipulatives, and hands-on activities — rather than passive instruction. TIDE Foundation has developed a rich library of ABL materials for Grades 1–5 across multiple subjects and languages."
+  browseButton: "Browse All Resources"
+  whyTitle: "Why ABL Works"
+  whyPoints:
+    - "Engages all learning styles — visual, kinesthetic, and auditory"
+    - "Improves concept retention through hands-on practice"
+    - "Adaptable to mixed-ability classrooms"
+    - "Designed for Gujarati, Hindi, and English medium schools"
+
+resourceTypes:
+  badge: "Browse by Type"
+  title: "Explore Resource Types"
+  resourcesCount: "resources"

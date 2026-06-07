@@ -6,6 +6,7 @@ import Button from '../../components/ui/Button'
 import Lightbox from '../../components/ui/Lightbox'
 import { useLightbox } from '../../hooks/useLightbox'
 import data from '../../data/resources-saral-kadam.json'
+import { useTranslation } from 'react-i18next'
 
 /* Tailwind color classes per colorKey — can't be stored in JSON */
 const LEVEL_COLORS = {
@@ -23,11 +24,12 @@ const fadeUp = (delay = 0) => ({
 })
 
 export default function SaralKadam() {
+  const { t } = useTranslation()
   const { lightboxIndex, isLightboxOpen, openLightbox, closeLightbox, prevLightbox, nextLightbox } = useLightbox(data.programGallery.photos.length)
 
   return (
     <>
-      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} />
+      <PageHero badge={data.meta.badge} title={t('resources.saralKadam.title', data.meta.title)} subtitle={t('resources.saralKadam.tagline', data.meta.tagline)} />
 
       {/* About */}
       <section className="section-padding bg-tide-bg">
@@ -35,9 +37,9 @@ export default function SaralKadam() {
           <div className="grid md:grid-cols-2 gap-12 items-start mb-16">
             <motion.div {...fadeUp()}>
               <h2 className="font-display text-3xl font-semibold text-tide-text mb-5">{data.about.title}</h2>
-              <p className="text-tide-muted font-body leading-relaxed mb-4">{data.about.overview}</p>
-              <p className="text-tide-muted font-body leading-relaxed mb-4">{data.about.available}</p>
-              <p className="text-tide-muted font-body leading-relaxed mb-6">{data.about.request}</p>
+              <p className="text-tide-muted font-body leading-relaxed mb-4">{t('resources.saralKadam.overview', data.about.overview)}</p>
+              <p className="text-tide-muted font-body leading-relaxed mb-4">{t('resources.saralKadam.available', data.about.available)}</p>
+              <p className="text-tide-muted font-body leading-relaxed mb-6">{t('resources.saralKadam.request', data.about.request)}</p>
               <Button href={data.about.ctaHref} variant="secondary">
                 <Mail className="w-4 h-4" /> {data.about.ctaLabel}
               </Button>
@@ -66,7 +68,7 @@ export default function SaralKadam() {
                 <motion.div key={l.key} {...fadeUp(li * 0.08)}>
                   <div className="flex items-center gap-3 mb-5">
                     <span className={`px-3 py-1 rounded-full text-sm font-body font-bold text-white ${colors.accentBg}`}>
-                      {l.title}
+                      {t(`resources.saralKadam.${l.key}`, l.title)}
                     </span>
                     <span className="text-sm font-body text-tide-muted">{l.booklets.length} booklets</span>
                   </div>

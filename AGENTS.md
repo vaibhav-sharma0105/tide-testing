@@ -57,18 +57,27 @@ Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 24 pag
 
 ### Data flows
 
-There are two distinct data pipelines in this project:
+There are three distinct data pipelines:
 
-**1 — CMS pipeline (20 pages)**
+**1 — CMS pipeline (22 pages + header/footer)**
 ```
-content/pages/*.yaml
-    ↓  scripts/yaml-to-json.js  (runs via predev/prebuild)
-src/data/*.json  (committed to git, never edit directly)
-    ↓  import data from '../../data/page.json'
-React page component
+content/pages/*.yaml  ─┐
+content/shared/*.yaml ─┤  scripts/yaml-to-json.js  (predev/prebuild)
+                        ↓
+                     src/data/*.json  (auto-generated, never edit directly)
+                        ↓  import data from '../../data/page.json'
+                     React page component (uses data.* as t() fallbacks)
 ```
 
-**2 — ABL pipeline (4 pages)**
+**2 — Locale translation pipeline (HI / GU)**
+```
+content/locales/hi/*.yaml  →  deep-merge  →  src/i18n/locales/hi/translation.json
+content/locales/gu/*.yaml  →  deep-merge  →  src/i18n/locales/gu/translation.json
+```
+Both run via the same `npm run content:sync` command.  
+`src/i18n/locales/en/translation.json` is intentionally empty — English always comes from YAML data.
+
+**3 — ABL pipeline (4 pages)**
 ```
 Google Sheet (private)
     ↓  Google Apps Script Web App (doGet, 15-min CacheService TTL)
@@ -76,6 +85,23 @@ useABLData() hook
     ↓  sessionStorage cache (15-min TTL, key: abl_api_cache_v2)
 ABL page components
 ```
+
+### i18n Architecture
+
+Pattern used by every page component:
+```jsx
+import { useTranslation } from 'react-i18next'
+import data from '../data/page.json'
+
+const { t } = useTranslation()
+// EN users get data.hero.title (YAML source)
+// HI/GU users get translated string from translation.json (same YAML key)
+<h1>{t('home.hero.title', data.hero.title)}</h1>
+```
+
+- `MULTILINGUAL_ENABLED` flag in `src/config/features.js` gates the language switcher
+- ABL pages never show the language switcher (content rows stay English)
+- When `MULTILINGUAL_ENABLED = false`: switcher is hidden, localStorage key is cleared, site renders EN only
 
 ### Routing
 
@@ -98,10 +124,17 @@ tide-new/
 ├── .env.example           ← documents required env vars (committed; no real values)
 │
 ├── content/               ← EDIT THIS — canonical content source
-│   ├── pages/             ← one .yaml per CMS page (20 files)
-│   └── shared/
-│       ├── navigation.yaml  ← site nav (Header reads navigation.json)
-│       └── footer.yaml      ← footer columns + social links
+│   ├── pages/             ← one .yaml per CMS page (22 files including abl-home, abl-contribute)
+│   ├── shared/
+│   │   ├── navigation.yaml  ← site nav (Header reads navigation.json)
+│   │   └── footer.yaml      ← footer columns + social links
+│   └── locales/           ← HI/GU translations (auto-merged → translation.json)
+│       ├── hi/
+│       │   ├── shared.yaml  ← nav, common, footer, abl, lang, todo
+│       │   └── pages.yaml   ← all page-specific HI translations
+│       └── gu/
+│           ├── shared.yaml
+│           └── pages.yaml
 │
 ├── src/
 │   ├── App.jsx            ← HashRouter + all 24 routes + ErrorBoundary
@@ -181,9 +214,16 @@ tide-new/
 │   ├── data/                     ← AUTO-GENERATED — never edit
 │   │   └── *.json                ← 22 JSON files (20 pages + navigation + footer)
 │   │
+│   ├── config/
+│   │   ├── abl.js                ← ABL_API_URL, cache TTL, TAB_STYLE_MAP
+│   │   └── features.js           ← MULTILINGUAL_ENABLED feature flag
+│   │
 │   └── i18n/
-│       ├── index.js              ← i18next init, localStorage lang persistence
-│       └── locales/en|hi|gu/translation.json
+│       ├── index.js              ← i18next init, fallbackLng: false, EN empty
+│       └── locales/
+│           ├── en/translation.json  ← intentionally empty — EN comes from YAML data
+│           ├── hi/translation.json  ← AUTO-GENERATED from content/locales/hi/*.yaml
+│           └── gu/translation.json  ← AUTO-GENERATED from content/locales/gu/*.yaml
 │
 ├── scripts/
 │   ├── yaml-to-json.js      ← YAML → JSON sync (predev/prebuild hook)
@@ -494,16 +534,36 @@ content/shared/footer.yaml          →   src/data/footer.json
 
 ### Import pattern in components
 
+Every page imports BOTH data AND useTranslation. Use `data.*` as the second (fallback) argument to `t()`:
+
 ```jsx
 // Top-level page  (src/pages/PageName.jsx)
+import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 import data from '../data/page-name.json'
+
+export default function PageName() {
+  const { t } = useTranslation()
+  return (
+    <>
+      <Helmet>
+        <title>{data.meta.seoTitle}</title>
+        <meta name="description" content={data.meta.seoDescription} />
+      </Helmet>
+      <h1>{t('pagename.hero.title', data.meta.title)}</h1>
+    </>
+  )
+}
 
 // Sub-directory page  (src/pages/about/WhyTide.jsx)
 import data from '../../data/about-why-tide.json'
 
-// Layout components  (src/components/layout/Header.jsx)
-import navData from '../../data/navigation.json'
+// Layout components
+import navData from '../../data/navigation.json'   // Header.jsx
+import footerData from '../../data/footer.json'    // Footer.jsx
 ```
+
+**Never hardcode an English string as the t() fallback.** Every fallback must come from `data.*` so non-developers can update it via YAML.
 
 ### Image paths in YAML
 
@@ -643,24 +703,32 @@ In `content/pages/resources-annual-reports.yaml`, prepend to `reports:` with `hi
 ### Add a new CMS page
 
 ```bash
-# 1. Create content file
+# 1. Create content file with all English text + meta
 cp content/pages/contact.yaml content/pages/new-page.yaml
-# Edit the YAML
+# Edit the YAML — include meta.seoTitle, meta.seoDescription
 
-# 2. Sync
+# 2. Sync → generates src/data/new-page.json
 npm run content:sync
 
 # 3. Create page component
 # src/pages/section/NewPage.jsx
+import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
 import data from '../../data/new-page.json'
-export default function NewPage() { ... }
+export default function NewPage() {
+  const { t } = useTranslation()
+  return (
+    <>
+      <Helmet><title>{data.meta.seoTitle}</title></Helmet>
+      <PageHero badge={data.meta.badge} title={t('newpage.title', data.meta.title)} />
+    </>
+  )
+}
 
 # 4. Register route — src/App.jsx
-import NewPage from './pages/section/NewPage'
-<Route path="/section/new-page" element={<NewPage />} />
-
-# 5. Add nav entry
-# Edit content/shared/navigation.yaml
+# 5. Add nav entry — content/shared/navigation.yaml
+# 6. Add HI translations — content/locales/hi/pages.yaml
+# 7. Add GU translations — content/locales/gu/pages.yaml
 npm run content:sync
 ```
 
@@ -782,6 +850,18 @@ Pages with more than one gallery (e.g. `CompletEd.jsx`) need separate `useLightb
 ```jsx
 const brochureLb = useLightbox()
 const galleryLb  = useLightbox()
+```
+
+### i18n — EN content always comes from YAML, never translation.json
+
+`src/i18n/locales/en/translation.json` is intentionally `{}`. When you call `t('some.key', data.someField)`, EN users always get `data.someField`. HI/GU users get the translated string from their locale file. Never write hardcoded English strings as the t() fallback — that bypasses the CMS and makes the text uneditable.
+
+```jsx
+// ✓ Correct — CMS-editable
+<h1>{t('home.hero.title', data.hero.title)}</h1>
+
+// ✗ Wrong — hardcoded, CMS cannot update it
+<h1>{t('home.hero.title', 'Education for India')}</h1>
 ```
 
 ### AnimatePresence requires key prop
