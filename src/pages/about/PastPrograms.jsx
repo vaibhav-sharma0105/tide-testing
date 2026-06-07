@@ -31,7 +31,7 @@ export default function PastPrograms() {
           <div className="space-y-12">
             {data.programs.map((prog, i) => (
               <motion.div key={prog.id} {...fadeUp(i * 0.08)}
-                className="bg-white rounded-2xl border border-tide-border p-8 md:p-10"
+                className="bg-white rounded-2xl border border-tide-border p-5 md:p-8 lg:p-10"
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
                   <div>

@@ -35,7 +35,7 @@ export default function OurPartners() {
             title={data.logoGallery.sectionTitle}
             subtitle={data.logoGallery.sectionSubtitle}
           />
-          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-3">
+          <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-8 gap-3">
             {data.logoGallery.images.map((filename, i) => (
               <motion.div
                 key={filename}

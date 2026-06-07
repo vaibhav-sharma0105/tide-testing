@@ -85,7 +85,7 @@ export default function Home() {
 
             <motion.h1
               {...fadeUp(0.2)}
-              className="font-display text-5xl md:text-6xl lg:text-[5.25rem] font-bold text-white leading-[1.05] tracking-tight text-balance"
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-[5.25rem] font-bold text-white leading-[1.05] tracking-tight text-balance"
             >
               {t('home.hero.tagline', data.hero.tagline)}{' '}
               <em className="not-italic text-accent">{t('home.hero.taglineHighlight', data.hero.taglineHighlight)}</em>
@@ -197,7 +197,7 @@ export default function Home() {
             </motion.div>
 
             <motion.div {...fadeIn(0.15)} className="order-1 lg:order-2 relative">
-              <div className="relative h-[480px] md:h-[540px]">
+              <div className="relative h-[340px] sm:h-[420px] md:h-[540px]">
                 <div className="absolute right-0 top-0 w-[75%] h-[85%] rounded-3xl overflow-hidden shadow-float">
                   <img src={`${B}assets/images/home/why-tide.jpg`} alt={data.mission.image1Alt} className="w-full h-full object-cover" />
                 </div>
@@ -241,8 +241,8 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-y md:divide-y-0 md:divide-x divide-white/10">
             {data.impact.stats.map((s, i) => (
-              <motion.div key={s.label} {...fadeUp(i * 0.1)} className="text-center px-6 py-6 md:py-2 group">
-                <AnimatedCounter value={s.value} label="" light numClassName="font-display font-bold text-5xl md:text-6xl leading-none text-white mb-2" />
+              <motion.div key={s.label} {...fadeUp(i * 0.1)} className="text-center px-3 sm:px-6 py-6 md:py-2 group">
+                <AnimatedCounter value={s.value} label="" light numClassName="font-display font-bold text-4xl sm:text-5xl md:text-6xl leading-none text-white mb-2" />
                 <div className="h-[2px] w-10 mx-auto mb-3 rounded-full bg-accent opacity-70 group-hover:w-16 group-hover:opacity-100 transition-all duration-400" />
                 <div className="font-body font-semibold text-sm text-white/90 uppercase tracking-wider mb-1">{s.label}</div>
                 <div className="font-body text-xs text-white/45 leading-relaxed">{s.detail}</div>

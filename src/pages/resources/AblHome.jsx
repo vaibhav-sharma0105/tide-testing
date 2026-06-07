@@ -74,7 +74,7 @@ export default function AblHome() {
                 </div>
                 <div className="text-center">
                   <div className="text-xs font-body font-semibold uppercase tracking-widest text-tide-muted mb-1">{t('abl.home.lastSynced', ablData.stats.lastSynced)}</div>
-                  <div className="text-sm font-body text-tide-text">{formatDate(data?.lastUpdated)}</div>
+                  <div className="text-xs sm:text-sm font-body text-tide-text">{formatDate(data?.lastUpdated)}</div>
                 </div>
               </>
             )}

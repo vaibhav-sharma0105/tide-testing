@@ -18,7 +18,7 @@ function BankRow({ label, value }) {
   return (
     <div className="flex justify-between gap-4 py-2 border-b border-tide-border last:border-0">
       <span className="font-body text-xs text-tide-muted uppercase tracking-wider shrink-0">{label}</span>
-      <span className="font-mono text-sm text-tide-text font-semibold text-right">{value}</span>
+      <span className="font-mono text-sm text-tide-text font-semibold text-right break-all">{value}</span>
     </div>
   )
 }

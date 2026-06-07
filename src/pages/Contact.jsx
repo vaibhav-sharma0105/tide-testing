@@ -107,7 +107,7 @@ export default function Contact() {
 
             {/* Contact form */}
             <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }}>
-              <div className="bg-white rounded-3xl p-8 border border-tide-border shadow-card">
+              <div className="bg-white rounded-3xl p-5 sm:p-8 border border-tide-border shadow-card">
                 <h3 className="font-display text-xl font-semibold text-tide-text mb-6">{data.form.title}</h3>
                 <form
                   aria-label="Contact form"

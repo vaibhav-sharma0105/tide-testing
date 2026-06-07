@@ -115,7 +115,7 @@ export default function THRIvE() {
             <motion.div {...fadeUp(0.15)}>
               <span className="badge-primary mb-4 block w-fit">{data.leaders.sectionBadge}</span>
               <h2 className="font-display text-2xl font-semibold text-tide-text mb-6">{t('thrive.leadership.title', data.leaders.sectionTitle)}</h2>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 min-[420px]:grid-cols-3 gap-3">
                 {data.leaders.members.map((l, i) => {
                   const lk = LEADER_KEYS[l.name]
                   return (
@@ -133,7 +133,7 @@ export default function THRIvE() {
         <div className="max-w-5xl mx-auto">
           <SectionHeader badge={data.researchTeam.sectionBadge} title={data.researchTeam.sectionTitle} subtitle={data.researchTeam.sectionSubtitle} />
           <p className="text-xs font-body text-tide-muted mb-8 -mt-6 italic">Hover over a photo to see the role.</p>
-          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 min-[420px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-3 md:gap-4">
             {data.researchTeam.members.map((m, i) => (
               <PersonCard key={m.name} name={m.name} role={m.role} photo={m.photo} delay={i * 0.05} />
             ))}
