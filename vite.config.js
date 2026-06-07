@@ -3,6 +3,11 @@ import react from '@vitejs/plugin-react'
 
 const base = process.env.GITHUB_ACTIONS ? '/tide-testing/' : '/'
 
+// Warn at build time if critical secrets are missing on CI
+if (process.env.GITHUB_ACTIONS && !process.env.VITE_ABL_API_URL) {
+  console.warn('\n⚠  VITE_ABL_API_URL is not set — Pramaan section will show "API not configured" on the deployed site.\n   Add it as a GitHub Actions repository secret.\n')
+}
+
 export default defineConfig({
   base,
   plugins: [react()],
