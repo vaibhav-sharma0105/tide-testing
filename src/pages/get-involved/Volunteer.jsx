@@ -86,7 +86,7 @@ export default function Volunteer() {
                 onClick={() => openLightbox(i)}
                 className={`rounded-xl overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${i === 0 || i === 4 ? 'sm:col-span-2 aspect-video' : 'aspect-square'}`}
               >
-                <img src={item.src} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                <img src={imgSrc(item.src)} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
               </motion.button>
             ))}
           </div>
