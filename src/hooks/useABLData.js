@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ABL_API_URL, ABL_CACHE_TTL_MS } from '../config/abl'
 
-console.log('[ABL] API URL configured:', ABL_API_URL ? ABL_API_URL.slice(0, 60) + '…' : '(EMPTY — check VITE_ABL_API_URL)')
 if (!ABL_API_URL) {
   console.error('[ABL] VITE_ABL_API_URL is not set. Add it to .env.development — see docs/ABL-APPSCRIPT-SETUP-GUIDE.md')
 }
@@ -43,7 +42,6 @@ export function useABLData() {
     if (!bypassCache) {
       const cached = readCache()
       if (cached) {
-        console.log('[ABL] Serving from cache, resources:', cached.meta?.total)
         setData(cached)
         setLastUpdated(cached.lastUpdated)
         setLoading(false)
@@ -52,17 +50,14 @@ export function useABLData() {
     }
 
     try {
-      console.log('[ABL] Fetching from API…')
       const controller = new AbortController()
       const timeout    = setTimeout(() => controller.abort(), 10_000)
 
       const res = await fetch(ABL_API_URL, { signal: controller.signal })
       clearTimeout(timeout)
-      console.log('[ABL] Response status:', res.status, res.ok)
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const json = await res.json()
-      console.log('[ABL] Data received, total resources:', json.meta?.total, 'tabs:', json.tabs)
 
       if (!json.success) throw new Error(json.error || 'API returned success: false')
 
@@ -70,13 +65,10 @@ export function useABLData() {
       setData(json)
       setLastUpdated(json.lastUpdated)
     } catch (err) {
-      console.error('[ABL] Fetch failed:', err)
       if (err.name === 'AbortError') {
         setError('Request timed out. Please check your connection and try again.')
-      } else if (err instanceof TypeError && err.message.includes('fetch')) {
-        setError('Network blocked — if you have an ad blocker, try disabling it for this site, then refresh.')
       } else {
-        setError(`Failed to load resources: ${err.message}`)
+        setError('Failed to load resources. Please try again.')
       }
     } finally {
       setLoading(false)
