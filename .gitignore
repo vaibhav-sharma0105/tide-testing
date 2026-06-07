@@ -17,6 +17,11 @@ dist-ssr
 .env.production
 .env.local
 
+# Windows installers / binaries
+*.exe
+*.winmd
+*.docx
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
