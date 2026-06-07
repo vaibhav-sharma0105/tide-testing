@@ -8,7 +8,7 @@ import navData from '../../data/navigation.json'
 import { MULTILINGUAL_ENABLED } from '../../config/features'
 
 /* ── Dropdown ──────────────────────────────────────────────────────────── */
-function Dropdown({ items, onClose }) {
+function Dropdown({ id, items, onClose }) {
   const { t } = useTranslation()
   const [openSub, setOpenSub] = useState(null)
   const subTimer = useRef(null)
@@ -18,6 +18,8 @@ function Dropdown({ items, onClose }) {
 
   return (
     <motion.div
+      id={id}
+      role="menu"
       initial={{ opacity: 0, y: 10, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 10, scale: 0.97 }}
@@ -154,6 +156,7 @@ export default function Header() {
 
   return (
     <header
+      role="banner"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'glass border-b border-tide-border/60 shadow-nav'
@@ -163,7 +166,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 h-[70px] flex items-center justify-between gap-6">
 
         {/* ── Logo ───────────────────────────────────────────────────── */}
-        <Link to="/" className="flex items-center gap-3 flex-shrink-0 group">
+        <Link to="/" aria-label="Go to homepage" className="flex items-center gap-3 flex-shrink-0 group">
           <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 shadow-sm">
             <img
               src={`${import.meta.env.BASE_URL}assets/images/shared/tide-logo.png`}
@@ -182,7 +185,7 @@ export default function Header() {
         </Link>
 
         {/* ── Desktop Nav ────────────────────────────────────────────── */}
-        <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
+        <nav aria-label="Main navigation" className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
           {nav.map((item, idx) => (
             <div
               key={idx}
@@ -193,6 +196,7 @@ export default function Header() {
               {item.to ? (
                 <Link
                   to={item.to}
+                  aria-current={isActive(item) ? 'page' : undefined}
                   className={`relative px-3.5 py-2 text-sm font-body font-medium rounded-lg flex items-center gap-1 transition-colors duration-200 ${
                     isActive(item)
                       ? scrolled ? 'text-primary' : 'text-white font-semibold'
@@ -209,6 +213,9 @@ export default function Header() {
                 </Link>
               ) : (
                 <button
+                  aria-expanded={openDropdown === idx}
+                  aria-haspopup="true"
+                  aria-controls={`dropdown-${idx}`}
                   className={`relative px-3.5 py-2 text-sm font-body font-medium rounded-lg flex items-center gap-1 transition-colors duration-200 ${
                     isActive(item)
                       ? scrolled ? 'text-primary' : 'text-white font-semibold'
@@ -227,7 +234,7 @@ export default function Header() {
               )}
               <AnimatePresence>
                 {item.children && openDropdown === idx && (
-                  <Dropdown items={item.children} onClose={() => setOpenDropdown(null)} />
+                  <Dropdown id={`dropdown-${idx}`} items={item.children} onClose={() => setOpenDropdown(null)} />
                 )}
               </AnimatePresence>
             </div>
@@ -257,6 +264,8 @@ export default function Header() {
             className={`lg:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-tide-text hover:bg-tide-subtle' : 'text-white hover:bg-white/10'}`}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
           >
             <AnimatePresence mode="wait" initial={false}>
               {mobileOpen
@@ -272,6 +281,7 @@ export default function Header() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}

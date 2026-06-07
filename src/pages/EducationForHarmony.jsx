@@ -21,6 +21,19 @@ export default function EducationForHarmony() {
       <Helmet>
         <title>{data.meta.seoTitle}</title>
         <meta name="description" content={data.meta.seoDescription} />
+        <meta property="og:title" content={data.meta.seoTitle} />
+        <meta property="og:description" content={data.meta.seoDescription} />
+        <meta property="og:url" content="https://tideinternational.org/education-for-harmony" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://tideinternational.org/assets/images/shared/tide-logo.png" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tideinternational.org/"},
+            {"@type": "ListItem", "position": 2, "name": "Education for Harmony", "item": "https://tideinternational.org/education-for-harmony"}
+          ]
+        })}</script>
       </Helmet>
 
       <PageHero
@@ -133,6 +146,7 @@ export default function EducationForHarmony() {
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
+              sandbox="allow-scripts allow-same-origin allow-presentation allow-fullscreen"
             />
           </motion.div>
         </div>

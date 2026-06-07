@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Clock, MessageCircle } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 import { FacebookIcon, InstagramIcon, LinkedinIcon } from '../components/ui/SocialIcons'
 import PageHero from '../components/ui/PageHero'
 import Button from '../components/ui/Button'
@@ -16,6 +17,23 @@ export default function Contact() {
   const { t } = useTranslation()
   return (
     <>
+      <Helmet>
+        <title>{data.meta.seoTitle}</title>
+        <meta name="description" content={data.meta.seoDescription} />
+        <meta property="og:title" content={data.meta.seoTitle} />
+        <meta property="og:description" content={data.meta.seoDescription} />
+        <meta property="og:url" content="https://tideinternational.org/contact" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://tideinternational.org/assets/images/shared/tide-logo.png" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tideinternational.org/"},
+            {"@type": "ListItem", "position": 2, "name": "Contact Us", "item": "https://tideinternational.org/contact"}
+          ]
+        })}</script>
+      </Helmet>
       <PageHero badge={data.meta.badge} title={t('contact.title', data.meta.title)} subtitle={t('contact.tagline', data.meta.tagline)} />
 
       <section className="section-padding bg-tide-bg">
@@ -70,7 +88,7 @@ export default function Contact() {
                 <p className="font-body font-semibold text-tide-text text-sm mb-4">Follow Us</p>
                 <div className="flex gap-3">
                   {data.social.map(s => (
-                    <a key={s.platform} href={s.href} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-tide-subtle border border-tide-border text-tide-muted hover:bg-primary hover:text-white hover:border-primary flex items-center justify-center transition-all duration-200">
+                    <a key={s.platform} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={`Visit TIDE on ${s.platform.charAt(0).toUpperCase() + s.platform.slice(1)}`} className="w-10 h-10 rounded-full bg-tide-subtle border border-tide-border text-tide-muted hover:bg-primary hover:text-white hover:border-primary flex items-center justify-center transition-all duration-200">
                       {SOCIAL_ICONS[s.platform]}
                     </a>
                   ))}
@@ -92,6 +110,7 @@ export default function Contact() {
               <div className="bg-white rounded-3xl p-8 border border-tide-border shadow-card">
                 <h3 className="font-display text-xl font-semibold text-tide-text mb-6">{data.form.title}</h3>
                 <form
+                  aria-label="Contact form"
                   onSubmit={e => {
                     e.preventDefault()
                     const fd = new FormData(e.target)
@@ -101,16 +120,16 @@ export default function Contact() {
                   className="space-y-5"
                 >
                   <div>
-                    <label className="block text-xs font-body font-semibold text-tide-muted uppercase tracking-wide mb-2">{t('contact.namePlaceholder', data.form.namePlaceholder)}</label>
-                    <input name="name" required type="text" placeholder={t('contact.namePlaceholder', data.form.namePlaceholder)} className="w-full px-4 py-3 rounded-xl border border-tide-border bg-tide-bg font-body text-sm text-tide-text placeholder-tide-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" />
+                    <label htmlFor="contact-name" className="block text-xs font-body font-semibold text-tide-muted uppercase tracking-wide mb-2">{t('contact.namePlaceholder', data.form.namePlaceholder)}</label>
+                    <input id="contact-name" name="name" required type="text" placeholder={t('contact.namePlaceholder', data.form.namePlaceholder)} className="w-full px-4 py-3 rounded-xl border border-tide-border bg-tide-bg font-body text-sm text-tide-text placeholder-tide-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" />
                   </div>
                   <div>
-                    <label className="block text-xs font-body font-semibold text-tide-muted uppercase tracking-wide mb-2">{t('contact.emailPlaceholder', data.form.emailPlaceholder)}</label>
-                    <input name="email" required type="email" placeholder={t('contact.emailPlaceholder', data.form.emailPlaceholder)} className="w-full px-4 py-3 rounded-xl border border-tide-border bg-tide-bg font-body text-sm text-tide-text placeholder-tide-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" />
+                    <label htmlFor="contact-email" className="block text-xs font-body font-semibold text-tide-muted uppercase tracking-wide mb-2">{t('contact.emailPlaceholder', data.form.emailPlaceholder)}</label>
+                    <input id="contact-email" name="email" required type="email" placeholder={t('contact.emailPlaceholder', data.form.emailPlaceholder)} className="w-full px-4 py-3 rounded-xl border border-tide-border bg-tide-bg font-body text-sm text-tide-text placeholder-tide-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" />
                   </div>
                   <div>
-                    <label className="block text-xs font-body font-semibold text-tide-muted uppercase tracking-wide mb-2">{t('contact.messagePlaceholder', data.form.messagePlaceholder)}</label>
-                    <textarea name="message" required rows={5} placeholder={t('contact.messagePlaceholder', data.form.messagePlaceholder)} className="w-full px-4 py-3 rounded-xl border border-tide-border bg-tide-bg font-body text-sm text-tide-text placeholder-tide-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition resize-none" />
+                    <label htmlFor="contact-message" className="block text-xs font-body font-semibold text-tide-muted uppercase tracking-wide mb-2">{t('contact.messagePlaceholder', data.form.messagePlaceholder)}</label>
+                    <textarea id="contact-message" name="message" required rows={5} placeholder={t('contact.messagePlaceholder', data.form.messagePlaceholder)} className="w-full px-4 py-3 rounded-xl border border-tide-border bg-tide-bg font-body text-sm text-tide-text placeholder-tide-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition resize-none" />
                   </div>
                   <Button type="submit" size="lg" className="w-full justify-center">
                     {t('contact.send', data.form.submitLabel)}

@@ -142,3 +142,46 @@
   .snap-x-mandatory  { scroll-snap-type: x mandatory; }
   .snap-start        { scroll-snap-align: start; }
 }
+
+/* ── Accessibility ──────────────────────────────────────────────── */
+
+/* Skip link (paired with the component in Layout.jsx) */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 9999;
+  width: auto;
+  height: auto;
+  overflow: visible;
+}
+
+/* Enhanced focus-visible for AAA — thick ring, high contrast */
+:focus-visible {
+  outline: 3px solid #3B7CB8;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Remove outline for mouse users while keeping for keyboard */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Prefers reduced motion — disable all animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

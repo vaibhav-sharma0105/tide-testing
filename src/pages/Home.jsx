@@ -46,6 +46,16 @@ export default function Home() {
         <meta name="description" content={data.meta.seoDescription} />
         <meta property="og:title" content={data.meta.seoTitle} />
         <meta property="og:description" content={data.meta.seoDescription} />
+        <meta property="og:url" content="https://tideinternational.org/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://tideinternational.org/assets/images/shared/tide-logo.png" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tideinternational.org/"}
+          ]
+        })}</script>
       </Helmet>
 
       {/* ══════════════════════════════════════════════════════════════
@@ -323,6 +333,7 @@ export default function Home() {
               className="absolute inset-0 w-full h-full"
               frameBorder="0"
               allow="camera;microphone;geolocation"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
             />
           </motion.div>
         </div>

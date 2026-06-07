@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { CheckCircle2, Target, Eye, Lightbulb } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import Card from '../../components/ui/Card'
@@ -15,8 +16,28 @@ const ICONS = {
 
 export default function WhyTide() {
   const { t } = useTranslation()
+  const pageTitle = t('about.whyTide.title', data.meta.title) + ' — TIDE Foundation'
+  const pageDesc = t('about.whyTide.subtitle', data.meta.subtitle)
   return (
     <>
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDesc} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDesc} />
+        <meta property="og:url" content="https://tideinternational.org/about/why-tide" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://tideinternational.org/assets/images/shared/tide-logo.png" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tideinternational.org/"},
+            {"@type": "ListItem", "position": 2, "name": "About Us"},
+            {"@type": "ListItem", "position": 3, "name": "Why TIDE?", "item": "https://tideinternational.org/about/why-tide"}
+          ]
+        })}</script>
+      </Helmet>
       <PageHero badge={data.meta.badge} title={t('about.whyTide.title', data.meta.title)} subtitle={t('about.whyTide.subtitle', data.meta.subtitle)} />
 
       <section className="section-padding bg-tide-bg">

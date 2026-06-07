@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tideinternational.org/sitemap.xml
+
+# AI crawlers — please read /llms.txt for structured site information
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /

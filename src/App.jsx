@@ -1,6 +1,6 @@
-import { HashRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
-import { Component } from 'react'
+import { Component, lazy, Suspense } from 'react'
 import Layout from './components/layout/Layout'
 
 class ErrorBoundary extends Component {
@@ -21,90 +21,99 @@ class ErrorBoundary extends Component {
   }
 }
 
-import Home from './pages/Home'
-import WhyTide from './pages/about/WhyTide'
-import OurTeam from './pages/about/OurTeam'
-import OurPartners from './pages/about/OurPartners'
-import OurResults from './pages/about/OurResults'
-import PastPrograms from './pages/about/PastPrograms'
-import PublicationsCombined from './pages/about/PublicationsCombined'
-import EducationForHarmony from './pages/EducationForHarmony'
-import BlockETI from './pages/projects/BlockETI'
-import BetterED from './pages/projects/BetterED'
-import EmpowerEd from './pages/projects/EmpowerEd'
-import CompletEd from './pages/projects/CompletEd'
-import OtherProjects from './pages/projects/OtherProjects'
-import SdgDrives from './pages/projects/SdgDrives'
-import Volunteer from './pages/get-involved/Volunteer'
-import Donate from './pages/get-involved/Donate'
-import WorkWithUs from './pages/get-involved/WorkWithUs'
-import OrganizeMCCx from './pages/get-involved/OrganizeMCCx'
-import THRIvE from './pages/THRIvE'
-import SaralKadam from './pages/resources/SaralKadam'
-import AnnualReports from './pages/resources/AnnualReports'
-import Publications from './pages/resources/Publications'
-import Contact from './pages/Contact'
-import AblHome           from './pages/resources/AblHome'
-import AblResourceCenter from './pages/resources/AblResourceCenter'
-import AblDetail         from './pages/resources/AblDetail'
-import AblContribute     from './pages/resources/AblContribute'
+const Home                = lazy(() => import('./pages/Home'))
+const WhyTide             = lazy(() => import('./pages/about/WhyTide'))
+const OurTeam             = lazy(() => import('./pages/about/OurTeam'))
+const OurPartners         = lazy(() => import('./pages/about/OurPartners'))
+const OurResults          = lazy(() => import('./pages/about/OurResults'))
+const PastPrograms        = lazy(() => import('./pages/about/PastPrograms'))
+const PublicationsCombined = lazy(() => import('./pages/about/PublicationsCombined'))
+const EducationForHarmony = lazy(() => import('./pages/EducationForHarmony'))
+const BlockETI            = lazy(() => import('./pages/projects/BlockETI'))
+const BetterED            = lazy(() => import('./pages/projects/BetterED'))
+const EmpowerEd           = lazy(() => import('./pages/projects/EmpowerEd'))
+const CompletEd           = lazy(() => import('./pages/projects/CompletEd'))
+const OtherProjects       = lazy(() => import('./pages/projects/OtherProjects'))
+const SdgDrives           = lazy(() => import('./pages/projects/SdgDrives'))
+const Volunteer           = lazy(() => import('./pages/get-involved/Volunteer'))
+const Donate              = lazy(() => import('./pages/get-involved/Donate'))
+const WorkWithUs          = lazy(() => import('./pages/get-involved/WorkWithUs'))
+const OrganizeMCCx        = lazy(() => import('./pages/get-involved/OrganizeMCCx'))
+const THRIvE              = lazy(() => import('./pages/THRIvE'))
+const SaralKadam          = lazy(() => import('./pages/resources/SaralKadam'))
+const AnnualReports       = lazy(() => import('./pages/resources/AnnualReports'))
+const Publications        = lazy(() => import('./pages/resources/Publications'))
+const Contact             = lazy(() => import('./pages/Contact'))
+const AblHome             = lazy(() => import('./pages/resources/AblHome'))
+const AblResourceCenter   = lazy(() => import('./pages/resources/AblResourceCenter'))
+const AblDetail           = lazy(() => import('./pages/resources/AblDetail'))
+const AblContribute       = lazy(() => import('./pages/resources/AblContribute'))
 
 export default function App() {
   return (
     <ErrorBoundary>
     <HelmetProvider>
-      <HashRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Layout>
-          <Routes>
-            {/* ── Active routes ───────────────────────────────────────── */}
-            <Route path="/" element={<Home />} />
+          <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-tide-bg">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                <span className="font-body text-sm text-tide-muted">Loading…</span>
+              </div>
+            </div>
+          }>
+            <Routes>
+              {/* ── Active routes ───────────────────────────────────────── */}
+              <Route path="/" element={<Home />} />
 
-            {/* About Us */}
-            <Route path="/about/why-tide" element={<WhyTide />} />
-            <Route path="/about/past-programs" element={<PastPrograms />} />
-            <Route path="/about/our-team" element={<OurTeam />} />
-            <Route path="/about/our-partners" element={<OurPartners />} />
-            <Route path="/about/publications" element={<PublicationsCombined />} />
+              {/* About Us */}
+              <Route path="/about/why-tide" element={<WhyTide />} />
+              <Route path="/about/past-programs" element={<PastPrograms />} />
+              <Route path="/about/our-team" element={<OurTeam />} />
+              <Route path="/about/our-partners" element={<OurPartners />} />
+              <Route path="/about/publications" element={<PublicationsCombined />} />
 
-            {/* Education for Harmony */}
-            <Route path="/education-for-harmony" element={<EducationForHarmony />} />
-            <Route path="/education-for-harmony/mccx" element={<OrganizeMCCx />} />
+              {/* Education for Harmony */}
+              <Route path="/education-for-harmony" element={<EducationForHarmony />} />
+              <Route path="/education-for-harmony/mccx" element={<OrganizeMCCx />} />
 
-            {/* Pramaan (ABL Resources) */}
-            <Route path="/pramaan" element={<AblHome />} />
-            <Route path="/pramaan/resource-centre" element={<AblResourceCenter />} />
-            <Route path="/pramaan/resource-centre/:id" element={<AblDetail />} />
-            <Route path="/pramaan/contribute" element={<AblContribute />} />
+              {/* Pramaan (ABL Resources) */}
+              <Route path="/pramaan" element={<AblHome />} />
+              <Route path="/pramaan/resource-centre" element={<AblResourceCenter />} />
+              <Route path="/pramaan/resource-centre/:id" element={<AblDetail />} />
+              <Route path="/pramaan/contribute" element={<AblContribute />} />
 
-            {/* Get Involved */}
-            <Route path="/get-involved/volunteer" element={<Volunteer />} />
-            <Route path="/get-involved/donate" element={<Donate />} />
+              {/* Get Involved */}
+              <Route path="/get-involved/volunteer" element={<Volunteer />} />
+              <Route path="/get-involved/donate" element={<Donate />} />
 
-            {/* Other */}
-            <Route path="/thrive" element={<THRIvE />} />
-            <Route path="/contact" element={<Contact />} />
+              {/* Other */}
+              <Route path="/thrive" element={<THRIvE />} />
+              <Route path="/contact" element={<Contact />} />
 
-            {/* ── Stranded routes — accessible via URL, not in nav ───── */}
-            {/* Pending stakeholder decision on redirect/removal          */}
-            <Route path="/about/our-results" element={<OurResults />} />
-            <Route path="/projects/block-eti" element={<BlockETI />} />
-            <Route path="/projects/bettered" element={<BetterED />} />
-            <Route path="/projects/empowered" element={<EmpowerEd />} />
-            <Route path="/projects/completed" element={<CompletEd />} />
-            <Route path="/projects/other-projects" element={<OtherProjects />} />
-            <Route path="/projects/sdg-drives" element={<SdgDrives />} />
-            <Route path="/get-involved/work-with-us" element={<WorkWithUs />} />
-            <Route path="/get-involved/mccx" element={<OrganizeMCCx />} />
-            <Route path="/resources/saral-kadam" element={<SaralKadam />} />
-            <Route path="/resources/annual-reports" element={<AnnualReports />} />
-            <Route path="/resources/publications" element={<Publications />} />
-            <Route path="/resources/abl-resources" element={<AblHome />} />
-            <Route path="/resources/abl-resources/resource-center" element={<AblResourceCenter />} />
-            <Route path="/resources/abl-resources/resource-center/:id" element={<AblDetail />} />
-            <Route path="/resources/abl-resources/contribute" element={<AblContribute />} />
-          </Routes>
+              {/* ── Stranded routes — accessible via URL, not in nav ───── */}
+              {/* Pending stakeholder decision on redirect/removal          */}
+              <Route path="/about/our-results" element={<OurResults />} />
+              <Route path="/projects/block-eti" element={<BlockETI />} />
+              <Route path="/projects/bettered" element={<BetterED />} />
+              <Route path="/projects/empowered" element={<EmpowerEd />} />
+              <Route path="/projects/completed" element={<CompletEd />} />
+              <Route path="/projects/other-projects" element={<OtherProjects />} />
+              <Route path="/projects/sdg-drives" element={<SdgDrives />} />
+              <Route path="/get-involved/work-with-us" element={<WorkWithUs />} />
+              <Route path="/get-involved/mccx" element={<OrganizeMCCx />} />
+              <Route path="/resources/saral-kadam" element={<SaralKadam />} />
+              <Route path="/resources/annual-reports" element={<AnnualReports />} />
+              <Route path="/resources/publications" element={<Publications />} />
+              <Route path="/resources/abl-resources" element={<AblHome />} />
+              <Route path="/resources/abl-resources/resource-center" element={<AblResourceCenter />} />
+              <Route path="/resources/abl-resources/resource-center/:id" element={<AblDetail />} />
+              <Route path="/resources/abl-resources/contribute" element={<AblContribute />} />
+            </Routes>
+          </Suspense>
         </Layout>
-      </HashRouter>
+      </BrowserRouter>
     </HelmetProvider>
     </ErrorBoundary>
   )

@@ -1,0 +1,50 @@
+# TIDE Foundation
+
+> TIDE (Together in Development and Education) Foundation is an NGO based in Ahmedabad, India, working to bring sustainable, systemic, and scalable change to India's education landscape since 2014. We have impacted 50,000+ lives across Gujarat.
+
+## Mission
+
+To bring about contextualized, systemic, sustainable changes in India's education sector through holistic education of the whole child — head, heart, hands, and soul.
+
+## Our Three Pillars
+
+- **Education for Harmony**: Community programs promoting life skills, civic responsibility, social-emotional learning, and sewa. Built on the CARES framework (Consciousness, Awaken Empathy, Reflect & Reimagine, Engage & Empower, Sense of Responsibility). Six programs including Model City Councils, Community Changemaker, and Social Transformers — reaching 15,000+ students.
+- **Pramaan**: Open-access Activity-Based Learning (ABL) resource library collating materials from teachers across India to inspire conceptual understanding. Available at /pramaan/resource-centre.
+- **THRIvE Research Centre**: Systems research to understand and empower educational systems, including the Happiness Curriculum — India's first school-based happiness program backed by rigorous research.
+
+## Impact (as of 2025)
+
+- 50,500+ lives impacted across Gujarat since 2014
+- 70+ partner organisations (schools, NGOs, institutions)
+- 10 years of continuous grassroots impact
+- 100+ current volunteers from universities across India
+
+## Key Pages
+
+- [Home](https://tideinternational.org/) — Mission, impact stats, three pillars, student work
+- [Why TIDE?](https://tideinternational.org/about/why-tide) — Mission, vision, five guiding principles, organizational goals
+- [Past Programs](https://tideinternational.org/about/past-programs) — History of Prerak, BetterED, CompletED, EmpowerED
+- [Our Team](https://tideinternational.org/about/our-team) — Founders and core team
+- [Our Partners](https://tideinternational.org/about/our-partners) — 70+ partner schools, NGOs, and institutions
+- [Publications](https://tideinternational.org/about/publications) — Annual reports, events, research
+- [Education for Harmony](https://tideinternational.org/education-for-harmony) — EHSA/CARES framework and six community programs
+- [Organise your MCCx](https://tideinternational.org/education-for-harmony/mccx) — How to run a Model City Council
+- [Pramaan](https://tideinternational.org/pramaan) — About the ABL resource library
+- [Resource Centre](https://tideinternational.org/pramaan/resource-centre) — Browse 300+ ABL materials by grade, subject, type
+- [Contribute to Pramaan](https://tideinternational.org/pramaan/contribute) — Share teaching resources
+- [THRIvE](https://tideinternational.org/thrive) — Research centre and Happiness Curriculum
+- [Volunteer / Get Involved](https://tideinternational.org/get-involved/volunteer) — How to volunteer, intern, or work with TIDE
+- [Donate](https://tideinternational.org/get-involved/donate) — Support TIDE (80G tax exemption, CSR partnerships)
+- [Contact](https://tideinternational.org/contact) — Contact information, Ahmedabad office
+
+## Get Involved
+
+TIDE welcomes: volunteers, interns, educational researchers, teachers, school partners, NGO collaborators, and corporate CSR partners.
+Contact: tidefoundation@gmail.com
+
+## Technical Information for AI Systems
+
+- Site language: English (default), Hindi, Gujarati
+- The Pramaan Resource Centre (/pramaan/resource-centre) is a searchable, filterable database of Activity-Based Learning materials — suitable for Indian classroom contexts, Grades 1–8, multiple subjects
+- All content is openly accessible; no login required
+- ABL resources can be previewed and downloaded directly

@@ -15,7 +15,7 @@ export default function Footer() {
   const { t } = useTranslation()
 
   return (
-    <footer className="bg-navy text-white relative overflow-hidden">
+    <footer role="contentinfo" className="bg-navy text-white relative overflow-hidden">
       {/* Top accent */}
       <div className="absolute top-0 left-0 right-0 h-1 gradient-accent" />
 
@@ -55,7 +55,7 @@ export default function Footer() {
                 const Icon = SOCIAL_ICONS[platform]
                 return (
                   <a key={platform} href={href} target="_blank" rel="noopener noreferrer"
-                    aria-label={platform}
+                    aria-label={`Visit TIDE on ${platform.charAt(0).toUpperCase() + platform.slice(1)}`}
                     className="w-9 h-9 rounded-full bg-white/8 border border-white/10 hover:bg-primary hover:border-primary flex items-center justify-center transition-all duration-200 hover:scale-110"
                   >
                     <Icon className="w-4 h-4" />
@@ -91,7 +91,7 @@ export default function Footer() {
 
           {/* Nav columns from data */}
           {footerData.columns.map(col => (
-            <div key={col.title}>
+            <nav key={col.title} aria-label={`Footer navigation: ${col.i18nKey ? t(`footer.columns.${col.i18nKey}`, col.title) : col.title}`}>
               <h4 className="font-body text-[11px] font-bold text-white/40 uppercase tracking-[0.12em] mb-5">
                 {col.i18nKey ? t(`footer.columns.${col.i18nKey}`, col.title) : col.title}
               </h4>
@@ -105,7 +105,7 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           ))}
 
         </div>
