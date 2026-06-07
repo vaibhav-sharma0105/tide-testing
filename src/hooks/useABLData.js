@@ -65,10 +65,13 @@ export function useABLData() {
       setData(json)
       setLastUpdated(json.lastUpdated)
     } catch (err) {
+      console.error('[ABL] Fetch failed:', err)
       if (err.name === 'AbortError') {
         setError('Request timed out. Please check your connection and try again.')
+      } else if (err instanceof TypeError && err.message.includes('fetch')) {
+        setError('Network blocked — if you have an ad blocker, try disabling it for this site, then refresh.')
       } else {
-        setError('Failed to load resources. Please try again.')
+        setError(`Failed to load resources: ${err.message}`)
       }
     } finally {
       setLoading(false)
