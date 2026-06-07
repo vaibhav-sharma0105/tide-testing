@@ -6,6 +6,7 @@ import Lightbox from '../../components/ui/Lightbox'
 import { useLightbox } from '../../hooks/useLightbox'
 import data from '../../data/projects-completed.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../../utils/imgSrc'
 
 const PROGRAM_COLORS = {
   violet: { bg: 'bg-violet-50', accent: 'from-violet-600 to-purple-700' },
@@ -61,7 +62,7 @@ export default function CompletEd() {
                 >
                   <div className="flex items-start justify-between mb-5">
                     <div className="bg-white rounded-xl p-3 shadow-sm border border-white/80 max-w-[120px]">
-                      <img src={p.logo} alt={p.title} className="h-12 w-auto object-contain" />
+                      <img src={imgSrc(p.logo)} alt={p.title} className="h-12 w-auto object-contain" />
                     </div>
                     <div className={`w-2 h-12 rounded-full bg-gradient-to-b ${colors.accent} opacity-60`} />
                   </div>
@@ -87,7 +88,7 @@ export default function CompletEd() {
                 onClick={() => brochure.openLightbox(i)}
                 className="rounded-xl overflow-hidden shadow-sm border border-tide-border aspect-[3/4] cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               >
-                <img src={item.src} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                <img src={imgSrc(item.src)} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
               </motion.button>
             ))}
           </div>
@@ -101,7 +102,7 @@ export default function CompletEd() {
           <div className="grid sm:grid-cols-2 gap-6 mb-16">
             {data.scfProgram.diagrams.map((item, i) => (
               <motion.div key={item.src} {...fadeUp(i * 0.1)} className="rounded-2xl overflow-hidden border border-tide-border shadow-sm bg-tide-subtle p-3">
-                <img src={item.src} alt={item.label} className="w-full h-auto object-contain rounded-xl" />
+                <img src={imgSrc(item.src)} alt={item.label} className="w-full h-auto object-contain rounded-xl" />
                 <p className="text-xs font-body text-tide-muted text-center mt-2">{item.label}</p>
               </motion.div>
             ))}
@@ -118,7 +119,7 @@ export default function CompletEd() {
                 className="group relative rounded-2xl overflow-hidden bg-white shadow-card hover:shadow-card-hover transition-shadow duration-300 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               >
                 <div className="relative aspect-[3/4] overflow-hidden">
-                  <img src={item.photo} alt={item.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.06]" />
+                  <img src={imgSrc(item.photo)} alt={item.name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.06]" />
                   <div
                     className="absolute inset-0 flex items-end translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
                     style={{ background: 'linear-gradient(0deg, rgba(10,22,44,0.92) 0%, rgba(10,22,44,0.55) 55%, rgba(10,22,44,0.08) 100%)' }}
@@ -148,13 +149,13 @@ export default function CompletEd() {
                 {...fadeUp(i * 0.08)}
                 className="bg-white/10 border border-white/20 rounded-2xl p-5 text-center hover:bg-white/15 transition-colors duration-200"
               >
-                <img src={item.src} alt={item.label} className="w-12 h-12 object-contain mx-auto mb-3" />
+                <img src={imgSrc(item.src)} alt={item.label} className="w-12 h-12 object-contain mx-auto mb-3" />
                 <p className="text-sm font-body text-white/80 font-medium">{item.label}</p>
               </motion.div>
             ))}
           </div>
           <motion.div {...fadeUp(0.2)} className="rounded-2xl overflow-hidden max-w-sm mx-auto">
-            <img src={data.moi2024.poster} alt="MOI 2024 Signup Poster" className="w-full h-auto object-contain" />
+            <img src={imgSrc(data.moi2024.poster)} alt="MOI 2024 Signup Poster" className="w-full h-auto object-contain" />
           </motion.div>
         </div>
       </section>
@@ -167,7 +168,7 @@ export default function CompletEd() {
       </AnimatePresence>
       <AnimatePresence>
         {fellows.isLightboxOpen && (
-          <Lightbox images={data.scfProgram.fellows.map(f => ({ src: f.photo, label: f.name }))} currentIndex={fellows.lightboxIndex} onClose={fellows.closeLightbox} onPrev={fellows.prevLightbox} onNext={fellows.nextLightbox} />
+          <Lightbox images={data.scfProgram.fellows.map(f => ({ src: imgSrc(f.photo), label: f.name }))} currentIndex={fellows.lightboxIndex} onClose={fellows.closeLightbox} onPrev={fellows.prevLightbox} onNext={fellows.nextLightbox} />
         )}
       </AnimatePresence>
     </>

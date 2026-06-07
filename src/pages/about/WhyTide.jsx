@@ -6,6 +6,7 @@ import SectionHeader from '../../components/ui/SectionHeader'
 import Card from '../../components/ui/Card'
 import data from '../../data/about-why-tide.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../../utils/imgSrc'
 
 const ICONS = {
   Target:       <Target className="w-5 h-5" />,
@@ -51,7 +52,7 @@ export default function WhyTide() {
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }} className="relative bg-navy rounded-2xl p-8 text-white overflow-hidden">
               <div className="absolute inset-0 opacity-25">
-                <img src={data.vision.backgroundImage} alt="" className="w-full h-full object-cover" />
+                <img src={imgSrc(data.vision.backgroundImage)} alt="" className="w-full h-full object-cover" />
               </div>
               <div className="relative">
                 <Eye className="w-8 h-8 text-accent mb-4" />

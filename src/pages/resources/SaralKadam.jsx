@@ -7,6 +7,7 @@ import Lightbox from '../../components/ui/Lightbox'
 import { useLightbox } from '../../hooks/useLightbox'
 import data from '../../data/resources-saral-kadam.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../../utils/imgSrc'
 
 /* Tailwind color classes per colorKey — can't be stored in JSON */
 const LEVEL_COLORS = {
@@ -46,10 +47,10 @@ export default function SaralKadam() {
             </motion.div>
             <motion.div {...fadeUp(0.15)} className="space-y-4">
               <div className="rounded-2xl overflow-hidden aspect-video">
-                <img src={data.about.mainPhoto} alt="Saral Kadam materials" className="w-full h-full object-cover" />
+                <img src={imgSrc(data.about.mainPhoto)} alt="Saral Kadam materials" className="w-full h-full object-cover" />
               </div>
               <div className="rounded-2xl overflow-hidden border border-tide-border bg-white p-3">
-                <img src={data.about.diagramPhoto} alt="Saral Kadam program structure" className="w-full h-auto object-contain" />
+                <img src={imgSrc(data.about.diagramPhoto)} alt="Saral Kadam program structure" className="w-full h-auto object-contain" />
               </div>
             </motion.div>
           </div>
@@ -81,7 +82,7 @@ export default function SaralKadam() {
                         className={`group rounded-xl border ${colors.card} overflow-hidden hover:shadow-card-hover transition-all duration-300`}
                       >
                         <div className="aspect-[3/4] overflow-hidden bg-white">
-                          <img src={b.img} alt={b.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                          <img src={imgSrc(b.img)} alt={b.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                         </div>
                         <div className="p-3 flex items-center justify-between gap-2">
                           <span className="text-xs font-body text-tide-text font-medium leading-tight line-clamp-2">{b.title}</span>
@@ -124,7 +125,7 @@ export default function SaralKadam() {
                 onClick={() => openLightbox(i)}
                 className={`rounded-xl overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${i === 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}
               >
-                <img src={item.src} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                <img src={imgSrc(item.src)} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
               </motion.button>
             ))}
           </div>

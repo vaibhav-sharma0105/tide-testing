@@ -8,6 +8,7 @@ import Lightbox from '../../components/ui/Lightbox'
 import { useLightbox } from '../../hooks/useLightbox'
 import data from '../../data/get-involved-volunteer.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../../utils/imgSrc'
 
 const ICONS = {
   BookOpen:  <BookOpen className="w-6 h-6" />,
@@ -49,7 +50,7 @@ export default function Volunteer() {
               <div className="grid grid-cols-2 gap-3">
                 {data.gallery.images.slice(0, 4).map((item, i) => (
                   <div key={item.src} className={`rounded-xl overflow-hidden ${i === 0 ? 'aspect-video col-span-2' : 'aspect-square'}`}>
-                    <img src={item.src} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    <img src={imgSrc(item.src)} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                   </div>
                 ))}
               </div>

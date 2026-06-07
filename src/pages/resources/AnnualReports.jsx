@@ -4,6 +4,7 @@ import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/resources-annual-reports.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../../utils/imgSrc'
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 16 },
@@ -40,7 +41,7 @@ export default function AnnualReports() {
               >
                 <div className="relative aspect-[3/4] bg-tide-subtle overflow-hidden">
                   <img
-                    src={r.photo}
+                    src={imgSrc(r.photo)}
                     alt={`${r.year} ${r.label}`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />

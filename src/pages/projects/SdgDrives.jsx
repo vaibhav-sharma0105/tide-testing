@@ -7,6 +7,7 @@ import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import data from '../../data/projects-sdg-drives.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../../utils/imgSrc'
 
 const ICONS = {
   Globe:     <Globe className="w-6 h-6" />,
@@ -43,7 +44,7 @@ export default function SdgDrives() {
             </motion.div>
             <motion.div {...fadeUp(0.15)} className="flex justify-center">
               <img
-                src={data.overview.image}
+                src={imgSrc(data.overview.image)}
                 alt={data.overview.imageAlt}
                 className="w-full max-w-sm"
               />

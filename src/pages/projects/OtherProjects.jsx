@@ -7,6 +7,7 @@ import Lightbox from '../../components/ui/Lightbox'
 import { useLightbox } from '../../hooks/useLightbox'
 import data from '../../data/projects-other.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../../utils/imgSrc'
 
 const ICONS = {
   GraduationCap: <GraduationCap className="w-6 h-6" />,
@@ -41,7 +42,7 @@ export default function OtherProjects() {
                   <div className="grid grid-cols-2 gap-0.5">
                     {p.photos.slice(0, 4).map((src, pi) => (
                       <div key={src} className="overflow-hidden aspect-square">
-                        <img src={src} alt={`${p.name} ${pi + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                        <img src={imgSrc(src)} alt={`${p.name} ${pi + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                       </div>
                     ))}
                   </div>
@@ -77,7 +78,7 @@ export default function OtherProjects() {
                   onClick={() => disha.openLightbox(i)}
                   className="rounded-xl overflow-hidden aspect-video cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                 >
-                  <img src={item.src} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                  <img src={imgSrc(item.src)} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                 </motion.button>
               ))}
             </div>
@@ -95,7 +96,7 @@ export default function OtherProjects() {
                   onClick={() => moi.openLightbox(i)}
                   className="rounded-xl overflow-hidden aspect-video cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                 >
-                  <img src={item.src} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                  <img src={imgSrc(item.src)} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                 </motion.button>
               ))}
             </div>
@@ -106,7 +107,7 @@ export default function OtherProjects() {
             <SectionHeader badge={data.prabhav.sectionBadge} title={data.prabhav.sectionTitle} subtitle={data.prabhav.sectionSubtitle} />
             <div className="grid sm:grid-cols-2 gap-8 items-start">
               <motion.div {...fadeUp(0)} className="rounded-2xl overflow-hidden border border-tide-border shadow-sm bg-white p-3">
-                <img src={data.prabhav.poster} alt="Schools2030 Poster" className="w-full h-auto object-contain rounded-xl" />
+                <img src={imgSrc(data.prabhav.poster)} alt="Schools2030 Poster" className="w-full h-auto object-contain rounded-xl" />
               </motion.div>
               <motion.div {...fadeUp(0.1)} className="bg-white rounded-2xl p-6 border border-tide-border">
                 <p className="text-tide-muted font-body leading-relaxed">{data.prabhav.body}</p>

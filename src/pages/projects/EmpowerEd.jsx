@@ -5,6 +5,7 @@ import SectionHeader from '../../components/ui/SectionHeader'
 import Card from '../../components/ui/Card'
 import data from '../../data/projects-empowered.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../../utils/imgSrc'
 
 const ICONS = {
   Users:    <Users className="w-6 h-6" />,
@@ -57,10 +58,10 @@ export default function EmpowerEd() {
 
             <motion.div {...fadeUp(0.15)} className="flex flex-col gap-6">
               <div className="rounded-2xl overflow-hidden border border-tide-border bg-white p-6 flex items-center justify-center">
-                <img src={data.overview.logo} alt="EmpowerEd" className="max-h-40 object-contain" />
+                <img src={imgSrc(data.overview.logo)} alt="EmpowerEd" className="max-h-40 object-contain" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-video">
-                <img src={data.overview.heroPhoto} alt="Teacher agency" className="w-full h-full object-cover" />
+                <img src={imgSrc(data.overview.heroPhoto)} alt="Teacher agency" className="w-full h-full object-cover" />
               </div>
             </motion.div>
           </div>
@@ -78,7 +79,7 @@ export default function EmpowerEd() {
                 {...fadeUp(i * 0.07)}
                 className="group relative overflow-hidden rounded-2xl bg-navy min-h-[200px]"
               >
-                <img src={o.photo} alt={o.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img src={imgSrc(o.photo)} alt={o.label} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 photo-overlay" />
                 <div className="absolute top-4 left-4">
                   <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-accent text-white text-xs font-display font-bold">

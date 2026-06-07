@@ -5,6 +5,7 @@ import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/resources-publications.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../../utils/imgSrc'
 
 /* Visual config — can't be stored in JSON */
 const TYPE_ICONS = {
@@ -60,7 +61,7 @@ export default function Publications() {
                   <Wrapper className="group block bg-white rounded-2xl border border-tide-border hover:border-primary hover:shadow-card-hover transition-all duration-300 overflow-hidden h-full">
                     {p.photo ? (
                       <div className="aspect-video overflow-hidden bg-tide-subtle">
-                        <img src={p.photo} alt={p.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <img src={imgSrc(p.photo)} alt={p.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       </div>
                     ) : (
                       <div className={`aspect-video flex items-center justify-center ${colors.icon} border-b border-tide-border`}>

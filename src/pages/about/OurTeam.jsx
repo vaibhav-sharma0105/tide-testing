@@ -3,6 +3,7 @@ import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/about-our-team.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../../utils/imgSrc'
 
 const getInitials = name => name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
 
@@ -21,7 +22,7 @@ function PortraitCard({ name, role, bio, photo, suffix, delay = 0, size = 'md' }
     >
       <div className={`relative ${ratioClass} overflow-hidden`}>
         {photo ? (
-          <img src={photo} alt={name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.06]" />
+          <img src={imgSrc(photo)} alt={name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.06]" />
         ) : (
           <div className="w-full h-full gradient-primary flex items-center justify-center">
             <span className="font-display text-white font-bold text-5xl opacity-40 select-none">{initials}</span>

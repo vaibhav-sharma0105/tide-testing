@@ -8,6 +8,7 @@ import Lightbox from '../components/ui/Lightbox'
 import { useLightbox } from '../hooks/useLightbox'
 import data from '../data/thrive.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../utils/imgSrc'
 
 const ICONS = {
   BookOpen:   <BookOpen className="w-5 h-5" />,
@@ -32,7 +33,7 @@ function PersonCard({ name, role, photo, delay = 0 }) {
     >
       <div className="relative aspect-[3/4] overflow-hidden">
         {photo ? (
-          <img src={photo} alt={name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.06]" />
+          <img src={imgSrc(photo)} alt={name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.06]" />
         ) : (
           <div className="w-full h-full gradient-primary flex items-center justify-center">
             <span className="font-display text-white font-bold text-4xl opacity-40 select-none">{initials}</span>
@@ -170,7 +171,7 @@ export default function THRIvE() {
                 {...fadeUp(i * 0.08)}
                 className="group relative overflow-hidden rounded-2xl bg-navy min-h-[240px] cursor-default"
               >
-                <img src={p.photo} alt={p.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img src={imgSrc(p.photo)} alt={p.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 photo-overlay" />
                 <div className="absolute top-4 left-4">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-body font-bold uppercase tracking-wider text-white bg-primary/80 backdrop-blur-sm border border-white/20">
@@ -200,7 +201,7 @@ export default function THRIvE() {
                 onClick={() => openLightbox(i)}
                 className="rounded-xl overflow-hidden aspect-video cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
               >
-                <img src={item.src} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                <img src={imgSrc(item.src)} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
               </motion.button>
             ))}
           </div>

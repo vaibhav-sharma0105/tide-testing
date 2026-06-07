@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { imgSrc } from '../../utils/imgSrc'
 
 /**
  * Full-screen image lightbox with prev/next navigation.
@@ -26,7 +27,7 @@ export default function Lightbox({ images, currentIndex, onClose, onPrev, onNext
   }, [onClose, onPrev, onNext])
 
   const item   = images[currentIndex] ?? images[0]
-  const src    = typeof item === 'string' ? item : item.src
+  const src    = imgSrc(typeof item === 'string' ? item : item.src)
   const caption = typeof item === 'string' ? '' : (item.alt || item.label || '')
   const total  = images.length
   const multi  = total > 1

@@ -8,6 +8,7 @@ import Lightbox from '../../components/ui/Lightbox'
 import { useLightbox } from '../../hooks/useLightbox'
 import data from '../../data/projects-bettered.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../../utils/imgSrc'
 
 export default function BetterED() {
   const { t } = useTranslation()
@@ -54,10 +55,10 @@ export default function BetterED() {
 
             <div>
               <div className="rounded-2xl overflow-hidden aspect-video mb-6">
-                <img src={data.overview.photo1} alt="BetterED program" className="w-full h-full object-cover" />
+                <img src={imgSrc(data.overview.photo1)} alt="BetterED program" className="w-full h-full object-cover" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-video">
-                <img src={data.overview.photo2} alt="BetterED students" className="w-full h-full object-cover" />
+                <img src={imgSrc(data.overview.photo2)} alt="BetterED students" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -96,7 +97,7 @@ export default function BetterED() {
                 onClick={() => openLightbox(i)}
                 className={`rounded-xl overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${i === 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}
               >
-                <img src={item.src} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                <img src={imgSrc(item.src)} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
               </motion.button>
             ))}
           </div>

@@ -5,6 +5,7 @@ import Button from '../../components/ui/Button'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/get-involved-mccx.json'
 import { useTranslation } from 'react-i18next'
+import { imgSrc } from '../../utils/imgSrc'
 
 const ICONS = {
   Mail:     <Mail className="w-5 h-5" />,
@@ -45,7 +46,7 @@ export default function OrganizeMCCx() {
               <div className="grid grid-cols-2 gap-3">
                 {data.whatIs.photos.map((p, i) => (
                   <div key={p.src} className="rounded-xl overflow-hidden aspect-video">
-                    <img src={p.src} alt={p.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    <img src={imgSrc(p.src)} alt={p.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                   </div>
                 ))}
               </div>
