@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "badge": "About Us · Publications",
+    "title": "Our Publications",
+    "tagline": "Annual reports, public event recordings, and research from a decade of work.",
+    "seoTitle": "Publications — TIDE Foundation",
+    "seoDescription": "Access TIDE Foundation's annual reports, public event recordings, and research publications."
+  },
+  "tabs": {
+    "annualReports": "Annual Reports",
+    "events": "Public Events",
+    "research": "Research & Writing"
+  },
+  "annualReports": {
+    "description": "Our annual reports document TIDE's journey, programs, and impact each year.",
+    "placeholder": "Annual reports will be listed here. Coming soon.",
+    "items": [
+      {
+        "year": "2023–24",
+        "title": "TIDE Foundation Annual Report 2023–24",
+        "link": ""
+      },
+      {
+        "year": "2022–23",
+        "title": "TIDE Foundation Annual Report 2022–23",
+        "link": ""
+      },
+      {
+        "year": "2021–22",
+        "title": "TIDE Foundation Annual Report 2021–22",
+        "link": ""
+      }
+    ]
+  },
+  "events": {
+    "description": "Glimpses from our public events — Model City Councils, Miracle of Ideas, and more.",
+    "items": [
+      {
+        "title": "MOI 2024 — Talk 1",
+        "type": "video",
+        "link": ""
+      },
+      {
+        "title": "MOI 2024 — Talk 2",
+        "type": "video",
+        "link": ""
+      },
+      {
+        "title": "MCC 2024",
+        "type": "photo",
+        "link": ""
+      },
+      {
+        "title": "MOI 2023 — Happiness in Education Exhibition Walkthrough",
+        "type": "video",
+        "link": ""
+      },
+      {
+        "title": "Parivartan Mela",
+        "type": "photo",
+        "link": ""
+      },
+      {
+        "title": "GGIS MCC",
+        "type": "photo",
+        "link": ""
+      },
+      {
+        "title": "AGS MCC",
+        "type": "photo",
+        "link": ""
+      }
+    ]
+  },
+  "research": {
+    "description": "Papers, articles, and writings from TIDE's research and practice.",
+    "placeholder": "Research publications will be listed here. Coming soon.",
+    "items": []
+  }
+}

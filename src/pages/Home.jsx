@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight, BookOpen, Users, Heart, Lightbulb, GraduationCap, Globe, Quote } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet-async'
 import Button from '../components/ui/Button'
@@ -15,9 +15,6 @@ const PROGRAM_COLORS = [
   'from-blue-600 to-primary',
   'from-emerald-600 to-teal-600',
   'from-violet-600 to-purple-600',
-  'from-rose-600 to-orange-600',
-  'from-amber-600 to-yellow-600',
-  'from-sky-600 to-blue-600',
 ]
 
 /* ── Motion presets ───────────────────────────────────────────────── */
@@ -246,9 +243,32 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════
-          PROGRAMS
+          JOURNEY TIMELINE
       ══════════════════════════════════════════════════════════════ */}
       <section className="section-padding bg-white">
+        <div className="max-w-5xl mx-auto container-wide">
+          <motion.div {...fadeUp()} className="mb-12">
+            <span className="badge-primary mb-4 block w-fit">{t('home.journey.badge', data.journey.sectionBadge)}</span>
+            <p className="body-lg max-w-2xl">{t('home.journey.intro', data.journey.intro)}</p>
+          </motion.div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {data.journey.phases.map((phase, i) => (
+              <motion.div key={phase.phase} {...fadeUp(i * 0.1)}
+                className="relative pl-6 border-l-2 border-primary/20 hover:border-primary transition-colors duration-300"
+              >
+                <div className="text-xs font-body font-bold uppercase tracking-widest text-primary mb-2">{phase.phase} · {phase.period}</div>
+                <div className="font-display text-xl font-semibold text-tide-text mb-2">{phase.lives}</div>
+                <p className="text-sm font-body text-tide-muted leading-relaxed">{phase.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════
+          PROGRAMS
+      ══════════════════════════════════════════════════════════════ */}
+      <section className="section-padding bg-tide-bg">
         <div className="max-w-7xl mx-auto container-wide">
           <motion.div {...fadeUp()} className="text-center mb-14">
             <span className="badge-primary mb-4 mx-auto">{t('home.programs.badge', data.programs.sectionBadge)}</span>
@@ -256,14 +276,14 @@ export default function Home() {
             <p className="body-md max-w-xl mx-auto mt-4">{t('home.programs.subtitle', data.programs.sectionSubtitle)}</p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {data.programs.items.map((p, i) => {
               const Icon  = ICON_MAP[p.iconKey] || Globe
               const color = PROGRAM_COLORS[i] || 'from-primary to-primary'
               return (
                 <motion.div key={p.to} {...fadeUp(i * 0.07)}>
                   <Link to={p.to} className="card-photo group block h-full min-h-[320px]">
-                    <img src={p.photo} alt={p.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img src={`${B}${p.photo}`} alt={p.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     <div className="absolute inset-0 photo-overlay transition-opacity duration-300 group-hover:opacity-90" />
                     <div className="absolute top-4 left-4">
                       <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-body font-bold uppercase tracking-[0.14em] text-white border border-accent/40 backdrop-blur-sm" style={{ background: 'rgba(245,158,11,0.82)' }}>{p.badge}</span>
@@ -287,36 +307,24 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════
-          GALLERY STRIP
+          STUDENT WORK PADLET
       ══════════════════════════════════════════════════════════════ */}
-      <section className="py-20 bg-navy overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 mb-10">
-          <motion.div {...fadeUp()} className="flex items-end justify-between">
-            <div>
-              <span className="badge-white mb-3 block w-fit">{t('home.gallery.badge', data.gallery.badge)}</span>
-              <h2 className="display-md text-white">{t('home.gallery.title', data.gallery.title)}</h2>
-            </div>
-            <Link to="/get-involved/volunteer" className="hidden md:flex items-center gap-2 text-sm font-body font-semibold text-white/60 hover:text-white transition-colors">
-              {t('home.gallery.viewAll', data.gallery.viewAll)} <ArrowRight className="w-4 h-4" />
-            </Link>
+      <section className="section-padding bg-tide-bg">
+        <div className="max-w-7xl mx-auto container-wide">
+          <motion.div {...fadeUp()} className="text-center mb-8">
+            <span className="badge-primary mb-4 mx-auto">{t('home.padlet.badge', data.padlet.sectionBadge)}</span>
+            <h2 className="display-md text-tide-text">{t('home.padlet.title', data.padlet.title)}</h2>
           </motion.div>
-        </div>
-
-        <div className="flex gap-4 pl-4 md:pl-8 overflow-x-auto snap-x-mandatory pb-4 scrollbar-none"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          {data.gallery.items.map((item, i) => (
-            <motion.div
-              key={item.src}
-              initial={{ opacity: 0, scale: 0.94 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ delay: i * 0.04, duration: 0.5 }}
-              className="flex-shrink-0 snap-start w-[260px] md:w-[320px] h-[220px] md:h-[280px] rounded-2xl overflow-hidden"
-            >
-              <img src={item.src} alt={item.alt} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-            </motion.div>
-          ))}
-          <div className="flex-shrink-0 w-4 md:w-8" />
+          <motion.div {...fadeUp(0.1)} className="relative rounded-2xl overflow-hidden border border-tide-border shadow-card"
+            style={{ paddingBottom: '56.25%', height: 0 }}>
+            <iframe
+              src={data.padlet.url}
+              title={data.padlet.iframeTitle}
+              className="absolute inset-0 w-full h-full"
+              frameBorder="0"
+              allow="camera;microphone;geolocation"
+            />
+          </motion.div>
         </div>
       </section>
 

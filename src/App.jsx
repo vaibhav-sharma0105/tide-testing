@@ -26,6 +26,9 @@ import WhyTide from './pages/about/WhyTide'
 import OurTeam from './pages/about/OurTeam'
 import OurPartners from './pages/about/OurPartners'
 import OurResults from './pages/about/OurResults'
+import PastPrograms from './pages/about/PastPrograms'
+import PublicationsCombined from './pages/about/PublicationsCombined'
+import EducationForHarmony from './pages/EducationForHarmony'
 import BlockETI from './pages/projects/BlockETI'
 import BetterED from './pages/projects/BetterED'
 import EmpowerEd from './pages/projects/EmpowerEd'
@@ -53,10 +56,36 @@ export default function App() {
       <HashRouter>
         <Layout>
           <Routes>
+            {/* ── Active routes ───────────────────────────────────────── */}
             <Route path="/" element={<Home />} />
+
+            {/* About Us */}
             <Route path="/about/why-tide" element={<WhyTide />} />
+            <Route path="/about/past-programs" element={<PastPrograms />} />
             <Route path="/about/our-team" element={<OurTeam />} />
             <Route path="/about/our-partners" element={<OurPartners />} />
+            <Route path="/about/publications" element={<PublicationsCombined />} />
+
+            {/* Education for Harmony */}
+            <Route path="/education-for-harmony" element={<EducationForHarmony />} />
+            <Route path="/education-for-harmony/mccx" element={<OrganizeMCCx />} />
+
+            {/* Pramaan (ABL Resources) */}
+            <Route path="/pramaan" element={<AblHome />} />
+            <Route path="/pramaan/resource-centre" element={<AblResourceCenter />} />
+            <Route path="/pramaan/resource-centre/:id" element={<AblDetail />} />
+            <Route path="/pramaan/contribute" element={<AblContribute />} />
+
+            {/* Get Involved */}
+            <Route path="/get-involved/volunteer" element={<Volunteer />} />
+            <Route path="/get-involved/donate" element={<Donate />} />
+
+            {/* Other */}
+            <Route path="/thrive" element={<THRIvE />} />
+            <Route path="/contact" element={<Contact />} />
+
+            {/* ── Stranded routes — accessible via URL, not in nav ───── */}
+            {/* Pending stakeholder decision on redirect/removal          */}
             <Route path="/about/our-results" element={<OurResults />} />
             <Route path="/projects/block-eti" element={<BlockETI />} />
             <Route path="/projects/bettered" element={<BetterED />} />
@@ -64,11 +93,8 @@ export default function App() {
             <Route path="/projects/completed" element={<CompletEd />} />
             <Route path="/projects/other-projects" element={<OtherProjects />} />
             <Route path="/projects/sdg-drives" element={<SdgDrives />} />
-            <Route path="/get-involved/volunteer" element={<Volunteer />} />
-            <Route path="/get-involved/donate" element={<Donate />} />
             <Route path="/get-involved/work-with-us" element={<WorkWithUs />} />
             <Route path="/get-involved/mccx" element={<OrganizeMCCx />} />
-            <Route path="/thrive" element={<THRIvE />} />
             <Route path="/resources/saral-kadam" element={<SaralKadam />} />
             <Route path="/resources/annual-reports" element={<AnnualReports />} />
             <Route path="/resources/publications" element={<Publications />} />
@@ -76,7 +102,6 @@ export default function App() {
             <Route path="/resources/abl-resources/resource-center" element={<AblResourceCenter />} />
             <Route path="/resources/abl-resources/resource-center/:id" element={<AblDetail />} />
             <Route path="/resources/abl-resources/contribute" element={<AblContribute />} />
-            <Route path="/contact" element={<Contact />} />
           </Routes>
         </Layout>
       </HashRouter>

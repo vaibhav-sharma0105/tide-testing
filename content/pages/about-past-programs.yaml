@@ -1,0 +1,57 @@
+meta:
+  badge: "About Us · History"
+  title: "Past Programs"
+  tagline: "A decade of initiatives that shaped who we are today."
+  seoTitle: "Past Programs — TIDE Foundation"
+  seoDescription: "Explore TIDE Foundation's history of educational initiatives — Prerak, BetterED, CompletEd, and EmpowerEd."
+
+intro: "Over the years, TIDE has run a series of deep, grounded educational programs. These initiatives have since evolved or concluded, but their learnings continue to shape everything we do."
+
+programs:
+  - id: "prerak"
+    name: "Prerak"
+    tagline: "Application and project-based learning"
+    description: "Bridging the academic learning gap through application-based holistic development — engaging students in self-learning, peer-learning, project-work and activity-based learning through kits, flashcards, games, and worksheets. Over time, this included a deep transformation program for whole-school improvement, alongside shorter interventions like activity-based bridge courses, holistic foundational learning, and ABL resource development."
+    stats:
+      - label: "Schools & NGOs"
+        value: "126 schools + 5+ NGOs"
+      - label: "Children reached"
+        value: "29,402"
+      - label: "Teachers impacted"
+        value: "448"
+
+  - id: "bettered"
+    name: "BetterED"
+    tagline: "Life skills education for young people"
+    description: "Providing life skills education to empower young people with skills for learning, employability, personal empowerment, and citizenship — to navigate everyday challenges at home, school, and community. Delivered through clubs, weekend classes, SDG workshops, and project-based sessions."
+    stats:
+      - label: "Sites"
+        value: "60 schools · 12 slums · 5 orphanages · 1 village"
+      - label: "Children reached"
+        value: "6,302"
+
+  - id: "completed"
+    name: "CompletED"
+    tagline: "Socially responsible youth leadership"
+    description: "Shaping socially responsible youth leaders through critical dialogue and action on social justice issues. Delivered through public talk series, thinking skills workshops, research programs, SDG drives, internships, and volunteering opportunities."
+    stats:
+      - label: "Sites"
+        value: "7 schools · 5 colleges"
+      - label: "People reached"
+        value: "5,512"
+
+  - id: "empowered"
+    name: "EmpowerED"
+    tagline: "Communities of practice for educators"
+    description: "Empowering educators through communities of practice, sharing effective practices, peer-learning, and action research in rural and alternative schools. Built communities of holistic educators from across the country, facilitated peer-to-peer learning, ran teacher professional development workshops, and set up peer- and self-observation routines."
+    stats:
+      - label: "Sites"
+        value: "15+ low-fee · 20+ alternative · 37+ govt schools · 3+ BEd/MSW colleges"
+      - label: "Lives impacted"
+        value: "889"
+
+cta:
+  title: "See what we're building today"
+  body: "Our current work carries forward the best of these programs. Explore Education for Harmony and Pramaan to see how these learnings live on."
+  efhLabel: "Education for Harmony"
+  pramaanLabel: "Pramaan"

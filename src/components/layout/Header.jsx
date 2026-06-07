@@ -115,7 +115,7 @@ export default function Header() {
   const [mobileExpanded, setMobileExpanded] = useState(null)
   const leaveTimer = useRef(null)
 
-  const isABL = location.pathname.startsWith('/resources/abl-resources')
+  const isABL = location.pathname.startsWith('/pramaan') || location.pathname.startsWith('/resources/abl-resources')
 
   /* scroll detection */
   useEffect(() => {

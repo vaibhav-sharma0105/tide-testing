@@ -2,9 +2,9 @@ import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 const TABS = [
-  { i18nKey: 'home',           label: 'Home',            to: '/resources/abl-resources',                activeSlug: 'home'            },
-  { i18nKey: 'resourceCenter', label: 'Resource Center', to: '/resources/abl-resources/resource-center', activeSlug: 'resource-center' },
-  { i18nKey: 'contribute',     label: 'Contribute',      to: '/resources/abl-resources/contribute',      activeSlug: 'contribute'      },
+  { i18nKey: 'home',           label: 'About Pramaan',   to: '/pramaan',                   activeSlug: 'home'            },
+  { i18nKey: 'resourceCenter', label: 'Resource Centre',  to: '/pramaan/resource-centre',   activeSlug: 'resource-centre' },
+  { i18nKey: 'contribute',     label: 'Contribute',       to: '/pramaan/contribute',         activeSlug: 'contribute'      },
 ]
 
 export default function AblNavBar() {
@@ -13,8 +13,8 @@ export default function AblNavBar() {
 
   const activeSlug = pathname.includes('/contribute')
     ? 'contribute'
-    : pathname.includes('/resource-center')
-    ? 'resource-center'
+    : pathname.includes('/resource-centre') || pathname.includes('/resource-center')
+    ? 'resource-centre'
     : 'home'
 
   return (

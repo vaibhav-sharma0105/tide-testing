@@ -1,0 +1,74 @@
+meta:
+  badge: "Education for Harmony"
+  title: "Education for Harmony"
+  tagline: "An ecosystem of interventions for self- and social-transformation."
+  seoTitle: "Education for Harmony — TIDE Foundation"
+  seoDescription: "TIDE Foundation's Education for Harmony program builds life skills, civic responsibility, social-emotional learning, and community action."
+
+intro:
+  body: "At TIDE Foundation we have been developing an ecosystem of educational interventions for self- and social-transformation for different contexts, age groups, and to varying degrees of depth."
+  aims:
+    - "Promote holistic, experiential, collaborative, project-based, and human-centered learning"
+    - "Build life skills like communication, problem-solving, teamwork, and leadership"
+    - "Develop thinking (independent, critical, creative, and systems) and decision-making"
+    - "Develop empathy, care, and compassion for others"
+    - "Foster a sense of social and personal responsibility and commitment to social action"
+    - "Shape a generation of socially conscious global leaders with agency for meaningful action"
+
+cares:
+  sectionBadge: "The EHSA Framework"
+  title: "Education for Harmony through Self & Social Action"
+  subtitle: "EHSA is conceptualized as CARES — five interconnected dimensions of transformation."
+  dimensions:
+    - key: "C"
+      name: "Consciousness"
+      desc: "Seeing, awareness, and a deep understanding of social, cultural, and ecological issues — alongside understanding of their interconnectedness."
+    - key: "A"
+      name: "Awaken Empathy"
+      desc: "Developing a deep empathetic and caring connection with issues and the various actors impacted."
+    - key: "R"
+      name: "Reflect & Reimagine"
+      desc: "Deep reflection on one's own ways of living and being, underlying critical issues, and systemic nature of problems — alongside reimagining different possibilities."
+    - key: "E"
+      name: "Engage & Empower"
+      desc: "Act to bring about real and meaningful change while mobilising and empowering others to join in."
+    - key: "S"
+      name: "Sense of Responsibility"
+      desc: "Developing an intrinsic sense of responsibility that underpins behavioural change and drives larger systemic transformation."
+
+programs:
+  sectionBadge: "Our Interventions"
+  title: "An ecosystem of programs"
+  subtitle: "Six interconnected programs, designed for different contexts and depths of engagement."
+  items:
+    - name: "Social Explorer Program"
+      desc: "Ideal for sensitization, low-stake engagement, and introduction to self and social transformation."
+      impact: "1,961 students"
+    - name: "Social Deliberator & Planning (Model City Councils)"
+      desc: "Intra- and inter-school deliberative and dialogic events that support students in exploring contextual realities in their own cities and communities."
+      impact: "2,882 students"
+    - name: "Community Changemaker"
+      desc: "A more action-oriented series of interventions that mobilises students to take collective action at the individual, school, peer, community, and systems level."
+      impact: "4,245 students in 154 camps across 86 schools, indirectly impacting 2,944 students"
+    - name: "Social Ambassadors"
+      desc: "Selected students mobilise others in their schools and communities to act on relevant and immediate issues to create visible change."
+      impact: "222 students"
+    - name: "Social Changemakers"
+      desc: "Students engage in longer fellowships to systemically and meaningfully resolve deeply interconnected issues."
+      impact: "27 students, indirectly impacting 2,399 people"
+    - name: "Social Transformers"
+      desc: "A program for mentors that support other students, or those that engage with local governance to make a sustainable difference."
+      impact: ""
+
+video:
+  sectionBadge: "In Action"
+  title: "Glimpses of Community Changemaker"
+  youtubeId: "y7pp0ABMu_4"
+  caption: "A video overview of the Community Changemaker program"
+
+collaborate:
+  sectionBadge: "Partner with Us"
+  title: "Collaborate with us"
+  body: "We are happy to share our materials and to support other organisations interested in replicating these interventions in their contexts — including regional, state, and national government, educational institutions, NGOs, and colleges offering MSW and BEd courses."
+  ctaLabel: "Email us to collaborate"
+  ctaEmail: "tidefoundation@gmail.com"

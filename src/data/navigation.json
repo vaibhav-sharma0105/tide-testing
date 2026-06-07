@@ -14,6 +14,13 @@
           "desc": "Our story, vision & values"
         },
         {
+          "label": "Past Programs",
+          "i18nKey": "pastPrograms",
+          "descKey": "desc.pastPrograms",
+          "to": "/about/past-programs",
+          "desc": "Our history and earlier initiatives"
+        },
+        {
           "label": "Our Team",
           "i18nKey": "ourTeam",
           "descKey": "desc.ourTeam",
@@ -25,89 +32,68 @@
           "i18nKey": "ourPartners",
           "descKey": "desc.ourPartners",
           "to": "/about/our-partners",
-          "desc": "70+ school & university partners"
+          "desc": "Our network of collaborators"
         },
         {
-          "label": "Our Results",
-          "i18nKey": "ourResults",
-          "descKey": "desc.ourResults",
-          "to": "/about/our-results",
-          "desc": "Impact data & outcomes"
-        }
-      ]
-    },
-    {
-      "label": "Projects",
-      "i18nKey": "projects",
-      "children": [
-        {
-          "label": "Block Educational Transformation Initiative",
-          "i18nKey": "blockETI",
-          "descKey": "desc.blockETI",
-          "to": "/projects/block-eti",
-          "desc": "Systemic change in govt. schools"
-        },
-        {
-          "label": "BetterED",
-          "i18nKey": "bettered",
-          "descKey": "desc.bettered",
-          "to": "/projects/bettered",
-          "desc": "Life skills in 12 urban slums"
-        },
-        {
-          "label": "EmpowerEd",
-          "i18nKey": "empowered",
-          "descKey": "desc.empowered",
-          "to": "/projects/empowered",
-          "desc": "Teacher professional development"
-        },
-        {
-          "label": "CompletEd",
-          "i18nKey": "completed",
-          "descKey": "desc.completed",
-          "to": "/projects/completed",
-          "desc": "Fellowships & civic education"
-        },
-        {
-          "label": "SDG Drives",
-          "i18nKey": "sdgDrives",
-          "descKey": "desc.sdgDrives",
-          "to": "/projects/sdg-drives",
-          "desc": "Year-long SDG volunteering initiative"
-        },
-        {
-          "label": "Other Projects",
-          "i18nKey": "otherProjects",
-          "descKey": "desc.otherProjects",
-          "to": "/projects/other-projects",
-          "desc": "More initiatives & programs"
-        }
-      ]
-    },
-    {
-      "label": "Get Involved",
-      "i18nKey": "getInvolved",
-      "children": [
-        {
-          "label": "Volunteer / Intern With Us",
+          "label": "Get Involved",
           "i18nKey": "volunteer",
           "descKey": "desc.volunteer",
           "to": "/get-involved/volunteer",
-          "desc": "Intern or volunteer with us"
+          "desc": "Volunteer, intern, or join the team"
         },
         {
-          "label": "Work With Us",
-          "i18nKey": "workWithUs",
-          "descKey": "desc.workWithUs",
-          "to": "/get-involved/work-with-us",
-          "desc": "Full-time & part-time roles"
+          "label": "Our Publications",
+          "i18nKey": "ourPublications",
+          "descKey": "desc.ourPublications",
+          "to": "/about/publications",
+          "desc": "Annual reports, research & events"
+        }
+      ]
+    },
+    {
+      "label": "Education for Harmony",
+      "i18nKey": "educationForHarmony",
+      "children": [
+        {
+          "label": "Ecosystem of Programs",
+          "i18nKey": "efhEcosystem",
+          "descKey": "desc.efhEcosystem",
+          "to": "/education-for-harmony",
+          "desc": "EHSA framework & community programs"
         },
         {
           "label": "Organise your MCCx",
           "i18nKey": "mccx",
           "descKey": "desc.mccx",
-          "to": "/get-involved/mccx",
-          "desc": "Organise a Model City Council"
+          "to": "/education-for-harmony/mccx",
+          "desc": "Run a Model City Council"
+        }
+      ]
+    },
+    {
+      "label": "Pramaan",
+      "i18nKey": "pramaan",
+      "children": [
+        {
+          "label": "About Pramaan",
+          "i18nKey": "pramaanHome",
+          "descKey": "desc.pramaanHome",
+          "to": "/pramaan",
+          "desc": "Open-access ABL resource centre"
+        },
+        {
+          "label": "Resource Centre",
+          "i18nKey": "ablResourceCenter",
+          "descKey": "desc.ablResourceCenter",
+          "to": "/pramaan/resource-centre",
+          "desc": "Browse ABL materials by grade & subject"
+        },
+        {
+          "label": "Contribute",
+          "i18nKey": "ablContribute",
+          "descKey": "desc.ablContribute",
+          "to": "/pramaan/contribute",
+          "desc": "Share your teaching resources"
         }
       ]
     },
@@ -115,57 +101,6 @@
       "label": "THRIvE Research Centre",
       "i18nKey": "thrive",
       "to": "/thrive"
-    },
-    {
-      "label": "Resources",
-      "i18nKey": "resources",
-      "children": [
-        {
-          "label": "Saral Kadam Materials",
-          "i18nKey": "saralKadam",
-          "descKey": "desc.saralKadam",
-          "to": "/resources/saral-kadam",
-          "desc": "Foundational learning booklets"
-        },
-        {
-          "label": "Annual Reports",
-          "i18nKey": "annualReports",
-          "descKey": "desc.annualReports",
-          "to": "/resources/annual-reports",
-          "desc": "Reports from 2014 to present"
-        },
-        {
-          "label": "Our Publications",
-          "i18nKey": "publications",
-          "descKey": "desc.publications",
-          "to": "/resources/publications",
-          "desc": "Research papers & articles"
-        },
-        {
-          "label": "ABL Resources",
-          "i18nKey": "abl",
-          "descKey": "desc.abl",
-          "to": "/resources/abl-resources",
-          "desc": "Activity-Based Learning resource library",
-          "subItems": [
-            {
-              "label": "Home",
-              "i18nKey": "ablHome",
-              "to": "/resources/abl-resources"
-            },
-            {
-              "label": "Resource Center",
-              "i18nKey": "ablResourceCenter",
-              "to": "/resources/abl-resources/resource-center"
-            },
-            {
-              "label": "Contribute",
-              "i18nKey": "ablContribute",
-              "to": "/resources/abl-resources/contribute"
-            }
-          ]
-        }
-      ]
     },
     {
       "label": "Contact Us",

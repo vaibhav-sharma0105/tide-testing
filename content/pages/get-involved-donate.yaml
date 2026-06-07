@@ -1,21 +1,33 @@
 meta:
-  badge: "Get Involved"
-  title: "Donate Now"
-  tagline: "Every rupee builds a better classroom."
-  seoTitle: "Donate — TIDE Foundation"
-  seoDescription: "Support TIDE Foundation. Your donation directly funds programs reaching 40,000+ people across India."
-
-support:
+  badge: "Get Involved · Donate"
   title: "Support TIDE Foundation"
-  body: "Your donation directly funds programs that reach 40,000+ people across India. To make a donation or learn about CSR partnerships, please reach out to us directly."
-  impactPoints:
-    - "40,000+ lives impacted across Gujarat"
-    - "6 independent programs supported"
+  tagline: "Your donation directly funds programs that will reach thousands of people across India."
+  seoTitle: "Donate — TIDE Foundation"
+  seoDescription: "Support TIDE Foundation's education programs. 80G tax exemption available. CSR partnership opportunities."
+
+hero:
+  heading: "Support TIDE Foundation"
+  body: "Your donation directly funds programs that will reach thousands of people across India. To make a donation or learn about CSR partnerships, please reach out to us directly."
+  highlights:
+    - "50,000+ lives impacted across Gujarat"
     - "80G tax exemption available for Indian donors"
     - "CSR partnership opportunities available"
-  donorPoster: "/assets/images/get-involved-donate/qr-donate-poster.png"
-  posterCaption: "Scan the QR code to donate directly, or contact us for bank transfer details and CSR arrangements."
-  contactLabel: "Contact to Donate"
-  contactHref: "mailto:info@tideinternational.org?subject=Donation Enquiry"
-  whatsappLabel: "WhatsApp Us"
-  whatsappHref: "https://wa.me/917041094082"
+  emailCta: "Email to donate"
+  email: "tidefoundation@gmail.com"
+  whatsappCta: "WhatsApp us"
+  whatsappUrl: "https://wa.me/919979882648"
+
+bank:
+  title: "Donate Directly"
+  qrTitle: "Scan QR Code"
+  qrPlaceholder: "QR code coming soon"
+  transferTitle: "Bank Transfer"
+  accountName: "TIDE Foundation"
+  accountNumber: "50200018421062"
+  bankName: "HDFC Bank"
+  ifsc: "HDFC0000006"
+  branch: "HDFC Bank, Navrangpura"
+
+image:
+  src: "assets/images/get-involved-volunteer/gallery-01.jpg"
+  alt: "TIDE Foundation volunteers working with students"
