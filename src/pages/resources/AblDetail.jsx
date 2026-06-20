@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, BookOpen, Expand, FileText } from 'lucide-react'
+import { ArrowLeft, BookOpen, Expand, ExternalLink } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
@@ -42,23 +42,23 @@ function CoverageMatrix({ chapters, accent }) {
   return (
     <div>
       <Eyebrow className={accent.eyebrow}>Coverage</Eyebrow>
-      <div className="grid grid-cols-5 gap-1.5 mt-2">
+      <div className="grid grid-cols-5 gap-2 mt-2">
         {GRADES.map(g => {
           const count = chapters[g]?.length ?? 0
           const has   = count > 0
           return (
-            <div key={g} className="flex flex-col items-center gap-1">
-              <div className={`w-full aspect-square rounded-lg border flex items-center justify-center text-sm font-display font-semibold ${has ? accent.tile : 'border-tide-border text-tide-muted/30'}`}>
+            <div key={g} className="flex flex-col items-center gap-1.5">
+              <div className={`w-full aspect-square rounded-lg border flex items-center justify-center text-base font-display font-semibold ${has ? accent.tile : 'border-tide-border text-tide-muted/30'}`}>
                 {has ? count : '–'}
               </div>
-              <span className="text-[10px] font-body text-tide-muted">{g.replace('GRADE ', 'G')}</span>
+              <span className="text-xs font-body text-tide-muted">{g.replace('GRADE ', 'G')}</span>
             </div>
           )
         })}
       </div>
       <ul className="mt-3 space-y-1">
         {detailRows.map(({ grade, list }) => (
-          <li key={grade} className="text-xs font-body text-tide-muted">
+          <li key={grade} className="text-sm font-body text-tide-muted">
             <span className="font-semibold text-tide-text">{grade.replace('GRADE ', 'Grade ')}</span>
             {' — '}{list.join(', ')}
           </li>
@@ -94,7 +94,7 @@ export default function AblDetail() {
           <div className="max-w-5xl mx-auto">
             {backLink}
             <div className="animate-pulse grid md:grid-cols-5 gap-10">
-              <div className="md:col-span-2 aspect-[3/4] bg-tide-subtle rounded-2xl" />
+              <div className="md:col-span-2 max-w-[280px] aspect-[3/4] bg-tide-subtle rounded-2xl" />
               <div className="md:col-span-3 space-y-4">
                 {Array.from({ length: 6 }).map((_, i) => (
                   <div key={i} className="h-4 bg-tide-subtle rounded w-3/4" />
@@ -129,7 +129,9 @@ export default function AblDetail() {
   const videoPreviewUrl = getDrivePreviewUrl(resource.videoUrl)
   const style           = TAB_STYLE_MAP[resource.type] ?? TAB_STYLE_MAP._default
   const accent          = ACCENT_MAP[style.color] ?? ACCENT_MAP.gray
-  const isOwned         = resource.ownership === 'TIDE'
+  const hasCoverage     = GRADES.some(g => (resource.chapters?.[g]?.length ?? 0) > 0)
+  const hasInfoCard     = Boolean(resource.concept || languages.length > 0 || resource.ownership)
+  const hasActions      = Boolean(resource.photoUrl || resource.referenceLink)
 
   return (
     <>
@@ -145,35 +147,38 @@ export default function AblDetail() {
 
               {/* Left — media plate */}
               <div className="md:col-span-2">
-                <button
-                  type="button"
-                  onClick={() => resource.photoUrl && setLightboxOpen(true)}
-                  className={`group/img relative block w-full rounded-2xl overflow-hidden border border-tide-border shadow-card ${resource.photoUrl ? 'cursor-zoom-in' : 'cursor-default'}`}
-                  aria-label="View full image"
-                  disabled={!resource.photoUrl}
-                >
-                  <DriveImage id={resource.id} alt={resource.name} variant="full" />
-                  {resource.photoUrl && (
-                    <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/15 transition-colors duration-300" />
-                  )}
-                </button>
+                <div className="max-w-[280px]">
+                  <button
+                    type="button"
+                    onClick={() => resource.photoUrl && setLightboxOpen(true)}
+                    className={`group/img relative block w-full rounded-2xl overflow-hidden border border-tide-border shadow-card ${resource.photoUrl ? 'cursor-zoom-in' : 'cursor-default'}`}
+                    aria-label="View full image"
+                    disabled={!resource.photoUrl}
+                  >
+                    <DriveImage id={resource.id} alt={resource.name} variant="full" />
+                    {resource.photoUrl && (
+                      <>
+                        <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/15 transition-colors duration-300" />
+                        <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-body font-medium">
+                          <Expand className="w-3.5 h-3.5" /> {t('abl.detail.viewLarger', 'Tap to view larger')}
+                        </div>
+                      </>
+                    )}
+                  </button>
 
-                {resource.photoUrl && (
-                  <div className="mt-2 flex items-center gap-1.5 text-xs font-body text-tide-muted">
-                    <Expand className="w-3.5 h-3.5" /> {t('abl.detail.viewLarger', 'Tap to view larger')}
-                  </div>
-                )}
-
-                <div className="flex gap-3 mt-4 flex-wrap">
-                  {resource.photoUrl && (
-                    <Button href={resource.photoUrl} external variant="accent">
-                      <FileText className="w-4 h-4" /> {t('abl.detail.openFull', 'Open Full Resource')}
-                    </Button>
-                  )}
-                  {resource.referenceLink && (
-                    <Button href={resource.referenceLink} external variant="secondary">
-                      {t('abl.detail.sourceRef', 'Source Reference')}
-                    </Button>
+                  {hasActions && (
+                    <div className="flex gap-3 mt-4 flex-wrap">
+                      {resource.photoUrl && (
+                        <Button href={resource.photoUrl} external variant="accent">
+                          {t('abl.detail.openFull', 'Full Preview')} <ExternalLink className="w-4 h-4" />
+                        </Button>
+                      )}
+                      {resource.referenceLink && (
+                        <Button href={resource.referenceLink} external variant="secondary">
+                          {t('abl.detail.sourceRef', 'Source Reference')}
+                        </Button>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
@@ -201,31 +206,37 @@ export default function AblDetail() {
                   </div>
                 )}
 
-                {resource.concept && (
-                  <div>
-                    <Eyebrow className={accent.eyebrow}>{t('abl.detail.concept', 'Concept')}</Eyebrow>
-                    <p className="font-display text-lg font-semibold text-tide-text mt-1">{resource.concept}</p>
+                {hasInfoCard && (
+                  <div className="bg-white rounded-2xl border border-tide-border p-5 space-y-4">
+                    {resource.concept && (
+                      <div>
+                        <Eyebrow className={accent.eyebrow}>{t('abl.detail.concept', 'Concept')}</Eyebrow>
+                        <p className="font-display text-xl font-semibold text-tide-text mt-1">{resource.concept}</p>
+                      </div>
+                    )}
+
+                    {languages.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {languages.map(l => (
+                          <span key={l} className="inline-block px-3 py-1 text-sm font-semibold rounded-full border bg-tide-subtle text-tide-muted border-tide-border">
+                            {l}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {resource.ownership && (
+                      <div className="flex items-center gap-1.5">
+                        <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${resource.ownership === 'TIDE' ? 'bg-primary' : 'bg-tide-muted'}`} />
+                        <span className="text-sm font-body text-tide-muted">
+                          {resource.ownership === 'TIDE' ? t('abl.resourceCard.tideResource', 'TIDE Resource') : t('abl.resourceCard.externalResource', 'External Resource')}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 )}
 
-                {languages.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {languages.map(l => (
-                      <span key={l} className="inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full border bg-tide-subtle text-tide-muted border-tide-border">
-                        {l}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                <div className="flex items-center gap-1.5">
-                  <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isOwned ? 'bg-primary' : 'bg-tide-muted'}`} />
-                  <span className="text-xs font-body text-tide-muted">
-                    {isOwned ? t('abl.resourceCard.tideResource', 'TIDE Resource') : t('abl.resourceCard.externalResource', 'External Resource')}
-                  </span>
-                </div>
-
-                <div className="h-px bg-tide-border" />
+                {hasCoverage && <div className="h-px bg-tide-border" />}
 
                 <CoverageMatrix chapters={resource.chapters ?? {}} accent={accent} />
 
@@ -234,10 +245,10 @@ export default function AblDetail() {
                 )}
 
                 {resource.storageLocation && (
-                  <p className="text-xs text-tide-muted">Storage: {resource.storageLocation}</p>
+                  <p className="text-sm text-tide-muted">Storage: {resource.storageLocation}</p>
                 )}
                 {resource.quantity && (
-                  <p className="text-xs text-tide-muted">Quantity: {resource.quantity} set(s)</p>
+                  <p className="text-sm text-tide-muted">Quantity: {resource.quantity} set(s)</p>
                 )}
               </div>
             </div>
