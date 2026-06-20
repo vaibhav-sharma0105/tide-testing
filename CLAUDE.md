@@ -19,10 +19,10 @@ React static site rebuild of [tideinternational.org](https://tideinternational.o
 - Secrets required in GitHub: `VITE_ABL_API_URL`, `VITE_ABL_CONTRIBUTE_FORM_URL`
 
 ## Design System
-- **Primary:** `#3B7CB8` (TIDE teal-blue)
-- **Accent:** `#F4A435` (amber — CTAs, highlights)
-- **Background:** `#FAFAF8` (warm white)
-- **Text:** `#1A1A2E` (near-black)
+- **Primary:** `#1E6BAA` (TIDE teal-blue)
+- **Accent:** `#F59E0B` (amber — CTAs, highlights)
+- **Background:** `#FDFCF9` (warm white)
+- **Text:** `#0D1F3C` (near-black navy)
 - **Headings:** Playfair Display (EN) / Noto Serif Devanagari (HI) / Noto Serif Gujarati (GU)
 - **Body:** Plus Jakarta Sans (EN) / Noto Sans Devanagari (HI) / Noto Sans Gujarati (GU)
 - Full token map in `tailwind.config.js`

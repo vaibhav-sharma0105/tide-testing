@@ -254,14 +254,21 @@ tide-new/
 
 | Tailwind class | Hex | Usage |
 |---|---|---|
-| `text-primary` / `bg-primary` | `#3B7CB8` | Buttons, links, heading accents |
-| `bg-primary-light` | `#EBF3FB` | Chip backgrounds, hover tints |
-| `text-accent` / `bg-accent` | `#F4A435` | CTAs, highlights, badges |
-| `text-tide-text` | `#1A1A2E` | Body copy |
-| `text-tide-muted` | `#6B7280` | Secondary labels, captions |
-| `bg-tide-bg` | `#FAFAF8` | Page section backgrounds |
-| `bg-tide-subtle` | `#F3F4F6` | Input fields, card inner areas |
-| `border-tide-border` | `#E5E7EB` | Card and input borders |
+| `text-primary` / `bg-primary` | `#1E6BAA` | Buttons, links, heading accents |
+| `bg-primary-mid` | `#2E85C7` | Gradient buttons (paired with `primary-dark`) |
+| `bg-primary-dark` | `#15538A` | Gradient buttons, hover states |
+| `bg-primary-light` | `#D4EBF8` | Chip backgrounds, hover tints |
+| `bg-primary-faint` | `#EEF6FC` | Subtle backgrounds |
+| `text-accent` / `bg-accent` | `#F59E0B` | CTAs, highlights, badges |
+| `bg-accent-dark` | `#D97706` | Gradient buttons, hover states |
+| `bg-navy` | `#0D2137` | `PageHero` dark banner background |
+| `text-tide-text` | `#0D1F3C` | Body copy |
+| `text-tide-muted` | `#5A6A7E` | Secondary labels, captions |
+| `bg-tide-bg` | `#FDFCF9` | Page section backgrounds |
+| `bg-tide-subtle` | `#F0EDE8` | Input fields, card inner areas |
+| `border-tide-border` | `#E2DDD7` | Card and input borders |
+
+Full token map (incl. `deeper`/all shade variants): `tailwind.config.js`. **This table was previously wrong** (e.g. listed `#3B7CB8` for primary when the actual value has been `#1E6BAA` — corrected 2026-06-21). If a future audit finds another mismatch, trust `tailwind.config.js`, not this table.
 
 ### Typography
 
