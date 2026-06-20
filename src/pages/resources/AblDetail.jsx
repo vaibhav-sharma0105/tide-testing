@@ -234,12 +234,12 @@ export default function AblDetail() {
                     )}
 
                     {videoPreviewUrl && (
-                      <div className="w-full sm:w-44 flex-shrink-0">
+                      <div className="w-full sm:w-64 flex-shrink-0">
                         <Eyebrow className="text-tide-muted mb-1.5">{t('abl.detail.explanationVideo', 'Explanation Video')}</Eyebrow>
                         <motion.div
                           className="group/video relative aspect-video rounded-xl overflow-hidden border-2 border-primary/25 shadow-card cursor-pointer"
-                          whileHover={{ scale: 1.035 }}
-                          transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+                          whileHover={{ scale: 1.06, y: -4, boxShadow: '0 20px 40px -8px rgba(30,107,170,0.45)' }}
+                          transition={{ type: 'spring', stiffness: 280, damping: 18 }}
                         >
                           <iframe
                             src={videoPreviewUrl}
@@ -253,8 +253,12 @@ export default function AblDetail() {
                             aria-label={t('abl.detail.playVideo', 'Play explanation video')}
                             className="absolute inset-0 w-full h-full flex items-center justify-center bg-primary/0 group-hover/video:bg-primary/25 transition-colors duration-300"
                           >
-                            <span className="opacity-0 group-hover/video:opacity-100 scale-90 group-hover/video:scale-100 transition-all duration-300 w-10 h-10 rounded-full bg-white/95 flex items-center justify-center shadow-xl">
-                              <Play className="w-4 h-4 text-primary fill-primary translate-x-px" />
+                            {/* Always-visible subtle badge, replaced by a larger button on hover */}
+                            <span className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-black/55 backdrop-blur-sm flex items-center justify-center opacity-100 group-hover/video:opacity-0 transition-opacity duration-200">
+                              <Play className="w-3 h-3 text-white fill-white translate-x-px" />
+                            </span>
+                            <span className="opacity-0 group-hover/video:opacity-100 scale-75 group-hover/video:scale-100 transition-all duration-300 w-12 h-12 rounded-full bg-white/95 flex items-center justify-center shadow-xl">
+                              <Play className="w-5 h-5 text-primary fill-primary translate-x-px" />
                             </span>
                           </button>
                         </motion.div>
