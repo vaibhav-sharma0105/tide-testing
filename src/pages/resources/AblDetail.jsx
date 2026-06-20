@@ -236,17 +236,17 @@ export default function AblDetail() {
 
                     {videoPreviewUrl && (
                       <div className="w-full sm:w-72 flex-shrink-0">
-                        <Eyebrow className="text-tide-muted mb-1.5">{t('abl.detail.explanationVideo', 'Explanation Video')}</Eyebrow>
+                        <Eyebrow className="text-tide-muted mb-3">{t('abl.detail.explanationVideo', 'Explanation Video')}</Eyebrow>
                         <motion.div
                           className="group/video relative aspect-video rounded-xl overflow-hidden border-2 border-primary/25 shadow-card cursor-pointer bg-white"
-                          whileHover={{ scale: 1.04, y: -4, boxShadow: '0 20px 40px -8px rgba(30,107,170,0.45)' }}
+                          whileHover={{ scale: 1.04, y: -3, boxShadow: '0 20px 40px -8px rgba(30,107,170,0.45)' }}
                           transition={{ type: 'spring', stiffness: 280, damping: 18 }}
                         >
                           {/* Static fallback poster — a live Drive iframe here would letterbox
                               unpredictably depending on the source video's own aspect ratio,
                               which we can't control or detect from a cross-origin embed. */}
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <img src={imgSrc('assets/images/shared/tide-logo.png')} alt="" className="w-20 h-20 opacity-70" />
+                            <img src={imgSrc('assets/images/shared/tide-logo.png')} alt="" className="w-28 h-28 opacity-70" />
                           </div>
                           <button
                             type="button"
