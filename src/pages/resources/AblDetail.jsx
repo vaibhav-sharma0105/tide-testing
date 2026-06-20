@@ -198,18 +198,6 @@ export default function AblDetail() {
                       )}
                     </button>
 
-                    {videoPreviewUrl && (
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <button
-                          type="button"
-                          onClick={() => setVideoOpen(true)}
-                          aria-label={t('abl.detail.playVideo', 'Play explanation video')}
-                          className="pointer-events-auto w-14 h-14 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-xl transition-transform hover:scale-105"
-                        >
-                          <Play className="w-6 h-6 text-primary fill-primary translate-x-px" />
-                        </button>
-                      </div>
-                    )}
                   </div>
 
                   {hasActions && (
@@ -236,10 +224,42 @@ export default function AblDetail() {
                 animate="visible"
                 variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
               >
-                {resource.concept && (
-                  <motion.div variants={fadeUp}>
-                    <Eyebrow className={accent.eyebrow}>{t('abl.detail.concept', 'Concept')}</Eyebrow>
-                    <p className="font-display text-2xl font-semibold text-tide-text mt-1">{resource.concept}</p>
+                {(resource.concept || videoPreviewUrl) && (
+                  <motion.div variants={fadeUp} className="flex flex-col sm:flex-row sm:items-start gap-4">
+                    {resource.concept && (
+                      <div className="flex-1 min-w-0">
+                        <Eyebrow className={accent.eyebrow}>{t('abl.detail.concept', 'Concept')}</Eyebrow>
+                        <p className="font-display text-2xl font-semibold text-tide-text mt-1">{resource.concept}</p>
+                      </div>
+                    )}
+
+                    {videoPreviewUrl && (
+                      <div className="w-full sm:w-44 flex-shrink-0">
+                        <Eyebrow className="text-tide-muted mb-1.5">{t('abl.detail.explanationVideo', 'Explanation Video')}</Eyebrow>
+                        <motion.div
+                          className="group/video relative aspect-video rounded-xl overflow-hidden border-2 border-primary/25 shadow-card cursor-pointer"
+                          whileHover={{ scale: 1.035 }}
+                          transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+                        >
+                          <iframe
+                            src={videoPreviewUrl}
+                            title={t('abl.detail.explanationVideo', 'Explanation Video')}
+                            className="absolute inset-0 w-full h-full"
+                            frameBorder="0"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setVideoOpen(true)}
+                            aria-label={t('abl.detail.playVideo', 'Play explanation video')}
+                            className="absolute inset-0 w-full h-full flex items-center justify-center bg-primary/0 group-hover/video:bg-primary/25 transition-colors duration-300"
+                          >
+                            <span className="opacity-0 group-hover/video:opacity-100 scale-90 group-hover/video:scale-100 transition-all duration-300 w-10 h-10 rounded-full bg-white/95 flex items-center justify-center shadow-xl">
+                              <Play className="w-4 h-4 text-primary fill-primary translate-x-px" />
+                            </span>
+                          </button>
+                        </motion.div>
+                      </div>
+                    )}
                   </motion.div>
                 )}
 
