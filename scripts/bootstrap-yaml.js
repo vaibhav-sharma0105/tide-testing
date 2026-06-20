@@ -12,9 +12,7 @@
 
 import fs from 'fs'
 import path from 'path'
-import yaml from 'js-yaml'
 
-const TRANSLATION_FILE = path.resolve('src/i18n/locales/en/translation.json')
 const CONTENT_DIR      = path.resolve('content')
 const PAGES_DIR        = path.join(CONTENT_DIR, 'pages')
 const SHARED_DIR       = path.join(CONTENT_DIR, 'shared')
@@ -35,27 +33,6 @@ function writeIfAbsent(filePath, content) {
     created++
   }
 }
-
-function dumpYaml(obj) {
-  return yaml.dump(obj, { lineWidth: 120, quotingType: '"', forceQuotes: false })
-}
-
-// --- Load translation.json ---
-let t = {}
-try {
-  t = JSON.parse(fs.readFileSync(TRANSLATION_FILE, 'utf8'))
-} catch (e) {
-  console.warn(`  ⚠ Could not load translation.json: ${e.message}`)
-  console.warn('  Proceeding with empty text values — fill YAML manually.\n')
-}
-
-const h = t?.home   || {}
-const a = t?.about  || {}
-const p = t?.projects || {}
-const g = t?.getInvolved || {}
-const r = t?.resources || {}
-const c = t?.contact || {}
-const th = t?.thrive || {}
 
 console.log('\n🌱 Bootstrapping YAML content files...\n')
 

@@ -78,7 +78,7 @@ export function useABLData() {
   useEffect(() => { fetchData() }, [fetchData])
 
   const refetch = useCallback(() => {
-    try { sessionStorage.removeItem(STORAGE_KEY) } catch {}
+    try { sessionStorage.removeItem(STORAGE_KEY) } catch { /* sessionStorage unavailable */ }
     fetchData(true)
   }, [fetchData])
 

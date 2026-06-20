@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-export default function PageHero({ badge, title, subtitle, children, gradient = false }) {
+export default function PageHero({ badge, title, subtitle, children }) {
   return (
     <section className="pt-28 pb-20 md:pt-36 md:pb-28 px-4 md:px-8 lg:px-16 bg-[#1c314d] relative overflow-hidden">
       {/* Background texture */}

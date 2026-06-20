@@ -11,7 +11,7 @@
  * IntersectionObserver are declared in src/test/setup.js.
  */
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
 import { vi } from 'vitest'

@@ -44,7 +44,7 @@ export default function OrganizeMCCx() {
 
             <motion.div {...fadeUp(0.15)}>
               <div className="grid grid-cols-2 gap-3">
-                {data.whatIs.photos.map((p, i) => (
+                {data.whatIs.photos.map((p) => (
                   <div key={p.src} className="rounded-xl overflow-hidden aspect-video">
                     <img src={imgSrc(p.src)} alt={p.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                   </div>

@@ -111,32 +111,32 @@ export default function Header() {
   const { t } = useTranslation()
   const location = useLocation()
   const [scrolled, setScrolled]       = useState(false)
-  const [atTop, setAtTop]             = useState(true)
   const [mobileOpen, setMobileOpen]   = useState(false)
   const [openDropdown, setOpenDropdown] = useState(null)
   const [mobileExpanded, setMobileExpanded] = useState(null)
+  const [prevLocation, setPrevLocation] = useState(location)
   const leaveTimer = useRef(null)
 
   const isABL = location.pathname.startsWith('/pramaan') || location.pathname.startsWith('/resources/abl-resources')
+
+  /* close on route change */
+  if (location !== prevLocation) {
+    setPrevLocation(location)
+    setMobileOpen(false)
+    setOpenDropdown(null)
+    setMobileExpanded(null)
+  }
 
   /* scroll detection */
   useEffect(() => {
     const handler = () => {
       const y = window.scrollY
       setScrolled(y > 20)
-      setAtTop(y < 4)
     }
     handler()
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
   }, [])
-
-  /* close on route change */
-  useEffect(() => {
-    setMobileOpen(false)
-    setOpenDropdown(null)
-    setMobileExpanded(null)
-  }, [location])
 
   const nav = navData.items
 
