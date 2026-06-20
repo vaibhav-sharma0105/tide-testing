@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ArrowLeft, BookOpen, Expand, ExternalLink } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ArrowLeft, BookOpen, Expand, ExternalLink, MapPin, Layers } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
@@ -15,11 +15,16 @@ import { TAB_STYLE_MAP } from '../../config/abl'
 const GRADES = ['GRADE 1', 'GRADE 2', 'GRADE 3', 'GRADE 4', 'GRADE 5']
 
 const ACCENT_MAP = {
-  blue:    { tile: 'bg-blue-50 text-blue-700 border-blue-200',       eyebrow: 'text-blue-700' },
-  emerald: { tile: 'bg-emerald-50 text-emerald-700 border-emerald-200', eyebrow: 'text-emerald-700' },
-  violet:  { tile: 'bg-violet-50 text-violet-700 border-violet-200',  eyebrow: 'text-violet-700' },
-  amber:   { tile: 'bg-amber-50 text-amber-700 border-amber-200',    eyebrow: 'text-amber-700' },
-  gray:    { tile: 'bg-tide-subtle text-tide-muted border-tide-border', eyebrow: 'text-tide-muted' },
+  blue:    { tile: 'bg-blue-50 text-blue-700 border-blue-200',       eyebrow: 'text-blue-700', solid: 'bg-blue-600' },
+  emerald: { tile: 'bg-emerald-50 text-emerald-700 border-emerald-200', eyebrow: 'text-emerald-700', solid: 'bg-emerald-600' },
+  violet:  { tile: 'bg-violet-50 text-violet-700 border-violet-200',  eyebrow: 'text-violet-700', solid: 'bg-violet-600' },
+  amber:   { tile: 'bg-amber-50 text-amber-700 border-amber-200',    eyebrow: 'text-amber-700', solid: 'bg-amber-600' },
+  gray:    { tile: 'bg-tide-subtle text-tide-muted border-tide-border', eyebrow: 'text-tide-muted', solid: 'bg-tide-muted' },
+}
+
+const fadeUp = {
+  hidden:  { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0 },
 }
 
 function Eyebrow({ children, className = '' }) {
@@ -30,41 +35,97 @@ function Eyebrow({ children, className = '' }) {
   )
 }
 
-/* Glanceable grade × chapter-count grid — the one piece of data unique to
-   this content type (which grades + how many chapters each one touches). */
-function CoverageMatrix({ chapters, accent }) {
-  const detailRows = GRADES
-    .map(g => ({ grade: g, list: chapters[g] ?? [] }))
-    .filter(row => row.list.length > 0)
+/* Segmented switcher between the resource photo and its explanation video,
+   sharing one frame instead of stacking two separate media blocks. */
+function MediaTabs({ tab, onChange, showPhoto, showVideo }) {
+  if (!showPhoto || !showVideo) return null
+  const tabs = [
+    { key: 'photo', label: 'Photo' },
+    { key: 'video', label: 'Video' },
+  ]
+  return (
+    <div className="inline-flex items-center bg-tide-subtle rounded-full p-1 mb-3">
+      {tabs.map(({ key, label }) => (
+        <button
+          key={key}
+          type="button"
+          onClick={() => onChange(key)}
+          className="relative px-4 py-1.5 text-sm font-body font-semibold rounded-full transition-colors duration-200"
+        >
+          {tab === key && (
+            <motion.span
+              layoutId="media-tab-pill"
+              className="absolute inset-0 rounded-full bg-primary"
+              transition={{ type: 'spring', duration: 0.4, bounce: 0.18 }}
+            />
+          )}
+          <span className={`relative z-10 ${tab === key ? 'text-white' : 'text-tide-muted hover:text-tide-text'}`}>
+            {label}
+          </span>
+        </button>
+      ))}
+    </div>
+  )
+}
 
-  if (detailRows.length === 0) return null
+/* Grade × chapter-count grid — tap a tile to reveal its chapters in a
+   shared panel below, instead of always-on text for every grade at once. */
+function CoverageMatrix({ chapters, accent, expanded, onToggle }) {
+  const rows = GRADES.map(g => ({ grade: g, list: chapters[g] ?? [] }))
+  const hasAny = rows.some(r => r.list.length > 0)
+  if (!hasAny) return null
+
+  const active = rows.find(r => r.grade === expanded && r.list.length > 0)
 
   return (
-    <div>
-      <Eyebrow className={accent.eyebrow}>Coverage</Eyebrow>
+    <motion.div variants={fadeUp}>
+      <Eyebrow className={accent.eyebrow}>{'Coverage'}</Eyebrow>
       <div className="grid grid-cols-5 gap-2 mt-2">
-        {GRADES.map(g => {
-          const count = chapters[g]?.length ?? 0
-          const has   = count > 0
+        {rows.map(({ grade, list }, i) => {
+          const has = list.length > 0
+          const isActive = expanded === grade
           return (
-            <div key={g} className="flex flex-col items-center gap-1.5">
-              <div className={`w-full aspect-square rounded-lg border flex items-center justify-center text-base font-display font-semibold ${has ? accent.tile : 'border-tide-border text-tide-muted/30'}`}>
-                {has ? count : '–'}
+            <motion.button
+              key={grade}
+              type="button"
+              disabled={!has}
+              onClick={() => onToggle(isActive ? null : grade)}
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.05, duration: 0.25 }}
+              className={`flex flex-col items-center gap-1.5 ${has ? 'cursor-pointer' : 'cursor-default'}`}
+            >
+              <div
+                className={`w-full aspect-square rounded-lg border flex items-center justify-center text-base font-display font-semibold transition-all duration-200 ${
+                  has ? accent.tile : 'border-tide-border text-tide-muted/30'
+                } ${isActive ? 'ring-2 ring-offset-1 ring-primary' : ''}`}
+              >
+                {has ? list.length : '–'}
               </div>
-              <span className="text-xs font-body text-tide-muted">{g.replace('GRADE ', 'G')}</span>
-            </div>
+              <span className="text-xs font-body text-tide-muted">{grade.replace('GRADE ', 'G')}</span>
+            </motion.button>
           )
         })}
       </div>
-      <ul className="mt-3 space-y-1">
-        {detailRows.map(({ grade, list }) => (
-          <li key={grade} className="text-sm font-body text-tide-muted">
-            <span className="font-semibold text-tide-text">{grade.replace('GRADE ', 'Grade ')}</span>
-            {' — '}{list.join(', ')}
-          </li>
-        ))}
-      </ul>
-    </div>
+
+      <AnimatePresence mode="wait">
+        {active && (
+          <motion.div
+            key={active.grade}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="mt-3 px-3 py-2.5 rounded-xl bg-tide-subtle text-sm font-body text-tide-muted">
+              <span className="font-semibold text-tide-text">{active.grade.replace('GRADE ', 'Grade ')}</span>
+              {' — '}{active.list.join(', ')}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   )
 }
 
@@ -73,6 +134,8 @@ export default function AblDetail() {
   const { id } = useParams()
   const { allResources, loading, error } = useABLData()
   const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [mediaTab, setMediaTab] = useState('photo')
+  const [expandedGrade, setExpandedGrade] = useState(null)
 
   const backLink = (
     <Link
@@ -129,9 +192,9 @@ export default function AblDetail() {
   const videoPreviewUrl = getDrivePreviewUrl(resource.videoUrl)
   const style           = TAB_STYLE_MAP[resource.type] ?? TAB_STYLE_MAP._default
   const accent          = ACCENT_MAP[style.color] ?? ACCENT_MAP.gray
-  const hasCoverage     = GRADES.some(g => (resource.chapters?.[g]?.length ?? 0) > 0)
-  const hasInfoCard     = Boolean(resource.concept || languages.length > 0 || resource.ownership)
   const hasActions      = Boolean(resource.photoUrl || resource.referenceLink)
+  const hasCoverage     = GRADES.some(g => (resource.chapters?.[g]?.length ?? 0) > 0)
+  const activeTab       = resource.photoUrl ? mediaTab : 'video'
 
   return (
     <>
@@ -145,26 +208,61 @@ export default function AblDetail() {
 
             <div className="grid md:grid-cols-5 gap-10">
 
-              {/* Left — media plate */}
+              {/* Left — unified media stage */}
               <div className="md:col-span-2">
                 <div className="max-w-[280px]">
-                  <button
-                    type="button"
-                    onClick={() => resource.photoUrl && setLightboxOpen(true)}
-                    className={`group/img relative block w-full rounded-2xl overflow-hidden border border-tide-border shadow-card ${resource.photoUrl ? 'cursor-zoom-in' : 'cursor-default'}`}
-                    aria-label="View full image"
-                    disabled={!resource.photoUrl}
-                  >
-                    <DriveImage id={resource.id} alt={resource.name} variant="full" />
-                    {resource.photoUrl && (
-                      <>
-                        <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/15 transition-colors duration-300" />
-                        <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-body font-medium">
-                          <Expand className="w-3.5 h-3.5" /> {t('abl.detail.viewLarger', 'Tap to view larger')}
-                        </div>
-                      </>
-                    )}
-                  </button>
+                  <MediaTabs
+                    tab={activeTab}
+                    onChange={setMediaTab}
+                    showPhoto={Boolean(resource.photoUrl)}
+                    showVideo={Boolean(videoPreviewUrl)}
+                  />
+
+                  <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-tide-border shadow-card">
+                    <AnimatePresence mode="wait">
+                      {activeTab === 'photo' ? (
+                        <motion.div
+                          key="photo"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute inset-0"
+                        >
+                          <button
+                            type="button"
+                            onClick={() => setLightboxOpen(true)}
+                            className="group/img absolute inset-0 w-full h-full cursor-zoom-in"
+                            aria-label="View full image"
+                          >
+                            <DriveImage id={resource.id} alt={resource.name} variant="full" />
+                            <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/15 transition-colors duration-300" />
+                            <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-body font-medium">
+                              <Expand className="w-3.5 h-3.5" /> {t('abl.detail.viewLarger', 'Tap to view larger')}
+                            </div>
+                          </button>
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="video"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute inset-0 bg-tide-deeper"
+                        >
+                          <iframe
+                            src={videoPreviewUrl}
+                            title={t('abl.detail.explanationVideo', 'Explanation Video')}
+                            className="absolute inset-0 w-full h-full"
+                            frameBorder="0"
+                            allow="autoplay"
+                            allowFullScreen
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
 
                   {hasActions && (
                     <div className="flex gap-3 mt-4 flex-wrap">
@@ -183,74 +281,62 @@ export default function AblDetail() {
                 </div>
               </div>
 
-              {/* Right — facts rail */}
-              <div className="md:col-span-3 space-y-6">
-                {videoPreviewUrl && (
-                  <div>
-                    <Eyebrow className={`mb-2 ${accent.eyebrow}`}>
-                      {t('abl.detail.explanationVideo', 'Explanation Video')}
-                    </Eyebrow>
-                    <div
-                      className="relative rounded-2xl overflow-hidden border border-tide-border shadow-card"
-                      style={{ paddingBottom: '56.25%', height: 0 }}
-                    >
-                      <iframe
-                        src={videoPreviewUrl}
-                        title={t('abl.detail.explanationVideo', 'Explanation Video')}
-                        className="absolute inset-0 w-full h-full"
-                        frameBorder="0"
-                        allow="autoplay"
-                        allowFullScreen
-                      />
-                    </div>
-                  </div>
+              {/* Right — one consolidated fact sheet */}
+              <motion.div
+                className="md:col-span-3 bg-white rounded-2xl border border-tide-border p-6 space-y-5"
+                initial="hidden"
+                animate="visible"
+                variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
+              >
+                {resource.concept && (
+                  <motion.div variants={fadeUp}>
+                    <Eyebrow className={accent.eyebrow}>{t('abl.detail.concept', 'Concept')}</Eyebrow>
+                    <p className="font-display text-2xl font-semibold text-tide-text mt-1">{resource.concept}</p>
+                  </motion.div>
                 )}
 
-                {hasInfoCard && (
-                  <div className="bg-white rounded-2xl border border-tide-border p-5 space-y-4">
-                    {resource.concept && (
-                      <div>
-                        <Eyebrow className={accent.eyebrow}>{t('abl.detail.concept', 'Concept')}</Eyebrow>
-                        <p className="font-display text-xl font-semibold text-tide-text mt-1">{resource.concept}</p>
-                      </div>
-                    )}
-
-                    {languages.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5">
-                        {languages.map(l => (
-                          <span key={l} className="inline-block px-3 py-1 text-sm font-semibold rounded-full border bg-tide-subtle text-tide-muted border-tide-border">
-                            {l}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
+                {(languages.length > 0 || resource.ownership) && (
+                  <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-2">
+                    {languages.map(l => (
+                      <span key={l} className="inline-block px-3 py-1 text-sm font-semibold rounded-full border bg-tide-subtle text-tide-muted border-tide-border">
+                        {l}
+                      </span>
+                    ))}
                     {resource.ownership && (
-                      <div className="flex items-center gap-1.5">
-                        <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${resource.ownership === 'TIDE' ? 'bg-primary' : 'bg-tide-muted'}`} />
-                        <span className="text-sm font-body text-tide-muted">
-                          {resource.ownership === 'TIDE' ? t('abl.resourceCard.tideResource', 'TIDE Resource') : t('abl.resourceCard.externalResource', 'External Resource')}
-                        </span>
-                      </div>
+                      <span className="inline-flex items-center gap-1.5 text-sm font-body text-tide-muted">
+                        <span className={`w-1.5 h-1.5 rounded-full ${resource.ownership === 'TIDE' ? 'bg-primary' : 'bg-tide-muted'}`} />
+                        {resource.ownership === 'TIDE' ? t('abl.resourceCard.tideResource', 'TIDE Resource') : t('abl.resourceCard.externalResource', 'External Resource')}
+                      </span>
                     )}
-                  </div>
+                  </motion.div>
                 )}
 
-                {hasCoverage && <div className="h-px bg-tide-border" />}
+                {hasCoverage && (
+                  <motion.div variants={fadeUp}><div className="h-px bg-tide-border" /></motion.div>
+                )}
 
-                <CoverageMatrix chapters={resource.chapters ?? {}} accent={accent} />
+                <CoverageMatrix
+                  chapters={resource.chapters ?? {}}
+                  accent={accent}
+                  expanded={expandedGrade}
+                  onToggle={setExpandedGrade}
+                />
 
                 {(resource.storageLocation || resource.quantity) && (
-                  <div className="h-px bg-tide-border" />
+                  <motion.div variants={fadeUp} className="flex flex-wrap gap-6 pt-1">
+                    {resource.storageLocation && (
+                      <div className="flex items-center gap-2 text-sm font-body text-tide-muted">
+                        <MapPin className="w-4 h-4 text-tide-muted/60" /> {resource.storageLocation}
+                      </div>
+                    )}
+                    {resource.quantity && (
+                      <div className="flex items-center gap-2 text-sm font-body text-tide-muted">
+                        <Layers className="w-4 h-4 text-tide-muted/60" /> {resource.quantity} set(s)
+                      </div>
+                    )}
+                  </motion.div>
                 )}
-
-                {resource.storageLocation && (
-                  <p className="text-sm text-tide-muted">Storage: {resource.storageLocation}</p>
-                )}
-                {resource.quantity && (
-                  <p className="text-sm text-tide-muted">Quantity: {resource.quantity} set(s)</p>
-                )}
-              </div>
+              </motion.div>
             </div>
 
             {resource.description && (
