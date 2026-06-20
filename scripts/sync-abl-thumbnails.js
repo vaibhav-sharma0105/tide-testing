@@ -32,10 +32,19 @@ function sniffImageType(buf) {
   return null
 }
 
-async function fetchJson(url) {
-  const res = await fetch(url, { redirect: 'follow' })
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`)
-  return res.json()
+async function fetchJson(url, attempts = 3) {
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      const res = await fetch(url, { redirect: 'follow' })
+      if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`)
+      return await res.json()
+    } catch (err) {
+      if (attempt === attempts) throw err
+      const delayMs = attempt * 2000
+      console.warn(`  fetch failed (attempt ${attempt}/${attempts}): ${err.message} — retrying in ${delayMs}ms`)
+      await new Promise(resolve => setTimeout(resolve, delayMs))
+    }
+  }
 }
 
 async function loadManifest() {
