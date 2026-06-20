@@ -113,7 +113,7 @@ export default function AblDetail() {
                   aria-label="View full image"
                   disabled={!resource.photoUrl}
                 >
-                  <DriveImage url={resource.photoUrl} alt={resource.name} width={1200} />
+                  <DriveImage id={resource.id} alt={resource.name} variant="full" />
 
                   {/* Hover overlay */}
                   {resource.photoUrl && (
@@ -222,7 +222,7 @@ export default function AblDetail() {
       </section>
 
       <ImageLightbox
-        photoUrl={lightboxOpen ? resource.photoUrl : null}
+        id={lightboxOpen ? resource.id : null}
         alt={resource.name}
         onClose={() => setLightboxOpen(false)}
       />

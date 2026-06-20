@@ -150,6 +150,14 @@ Google Sheet (private) → Google Apps Script Web App → useABLData() → React
                                               sessionStorage cache (15-min TTL)
 ```
 
+Resource **thumbnails** are a separate, one-way sync — not part of the
+request above. `scripts/sync-abl-thumbnails.js` (run via
+`.github/workflows/sync-abl-thumbnails.yml`, triggered automatically on
+Sheet edits) downloads photos from Drive ahead of time and commits optimized
+WebP files into `public/assets/images/abl/`. The React app only ever reads
+`src/data/abl-thumbnails-manifest.json` — it never talks to Google for
+images at runtime. See `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md`.
+
 ### Configuration
 ```bash
 # .env.development (gitignored — create locally)
@@ -157,14 +165,19 @@ VITE_ABL_API_URL=https://script.google.com/macros/s/.../exec
 VITE_ABL_CONTRIBUTE_FORM_URL=https://forms.gle/...
 ```
 Add both as GitHub Actions repository secrets for production builds.
+The thumbnail sync workflow additionally needs an `ABL_SYNC_TOKEN` repo
+secret — see the thumbnail sync setup guide above.
 
 ### Key files
 - `src/config/abl.js` — all ABL constants and tab config
 - `src/hooks/useABLData.js` — fetch + cache hook
-- `src/utils/driveUtils.js` — Drive URL transforms
+- `src/utils/driveUtils.js` — Drive preview/download link transforms (not thumbnails)
+- `src/utils/ablThumbnails.js` — resolves a resource id to its synced thumbnail path
 - `src/utils/filterResources.js` — pure filter function
 - `src/components/abl/` — 8 UI components
+- `scripts/sync-abl-thumbnails.js` — thumbnail sync job (see setup guide)
 - `docs/ABL-RESOURCE-LIBRARY-SPEC.md` — full spec + Apps Script code
+- `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` — thumbnail sync setup procedure
 
 ## Resuming Work
 1. Read this file for orientation

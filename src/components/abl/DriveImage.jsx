@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { BookOpen } from 'lucide-react'
-import { getDriveThumbnail } from '../../utils/driveUtils'
+import { getAblThumbnail } from '../../utils/ablThumbnails'
 
-export default function DriveImage({ url, alt, className = '', width = 800, imgClassName = '' }) {
+export default function DriveImage({ id, alt, className = '', variant = 'thumb', imgClassName = '' }) {
   const [loaded,  setLoaded]  = useState(false)
   const [errored, setErrored] = useState(false)
-  const src = getDriveThumbnail(url, width)
+  const src = getAblThumbnail(id, variant)
 
   return (
     <div className={`relative aspect-[3/4] overflow-hidden bg-tide-subtle ${className}`}>

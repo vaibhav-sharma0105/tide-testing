@@ -1,0 +1,57 @@
+name: Sync ABL Thumbnails
+
+# Keeps ABL Resource Center thumbnails self-hosted instead of depending on
+# Google's undocumented thumbnail CDN at runtime. See
+# docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md for the full setup procedure.
+#
+# Triggers:
+#   - repository_dispatch (abl-content-changed): fired by the Apps Script
+#     onSheetChange trigger within seconds of a real sheet edit.
+#   - schedule: daily safety net in case a dispatch is ever missed.
+#   - workflow_dispatch: manual run (e.g. the very first sync, or debugging).
+
+on:
+  repository_dispatch:
+    types: [abl-content-changed]
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-abl-thumbnails
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run sync
+        id: sync
+        run: npm run content:sync-abl-thumbnails
+        env:
+          VITE_ABL_API_URL: ${{ secrets.VITE_ABL_API_URL }}
+          ABL_SYNC_TOKEN: ${{ secrets.ABL_SYNC_TOKEN }}
+
+      - name: Commit changes
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/assets/images/abl src/data/abl-thumbnails-manifest.json
+          git commit -m "chore(abl-sync): update resource thumbnails"
+          git push

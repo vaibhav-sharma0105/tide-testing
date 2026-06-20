@@ -213,7 +213,45 @@ Error response (never throws, always returns JSON):
 Fields that may be `null`: `quantity`, `storageLocation`, `photoUrl`, `videoUrl`, `canvaUrl`, `description`, `referenceLink`.  
 `grades` and `chapters[grade]` are always arrays (never null — empty array if no data).
 
-### 2.4 Complete Apps Script Code
+### 2.4 Thumbnail Sync Endpoints (`?action=manifest` / `?action=fetchImage`)
+
+These two actions exist **only** to support the automated thumbnail-sync pipeline
+described in `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` — they are not used by the
+public React site. They are gated by a shared secret (`SYNC_TOKEN`, stored in
+Script Properties, never in source) so they don't widen the Web App's existing
+"Anyone can access" surface beyond the original read-only resource listing.
+
+**`GET ?action=manifest&token=SYNC_TOKEN`**
+
+Returns `{id, fileId, modifiedTime}` for every resource that has a `photoUrl`,
+so the sync job can diff cheaply against its local manifest instead of
+re-downloading all 161+ images on every run.
+
+```json
+{ "success": true, "manifest": [
+  { "id": "W1", "fileId": "1zSvZ...", "modifiedTime": "2026-06-20T07:54:05.909Z" }
+] }
+```
+
+**`GET ?action=fetchImage&id=W1&token=SYNC_TOKEN`**
+
+Returns base64 bytes for exactly one resource's photo. `id` must be a real,
+known resource id from the current sheet — the endpoint never accepts a raw
+Drive `fileId` directly. This is a deliberate allowlist: even if `SYNC_TOKEN`
+ever leaked, it could only be used to pull images that are already public
+resources, never arbitrary files elsewhere in the linked Drive.
+
+```json
+{ "success": true, "id": "W1", "mimeType": "image/png",
+  "modifiedTime": "2026-06-20T07:54:05.909Z", "base64": "iVBORw0KG..." }
+```
+
+Both actions return `{ "success": false, "error": "Unauthorized" }` (still
+HTTP 200 — Apps Script `doGet` cannot set a custom status code) when the
+token is missing or wrong. The sync job treats `success: false` as a hard
+failure and aborts the run rather than committing partial data.
+
+### 2.5 Complete Apps Script Code
 
 **File: `Code.gs`** — paste this in full when setting up.
 
@@ -230,18 +268,138 @@ function tabCacheKey(tabName) { return 'abl_tab_v2_' + tabName; }
 // ─── Entry point ─────────────────────────────────────────────────────────────
 function doGet(e) {
   try {
+    const action = e.parameter.action;
+
+    if (action === 'manifest')   return jsonOutput(handleManifest(e));
+    if (action === 'fetchImage') return jsonOutput(handleFetchImage(e));
+
+    // Default: public resource listing (unchanged, no auth)
     const result = getFromCacheOrFetch();
-    return ContentService
-      .createTextOutput(JSON.stringify(result))
-      .setMimeType(ContentService.MimeType.JSON);
+    return jsonOutput(result);
   } catch (err) {
-    const errResponse = {
+    return jsonOutput({
       success: false, error: err.message,
       tabs: [], resources: {}, meta: { counts: {}, total: 0 }
+    });
+  }
+}
+
+function jsonOutput(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ─── Thumbnail sync — token-gated, allowlisted to known resource ids ─────────
+// See docs/ABL-RESOURCE-LIBRARY-SPEC.md §2.4 and
+// docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md for the full setup procedure.
+
+function isAuthorizedSyncRequest(e) {
+  const expected = PropertiesService.getScriptProperties().getProperty('SYNC_TOKEN');
+  const provided = e.parameter.token;
+  return !!expected && !!provided && expected === provided;
+}
+
+function handleManifest(e) {
+  if (!isAuthorizedSyncRequest(e)) return { success: false, error: 'Unauthorized' };
+
+  const data = getFromCacheOrFetch();
+  const manifest = [];
+
+  Object.keys(data.resources).forEach(function(tab) {
+    data.resources[tab].forEach(function(resource) {
+      const fileId = extractDriveFileId(resource.photoUrl);
+      if (!fileId) return;
+      try {
+        const modifiedTime = DriveApp.getFileById(fileId).getLastUpdated().toISOString();
+        manifest.push({ id: resource.id, fileId: fileId, modifiedTime: modifiedTime });
+      } catch (err) {
+        Logger.log('Could not read file for resource ' + resource.id + ': ' + err.message);
+      }
+    });
+  });
+
+  return { success: true, manifest: manifest };
+}
+
+function handleFetchImage(e) {
+  if (!isAuthorizedSyncRequest(e)) return { success: false, error: 'Unauthorized' };
+
+  const id = e.parameter.id;
+  if (!id) return { success: false, error: 'Missing id' };
+
+  // Look up the id against the CURRENT resource list — never trust a
+  // client-supplied Drive fileId directly. This is what keeps a leaked
+  // SYNC_TOKEN from being usable to pull arbitrary files out of Drive.
+  const data = getFromCacheOrFetch();
+  let resource = null;
+  Object.keys(data.resources).some(function(tab) {
+    const found = data.resources[tab].find(function(r) { return r.id === id; });
+    if (found) { resource = found; return true; }
+    return false;
+  });
+  if (!resource) return { success: false, error: 'Unknown resource id' };
+
+  const fileId = extractDriveFileId(resource.photoUrl);
+  if (!fileId) return { success: false, error: 'Resource has no photo' };
+
+  try {
+    const file = DriveApp.getFileById(fileId);
+    const blob = file.getBlob();
+    return {
+      success: true,
+      id: id,
+      mimeType: blob.getContentType(),
+      modifiedTime: file.getLastUpdated().toISOString(),
+      base64: Utilities.base64Encode(blob.getBytes())
     };
-    return ContentService
-      .createTextOutput(JSON.stringify(errResponse))
-      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return { success: false, error: 'Could not read file: ' + err.message };
+  }
+}
+
+function extractDriveFileId(url) {
+  if (!url) return null;
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  return match ? match[1] : null;
+}
+
+// ─── onChange dispatch trigger ────────────────────────────────────────────────
+// Install via Triggers UI (NOT the automatic onEdit simple trigger — this
+// needs full authorization to call UrlFetchApp with a stored credential):
+//   Add Trigger → function "onSheetChange" → event source "From spreadsheet"
+//   → event type "On edit".
+// Fires a GitHub repository_dispatch the moment the sheet actually changes,
+// so the thumbnail sync workflow reacts within seconds instead of waiting
+// for the daily cron safety net.
+function onSheetChange(e) {
+  const props = PropertiesService.getScriptProperties();
+  const now   = Date.now();
+  const last  = parseInt(props.getProperty('LAST_DISPATCH_AT') || '0', 10);
+
+  if (now - last < 2 * 60 * 1000) return; // debounce: skip if dispatched <2 min ago
+  props.setProperty('LAST_DISPATCH_AT', String(now));
+
+  const token = props.getProperty('GITHUB_PAT');
+  const repo  = props.getProperty('GITHUB_REPO'); // "owner/repo"
+  if (!token || !repo) {
+    Logger.log('GitHub dispatch skipped — GITHUB_PAT/GITHUB_REPO not set');
+    return;
+  }
+
+  try {
+    UrlFetchApp.fetch('https://api.github.com/repos/' + repo + '/dispatches', {
+      method: 'post',
+      contentType: 'application/json',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        Accept: 'application/vnd.github+json'
+      },
+      payload: JSON.stringify({ event_type: 'abl-content-changed' }),
+      muteHttpExceptions: true
+    });
+  } catch (err) {
+    Logger.log('GitHub dispatch failed: ' + err.message);
   }
 }
 
@@ -565,7 +723,16 @@ export function useABLData() {
 
 ---
 
-## 5. Drive URL Utilities — `driveUtils.js`
+## 5. Drive URL Utilities — `driveUtils.js` / `ablThumbnails.js`
+
+> **Update (thumbnail sync migration):** Earlier versions of this spec built
+> card/detail/lightbox thumbnail URLs at runtime via the unofficial
+> `lh3.googleusercontent.com/d/<id>=wN` endpoint. That endpoint has no
+> published quota and rate-limited (`HTTP 429` → Chrome `ERR_BLOCKED_BY_ORB`)
+> under ordinary page-load traffic. Thumbnails are now synced ahead of time
+> into self-hosted WebP assets by `scripts/sync-abl-thumbnails.js` — see
+> `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md`. `driveUtils.js` now only handles
+> explicit outbound links (preview/download), not passive image loads.
 
 ```js
 // src/utils/driveUtils.js
@@ -574,17 +741,6 @@ export function extractDriveFileId(url) {
   if (!url) return null
   const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/)
   return match ? match[1] : null
-}
-
-// For card thumbnails — fast, widely cached by Google CDN
-export function getDriveThumbnail(url, width = 400) {
-  const id = extractDriveFileId(url)
-  return id ? `https://lh3.googleusercontent.com/d/${id}=w${width}` : null
-}
-
-// For detail page full image
-export function getDriveFullImage(url) {
-  return getDriveThumbnail(url, 1200)
 }
 
 // For iframe embed (video/doc preview)
@@ -597,6 +753,21 @@ export function getDrivePreviewUrl(url) {
 export function getDriveDownloadUrl(url) {
   const id = extractDriveFileId(url)
   return id ? `https://drive.google.com/uc?export=download&id=${id}` : null
+}
+```
+
+```js
+// src/utils/ablThumbnails.js
+import manifest from '../data/abl-thumbnails-manifest.json'
+import { imgSrc } from './imgSrc'
+
+// Resolves a resource id to a self-hosted thumbnail path, synced ahead of
+// time by scripts/sync-abl-thumbnails.js. Returns null if the resource has
+// no photo, or hasn't been synced yet — callers fall back to a placeholder.
+export function getAblThumbnail(id, variant = 'thumb') {
+  const entry = manifest[id]
+  if (!entry) return null
+  return imgSrc(entry[variant])
 }
 ```
 
@@ -684,14 +855,13 @@ Detect active from `useLocation()` — do not rely on the `active` prop alone so
 ### 7.2 `DriveImage.jsx`
 
 ```
-Props: { url: string | null, alt: string, className?: string, width?: number }
+Props: { id: string, alt: string, className?: string, variant?: 'thumb' | 'full', imgClassName?: string }
 ```
 
-- Transform `url` → `getDriveThumbnail(url, width ?? 400)`
+- Resolve `id` → `getAblThumbnail(id, variant ?? 'thumb')` (self-hosted, synced ahead of time — see §5)
 - Render `<img loading="lazy" />`
-- `onError`: replace with fallback `<div className="w-full h-full bg-gradient-to-br from-primary-light to-primary/20 flex items-center justify-center"><BookOpen className="w-10 h-10 text-primary/40" /></div>`
-- If `url` is null: render fallback immediately (no broken request)
-- The outer container must have a defined aspect ratio so layout does not shift: `aspect-[4/3]` for cards, pass `className` to override
+- `onError` or no manifest entry yet: fallback `<div className="w-full h-full bg-gradient-to-br from-primary-light to-primary/20 flex items-center justify-center"><BookOpen className="w-10 h-10 text-primary/40" /></div>`
+- The outer container must have a defined aspect ratio so layout does not shift: `aspect-[3/4]` (portrait), pass `className` to override
 
 ### 7.3 `ResourceTypeBadge.jsx`
 
@@ -927,7 +1097,7 @@ On mount: read all resources from `useABLData()`, find `allResources.find(r => r
 
       {/* Left (3 cols) — media */}
       <div className="md:col-span-3">
-        <DriveImage url={resource.photoUrl} alt={resource.name} className="w-full" width={800} />
+        <DriveImage id={resource.id} alt={resource.name} className="w-full" variant="thumb" />
 
         {/* Action links */}
         <div className="flex gap-3 mt-5 flex-wrap">
@@ -1085,6 +1255,9 @@ All existing Tailwind tokens apply. Do not add new colours to `tailwind.config.j
 - **XSS**: all resource data is rendered via React JSX (auto-escaped). No `dangerouslySetInnerHTML` anywhere.
 - **CORS**: GAS sets appropriate CORS headers for GET requests when deployed as "Anyone". No proxy needed.
 - **Content validation**: the GAS script's `buildResource()` function normalises all fields before returning — null-coerces instead of passing raw sheet values.
+- **Thumbnail sync endpoints** (`?action=manifest`, `?action=fetchImage`) are gated by `SYNC_TOKEN`, a shared secret stored only in Script Properties (Apps Script) and a GitHub Actions encrypted secret — never in source. `fetchImage` additionally allowlists against the live resource list by `id`; it never accepts a raw Drive `fileId`, so a leaked token can only ever read images that are already public resources, not arbitrary files in the linked Drive.
+- **`GITHUB_PAT`** (used by `onSheetChange` to trigger the sync workflow) must be a *fine-grained* token scoped to this one repository with only the "Actions: Read and write" permission — no `contents`, no `admin`, no access to other repos. If it ever leaks, the blast radius is "can trigger a workflow run," nothing more.
+- **Downloaded image bytes are never trusted blindly**: the sync job validates the actual file signature (magic bytes) and enforces a size cap before writing anything into the deployed site, since the Sheet is editable by non-developer staff and is a softer trust boundary than the codebase itself.
 
 ---
 
@@ -1093,7 +1266,7 @@ All existing Tailwind tokens apply. Do not add new colours to `tailwind.config.j
 | Edge case | Handling |
 |---|---|
 | GAS cold start (first request after idle) | Loading skeleton shows; data arrives in 2–5s. Acceptable. |
-| Drive thumbnail returns 403 | `DriveImage.onError` → gradient fallback. Never show broken img. |
+| Resource not yet synced (new sheet row before next sync run) | No manifest entry → `DriveImage` renders gradient fallback immediately. Never show broken img. |
 | Resource with no photo | `url=null` → fallback rendered immediately, no HTTP request made. |
 | Gujarati script in name/concept | Rendered as-is; Noto Sans Gujarati is already loaded globally. |
 | Flashcard concept is a full sentence | `ResourceCard` detects `type === 'Flashcard'` and omits concept line. `AblDetail` always renders concept in full. |
@@ -1165,8 +1338,8 @@ Implement strictly in this order. Do not skip ahead.
 | `extractDriveFileId('https://drive.google.com/file/d/ABC123/view?usp=sharing')` | `'ABC123'` |
 | `extractDriveFileId(null)` | `null` |
 | `extractDriveFileId('https://example.com')` | `null` |
-| `getDriveThumbnail('https://drive.google.com/file/d/ABC/view', 400)` | `'https://lh3.googleusercontent.com/d/ABC=w400'` |
-| `getDriveThumbnail(null)` | `null` |
+| `getAblThumbnail('W1', 'thumb')` (synced) | `'/assets/images/abl/W1-thumb.webp'` (base-path resolved) |
+| `getAblThumbnail('UNKNOWN_ID')` | `null` |
 | `getDrivePreviewUrl('https://drive.google.com/file/d/XYZ/view')` | `'https://drive.google.com/file/d/XYZ/preview'` |
 
 ### Integration tests (after Phase 4)

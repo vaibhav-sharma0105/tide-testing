@@ -26,7 +26,7 @@ export default function ResourceCard({ resource }) {
       {/* Image with subtle zoom on hover */}
       <div className="overflow-hidden rounded-t-2xl">
         <DriveImage
-          url={resource.photoUrl}
+          id={resource.id}
           alt={resource.name ?? 'Resource'}
           imgClassName="group-hover/card:scale-105"
         />

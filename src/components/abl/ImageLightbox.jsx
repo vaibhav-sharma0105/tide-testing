@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
-import { getDriveLightboxImage } from '../../utils/driveUtils'
+import { getAblThumbnail } from '../../utils/ablThumbnails'
 
-export default function ImageLightbox({ photoUrl, alt, onClose }) {
-  const src = getDriveLightboxImage(photoUrl)
+export default function ImageLightbox({ id, alt, onClose }) {
+  const src = getAblThumbnail(id, 'full')
 
   useEffect(() => {
-    if (!photoUrl) return
+    if (!id) return
     const handler = (e) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', handler)
     document.body.style.overflow = 'hidden'
@@ -15,11 +15,11 @@ export default function ImageLightbox({ photoUrl, alt, onClose }) {
       document.removeEventListener('keydown', handler)
       document.body.style.overflow = ''
     }
-  }, [photoUrl, onClose])
+  }, [id, onClose])
 
   return (
     <AnimatePresence>
-      {photoUrl && (
+      {id && (
         <motion.div
           key="lightbox-backdrop"
           initial={{ opacity: 0 }}

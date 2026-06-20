@@ -1,9 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import {
   extractDriveFileId,
-  getDriveThumbnail,
-  getDriveFullImage,
-  getDriveLightboxImage,
   getDrivePreviewUrl,
   getDriveDownloadUrl,
 } from '../../utils/driveUtils'
@@ -44,64 +41,6 @@ describe('extractDriveFileId', () => {
 
   it('returns null for a URL with no /d/ segment', () => {
     expect(extractDriveFileId('https://drive.google.com/open?id=someId')).toBeNull()
-  })
-})
-
-describe('getDriveThumbnail', () => {
-  it('returns a lh3.googleusercontent.com URL for a valid Drive link', () => {
-    const url = getDriveThumbnail(SHARE_URL)
-    expect(url).toMatch(/^https:\/\/lh3\.googleusercontent\.com\/d\//)
-    expect(url).toContain(FILE_ID)
-  })
-
-  it('uses default width of 400', () => {
-    const url = getDriveThumbnail(SHARE_URL)
-    expect(url).toContain('=w400')
-  })
-
-  it('respects a custom width parameter', () => {
-    const url = getDriveThumbnail(SHARE_URL, 800)
-    expect(url).toContain('=w800')
-  })
-
-  it('returns null for a non-Drive URL', () => {
-    expect(getDriveThumbnail('https://example.com/img.png')).toBeNull()
-  })
-
-  it('returns null for empty string', () => {
-    expect(getDriveThumbnail('')).toBeNull()
-  })
-
-  it('returns null for undefined', () => {
-    expect(getDriveThumbnail(undefined)).toBeNull()
-  })
-
-  it('returns null for null', () => {
-    expect(getDriveThumbnail(null)).toBeNull()
-  })
-})
-
-describe('getDriveFullImage', () => {
-  it('returns a URL with width 1200', () => {
-    const url = getDriveFullImage(SHARE_URL)
-    expect(url).toContain('=w1200')
-    expect(url).toContain(FILE_ID)
-  })
-
-  it('returns null for null input', () => {
-    expect(getDriveFullImage(null)).toBeNull()
-  })
-})
-
-describe('getDriveLightboxImage', () => {
-  it('returns a URL with width 1600', () => {
-    const url = getDriveLightboxImage(SHARE_URL)
-    expect(url).toContain('=w1600')
-    expect(url).toContain(FILE_ID)
-  })
-
-  it('returns null for null input', () => {
-    expect(getDriveLightboxImage(null)).toBeNull()
   })
 })
 
@@ -148,13 +87,5 @@ describe('getDriveDownloadUrl', () => {
 
   it('returns null for null', () => {
     expect(getDriveDownloadUrl(null)).toBeNull()
-  })
-
-  it('constructs independent URLs — thumbnail and download differ', () => {
-    const thumb = getDriveThumbnail(SHARE_URL)
-    const download = getDriveDownloadUrl(SHARE_URL)
-    expect(thumb).not.toBe(download)
-    expect(thumb).toContain('lh3.googleusercontent.com')
-    expect(download).toContain('uc?export=download')
   })
 })
