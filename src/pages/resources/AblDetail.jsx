@@ -1,31 +1,70 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ExternalLink, ArrowLeft, BookOpen, Expand } from 'lucide-react'
+import { ArrowLeft, BookOpen, Expand, FileText } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
-import ResourceTypeBadge from '../../components/abl/ResourceTypeBadge'
+import Button from '../../components/ui/Button'
 import DriveImage from '../../components/abl/DriveImage'
 import ImageLightbox from '../../components/abl/ImageLightbox'
 import { useABLData } from '../../hooks/useABLData'
 import { getDrivePreviewUrl } from '../../utils/driveUtils'
+import { TAB_STYLE_MAP } from '../../config/abl'
 
-function MetaField({ label, value, children }) {
-  if (value == null && !children) return null
+const GRADES = ['GRADE 1', 'GRADE 2', 'GRADE 3', 'GRADE 4', 'GRADE 5']
+
+const ACCENT_MAP = {
+  blue:    { tile: 'bg-blue-50 text-blue-700 border-blue-200',       eyebrow: 'text-blue-700' },
+  emerald: { tile: 'bg-emerald-50 text-emerald-700 border-emerald-200', eyebrow: 'text-emerald-700' },
+  violet:  { tile: 'bg-violet-50 text-violet-700 border-violet-200',  eyebrow: 'text-violet-700' },
+  amber:   { tile: 'bg-amber-50 text-amber-700 border-amber-200',    eyebrow: 'text-amber-700' },
+  gray:    { tile: 'bg-tide-subtle text-tide-muted border-tide-border', eyebrow: 'text-tide-muted' },
+}
+
+function Eyebrow({ children, className = '' }) {
   return (
-    <div>
-      <dt className="text-xs font-body font-semibold uppercase tracking-widest text-tide-muted mb-1">{label}</dt>
-      <dd className="text-sm font-body text-tide-text">{children ?? value}</dd>
-    </div>
+    <p className={`text-xs font-body font-semibold uppercase tracking-widest ${className}`}>
+      {children}
+    </p>
   )
 }
 
-function GradeChip({ grade }) {
+/* Glanceable grade × chapter-count grid — the one piece of data unique to
+   this content type (which grades + how many chapters each one touches). */
+function CoverageMatrix({ chapters, accent }) {
+  const detailRows = GRADES
+    .map(g => ({ grade: g, list: chapters[g] ?? [] }))
+    .filter(row => row.list.length > 0)
+
+  if (detailRows.length === 0) return null
+
   return (
-    <span className="bg-primary-light text-primary text-[10px] font-bold px-2 py-0.5 rounded-full border border-primary/20 mr-1 mb-1 inline-block">
-      {grade}
-    </span>
+    <div>
+      <Eyebrow className={accent.eyebrow}>Coverage</Eyebrow>
+      <div className="grid grid-cols-5 gap-1.5 mt-2">
+        {GRADES.map(g => {
+          const count = chapters[g]?.length ?? 0
+          const has   = count > 0
+          return (
+            <div key={g} className="flex flex-col items-center gap-1">
+              <div className={`w-full aspect-square rounded-lg border flex items-center justify-center text-sm font-display font-semibold ${has ? accent.tile : 'border-tide-border text-tide-muted/30'}`}>
+                {has ? count : '–'}
+              </div>
+              <span className="text-[10px] font-body text-tide-muted">{g.replace('GRADE ', 'G')}</span>
+            </div>
+          )
+        })}
+      </div>
+      <ul className="mt-3 space-y-1">
+        {detailRows.map(({ grade, list }) => (
+          <li key={grade} className="text-xs font-body text-tide-muted">
+            <span className="font-semibold text-tide-text">{grade.replace('GRADE ', 'Grade ')}</span>
+            {' — '}{list.join(', ')}
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
 
@@ -49,7 +88,7 @@ export default function AblDetail() {
   if (loading) {
     return (
       <>
-        <PageHero badge="Resources · ABL" title={t('abl.resourceCenter.loading', 'Loading…')} gradient />
+        <PageHero badge="Resources · ABL" title={t('abl.resourceCenter.loading', 'Loading…')} />
         <AblNavBar />
         <section className="section-padding bg-tide-bg">
           <div className="max-w-5xl mx-auto">
@@ -71,7 +110,7 @@ export default function AblDetail() {
   if (error || !resource) {
     return (
       <>
-        <PageHero badge="Resources · ABL" title={t('abl.detail.notFound', 'Resource Not Found')} gradient />
+        <PageHero badge="Resources · ABL" title={t('abl.detail.notFound', 'Resource Not Found')} />
         <AblNavBar />
         <section className="section-padding bg-tide-bg">
           <div className="max-w-5xl mx-auto text-center py-10">
@@ -86,13 +125,15 @@ export default function AblDetail() {
     )
   }
 
-  const languages        = resource.language?.split(',').map(l => l.trim()).filter(Boolean) ?? []
-  const videoPreviewUrl  = getDrivePreviewUrl(resource.videoUrl)
-  const chaptersWithData = Object.entries(resource.chapters ?? {}).filter(([, chs]) => chs.length > 0)
+  const languages       = resource.language?.split(',').map(l => l.trim()).filter(Boolean) ?? []
+  const videoPreviewUrl = getDrivePreviewUrl(resource.videoUrl)
+  const style           = TAB_STYLE_MAP[resource.type] ?? TAB_STYLE_MAP._default
+  const accent          = ACCENT_MAP[style.color] ?? ACCENT_MAP.gray
+  const isOwned         = resource.ownership === 'TIDE'
 
   return (
     <>
-      <PageHero badge={`Resources · ${resource.type}`} title={resource.name} gradient />
+      <PageHero badge={`Resources · ${resource.type}`} title={resource.name} />
       <AblNavBar />
 
       <section className="section-padding bg-tide-bg">
@@ -102,135 +143,114 @@ export default function AblDetail() {
 
             <div className="grid md:grid-cols-5 gap-10">
 
-              {/* Left — media */}
+              {/* Left — media plate */}
               <div className="md:col-span-3">
-
-                {/* Clickable image → lightbox */}
                 <button
                   type="button"
                   onClick={() => resource.photoUrl && setLightboxOpen(true)}
-                  className={`group/img relative block w-full rounded-2xl overflow-hidden border border-tide-border ${resource.photoUrl ? 'cursor-zoom-in' : 'cursor-default'}`}
+                  className={`group/img relative block w-full rounded-2xl overflow-hidden border border-tide-border shadow-card ${resource.photoUrl ? 'cursor-zoom-in' : 'cursor-default'}`}
                   aria-label="View full image"
                   disabled={!resource.photoUrl}
                 >
                   <DriveImage id={resource.id} alt={resource.name} variant="full" />
-
-                  {/* Hover overlay */}
                   {resource.photoUrl && (
-                    <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                      <div className="w-12 h-12 rounded-full bg-white/0 group-hover/img:bg-white/85 flex items-center justify-center transition-all duration-250 scale-75 group-hover/img:scale-100 shadow-xl">
-                        <Expand className="w-5 h-5 text-tide-text opacity-0 group-hover/img:opacity-90 transition-opacity duration-200" />
-                      </div>
-                    </div>
+                    <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/15 transition-colors duration-300" />
                   )}
                 </button>
 
-                {videoPreviewUrl && (
-                  <div
-                    className="relative rounded-2xl overflow-hidden border border-tide-border mt-5"
-                    style={{ paddingBottom: '56.25%', height: 0 }}
-                  >
-                    <iframe
-                      src={videoPreviewUrl}
-                      title={t('abl.detail.watchVideo', 'Explanation video')}
-                      className="absolute inset-0 w-full h-full"
-                      frameBorder="0"
-                      allow="autoplay"
-                      allowFullScreen
-                    />
+                {resource.photoUrl && (
+                  <div className="mt-2 flex items-center gap-1.5 text-xs font-body text-tide-muted">
+                    <Expand className="w-3.5 h-3.5" /> {t('abl.detail.viewLarger', 'Tap to view larger')}
                   </div>
                 )}
 
-                <div className="flex gap-3 mt-5 flex-wrap">
-                  {resource.photoUrl && (
-                    <a
-                      href={resource.photoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary text-white text-sm font-body font-semibold hover:bg-primary/90 transition-colors"
+                {videoPreviewUrl && (
+                  <div className="mt-6">
+                    <Eyebrow className={`mb-2 ${accent.eyebrow}`}>
+                      {t('abl.detail.explanationVideo', 'Explanation Video')}
+                    </Eyebrow>
+                    <div
+                      className="relative rounded-2xl overflow-hidden border border-tide-border shadow-card"
+                      style={{ paddingBottom: '56.25%', height: 0 }}
                     >
-                      <ExternalLink className="w-4 h-4" /> {t('abl.detail.viewOriginal', 'View Original File')}
-                    </a>
+                      <iframe
+                        src={videoPreviewUrl}
+                        title={t('abl.detail.explanationVideo', 'Explanation Video')}
+                        className="absolute inset-0 w-full h-full"
+                        frameBorder="0"
+                        allow="autoplay"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex gap-3 mt-6 flex-wrap">
+                  {resource.photoUrl && (
+                    <Button href={resource.photoUrl} external variant="accent">
+                      <FileText className="w-4 h-4" /> {t('abl.detail.openFull', 'Open Full Resource')}
+                    </Button>
                   )}
                   {resource.canvaUrl && (
-                    <a
-                      href={resource.canvaUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-tide-border text-tide-text text-sm font-body font-semibold hover:border-primary hover:text-primary transition-colors"
-                    >
-                      <ExternalLink className="w-4 h-4" /> {t('abl.detail.viewCanva', 'View in Canva')}
-                    </a>
+                    <Button href={resource.canvaUrl} external variant="secondary">
+                      {t('abl.detail.viewCanva', 'View in Canva')}
+                    </Button>
                   )}
                   {resource.referenceLink && (
-                    <a
-                      href={resource.referenceLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-tide-border text-tide-text text-sm font-body font-semibold hover:border-primary hover:text-primary transition-colors"
-                    >
-                      <ExternalLink className="w-4 h-4" /> {t('abl.detail.sourceRef', 'Source Reference')}
-                    </a>
+                    <Button href={resource.referenceLink} external variant="secondary">
+                      {t('abl.detail.sourceRef', 'Source Reference')}
+                    </Button>
                   )}
                 </div>
               </div>
 
-              {/* Right — metadata */}
-              <div className="md:col-span-2">
-                <dl className="space-y-5">
-                  <div><ResourceTypeBadge type={resource.type} /></div>
+              {/* Right — facts rail */}
+              <div className="md:col-span-2 space-y-6">
+                {resource.concept && (
+                  <div>
+                    <Eyebrow className={accent.eyebrow}>{t('abl.detail.concept', 'Concept')}</Eyebrow>
+                    <p className="font-display text-lg font-semibold text-tide-text mt-1">{resource.concept}</p>
+                  </div>
+                )}
 
-                  <MetaField label={t('abl.detail.concept', 'Concept')} value={resource.concept} />
+                {languages.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {languages.map(l => (
+                      <span key={l} className="inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full border bg-tide-subtle text-tide-muted border-tide-border">
+                        {l}
+                      </span>
+                    ))}
+                  </div>
+                )}
 
-                  {languages.length > 0 && (
-                    <div>
-                      <dt className="text-xs font-body font-semibold uppercase tracking-widest text-tide-muted mb-1">{t('abl.detail.language', 'Language')}</dt>
-                      <dd className="flex flex-wrap gap-1.5">
-                        {languages.map(l => (
-                          <span key={l} className="inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full border bg-tide-subtle text-tide-muted border-tide-border">
-                            {l}
-                          </span>
-                        ))}
-                      </dd>
-                    </div>
-                  )}
+                <div className="flex items-center gap-1.5">
+                  <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isOwned ? 'bg-primary' : 'bg-tide-muted'}`} />
+                  <span className="text-xs font-body text-tide-muted">
+                    {isOwned ? t('abl.resourceCard.tideResource', 'TIDE Resource') : t('abl.resourceCard.externalResource', 'External Resource')}
+                  </span>
+                </div>
 
-                  {resource.grades?.length > 0 && (
-                    <div>
-                      <dt className="text-xs font-body font-semibold uppercase tracking-widest text-tide-muted mb-1">{t('abl.detail.grades', 'Grades')}</dt>
-                      <dd className="flex flex-wrap">
-                        {resource.grades.map(g => <GradeChip key={g} grade={g} />)}
-                      </dd>
-                    </div>
-                  )}
+                <div className="h-px bg-tide-border" />
 
-                  {chaptersWithData.map(([grade, chs]) => (
-                    <details key={grade} className="border border-tide-border rounded-xl px-4 py-3">
-                      <summary className="font-body text-sm font-semibold text-tide-text cursor-pointer list-none flex items-center justify-between">
-                        {grade} — Chapters
-                        <span className="text-tide-muted text-xs font-normal">({chs.length})</span>
-                      </summary>
-                      <p className="text-sm text-tide-muted mt-2 leading-relaxed">{chs.join(', ')}</p>
-                    </details>
-                  ))}
+                <CoverageMatrix chapters={resource.chapters ?? {}} accent={accent} />
 
-                  <MetaField label={t('abl.detail.ownership', 'Ownership')} value={resource.ownership ?? '—'} />
+                {(resource.storageLocation || resource.quantity) && (
+                  <div className="h-px bg-tide-border" />
+                )}
 
-                  {resource.storageLocation && (
-                    <p className="text-xs text-tide-muted">Storage: {resource.storageLocation}</p>
-                  )}
-                  {resource.quantity && (
-                    <p className="text-xs text-tide-muted">Quantity: {resource.quantity} set(s)</p>
-                  )}
-                  <p className="text-xs text-tide-muted font-mono">ID: {resource.id}</p>
-                </dl>
+                {resource.storageLocation && (
+                  <p className="text-xs text-tide-muted">Storage: {resource.storageLocation}</p>
+                )}
+                {resource.quantity && (
+                  <p className="text-xs text-tide-muted">Quantity: {resource.quantity} set(s)</p>
+                )}
               </div>
             </div>
 
             {resource.description && (
-              <div className="mt-10 bg-white rounded-2xl p-8 border border-tide-border">
-                <h3 className="font-display text-xl font-semibold text-tide-text mb-4">About This Resource</h3>
-                <p className="text-tide-muted font-body leading-relaxed">{resource.description}</p>
+              <div className="mt-12 pt-8 border-t border-tide-border">
+                <Eyebrow className="text-tide-muted mb-3">{t('abl.detail.about', 'About This Resource')}</Eyebrow>
+                <p className="text-tide-text font-body leading-relaxed max-w-3xl">{resource.description}</p>
               </div>
             )}
           </motion.div>
