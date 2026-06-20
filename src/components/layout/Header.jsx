@@ -27,7 +27,7 @@ function Dropdown({ id, items, onClose }) {
       className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 bg-white rounded-2xl shadow-float border border-tide-border/60 py-2 z-50 overflow-visible"
     >
       {/* top accent bar */}
-      <div className="absolute top-0 left-0 right-0 h-0.5 gradient-primary-soft rounded-t-2xl pointer-events-none" />
+      <div className="absolute top-0 left-4 right-4 h-[3px] rounded-full gradient-primary-soft pointer-events-none" />
 
       {items.map((item) =>
         item.subItems ? (
@@ -64,7 +64,7 @@ function Dropdown({ id, items, onClose }) {
                   role="menu"
                   className="absolute left-full top-0 ml-2 w-52 bg-white rounded-2xl shadow-float border border-tide-border/60 py-2 z-50 overflow-hidden"
                 >
-                  <div className="absolute top-0 left-0 right-0 h-0.5 gradient-primary-soft rounded-t-2xl pointer-events-none" />
+                  <div className="absolute top-0 left-4 right-4 h-[3px] rounded-full gradient-primary-soft pointer-events-none" />
                   {item.subItems.map(sub => (
                     <Link
                       key={sub.to}

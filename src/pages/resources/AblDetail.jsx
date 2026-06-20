@@ -94,8 +94,8 @@ export default function AblDetail() {
           <div className="max-w-5xl mx-auto">
             {backLink}
             <div className="animate-pulse grid md:grid-cols-5 gap-10">
-              <div className="md:col-span-3 aspect-[4/3] bg-tide-subtle rounded-2xl" />
-              <div className="md:col-span-2 space-y-4">
+              <div className="md:col-span-2 aspect-[3/4] bg-tide-subtle rounded-2xl" />
+              <div className="md:col-span-3 space-y-4">
                 {Array.from({ length: 6 }).map((_, i) => (
                   <div key={i} className="h-4 bg-tide-subtle rounded w-3/4" />
                 ))}
@@ -144,7 +144,7 @@ export default function AblDetail() {
             <div className="grid md:grid-cols-5 gap-10">
 
               {/* Left — media plate */}
-              <div className="md:col-span-3">
+              <div className="md:col-span-2">
                 <button
                   type="button"
                   onClick={() => resource.photoUrl && setLightboxOpen(true)}
@@ -164,8 +164,24 @@ export default function AblDetail() {
                   </div>
                 )}
 
+                <div className="flex gap-3 mt-4 flex-wrap">
+                  {resource.photoUrl && (
+                    <Button href={resource.photoUrl} external variant="accent">
+                      <FileText className="w-4 h-4" /> {t('abl.detail.openFull', 'Open Full Resource')}
+                    </Button>
+                  )}
+                  {resource.referenceLink && (
+                    <Button href={resource.referenceLink} external variant="secondary">
+                      {t('abl.detail.sourceRef', 'Source Reference')}
+                    </Button>
+                  )}
+                </div>
+              </div>
+
+              {/* Right — facts rail */}
+              <div className="md:col-span-3 space-y-6">
                 {videoPreviewUrl && (
-                  <div className="mt-6">
+                  <div>
                     <Eyebrow className={`mb-2 ${accent.eyebrow}`}>
                       {t('abl.detail.explanationVideo', 'Explanation Video')}
                     </Eyebrow>
@@ -185,27 +201,6 @@ export default function AblDetail() {
                   </div>
                 )}
 
-                <div className="flex gap-3 mt-6 flex-wrap">
-                  {resource.photoUrl && (
-                    <Button href={resource.photoUrl} external variant="accent">
-                      <FileText className="w-4 h-4" /> {t('abl.detail.openFull', 'Open Full Resource')}
-                    </Button>
-                  )}
-                  {resource.canvaUrl && (
-                    <Button href={resource.canvaUrl} external variant="secondary">
-                      {t('abl.detail.viewCanva', 'View in Canva')}
-                    </Button>
-                  )}
-                  {resource.referenceLink && (
-                    <Button href={resource.referenceLink} external variant="secondary">
-                      {t('abl.detail.sourceRef', 'Source Reference')}
-                    </Button>
-                  )}
-                </div>
-              </div>
-
-              {/* Right — facts rail */}
-              <div className="md:col-span-2 space-y-6">
                 {resource.concept && (
                   <div>
                     <Eyebrow className={accent.eyebrow}>{t('abl.detail.concept', 'Concept')}</Eyebrow>
