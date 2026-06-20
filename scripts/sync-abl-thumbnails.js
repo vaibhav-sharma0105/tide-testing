@@ -23,14 +23,7 @@ const MANIFEST_PATH = path.resolve('src/data/abl-thumbnails-manifest.json')
 const ASSETS_DIR    = path.resolve('public/assets/images/abl')
 const THUMB_WIDTH   = 480
 const FULL_WIDTH    = 1200
-const MAX_RAW_BYTES = 8 * 1024 * 1024 // reject anything larger than 8MB raw
-
-function sniffImageType(buf) {
-  if (buf.length >= 4 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) return 'image/png'
-  if (buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return 'image/jpeg'
-  if (buf.length >= 12 && buf.toString('ascii', 0, 4) === 'RIFF' && buf.toString('ascii', 8, 12) === 'WEBP') return 'image/webp'
-  return null
-}
+const MAX_RAW_BYTES = 25 * 1024 * 1024 // reject anything larger than 25MB raw (modern phone photos can exceed 8-10MB)
 
 async function fetchJson(url, attempts = 3) {
   for (let attempt = 1; attempt <= attempts; attempt++) {
@@ -89,10 +82,12 @@ async function main() {
         console.warn(`  skip ${id}: image too large (${raw.length} bytes)`)
         continue
       }
-      if (!sniffImageType(raw)) {
-        console.warn(`  skip ${id}: not a recognized image format`)
-        continue
-      }
+
+      // Let sharp itself validate the bytes are a decodable image — it
+      // supports far more real-world formats (HEIC/HEIF, GIF, TIFF, AVIF...)
+      // than a hand-rolled magic-byte check would, and a decode failure here
+      // is a stronger signal of "not actually an image" than guessing.
+      await sharp(raw).metadata()
 
       const thumbPath = path.join(ASSETS_DIR, `${id}-thumb.webp`)
       const fullPath  = path.join(ASSETS_DIR, `${id}-full.webp`)
