@@ -8,9 +8,11 @@ description: >
   automated pipeline such as a GitHub Actions workflow or a sync script), the design-system
   source of truth (tailwind.config.js, index.css design tokens), OR the public API of any
   component/utility/hook that AGENTS.md already documents (props renamed or changed shape,
-  a function's signature or return type changed, a file moved) — that last case is easy to
-  miss because it doesn't feel like "new architecture," but a doc describing the old prop
-  name is just as actively misleading as a doc describing a whole missing pipeline. Also
+  a function's signature or return type changed, a file moved), OR a documented constant's
+  set of valid values changed (e.g. a new entry added to TAB_STYLE_MAP, the GRADES list
+  growing past 5, a new Sheet tab) — these are easy to miss because they don't feel like
+  "new architecture," but a doc stating "Grades 1-5" or listing four resource types is just
+  as actively wrong as a doc describing a whole missing pipeline once a fifth type exists. Also
   trigger mid-task if you notice an EXISTING claim in docs/*.md, CLAUDE.md, or AGENTS.md is
   already wrong, even if unrelated to the current change — fix it inline while you're there,
   then call it out as a separate finding. Use this even when the user's request had nothing
@@ -55,10 +57,11 @@ repo docs.
 1. **Identify what actually changed.** Use `git diff`/`git log` for the current session's
    commits, or your own knowledge of what you just built if not yet committed. Categorize it:
    new/changed pipeline, new/changed subsystem, route or file-structure change, design-token
-   change, a documented component/utility's public API changed shape, or "not structural"
-   (skip). That fourth category is the one to watch for — it's the easiest to rationalize away
-   as "just a refactor" while still leaving a doc actively describing a prop or signature that
-   no longer exists.
+   change, a documented component/utility's public API changed shape, a documented constant's
+   set of valid values changed (new resource type, new grade level, new locale), or "not
+   structural" (skip). The middle two are the ones to watch for — both are easy to rationalize
+   away as "just a small addition" while still leaving a doc actively describing a prop,
+   signature, or value range that no longer matches reality.
 
 2. **Map the change to the docs that describe that area.** Don't guess which file needs
    updating — grep for it:
