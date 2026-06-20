@@ -11,6 +11,7 @@ import ImageLightbox from '../../components/abl/ImageLightbox'
 import VideoLightbox from '../../components/abl/VideoLightbox'
 import { useABLData } from '../../hooks/useABLData'
 import { getDrivePreviewUrl } from '../../utils/driveUtils'
+import { imgSrc } from '../../utils/imgSrc'
 import { TAB_STYLE_MAP } from '../../config/abl'
 
 const GRADES = ['GRADE 1', 'GRADE 2', 'GRADE 3', 'GRADE 4', 'GRADE 5']
@@ -47,7 +48,7 @@ function CoverageMatrix({ chapters, accent, expanded, onToggle }) {
 
   return (
     <motion.div variants={fadeUp}>
-      <Eyebrow className={accent.eyebrow}>{'Coverage'}</Eyebrow>
+      <Eyebrow className={accent.eyebrow}>{'Grade'}</Eyebrow>
       <div className="grid grid-cols-5 gap-2 mt-2">
         {rows.map(({ grade, list }, i) => {
           const has = list.length > 0
@@ -234,31 +235,27 @@ export default function AblDetail() {
                     )}
 
                     {videoPreviewUrl && (
-                      <div className="w-full sm:w-64 flex-shrink-0">
+                      <div className="w-full sm:w-72 flex-shrink-0">
                         <Eyebrow className="text-tide-muted mb-1.5">{t('abl.detail.explanationVideo', 'Explanation Video')}</Eyebrow>
                         <motion.div
-                          className="group/video relative aspect-video rounded-xl overflow-hidden border-2 border-primary/25 shadow-card cursor-pointer"
-                          whileHover={{ scale: 1.06, y: -4, boxShadow: '0 20px 40px -8px rgba(30,107,170,0.45)' }}
+                          className="group/video relative aspect-video rounded-xl overflow-hidden border-2 border-primary/25 shadow-card cursor-pointer bg-white"
+                          whileHover={{ scale: 1.04, y: -4, boxShadow: '0 20px 40px -8px rgba(30,107,170,0.45)' }}
                           transition={{ type: 'spring', stiffness: 280, damping: 18 }}
                         >
-                          <iframe
-                            src={videoPreviewUrl}
-                            title={t('abl.detail.explanationVideo', 'Explanation Video')}
-                            className="absolute inset-0 w-full h-full"
-                            frameBorder="0"
-                          />
+                          {/* Static fallback poster — a live Drive iframe here would letterbox
+                              unpredictably depending on the source video's own aspect ratio,
+                              which we can't control or detect from a cross-origin embed. */}
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <img src={imgSrc('assets/images/shared/tide-logo.png')} alt="" className="w-20 h-20 opacity-70" />
+                          </div>
                           <button
                             type="button"
                             onClick={() => setVideoOpen(true)}
                             aria-label={t('abl.detail.playVideo', 'Play explanation video')}
-                            className="absolute inset-0 w-full h-full flex items-center justify-center bg-primary/0 group-hover/video:bg-primary/25 transition-colors duration-300"
+                            className="absolute inset-0 w-full h-full flex items-center justify-center"
                           >
-                            {/* Always-visible subtle badge, replaced by a larger button on hover */}
-                            <span className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-black/55 backdrop-blur-sm flex items-center justify-center opacity-100 group-hover/video:opacity-0 transition-opacity duration-200">
-                              <Play className="w-3 h-3 text-white fill-white translate-x-px" />
-                            </span>
-                            <span className="opacity-0 group-hover/video:opacity-100 scale-75 group-hover/video:scale-100 transition-all duration-300 w-12 h-12 rounded-full bg-white/95 flex items-center justify-center shadow-xl">
-                              <Play className="w-5 h-5 text-primary fill-primary translate-x-px" />
+                            <span className="w-12 h-12 rounded-full bg-primary group-hover/video:bg-white flex items-center justify-center shadow-lg transition-all duration-300 group-hover/video:scale-110">
+                              <Play className="w-5 h-5 text-white group-hover/video:text-primary fill-white group-hover/video:fill-primary translate-x-px transition-colors duration-300" />
                             </span>
                           </button>
                         </motion.div>
