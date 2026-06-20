@@ -178,6 +178,7 @@ secret — see the thumbnail sync setup guide above.
 - `scripts/sync-abl-thumbnails.js` — thumbnail sync job (see setup guide)
 - `docs/ABL-RESOURCE-LIBRARY-SPEC.md` — full spec + Apps Script code
 - `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` — thumbnail sync setup procedure
+- `docs/ARCHITECTURE.html` — interactive end-to-end system diagram (content pipeline, ABL data flow, thumbnail sync, secrets, deploy). Open directly in a browser — standalone, not part of the build.
 
 ## Resuming Work
 1. Read this file for orientation

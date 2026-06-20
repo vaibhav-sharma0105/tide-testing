@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TIDE Foundation Website — System Architecture</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #0a0e14;
+    --panel: #11161f;
+    --panel-2: #161c28;
+    --border: #232b3a;
+    --text: #e2e8f0;
+    --muted: #8b97ad;
+    --mono: 'SFMono-Regular', 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+    --content: #94a3b8;
+    --script: #60a5fa;
+    --generated: #c084fc;
+    --runtime: #34d399;
+    --gas: #fbbf24;
+    --ci: #818cf8;
+    --secret: #f87171;
+    --host: #22d3ee;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  header {
+    padding: 28px 32px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 {
+    margin: 0 0 4px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  header p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 0;
+    align-items: start;
+  }
+  main {
+    padding: 24px 32px 80px;
+    min-width: 0;
+    overflow-x: auto;
+  }
+  .section {
+    margin-bottom: 36px;
+  }
+  .section-title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .section-num {
+    font-family: var(--mono);
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .section-title h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .section-desc {
+    color: var(--muted);
+    font-size: 12.5px;
+    margin: 0 0 14px;
+    max-width: 720px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+  .node {
+    border: 1.5px solid var(--border);
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 10px 13px;
+    cursor: pointer;
+    min-width: 150px;
+    max-width: 210px;
+    transition: border-color .15s, transform .1s, box-shadow .15s;
+    position: relative;
+  }
+  .node:hover {
+    border-color: #3a4658;
+    transform: translateY(-1px);
+  }
+  .node.active {
+    border-color: var(--node-accent, #5eead4);
+    box-shadow: 0 0 0 1px var(--node-accent, #5eead4), 0 0 16px -4px var(--node-accent, #5eead4);
+  }
+  .node.flash {
+    animation: flash 1s ease;
+  }
+  @keyframes flash {
+    0%, 100% { background: var(--panel); }
+    30% { background: var(--panel-2); }
+  }
+  .node-type-bar {
+    height: 3px;
+    border-radius: 2px;
+    margin-bottom: 7px;
+  }
+  .node-title {
+    font-weight: 600;
+    font-size: 12.5px;
+    margin-bottom: 2px;
+  }
+  .node-path {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--muted);
+    word-break: break-all;
+  }
+  .arrow {
+    color: var(--muted);
+    font-size: 16px;
+    padding: 0 8px;
+    flex-shrink: 0;
+    align-self: center;
+  }
+  .arrow-down-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 24px;
+    color: var(--muted);
+    font-size: 13px;
+    margin: 2px 0;
+  }
+  aside {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    border-left: 1px solid var(--border);
+    background: var(--panel);
+    overflow-y: auto;
+    padding: 24px 22px 60px;
+  }
+  .panel-empty {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-top: 40px;
+  }
+  .panel-type-badge {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 5px;
+    margin-bottom: 12px;
+  }
+  .panel-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+  .panel-path {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--host);
+    margin-bottom: 16px;
+    word-break: break-all;
+  }
+  .panel-desc {
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 18px;
+    line-height: 1.65;
+  }
+  .panel-row {
+    margin-bottom: 14px;
+  }
+  .panel-row-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .panel-row-content {
+    font-size: 12.5px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .panel-row-content code, .panel-row-content .ic {
+    font-family: var(--mono);
+    background: var(--panel-2);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    color: #fbcfe8;
+  }
+  .panel-row-content ul {
+    margin: 4px 0 0;
+    padding-left: 16px;
+  }
+  .panel-row-content li {
+    margin-bottom: 3px;
+  }
+  .connects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .connect-pill {
+    font-size: 11px;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    border-radius: 12px;
+    padding: 4px 10px;
+    cursor: pointer;
+    color: var(--text);
+    transition: border-color .15s;
+  }
+  .connect-pill:hover {
+    border-color: var(--host);
+    color: var(--host);
+  }
+  .security-note {
+    border-left: 3px solid var(--secret);
+    background: rgba(248,113,113,0.08);
+    padding: 8px 10px;
+    border-radius: 0 6px 6px 0;
+    font-size: 12px;
+  }
+  .timeline {
+    border-left: 2px solid var(--border);
+    margin-left: 8px;
+    padding-left: 22px;
+  }
+  .timeline-step {
+    position: relative;
+    margin-bottom: 18px;
+  }
+  .timeline-step::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 3px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--ci);
+    border: 2px solid var(--bg);
+  }
+  .timeline-t {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ci);
+    font-weight: 700;
+  }
+  .timeline-label {
+    font-size: 13px;
+    margin-top: 2px;
+  }
+  .timeline-sub {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  @media (max-width: 980px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { position: static; height: auto; border-left: none; border-top: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>TIDE Foundation Website — System Architecture</h1>
+  <p>Click any block for details. Lines marked "Connects to" jump to the related block. Generated 2026-06-21 — verified against source, not memory.</p>
+  <div class="legend">
+    <div class="legend-item"><span class="swatch" style="background:var(--content)"></span>Human-authored content</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--script)"></span>Build/sync script</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--generated)"></span>Generated artifact (committed)</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--runtime)"></span>Runtime / React</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--gas)"></span>Google Apps Script</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--ci)"></span>GitHub Actions / CI</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--secret)"></span>Secret / credential</div>
+    <div class="legend-item"><span class="swatch" style="background:var(--host)"></span>Static hosting</div>
+  </div>
+</header>
+
+<div class="layout">
+  <main id="main"></main>
+  <aside id="panel">
+    <div class="panel-empty">← Click any block in the diagram.<br><br>Each block shows what it reads, what it writes, how it's triggered, and — for secrets-adjacent pieces — exactly what's exposed if it leaks.</div>
+  </aside>
+</div>
+
+<script>
+const TYPE_COLOR = {
+  content: 'var(--content)', script: 'var(--script)', generated: 'var(--generated)',
+  runtime: 'var(--runtime)', gas: 'var(--gas)', ci: 'var(--ci)', secret: 'var(--secret)', host: 'var(--host)'
+};
+const TYPE_LABEL = {
+  content: 'Human-authored content', script: 'Build/sync script', generated: 'Generated artifact',
+  runtime: 'Runtime / React', gas: 'Google Apps Script', ci: 'GitHub Actions / CI',
+  secret: 'Secret / credential', host: 'Static hosting'
+};
+
+const NODES = {
+
+  // ---------- Section 1: Content & Translation ----------
+  'content-yaml': { type:'content', title:'Page & shared YAML', path:'content/pages/*.yaml, content/shared/*.yaml',
+    desc:'20 page YAML files (one per CMS-managed page) plus navigation.yaml and footer.yaml. This is the single source of truth for all English copy on the site — never edited as JSON.',
+    rows:{ 'Read by':'scripts/yaml-to-json.js' }, connects:['yaml-to-json'] },
+  'locale-yaml': { type:'content', title:'Locale YAML (HI/GU)', path:'content/locales/hi/*.yaml, content/locales/gu/*.yaml',
+    desc:'Hindi and Gujarati translations, authored independently of the English YAML. Deep-merged into translation.json per locale.',
+    rows:{ 'Read by':'scripts/yaml-to-json.js' }, connects:['yaml-to-json'] },
+  'yaml-to-json': { type:'script', title:'yaml-to-json.js', path:'scripts/yaml-to-json.js',
+    desc:'Runs automatically via the predev/prebuild npm hooks — never run manually in normal workflow. Converts page YAML to JSON 1:1, and deep-merges locale YAML into each language\'s translation.json.',
+    rows:{ 'Triggered by':'npm run dev / npm run build (predev, prebuild hooks)', 'Writes to':'src/data/*.json, src/i18n/locales/{hi,gu}/translation.json' },
+    connects:['content-yaml','locale-yaml','validate-content','src-data-json','i18n-json'] },
+  'validate-content': { type:'script', title:'validate-content.js', path:'scripts/validate-content.js',
+    desc:'Manually-run check (npm run content:validate) — verifies YAML syntax and that every referenced image path actually exists in public/assets. Not part of the build; a pre-flight sanity check for content editors.',
+    rows:{}, connects:['content-yaml'] },
+  'src-data-json': { type:'generated', title:'src/data/*.json', path:'src/data/*.json',
+    desc:'22 auto-generated JSON files (20 pages + navigation + footer), committed to git so the repo is buildable without re-running the sync. Never hand-edited — any manual change is silently overwritten on the next sync.',
+    rows:{ 'Generated by':'yaml-to-json.js', 'Read by':'React page components (import data from \'../data/page.json\')' },
+    connects:['yaml-to-json','react-pages'] },
+  'i18n-json': { type:'generated', title:'i18n translation.json', path:'src/i18n/locales/{en,hi,gu}/translation.json',
+    desc:'en/translation.json is intentionally {} — English never comes from here, only from the YAML data passed as t() fallback. hi/ and gu/ are auto-generated deep-merges of their locale YAML.',
+    rows:{ 'Generated by':'yaml-to-json.js (hi/gu only — en is static {})', 'Read by':'i18next-runtime' },
+    connects:['yaml-to-json','i18next-runtime'] },
+  'react-pages': { type:'runtime', title:'React page components', path:'src/pages/**/*.jsx',
+    desc:'Every CMS-managed page imports its JSON and uses the t(\'key\', data.field) pattern — the YAML-sourced value is always the fallback, so missing translations degrade to correct English rather than a raw i18n key.',
+    rows:{ 'Reads':'src/data/*.json', 'Uses':'i18next-runtime for HI/GU' }, connects:['src-data-json','i18next-runtime'] },
+  'i18next-runtime': { type:'runtime', title:'i18next + react-i18next', path:'src/i18n/index.js',
+    desc:'fallbackLng: false — a missing HI/GU key renders the YAML data.* fallback directly instead of an i18next placeholder. LanguageSwitcher persists the chosen language to localStorage. Controlled by MULTILINGUAL_ENABLED feature flag (src/config/features.js).',
+    rows:{}, connects:['i18n-json','react-pages'] },
+
+  // ---------- Section 2: ABL Dynamic Data ----------
+  'google-sheet': { type:'content', title:'Google Sheet (private)', path:'Sheet ID lives only in Code.gs — never in the React app',
+    desc:'Source of truth for ~161 Activity-Based Learning resources across 4 tabs: Worksheet, Games, Kits, Flashcards. Edited directly by TIDE staff — no developer involvement needed for routine content updates.',
+    rows:{ 'Read by':'apps-script-listing (resource data), Drive files linked from rows feed the thumbnail pipeline (Section 3)' },
+    connects:['apps-script-listing','apps-script-onchange-trigger'] },
+  'apps-script-listing': { type:'gas', title:'Apps Script — listing API', path:'Code.gs — doGet() default action',
+    desc:'Deployed as a Web App ("Execute as: Me", "Who has access: Anyone") — the only public-facing surface for the private Sheet. Parses every tab into a normalized ResourceObject shape, server-side null-coercion via buildResource().',
+    rows:{
+      'Caching':'CacheService, 900s TTL, split per-tab to stay under the 100KB cache-entry limit',
+      'Auto-refresh':'scheduledRefresh() time-trigger runs every 15 minutes regardless of traffic',
+      'Security':'No auth on this default action — read-only resource listing is intentionally public'
+    },
+    connects:['google-sheet','useABLData-hook'] },
+  'useABLData-hook': { type:'runtime', title:'useABLData()', path:'src/hooks/useABLData.js',
+    desc:'Client-side fetch + cache hook, called independently by every ABL page (including AblDetail on direct deep-link — never assume allResources is pre-populated).',
+    rows:{
+      'Cache':'sessionStorage, 15-minute TTL — matches the Apps Script side\'s own 15-min cycle',
+      'Timeout':'10s client-side fetch timeout → error state with retry, not a crash',
+      'Config':'VITE_ABL_API_URL — if unset, returns an error state immediately, no fetch attempted'
+    },
+    connects:['apps-script-listing','abl-react-pages','env-local'] },
+  'abl-react-pages': { type:'runtime', title:'AblHome / AblResourceCenter / AblDetail / AblContribute', path:'src/pages/resources/Abl*.jsx',
+    desc:'Four pages sharing one data hook. Results and the Resource Type filter both sort alphabetically ascending. Thumbnails are NOT fetched here — see Section 3.',
+    rows:{}, connects:['useABLData-hook','driveImage-component'] },
+
+  // ---------- Section 3: Thumbnail Self-Hosting Pipeline ----------
+  'apps-script-thumb-endpoints': { type:'gas', title:'Apps Script — thumbnail endpoints', path:'Code.gs — ?action=manifest / ?action=fetchImage',
+    desc:'Added 2026-06-20 to replace a runtime dependency on an undocumented Google CDN endpoint (lh3.googleusercontent.com) that rate-limited under ordinary page-load traffic. Uses Drive API\'s thumbnailLink rather than raw file bytes — worksheet "photos" are often actually PDFs, and some phone-camera HEIC files exceed libheif\'s safety limits; Google\'s own thumbnail renderer handles both, raw bytes did not.',
+    rows:{
+      'manifest':'returns {id, fileId, modifiedTime} for every resource with a photo — lets the sync job diff cheaply',
+      'fetchImage':'returns base64 bytes for ONE resource\'s rendered thumbnail',
+    },
+    security:'Both actions require token === SYNC_TOKEN (Script Property). fetchImage additionally allowlists against the live resource list by id — it never accepts a raw Drive fileId directly, so a leaked token can only ever read images already in the public resource list, nothing else in the linked Drive.',
+    connects:['google-sheet','sync-script','apps-script-properties'] },
+  'apps-script-onchange-trigger': { type:'gas', title:'onSheetChange trigger', path:'Code.gs — installable "On edit" trigger',
+    desc:'Fires within seconds of any real Sheet edit. Debounced — skips if the last dispatch was under 2 minutes ago, so an active editing burst doesn\'t spam GitHub Actions runs.',
+    rows:{ 'Calls':'POST https://api.github.com/repos/{GITHUB_REPO}/dispatches, event_type: abl-content-changed', 'Auth':'Bearer {GITHUB_PAT} (fine-grained, Actions:write only, scoped to this one repo)' },
+    security:'If GITHUB_PAT leaks, blast radius is "can trigger a workflow run" — nothing else, by design (no contents/admin scope).',
+    connects:['google-sheet','gh-actions-sync-workflow','apps-script-properties'] },
+  'gh-actions-sync-workflow': { type:'ci', title:'sync-abl-thumbnails.yml', path:'.github/workflows/sync-abl-thumbnails.yml',
+    desc:'Three independent triggers, in priority order of how you\'ll actually see them fire.',
+    rows:{
+      'repository_dispatch':'abl-content-changed — the near-real-time path, fired by onSheetChange',
+      'schedule':'daily cron at 02:00 UTC — pure safety net for a missed dispatch',
+      'workflow_dispatch':'manual run — used for the first-ever sync and for debugging'
+    },
+    connects:['apps-script-onchange-trigger','sync-script'] },
+  'sync-script': { type:'script', title:'sync-abl-thumbnails.js', path:'scripts/sync-abl-thumbnails.js',
+    desc:'The actual sync job. Fetches the manifest (one call), diffs against the locally committed manifest, and only fetches images for new/changed ids — a no-op run costs almost nothing.',
+    rows:{
+      'Validation':'sharp decodes the bytes (rejects anything it can\'t decode — far more format coverage than a hand-rolled signature check) + 25MB raw size cap',
+      'Output':'two WebP renditions per resource — 480w "thumb", 1200w "full"',
+      'Retries':'up to 3 attempts with backoff per HTTP call — added after a transient ETIMEDOUT on the GitHub-hosted runner'
+    },
+    connects:['apps-script-thumb-endpoints','public-assets-abl','manifest-json'] },
+  'public-assets-abl': { type:'generated', title:'Committed thumbnail files', path:'public/assets/images/abl/*.webp',
+    desc:'~29MB across 159 resources × 2 renditions as of last sync. Served by GitHub Pages\' CDN exactly like every other static asset on the site — no separate hosting, no runtime dependency on Google.',
+    rows:{}, connects:['sync-script','github-pages-host'] },
+  'manifest-json': { type:'generated', title:'abl-thumbnails-manifest.json', path:'src/data/abl-thumbnails-manifest.json',
+    desc:'The diff source of truth for the whole pipeline: {id: {modifiedTime, thumb, full}}. Lives in src/data/ alongside the YAML-generated JSON, but — important distinction — it\'s written by sync-abl-thumbnails.js, NOT by yaml-to-json.js. content:sync never touches it.',
+    rows:{ 'Written by':'sync-abl-thumbnails.js (commits directly to main if anything changed)', 'Read by':'ablThumbnails.js' },
+    connects:['sync-script','ablThumbnails-util'] },
+  'ablThumbnails-util': { type:'runtime', title:'ablThumbnails.js', path:'src/utils/ablThumbnails.js',
+    desc:'getAblThumbnail(id, variant) — the only place that reads the manifest. Returns a base-path-resolved path, or null if the resource has no photo or just hasn\'t been synced yet (new Sheet row, sync hasn\'t run).',
+    rows:{}, connects:['manifest-json','driveImage-component'] },
+  'driveImage-component': { type:'runtime', title:'DriveImage / ImageLightbox / VideoLightbox', path:'src/components/abl/*.jsx',
+    desc:'Zero runtime calls to Google. A null return from getAblThumbnail renders a gradient fallback immediately — never a broken image icon, never a network request that might fail.',
+    rows:{}, connects:['ablThumbnails-util','abl-react-pages'] },
+
+  // ---------- Section 4: Secrets & Configuration ----------
+  'env-local': { type:'secret', title:'.env.development', path:'.env.development (gitignored)',
+    desc:'Local-only config for npm run dev. Never committed.',
+    rows:{ 'Vars':'VITE_ABL_API_URL, VITE_ABL_CONTRIBUTE_FORM_URL' },
+    security:'The Apps Script URL itself is not secret-sensitive (it\'s a public read-only endpoint) but is kept out of source control anyway, by convention — the Sheet ID behind it lives only in Code.gs.',
+    connects:['useABLData-hook'] },
+  'github-secrets': { type:'secret', title:'GitHub repository secrets', path:'Settings → Secrets and variables → Actions',
+    desc:'Three secrets, two different consumers.',
+    rows:{
+      'VITE_ABL_API_URL / VITE_ABL_CONTRIBUTE_FORM_URL':'injected into deploy.yml\'s build step as env vars',
+      'ABL_SYNC_TOKEN':'injected into sync-abl-thumbnails.yml — must match Code.gs\'s SYNC_TOKEN Script Property exactly'
+    },
+    connects:['deploy-workflow','gh-actions-sync-workflow'] },
+  'apps-script-properties': { type:'secret', title:'Apps Script Script Properties', path:'Project Settings → Script Properties (per-project, not in source)',
+    desc:'Four properties, none of them ever appear in Code.gs\'s source text.',
+    rows:{
+      'SYNC_TOKEN':'shared secret, must match the ABL_SYNC_TOKEN GitHub secret',
+      'GITHUB_PAT':'fine-grained PAT, Actions:write only, scoped to this one repo',
+      'GITHUB_REPO':'"owner/repo" string the dispatch call targets',
+      'LAST_DISPATCH_AT':'internal debounce timestamp, not user-set'
+    },
+    connects:['apps-script-thumb-endpoints','apps-script-onchange-trigger'] },
+
+  // ---------- Section 5: Build & Deploy ----------
+  'deploy-workflow': { type:'ci', title:'deploy.yml', path:'.github/workflows/deploy.yml',
+    desc:'Triggers on every push to main — including the bot commits from sync-abl-thumbnails.yml, so a thumbnail update redeploys the live site automatically with no separate step.',
+    rows:{ 'Steps':'npm ci → npm run build (env: secrets + GITHUB_ACTIONS=true) → upload-pages-artifact → deploy-pages' },
+    connects:['github-secrets','vite-build','github-pages-host'] },
+  'vite-build': { type:'script', title:'vite.config.js', path:'vite.config.js',
+    desc:'base path is / locally, /tide-testing/ on CI — toggled by the GITHUB_ACTIONS env var, never hardcoded in app source (use import.meta.env.BASE_URL instead).',
+    rows:{ 'Warns':'at build time if VITE_ABL_API_URL is missing on CI, instead of failing silently', 'Chunking':'manual vendor splits for react, router, framer-motion, i18next, ui libs' },
+    connects:['deploy-workflow'] },
+  'github-pages-host': { type:'host', title:'GitHub Pages', path:'https://vaibhav-sharma0105.github.io/tide-testing/',
+    desc:'Static hosting only — no server-side rewrite for deep routes. Served via Fastly CDN.',
+    rows:{}, connects:['deploy-workflow','spa-fallback','public-assets-abl'] },
+  'spa-fallback': { type:'generated', title:'404.html + index.html redirect', path:'public/404.html, index.html (inline script)',
+    desc:'BrowserRouter needs this because GitHub Pages has no server-side rewrite. A hard reload or direct link to a deep route gets served 404.html, which redirects to /?/path&query; index.html\'s inline script decodes that back via history.replaceState before React mounts.',
+    rows:{},
+    security:'Bug history: the restoration script once joined the path and query with & instead of ? — produced a malformed URL (no error, just a blank page) for any route with query params on a hard reload. Fixed 2026-06-21. If you touch either script, test this exact case.',
+    connects:['github-pages-host'] },
+
+  // ---------- Connector hub back-references (declared above already cover both directions visually via panel links) ----------
+};
+
+function render() {
+  const main = document.getElementById('main');
+
+  const sections = [
+    { num:'1', title:'Content & Translation Pipeline', desc:'Build-time only. Nothing here runs in the visitor\'s browser — by the time the site is live, this has already become static JSON.',
+      rows:[
+        ['content-yaml','arrow','yaml-to-json','arrow','src-data-json'],
+        ['locale-yaml','arrow','yaml-to-json','arrow','i18n-json'],
+        ['validate-content'],
+      ],
+      extraFlow: ['src-data-json','i18n-json','arrow','react-pages','arrow','i18next-runtime']
+    },
+    { num:'2', title:'ABL Dynamic Data (resource listing)', desc:'Runtime fetch — this one DOES run in the visitor\'s browser, every time an ABL page loads (subject to the 15-min cache).',
+      rows:[ ['google-sheet','arrow','apps-script-listing','arrow','useABLData-hook','arrow','abl-react-pages'] ]
+    },
+    { num:'3', title:'Thumbnail Self-Hosting Pipeline', desc:'The opposite of Section 2 on purpose: this is a one-way, ahead-of-time sync so the site never depends on Google for images at runtime.',
+      rows:[
+        ['google-sheet','arrow','apps-script-onchange-trigger','arrow','gh-actions-sync-workflow'],
+        ['apps-script-thumb-endpoints','arrow','sync-script','arrow','public-assets-abl'],
+      ],
+      extraFlow: ['sync-script','arrow','manifest-json','arrow','ablThumbnails-util','arrow','driveImage-component']
+    },
+    { num:'4', title:'Secrets & Configuration', desc:'Three independent credential stores. None of them share a value across systems except where explicitly noted (ABL_SYNC_TOKEN ⇄ SYNC_TOKEN).',
+      rows:[ ['env-local','github-secrets','apps-script-properties'] ]
+    },
+    { num:'5', title:'Build & Deploy', desc:'Triggered by ANY push to main — including automated bot commits from Section 3.',
+      rows:[ ['deploy-workflow','arrow','vite-build','arrow','github-pages-host','arrow','spa-fallback'] ]
+    },
+  ];
+
+  main.innerHTML = sections.map(s => `
+    <div class="section">
+      <div class="section-title"><span class="section-num">§${s.num}</span><h2>${s.title}</h2></div>
+      <p class="section-desc">${s.desc}</p>
+      ${s.rows.map(r => `<div class="row">${r.map(item => item === 'arrow' ? `<span class="arrow">→</span>` : nodeHtml(item)).join('')}</div>`).join('')}
+      ${s.extraFlow ? `<div class="arrow-down-wrap">↳ also feeds</div><div class="row">${s.extraFlow.map(item => item === 'arrow' ? `<span class="arrow">→</span>` : nodeHtml(item)).join('')}</div>` : ''}
+    </div>
+  `).join('') + timelineHtml();
+
+  document.querySelectorAll('.node').forEach(el => {
+    el.addEventListener('click', () => selectNode(el.dataset.id));
+  });
+}
+
+function nodeHtml(id) {
+  const n = NODES[id];
+  if (!n) return '';
+  return `<div class="node" id="node-${id}" data-id="${id}" style="--node-accent:${TYPE_COLOR[n.type]}">
+    <div class="node-type-bar" style="background:${TYPE_COLOR[n.type]}"></div>
+    <div class="node-title">${n.title}</div>
+    <div class="node-path">${n.path.split(',')[0].split(' ')[0]}</div>
+  </div>`;
+}
+
+function timelineHtml() {
+  return `
+    <div class="section">
+      <div class="section-title"><span class="section-num">§6</span><h2>Auto-Sync Timing — "I edited the Sheet, when does the site catch up?"</h2></div>
+      <p class="section-desc">Two independent clocks. Resource <em>listing</em> data (text/metadata) and resource <em>images</em> sync on completely different schedules.</p>
+      <div style="display:flex; gap:40px; flex-wrap:wrap;">
+        <div>
+          <div class="panel-row-label" style="margin-bottom:10px;">LISTING DATA (text, filters, metadata)</div>
+          <div class="timeline">
+            <div class="timeline-step"><div class="timeline-t">T+0</div><div class="timeline-label">Staff edits a cell in the Sheet</div></div>
+            <div class="timeline-step"><div class="timeline-t">≤ T+15min</div><div class="timeline-label">Apps Script's own scheduledRefresh trigger rebuilds the CacheService cache</div><div class="timeline-sub">Runs every 15 min regardless of traffic — worst case is the gap between edits and the next tick</div></div>
+            <div class="timeline-step"><div class="timeline-t">≤ T+15min more</div><div class="timeline-label">A given visitor's browser sees it</div><div class="timeline-sub">sessionStorage cache is also 15 min — a tab opened right before your edit could wait the full second 15 min on top</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="panel-row-label" style="margin-bottom:10px;">IMAGES (thumbnails)</div>
+          <div class="timeline">
+            <div class="timeline-step"><div class="timeline-t">T+0</div><div class="timeline-label">Staff replaces a photo / adds a new resource</div></div>
+            <div class="timeline-step"><div class="timeline-t">T+0 to T+2min</div><div class="timeline-label">onSheetChange fires (debounced — waits if another dispatch went out &lt;2 min ago)</div></div>
+            <div class="timeline-step"><div class="timeline-t">T+~1-2min</div><div class="timeline-label">GitHub Action runs, diffs the manifest, resizes, commits</div><div class="timeline-sub">No-op (near-instant) if nothing actually changed</div></div>
+            <div class="timeline-step"><div class="timeline-t">T+~1-2min</div><div class="timeline-label">That commit triggers deploy.yml, site redeploys</div></div>
+            <div class="timeline-step"><div class="timeline-t">~T+5min total</div><div class="timeline-label">Live on the site</div><div class="timeline-sub">Fallback: if the dispatch is ever missed, a daily 02:00 UTC cron catches it within 24h</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function selectNode(id) {
+  document.querySelectorAll('.node').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById('node-' + id);
+  if (el) el.classList.add('active');
+
+  const n = NODES[id];
+  const panel = document.getElementById('panel');
+  const rowsHtml = Object.entries(n.rows || {}).map(([k,v]) => `
+    <div class="panel-row">
+      <div class="panel-row-label">${k}</div>
+      <div class="panel-row-content">${v}</div>
+    </div>`).join('');
+  const securityHtml = n.security ? `
+    <div class="panel-row">
+      <div class="panel-row-label">Security</div>
+      <div class="security-note">${n.security}</div>
+    </div>` : '';
+  const connectsHtml = (n.connects && n.connects.length) ? `
+    <div class="panel-row">
+      <div class="panel-row-label">Connects to</div>
+      <div class="connects">${n.connects.map(c => `<span class="connect-pill" data-jump="${c}">${NODES[c] ? NODES[c].title : c}</span>`).join('')}</div>
+    </div>` : '';
+
+  panel.innerHTML = `
+    <span class="panel-type-badge" style="background:${TYPE_COLOR[n.type]}22; color:${TYPE_COLOR[n.type]}">${TYPE_LABEL[n.type]}</span>
+    <div class="panel-title">${n.title}</div>
+    <div class="panel-path">${n.path}</div>
+    <div class="panel-desc">${n.desc}</div>
+    ${rowsHtml}
+    ${securityHtml}
+    ${connectsHtml}
+  `;
+
+  panel.querySelectorAll('.connect-pill').forEach(pill => {
+    pill.addEventListener('click', () => jumpTo(pill.dataset.jump));
+  });
+}
+
+function jumpTo(id) {
+  selectNode(id);
+  const el = document.getElementById('node-' + id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('flash');
+    setTimeout(() => el.classList.remove('flash'), 1000);
+  }
+}
+
+render();
+</script>
+</body>
+</html>

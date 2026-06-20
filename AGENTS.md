@@ -942,6 +942,8 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 | `.claude/skills/content-management.md` | Full CMS agent skill reference |
 | `docs/ABL-RESOURCE-LIBRARY-SPEC.md` | Full ABL spec + Apps Script code |
 | `docs/ABL-APPSCRIPT-SETUP-GUIDE.md` | GAS backend setup guide |
+| `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` | Thumbnail self-hosting pipeline setup guide |
+| `docs/ARCHITECTURE.html` | Interactive end-to-end system diagram — open directly in a browser, click any block for details. Standalone, not part of the build. |
 | `content/pages/home.yaml` | Reference example of a full page YAML |
 | `src/pages/Home.jsx` | Reference example of a full page component |
 | `src/pages/resources/AblResourceCenter.jsx` | Reference for filter + URL-param sync pattern |
