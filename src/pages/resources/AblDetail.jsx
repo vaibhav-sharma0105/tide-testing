@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, BookOpen, Expand, ExternalLink, MapPin, Layers } from 'lucide-react'
+import { ArrowLeft, BookOpen, Expand, ExternalLink, MapPin, Layers, Play } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import Button from '../../components/ui/Button'
 import DriveImage from '../../components/abl/DriveImage'
 import ImageLightbox from '../../components/abl/ImageLightbox'
+import VideoLightbox from '../../components/abl/VideoLightbox'
 import { useABLData } from '../../hooks/useABLData'
 import { getDrivePreviewUrl } from '../../utils/driveUtils'
 import { TAB_STYLE_MAP } from '../../config/abl'
@@ -32,39 +33,6 @@ function Eyebrow({ children, className = '' }) {
     <p className={`text-xs font-body font-semibold uppercase tracking-widest ${className}`}>
       {children}
     </p>
-  )
-}
-
-/* Segmented switcher between the resource photo and its explanation video,
-   sharing one frame instead of stacking two separate media blocks. */
-function MediaTabs({ tab, onChange, showPhoto, showVideo }) {
-  if (!showPhoto || !showVideo) return null
-  const tabs = [
-    { key: 'photo', label: 'Photo' },
-    { key: 'video', label: 'Video' },
-  ]
-  return (
-    <div className="inline-flex items-center bg-tide-subtle rounded-full p-1 mb-3">
-      {tabs.map(({ key, label }) => (
-        <button
-          key={key}
-          type="button"
-          onClick={() => onChange(key)}
-          className="relative px-4 py-1.5 text-sm font-body font-semibold rounded-full transition-colors duration-200"
-        >
-          {tab === key && (
-            <motion.span
-              layoutId="media-tab-pill"
-              className="absolute inset-0 rounded-full bg-primary"
-              transition={{ type: 'spring', duration: 0.4, bounce: 0.18 }}
-            />
-          )}
-          <span className={`relative z-10 ${tab === key ? 'text-white' : 'text-tide-muted hover:text-tide-text'}`}>
-            {label}
-          </span>
-        </button>
-      ))}
-    </div>
   )
 }
 
@@ -134,7 +102,7 @@ export default function AblDetail() {
   const { id } = useParams()
   const { allResources, loading, error } = useABLData()
   const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [mediaTab, setMediaTab] = useState('photo')
+  const [videoOpen, setVideoOpen] = useState(false)
   const [expandedGrade, setExpandedGrade] = useState(null)
 
   const backLink = (
@@ -194,7 +162,6 @@ export default function AblDetail() {
   const accent          = ACCENT_MAP[style.color] ?? ACCENT_MAP.gray
   const hasActions      = Boolean(resource.photoUrl || resource.referenceLink)
   const hasCoverage     = GRADES.some(g => (resource.chapters?.[g]?.length ?? 0) > 0)
-  const activeTab       = resource.photoUrl ? mediaTab : 'video'
 
   return (
     <>
@@ -208,60 +175,41 @@ export default function AblDetail() {
 
             <div className="grid md:grid-cols-5 gap-10">
 
-              {/* Left — unified media stage */}
+              {/* Left — media plate */}
               <div className="md:col-span-2">
                 <div className="max-w-[280px]">
-                  <MediaTabs
-                    tab={activeTab}
-                    onChange={setMediaTab}
-                    showPhoto={Boolean(resource.photoUrl)}
-                    showVideo={Boolean(videoPreviewUrl)}
-                  />
-
                   <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-tide-border shadow-card">
-                    <AnimatePresence mode="wait">
-                      {activeTab === 'photo' ? (
-                        <motion.div
-                          key="photo"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute inset-0"
-                        >
-                          <button
-                            type="button"
-                            onClick={() => setLightboxOpen(true)}
-                            className="group/img absolute inset-0 w-full h-full cursor-zoom-in"
-                            aria-label="View full image"
-                          >
-                            <DriveImage id={resource.id} alt={resource.name} variant="full" />
-                            <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/15 transition-colors duration-300" />
-                            <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-body font-medium">
-                              <Expand className="w-3.5 h-3.5" /> {t('abl.detail.viewLarger', 'Tap to view larger')}
-                            </div>
-                          </button>
-                        </motion.div>
-                      ) : (
-                        <motion.div
-                          key="video"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute inset-0 bg-tide-deeper"
-                        >
-                          <iframe
-                            src={videoPreviewUrl}
-                            title={t('abl.detail.explanationVideo', 'Explanation Video')}
-                            className="absolute inset-0 w-full h-full"
-                            frameBorder="0"
-                            allow="autoplay"
-                            allowFullScreen
-                          />
-                        </motion.div>
+                    <DriveImage id={resource.id} alt={resource.name} variant="full" />
+
+                    <button
+                      type="button"
+                      onClick={() => resource.photoUrl && setLightboxOpen(true)}
+                      disabled={!resource.photoUrl}
+                      className={`group/img absolute inset-0 w-full h-full ${resource.photoUrl ? 'cursor-zoom-in' : 'cursor-default'}`}
+                      aria-label="View full image"
+                    >
+                      {resource.photoUrl && (
+                        <>
+                          <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/15 transition-colors duration-300" />
+                          <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-body font-medium">
+                            <Expand className="w-3.5 h-3.5" /> {t('abl.detail.viewLarger', 'Tap to view larger')}
+                          </div>
+                        </>
                       )}
-                    </AnimatePresence>
+                    </button>
+
+                    {videoPreviewUrl && (
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <button
+                          type="button"
+                          onClick={() => setVideoOpen(true)}
+                          aria-label={t('abl.detail.playVideo', 'Play explanation video')}
+                          className="pointer-events-auto w-14 h-14 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-xl transition-transform hover:scale-105"
+                        >
+                          <Play className="w-6 h-6 text-primary fill-primary translate-x-px" />
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   {hasActions && (
@@ -353,6 +301,12 @@ export default function AblDetail() {
         id={lightboxOpen ? resource.id : null}
         alt={resource.name}
         onClose={() => setLightboxOpen(false)}
+      />
+
+      <VideoLightbox
+        src={videoOpen ? videoPreviewUrl : null}
+        title={t('abl.detail.explanationVideo', 'Explanation Video')}
+        onClose={() => setVideoOpen(false)}
       />
     </>
   )
