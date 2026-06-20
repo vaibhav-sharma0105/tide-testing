@@ -2,12 +2,13 @@
 
 **Version:** 2.1  
 **Status:** Implemented ✓  
-**Target hosting:** GitHub Pages (static, HashRouter)  
+**Target hosting:** GitHub Pages (static, `BrowserRouter` + `public/404.html` SPA fallback — not HashRouter)  
 **Architecture:** Apps Script JSON API + React frontend (no iframe, no gviz/tq)
 
-> **As-built notes:** The spec was implemented faithfully with two deviations from the original design:
+> **As-built notes:** The spec was implemented faithfully with these deviations from the original design:
 > - `ResourceFilters` is a **left sidebar** (not a horizontal filter bar as in section 7.5) — collapsible sections with independent scroll
 > - `DriveImage` uses **`aspect-[3/4]` (portrait)** rather than `aspect-[4/3]` — all images are portrait-oriented
+> - **(2026-06-20/21)** Thumbnails are self-hosted via an automated sync pipeline rather than built from a live Drive URL at runtime (§2.4–2.5, §5) — see `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md`. `AblDetail.jsx`'s layout has also been substantially redesigned beyond what §7–8 describe; the component file is the source of truth for current UI, the Apps Script code in §2.5 remains the source of truth for `Code.gs`.
 > - `ImageLightbox` is present on the **detail page only** (`AblDetail.jsx`), not on the listings page
 > - Filter logic is extracted to `src/utils/filterResources.js` (`applyResourceFilters`)
 > 

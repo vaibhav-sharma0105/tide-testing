@@ -5,7 +5,7 @@ React static site rebuild of [tideinternational.org](https://tideinternational.o
 
 ## Tech Stack
 - **Vite 8 + React 19** — static site, `npm run build` → `dist/`
-- **React Router v7** (HashRouter — works on any static host without server config)
+- **React Router v7** (`BrowserRouter` — clean URLs; GitHub Pages deep-link/reload support comes from `public/404.html` + a redirect-restoration script in `index.html`, not from hash routing)
 - **Tailwind CSS v3** — utility-first styling
 - **Framer Motion 12** — animations and page transitions
 - **i18next + react-i18next** — trilingual: English (default), Hindi, Gujarati
@@ -54,7 +54,7 @@ src/
     filterResources.js      # Pure filter function for ABL resource center
   i18n/
     index.js + locales/en|hi|gu/translation.json
-  App.jsx        # HashRouter + all 24 routes + ErrorBoundary
+  App.jsx        # BrowserRouter + all 24 routes + ErrorBoundary
   main.jsx       # Entry point, i18n init
   index.css      # Global styles + Tailwind base
 
@@ -173,8 +173,8 @@ secret — see the thumbnail sync setup guide above.
 - `src/hooks/useABLData.js` — fetch + cache hook
 - `src/utils/driveUtils.js` — Drive preview/download link transforms (not thumbnails)
 - `src/utils/ablThumbnails.js` — resolves a resource id to its synced thumbnail path
-- `src/utils/filterResources.js` — pure filter function
-- `src/components/abl/` — 8 UI components
+- `src/utils/filterResources.js` — pure filter function, also sorts results by name ascending
+- `src/components/abl/` — 9 UI components (incl. `VideoLightbox.jsx` — full-screen video overlay)
 - `scripts/sync-abl-thumbnails.js` — thumbnail sync job (see setup guide)
 - `docs/ABL-RESOURCE-LIBRARY-SPEC.md` — full spec + Apps Script code
 - `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` — thumbnail sync setup procedure

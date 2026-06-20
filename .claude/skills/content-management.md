@@ -290,7 +290,7 @@ home:
 ## Tech Stack Context
 
 - **Vite 8 + React 19** — static site
-- **React Router v7** — HashRouter (no server config needed)
+- **React Router v7** — `BrowserRouter` (clean URLs; GitHub Pages SPA fallback via `public/404.html` + `index.html` redirect script, not hash routing)
 - **Tailwind CSS v3** — utility classes
 - **Framer Motion 12** — animations
 - **i18next + react-i18next** — EN/HI/GU with localStorage persistence
