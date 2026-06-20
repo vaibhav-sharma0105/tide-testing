@@ -255,6 +255,12 @@ failure and aborts the run rather than committing partial data.
 
 **File: `Code.gs`** — paste this in full when setting up.
 
+> **Requires the "Drive API" advanced service** (used by `handleFetchImage`
+> for `Drive.Files.get(...).thumbnailLink`) — the basic `DriveApp` service
+> doesn't expose it. In the Apps Script editor: **Services** (+ icon in the
+> left sidebar) → **Drive API** → **Add**. See
+> `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` for the full walkthrough.
+
 ```javascript
 // ─── Configuration ───────────────────────────────────────────────────────────
 const SHEET_ID         = '1Cdx2iVkzA_-mv9b0vKXmo1eTRdz3K7HmtBSKDrM8CgQ';
@@ -343,9 +349,26 @@ function handleFetchImage(e) {
   const fileId = extractDriveFileId(resource.photoUrl);
   if (!fileId) return { success: false, error: 'Resource has no photo' };
 
+  // Fetch Google's own pre-rendered thumbnail rather than the file's raw
+  // bytes. Source files are heterogeneous in practice (worksheet "photos"
+  // are often actually PDFs; some phone-camera HEIC files exceed libheif's
+  // safety limits) — Google's thumbnail renderer already solves "turn any
+  // file into a raster preview" reliably, the same renderer the site used
+  // to hot-link to directly from every visitor's browser. Calling it here,
+  // once per sync, from the server, is a fundamentally different load
+  // profile than the original problem.
   try {
     const file = DriveApp.getFileById(fileId);
-    const blob = file.getBlob();
+    const meta = Drive.Files.get(fileId, { fields: 'thumbnailLink' });
+    if (!meta.thumbnailLink) return { success: false, error: 'Drive has no thumbnail for this file' };
+
+    const thumbUrl = meta.thumbnailLink.replace(/=s\d+$/, '=s1600');
+    const resp = UrlFetchApp.fetch(thumbUrl, { muteHttpExceptions: true });
+    if (resp.getResponseCode() !== 200) {
+      return { success: false, error: 'Thumbnail render fetch failed: HTTP ' + resp.getResponseCode() };
+    }
+
+    const blob = resp.getBlob();
     return {
       success: true,
       id: id,

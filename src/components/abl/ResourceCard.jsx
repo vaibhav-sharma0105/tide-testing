@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { Play } from 'lucide-react'
 import DriveImage from './DriveImage'
 import ResourceTypeBadge from './ResourceTypeBadge'
 
@@ -24,12 +25,20 @@ export default function ResourceCard({ resource }) {
       className="group/card bg-white rounded-2xl border border-tide-border shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col"
     >
       {/* Image with subtle zoom on hover */}
-      <div className="overflow-hidden rounded-t-2xl">
+      <div className="relative overflow-hidden rounded-t-2xl">
         <DriveImage
           id={resource.id}
           alt={resource.name ?? 'Resource'}
           imgClassName="group-hover/card:scale-105"
         />
+        {resource.videoUrl && (
+          <div
+            className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-black/55 backdrop-blur-sm flex items-center justify-center pointer-events-none"
+            aria-label="Video available"
+          >
+            <Play className="w-3 h-3 text-white fill-white" />
+          </div>
+        )}
       </div>
 
       <div className="p-4 flex flex-col gap-2 flex-1">

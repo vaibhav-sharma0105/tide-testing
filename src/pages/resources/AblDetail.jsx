@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { PlayCircle, ExternalLink, ArrowLeft, BookOpen, Expand } from 'lucide-react'
+import { ExternalLink, ArrowLeft, BookOpen, Expand } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
@@ -125,15 +125,31 @@ export default function AblDetail() {
                   )}
                 </button>
 
+                {videoPreviewUrl && (
+                  <div
+                    className="relative rounded-2xl overflow-hidden border border-tide-border mt-5"
+                    style={{ paddingBottom: '56.25%', height: 0 }}
+                  >
+                    <iframe
+                      src={videoPreviewUrl}
+                      title={t('abl.detail.watchVideo', 'Explanation video')}
+                      className="absolute inset-0 w-full h-full"
+                      frameBorder="0"
+                      allow="autoplay"
+                      allowFullScreen
+                    />
+                  </div>
+                )}
+
                 <div className="flex gap-3 mt-5 flex-wrap">
-                  {videoPreviewUrl && (
+                  {resource.photoUrl && (
                     <a
-                      href={videoPreviewUrl}
+                      href={resource.photoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary text-white text-sm font-body font-semibold hover:bg-primary/90 transition-colors"
                     >
-                      <PlayCircle className="w-4 h-4" /> {t('abl.detail.watchVideo', 'Watch Video')}
+                      <ExternalLink className="w-4 h-4" /> {t('abl.detail.viewOriginal', 'View Original File')}
                     </a>
                   )}
                   {resource.canvaUrl && (

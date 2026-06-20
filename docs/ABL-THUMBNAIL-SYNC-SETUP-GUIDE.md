@@ -81,6 +81,20 @@ Script editor you already have open from the previous guide:
 > Keeping the canonical script in one place (the spec doc) avoids two copies
 > drifting apart. Always copy from there when updating.
 
+### Enable the "Drive API" Advanced Service
+
+The script needs one built-in Google service that isn't on by default:
+
+1. In the left sidebar, find **Services** and click the **+** next to it.
+2. Find **Drive API** in the list and click it.
+3. Leave the identifier as `Drive` and click **Add**.
+4. You'll see "Drive" appear in the Services list in the sidebar.
+
+This lets the script ask Google for a pre-rendered thumbnail of any file
+(including PDFs and unusual photo formats), instead of reading the raw file
+bytes itself — which is what makes this work reliably across worksheet
+PDFs, phone-camera photos, and everything else in the sheet.
+
 ---
 
 ## Step 4 — Store the Token in Script Properties
@@ -247,6 +261,8 @@ Saving alone never updates what the live Web App actually serves.
 | Action succeeds but no commit appears | Nothing actually changed (this is normal — the job is a no-op if nothing differs) | Not an error. Edit a resource's photo and re-test if you want to confirm end-to-end |
 | `GITHUB_PAT` stops working after a while | Fine-grained PATs expire on the date you chose in Step 7 | Generate a new one (Step 7) and update the Script Property (Step 8) |
 | Cards show placeholders again after working fine before | A redeploy of the GitHub Pages site happened from an older commit, or the manifest file was manually edited | Re-run the workflow manually (Step 10) |
+| Sync log shows `Drive.Files is not defined` or similar | The "Drive API" advanced service (see Step 3) wasn't added, or wasn't added before the last redeploy | Add it, save, then redeploy (Step 5) again |
+| Sync log shows `Drive has no thumbnail for this file` for a specific resource | Some file types Drive genuinely can't preview (rare) | Check the file opens normally in Drive directly; otherwise it's expected to stay a placeholder |
 
 ---
 
