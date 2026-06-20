@@ -1,1 +1,467 @@
-{}
+{
+  "G7": {
+    "modifiedTime": "2026-03-14T07:35:29.521Z",
+    "thumb": "assets/images/abl/G7-thumb.webp",
+    "full": "assets/images/abl/G7-full.webp"
+  },
+  "G8": {
+    "modifiedTime": "2026-03-14T07:28:45.192Z",
+    "thumb": "assets/images/abl/G8-thumb.webp",
+    "full": "assets/images/abl/G8-full.webp"
+  },
+  "G9": {
+    "modifiedTime": "2026-03-14T07:35:55.483Z",
+    "thumb": "assets/images/abl/G9-thumb.webp",
+    "full": "assets/images/abl/G9-full.webp"
+  },
+  "G10": {
+    "modifiedTime": "2026-03-14T07:27:24.714Z",
+    "thumb": "assets/images/abl/G10-thumb.webp",
+    "full": "assets/images/abl/G10-full.webp"
+  },
+  "G11": {
+    "modifiedTime": "2026-03-14T07:29:57.145Z",
+    "thumb": "assets/images/abl/G11-thumb.webp",
+    "full": "assets/images/abl/G11-full.webp"
+  },
+  "G12": {
+    "modifiedTime": "2026-03-14T07:38:56.490Z",
+    "thumb": "assets/images/abl/G12-thumb.webp",
+    "full": "assets/images/abl/G12-full.webp"
+  },
+  "G13": {
+    "modifiedTime": "2026-03-14T07:30:41.624Z",
+    "thumb": "assets/images/abl/G13-thumb.webp",
+    "full": "assets/images/abl/G13-full.webp"
+  },
+  "G14": {
+    "modifiedTime": "2026-03-14T07:41:34.173Z",
+    "thumb": "assets/images/abl/G14-thumb.webp",
+    "full": "assets/images/abl/G14-full.webp"
+  },
+  "G15": {
+    "modifiedTime": "2026-03-14T07:26:59.588Z",
+    "thumb": "assets/images/abl/G15-thumb.webp",
+    "full": "assets/images/abl/G15-full.webp"
+  },
+  "G16": {
+    "modifiedTime": "2026-03-14T07:28:28.065Z",
+    "thumb": "assets/images/abl/G16-thumb.webp",
+    "full": "assets/images/abl/G16-full.webp"
+  },
+  "G17": {
+    "modifiedTime": "2026-03-14T07:41:12.928Z",
+    "thumb": "assets/images/abl/G17-thumb.webp",
+    "full": "assets/images/abl/G17-full.webp"
+  },
+  "G18": {
+    "modifiedTime": "2026-03-14T07:29:32.718Z",
+    "thumb": "assets/images/abl/G18-thumb.webp",
+    "full": "assets/images/abl/G18-full.webp"
+  },
+  "G19": {
+    "modifiedTime": "2026-03-14T07:29:15.538Z",
+    "thumb": "assets/images/abl/G19-thumb.webp",
+    "full": "assets/images/abl/G19-full.webp"
+  },
+  "G20": {
+    "modifiedTime": "2026-03-14T07:35:04.054Z",
+    "thumb": "assets/images/abl/G20-thumb.webp",
+    "full": "assets/images/abl/G20-full.webp"
+  },
+  "G21": {
+    "modifiedTime": "2026-03-14T07:41:01.733Z",
+    "thumb": "assets/images/abl/G21-thumb.webp",
+    "full": "assets/images/abl/G21-full.webp"
+  },
+  "G22": {
+    "modifiedTime": "2026-03-14T07:39:07.413Z",
+    "thumb": "assets/images/abl/G22-thumb.webp",
+    "full": "assets/images/abl/G22-full.webp"
+  },
+  "G23": {
+    "modifiedTime": "2026-03-14T07:41:45.226Z",
+    "thumb": "assets/images/abl/G23-thumb.webp",
+    "full": "assets/images/abl/G23-full.webp"
+  },
+  "G24": {
+    "modifiedTime": "2026-03-14T07:36:52.709Z",
+    "thumb": "assets/images/abl/G24-thumb.webp",
+    "full": "assets/images/abl/G24-full.webp"
+  },
+  "G25": {
+    "modifiedTime": "2026-03-14T07:27:48.518Z",
+    "thumb": "assets/images/abl/G25-thumb.webp",
+    "full": "assets/images/abl/G25-full.webp"
+  },
+  "G26": {
+    "modifiedTime": "2026-03-14T07:40:52.180Z",
+    "thumb": "assets/images/abl/G26-thumb.webp",
+    "full": "assets/images/abl/G26-full.webp"
+  },
+  "G27": {
+    "modifiedTime": "2026-03-16T07:29:16.454Z",
+    "thumb": "assets/images/abl/G27-thumb.webp",
+    "full": "assets/images/abl/G27-full.webp"
+  },
+  "G28": {
+    "modifiedTime": "2026-03-14T07:40:30.717Z",
+    "thumb": "assets/images/abl/G28-thumb.webp",
+    "full": "assets/images/abl/G28-full.webp"
+  },
+  "G29": {
+    "modifiedTime": "2026-03-14T07:33:07.354Z",
+    "thumb": "assets/images/abl/G29-thumb.webp",
+    "full": "assets/images/abl/G29-full.webp"
+  },
+  "G30": {
+    "modifiedTime": "2026-03-14T07:39:18.588Z",
+    "thumb": "assets/images/abl/G30-thumb.webp",
+    "full": "assets/images/abl/G30-full.webp"
+  },
+  "G31": {
+    "modifiedTime": "2026-03-14T07:41:24.731Z",
+    "thumb": "assets/images/abl/G31-thumb.webp",
+    "full": "assets/images/abl/G31-full.webp"
+  },
+  "G32": {
+    "modifiedTime": "2026-03-14T07:40:43.491Z",
+    "thumb": "assets/images/abl/G32-thumb.webp",
+    "full": "assets/images/abl/G32-full.webp"
+  },
+  "K8": {
+    "modifiedTime": "2026-02-25T05:49:19.875Z",
+    "thumb": "assets/images/abl/K8-thumb.webp",
+    "full": "assets/images/abl/K8-full.webp"
+  },
+  "K9": {
+    "modifiedTime": "2026-02-25T05:31:02.170Z",
+    "thumb": "assets/images/abl/K9-thumb.webp",
+    "full": "assets/images/abl/K9-full.webp"
+  },
+  "K10": {
+    "modifiedTime": "2026-02-25T05:31:37.752Z",
+    "thumb": "assets/images/abl/K10-thumb.webp",
+    "full": "assets/images/abl/K10-full.webp"
+  },
+  "K11": {
+    "modifiedTime": "2026-02-25T05:33:15.454Z",
+    "thumb": "assets/images/abl/K11-thumb.webp",
+    "full": "assets/images/abl/K11-full.webp"
+  },
+  "K12": {
+    "modifiedTime": "2026-02-25T05:33:36.338Z",
+    "thumb": "assets/images/abl/K12-thumb.webp",
+    "full": "assets/images/abl/K12-full.webp"
+  },
+  "K13": {
+    "modifiedTime": "2026-02-25T05:35:38.652Z",
+    "thumb": "assets/images/abl/K13-thumb.webp",
+    "full": "assets/images/abl/K13-full.webp"
+  },
+  "K14": {
+    "modifiedTime": "2026-02-25T05:35:03.713Z",
+    "thumb": "assets/images/abl/K14-thumb.webp",
+    "full": "assets/images/abl/K14-full.webp"
+  },
+  "K15": {
+    "modifiedTime": "2026-02-25T05:37:08.199Z",
+    "thumb": "assets/images/abl/K15-thumb.webp",
+    "full": "assets/images/abl/K15-full.webp"
+  },
+  "K16": {
+    "modifiedTime": "2026-02-25T05:41:20.644Z",
+    "thumb": "assets/images/abl/K16-thumb.webp",
+    "full": "assets/images/abl/K16-full.webp"
+  },
+  "K17": {
+    "modifiedTime": "2026-03-14T05:57:12.621Z",
+    "thumb": "assets/images/abl/K17-thumb.webp",
+    "full": "assets/images/abl/K17-full.webp"
+  },
+  "K18": {
+    "modifiedTime": "2026-02-25T05:42:41.467Z",
+    "thumb": "assets/images/abl/K18-thumb.webp",
+    "full": "assets/images/abl/K18-full.webp"
+  },
+  "K19": {
+    "modifiedTime": "2026-02-25T05:45:04.028Z",
+    "thumb": "assets/images/abl/K19-thumb.webp",
+    "full": "assets/images/abl/K19-full.webp"
+  },
+  "K20": {
+    "modifiedTime": "2026-02-25T05:48:55.879Z",
+    "thumb": "assets/images/abl/K20-thumb.webp",
+    "full": "assets/images/abl/K20-full.webp"
+  },
+  "K21": {
+    "modifiedTime": "2026-02-25T05:48:33.965Z",
+    "thumb": "assets/images/abl/K21-thumb.webp",
+    "full": "assets/images/abl/K21-full.webp"
+  },
+  "K23": {
+    "modifiedTime": "2026-02-25T05:45:33.248Z",
+    "thumb": "assets/images/abl/K23-thumb.webp",
+    "full": "assets/images/abl/K23-full.webp"
+  },
+  "K24": {
+    "modifiedTime": "2026-02-25T05:46:01.743Z",
+    "thumb": "assets/images/abl/K24-thumb.webp",
+    "full": "assets/images/abl/K24-full.webp"
+  },
+  "K25": {
+    "modifiedTime": "2026-02-25T05:46:30.749Z",
+    "thumb": "assets/images/abl/K25-thumb.webp",
+    "full": "assets/images/abl/K25-full.webp"
+  },
+  "K26": {
+    "modifiedTime": "2026-02-25T05:47:12.653Z",
+    "thumb": "assets/images/abl/K26-thumb.webp",
+    "full": "assets/images/abl/K26-full.webp"
+  },
+  "K27": {
+    "modifiedTime": "2026-03-16T07:30:05.396Z",
+    "thumb": "assets/images/abl/K27-thumb.webp",
+    "full": "assets/images/abl/K27-full.webp"
+  },
+  "K28": {
+    "modifiedTime": "2026-02-25T05:48:15.892Z",
+    "thumb": "assets/images/abl/K28-thumb.webp",
+    "full": "assets/images/abl/K28-full.webp"
+  },
+  "K29": {
+    "modifiedTime": "2026-03-14T06:09:42.481Z",
+    "thumb": "assets/images/abl/K29-thumb.webp",
+    "full": "assets/images/abl/K29-full.webp"
+  },
+  "K30": {
+    "modifiedTime": "2026-02-25T05:50:19.227Z",
+    "thumb": "assets/images/abl/K30-thumb.webp",
+    "full": "assets/images/abl/K30-full.webp"
+  },
+  "K 31": {
+    "modifiedTime": "2026-02-25T05:48:44.759Z",
+    "thumb": "assets/images/abl/K 31-thumb.webp",
+    "full": "assets/images/abl/K 31-full.webp"
+  },
+  "K32 (26 in Gujarati)": {
+    "modifiedTime": "2026-02-25T05:47:12.653Z",
+    "thumb": "assets/images/abl/K32 (26 in Gujarati)-thumb.webp",
+    "full": "assets/images/abl/K32 (26 in Gujarati)-full.webp"
+  },
+  "F1": {
+    "modifiedTime": "2026-01-03T07:39:27.803Z",
+    "thumb": "assets/images/abl/F1-thumb.webp",
+    "full": "assets/images/abl/F1-full.webp"
+  },
+  "F2": {
+    "modifiedTime": "2026-01-03T07:40:08.066Z",
+    "thumb": "assets/images/abl/F2-thumb.webp",
+    "full": "assets/images/abl/F2-full.webp"
+  },
+  "F3": {
+    "modifiedTime": "2026-01-03T07:17:40.633Z",
+    "thumb": "assets/images/abl/F3-thumb.webp",
+    "full": "assets/images/abl/F3-full.webp"
+  },
+  "F4": {
+    "modifiedTime": "2026-01-17T06:35:26.000Z",
+    "thumb": "assets/images/abl/F4-thumb.webp",
+    "full": "assets/images/abl/F4-full.webp"
+  },
+  "F5": {
+    "modifiedTime": "2026-01-03T07:17:56.519Z",
+    "thumb": "assets/images/abl/F5-thumb.webp",
+    "full": "assets/images/abl/F5-full.webp"
+  },
+  "F6": {
+    "modifiedTime": "2026-01-03T07:18:20.474Z",
+    "thumb": "assets/images/abl/F6-thumb.webp",
+    "full": "assets/images/abl/F6-full.webp"
+  },
+  "F7": {
+    "modifiedTime": "2026-01-03T07:18:28.830Z",
+    "thumb": "assets/images/abl/F7-thumb.webp",
+    "full": "assets/images/abl/F7-full.webp"
+  },
+  "F8": {
+    "modifiedTime": "2026-01-03T07:18:48.291Z",
+    "thumb": "assets/images/abl/F8-thumb.webp",
+    "full": "assets/images/abl/F8-full.webp"
+  },
+  "F9": {
+    "modifiedTime": "2026-01-03T07:19:08.386Z",
+    "thumb": "assets/images/abl/F9-thumb.webp",
+    "full": "assets/images/abl/F9-full.webp"
+  },
+  "F10": {
+    "modifiedTime": "2026-01-03T07:19:26.539Z",
+    "thumb": "assets/images/abl/F10-thumb.webp",
+    "full": "assets/images/abl/F10-full.webp"
+  },
+  "F11": {
+    "modifiedTime": "2026-01-03T07:19:53.343Z",
+    "thumb": "assets/images/abl/F11-thumb.webp",
+    "full": "assets/images/abl/F11-full.webp"
+  },
+  "F12": {
+    "modifiedTime": "2026-01-03T07:20:06.800Z",
+    "thumb": "assets/images/abl/F12-thumb.webp",
+    "full": "assets/images/abl/F12-full.webp"
+  },
+  "F13": {
+    "modifiedTime": "2026-01-03T07:20:33.575Z",
+    "thumb": "assets/images/abl/F13-thumb.webp",
+    "full": "assets/images/abl/F13-full.webp"
+  },
+  "F14": {
+    "modifiedTime": "2026-01-17T06:35:51.000Z",
+    "thumb": "assets/images/abl/F14-thumb.webp",
+    "full": "assets/images/abl/F14-full.webp"
+  },
+  "F15": {
+    "modifiedTime": "2026-01-03T07:17:54.692Z",
+    "thumb": "assets/images/abl/F15-thumb.webp",
+    "full": "assets/images/abl/F15-full.webp"
+  },
+  "F16": {
+    "modifiedTime": "2026-03-13T08:14:27.479Z",
+    "thumb": "assets/images/abl/F16-thumb.webp",
+    "full": "assets/images/abl/F16-full.webp"
+  },
+  "F17": {
+    "modifiedTime": "2026-03-13T08:16:43.388Z",
+    "thumb": "assets/images/abl/F17-thumb.webp",
+    "full": "assets/images/abl/F17-full.webp"
+  },
+  "F18": {
+    "modifiedTime": "2026-03-13T08:14:39.533Z",
+    "thumb": "assets/images/abl/F18-thumb.webp",
+    "full": "assets/images/abl/F18-full.webp"
+  },
+  "F19": {
+    "modifiedTime": "2026-03-13T08:14:08.632Z",
+    "thumb": "assets/images/abl/F19-thumb.webp",
+    "full": "assets/images/abl/F19-full.webp"
+  },
+  "F20": {
+    "modifiedTime": "2026-03-13T08:17:56.137Z",
+    "thumb": "assets/images/abl/F20-thumb.webp",
+    "full": "assets/images/abl/F20-full.webp"
+  },
+  "F21": {
+    "modifiedTime": "2026-03-13T08:13:14.345Z",
+    "thumb": "assets/images/abl/F21-thumb.webp",
+    "full": "assets/images/abl/F21-full.webp"
+  },
+  "F22": {
+    "modifiedTime": "2026-03-13T08:13:01.733Z",
+    "thumb": "assets/images/abl/F22-thumb.webp",
+    "full": "assets/images/abl/F22-full.webp"
+  },
+  "F23": {
+    "modifiedTime": "2026-03-13T08:16:10.551Z",
+    "thumb": "assets/images/abl/F23-thumb.webp",
+    "full": "assets/images/abl/F23-full.webp"
+  },
+  "F24": {
+    "modifiedTime": "2026-03-13T08:15:45.561Z",
+    "thumb": "assets/images/abl/F24-thumb.webp",
+    "full": "assets/images/abl/F24-full.webp"
+  },
+  "F25": {
+    "modifiedTime": "2026-03-13T08:12:50.822Z",
+    "thumb": "assets/images/abl/F25-thumb.webp",
+    "full": "assets/images/abl/F25-full.webp"
+  },
+  "F26": {
+    "modifiedTime": "2026-03-13T08:13:33.622Z",
+    "thumb": "assets/images/abl/F26-thumb.webp",
+    "full": "assets/images/abl/F26-full.webp"
+  },
+  "F27": {
+    "modifiedTime": "2026-03-13T08:15:59.332Z",
+    "thumb": "assets/images/abl/F27-thumb.webp",
+    "full": "assets/images/abl/F27-full.webp"
+  },
+  "F28": {
+    "modifiedTime": "2026-03-13T08:11:53.343Z",
+    "thumb": "assets/images/abl/F28-thumb.webp",
+    "full": "assets/images/abl/F28-full.webp"
+  },
+  "F29": {
+    "modifiedTime": "2026-03-13T08:16:53.356Z",
+    "thumb": "assets/images/abl/F29-thumb.webp",
+    "full": "assets/images/abl/F29-full.webp"
+  },
+  "F30": {
+    "modifiedTime": "2026-03-13T08:16:33.856Z",
+    "thumb": "assets/images/abl/F30-thumb.webp",
+    "full": "assets/images/abl/F30-full.webp"
+  },
+  "F31": {
+    "modifiedTime": "2026-03-13T08:16:21.451Z",
+    "thumb": "assets/images/abl/F31-thumb.webp",
+    "full": "assets/images/abl/F31-full.webp"
+  },
+  "F32": {
+    "modifiedTime": "2026-03-13T08:17:12.972Z",
+    "thumb": "assets/images/abl/F32-thumb.webp",
+    "full": "assets/images/abl/F32-full.webp"
+  },
+  "F33": {
+    "modifiedTime": "2026-03-13T08:12:04.869Z",
+    "thumb": "assets/images/abl/F33-thumb.webp",
+    "full": "assets/images/abl/F33-full.webp"
+  },
+  "F34": {
+    "modifiedTime": "2026-03-13T08:17:03.282Z",
+    "thumb": "assets/images/abl/F34-thumb.webp",
+    "full": "assets/images/abl/F34-full.webp"
+  },
+  "F35": {
+    "modifiedTime": "2026-03-13T08:15:01.360Z",
+    "thumb": "assets/images/abl/F35-thumb.webp",
+    "full": "assets/images/abl/F35-full.webp"
+  },
+  "F36": {
+    "modifiedTime": "2026-03-13T08:17:26.909Z",
+    "thumb": "assets/images/abl/F36-thumb.webp",
+    "full": "assets/images/abl/F36-full.webp"
+  },
+  "F37": {
+    "modifiedTime": "2026-03-13T08:13:44.092Z",
+    "thumb": "assets/images/abl/F37-thumb.webp",
+    "full": "assets/images/abl/F37-full.webp"
+  },
+  "F38": {
+    "modifiedTime": "2026-03-13T08:12:33.884Z",
+    "thumb": "assets/images/abl/F38-thumb.webp",
+    "full": "assets/images/abl/F38-full.webp"
+  },
+  "F39": {
+    "modifiedTime": "2026-03-13T08:14:52.062Z",
+    "thumb": "assets/images/abl/F39-thumb.webp",
+    "full": "assets/images/abl/F39-full.webp"
+  },
+  "F40": {
+    "modifiedTime": "2026-03-13T08:13:23.510Z",
+    "thumb": "assets/images/abl/F40-thumb.webp",
+    "full": "assets/images/abl/F40-full.webp"
+  },
+  "F41": {
+    "modifiedTime": "2026-03-13T08:17:40.632Z",
+    "thumb": "assets/images/abl/F41-thumb.webp",
+    "full": "assets/images/abl/F41-full.webp"
+  },
+  "F42": {
+    "modifiedTime": "2026-03-13T08:13:57.473Z",
+    "thumb": "assets/images/abl/F42-thumb.webp",
+    "full": "assets/images/abl/F42-full.webp"
+  },
+  "F43": {
+    "modifiedTime": "2026-03-13T08:15:30.110Z",
+    "thumb": "assets/images/abl/F43-thumb.webp",
+    "full": "assets/images/abl/F43-full.webp"
+  }
+}
