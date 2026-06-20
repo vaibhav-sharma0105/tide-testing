@@ -33,5 +33,5 @@ export function applyResourceFilters(resources, filters) {
     result = result.filter(r => r.name?.toLowerCase().includes(q))
   }
 
-  return result
+  return result.slice().sort((a, b) => (a.name ?? '').localeCompare(b.name ?? ''))
 }

@@ -254,7 +254,7 @@ export default function AblDetail() {
                             aria-label={t('abl.detail.playVideo', 'Play explanation video')}
                             className="absolute inset-0 w-full h-full flex items-center justify-center"
                           >
-                            <span className="w-12 h-12 rounded-full bg-primary group-hover/video:bg-white flex items-center justify-center shadow-lg transition-all duration-300 group-hover/video:scale-110">
+                            <span className="w-12 h-12 rounded-full bg-primary group-hover/video:bg-white border-2 border-transparent group-hover/video:border-primary/25 flex items-center justify-center shadow-lg transition-all duration-300 group-hover/video:scale-110">
                               <Play className="w-5 h-5 text-white group-hover/video:text-primary fill-white group-hover/video:fill-primary translate-x-px transition-colors duration-300" />
                             </span>
                           </button>

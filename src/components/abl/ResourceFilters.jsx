@@ -97,7 +97,14 @@ export default function ResourceFilters({ allResources, filters, onChange, onCle
             active={!filters.type}
             onClick={() => onChange({ ...filters, type: '' })}
           />
-          {tabs.map(tab => {
+          {tabs
+            .slice()
+            .sort((a, b) => {
+              const labelA = (TAB_STYLE_MAP[a] ?? TAB_STYLE_MAP._default).pluralLabel
+              const labelB = (TAB_STYLE_MAP[b] ?? TAB_STYLE_MAP._default).pluralLabel
+              return labelA.localeCompare(labelB)
+            })
+            .map(tab => {
             const style = TAB_STYLE_MAP[tab] ?? TAB_STYLE_MAP._default
             const count = data?.meta?.counts?.[tab] ?? allResources.filter(r => r.tab === tab).length
             return (
