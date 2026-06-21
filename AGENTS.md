@@ -239,7 +239,11 @@ tide-new/
 ├── docs/
 │   ├── ABL-RESOURCE-LIBRARY-SPEC.md         ← full ABL spec + Apps Script code (source of truth for Code.gs)
 │   ├── ABL-APPSCRIPT-SETUP-GUIDE.md         ← GAS backend setup instructions (resource listing API)
-│   └── ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md    ← thumbnail self-hosting pipeline setup instructions
+│   ├── ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md    ← thumbnail self-hosting pipeline setup instructions (fresh setup only)
+│   ├── MIGRATION-OVERVIEW.md                ← start here when handing the whole project to a new owner
+│   ├── MIGRATION-GOOGLE-SHEET-APPSCRIPT.md  ← moving Sheet + Apps Script to a new Google account
+│   ├── MIGRATION-GITHUB-REPOSITORY.md       ← transferring the GitHub repo to a new owner
+│   └── MAINTENANCE-GITHUB-PAT-REFRESH.md    ← short recurring task when the GitHub token expires
 │
 └── .github/workflows/
     ├── deploy.yml                  ← build → upload dist/ → deploy to GitHub Pages
@@ -942,7 +946,11 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 | `.claude/skills/content-management.md` | Full CMS agent skill reference |
 | `docs/ABL-RESOURCE-LIBRARY-SPEC.md` | Full ABL spec + Apps Script code |
 | `docs/ABL-APPSCRIPT-SETUP-GUIDE.md` | GAS backend setup guide |
-| `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` | Thumbnail self-hosting pipeline setup guide |
+| `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` | Thumbnail self-hosting pipeline setup guide (fresh setup only) |
+| `docs/MIGRATION-OVERVIEW.md` | Start here when handing the whole project (Google + GitHub) to a new owner |
+| `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` | Moving the Sheet + Apps Script to a new Google account — uses a fresh-copy approach, not Google's "transfer ownership," because Apps Script Web App deployments don't transfer ownership the way you'd expect |
+| `docs/MIGRATION-GITHUB-REPOSITORY.md` | Transferring the GitHub repository to a new owner |
+| `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` | Short recurring task when the GitHub token expires |
 | `docs/ARCHITECTURE.html` | Interactive end-to-end system diagram — open directly in a browser, click any block for details. Standalone, not part of the build. |
 | `content/pages/home.yaml` | Reference example of a full page YAML |
 | `src/pages/Home.jsx` | Reference example of a full page component |

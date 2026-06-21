@@ -8,6 +8,10 @@ on Google's image servers while a visitor is browsing. New or changed photos
 in the Sheet show up on the live site automatically within about a minute of
 you editing the Sheet — no developer involved after this one-time setup.
 
+> **Moving an existing setup to a new Google account instead of setting up fresh?** Use `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` instead, which covers this guide's setup *and* the listing-API setup together as one combined migration.
+
+> **Token expired and auto-sync stopped working?** That's `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md`, a much shorter doc — you don't need to redo this whole guide.
+
 **Why this exists:** The Resource Center used to build thumbnail URLs on the
 fly by guessing an undocumented Google address
 (`lh3.googleusercontent.com/d/.../=wN`). That address has no guaranteed

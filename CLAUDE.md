@@ -177,7 +177,11 @@ secret — see the thumbnail sync setup guide above.
 - `src/components/abl/` — 9 UI components (incl. `VideoLightbox.jsx` — full-screen video overlay)
 - `scripts/sync-abl-thumbnails.js` — thumbnail sync job (see setup guide)
 - `docs/ABL-RESOURCE-LIBRARY-SPEC.md` — full spec + Apps Script code
-- `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` — thumbnail sync setup procedure
+- `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` — thumbnail sync setup procedure (fresh setup only)
+- `docs/MIGRATION-OVERVIEW.md` — start here when handing the whole project (Google + GitHub) to a new owner
+- `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` — moving the Sheet + Apps Script to a new Google account
+- `docs/MIGRATION-GITHUB-REPOSITORY.md` — transferring the GitHub repository to a new owner
+- `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` — short recurring task when the GitHub token expires
 - `docs/ARCHITECTURE.html` — interactive end-to-end system diagram (content pipeline, ABL data flow, thumbnail sync, secrets, deploy). Open directly in a browser — standalone, not part of the build.
 
 ## Resuming Work

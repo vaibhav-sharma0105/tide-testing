@@ -6,16 +6,28 @@
 
 ## How the System Works (Overview)
 
-Content lives in simple **YAML files** inside the `content/` folder. YAML is a plain-text format that looks like a structured list. You edit YAML → run one command → the site updates.
+Content lives in simple **YAML files** inside the `content/` folder. YAML is a plain-text format that looks like a structured list. You edit YAML, save it to GitHub, and the live site updates **automatically** within a few minutes — there is no separate "publish" or "upload" step to remember.
 
 ```
 content/
-  pages/         ← one file per page
-  shared/        ← navigation and footer
+  pages/         ← one file per page (English)
+  shared/        ← navigation and footer (English)
+  locales/       ← Hindi and Gujarati translations (see "Translations" section below)
 src/data/        ← auto-generated JSON (do not edit directly)
 ```
 
 **The golden rule:** Only ever edit files in `content/`. Never edit files in `src/data/` — they are overwritten automatically.
+
+**Two ways to make an edit — pick whichever fits you:**
+
+| | No terminal, no installs | Terminal, with local preview |
+|---|---|---|
+| **Best for** | A quick text/link fix you want live fast | Bigger edits you want to see rendered before publishing |
+| **Where you edit** | Directly on GitHub's website | Files on your own computer |
+| **How it goes live** | Click GitHub's "Commit changes" button | `git push` after previewing locally |
+| **Full steps** | "Path A" in each section below | "Path B" in each section below |
+
+Both paths end the same way: a commit lands on the `main` branch, and GitHub Actions builds and deploys the site automatically. You never need to manually upload a `dist/` folder anywhere.
 
 ---
 
@@ -51,7 +63,7 @@ Find the YAML file for the page you want to edit. Naming follows the URL:
 
 ### 2. Edit the text
 
-Open the file in any text editor (Notepad, VS Code, etc.). YAML uses a simple `key: value` format:
+YAML uses a simple `key: value` format:
 
 ```yaml
 title: Our Amazing Team
@@ -70,31 +82,67 @@ title: Meet the TIDE Team
 - If text contains a colon, wrap it in quotes: `title: "Education: A Path Forward"`
 - Indentation (spaces) matters — keep it exactly as-is
 
-### 3. Sync and preview
+### 3. Publish your change
 
-After editing, open a terminal in the project folder and run:
+#### Path A — No terminal, no installs (fastest for small edits)
 
-```bash
-npm run content:sync
+1. Go to the repository on GitHub and open the file you need (use the table above to find it).
+2. Click the **pencil icon** ("Edit this file") near the top right of the file view.
+3. Make your change directly in the browser.
+4. Scroll down to **"Commit changes"**, add a short description of what you changed, and click **Commit changes** (committing straight to `main` is fine for content edits).
+5. That's it — no further steps. GitHub Actions builds and deploys the site automatically. Check the **Actions** tab if you want to watch it happen; it usually takes 1–2 minutes.
+
+#### Path B — Terminal, with local preview first
+
+Use this when you want to see the change rendered before it goes live, or you're editing several things at once.
+
+1. Open a terminal in the project folder and run:
+   ```bash
+   npm run dev
+   ```
+   This automatically syncs your YAML into JSON and starts a local preview server.
+2. Open `http://localhost:5173` in your browser to see your change rendered.
+3. Happy with it? Save it to GitHub:
+   ```bash
+   git add content/
+   git commit -m "Update [page name] content"
+   git push
+   ```
+4. GitHub Actions takes it from there — builds and deploys automatically, usually within 1–2 minutes. No `npm run build` and no manual upload needed; that only happens inside GitHub's automation, not on your computer.
+
+---
+
+## Translations (Hindi & Gujarati)
+
+The site shows English, Hindi, or Gujarati depending on what the visitor picks with the language switcher. **Editing a translation never touches the English content** — they're completely separate files, so a translator can't accidentally change the English text, and an English editor can't accidentally break a translation.
+
+```
+content/locales/
+  hi/
+    pages.yaml     ← Hindi translations for every page
+    shared.yaml    ← Hindi translations for navigation/footer
+  gu/
+    pages.yaml     ← Gujarati translations for every page
+    shared.yaml    ← Gujarati translations for navigation/footer
 ```
 
-This converts your YAML changes into the JSON files the site reads. Then:
+### How to find the right line to translate
 
-```bash
-npm run dev
-```
+Each translation file mirrors the *same* structure as the English content, just with translated values. For example, the Home page's hero tagline:
 
-Open your browser to `http://localhost:5173` to preview the changes.
+- English source: `content/pages/home.yaml` → `hero: { tagline: "..." }`
+- Hindi translation: `content/locales/hi/pages.yaml` → `home: { hero: { tagline: "..." } }`
+- Gujarati translation: `content/locales/gu/pages.yaml` → `home: { hero: { tagline: "..." } }`
 
-### 4. Build and deploy
+The key names (`home`, `hero`, `tagline`) are always in English and must match exactly across all three files — only the *values* (the actual text) differ. If you're translating an existing page, the easiest approach is: open the English YAML file and the matching locale file side by side, and translate value-for-value, line-for-line.
 
-When you're happy with the changes:
+### What happens if a translation is missing
 
-```bash
-npm run build
-```
+If a Hindi or Gujarati value is ever missing for some text, that text simply falls back to showing the English version — visitors never see a broken or blank section. This means translation work can happen gradually, page by page, without anything ever looking unfinished in the meantime.
 
-This creates a `dist/` folder. Upload its contents to your hosting provider (Netlify, Vercel, GitHub Pages, etc.).
+### Publishing a translation edit
+
+Exactly the same as English content — use **Path A** (GitHub web UI) or **Path B** (terminal with local preview) from the section above. To preview a translation locally, switch the language using the switcher in the site's header after running `npm run dev`.
 
 ---
 
@@ -219,7 +267,7 @@ Change only the `label` and `desc` values. **Never change the `to:` paths** — 
 
 ## Validating Your Changes
 
-Before building, you can check that all YAML files are valid:
+If you're using Path B, you can check that all YAML files are valid before pushing:
 
 ```bash
 npm run content:validate
@@ -229,36 +277,51 @@ This will:
 - Report any YAML syntax errors (missing colons, bad indentation, etc.)
 - Warn about any image paths in YAML that don't have matching files in `public/`
 
-Fix any errors reported before building.
+Fix any errors reported before pushing. (If you're using Path A — editing directly on GitHub — there's no equivalent check beforehand; if something's wrong, the GitHub Actions build will fail and you can see why in the **Actions** tab.)
 
 ---
 
 ## Full Workflow Summary
 
+**Path A — no terminal:**
+```
+Edit a file on GitHub's website
+        ↓
+Click "Commit changes"
+        ↓
+GitHub Actions builds + deploys automatically (~1-2 min)
+        ↓
+Live on the site
+```
+
+**Path B — terminal, with local preview:**
 ```
 Edit a YAML file in content/
         ↓
-npm run content:sync      ← converts YAML → JSON
+npm run dev          ← auto-syncs YAML → JSON, starts local preview
         ↓
-npm run dev               ← preview in browser (http://localhost:5173)
+Check http://localhost:5173 — looks good?
         ↓
-Looks good? →
+git add, git commit, git push
         ↓
-npm run build             ← creates dist/ folder
+GitHub Actions builds + deploys automatically (~1-2 min)
         ↓
-Upload dist/ to hosting
+Live on the site
 ```
 
-Or just use `npm run dev` directly — it runs the sync automatically before starting.
+There is no manual build step and no manual upload, ever — `npm run build` only matters if you're a developer debugging a build issue locally. Publishing always happens through a commit reaching `main`, never by running `npm run build` yourself and moving files anywhere.
 
 ---
 
-## First-Time Setup (for a new computer)
+## First-Time Setup (for a new computer, Path B only)
 
-1. Install [Node.js](https://nodejs.org/) (LTS version)
-2. Open a terminal and navigate to the project folder:
+You only need this if you're using Path B (terminal with local preview). Path A needs nothing installed at all.
+
+1. Install [Node.js](https://nodejs.org/) (LTS version) and [Git](https://git-scm.com/downloads).
+2. Clone the repository (one-time only):
    ```bash
-   cd path/to/tide-new
+   git clone https://github.com/<owner>/<repo>.git
+   cd <repo>
    ```
 3. Install dependencies (one-time only):
    ```bash
@@ -277,10 +340,11 @@ Or just use `npm run dev` directly — it runs the sync automatically before sta
 | Problem | Solution |
 |---------|----------|
 | "Cannot find module" error | Run `npm install` first |
-| Changes not showing | Run `npm run content:sync` then refresh |
+| Changes not showing in local preview (Path B) | Run `npm run content:sync` then refresh |
+| Committed a change but the live site looks the same after 5+ minutes | Check the repo's **Actions** tab — if the latest run shows a red ✕, click it to see what failed |
 | YAML syntax error | Check for missing colons, wrong indentation, or unquoted colons in values |
 | Image not showing | Check the path in YAML starts with `/assets/images/` and the file exists in `public/` |
-| Build fails | Run `npm run content:validate` to find the problem |
+| Build fails (Actions tab shows red ✕) | Run `npm run content:validate` locally to find the problem, fix it, and push again |
 
 ---
 

@@ -4,6 +4,8 @@
 **Time required:** ~20 minutes  
 **What you will set up:** A Google Apps Script Web App that reads your private Google Sheet and serves its data as a JSON API for the website.
 
+> **Already have a working setup under a different Google account, and need to move it to a new one?** This guide is for setting up from scratch. For moving an *existing* setup to a new owner, use `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` instead — it has an important gotcha (Apps Script deployments don't transfer ownership the way you'd expect) that this guide doesn't need to cover.
+
 ---
 
 ## Before You Start — What You Need
