@@ -51,7 +51,7 @@ Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 24 pag
 ### Tech stack
 
 - **Vite 8 + React 19** — static bundle, `npm run build` → `dist/`
-- **React Router v7** — `BrowserRouter` (clean URLs, e.g. `/pramaan/resource-centre`). GitHub Pages has no server-side rewrite, so deep links and hard reloads rely on `public/404.html` redirecting to `index.html`, which restores the original path via `history.replaceState`. **Do not assume HashRouter** — older notes in this repo's history said otherwise; `src/App.jsx` is the source of truth. A catch-all `<Route path="*" element={<NotFound />} />` is the last route in `src/App.jsx` — it only handles paths that don't match *any* route once React has mounted; the `404.html` trick above is a separate, earlier-stage mechanism for raw server-level 404s on a hard reload.
+- **React Router v7** — `BrowserRouter` (clean URLs, e.g. `/pramaan/resource-centre`). GitHub Pages has no server-side rewrite, so deep links and hard reloads rely on `public/404.html` redirecting to `index.html`, which restores the original path via `history.replaceState`. **Do not assume HashRouter** — older notes in this repo's history said otherwise; `src/App.jsx` is the source of truth. A catch-all `<Route path="*" element={<NotFound />} />` is the last route in `src/App.jsx` — it only handles paths that don't match *any* route once React has mounted; the `404.html` trick above is a separate, earlier-stage mechanism for raw server-level 404s on a hard reload. `/404` is also a standalone, permanent route to the same `NotFound` page (so it can be linked/tested directly without relying on an actual unmatched path) — both must stay in sync if `NotFound` is ever replaced.
 - **Tailwind CSS v3** — utility classes, design tokens in `tailwind.config.js`
 - **Framer Motion 12** — page transitions, scroll animations
 - **i18next + react-i18next** — EN / HI / GU with localStorage persistence
@@ -177,8 +177,8 @@ tide-new/
 │   │   ├── Home.jsx          ← hero, mission, impact counters, programs, gallery, CTA
 │   │   ├── Contact.jsx       ← form + info sidebar
 │   │   ├── THRIvE.jsx        ← THRIvE programme page
-│   │   ├── NotFound.jsx      ← 404 catch-all, content/shared/not-found.yaml
-│   │   ├── ComingSoon.jsx    ← reusable template for not-yet-built sections, props override content/shared/coming-soon.yaml
+│   │   ├── NotFound.jsx      ← reachable at /404 AND the catch-all (*); content/shared/not-found.yaml
+│   │   ├── ComingSoon.jsx    ← reachable at /coming-soon (also reusable as a template — drop it on any other route, props override content/shared/coming-soon.yaml)
 │   │   ├── about/
 │   │   │   ├── WhyTide.jsx   ← who we are, vision, goals
 │   │   │   ├── OurTeam.jsx   ← portrait cards + advisor cards

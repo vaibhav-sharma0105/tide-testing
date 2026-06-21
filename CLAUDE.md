@@ -97,7 +97,8 @@ docs/
 | `/get-involved/donate` | Donate | `get-involved-donate.json` | TODO content |
 | `/thrive` | THRIvE | `thrive.json` | ✓ |
 | `/contact` | Contact | `contact.json` | ✓ |
-| `*` (no route matched) | NotFound | `not-found.json` | ✓ |
+| `/coming-soon` | ComingSoon | `coming-soon.json` (props can override) | ✓ — reusable template, not page-specific |
+| `/404` and `*` (no route matched) | NotFound | `not-found.json` | ✓ |
 
 **Stranded routes** (still resolve via direct URL, not in nav, pending stakeholder decision — see `src/App.jsx`): `/about/our-results`, `/projects/block-eti`, `/projects/bettered`, `/projects/empowered`, `/projects/completed`, `/projects/other-projects`, `/projects/sdg-drives`, `/get-involved/work-with-us`, `/get-involved/mccx`, `/resources/saral-kadam`, `/resources/annual-reports`, `/resources/publications`, `/resources/abl-resources(/resource-center(/:id)|/contribute)`.
 
