@@ -2,6 +2,21 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { Component, lazy, Suspense } from 'react'
 import Layout from './components/layout/Layout'
+import CreativeLoader from './components/ui/CreativeLoader'
+import { useDelayedVisible } from './hooks/useDelayedVisible'
+
+/* Suspense renders this the instant a lazy route suspends, and unmounts it
+   the instant the import resolves — useDelayedVisible(true, ...) means it
+   only actually shows anything if that window lasts longer than the delay,
+   so a fast chunk load never flashes the loader at all. */
+function RouteLoadingFallback() {
+  const show = useDelayedVisible(true, 200)
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-tide-bg">
+      {show && <CreativeLoader />}
+    </div>
+  )
+}
 
 class ErrorBoundary extends Component {
   constructor(props) { super(props); this.state = { error: null } }
@@ -48,6 +63,7 @@ const AblHome             = lazy(() => import('./pages/resources/AblHome'))
 const AblResourceCenter   = lazy(() => import('./pages/resources/AblResourceCenter'))
 const AblDetail           = lazy(() => import('./pages/resources/AblDetail'))
 const AblContribute       = lazy(() => import('./pages/resources/AblContribute'))
+const NotFound            = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
   return (
@@ -55,14 +71,7 @@ export default function App() {
     <HelmetProvider>
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Layout>
-          <Suspense fallback={
-            <div className="min-h-screen flex items-center justify-center bg-tide-bg">
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                <span className="font-body text-sm text-tide-muted">Loading…</span>
-              </div>
-            </div>
-          }>
+          <Suspense fallback={<RouteLoadingFallback />}>
             <Routes>
               {/* ── Active routes ───────────────────────────────────────── */}
               <Route path="/" element={<Home />} />
@@ -110,6 +119,9 @@ export default function App() {
               <Route path="/resources/abl-resources/resource-center" element={<AblResourceCenter />} />
               <Route path="/resources/abl-resources/resource-center/:id" element={<AblDetail />} />
               <Route path="/resources/abl-resources/contribute" element={<AblContribute />} />
+
+              {/* ── Catch-all — no other route matched ───────────────────── */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </Layout>

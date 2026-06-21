@@ -6,10 +6,12 @@ import { useTranslation } from 'react-i18next'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import Button from '../../components/ui/Button'
+import CreativeLoader from '../../components/ui/CreativeLoader'
 import DriveImage from '../../components/abl/DriveImage'
 import ImageLightbox from '../../components/abl/ImageLightbox'
 import VideoLightbox from '../../components/abl/VideoLightbox'
 import { useABLData } from '../../hooks/useABLData'
+import { useDelayedVisible } from '../../hooks/useDelayedVisible'
 import { getDrivePreviewUrl } from '../../utils/driveUtils'
 import { imgSrc } from '../../utils/imgSrc'
 import { TAB_STYLE_MAP } from '../../config/abl'
@@ -105,6 +107,7 @@ export default function AblDetail() {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [videoOpen, setVideoOpen] = useState(false)
   const [expandedGrade, setExpandedGrade] = useState(null)
+  const showLoader = useDelayedVisible(loading, 200)
 
   const backLink = (
     <Link
@@ -122,18 +125,8 @@ export default function AblDetail() {
       <>
         <PageHero badge="Resources · ABL" title={t('abl.resourceCenter.loading', 'Loading…')} />
         <AblNavBar />
-        <section className="section-padding bg-tide-bg">
-          <div className="max-w-5xl mx-auto">
-            {backLink}
-            <div className="animate-pulse grid md:grid-cols-5 gap-10">
-              <div className="md:col-span-2 max-w-[280px] aspect-[3/4] bg-tide-subtle rounded-2xl" />
-              <div className="md:col-span-3 space-y-4">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="h-4 bg-tide-subtle rounded w-3/4" />
-                ))}
-              </div>
-            </div>
-          </div>
+        <section className="section-padding bg-tide-bg min-h-[40vh] flex items-center justify-center">
+          {showLoader && <CreativeLoader />}
         </section>
       </>
     )

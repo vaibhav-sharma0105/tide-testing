@@ -75,32 +75,30 @@ docs/
 ```
 
 ## Pages (24 total)
+
+> **Note:** the site underwent a route restructure (see `docs/specs/site-restructure-plan.md`) — current primary nav paths use `/pramaan/*` and `/education-for-harmony/*`, not the older `/resources/abl-resources/*` style. The old paths still resolve (kept live, just not linked in nav) pending a final stakeholder decision on redirect/removal — see the "Stranded routes" comment block in `src/App.jsx`.
+
 | Route | Component | Data Source | Status |
 |-------|-----------|-------------|--------|
 | `/` | Home | `home.json` | ✓ |
 | `/about/why-tide` | WhyTide | `about-why-tide.json` | ✓ |
+| `/about/past-programs` | PastPrograms | `about-past-programs.json` | ✓ |
 | `/about/our-team` | OurTeam | `about-our-team.json` | ✓ |
 | `/about/our-partners` | OurPartners | `about-our-partners.json` | ✓ |
-| `/about/our-results` | OurResults | `about-our-results.json` | ✓ |
-| `/projects/block-eti` | BlockETI | `projects-block-eti.json` | TODO content |
-| `/projects/bettered` | BetterED | `projects-bettered.json` | ✓ |
-| `/projects/empowered` | EmpowerEd | `projects-empowered.json` | ✓ |
-| `/projects/completed` | CompletEd | `projects-completed.json` | ✓ |
-| `/projects/sdg-drives` | SdgDrives | `projects-sdg-drives.json` | ✓ |
-| `/projects/other-projects` | OtherProjects | `projects-other.json` | ✓ |
+| `/about/publications` | PublicationsCombined | `about-publications.json` | ✓ |
+| `/education-for-harmony` | EducationForHarmony | `education-for-harmony.json` | ✓ |
+| `/education-for-harmony/mccx` | OrganizeMCCx | `get-involved-mccx.json` | TODO content |
+| `/pramaan` | AblHome | Apps Script API | ✓ |
+| `/pramaan/resource-centre` | AblResourceCenter | Apps Script API | ✓ |
+| `/pramaan/resource-centre/:id` | AblDetail | Apps Script API | ✓ |
+| `/pramaan/contribute` | AblContribute | Static + env config | ✓ |
 | `/get-involved/volunteer` | Volunteer | `get-involved-volunteer.json` | ✓ |
 | `/get-involved/donate` | Donate | `get-involved-donate.json` | TODO content |
-| `/get-involved/work-with-us` | WorkWithUs | `get-involved-work-with-us.json` | TODO content |
-| `/get-involved/mccx` | OrganizeMCCx | `get-involved-mccx.json` | TODO content |
 | `/thrive` | THRIvE | `thrive.json` | ✓ |
-| `/resources/saral-kadam` | SaralKadam | `resources-saral-kadam.json` | ✓ |
-| `/resources/annual-reports` | AnnualReports | `resources-annual-reports.json` | ✓ |
-| `/resources/publications` | Publications | `resources-publications.json` | ✓ |
-| `/resources/abl-resources` | AblHome | Apps Script API | ✓ |
-| `/resources/abl-resources/resource-center` | AblResourceCenter | Apps Script API | ✓ |
-| `/resources/abl-resources/resource-center/:id` | AblDetail | Apps Script API | ✓ |
-| `/resources/abl-resources/contribute` | AblContribute | Static + env config | ✓ |
 | `/contact` | Contact | `contact.json` | ✓ |
+| `*` (no route matched) | NotFound | `not-found.json` | ✓ |
+
+**Stranded routes** (still resolve via direct URL, not in nav, pending stakeholder decision — see `src/App.jsx`): `/about/our-results`, `/projects/block-eti`, `/projects/bettered`, `/projects/empowered`, `/projects/completed`, `/projects/other-projects`, `/projects/sdg-drives`, `/get-involved/work-with-us`, `/get-involved/mccx`, `/resources/saral-kadam`, `/resources/annual-reports`, `/resources/publications`, `/resources/abl-resources(/resource-center(/:id)|/contribute)`.
 
 ## TODO Placeholders
 Pages marked "TODO content" use `<TodoPlaceholder>` — amber banner at the bottom. Sections also marked `{/* TODO: replace with real content */}`.

@@ -1,0 +1,10 @@
+# Shown briefly while a page or its data is loading. Only appears if loading
+# takes longer than a moment — fast loads never show this at all.
+# messages: rotate every few seconds if loading takes a while. Keep each one
+# short (under ~60 characters) so it fits on one line on mobile.
+messages:
+  - "Gathering today's learning resources…"
+  - "Together in Development & Education since 2014"
+  - "40,000+ lives changed across Gujarat"
+  - "Loading something worth the wait…"
+  - "Activity-based learning, on its way"

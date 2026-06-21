@@ -51,7 +51,7 @@ Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 24 pag
 ### Tech stack
 
 - **Vite 8 + React 19** — static bundle, `npm run build` → `dist/`
-- **React Router v7** — `BrowserRouter` (clean URLs, e.g. `/resources/abl-resources`). GitHub Pages has no server-side rewrite, so deep links and hard reloads rely on `public/404.html` redirecting to `index.html`, which restores the original path via `history.replaceState`. **Do not assume HashRouter** — older notes in this repo's history said otherwise; `src/App.jsx` is the source of truth.
+- **React Router v7** — `BrowserRouter` (clean URLs, e.g. `/pramaan/resource-centre`). GitHub Pages has no server-side rewrite, so deep links and hard reloads rely on `public/404.html` redirecting to `index.html`, which restores the original path via `history.replaceState`. **Do not assume HashRouter** — older notes in this repo's history said otherwise; `src/App.jsx` is the source of truth. A catch-all `<Route path="*" element={<NotFound />} />` is the last route in `src/App.jsx` — it only handles paths that don't match *any* route once React has mounted; the `404.html` trick above is a separate, earlier-stage mechanism for raw server-level 404s on a hard reload.
 - **Tailwind CSS v3** — utility classes, design tokens in `tailwind.config.js`
 - **Framer Motion 12** — page transitions, scroll animations
 - **i18next + react-i18next** — EN / HI / GU with localStorage persistence
@@ -156,6 +156,7 @@ tide-new/
 │   │   │   ├── SectionHeader.jsx    ← badge + h2 + subtitle block
 │   │   │   ├── PageHero.jsx         ← dark banner for inner pages
 │   │   │   ├── AnimatedCounter.jsx  ← scroll-triggered number animation
+│   │   │   ├── CreativeLoader.jsx   ← open book + growing sprout SVG; gate behind useDelayedVisible
 │   │   │   ├── Lightbox.jsx         ← full-screen image gallery with keyboard nav
 │   │   │   ├── LanguageSwitcher.jsx ← EN/HI/GU toggle with localStorage
 │   │   │   ├── SocialIcons.jsx      ← inline SVG: FB, IG, LinkedIn, WhatsApp
@@ -176,6 +177,8 @@ tide-new/
 │   │   ├── Home.jsx          ← hero, mission, impact counters, programs, gallery, CTA
 │   │   ├── Contact.jsx       ← form + info sidebar
 │   │   ├── THRIvE.jsx        ← THRIvE programme page
+│   │   ├── NotFound.jsx      ← 404 catch-all, content/shared/not-found.yaml
+│   │   ├── ComingSoon.jsx    ← reusable template for not-yet-built sections, props override content/shared/coming-soon.yaml
 │   │   ├── about/
 │   │   │   ├── WhyTide.jsx   ← who we are, vision, goals
 │   │   │   ├── OurTeam.jsx   ← portrait cards + advisor cards
@@ -205,7 +208,8 @@ tide-new/
 │   ├── hooks/
 │   │   ├── useScrollAnimation.js ← IntersectionObserver → [ref, isVisible]
 │   │   ├── useLightbox.js        ← gallery open/close/prev/next state
-│   │   └── useABLData.js         ← ABL API fetch + sessionStorage cache
+│   │   ├── useABLData.js         ← ABL API fetch + sessionStorage cache
+│   │   └── useDelayedVisible.js  ← gates a loading UI behind a threshold so fast loads never flash it
 │   │
 │   ├── config/
 │   │   └── abl.js                ← ABL_API_URL, cache TTL, TAB_STYLE_MAP
@@ -639,12 +643,14 @@ On mobile, `subItems` render as an indented inline list under the parent item.
 
 ### Pages and routes
 
-| Route | Page | Notes |
-|---|---|---|
-| `/resources/abl-resources` | `AblHome` | Stats bar + type cards — dynamic from API |
-| `/resources/abl-resources/resource-center` | `AblResourceCenter` | Sidebar filters + grid + pagination |
-| `/resources/abl-resources/resource-center/:id` | `AblDetail` | Single resource + lightbox |
-| `/resources/abl-resources/contribute` | `AblContribute` | Static 3-step + Google Form CTA |
+Current nav paths use `/pramaan/*` (post-restructure, see `docs/specs/site-restructure-plan.md`). The original `/resources/abl-resources/*` paths still resolve as stranded routes (not in nav) — see `src/App.jsx`'s "Stranded routes" block.
+
+| Route (current) | Stranded equivalent | Page | Notes |
+|---|---|---|---|
+| `/pramaan` | `/resources/abl-resources` | `AblHome` | Stats bar + type cards — dynamic from API |
+| `/pramaan/resource-centre` | `/resources/abl-resources/resource-center` | `AblResourceCenter` | Sidebar filters + grid + pagination |
+| `/pramaan/resource-centre/:id` | `/resources/abl-resources/resource-center/:id` | `AblDetail` | Single resource + lightbox |
+| `/pramaan/contribute` | `/resources/abl-resources/contribute` | `AblContribute` | Static 3-step + Google Form CTA |
 
 ### ResourceObject schema
 
