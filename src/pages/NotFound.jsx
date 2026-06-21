@@ -20,7 +20,23 @@ export default function NotFound() {
 
       <section className="py-16 md:py-20 bg-tide-bg px-4">
         <div className="max-w-lg w-full mx-auto text-center">
-          <svg width="160" height="120" viewBox="0 0 160 120" fill="none" className="mx-auto mb-6" aria-hidden="true">
+          <svg width="160" height="140" viewBox="0 0 160 140" fill="none" className="mx-auto mb-6" aria-hidden="true">
+            <defs>
+              <linearGradient id="kiteBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#4FA8DE" />
+                <stop offset="55%" stopColor="#1E6BAA" />
+                <stop offset="100%" stopColor="#103E63" />
+              </linearGradient>
+              <linearGradient id="kiteAmber" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#FDC768" />
+                <stop offset="55%" stopColor="#F59E0B" />
+                <stop offset="100%" stopColor="#B45309" />
+              </linearGradient>
+              <filter id="kiteShadow" x="-60%" y="-60%" width="220%" height="220%">
+                <feDropShadow dx="2" dy="5" stdDeviation="3" floodColor="#0D2137" floodOpacity="0.28" />
+              </filter>
+            </defs>
+
             {/* Dotted flight path */}
             <motion.path
               d="M10,95 Q50,90 75,70 T120,35"
@@ -29,22 +45,42 @@ export default function NotFound() {
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
             />
-            {/* Paper airplane — nose at (122,32), designed pointing right at
-                rest, then rotated -35deg around that same point so the nose
-                ends up aimed up-and-right, matching the flight path's end. */}
+            {/* A kite that's flown off — kite-flying (Uttarayan) is a major
+                Gujarati tradition, giving this real local resonance beyond a
+                generic "lost" icon. Diamond frame centered at (118,31). The
+                tail sways on its own, faster and wider than the body, for a
+                layered "whipping in the wind" feel rather than one stiff,
+                uniform sway. */}
             <motion.g
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: [0, -4, 0] }}
+              initial={{ opacity: 0, y: 8, rotate: -6 }}
+              animate={{ opacity: 1, y: [0, -6, 0], rotate: [-8, 8, -8] }}
               transition={{
                 opacity: { duration: 0.5, delay: 0.4 },
                 y: { duration: 2.4, delay: 0.9, repeat: Infinity, ease: 'easeInOut' },
+                rotate: { duration: 3, delay: 0.9, repeat: Infinity, ease: 'easeInOut' },
               }}
+              style={{ transformOrigin: '118px 31px' }}
+              filter="url(#kiteShadow)"
             >
-              <path
-                d="M122,32 L104,19 L116,29 L104,46 Z"
-                fill="#1E6BAA" stroke="#15538A" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round"
-                transform="rotate(-35 122 32)"
-              />
+              {/* tail, with its own independent flutter */}
+              <motion.g
+                initial={{ rotate: -10 }}
+                animate={{ rotate: [-10, 14, -10] }}
+                transition={{ duration: 1.7, delay: 0.9, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ transformOrigin: '118px 49px' }}
+              >
+                <path d="M118,49 Q110,58 114,68 Q118,76 111,84"
+                  stroke="#A8D4F0" strokeWidth="2" strokeLinecap="round" fill="none" />
+                <circle cx="113" cy="60" r="3.2" fill="#F59E0B" stroke="#B45309" strokeWidth="1" />
+                <circle cx="116" cy="74" r="3.2" fill="#1E6BAA" stroke="#103E63" strokeWidth="1" />
+              </motion.g>
+              {/* diamond frame — two-tone, gradient-shaded halves */}
+              <path d="M118,13 L106,31 L118,49 Z" fill="url(#kiteBlue)" stroke="#0D3A5F" strokeWidth="1.5" strokeLinejoin="round" />
+              <path d="M118,13 L130,31 L118,49 Z" fill="url(#kiteAmber)" stroke="#92400E" strokeWidth="1.5" strokeLinejoin="round" />
+              {/* sheen highlights */}
+              <line x1="118" y1="13" x2="118" y2="49" stroke="#FFFFFF" strokeWidth="1.2" strokeOpacity="0.85" />
+              <line x1="106" y1="31" x2="130" y2="31" stroke="#FFFFFF" strokeWidth="1" strokeOpacity="0.6" />
+              <path d="M118,16 L112,29" stroke="#FFFFFF" strokeWidth="1.5" strokeOpacity="0.5" strokeLinecap="round" />
             </motion.g>
           </svg>
 
