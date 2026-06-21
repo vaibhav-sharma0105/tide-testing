@@ -52,8 +52,12 @@
            bg-primary-faint text-primary border border-primary/20 tracking-widest uppercase;
   }
   .badge-accent {
+    /* text-accent-deeper, not text-accent-dark — verified by hand: accent-dark
+       on accent-faint is only 3.07:1 (axe's automated scan didn't catch this,
+       likely a small-text heuristic limitation, but the actual rendered
+       colors clearly fail 4.5:1). accent-deeper clears 4.84:1. */
     @apply inline-flex items-center gap-1.5 px-3 py-1 text-xs font-body font-semibold rounded-full
-           bg-accent-faint text-accent-dark border border-accent/30 tracking-widest uppercase;
+           bg-accent-faint text-accent-deeper border border-accent/30 tracking-widest uppercase;
   }
   .badge-white {
     @apply inline-flex items-center gap-1.5 px-3 py-1 text-xs font-body font-semibold rounded-full

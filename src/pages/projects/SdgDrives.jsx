@@ -56,10 +56,10 @@ export default function SdgDrives() {
             <h2 className="font-display text-2xl font-semibold text-tide-text mb-4">{data.idea.title}</h2>
             <p className="text-tide-muted font-body leading-relaxed mb-5">{data.idea.body}</p>
             <div className="bg-primary-light rounded-xl px-5 py-4 mb-5">
-              <p className="text-sm font-body font-semibold text-primary leading-relaxed">{data.idea.sdgList}</p>
+              <p className="text-sm font-body font-semibold text-primary-dark leading-relaxed">{data.idea.sdgList}</p>
             </div>
             <div className="flex items-start gap-3">
-              <Mail className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
+              <Mail className="w-4 h-4 text-accent-deeper flex-shrink-0 mt-0.5" />
               <p className="text-sm font-body text-tide-muted">{data.idea.contactNote}</p>
             </div>
           </motion.div>
@@ -119,9 +119,9 @@ export default function SdgDrives() {
               <table className="w-full">
                 <thead>
                   <tr className="bg-tide-subtle">
-                    <th className="px-6 py-3 text-left text-xs font-body font-bold text-tide-muted uppercase tracking-widest">{t('projects.sdgDrives.colDuration', data.execution.colDuration)}</th>
-                    <th className="px-6 py-3 text-left text-xs font-body font-bold text-tide-muted uppercase tracking-widest">{t('projects.sdgDrives.colFrequency', data.execution.colFrequency)}</th>
-                    <th className="px-6 py-3 text-left text-xs font-body font-bold text-tide-muted uppercase tracking-widest">{t('projects.sdgDrives.colSdgs', data.execution.colSdgs)}</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-body font-bold text-tide-muted uppercase tracking-widest">{t('projects.sdgDrives.colDuration', data.execution.colDuration)}</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-body font-bold text-tide-muted uppercase tracking-widest">{t('projects.sdgDrives.colFrequency', data.execution.colFrequency)}</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-body font-bold text-tide-muted uppercase tracking-widest">{t('projects.sdgDrives.colSdgs', data.execution.colSdgs)}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -214,7 +214,7 @@ export default function SdgDrives() {
           <div className="grid md:grid-cols-2 gap-8">
 
             <motion.div {...fadeUp()} className="bg-tide-bg rounded-2xl p-8 border border-tide-border text-center flex flex-col items-center">
-              <span className="inline-block px-3 py-1 text-xs font-body font-bold uppercase tracking-widest text-primary bg-primary-light rounded-full mb-4 border border-primary/20">
+              <span className="inline-block px-3 py-1 text-xs font-body font-bold uppercase tracking-widest text-primary-dark bg-primary-light rounded-full mb-4 border border-primary/20">
                 {data.register.sectionBadge}
               </span>
               <h2 className="font-display text-2xl font-semibold text-tide-text mb-3">{data.register.title}</h2>
@@ -225,7 +225,7 @@ export default function SdgDrives() {
             </motion.div>
 
             <motion.div {...fadeUp(0.1)} className="bg-tide-bg rounded-2xl p-8 border border-tide-border">
-              <span className="inline-block px-3 py-1 text-xs font-body font-bold uppercase tracking-widest text-primary bg-primary-light rounded-full mb-4 border border-primary/20">
+              <span className="inline-block px-3 py-1 text-xs font-body font-bold uppercase tracking-widest text-primary-dark bg-primary-light rounded-full mb-4 border border-primary/20">
                 {data.downloads.sectionBadge}
               </span>
               <h2 className="font-display text-2xl font-semibold text-tide-text mb-6">{data.downloads.title}</h2>

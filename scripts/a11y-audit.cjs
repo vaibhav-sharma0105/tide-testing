@@ -50,7 +50,22 @@ const ROUTES = [
   for (const route of ROUTES) {
     try {
       await page.goto(BASE + route, { waitUntil: 'load', timeout: 15000 })
-      await page.waitForTimeout(900) // let async data/animations settle
+      // Scroll through the page first so every whileInView animation has
+      // actually triggered, then wait for them to finish settling — otherwise
+      // axe can snapshot an element mid-fade-in and report a contrast ratio
+      // that never actually exists at rest (confirmed: 2026-06-22, a false
+      // positive on AblHome's "why points" list, mid-animation foreground
+      // color #6a788a vs the true resting #5A6A7E once settled).
+      await page.evaluate(async () => {
+        const step = window.innerHeight
+        const max = document.body.scrollHeight
+        for (let y = 0; y < max; y += step) {
+          window.scrollTo(0, y)
+          await new Promise(r => setTimeout(r, 80))
+        }
+        window.scrollTo(0, 0)
+      })
+      await page.waitForTimeout(1200)
       const results = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
         .analyze()

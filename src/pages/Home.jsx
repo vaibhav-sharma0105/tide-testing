@@ -182,7 +182,7 @@ export default function Home() {
               <h2 className="display-lg text-tide-text">{t('home.mission.title', data.mission.title)}</h2>
               <p className="body-lg mt-5">{t('home.mission.body', data.mission.body)}</p>
               <blockquote className="mt-8 pl-6 border-l-4 border-accent relative">
-                <Quote className="absolute -top-1 -left-1 w-5 h-5 text-accent opacity-60" />
+                <Quote aria-hidden="true" className="absolute -top-1 -left-1 w-5 h-5 text-accent-deeper opacity-60" />
                 <p className="font-display text-xl italic text-tide-text leading-snug">
                   "{t('home.mission.quote', data.mission.quote)}"
                 </p>

@@ -88,7 +88,7 @@ export default function AblContribute() {
                 <span className="px-5 py-3 rounded-full bg-tide-subtle text-tide-muted text-sm font-body font-semibold border border-tide-border cursor-not-allowed">
                   {t('abl.contribute.cta', ablContributeData.cta)} ↗
                 </span>
-                <span className="text-xs font-body text-accent font-semibold">{t('abl.contribute.ctaPending', ablContributeData.ctaPending)}</span>
+                <span className="text-xs font-body text-accent-deeper font-semibold">{t('abl.contribute.ctaPending', ablContributeData.ctaPending)}</span>
               </div>
             )}
             <p className="text-xs font-body text-tide-muted mt-3">{t('abl.contribute.disclaimer', ablContributeData.disclaimer)}</p>

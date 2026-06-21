@@ -42,7 +42,7 @@ export default function ResourceGrid({ resources, loading, error, onRetry, colsC
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center gap-4">
-        <AlertCircle className="w-10 h-10 text-accent" />
+        <AlertCircle className="w-10 h-10 text-accent-deeper" />
         <p className="font-body text-tide-muted max-w-sm">{error}</p>
         <button
           onClick={onRetry}

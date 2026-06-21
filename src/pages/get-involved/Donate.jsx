@@ -55,7 +55,7 @@ export default function Donate() {
               <ul className="space-y-3 mb-8">
                 {data.hero.highlights.map((pt, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-accent-deeper shrink-0 mt-0.5" />
                     <span className="font-body text-sm text-tide-text">{pt}</span>
                   </li>
                 ))}

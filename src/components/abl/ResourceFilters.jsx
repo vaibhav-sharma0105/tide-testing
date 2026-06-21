@@ -196,7 +196,7 @@ function RadioRow({ label, count, active, onClick }) {
         {active && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
       </span>
       <span className="flex-1 text-left">{label}</span>
-      <span className="text-xs text-tide-muted font-normal tabular-nums">{count}</span>
+      <span className={`text-xs font-normal tabular-nums ${active ? 'text-tide-mutedOnLight' : 'text-tide-muted'}`}>{count}</span>
     </button>
   )
 }
