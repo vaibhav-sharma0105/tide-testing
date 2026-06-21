@@ -69,7 +69,7 @@ export default function OtherProjects() {
             <div className="bg-white rounded-2xl p-6 border border-tide-border mb-6">
               <p className="text-tide-muted font-body leading-relaxed">{data.disha.body}</p>
             </div>
-            <p className="text-xs font-body text-tide-muted mb-5 italic">Click any image to view full screen.</p>
+            <p className="text-xs font-body text-tide-muted mb-5 italic">{t('common.clickToZoom', 'Click any image to view full screen.')}</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {data.disha.photos.map((item, i) => (
                 <motion.button
@@ -87,7 +87,7 @@ export default function OtherProjects() {
           {/* Miracle of Ideas */}
           <div className="mb-20">
             <SectionHeader badge={data.moi.sectionBadge} title={data.moi.sectionTitle} subtitle={data.moi.sectionSubtitle} />
-            <p className="text-xs font-body text-tide-muted mb-5 italic">Click any image to view full screen.</p>
+            <p className="text-xs font-body text-tide-muted mb-5 italic">{t('common.clickToZoom', 'Click any image to view full screen.')}</p>
             <div className="grid sm:grid-cols-2 gap-6">
               {data.moi.photos.map((item, i) => (
                 <motion.button
@@ -107,7 +107,7 @@ export default function OtherProjects() {
             <SectionHeader badge={data.prabhav.sectionBadge} title={data.prabhav.sectionTitle} subtitle={data.prabhav.sectionSubtitle} />
             <div className="grid sm:grid-cols-2 gap-8 items-start">
               <motion.div {...fadeUp(0)} className="rounded-2xl overflow-hidden border border-tide-border shadow-sm bg-white p-3">
-                <img src={imgSrc(data.prabhav.poster)} alt="Schools2030 Poster" className="w-full h-auto object-contain rounded-xl" />
+                <img src={imgSrc(data.prabhav.poster)} alt={data.prabhav.posterAlt} className="w-full h-auto object-contain rounded-xl" />
               </motion.div>
               <motion.div {...fadeUp(0.1)} className="bg-white rounded-2xl p-6 border border-tide-border">
                 <p className="text-tide-muted font-body leading-relaxed">{data.prabhav.body}</p>

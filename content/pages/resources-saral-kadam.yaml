@@ -11,7 +11,9 @@ about:
   available: "Currently available in Gujarati. English and Hindi translations in progress."
   request: "Worksheets and test papers available on request — email us at info@tideinternational.org"
   mainPhoto: "/assets/images/resources-publications/saral-kadam-booklets.jpg"
+  mainPhotoAlt: "Saral Kadam materials"
   diagramPhoto: "/assets/images/resources-saral-kadam-program/diagram.png"
+  diagramPhotoAlt: "Saral Kadam program structure"
   ctaLabel: "Request Materials"
   ctaHref: "mailto:info@tideinternational.org"
 

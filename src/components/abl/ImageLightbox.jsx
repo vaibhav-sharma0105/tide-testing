@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { getAblThumbnail } from '../../utils/ablThumbnails'
 
 export default function ImageLightbox({ id, alt, onClose }) {
+  const { t } = useTranslation()
   const src = getAblThumbnail(id, 'full')
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function ImageLightbox({ id, alt, onClose }) {
           {/* Close button */}
           <button
             onClick={onClose}
-            aria-label="Close preview"
+            aria-label={t('common.closePreview', 'Close preview')}
             className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition-colors duration-150"
           >
             <X className="w-5 h-5" />
@@ -59,7 +61,7 @@ export default function ImageLightbox({ id, alt, onClose }) {
               />
             ) : (
               <div className="w-96 h-64 rounded-xl bg-white/10 flex items-center justify-center">
-                <span className="text-white/50 text-sm font-body">No image available</span>
+                <span className="text-white/50 text-sm font-body">{t('abl.resourceCenter.noImage', 'No image available')}</span>
               </div>
             )}
             {alt && (

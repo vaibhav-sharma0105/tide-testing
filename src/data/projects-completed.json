@@ -163,6 +163,7 @@
         "label": "MCC"
       }
     ],
-    "poster": "assets/images/projects-moi2024/signup-poster.png"
+    "poster": "assets/images/projects-moi2024/signup-poster.png",
+    "posterAlt": "MOI 2024 Signup Poster"
   }
 }

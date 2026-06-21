@@ -168,7 +168,12 @@
     "sdgDrives": {
       "title": "SDG ડ્રાઇવ્સ",
       "tagline": "UN sustainable development goals aligned volunteering.",
-      "overview": "SDG Drives mobilises volunteers across Gujarat for SDG-aligned campaigns."
+      "overview": "SDG Drives mobilises volunteers across Gujarat for SDG-aligned campaigns.",
+      "timelineTitle": "અમલીકરણ સમયરેખા",
+      "colDuration": "સમયગાળો",
+      "colFrequency": "આવર્તન",
+      "colSdgs": "આવરી લેવાયેલ SDGs",
+      "padletFallback": "બોર્ડ દેખાતું નથી?"
     },
     "other": {
       "title": "અન્ય પ્રોજેક્ટ્સ",
@@ -197,6 +202,7 @@
     },
     "projects": {
       "title": "ચાલુ સંશોધન પ્રોજેક્ટ્સ",
+      "badge": "સંશોધન",
       "p1": "ખુશી અભ્યાસક્રમ અધ્યયન",
       "p1desc": "સામાજિક-ભાવાત્મક અભ્યાસક્રમ.",
       "p2": "PRABHAV",
@@ -258,7 +264,14 @@
     },
     "publications": {
       "title": "Our Publications",
-      "tagline": "Research, insights, and ideas from the TIDE community."
+      "tagline": "Research, insights, and ideas from the TIDE community.",
+      "viewResource": "સંસાધન જુઓ",
+      "readMore": "વધુ વાંચો",
+      "typeBook": "પુસ્તક",
+      "typeArticle": "લેખ",
+      "typeVideo": "વિડિઓ",
+      "typeTalk": "વાર્તાલાપ",
+      "typeMaterials": "સામગ્રી"
     }
   },
   "contact": {
@@ -271,7 +284,13 @@
     "namePlaceholder": "Your name",
     "emailPlaceholder": "Your email",
     "messagePlaceholder": "Your message",
-    "send": "Send Message"
+    "send": "Send Message",
+    "getInTouch": "Get in touch",
+    "labelAddress": "Address",
+    "labelPhone": "Phone",
+    "labelEmail": "Email",
+    "labelHours": "Office Hours",
+    "followUs": "Follow Us"
   },
   "nav": {
     "home": "હોમ",
@@ -337,6 +356,11 @@
     "page": "Page",
     "of": "of",
     "hoverForBio": "Hover over a photo to read about each person.",
+    "hoverForRole": "Hover over a photo to see the role.",
+    "clickToZoom": "Click any image to view full screen.",
+    "step": "પગલું",
+    "closePreview": "પૂર્વાવલોકન બંધ કરો",
+    "closeVideo": "વિડિઓ બંધ કરો",
     "learnMore": "Learn more",
     "viewAll": "View all"
   },
@@ -399,6 +423,8 @@
       "showing": "Showing",
       "resources": "resources",
       "noResults": "No resources match your filters.",
+      "noResultsHint": "Try adjusting or clearing your filters.",
+      "noImage": "No image available",
       "loading": "Loading resources...",
       "error": "Failed to load resources.",
       "retry": "Try again"

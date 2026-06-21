@@ -113,15 +113,15 @@ export default function SdgDrives() {
           {/* Timeline Table */}
           <motion.div {...fadeUp(0.15)} className="bg-white rounded-2xl overflow-hidden border border-tide-border">
             <div className="px-6 py-4 border-b border-tide-border bg-primary-light">
-              <h3 className="font-display text-lg font-semibold text-primary">Execution Timeline</h3>
+              <h3 className="font-display text-lg font-semibold text-primary">{t('projects.sdgDrives.timelineTitle', data.execution.timelineTitle)}</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="bg-tide-subtle">
-                    <th className="px-6 py-3 text-left text-xs font-body font-bold text-tide-muted uppercase tracking-widest">Duration</th>
-                    <th className="px-6 py-3 text-left text-xs font-body font-bold text-tide-muted uppercase tracking-widest">Frequency</th>
-                    <th className="px-6 py-3 text-left text-xs font-body font-bold text-tide-muted uppercase tracking-widest">SDGs Covered</th>
+                    <th className="px-6 py-3 text-left text-xs font-body font-bold text-tide-muted uppercase tracking-widest">{t('projects.sdgDrives.colDuration', data.execution.colDuration)}</th>
+                    <th className="px-6 py-3 text-left text-xs font-body font-bold text-tide-muted uppercase tracking-widest">{t('projects.sdgDrives.colFrequency', data.execution.colFrequency)}</th>
+                    <th className="px-6 py-3 text-left text-xs font-body font-bold text-tide-muted uppercase tracking-widest">{t('projects.sdgDrives.colSdgs', data.execution.colSdgs)}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -195,7 +195,7 @@ export default function SdgDrives() {
         {/* Fallback link */}
         <div className="max-w-5xl mx-auto px-4 md:px-8 lg:px-16 pb-20 md:pb-28 pt-4">
           <p className="padlet-fallback text-sm font-body text-tide-muted text-center">
-            Can't see the board?{' '}
+            {t('projects.sdgDrives.padletFallback', data.padlet.fallbackIntro)}{' '}
             <a
               href={data.padlet.url}
               target="_blank"

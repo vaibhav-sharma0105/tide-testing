@@ -151,6 +151,11 @@ projects:
     title: "SDG ड्राइव्स"
     tagline: "UN सतत विकास लक्ष्यों के अनुरूप साल भर की स्वयंसेवा।"
     overview: "SDG Drives गुजरात भर में स्वयंसेवकों को SDG-केंद्रित प्रभाव अभियानों के लिए जुटाता है।"
+    timelineTitle: "कार्यान्वयन समय-सारणी"
+    colDuration: "अवधि"
+    colFrequency: "आवृत्ति"
+    colSdgs: "शामिल SDGs"
+    padletFallback: "बोर्ड नहीं दिख रहा?"
   other:
     title: "अन्य परियोजनाएं"
     tagline: "TIDE के पोर्टफोलियो की अन्य पहलें।"
@@ -176,6 +181,7 @@ thrive:
     p6desc: "शिक्षकों को अनुसंधान कौशल से लैस करना।"
   projects:
     title: "चालू शोध परियोजनाएं"
+    badge: "शोध"
     p1: "खुशी पाठ्यक्रम अध्ययन"
     p1desc: "सामाजिक-भावनात्मक पाठ्यक्रम के साथ शिक्षक और छात्र अनुभव।"
     p2: "प्रभाव"
@@ -230,6 +236,13 @@ resources:
   publications:
     title: "हमारे प्रकाशन"
     tagline: "TIDE समुदाय से शोध, अंतर्दृष्टि और विचार।"
+    viewResource: "संसाधन देखें"
+    readMore: "और पढ़ें"
+    typeBook: "पुस्तक"
+    typeArticle: "लेख"
+    typeVideo: "वीडियो"
+    typeTalk: "वार्ता"
+    typeMaterials: "सामग्री"
 
 contact:
   title: "संपर्क करें"
@@ -242,3 +255,9 @@ contact:
   emailPlaceholder: "आपका ईमेल"
   messagePlaceholder: "आपका संदेश"
   send: "संदेश भेजें"
+  getInTouch: "संपर्क में रहें"
+  labelAddress: "पता"
+  labelPhone: "फ़ोन"
+  labelEmail: "ईमेल"
+  labelHours: "कार्यालय समय"
+  followUs: "हमें फॉलो करें"

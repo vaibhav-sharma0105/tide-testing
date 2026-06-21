@@ -60,7 +60,7 @@ export default function OrganizeMCCx() {
                 <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center mb-4">
                   {ICONS[s.iconKey] || <Globe className="w-5 h-5" />}
                 </div>
-                <div className="text-xs font-body font-semibold text-tide-muted uppercase tracking-widest mb-2">Step {i + 1}</div>
+                <div className="text-xs font-body font-semibold text-tide-muted uppercase tracking-widest mb-2">{t('common.step', 'Step')} {i + 1}</div>
                 <h3 className="font-display font-semibold text-tide-text mb-2">{s.title}</h3>
                 <p className="text-sm font-body text-tide-muted leading-relaxed">{s.desc}</p>
               </motion.div>

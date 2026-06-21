@@ -9,7 +9,12 @@ section:
   sectionBadge: "Transparency"
   sectionTitle: "10 Years of Documentation"
   sectionSubtitle: "Every report reflects our commitment to accountability and learning."
-  footerNote: "For full PDF downloads, visit tideinternational.org or email info@tideinternational.org"
+  latestBadge: "Latest"
+  footerPrefix: "For full PDF downloads, visit "
+  footerMiddle: " or email "
+  websiteLabel: "tideinternational.org"
+  websiteUrl: "https://tideinternational.org/resources/annual-reports/"
+  email: "info@tideinternational.org"
 
 reports:
   - year: "2025–26"

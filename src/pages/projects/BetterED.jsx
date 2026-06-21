@@ -55,10 +55,10 @@ export default function BetterED() {
 
             <div>
               <div className="rounded-2xl overflow-hidden aspect-video mb-6">
-                <img src={imgSrc(data.overview.photo1)} alt="BetterED program" className="w-full h-full object-cover" />
+                <img src={imgSrc(data.overview.photo1)} alt={data.overview.photo1Alt} className="w-full h-full object-cover" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-video">
-                <img src={imgSrc(data.overview.photo2)} alt="BetterED students" className="w-full h-full object-cover" />
+                <img src={imgSrc(data.overview.photo2)} alt={data.overview.photo2Alt} className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function BetterED() {
       <section className="section-padding bg-navy">
         <div className="max-w-5xl mx-auto">
           <SectionHeader badge={data.gallery.sectionBadge} title={data.gallery.sectionTitle} light />
-          <p className="text-xs font-body text-white/40 mb-8 -mt-6 italic">Click any image to view full screen.</p>
+          <p className="text-xs font-body text-white/40 mb-8 -mt-6 italic">{t('common.clickToZoom', 'Click any image to view full screen.')}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {data.gallery.images.map((item, i) => (
               <motion.button

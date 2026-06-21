@@ -15,6 +15,14 @@
     "email": "info@tideinternational.org",
     "officeHours": "Monday – Friday, 9:00 AM – 6:00 PM"
   },
+  "labels": {
+    "getInTouch": "Get in touch",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "officeHours": "Office Hours",
+    "followUs": "Follow Us"
+  },
   "social": [
     {
       "platform": "facebook",

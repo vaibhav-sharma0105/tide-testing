@@ -27,7 +27,7 @@ export default function Pagination({ total, page, perPage = ABL_PAGE_SIZE, onCha
         <button
           onClick={() => page > 1 && onChange(page - 1)}
           aria-disabled={page === 1}
-          aria-label={t('abl.pagination.previous', 'Previous page')}
+          aria-label={t('abl.pagination.previous', 'Previous')}
           className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-body font-medium transition-colors ${
             page === 1 ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
           }`}
@@ -57,7 +57,7 @@ export default function Pagination({ total, page, perPage = ABL_PAGE_SIZE, onCha
         <button
           onClick={() => page < totalPages && onChange(page + 1)}
           aria-disabled={page === totalPages}
-          aria-label="Next page"
+          aria-label={t('abl.pagination.next', 'Next')}
           className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-body font-medium transition-colors ${
             page === totalPages ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
           }`}

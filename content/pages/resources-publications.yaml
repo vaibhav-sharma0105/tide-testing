@@ -9,6 +9,15 @@ section:
   sectionBadge: "Research & Writing"
   sectionTitle: "15+ Publications & Presentations"
   sectionSubtitle: "Academic, applied, and public scholarship from the TIDE team."
+  viewResourceLabel: "View resource"
+  readMoreLabel: "Read more"
+
+typeLabels:
+  book: "Book"
+  article: "Article"
+  video: "Video"
+  talk: "Talk"
+  materials: "Materials"
 
 # type values: book | article | video | talk | materials
 # href: null if no link available

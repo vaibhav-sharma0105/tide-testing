@@ -24,7 +24,7 @@ const typeColors = {
   materials: { pill: 'bg-emerald-100 text-emerald-700 border-emerald-200', icon: 'bg-emerald-50 text-emerald-600 border-emerald-200' },
 }
 
-const typeLabel = { book: 'Book', article: 'Article', video: 'Video', talk: 'Talk', materials: 'Materials' }
+const TYPE_I18N_KEY = { book: 'typeBook', article: 'typeArticle', video: 'typeVideo', talk: 'typeTalk', materials: 'typeMaterials' }
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 12 },
@@ -71,7 +71,7 @@ export default function Publications() {
 
                     <div className="p-5">
                       <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-body font-semibold border mb-3 ${colors.pill}`}>
-                        {typeLabel[p.type]}
+                        {t(`resources.publications.${TYPE_I18N_KEY[p.type]}`, data.typeLabels[p.type])}
                       </span>
                       <h3 className="font-display font-semibold text-tide-text text-sm leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-3">
                         {p.title}
@@ -80,7 +80,9 @@ export default function Publications() {
 
                       {p.href && (
                         <div className="mt-3 flex items-center gap-1 text-xs font-body font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                          {p.internal ? 'View resource' : 'Read more'}
+                          {p.internal
+                            ? t('resources.publications.viewResource', data.section.viewResourceLabel)
+                            : t('resources.publications.readMore', data.section.readMoreLabel)}
                           <ExternalLink className="w-3 h-3" />
                         </div>
                       )}

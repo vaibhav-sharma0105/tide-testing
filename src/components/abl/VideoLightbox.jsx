@@ -1,8 +1,10 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 export default function VideoLightbox({ src, title, onClose }) {
+  const { t } = useTranslation()
   useEffect(() => {
     if (!src) return
     const handler = (e) => { if (e.key === 'Escape') onClose() }
@@ -32,7 +34,7 @@ export default function VideoLightbox({ src, title, onClose }) {
           {/* Close button */}
           <button
             onClick={onClose}
-            aria-label="Close video"
+            aria-label={t('common.closeVideo', 'Close video')}
             className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition-colors duration-150"
           >
             <X className="w-5 h-5" />

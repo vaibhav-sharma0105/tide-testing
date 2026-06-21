@@ -58,10 +58,10 @@ export default function EmpowerEd() {
 
             <motion.div {...fadeUp(0.15)} className="flex flex-col gap-6">
               <div className="rounded-2xl overflow-hidden border border-tide-border bg-white p-6 flex items-center justify-center">
-                <img src={imgSrc(data.overview.logo)} alt="EmpowerEd" className="max-h-40 object-contain" />
+                <img src={imgSrc(data.overview.logo)} alt={data.overview.logoAlt} className="max-h-40 object-contain" />
               </div>
               <div className="rounded-2xl overflow-hidden aspect-video">
-                <img src={imgSrc(data.overview.heroPhoto)} alt="Teacher agency" className="w-full h-full object-cover" />
+                <img src={imgSrc(data.overview.heroPhoto)} alt={data.overview.heroPhotoAlt} className="w-full h-full object-cover" />
               </div>
             </motion.div>
           </div>

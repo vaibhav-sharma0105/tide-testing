@@ -133,7 +133,7 @@ export default function THRIvE() {
       <section className="section-padding bg-white border-t border-tide-border">
         <div className="max-w-5xl mx-auto">
           <SectionHeader badge={data.researchTeam.sectionBadge} title={data.researchTeam.sectionTitle} subtitle={data.researchTeam.sectionSubtitle} />
-          <p className="text-xs font-body text-tide-muted mb-8 -mt-6 italic">Hover over a photo to see the role.</p>
+          <p className="text-xs font-body text-tide-muted mb-8 -mt-6 italic">{t('common.hoverForRole', 'Hover over a photo to see the role.')}</p>
           <div className="grid grid-cols-2 min-[420px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-3 md:gap-4">
             {data.researchTeam.members.map((m, i) => (
               <PersonCard key={m.name} name={m.name} role={m.role} photo={m.photo} delay={i * 0.05} />
@@ -175,7 +175,7 @@ export default function THRIvE() {
                 <div className="absolute inset-0 photo-overlay" />
                 <div className="absolute top-4 left-4">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-body font-bold uppercase tracking-wider text-white bg-primary/80 backdrop-blur-sm border border-white/20">
-                    Research
+                    {t('thrive.projects.badge', data.researchProjects.cardBadge)}
                   </span>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -192,7 +192,7 @@ export default function THRIvE() {
       <section className="section-padding bg-navy">
         <div className="max-w-5xl mx-auto">
           <SectionHeader badge={data.conferences.sectionBadge} title={data.conferences.sectionTitle} subtitle={data.conferences.sectionSubtitle} light />
-          <p className="text-xs font-body text-white/40 mb-8 -mt-6 italic">Click any image to view full screen.</p>
+          <p className="text-xs font-body text-white/40 mb-8 -mt-6 italic">{t('common.clickToZoom', 'Click any image to view full screen.')}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {data.conferences.images.map((item, i) => (
               <motion.button

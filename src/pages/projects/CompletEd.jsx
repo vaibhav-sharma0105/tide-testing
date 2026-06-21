@@ -155,7 +155,7 @@ export default function CompletEd() {
             ))}
           </div>
           <motion.div {...fadeUp(0.2)} className="rounded-2xl overflow-hidden max-w-sm mx-auto">
-            <img src={imgSrc(data.moi2024.poster)} alt="MOI 2024 Signup Poster" className="w-full h-auto object-contain" />
+            <img src={imgSrc(data.moi2024.poster)} alt={data.moi2024.posterAlt} className="w-full h-auto object-contain" />
           </motion.div>
         </div>
       </section>

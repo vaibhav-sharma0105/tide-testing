@@ -10,7 +10,9 @@
     "title": "Overview",
     "body": "EmpowerEd develops bottom-up, collaborative interventions to educate, enrich and empower educators. It treats teachers as experts — not recipients — of professional development.",
     "logo": "assets/images/projects-empowered/ee-logo.jpeg",
-    "heroPhoto": "assets/images/projects-empowered/Build-teacher-agency.jpg"
+    "logoAlt": "EmpowerEd",
+    "heroPhoto": "assets/images/projects-empowered/Build-teacher-agency.jpg",
+    "heroPhotoAlt": "Teacher agency"
   },
   "components": [
     {

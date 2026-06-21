@@ -41,14 +41,14 @@ export default function Contact() {
           <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
             {/* Contact info */}
             <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-              <h2 className="font-display text-2xl font-semibold text-tide-text mb-8">Get in touch</h2>
+              <h2 className="font-display text-2xl font-semibold text-tide-text mb-8">{t('contact.getInTouch', data.labels.getInTouch)}</h2>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center shrink-0 mt-0.5">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="font-body font-semibold text-tide-text text-sm mb-1">Address</p>
+                    <p className="font-body font-semibold text-tide-text text-sm mb-1">{t('contact.labelAddress', data.labels.address)}</p>
                     <p className="font-body text-tide-muted text-sm leading-relaxed">{data.info.address}</p>
                   </div>
                 </div>
@@ -57,7 +57,7 @@ export default function Contact() {
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="font-body font-semibold text-tide-text text-sm mb-1">Phone</p>
+                    <p className="font-body font-semibold text-tide-text text-sm mb-1">{t('contact.labelPhone', data.labels.phone)}</p>
                     {data.info.phones.map(phone => (
                       <a key={phone} href={`tel:${phone.replace(/\s/g, '')}`} className="font-body text-tide-muted text-sm hover:text-primary transition-colors block">{phone}</a>
                     ))}
@@ -68,7 +68,7 @@ export default function Contact() {
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="font-body font-semibold text-tide-text text-sm mb-1">Email</p>
+                    <p className="font-body font-semibold text-tide-text text-sm mb-1">{t('contact.labelEmail', data.labels.email)}</p>
                     <a href={`mailto:${data.info.email}`} className="font-body text-tide-muted text-sm hover:text-primary transition-colors">{data.info.email}</a>
                   </div>
                 </div>
@@ -77,7 +77,7 @@ export default function Contact() {
                     <Clock className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="font-body font-semibold text-tide-text text-sm mb-1">Office Hours</p>
+                    <p className="font-body font-semibold text-tide-text text-sm mb-1">{t('contact.labelHours', data.labels.officeHours)}</p>
                     <p className="font-body text-tide-muted text-sm">{data.info.officeHours}</p>
                   </div>
                 </div>
@@ -85,7 +85,7 @@ export default function Contact() {
 
               {/* Social */}
               <div className="mt-10 pt-8 border-t border-tide-border">
-                <p className="font-body font-semibold text-tide-text text-sm mb-4">Follow Us</p>
+                <p className="font-body font-semibold text-tide-text text-sm mb-4">{t('contact.followUs', data.labels.followUs)}</p>
                 <div className="flex gap-3">
                   {data.social.map(s => (
                     <a key={s.platform} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={`Visit TIDE on ${s.platform.charAt(0).toUpperCase() + s.platform.slice(1)}`} className="w-10 h-10 rounded-full bg-tide-subtle border border-tide-border text-tide-muted hover:bg-primary hover:text-white hover:border-primary flex items-center justify-center transition-all duration-200">

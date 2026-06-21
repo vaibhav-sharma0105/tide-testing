@@ -42,6 +42,10 @@ execution:
   sectionTitle: "How SDG Drives Works"
   ambassadorTitle: "Campus Ambassador Team Structure"
   ambassadorNote: "Applicable for college / university students"
+  timelineTitle: "Execution Timeline"
+  colDuration: "Duration"
+  colFrequency: "Frequency"
+  colSdgs: "SDGs Covered"
   ambassadorRoles:
     - "Sponsorship Head"
     - "Logistics Head"
@@ -65,6 +69,7 @@ padlet:
   subtitle: "Explore our SDG Drives activities, goals, and stories from the ground."
   url: "https://padlet.com/jwalin10/sustainability-in-action-our-goals-our-world-298p6w36455b1bp5"
   fallbackLabel: "Open the SDG Drives Padlet board"
+  fallbackIntro: "Can't see the board?"
   iframeTitle: "SDG Drives — Sustainability in Action Padlet Board"
 
 register:

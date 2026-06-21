@@ -79,6 +79,7 @@ researchProjects:
   sectionBadge: "Research"
   sectionTitle: "Current Research Projects"
   sectionSubtitle: "Active investigations shaping the future of Indian education"
+  cardBadge: "Research"
   items:
     - title: "Happiness Curriculum Study"
       desc: "Exploring teacher and student experiences with social-emotional development curricula."

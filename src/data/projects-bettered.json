@@ -31,7 +31,9 @@
     "focus": "Life skills, arts, dance, theatre, public speaking and storytelling",
     "goal": "A scalable, volunteer-driven intervention that can reach hundreds of schools citywide.",
     "photo1": "assets/images/projects-bettered/gallery-01.jpg",
-    "photo2": "assets/images/projects-bettered/gallery-02.jpg"
+    "photo1Alt": "BetterED program",
+    "photo2": "assets/images/projects-bettered/gallery-02.jpg",
+    "photo2Alt": "BetterED students"
   },
   "evolution": {
     "sectionBadge": "Journey",

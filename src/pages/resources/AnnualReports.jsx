@@ -47,7 +47,7 @@ export default function AnnualReports() {
                   />
                   {r.highlight && (
                     <div className="absolute top-3 left-3">
-                      <span className="badge-accent text-[10px]">Latest</span>
+                      <span className="badge-accent text-[10px]">{data.section.latestBadge}</span>
                     </div>
                   )}
                   <div className="absolute inset-0 bg-navy/0 group-hover:bg-navy/20 transition-colors duration-300 flex items-center justify-center">
@@ -67,13 +67,13 @@ export default function AnnualReports() {
           </div>
 
           <p className="mt-10 text-sm font-body text-tide-muted text-center">
-            {data.section.footerNote.split('tideinternational.org')[0]}
-            <a href="https://tideinternational.org/resources/annual-reports/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">
-              tideinternational.org
+            {data.section.footerPrefix}
+            <a href={data.section.websiteUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">
+              {data.section.websiteLabel}
             </a>
-            {data.section.footerNote.split('tideinternational.org')[1]?.split('info@tideinternational.org')[0]}
-            <a href="mailto:info@tideinternational.org" className="text-primary hover:underline">
-              info@tideinternational.org
+            {data.section.footerMiddle}
+            <a href={`mailto:${data.section.email}`} className="text-primary hover:underline">
+              {data.section.email}
             </a>
           </p>
         </div>
