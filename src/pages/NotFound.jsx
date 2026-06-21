@@ -1,18 +1,25 @@
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 import Button from '../components/ui/Button'
+import PageHero from '../components/ui/PageHero'
 import data from '../data/not-found.json'
 
 export default function NotFound() {
   return (
     <>
       <Helmet>
-        <title>{data.badge} — TIDE Foundation</title>
+        <title>{`${data.badge} — TIDE Foundation`}</title>
         <meta name="robots" content="noindex" />
       </Helmet>
 
-      <section className="min-h-[70vh] flex items-center justify-center bg-tide-bg px-4">
-        <div className="max-w-lg w-full text-center">
+      {/* PageHero gives this page the same dark top section every other inner
+          page has — the header assumes a dark hero sits behind it until the
+          visitor scrolls, so a page without one renders the header invisible
+          (white text on the white page background) on first load. */}
+      <PageHero badge={data.badge} title={data.title} />
+
+      <section className="py-16 md:py-20 bg-tide-bg px-4">
+        <div className="max-w-lg w-full mx-auto text-center">
           <svg width="160" height="120" viewBox="0 0 160 120" fill="none" className="mx-auto mb-6" aria-hidden="true">
             {/* Dotted flight path */}
             <motion.path
@@ -42,12 +49,6 @@ export default function NotFound() {
           </svg>
 
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }}>
-            <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-primary-light text-primary border border-primary/20">
-              {data.badge}
-            </span>
-            <h1 className="font-display text-2xl md:text-3xl font-semibold text-tide-text mb-3">
-              {data.title}
-            </h1>
             <p className="font-body text-tide-muted leading-relaxed mb-8 max-w-md mx-auto">
               {data.message}
             </p>

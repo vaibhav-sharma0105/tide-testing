@@ -10,7 +10,7 @@ export default function SectionHeader({ badge, title, subtitle, center = false, 
       className={`mb-12 md:mb-16 ${center ? 'text-center' : ''} ${className}`}
     >
       {badge && (
-        <span className={`inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase ${light ? 'bg-white/20 text-white border border-white/30' : 'bg-primary-light text-primary border border-primary/20'}`}>
+        <span className={`inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase ${light ? 'bg-white/20 text-white border border-white/30' : 'bg-primary-light text-primary-dark border border-primary/20'}`}>
           {badge}
         </span>
       )}

@@ -100,7 +100,7 @@ export default function SaralKadam() {
           <div className="mt-12 bg-primary rounded-2xl p-8 text-white text-center">
             <BookOpen className="w-10 h-10 text-white/60 mx-auto mb-4" />
             <h3 className="font-display text-xl font-semibold mb-2">{data.booklets.downloadCtaTitle}</h3>
-            <p className="text-white/75 font-body text-sm max-w-md mx-auto mb-6">{data.booklets.downloadCtaBody}</p>
+            <p className="text-white/90 font-body text-sm max-w-md mx-auto mb-6">{data.booklets.downloadCtaBody}</p>
             <Button href={data.booklets.downloadCtaHref} className="bg-white text-primary hover:bg-primary-faint">
               <Mail className="w-4 h-4" /> {data.booklets.downloadCtaLabel}
             </Button>

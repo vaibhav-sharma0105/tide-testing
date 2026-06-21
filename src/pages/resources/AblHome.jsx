@@ -91,7 +91,7 @@ export default function AblHome() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-primary-light text-primary border border-primary/20">
+            <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-primary-light text-primary-dark border border-primary/20">
               {t('abl.home.aboutBadge', ablData.about.badge)}
             </span>
             <h2 className="font-display text-3xl font-semibold text-tide-text mb-5">{t('abl.home.aboutTitle', ablData.about.title)}</h2>

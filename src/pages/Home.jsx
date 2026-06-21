@@ -102,7 +102,7 @@ export default function Home() {
                 {t('home.hero.cta', data.hero.ctaLabel)} <ArrowRight className="w-4 h-4" />
               </Button>
               <Button to="/get-involved/volunteer" size="lg"
-                className="gradient-accent text-white border-none shadow-float px-8 py-4"
+                className="gradient-accent text-tide-text border-none shadow-float px-8 py-4"
               >
                 {t('home.hero.ctaSecondary', data.hero.ctaSecondaryLabel)}
               </Button>
@@ -209,10 +209,10 @@ export default function Home() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.4, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-                  className="absolute top-6 left-6 gradient-accent text-white rounded-2xl px-4 py-3 shadow-float"
+                  className="absolute top-6 left-6 gradient-accent text-tide-text rounded-2xl px-4 py-3 shadow-float"
                 >
                   <div className="font-display font-bold text-2xl leading-none">2014</div>
-                  <div className="text-xs font-body mt-0.5 text-white/80">{t('home.hero.floatFounded', data.hero.floatFounded)}</div>
+                  <div className="text-xs font-body mt-0.5 text-tide-text/85">{t('home.hero.floatFounded', data.hero.floatFounded)}</div>
                 </motion.div>
               </div>
             </motion.div>
@@ -245,7 +245,7 @@ export default function Home() {
                 <AnimatedCounter value={s.value} label="" light numClassName="font-display font-bold text-4xl sm:text-5xl md:text-6xl leading-none text-white mb-2" />
                 <div className="h-[2px] w-10 mx-auto mb-3 rounded-full bg-accent opacity-70 group-hover:w-16 group-hover:opacity-100 transition-all duration-400" />
                 <div className="font-body font-semibold text-sm text-white/90 uppercase tracking-wider mb-1">{s.label}</div>
-                <div className="font-body text-xs text-white/45 leading-relaxed">{s.detail}</div>
+                <div className="font-body text-xs text-white/55 leading-relaxed">{s.detail}</div>
               </motion.div>
             ))}
           </div>
@@ -378,7 +378,7 @@ export default function Home() {
                     <img src={`${B}assets/images/home/testimonial-quote.png`} alt={data.testimonial.author} className="w-full h-full object-cover" />
                   </div>
                   <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full gradient-accent flex items-center justify-center shadow-sm">
-                    <Quote className="w-3 h-3 text-white" />
+                    <Quote className="w-3 h-3 text-tide-text" />
                   </div>
                 </div>
                 <div>
@@ -418,7 +418,7 @@ export default function Home() {
                     {t('home.cta.volunteer', data.cta.volunteerLabel)} <ArrowRight className="w-4 h-4" />
                   </Button>
                   <Button to="/get-involved/donate" size="lg"
-                    className="gradient-accent text-white border-none shadow-float"
+                    className="gradient-accent text-tide-text border-none shadow-float"
                   >
                     <Heart className="w-4 h-4" /> {t('home.cta.donate', data.cta.donateLabel)}
                   </Button>

@@ -59,7 +59,7 @@ export default function Contact() {
                   <div>
                     <p className="font-body font-semibold text-tide-text text-sm mb-1">{t('contact.labelPhone', data.labels.phone)}</p>
                     {data.info.phones.map(phone => (
-                      <a key={phone} href={`tel:${phone.replace(/\s/g, '')}`} className="font-body text-tide-muted text-sm hover:text-primary transition-colors block">{phone}</a>
+                      <a key={phone} href={`tel:${phone.replace(/\s/g, '')}`} className="font-body text-tide-muted text-sm hover:text-primary transition-colors block py-1 -my-1">{phone}</a>
                     ))}
                   </div>
                 </div>

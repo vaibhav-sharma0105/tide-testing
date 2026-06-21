@@ -60,7 +60,7 @@ export default function AnnualReports() {
                   <h3 className={`font-display font-semibold text-sm leading-tight ${r.highlight ? 'text-primary-dark' : 'text-tide-text'}`}>
                     {r.year}
                   </h3>
-                  <p className="text-xs font-body text-tide-muted mt-0.5">{r.label}</p>
+                  <p className={`text-xs font-body mt-0.5 ${r.highlight ? 'text-tide-mutedOnLight' : 'text-tide-muted'}`}>{r.label}</p>
                 </div>
               </motion.a>
             ))}

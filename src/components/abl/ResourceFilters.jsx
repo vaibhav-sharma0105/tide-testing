@@ -184,7 +184,7 @@ function RadioRow({ label, count, active, onClick }) {
     <button
       onClick={onClick}
       className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-body transition-colors duration-150 ${
-        active ? 'bg-primary-light text-primary font-semibold' : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
+        active ? 'bg-primary-light text-primary-dark font-semibold' : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
       }`}
     >
       <span className={`w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-colors ${

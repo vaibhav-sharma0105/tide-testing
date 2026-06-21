@@ -30,6 +30,11 @@ export default {
           surface: '#FFFFFF',
           text:    '#0D1F3C',
           muted:   '#5A6A7E',
+          // Slightly darker than `muted` — for small/muted text sitting on a
+          // light, low-contrast chip background (primary-light, tide-border),
+          // where #5A6A7E's contrast ratio is borderline (4.10-4.49:1, under
+          // WCAG AA's 4.5:1 minimum). #5A6A7E itself is fine on tide-bg/white.
+          mutedOnLight: '#4D5C6F',
           subtle:  '#F0EDE8',
           border:  '#E2DDD7',
         },

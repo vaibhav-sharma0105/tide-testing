@@ -83,7 +83,7 @@ export default function Footer() {
             {/* Donate CTA */}
             <Link
               to="/get-involved/donate"
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-body font-semibold rounded-full gradient-accent text-white shadow-sm hover:shadow-glow-amber hover:scale-[1.03] transition-all duration-200"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-body font-semibold rounded-full gradient-accent text-tide-text shadow-sm hover:shadow-glow-amber hover:scale-[1.03] transition-all duration-200"
             >
               <Heart className="w-3.5 h-3.5" /> {t('common.supportWork', footerData.supportWork)}
             </Link>
@@ -92,7 +92,7 @@ export default function Footer() {
           {/* Nav columns from data */}
           {footerData.columns.map(col => (
             <nav key={col.title} aria-label={`Footer navigation: ${col.i18nKey ? t(`footer.columns.${col.i18nKey}`, col.title) : col.title}`}>
-              <h4 className="font-body text-[11px] font-bold text-white/40 uppercase tracking-[0.12em] mb-5">
+              <h4 className="font-body text-[11px] font-bold text-white/50 uppercase tracking-[0.12em] mb-5">
                 {col.i18nKey ? t(`footer.columns.${col.i18nKey}`, col.title) : col.title}
               </h4>
               <ul className="space-y-3">
@@ -112,10 +112,10 @@ export default function Footer() {
 
         {/* ── Bottom bar ── */}
         <div className="mt-14 pt-7 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="font-body text-white/35 text-xs">
+          <p className="font-body text-white/55 text-xs">
             {t('footer.rights', footerData.rights)}
           </p>
-          <p className="font-body text-white/35 text-xs flex items-center gap-1.5">
+          <p className="font-body text-white/55 text-xs flex items-center gap-1.5">
             {t('footer.madeWithLove', footerData.madeWithLove)}
           </p>
         </div>

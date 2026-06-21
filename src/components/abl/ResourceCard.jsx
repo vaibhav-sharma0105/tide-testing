@@ -62,7 +62,7 @@ export default function ResourceCard({ resource }) {
         {grades.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-auto pt-1">
             {shownGrades.map(g => (
-              <span key={g} className="bg-primary-light text-primary text-[10px] font-bold px-2 py-0.5 rounded-full border border-primary/20">
+              <span key={g} className="bg-primary-light text-primary-dark text-[10px] font-bold px-2 py-0.5 rounded-full border border-primary/20">
                 {g}
               </span>
             ))}

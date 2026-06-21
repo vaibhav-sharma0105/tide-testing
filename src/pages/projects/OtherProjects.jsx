@@ -55,7 +55,7 @@ export default function OtherProjects() {
                     <h3 className="font-display text-lg font-semibold text-tide-text">{p.name}</h3>
                   </div>
                   <p className="text-sm font-body text-tide-muted leading-relaxed mb-4">{p.desc}</p>
-                  <span className="inline-block px-3 py-1 text-xs font-body font-semibold rounded-full bg-primary-light text-primary border border-primary/20">
+                  <span className="inline-block px-3 py-1 text-xs font-body font-semibold rounded-full bg-primary-light text-primary-dark border border-primary/20">
                     {p.stats}
                   </span>
                 </div>

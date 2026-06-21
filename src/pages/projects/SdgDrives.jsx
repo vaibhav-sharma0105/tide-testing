@@ -130,7 +130,7 @@ export default function SdgDrives() {
                       <td className="px-6 py-4 font-body text-sm font-semibold text-tide-text">{row.duration}</td>
                       <td className="px-6 py-4 font-body text-sm text-tide-muted">{row.frequency}</td>
                       <td className="px-6 py-4">
-                        <span className="inline-block px-3 py-1 text-xs font-body font-semibold rounded-full bg-primary-light text-primary border border-primary/20">
+                        <span className="inline-block px-3 py-1 text-xs font-body font-semibold rounded-full bg-primary-light text-primary-dark border border-primary/20">
                           {row.sdgs}
                         </span>
                       </td>
@@ -156,7 +156,7 @@ export default function SdgDrives() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
           >
-            <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-primary-light text-primary border border-primary/20">
+            <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-primary-light text-primary-dark border border-primary/20">
               {data.padlet.sectionBadge}
             </span>
             <h2 id="padlet-heading" className="font-display text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight text-tide-text">

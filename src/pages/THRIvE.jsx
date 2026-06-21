@@ -192,7 +192,7 @@ export default function THRIvE() {
       <section className="section-padding bg-navy">
         <div className="max-w-5xl mx-auto">
           <SectionHeader badge={data.conferences.sectionBadge} title={data.conferences.sectionTitle} subtitle={data.conferences.sectionSubtitle} light />
-          <p className="text-xs font-body text-white/40 mb-8 -mt-6 italic">{t('common.clickToZoom', 'Click any image to view full screen.')}</p>
+          <p className="text-xs font-body text-white/50 mb-8 -mt-6 italic">{t('common.clickToZoom', 'Click any image to view full screen.')}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {data.conferences.images.map((item, i) => (
               <motion.button

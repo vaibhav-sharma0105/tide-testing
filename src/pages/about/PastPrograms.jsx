@@ -42,7 +42,7 @@ export default function PastPrograms() {
                     {prog.stats.map(s => (
                       <div key={s.label} className="text-center px-4 py-2 bg-primary-light rounded-xl border border-primary/10">
                         <div className="font-display font-bold text-primary text-sm leading-tight">{s.value}</div>
-                        <div className="text-[10px] font-body text-tide-muted uppercase tracking-wider mt-0.5">{s.label}</div>
+                        <div className="text-[10px] font-body text-tide-mutedOnLight uppercase tracking-wider mt-0.5">{s.label}</div>
                       </div>
                     ))}
                   </div>

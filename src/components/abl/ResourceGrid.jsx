@@ -30,6 +30,7 @@ export default function ResourceGrid({ resources, loading, error, onRetry, colsC
     return (
       <div
         className={`grid ${gridCols} gap-5`}
+        role="status"
         aria-busy="true"
         aria-label={t('abl.resourceCenter.loading', 'Loading resources')}
       >

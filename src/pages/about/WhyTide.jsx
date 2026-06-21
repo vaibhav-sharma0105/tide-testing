@@ -45,7 +45,7 @@ export default function WhyTide() {
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-              <span className="inline-block mb-3 px-3 py-1 text-xs font-body font-semibold rounded-full bg-primary-light text-primary border border-primary/20 tracking-widest uppercase">{data.whoWeAre.sectionBadge}</span>
+              <span className="inline-block mb-3 px-3 py-1 text-xs font-body font-semibold rounded-full bg-primary-light text-primary-dark border border-primary/20 tracking-widest uppercase">{data.whoWeAre.sectionBadge}</span>
               <h2 className="font-display text-3xl font-semibold text-tide-text leading-tight mb-4">{data.whoWeAre.sectionTitle}</h2>
               <p className="text-tide-muted leading-relaxed font-body">{t('about.whyTide.mission', data.whoWeAre.mission)}</p>
               <p className="mt-4 text-tide-muted leading-relaxed font-body">{t('about.whyTide.philosophy', data.whoWeAre.philosophy)}</p>

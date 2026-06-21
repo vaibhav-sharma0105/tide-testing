@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 import Button from '../components/ui/Button'
+import PageHero from '../components/ui/PageHero'
 import defaults from '../data/coming-soon.json'
 
 /**
@@ -22,12 +23,18 @@ export default function ComingSoon({ badge, title, message, ctaLabel, ctaHref })
   return (
     <>
       <Helmet>
-        <title>{copy.badge} — TIDE Foundation</title>
+        <title>{`${copy.badge} — TIDE Foundation`}</title>
         <meta name="robots" content="noindex" />
       </Helmet>
 
-      <section className="min-h-[70vh] flex items-center justify-center bg-tide-bg px-4">
-        <div className="max-w-lg w-full text-center">
+      {/* PageHero gives this page the same dark top section every other inner
+          page has — the header assumes a dark hero sits behind it until the
+          visitor scrolls, so a page without one renders the header invisible
+          (white text on the white page background) on first load. */}
+      <PageHero badge={copy.badge} title={copy.title} />
+
+      <section className="py-16 md:py-20 bg-tide-bg px-4">
+        <div className="max-w-lg w-full mx-auto text-center">
           <svg width="140" height="120" viewBox="0 0 140 120" fill="none" className="mx-auto mb-6" aria-hidden="true">
             {/* Foundation blocks, stacking — "building" something */}
             <motion.rect x="35" y="80" width="70" height="18" rx="3" fill="#D4EBF8"
@@ -52,12 +59,6 @@ export default function ComingSoon({ badge, title, message, ctaLabel, ctaHref })
           </svg>
 
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }}>
-            <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-accent-faint text-accent-dark border border-accent/20">
-              {copy.badge}
-            </span>
-            <h1 className="font-display text-2xl md:text-3xl font-semibold text-tide-text mb-3">
-              {copy.title}
-            </h1>
             <p className="font-body text-tide-muted leading-relaxed mb-8 max-w-md mx-auto">
               {copy.message}
             </p>

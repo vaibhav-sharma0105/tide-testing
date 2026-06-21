@@ -80,7 +80,7 @@ export default function PublicationsCombined() {
                         <Download className="w-3.5 h-3.5" /> {t('pubs.ar.download', 'Download')}
                       </a>
                     ) : (
-                      <span className="mt-auto inline-flex items-center gap-2 px-4 py-2 rounded-full bg-tide-border text-tide-muted text-xs font-body font-semibold cursor-not-allowed w-fit">
+                      <span className="mt-auto inline-flex items-center gap-2 px-4 py-2 rounded-full bg-tide-border text-tide-mutedOnLight text-xs font-body font-semibold cursor-not-allowed w-fit">
                         <Download className="w-3.5 h-3.5" /> {t('pubs.ar.comingSoon', 'Coming soon')}
                       </span>
                     )}

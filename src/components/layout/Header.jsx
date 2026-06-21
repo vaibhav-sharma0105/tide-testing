@@ -252,7 +252,7 @@ export default function Header() {
           <Link
             to="/get-involved/donate"
             className="hidden md:inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-body font-semibold rounded-full
-                       gradient-accent text-white shadow-sm hover:shadow-glow-amber hover:scale-[1.03]
+                       gradient-accent text-tide-text shadow-sm hover:shadow-glow-amber hover:scale-[1.03]
                        transition-all duration-200"
           >
             <Heart className="w-3.5 h-3.5" />
@@ -366,7 +366,7 @@ export default function Header() {
                 <Link
                   to="/get-involved/donate"
                   className="flex items-center justify-center gap-2 w-full py-3.5 text-sm font-body font-semibold
-                             gradient-accent text-white rounded-full shadow-sm"
+                             gradient-accent text-tide-text rounded-full shadow-sm"
                 >
                   <Heart className="w-4 h-4" /> {t('common.donateToTide', navData.donateMobileLabel)}
                 </Link>

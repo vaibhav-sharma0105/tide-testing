@@ -101,7 +101,7 @@ export default function Lightbox({ images, currentIndex, onClose, onPrev, onNext
             draggable={false}
           />
           {caption && (
-            <figcaption className="font-body text-xs text-white/38 tracking-wide max-w-md text-center">
+            <figcaption className="font-body text-xs text-white/55 tracking-wide max-w-md text-center">
               {caption}
             </figcaption>
           )}
