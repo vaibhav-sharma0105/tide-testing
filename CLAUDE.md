@@ -185,7 +185,8 @@ secret — see the thumbnail sync setup guide above.
 - `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` — moving the Sheet + Apps Script to a new Google account
 - `docs/MIGRATION-GITHUB-REPOSITORY.md` — transferring the GitHub repository to a new owner
 - `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` — short recurring task when the GitHub token expires
-- `docs/ARCHITECTURE.html` — interactive end-to-end system diagram (content pipeline, ABL data flow, thumbnail sync, secrets, deploy). Open directly in a browser — standalone, not part of the build.
+- `docs/ARCHITECTURE.html` — interactive end-to-end system diagram, organized by **who does each step** (non-technical-friendly). Open directly in a browser — standalone, not part of the build.
+- `docs/ARCHITECTURE-DATAFLOW.html` — companion diagram for technical readers, organized by **system layer and direction of data flow** instead — request/response contracts, caching TTLs, trust boundaries (Google infra / GitHub infra / build-time / runtime), and a secrets/credentials reference table. Keep both diagrams in sync when the architecture changes.
 
 ## Resuming Work
 1. Read this file for orientation

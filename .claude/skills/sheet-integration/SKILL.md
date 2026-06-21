@@ -132,8 +132,9 @@ guide as good as the original.
 This is exactly the kind of change `doc-sync` exists for — new subsystem, new pipeline, new
 file-structure entries. Invoke it (or apply its procedure directly) once the integration is
 built: update `AGENTS.md`'s repository tree and any relevant reference table, `CLAUDE.md`'s
-subsystem list, and both architecture diagrams (`docs/ARCHITECTURE.html` and the technical
-dataflow diagram) to include the new integration as a parallel block to the ABL one.
+subsystem list, and both architecture diagrams (`docs/ARCHITECTURE.html` and
+`docs/ARCHITECTURE-DATAFLOW.html`) to include the new integration as a parallel block to the
+ABL one.
 
 ## Reference implementation
 

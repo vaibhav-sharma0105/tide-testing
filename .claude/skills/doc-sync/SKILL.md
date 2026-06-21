@@ -42,8 +42,12 @@ followup task that may or may not happen.
 
 ## Scope
 
-**In scope:** `docs/*.md`, `CLAUDE.md`, `AGENTS.md`, and any project skill files under
-`.claude/skills/` that describe the changed area.
+**In scope:** `docs/*.md`, `CLAUDE.md`, `AGENTS.md`, the two interactive architecture diagrams
+(`docs/ARCHITECTURE.html` — actor/who-does-what view, `docs/ARCHITECTURE-DATAFLOW.html` —
+technical system-layer/dataflow view), and any project skill files under `.claude/skills/` that
+describe the changed area. The two HTML diagrams cover the same underlying system from two
+different organizing principles — a structural change (new pipeline, new subsystem, a node's
+contract/security posture changing) generally needs updating in **both**, not just one.
 
 **Out of scope:** the user's persistent memory files under
 `~/.claude/projects/<project>/memory/*.md`. Those are a separate, auto-persisted system with

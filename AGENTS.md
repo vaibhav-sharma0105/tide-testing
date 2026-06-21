@@ -960,7 +960,8 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 | `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` | Moving the Sheet + Apps Script to a new Google account — uses a fresh-copy approach, not Google's "transfer ownership," because Apps Script Web App deployments don't transfer ownership the way you'd expect |
 | `docs/MIGRATION-GITHUB-REPOSITORY.md` | Transferring the GitHub repository to a new owner |
 | `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` | Short recurring task when the GitHub token expires |
-| `docs/ARCHITECTURE.html` | Interactive end-to-end system diagram — open directly in a browser, click any block for details. Standalone, not part of the build. |
+| `docs/ARCHITECTURE.html` | Interactive system diagram, organized by who does each step (non-technical-friendly). Open directly in a browser, click any block for details. Standalone, not part of the build. |
+| `docs/ARCHITECTURE-DATAFLOW.html` | Companion diagram for technical readers — organized by system layer/dataflow direction, with request/response contracts, caching, trust boundaries, and a secrets reference table. Keep both diagrams in sync. |
 | `content/pages/home.yaml` | Reference example of a full page YAML |
 | `src/pages/Home.jsx` | Reference example of a full page component |
 | `src/pages/resources/AblResourceCenter.jsx` | Reference for filter + URL-param sync pattern |

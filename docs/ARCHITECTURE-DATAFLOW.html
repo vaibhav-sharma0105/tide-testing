@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TIDE Foundation Website — Technical Dataflow Architecture</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #0a0e14;
+    --panel: #11161f;
+    --panel-2: #161c28;
+    --border: #232b3a;
+    --text: #e2e8f0;
+    --muted: #8b97ad;
+    --mono: 'SFMono-Regular', 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+    /* Layer colors — the primary axis of THIS diagram (system layer, not actor) */
+    --source: #fbbf24;     /* amber — origin of truth */
+    --backend: #a78bfa;    /* violet — server-side processing */
+    --artifact: #38bdf8;   /* cyan — generated/stored data */
+    --app: #60a5fa;        /* blue — application code */
+    --delivery: #34d399;   /* emerald — hosting/delivery */
+
+    --warn: #fbbf24;
+    --danger: #f87171;
+    --ok: #34d399;
+    --google: #ea4335;
+    --github: #8b97ad;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  a { color: inherit; }
+
+  header {
+    padding: 28px 32px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 { margin: 0 0 4px; font-size: 19px; font-weight: 700; letter-spacing: -0.01em; }
+  header .sub { color: var(--muted); font-size: 13px; }
+  header .crosslink { font-size: 12px; margin-top: 8px; }
+  header .crosslink a { color: #67e8f9; text-decoration: none; }
+  header .crosslink a:hover { text-decoration: underline; }
+
+  .legend {
+    display: flex; gap: 18px; flex-wrap: wrap;
+    padding: 14px 32px; border-bottom: 1px solid var(--border);
+    background: var(--panel); font-size: 11.5px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+  .legend-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+
+  .layout { display: grid; grid-template-columns: 1fr 420px; align-items: start; }
+  main { padding: 26px 32px 60px; min-width: 0; }
+
+  /* ---------- Trust boundary groups ---------- */
+  .boundary {
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 16px 16px 10px;
+    margin-bottom: 22px;
+    position: relative;
+  }
+  .boundary-label {
+    position: absolute; top: -11px; left: 14px;
+    background: var(--bg); padding: 0 8px;
+    font-size: 10.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .boundary[data-domain="google"] { border-color: rgba(234,67,53,0.35); }
+  .boundary[data-domain="google"] .boundary-label { color: var(--google); }
+  .boundary[data-domain="github"] { border-color: rgba(139,151,173,0.4); }
+  .boundary[data-domain="github"] .boundary-label { color: #c2cbda; }
+  .boundary[data-domain="browser"] { border-color: rgba(52,211,153,0.35); }
+  .boundary[data-domain="browser"] .boundary-label { color: var(--delivery); }
+  .boundary[data-domain="dev"] { border-color: rgba(96,165,250,0.35); }
+  .boundary[data-domain="dev"] .boundary-label { color: var(--app); }
+
+  .layer {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    margin-bottom: 8px;
+  }
+  .layer-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--muted); padding: 10px 10px 10px 0;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .layer-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+  .layer-nodes { display: flex; gap: 10px; flex-wrap: wrap; padding: 6px 0; }
+
+  .node {
+    border: 1.5px solid var(--border);
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 9px 13px;
+    cursor: pointer;
+    min-width: 140px;
+    transition: border-color .15s, transform .1s, box-shadow .15s;
+  }
+  .node:hover { border-color: #3a4658; transform: translateY(-1px); }
+  .node.active { border-color: var(--node-accent); box-shadow: 0 0 0 1px var(--node-accent), 0 0 14px -3px var(--node-accent); }
+  .node.flash { animation: flash 1s ease; }
+  @keyframes flash { 0%,100% { background: var(--panel); } 30% { background: var(--panel-2); } }
+  .node-title { font-weight: 600; font-size: 12.5px; display: block; }
+  .node-path { font-family: var(--mono); font-size: 10px; color: #5b6678; margin-top: 2px; display: block; }
+
+  .flow-arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: #4a5568; font-size: 11px; padding: 2px 0 6px;
+    gap: 6px;
+  }
+  .flow-arrow .line { flex: 1; height: 1px; background: #2d3748; max-width: 60px; }
+
+  /* ---------- Detail panel ---------- */
+  aside { position: sticky; top: 0; max-height: 100vh; overflow-y: auto; border-left: 1px solid var(--border); background: var(--panel); padding: 22px 20px 60px; }
+  .panel-empty { color: var(--muted); font-size: 13px; line-height: 1.7; margin-top: 30px; }
+  .panel-empty b { color: var(--text); }
+
+  .layer-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11.5px; font-weight: 700;
+    padding: 5px 10px; border-radius: 6px; margin-bottom: 10px;
+  }
+  .panel-title { font-size: 17px; font-weight: 700; margin: 0 0 6px; }
+  .panel-path { font-family: var(--mono); font-size: 11px; color: #67e8f9; margin-bottom: 14px; word-break: break-all; }
+  .panel-desc { font-size: 13px; margin-bottom: 16px; }
+
+  .contract {
+    border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px;
+    background: var(--panel-2);
+  }
+  .contract .label { font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #67e8f9; margin-bottom: 6px; }
+  .contract pre { margin: 0; font-family: var(--mono); font-size: 11px; color: #cbd5e1; white-space: pre-wrap; word-break: break-word; }
+
+  .panel-row { margin-bottom: 12px; }
+  .panel-row-label { font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .panel-row-content { font-size: 12px; }
+  .panel-row-content code { font-family: var(--mono); background: var(--panel-2); padding: 1px 5px; border-radius: 4px; font-size: 11px; color: #fbcfe8; }
+  .security-note { border-left: 3px solid var(--danger); background: rgba(248,113,113,0.08); padding: 8px 10px; border-radius: 0 6px 6px 0; font-size: 11.5px; }
+  .perf-note { border-left: 3px solid var(--ok); background: rgba(52,211,153,0.08); padding: 8px 10px; border-radius: 0 6px 6px 0; font-size: 11.5px; }
+
+  .connects { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .connect-pill { font-size: 11px; border: 1px solid var(--border); background: var(--panel-2); border-radius: 12px; padding: 4px 10px; cursor: pointer; transition: border-color .15s; }
+  .connect-pill:hover { border-color: #67e8f9; color: #67e8f9; }
+  .connect-pill.in::before { content: '← '; color: var(--muted); }
+  .connect-pill.out::after { content: ' →'; color: var(--muted); }
+
+  @media (max-width: 980px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { position: static; height: auto; border-left: none; border-top: 1px solid var(--border); }
+    .layer { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>TIDE Foundation Website — Technical Dataflow Architecture</h1>
+  <div class="sub">Organized by <b>system layer and direction of data flow</b>, with request/response contracts, caching, and trust boundaries. For developers and technical reviewers.</div>
+  <div class="crosslink">Looking for the non-technical, "who does what" view instead? See <a href="ARCHITECTURE.html">ARCHITECTURE.html</a>.</div>
+</header>
+
+<div class="legend" id="legend"></div>
+
+<div class="layout">
+  <main id="main"></main>
+  <aside id="panel">
+    <div class="panel-empty">← Click any node.<br><br>Each node's panel shows its <b>request/response contract</b> (where applicable), caching behavior, security posture, and upstream/downstream dependencies.</div>
+  </aside>
+</div>
+
+<script>
+const LAYERS = {
+  source:   { name:'Source of Truth', color:'var(--source)' },
+  backend:  { name:'Backend / Automation', color:'var(--backend)' },
+  artifact: { name:'Generated Artifact', color:'var(--artifact)' },
+  app:      { name:'Application Code', color:'var(--app)' },
+  delivery: { name:'Delivery / Runtime', color:'var(--delivery)' },
+};
+
+// ---------------------------------------------------------------------------
+// NODES — every block. `contract` is a request/response shape shown verbatim
+// in the panel for anything with a real wire format. `connects` is split
+// in/out so the panel can show direction, not just adjacency.
+// ---------------------------------------------------------------------------
+const NODES = {
+
+  // ===== Content pipeline =====
+  'yaml-content': { layer:'source', title:'content/pages/*.yaml\ncontent/shared/*.yaml', path:'Git-tracked, hand-edited',
+    desc:'English content + navigation/footer. Plain YAML, one file per page. This is the only place English copy is allowed to live — see the cms-integrity skill for the enforcement side of that rule.',
+    out:['yaml-to-json'] },
+  'locale-yaml': { layer:'source', title:'content/locales/{hi,gu}/*.yaml', path:'Git-tracked, hand-edited',
+    desc:'Hindi/Gujarati translations, structurally mirroring the English YAML key paths exactly. Missing keys fall back to English at runtime — never a blank string.',
+    out:['yaml-to-json'] },
+  'yaml-to-json': { layer:'backend', title:'yaml-to-json.js', path:'scripts/yaml-to-json.js',
+    desc:'Build-time Node script. Recursively walks content/pages/ and content/shared/, converts each .yaml to a same-named .json. Recursively merges content/locales/{lang}/*.yaml into one translation.json per language.',
+    contract:'INPUT:  fs.readdirSync(content/pages/, content/shared/) — recursive\nOUTPUT: src/data/<name>.json (1:1)\n        src/i18n/locales/{hi,gu}/translation.json (merged)',
+    perf:'No registration step for new files — any .yaml dropped into content/pages/ or content/shared/ is picked up automatically on the next sync.',
+    in:['yaml-content','locale-yaml'], out:['data-json','i18n-json'] },
+  'data-json': { layer:'artifact', title:'src/data/*.json', path:'Git-tracked, generated — never hand-edit',
+    desc:'One JSON file per YAML source, same shape. Imported directly by page components: import data from \'../data/x.json\'.',
+    in:['yaml-to-json'], out:['react-pages'] },
+  'i18n-json': { layer:'artifact', title:'translation.json (hi, gu)', path:'src/i18n/locales/{hi,gu}/translation.json',
+    desc:'No English translation.json exists by design — English strings come from the t(key, fallback) call\'s second argument, not a JSON file.',
+    in:['yaml-to-json'], out:['i18next'] },
+  'i18next': { layer:'app', title:'i18next runtime', path:'src/i18n/index.js',
+    desc:'Client-side language resolution. localStorage-persisted language choice. react-i18next\'s useTranslation() hook is the only consumer.',
+    contract:'t(\'namespace.key\', \'English fallback\')\n  → hi/gu: looks up namespace.key in translation.json\n  → en (or missing key): returns the fallback string verbatim',
+    in:['i18n-json'], out:['react-pages'] },
+  'react-pages': { layer:'app', title:'Page & UI components', path:'src/pages/**/*.jsx, src/components/**/*.jsx',
+    desc:'Renders data-json + i18next output into the DOM. No business logic lives here beyond presentation — data shape is decided upstream.',
+    in:['data-json','i18next'], out:['vite-build'] },
+
+  // ===== ABL listing dataflow =====
+  'sheet': { layer:'source', title:'Google Sheet', path:'Sheet ID hardcoded in Code.gs — never in the website repo',
+    desc:'~161 rows, one per teaching resource. Tabs = resource type (Worksheet/Games/Kits/Flashcards). Columns include a unique id, the photo Drive link, and (per a 2026-06-20 addition) a video Drive link.',
+    security:'Treated as a softer trust boundary than the codebase — editable by non-developers, so any value from here that flows into a filesystem path or external request must be validated, never trusted positionally.',
+    out:['apps-script-doget','apps-script-onedit'] },
+  'apps-script-doget': { layer:'backend', title:'Code.gs — doGet(e)', path:'Apps Script Web App, deployed "Execute as: Me, Anyone can access"',
+    desc:'Single entry point, dispatches on e.parameter.action. Default (no action param) = the public, unauthenticated resource listing — the only action with no token gate.',
+    contract:'GET ?<no action>\n  → 200 { success, tabs[], resources{tab: Resource[]}, meta }\nGET ?action=manifest&token=...\n  → token-gated, see Thumbnail Sync layer\nGET ?action=fetchImage&id=...&token=...\n  → token-gated, see Thumbnail Sync layer',
+    perf:'CacheService wraps the Sheet read, 900s TTL, keyed per-tab to stay under the 100KB-per-key cache limit. A time-driven trigger (scheduledRefresh) refreshes the cache every 15 min regardless of traffic, so a cache miss under load never has to wait on a live Sheet read.',
+    security:'Returns raw photoUrl/videoUrl Drive links in the public response — anyone can fetch the API directly and enumerate every Drive link faster than browsing the site. Accepted tradeoff, not a defect: these were always reachable by clicking through the UI.',
+    in:['sheet'], out:['useabldata-hook'] },
+  'useabldata-hook': { layer:'app', title:'useABLData()', path:'src/hooks/useABLData.js',
+    desc:'Client-side fetch + cache. Every ABL page mounts this hook; only the first one per 15-minute window actually hits the network.',
+    contract:'sessionStorage key: abl-data-cache\nTTL: 900s (must mirror Code.gs CacheService TTL, or staleness windows desync)\nShape returned: { data, loading, error, allResources }',
+    in:['apps-script-doget'], out:['abl-pages'] },
+  'abl-pages': { layer:'app', title:'AblHome / AblResourceCenter / AblDetail / AblContribute', path:'src/pages/resources/Abl*.jsx',
+    desc:'The only consumers of useABLData(). Filtering/sorting logic lives in src/utils/filterResources.js — pure function, also responsible for the alphabetical-ascending sort.',
+    in:['useabldata-hook'] },
+
+  // ===== Thumbnail sync dataflow =====
+  'apps-script-onedit': { layer:'backend', title:'Code.gs — onSheetChange(e)', path:'Installable trigger: From spreadsheet → On edit',
+    desc:'Fires on every real edit to the Sheet. Debounced via a stored LAST_DISPATCH_AT script property — skips if the last dispatch was under 2 minutes ago, so a burst of edits collapses into one sync run.',
+    contract:'POST https://api.github.com/repos/{GITHUB_REPO}/dispatches\n  Authorization: Bearer {GITHUB_PAT}\n  body: { event_type: "abl-content-changed" }',
+    security:'GITHUB_PAT must be fine-grained, scoped to this one repo, Actions:Read-and-write only. muteHttpExceptions:true on the dispatch call — verify the response code is checked and logged, otherwise an expired PAT fails completely silently (fixed 2026-06-21; was previously silent).',
+    in:['sheet'], out:['gh-dispatch-workflow'] },
+  'gh-dispatch-workflow': { layer:'backend', title:'sync-abl-thumbnails.yml', path:'.github/workflows/sync-abl-thumbnails.yml',
+    desc:'Triggers: repository_dispatch (abl-content-changed), schedule (daily, safety net), workflow_dispatch (manual). Deliberately has no pull_request trigger — secrets never run against untrusted fork code.',
+    contract:'permissions: contents: write\nenv: VITE_ABL_API_URL, ABL_SYNC_TOKEN  (from repo secrets)',
+    in:['apps-script-onedit'], out:['sync-script'] },
+  'sync-script': { layer:'backend', title:'sync-abl-thumbnails.js', path:'scripts/sync-abl-thumbnails.js',
+    desc:'Diffs the remote manifest (from Apps Script) against the locally committed manifest by modifiedTime; only re-downloads changed resources.',
+    contract:'GET {API_URL}?action=manifest&token=...\n  → { success, manifest: [{id, fileId, modifiedTime}] }\nGET {API_URL}?action=fetchImage&id=...&token=...\n  → { success, mimeType, modifiedTime, base64 }\nValidates: sharp(raw).metadata() must succeed (real decodable image)\nCaps: 25MB raw bytes',
+    security:'Token never reaches a thrown Error or log line — redactToken() strips it from any URL before it can appear in a (public) Actions log. Resource id is allowlist-validated (letters/digits/space/_()- only) before reaching path.join/fs.rm — a Sheet-supplied id containing "../" cannot traverse outside the assets directory. Deletion path independently verifies the resolved absolute path is inside ASSETS_DIR before calling fs.rm, even for paths read from its own previously-written manifest.',
+    in:['gh-dispatch-workflow'], out:['apps-script-fetchimage','webp-files','manifest-json'] },
+  'apps-script-fetchimage': { layer:'backend', title:'Code.gs — handleFetchImage(e)', path:'Same Code.gs project as doGet, action=fetchImage',
+    desc:'Looks up the client-supplied id against the live resource list FIRST — never accepts a raw Drive fileId from the request. Fetches Google\'s own pre-rendered thumbnail (Drive API thumbnailLink) rather than raw file bytes, which handles PDFs and HEIC photos that DriveApp.getBlob() chokes on.',
+    security:'This allowlist-before-fetch is what keeps a leaked SYNC_TOKEN from being usable to pull arbitrary files out of the linked Drive — it can only ever return images already serving as public resource photos.',
+    in:['sync-script'], out:['sync-script'] },
+  'webp-files': { layer:'artifact', title:'public/assets/images/abl/*.webp', path:'Git-tracked, generated — two sizes per resource (480w thumb, 1200w full)',
+    desc:'Committed binary assets. Served by the CDN at runtime exactly like any other static file — the live site never calls Google for an image.',
+    in:['sync-script'], out:['gh-pages-cdn'] },
+  'manifest-json': { layer:'artifact', title:'abl-thumbnails-manifest.json', path:'src/data/abl-thumbnails-manifest.json',
+    desc:'{ [resourceId]: { modifiedTime, thumb, full } }. Drives the diff in sync-script\'s next run. A separate pipeline from yaml-to-json.js\'s src/data/*.json output — same directory, unrelated mechanism.',
+    in:['sync-script'], out:['ablthumbnails-util'] },
+  'ablthumbnails-util': { layer:'app', title:'ablThumbnails.js', path:'src/utils/ablThumbnails.js',
+    desc:'getAblThumbnail(id, variant) — the single chokepoint every image-rendering component goes through. Returns null on a manifest miss; callers render a fallback, never a broken-image icon.',
+    in:['manifest-json'], out:['abl-pages'] },
+
+  // ===== Build & deploy =====
+  'vite-build': { layer:'app', title:'Vite build', path:'vite.config.js',
+    desc:'Base path toggles on GITHUB_ACTIONS env var: /tide-testing/ in CI, / locally. predev/prebuild npm hooks run yaml-to-json.js automatically — content sync is never a manual step a developer can forget.',
+    contract:'npm run build → dist/',
+    in:['react-pages'], out:['gh-pages-deploy'] },
+  'gh-pages-deploy': { layer:'backend', title:'deploy.yml', path:'.github/workflows/deploy.yml',
+    desc:'Triggers on every push to main — including the automated commits sync-abl-thumbnails.yml makes. permissions: contents:read, pages:write, id-token:write.',
+    in:['vite-build','webp-files'], out:['gh-pages-cdn'] },
+  'gh-pages-cdn': { layer:'delivery', title:'GitHub Pages (Fastly CDN)', path:'https://<owner>.github.io/<repo>/',
+    desc:'Static-file-only host — no server-side rewrites. This is exactly why public/404.html exists: it\'s the fallback Pages serves for any path it doesn\'t recognize as a real file.',
+    perf:'Images served here scale with the CDN, not with Apps Script\'s execution quotas — this is the entire reason the thumbnail-sync pipeline exists (the original design hotlinked lh3.googleusercontent.com directly from every visitor\'s browser and hit undocumented rate limits under ordinary traffic).',
+    in:['gh-pages-deploy'], out:['browser-spa'] },
+  'browser-spa': { layer:'delivery', title:'Visitor\'s browser', path:'BrowserRouter + public/404.html restoration script',
+    desc:'A hard reload or direct deep link to a path with no matching static file gets served 404.html, which redirects to /?/path&query, and an inline script in index.html restores the real path via history.replaceState before React mounts. A React Router catch-all (path="*" → NotFound) is a separate, later-stage mechanism for paths that ARE served correctly but match no defined route once React has mounted.',
+    security:'History: a past bug joined the restored path and query with "&" instead of "?", silently producing a malformed URL — no error, just a blank page — on any reload of a route with query params. Fixed 2026-06-21; test this exact case (a filtered ABL route, hard-reloaded) if either script is ever touched.',
+    in:['gh-pages-cdn'] },
+};
+
+const SECRETS = [
+  { name:'VITE_ABL_API_URL', where:'.env.development (local) + GitHub repo secret (CI)', note:'Public Apps Script Web App URL — not actually secret, just env-configured to avoid hardcoding.' },
+  { name:'VITE_ABL_CONTRIBUTE_FORM_URL', where:'GitHub repo secret', note:'Public Google Form URL, same reasoning.' },
+  { name:'ABL_SYNC_TOKEN', where:'GitHub repo secret, mirrored as Code.gs Script Property SYNC_TOKEN', note:'Gates manifest/fetchImage actions. Compared with === (not constant-time — theoretically a timing-attack vector, practically infeasible given Apps Script\'s execution jitter).' },
+  { name:'GITHUB_PAT', where:'Code.gs Script Property only — never in the GitHub repo itself', note:'Fine-grained, single-repo, Actions:Read-and-write only. Used by onSheetChange to fire repository_dispatch.' },
+  { name:'GITHUB_REPO', where:'Code.gs Script Property', note:'owner/repo string — must be updated if the repo is ever transferred to a new owner.' },
+];
+
+function legendHtml() {
+  return Object.entries(LAYERS).map(([k,l]) => `
+    <div class="legend-item"><span class="legend-dot" style="background:${l.color}"></span>${l.name}</div>
+  `).join('') + `<div class="legend-item"><span style="border:1px dashed var(--muted); width:9px; height:9px; display:inline-block;"></span>Trust boundary</div>`;
+}
+
+function nodeHtml(id) {
+  const n = NODES[id];
+  const pathLine = n.path.split('\n')[0];
+  return `<div class="node" id="node-${id}" data-id="${id}" style="--node-accent:${LAYERS[n.layer].color}">
+    <span class="node-title">${n.title.split('\n')[0]}</span>
+    <span class="node-path">${pathLine.length > 38 ? pathLine.slice(0,36)+'…' : pathLine}</span>
+  </div>`;
+}
+
+function layerRow(layerKey, ids) {
+  const l = LAYERS[layerKey];
+  return `<div class="layer">
+    <div class="layer-label"><span class="layer-dot" style="background:${l.color}"></span>${l.name}</div>
+    <div class="layer-nodes">${ids.map(nodeHtml).join('')}</div>
+  </div>`;
+}
+
+const BOUNDARIES = [
+  { domain:'dev', label:'Build-time — Git repo, no network call', flow:[
+      ['source', ['yaml-content','locale-yaml']],
+      ['backend', ['yaml-to-json']],
+      ['artifact', ['data-json','i18n-json']],
+    ] },
+  { domain:'google', label:'Google infrastructure — Sheet + Apps Script', flow:[
+      ['source', ['sheet']],
+      ['backend', ['apps-script-doget','apps-script-onedit','apps-script-fetchimage']],
+    ] },
+  { domain:'github', label:'GitHub infrastructure — Actions + Pages', flow:[
+      ['backend', ['gh-dispatch-workflow','sync-script','gh-pages-deploy']],
+      ['artifact', ['webp-files','manifest-json']],
+    ] },
+  { domain:'browser', label:'Application code + visitor runtime', flow:[
+      ['app', ['i18next','react-pages','useabldata-hook','abl-pages','ablthumbnails-util','vite-build']],
+      ['delivery', ['gh-pages-cdn','browser-spa']],
+    ] },
+];
+
+function renderMain() {
+  const main = document.getElementById('main');
+  main.innerHTML = BOUNDARIES.map(b => `
+    <div class="boundary" data-domain="${b.domain}">
+      <span class="boundary-label">${b.label}</span>
+      ${b.flow.map(([layerKey, ids]) => layerRow(layerKey, ids)).join('')}
+    </div>
+  `).join('') + `
+    <div class="boundary" data-domain="dev">
+      <span class="boundary-label">Secrets &amp; credentials (cross-cutting — not part of the flow above)</span>
+      <table style="width:100%; border-collapse:collapse; font-size:12px; margin-top:10px;">
+        <thead><tr style="text-align:left; color:var(--muted); font-size:10.5px; text-transform:uppercase;">
+          <th style="padding:6px 8px;">Name</th><th style="padding:6px 8px;">Stored</th><th style="padding:6px 8px;">Note</th>
+        </tr></thead>
+        <tbody>${SECRETS.map(s => `
+          <tr style="border-top:1px solid var(--border);">
+            <td style="padding:8px; font-family:var(--mono); color:#fbcfe8;">${s.name}</td>
+            <td style="padding:8px; color:var(--muted);">${s.where}</td>
+            <td style="padding:8px;">${s.note}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+  document.querySelectorAll('.node').forEach(el => el.addEventListener('click', () => selectNode(el.dataset.id)));
+}
+
+function selectNode(id) {
+  document.querySelectorAll('.node').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById('node-' + id);
+  if (el) el.classList.add('active');
+
+  const n = NODES[id];
+  const panel = document.getElementById('panel');
+  const l = LAYERS[n.layer];
+
+  const contractHtml = n.contract ? `<div class="contract"><div class="label">Contract</div><pre>${n.contract}</pre></div>` : '';
+  const securityHtml = n.security ? `<div class="panel-row"><div class="panel-row-label">Security</div><div class="security-note">${n.security}</div></div>` : '';
+  const perfHtml = n.perf ? `<div class="panel-row"><div class="panel-row-label">Performance / caching</div><div class="perf-note">${n.perf}</div></div>` : '';
+
+  const inPills = (n.in||[]).map(c => `<span class="connect-pill in" data-jump="${c}">${NODES[c] ? NODES[c].title.split('\n')[0] : c}</span>`).join('');
+  const outPills = (n.out||[]).map(c => `<span class="connect-pill out" data-jump="${c}">${NODES[c] ? NODES[c].title.split('\n')[0] : c}</span>`).join('');
+  const connectsHtml = (inPills || outPills) ? `
+    <div class="panel-row"><div class="panel-row-label">Upstream (reads from)</div><div class="connects">${inPills || '<span style="color:var(--muted); font-size:11px;">none — origin node</span>'}</div></div>
+    <div class="panel-row"><div class="panel-row-label">Downstream (feeds into)</div><div class="connects">${outPills || '<span style="color:var(--muted); font-size:11px;">none — terminal node</span>'}</div></div>
+  ` : '';
+
+  panel.innerHTML = `
+    <span class="layer-badge" style="background:${l.color}22; color:${l.color}">${l.name}</span>
+    <div class="panel-title">${n.title.replace(/\n/g,' / ')}</div>
+    <div class="panel-path">${n.path.replace(/\n/g, '<br>')}</div>
+    <div class="panel-desc">${n.desc}</div>
+    ${contractHtml}
+    ${securityHtml}
+    ${perfHtml}
+    ${connectsHtml}
+  `;
+
+  panel.querySelectorAll('.connect-pill').forEach(pill => pill.addEventListener('click', () => jumpTo(pill.dataset.jump)));
+}
+
+function jumpTo(id) {
+  selectNode(id);
+  const el = document.getElementById('node-' + id);
+  if (el) {
+    el.scrollIntoView({ behavior:'smooth', block:'center' });
+    el.classList.add('flash');
+    setTimeout(() => el.classList.remove('flash'), 1000);
+  }
+}
+
+document.getElementById('legend').innerHTML = legendHtml();
+renderMain();
+</script>
+</body>
+</html>
