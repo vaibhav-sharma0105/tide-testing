@@ -950,6 +950,8 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 | `CLAUDE.md` | Project overview + quick reference |
 | `CONTENT-GUIDE.md` | Non-technical guide for content editing |
 | `.claude/skills/content-management.md` | Full CMS agent skill reference |
+| `.claude/skills/cms-integrity/SKILL.md` | Auto-triggers when adding/editing page/component JSX with user-facing text or media — catches hardcoded strings bypassing the CMS before they ship |
+| `.claude/skills/doc-sync/SKILL.md` | Auto-triggers after structural changes — keeps human and agent docs truthful |
 | `docs/ABL-RESOURCE-LIBRARY-SPEC.md` | Full ABL spec + Apps Script code |
 | `docs/ABL-APPSCRIPT-SETUP-GUIDE.md` | GAS backend setup guide |
 | `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` | Thumbnail self-hosting pipeline setup guide (fresh setup only) |
