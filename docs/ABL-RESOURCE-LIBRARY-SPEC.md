@@ -412,7 +412,7 @@ function onSheetChange(e) {
   }
 
   try {
-    UrlFetchApp.fetch('https://api.github.com/repos/' + repo + '/dispatches', {
+    const resp = UrlFetchApp.fetch('https://api.github.com/repos/' + repo + '/dispatches', {
       method: 'post',
       contentType: 'application/json',
       headers: {
@@ -422,6 +422,12 @@ function onSheetChange(e) {
       payload: JSON.stringify({ event_type: 'abl-content-changed' }),
       muteHttpExceptions: true
     });
+    // muteHttpExceptions means a bad response (e.g. an expired GITHUB_PAT)
+    // would otherwise fail completely silently — log it so there's at
+    // least a trace in the Apps Script execution log.
+    if (resp.getResponseCode() !== 204) {
+      Logger.log('GitHub dispatch returned HTTP ' + resp.getResponseCode() + ': ' + resp.getContentText());
+    }
   } catch (err) {
     Logger.log('GitHub dispatch failed: ' + err.message);
   }
@@ -1281,7 +1287,9 @@ All existing Tailwind tokens apply. Do not add new colours to `tailwind.config.j
 - **Content validation**: the GAS script's `buildResource()` function normalises all fields before returning — null-coerces instead of passing raw sheet values.
 - **Thumbnail sync endpoints** (`?action=manifest`, `?action=fetchImage`) are gated by `SYNC_TOKEN`, a shared secret stored only in Script Properties (Apps Script) and a GitHub Actions encrypted secret — never in source. `fetchImage` additionally allowlists against the live resource list by `id`; it never accepts a raw Drive `fileId`, so a leaked token can only ever read images that are already public resources, not arbitrary files in the linked Drive.
 - **`GITHUB_PAT`** (used by `onSheetChange` to trigger the sync workflow) must be a *fine-grained* token scoped to this one repository with only the "Actions: Read and write" permission — no `contents`, no `admin`, no access to other repos. If it ever leaks, the blast radius is "can trigger a workflow run," nothing more.
-- **Downloaded image bytes are never trusted blindly**: the sync job validates the actual file signature (magic bytes) and enforces a size cap before writing anything into the deployed site, since the Sheet is editable by non-developer staff and is a softer trust boundary than the codebase itself.
+- **Downloaded image bytes are never trusted blindly**: the sync job lets `sharp` validate the bytes actually decode as an image (not a hand-rolled magic-byte check — `sharp` covers far more real-world formats) and enforces a 25MB size cap before writing anything into the deployed site, since the Sheet is editable by non-developer staff and is a softer trust boundary than the codebase itself.
+- **Resource ids are not trusted as filesystem-safe** (2026-06-21): the sync script allowlist-validates every `id` (letters, digits, space, `_()-` only) before it reaches `path.join`/`fs.rm`, and independently verifies any path about to be deleted actually resolves inside the assets directory. Without this, a Sheet-supplied id containing `../` — malicious or just a typo — could write or delete files outside the intended directory.
+- **The sync script never lets `ABL_SYNC_TOKEN` reach a thrown `Error` or log line** (2026-06-21): error messages use a token-redacted copy of the request URL. This repo is public, so anything printed to a GitHub Actions log is publicly readable — GitHub's own secret redaction is a backstop, not something this code relies on.
 
 ---
 
