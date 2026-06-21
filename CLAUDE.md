@@ -139,7 +139,9 @@ See `CONTENT-GUIDE.md` for the non-technical user guide.
 See `.claude/skills/content-management.md` for the full agent skill reference.  
 See `.claude/skills/cms-integrity/SKILL.md` — auto-triggers when adding/editing any page or
 component that renders user-facing text/media, to catch hardcoded JSX that bypasses the CMS
-before it ships, not after a full-site audit finds it later.
+before it ships, not after a full-site audit finds it later.  
+See `.claude/skills/sheet-integration/SKILL.md` — invoke when bootstrapping a *new*
+Google-Sheet-backed section (generalizes the ABL/Pramaan pattern, includes a security checklist).
 
 ## ABL Resource Library
 The ABL (Activity-Based Learning) feature has a separate data pipeline — no YAML files.
