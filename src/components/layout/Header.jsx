@@ -36,6 +36,8 @@ function Dropdown({ id, items, onClose }) {
             className="relative"
             onMouseEnter={() => handleSubEnter(item.to)}
             onMouseLeave={handleSubLeave}
+            onFocus={() => handleSubEnter(item.to)}
+            onBlur={handleSubLeave}
           >
             <Link
               to={item.to}
@@ -116,6 +118,7 @@ export default function Header() {
   const [mobileExpanded, setMobileExpanded] = useState(null)
   const [prevLocation, setPrevLocation] = useState(location)
   const leaveTimer = useRef(null)
+  const hamburgerRef = useRef(null)
 
   const isABL = location.pathname.startsWith('/pramaan') || location.pathname.startsWith('/resources/abl-resources')
 
@@ -146,6 +149,17 @@ export default function Header() {
   }
   const handleMouseLeave = () => {
     leaveTimer.current = setTimeout(() => setOpenDropdown(null), 100)
+  }
+  // The dropdown trigger button previously had no onClick at all — it only
+  // opened via onMouseEnter on the parent div, which means a keyboard user
+  // tabbing to it (or any non-mouse interaction) could not open it at all,
+  // despite the correct-looking aria-expanded/aria-haspopup/aria-controls.
+  const toggleDropdown = (idx) => setOpenDropdown(prev => (prev === idx ? null : idx))
+  const closeDropdownOnEscape = (e, idx) => {
+    if (e.key === 'Escape' && openDropdown === idx) {
+      setOpenDropdown(null)
+      e.currentTarget.querySelector('button')?.focus()
+    }
   }
 
   /* is any item active? */
@@ -192,6 +206,7 @@ export default function Header() {
               className="relative"
               onMouseEnter={() => item.children && handleMouseEnter(idx)}
               onMouseLeave={item.children ? handleMouseLeave : undefined}
+              onKeyDown={item.children ? (e) => closeDropdownOnEscape(e, idx) : undefined}
             >
               {item.to ? (
                 <Link
@@ -213,6 +228,8 @@ export default function Header() {
                 </Link>
               ) : (
                 <button
+                  type="button"
+                  onClick={() => toggleDropdown(idx)}
                   aria-expanded={openDropdown === idx}
                   aria-haspopup="true"
                   aria-controls={`dropdown-${idx}`}
@@ -261,6 +278,7 @@ export default function Header() {
 
           {/* Mobile hamburger */}
           <button
+            ref={hamburgerRef}
             className={`lg:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-tide-text hover:bg-tide-subtle' : 'text-white hover:bg-white/10'}`}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
@@ -286,6 +304,12 @@ export default function Header() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                setMobileOpen(false)
+                hamburgerRef.current?.focus()
+              }
+            }}
             className="lg:hidden bg-white border-t border-tide-border overflow-hidden shadow-float"
           >
             <div className="px-4 py-5 space-y-1 max-h-[78vh] overflow-y-auto">
@@ -306,6 +330,7 @@ export default function Header() {
                     <>
                       <button
                         onClick={() => setMobileExpanded(mobileExpanded === idx ? null : idx)}
+                        aria-expanded={mobileExpanded === idx}
                         className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-body font-semibold text-tide-text hover:bg-tide-subtle transition-colors"
                       >
                         {item.i18nKey ? t(`nav.${item.i18nKey}`, item.label) : item.label}

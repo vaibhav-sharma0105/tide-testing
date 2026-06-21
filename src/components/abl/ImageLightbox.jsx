@@ -3,10 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { getAblThumbnail } from '../../utils/ablThumbnails'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 
 export default function ImageLightbox({ id, alt, onClose }) {
   const { t } = useTranslation()
   const src = getAblThumbnail(id, 'full')
+  const containerRef = useFocusTrap(!!id)
 
   useEffect(() => {
     if (!id) return
@@ -23,6 +25,10 @@ export default function ImageLightbox({ id, alt, onClose }) {
     <AnimatePresence>
       {id && (
         <motion.div
+          ref={containerRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={alt || 'Image preview'}
           key="lightbox-backdrop"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

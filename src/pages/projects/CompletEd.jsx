@@ -163,12 +163,12 @@ export default function CompletEd() {
       {/* Lightboxes */}
       <AnimatePresence>
         {brochure.isLightboxOpen && (
-          <Lightbox images={data.moiBrochure.pages} currentIndex={brochure.lightboxIndex} onClose={brochure.closeLightbox} onPrev={brochure.prevLightbox} onNext={brochure.nextLightbox} />
+          <Lightbox images={data.moiBrochure.pages} currentIndex={brochure.lightboxIndex} onClose={brochure.closeLightbox} onPrev={brochure.prevLightbox} onNext={brochure.nextLightbox} onGoTo={brochure.openLightbox} />
         )}
       </AnimatePresence>
       <AnimatePresence>
         {fellows.isLightboxOpen && (
-          <Lightbox images={data.scfProgram.fellows.map(f => ({ src: imgSrc(f.photo), label: f.name }))} currentIndex={fellows.lightboxIndex} onClose={fellows.closeLightbox} onPrev={fellows.prevLightbox} onNext={fellows.nextLightbox} />
+          <Lightbox images={data.scfProgram.fellows.map(f => ({ src: imgSrc(f.photo), label: f.name }))} currentIndex={fellows.lightboxIndex} onClose={fellows.closeLightbox} onPrev={fellows.prevLightbox} onNext={fellows.nextLightbox} onGoTo={fellows.openLightbox} />
         )}
       </AnimatePresence>
     </>

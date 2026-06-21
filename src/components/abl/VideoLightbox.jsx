@@ -2,9 +2,11 @@ import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 
 export default function VideoLightbox({ src, title, onClose }) {
   const { t } = useTranslation()
+  const containerRef = useFocusTrap(!!src)
   useEffect(() => {
     if (!src) return
     const handler = (e) => { if (e.key === 'Escape') onClose() }
@@ -20,6 +22,10 @@ export default function VideoLightbox({ src, title, onClose }) {
     <AnimatePresence>
       {src && (
         <motion.div
+          ref={containerRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={title || 'Video'}
           key="video-lightbox-backdrop"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

@@ -95,7 +95,7 @@ export default function Volunteer() {
 
       <AnimatePresence>
         {isLightboxOpen && (
-          <Lightbox images={data.gallery.images} currentIndex={lightboxIndex} onClose={closeLightbox} onPrev={prevLightbox} onNext={nextLightbox} />
+          <Lightbox images={data.gallery.images} currentIndex={lightboxIndex} onClose={closeLightbox} onPrev={prevLightbox} onNext={nextLightbox} onGoTo={openLightbox} />
         )}
       </AnimatePresence>
     </>

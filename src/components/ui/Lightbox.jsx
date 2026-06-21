@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { imgSrc } from '../../utils/imgSrc'
+import { useFocusTrap } from '../../hooks/useFocusTrap'
 
 /**
  * Full-screen image lightbox with prev/next navigation.
@@ -9,8 +10,11 @@ import { imgSrc } from '../../utils/imgSrc'
  * images  — array of strings OR objects { src, alt?, label? }
  * currentIndex — number (null/undefined = closed)
  * onClose / onPrev / onNext — callbacks
+ * onGoTo(i) — optional, jumps directly to image i (powers the dot strip)
  */
-export default function Lightbox({ images, currentIndex, onClose, onPrev, onNext }) {
+export default function Lightbox({ images, currentIndex, onClose, onPrev, onNext, onGoTo }) {
+  const containerRef = useFocusTrap()
+
   /* ── keyboard ────────────────────────────────────────────────── */
   useEffect(() => {
     const handler = (e) => {
@@ -34,6 +38,10 @@ export default function Lightbox({ images, currentIndex, onClose, onPrev, onNext
 
   return (
     <motion.div
+      ref={containerRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={caption || 'Image viewer'}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -114,7 +122,7 @@ export default function Lightbox({ images, currentIndex, onClose, onPrev, onNext
           {images.map((_, i) => (
             <button
               key={i}
-              onClick={e => { e.stopPropagation(); /* jump */ onClose(); /* not ideal — dots just for visual */ }}
+              onClick={e => { e.stopPropagation(); onGoTo ? onGoTo(i) : onClose() }}
               className={`rounded-full transition-all duration-200 ${i === currentIndex ? 'w-5 h-1.5 bg-white/80' : 'w-1.5 h-1.5 bg-white/25 hover:bg-white/50'}`}
               aria-label={`Go to image ${i + 1}`}
             />

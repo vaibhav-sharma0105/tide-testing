@@ -134,7 +134,7 @@ export default function SaralKadam() {
 
       <AnimatePresence>
         {isLightboxOpen && (
-          <Lightbox images={data.programGallery.photos} currentIndex={lightboxIndex} onClose={closeLightbox} onPrev={prevLightbox} onNext={nextLightbox} />
+          <Lightbox images={data.programGallery.photos} currentIndex={lightboxIndex} onClose={closeLightbox} onPrev={prevLightbox} onNext={nextLightbox} onGoTo={openLightbox} />
         )}
       </AnimatePresence>
     </>

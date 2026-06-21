@@ -11,6 +11,7 @@ function FilterSection({ title, children, open, onToggle }) {
     <div className="border-b border-tide-border last:border-b-0">
       <button
         onClick={onToggle}
+        aria-expanded={open}
         className="w-full flex items-center justify-between px-5 py-3.5 text-[11px] font-body font-bold uppercase tracking-widest text-tide-muted hover:text-tide-text transition-colors duration-150"
       >
         {title}
@@ -134,6 +135,7 @@ export default function ResourceFilters({ allResources, filters, onChange, onCle
                     : [...filters.grades, g]
                   onChange({ ...filters, grades: next })
                 }}
+                aria-pressed={active}
                 className={`px-3 py-1.5 rounded-lg text-xs font-body font-semibold border transition-all duration-150 ${
                   active
                     ? 'bg-primary text-white border-primary shadow-sm'
@@ -183,6 +185,7 @@ function RadioRow({ label, count, active, onClick }) {
   return (
     <button
       onClick={onClick}
+      aria-pressed={active}
       className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-body transition-colors duration-150 ${
         active ? 'bg-primary-light text-primary-dark font-semibold' : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
       }`}

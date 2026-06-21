@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
+import { MotionConfig } from 'framer-motion'
 import { Component, lazy, Suspense } from 'react'
 import Layout from './components/layout/Layout'
 import CreativeLoader from './components/ui/CreativeLoader'
@@ -69,6 +70,12 @@ export default function App() {
   return (
     <ErrorBoundary>
     <HelmetProvider>
+      {/* reducedMotion="user" makes every motion.* animation in the app
+          respect the OS-level prefers-reduced-motion setting automatically —
+          the CSS media query in index.css only covers actual CSS animations/
+          transitions, not Framer Motion's JS-driven ones, which is everything
+          used throughout this site (motion.div, whileInView, etc). */}
+      <MotionConfig reducedMotion="user">
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Layout>
           <Suspense fallback={<RouteLoadingFallback />}>
@@ -126,6 +133,7 @@ export default function App() {
           </Suspense>
         </Layout>
       </BrowserRouter>
+      </MotionConfig>
     </HelmetProvider>
     </ErrorBoundary>
   )

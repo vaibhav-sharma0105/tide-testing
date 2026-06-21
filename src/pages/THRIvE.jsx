@@ -210,7 +210,7 @@ export default function THRIvE() {
 
       <AnimatePresence>
         {isLightboxOpen && (
-          <Lightbox images={data.conferences.images} currentIndex={lightboxIndex} onClose={closeLightbox} onPrev={prevLightbox} onNext={nextLightbox} />
+          <Lightbox images={data.conferences.images} currentIndex={lightboxIndex} onClose={closeLightbox} onPrev={prevLightbox} onNext={nextLightbox} onGoTo={openLightbox} />
         )}
       </AnimatePresence>
     </>

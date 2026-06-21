@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next'
 
 const LANGS = [
-  { code: 'en', label: 'EN' },
-  { code: 'hi', label: 'हि' },
-  { code: 'gu', label: 'ગુ' },
+  { code: 'en', label: 'EN', name: 'English' },
+  { code: 'hi', label: 'हि', name: 'हिन्दी (Hindi)' },
+  { code: 'gu', label: 'ગુ', name: 'ગુજરાતી (Gujarati)' },
 ]
 
 export default function LanguageSwitcher({ light = false }) {
@@ -15,7 +15,10 @@ export default function LanguageSwitcher({ light = false }) {
   }
 
   return (
-    <div className={`flex items-center gap-0.5 rounded-full px-1 py-1 transition-all duration-300 ${
+    <div
+      role="group"
+      aria-label="Language"
+      className={`flex items-center gap-0.5 rounded-full px-1 py-1 transition-all duration-300 ${
       light
         ? 'border border-white/25 bg-white/10 backdrop-blur-sm'
         : 'border border-tide-border bg-tide-surface'
@@ -26,6 +29,8 @@ export default function LanguageSwitcher({ light = false }) {
           <button
             key={lang.code}
             onClick={() => change(lang.code)}
+            aria-pressed={active}
+            aria-label={lang.name}
             className={`px-2.5 py-1 text-xs font-body font-semibold rounded-full transition-all duration-200 ${
               active
                 ? light

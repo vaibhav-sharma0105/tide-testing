@@ -119,12 +119,12 @@ export default function OtherProjects() {
 
       <AnimatePresence>
         {disha.isLightboxOpen && (
-          <Lightbox images={data.disha.photos} currentIndex={disha.lightboxIndex} onClose={disha.closeLightbox} onPrev={disha.prevLightbox} onNext={disha.nextLightbox} />
+          <Lightbox images={data.disha.photos} currentIndex={disha.lightboxIndex} onClose={disha.closeLightbox} onPrev={disha.prevLightbox} onNext={disha.nextLightbox} onGoTo={disha.openLightbox} />
         )}
       </AnimatePresence>
       <AnimatePresence>
         {moi.isLightboxOpen && (
-          <Lightbox images={data.moi.photos} currentIndex={moi.lightboxIndex} onClose={moi.closeLightbox} onPrev={moi.prevLightbox} onNext={moi.nextLightbox} />
+          <Lightbox images={data.moi.photos} currentIndex={moi.lightboxIndex} onClose={moi.closeLightbox} onPrev={moi.prevLightbox} onNext={moi.nextLightbox} onGoTo={moi.openLightbox} />
         )}
       </AnimatePresence>
     </>
