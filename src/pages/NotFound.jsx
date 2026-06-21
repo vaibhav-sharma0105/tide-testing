@@ -29,21 +29,21 @@ export default function NotFound() {
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
             />
-            {/* Paper airplane */}
+            {/* Paper airplane — nose at (122,32), designed pointing right at
+                rest, then rotated -35deg around that same point so the nose
+                ends up aimed up-and-right, matching the flight path's end. */}
             <motion.g
-              initial={{ x: -8, y: 8, opacity: 0, rotate: -8 }}
-              animate={{ x: 0, y: [0, -4, 0], opacity: 1, rotate: -8 }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: [0, -4, 0] }}
               transition={{
                 opacity: { duration: 0.5, delay: 0.4 },
-                x: { duration: 0.5, delay: 0.4 },
                 y: { duration: 2.4, delay: 0.9, repeat: Infinity, ease: 'easeInOut' },
               }}
-              style={{ transformOrigin: '125px 30px' }}
             >
               <path
-                d="M125,18 L150,30 L132,33 L125,46 L120,32 Z"
-                fill="#1E6BAA" stroke="#15538A" strokeWidth="1.5" strokeLinejoin="round"
-                transform="translate(-1, 0) rotate(35 130 30)"
+                d="M122,32 L104,19 L116,29 L104,46 Z"
+                fill="#1E6BAA" stroke="#15538A" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round"
+                transform="rotate(-35 122 32)"
               />
             </motion.g>
           </svg>

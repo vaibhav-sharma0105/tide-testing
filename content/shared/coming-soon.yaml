@@ -2,7 +2,7 @@
 # planned section doesn't have a built page yet. A specific usage can pass
 # its own title/message as props instead of these defaults if needed.
 badge: "Coming Soon"
-title: "Something good is on its way"
-message: "We're building this section with the same care as the rest of the site. Check back soon."
+title: "Something meaningful is taking shape"
+message: "This is part of TIDE's growing work in education — built with the same care we bring to every classroom and community we serve. Check back soon."
 ctaLabel: "Back to Home"
 ctaHref: "/"

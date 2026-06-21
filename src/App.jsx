@@ -65,6 +65,7 @@ const AblResourceCenter   = lazy(() => import('./pages/resources/AblResourceCent
 const AblDetail           = lazy(() => import('./pages/resources/AblDetail'))
 const AblContribute       = lazy(() => import('./pages/resources/AblContribute'))
 const NotFound            = lazy(() => import('./pages/NotFound'))
+const ComingSoon          = lazy(() => import('./pages/ComingSoon'))
 
 export default function App() {
   return (
@@ -127,7 +128,10 @@ export default function App() {
               <Route path="/resources/abl-resources/resource-center/:id" element={<AblDetail />} />
               <Route path="/resources/abl-resources/contribute" element={<AblContribute />} />
 
-              {/* ── Catch-all — no other route matched ───────────────────── */}
+              {/* ── Functional / system pages ────────────────────────────── */}
+              <Route path="/coming-soon" element={<ComingSoon />} />
+              <Route path="/404" element={<NotFound />} />
+              {/* Catch-all — must stay last: any unmatched path falls through to here */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
