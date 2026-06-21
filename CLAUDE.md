@@ -20,12 +20,13 @@ React static site rebuild of [tideinternational.org](https://tideinternational.o
 
 ## Design System
 - **Primary:** `#1E6BAA` (TIDE teal-blue)
-- **Accent:** `#F59E0B` (amber — CTAs, highlights)
+- **Accent:** `#F59E0B` (amber). **Use as text/icon color only on dark backdrops** (5.9-7.6:1) — on a light background use `text-accent-deeper` instead (`#F59E0B` itself is only 2.1-2.2:1 there, failing WCAG AA). See AGENTS.md §3's accessibility note before using either color as foreground text.
 - **Background:** `#FDFCF9` (warm white)
 - **Text:** `#0D1F3C` (near-black navy)
 - **Headings:** Playfair Display (EN) / Noto Serif Devanagari (HI) / Noto Serif Gujarati (GU)
 - **Body:** Plus Jakarta Sans (EN) / Noto Sans Devanagari (HI) / Noto Sans Gujarati (GU)
 - Full token map in `tailwind.config.js`
+- **Accessibility:** audited end-to-end against WCAG 2.2 AA (2026-06-22) — `npm run lint` doesn't check this; run `node scripts/a11y-audit.cjs` against a running dev server to re-scan. Keyboard navigation, focus management (`src/hooks/useFocusTrap.js`), and color contrast were all verified by hand in addition to automated scanning — see git history around that date for the specific findings and reasoning if touching interactive components or color tokens.
 
 ## Repository Structure
 ```

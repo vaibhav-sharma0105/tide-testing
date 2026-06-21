@@ -209,7 +209,8 @@ tide-new/
 │   │   ├── useScrollAnimation.js ← IntersectionObserver → [ref, isVisible]
 │   │   ├── useLightbox.js        ← gallery open/close/prev/next state
 │   │   ├── useABLData.js         ← ABL API fetch + sessionStorage cache
-│   │   └── useDelayedVisible.js  ← gates a loading UI behind a threshold so fast loads never flash it
+│   │   ├── useDelayedVisible.js  ← gates a loading UI behind a threshold so fast loads never flash it
+│   │   └── useFocusTrap.js       ← modal focus management (trap Tab, focus on open, restore on close) — used by all 3 lightbox components
 │   │
 │   ├── config/
 │   │   └── abl.js                ← ABL_API_URL, cache TTL, TAB_STYLE_MAP
@@ -238,7 +239,8 @@ tide-new/
 │   ├── yaml-to-json.js          ← YAML → JSON sync (predev/prebuild hook)
 │   ├── validate-content.js      ← YAML syntax + image path validation
 │   ├── bootstrap-yaml.js        ← one-time YAML skeleton generator
-│   └── sync-abl-thumbnails.js   ← downloads + resizes ABL thumbnails, diffs against the manifest
+│   ├── sync-abl-thumbnails.js   ← downloads + resizes ABL thumbnails, diffs against the manifest
+│   └── a11y-audit.cjs           ← axe-core scan across every route (run manually: `node scripts/a11y-audit.cjs` against a running dev server on :5175). Scrolls the full page first so whileInView animations settle before scanning — don't shorten that wait, it was added after a confirmed false positive.
 │
 ├── docs/
 │   ├── ABL-RESOURCE-LIBRARY-SPEC.md         ← full ABL spec + Apps Script code (source of truth for Code.gs)
@@ -267,16 +269,20 @@ tide-new/
 | `bg-primary-dark` | `#15538A` | Gradient buttons, hover states |
 | `bg-primary-light` | `#D4EBF8` | Chip backgrounds, hover tints |
 | `bg-primary-faint` | `#EEF6FC` | Subtle backgrounds |
-| `text-accent` / `bg-accent` | `#F59E0B` | CTAs, highlights, badges |
+| `text-accent` / `bg-accent` | `#F59E0B` | **Backgrounds/dark-backdrop text only** — see accessibility note below |
+| `text-accent-deeper` | `#B45309` | Accent-colored **text or icons on a light background** (cream/white) |
 | `bg-accent-dark` | `#D97706` | Gradient buttons, hover states |
 | `bg-navy` | `#0D2137` | `PageHero` dark banner background |
 | `text-tide-text` | `#0D1F3C` | Body copy |
-| `text-tide-muted` | `#5A6A7E` | Secondary labels, captions |
+| `text-tide-muted` | `#5A6A7E` | Secondary labels, captions — passes 4.5:1 on `tide-bg`/white, but NOT on `bg-primary-light` (4.49:1, borderline) |
+| `text-tide-mutedOnLight` | `#4D5C6F` | Same role as `tide-muted`, but for text sitting on `bg-primary-light` or `bg-tide-border` specifically |
 | `bg-tide-bg` | `#FDFCF9` | Page section backgrounds |
 | `bg-tide-subtle` | `#F0EDE8` | Input fields, card inner areas |
 | `border-tide-border` | `#E2DDD7` | Card and input borders |
 
 Full token map (incl. `deeper`/all shade variants): `tailwind.config.js`. **This table was previously wrong** (e.g. listed `#3B7CB8` for primary when the actual value has been `#1E6BAA` — corrected 2026-06-21). If a future audit finds another mismatch, trust `tailwind.config.js`, not this table.
+
+**Accessibility note on `text-accent` (2026-06-22 audit):** `#F59E0B` is too light to use as foreground text/icon color on a light background — only 2.09:1 on `tide-bg`, 2.15:1 on white, failing even the relaxed 3:1 "large text" threshold. It works well (5.9–7.6:1) on dark backdrops (navy footer, dark hero overlays, `bg-navy` cards) precisely because it's light — use `text-accent-deeper` instead whenever accent-colored text/icons sit on a light background. Same logic applies to the `text-tide-muted` → `text-tide-mutedOnLight` swap on light-blue chip backgrounds. Don't pattern-match the wrong fix from a different background context — check what's actually behind the text first.
 
 ### Typography
 
