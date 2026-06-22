@@ -180,7 +180,12 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 h-[70px] flex items-center justify-between gap-6">
 
         {/* ── Logo ───────────────────────────────────────────────────── */}
-        <Link to="/" aria-label="Go to homepage" className="flex items-center gap-3 flex-shrink-0 group">
+        {/* No aria-label override — the image's alt + visible "TIDE
+            Foundation" text already form a clear, correct accessible name.
+            An explicit aria-label here previously replaced that with "Go to
+            homepage", which shares no text with what's visibly shown
+            (WCAG 2.5.3 Label in Name violation, flagged by Lighthouse). */}
+        <Link to="/" className="flex items-center gap-3 flex-shrink-0 group">
           <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 shadow-sm">
             <img
               src={`${import.meta.env.BASE_URL}assets/images/shared/tide-logo.png`}

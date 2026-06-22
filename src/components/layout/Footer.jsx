@@ -92,9 +92,17 @@ export default function Footer() {
           {/* Nav columns from data */}
           {footerData.columns.map(col => (
             <nav key={col.title} aria-label={`Footer navigation: ${col.i18nKey ? t(`footer.columns.${col.i18nKey}`, col.title) : col.title}`}>
-              <h4 className="font-body text-[11px] font-bold text-white/50 uppercase tracking-[0.12em] mb-5">
+              {/* Not a heading: the footer is reachable as a set of <nav>
+                  landmarks (each with its own aria-label above), giving
+                  screen reader users the same "jump to this group"
+                  navigation a heading would, without the page's heading
+                  outline skipping to h4 here regardless of what level the
+                  page's content actually ended on (flagged by Lighthouse's
+                  heading-order audit — a shared global footer can't know
+                  what level is "next" on every page that includes it). */}
+              <p className="font-body text-[11px] font-bold text-white/50 uppercase tracking-[0.12em] mb-5">
                 {col.i18nKey ? t(`footer.columns.${col.i18nKey}`, col.title) : col.title}
-              </h4>
+              </p>
               <ul className="space-y-3">
                 {col.links.map(item => (
                   <li key={item.to}>
