@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Mail, ArrowRight, Users, Vote, Lightbulb, Globe } from 'lucide-react'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import Button from '../../components/ui/Button'
 import SectionHeader from '../../components/ui/SectionHeader'
@@ -25,6 +26,21 @@ export default function OrganizeMCCx() {
   const { t } = useTranslation()
   return (
     <>
+      {/* This component renders at two routes — the active /education-for-
+          harmony/mccx and a stranded duplicate /get-involved/mccx. Canonical
+          always points at the active path regardless of which URL rendered
+          it, which is exactly what canonical is for (duplicate content, one
+          preferred URL) — no noindex needed alongside it. */}
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/education-for-harmony/mccx"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Education for Harmony', path: '/education-for-harmony' },
+          { name: 'Organise an MCCx', path: '/education-for-harmony/mccx' },
+        ]}
+      />
       <PageHero badge={data.meta.badge} title={t('getInvolved.mccx.title', data.meta.title)} subtitle={t('getInvolved.mccx.tagline', data.meta.tagline)} gradient />
 
       <section className="section-padding bg-tide-bg">

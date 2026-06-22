@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Microscope, BookOpen, TrendingUp, Lightbulb, Link2, Users } from 'lucide-react'
-import { Helmet } from 'react-helmet-async'
+import SeoHead from '../components/ui/SeoHead'
 import PageHero from '../components/ui/PageHero'
 import SectionHeader from '../components/ui/SectionHeader'
 import Card from '../components/ui/Card'
@@ -78,23 +78,15 @@ export default function THRIvE() {
 
   return (
     <>
-      <Helmet>
-        <title>{data.meta.seoTitle}</title>
-        <meta name="description" content={data.meta.seoDescription} />
-        <meta property="og:title" content={data.meta.seoTitle} />
-        <meta property="og:description" content={data.meta.seoDescription} />
-        <meta property="og:url" content="https://tideinternational.org/thrive" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://tideinternational.org/assets/images/shared/tide-logo.png" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tideinternational.org/"},
-            {"@type": "ListItem", "position": 2, "name": "THRIvE Research Centre", "item": "https://tideinternational.org/thrive"}
-          ]
-        })}</script>
-      </Helmet>
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/thrive"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'THRIvE Research Centre', path: '/thrive' },
+        ]}
+      />
       <PageHero badge={data.meta.badge} title={t('thrive.title', data.meta.title)} subtitle={t('thrive.fullName', data.meta.fullName)} gradient />
 
       {/* Tagline band */}

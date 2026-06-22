@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { ClipboardList, CheckCircle2, BookOpen } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet-async'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import Button from '../../components/ui/Button'
@@ -24,10 +24,19 @@ export default function AblContribute() {
 
   return (
     <>
-      <Helmet>
-        <title>{ablContributeData.meta.seoTitle}</title>
-        <meta name="description" content={ablContributeData.meta.seoDescription} />
-      </Helmet>
+      {/* Renders at the active /pramaan/contribute and a stranded duplicate
+          /resources/abl-resources/contribute — canonical always points at
+          the active path. */}
+      <SeoHead
+        title={ablContributeData.meta.seoTitle}
+        description={ablContributeData.meta.seoDescription}
+        path="/pramaan/contribute"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Pramaan', path: '/pramaan' },
+          { name: 'Contribute', path: '/pramaan/contribute' },
+        ]}
+      />
       <PageHero
         badge={ablContributeData.meta.badge}
         title={t('abl.contribute.title', ablContributeData.meta.title)}

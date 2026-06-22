@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, BookOpen, Expand, ExternalLink, MapPin, Layers, Play } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet-async'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import Button from '../../components/ui/Button'
@@ -111,7 +113,7 @@ export default function AblDetail() {
 
   const backLink = (
     <Link
-      to="/resources/abl-resources/resource-center"
+      to="/pramaan/resource-centre"
       className="inline-flex items-center gap-2 text-sm font-body font-medium text-tide-muted hover:text-primary transition-colors mb-8"
     >
       <ArrowLeft className="w-4 h-4" /> {t('abl.detail.back', 'Back to Resource Center')}
@@ -123,6 +125,9 @@ export default function AblDetail() {
   if (loading) {
     return (
       <>
+        {/* Transient — no canonical/OG needed, just a non-empty <title> in
+            case a crawler captures this exact instant. */}
+        <Helmet><title>Loading… — TIDE Pramaan</title></Helmet>
         <PageHero badge="Resources · ABL" title={t('abl.resourceCenter.loading', 'Loading…')} />
         <AblNavBar />
         <section className="section-padding bg-tide-bg min-h-[40vh] flex items-center justify-center">
@@ -135,6 +140,14 @@ export default function AblDetail() {
   if (error || !resource) {
     return (
       <>
+        {/* This specific resource id doesn't exist (or failed to load) —
+            noindex so a stale/typo'd link never gets indexed as real content. */}
+        <SeoHead
+          title="Resource Not Found — TIDE Pramaan"
+          description="This ABL resource could not be found. It may have been removed or the link may be incorrect."
+          path={`/pramaan/resource-centre/${id}`}
+          noindex
+        />
         <PageHero badge="Resources · ABL" title={t('abl.detail.notFound', 'Resource Not Found')} />
         <AblNavBar />
         <section className="section-padding bg-tide-bg">
@@ -156,9 +169,43 @@ export default function AblDetail() {
   const accent          = ACCENT_MAP[style.color] ?? ACCENT_MAP.gray
   const hasActions      = Boolean(resource.photoUrl || resource.referenceLink)
   const hasCoverage     = GRADES.some(g => (resource.chapters?.[g]?.length ?? 0) > 0)
+  const gradesCovered   = GRADES.filter(g => (resource.chapters?.[g]?.length ?? 0) > 0).map(g => g.replace('GRADE ', ''))
+  const seoDescription  = resource.description
+    || `${style.pluralLabel?.replace(/s$/, '') || resource.type} for ${gradesCovered.length ? `Grade ${gradesCovered.join(', ')}` : 'Indian classrooms'} — free Activity-Based Learning resource from TIDE Foundation's Pramaan library.`
 
   return (
     <>
+      <SeoHead
+        title={`${resource.name} — TIDE Pramaan`}
+        description={seoDescription}
+        path={`/pramaan/resource-centre/${id}`}
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Pramaan', path: '/pramaan' },
+          { name: 'Resource Centre', path: '/pramaan/resource-centre' },
+          { name: resource.name, path: `/pramaan/resource-centre/${id}` },
+        ]}
+      />
+      {/* Educational-content structured data — lets AI systems and rich
+          search understand this as a specific teaching resource (grade,
+          subject, free/paid, language), not just an undifferentiated page. */}
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'LearningResource',
+          name: resource.name,
+          description: seoDescription,
+          learningResourceType: resource.type,
+          ...(gradesCovered.length ? { educationalAlignment: gradesCovered.map(g => ({
+            '@type': 'AlignmentObject',
+            alignmentType: 'educationalLevel',
+            targetName: `Grade ${g}`,
+          })) } : {}),
+          ...(languages.length ? { inLanguage: languages } : {}),
+          isAccessibleForFree: true,
+          provider: { '@type': 'NGO', name: 'TIDE Foundation', url: 'https://tideinternational.org' },
+        })}</script>
+      </Helmet>
       <PageHero badge={`Resources · ${resource.type}`} title={resource.name} />
       <AblNavBar />
 

@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import AnimatedCounter from '../../components/ui/AnimatedCounter'
@@ -29,6 +30,7 @@ export default function CompletEd() {
 
   return (
     <>
+      <SeoHead title={data.meta.seoTitle} description={data.meta.seoDescription} path="/projects/completed" noindex />
       <PageHero badge={data.meta.badge} title={t('projects.completed.title', data.meta.title)} subtitle={t('projects.completed.tagline', data.meta.tagline)} gradient />
 
       {/* Stats */}
@@ -80,7 +82,7 @@ export default function CompletEd() {
         <div className="max-w-5xl mx-auto">
           <SectionHeader badge={data.moiBrochure.sectionBadge} title={data.moiBrochure.sectionTitle} subtitle={data.moiBrochure.sectionSubtitle} />
           <p className="text-xs font-body text-tide-muted mb-8 -mt-6 italic">Click any page to view full screen.</p>
-          <div className="grid grid-cols-3 gap-4 max-w-2xl">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl">
             {data.moiBrochure.pages.map((item, i) => (
               <motion.button
                 key={item.src}

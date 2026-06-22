@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { ExternalLink } from 'lucide-react'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/resources-annual-reports.json'
@@ -17,6 +18,7 @@ export default function AnnualReports() {
   const { t } = useTranslation()
   return (
     <>
+      <SeoHead title={data.meta.seoTitle} description={data.meta.seoDescription} path="/resources/annual-reports" noindex />
       <PageHero badge={data.meta.badge} title={t('resources.annualReports.title', data.meta.title)} subtitle={t('resources.annualReports.tagline', data.meta.tagline)} />
 
       <section className="section-padding bg-tide-bg">

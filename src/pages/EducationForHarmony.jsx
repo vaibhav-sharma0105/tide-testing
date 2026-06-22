@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet-async'
+import SeoHead from '../components/ui/SeoHead'
 import { CheckCircle2, Mail } from 'lucide-react'
 import PageHero from '../components/ui/PageHero'
 import SectionHeader from '../components/ui/SectionHeader'
@@ -18,23 +18,15 @@ export default function EducationForHarmony() {
 
   return (
     <>
-      <Helmet>
-        <title>{data.meta.seoTitle}</title>
-        <meta name="description" content={data.meta.seoDescription} />
-        <meta property="og:title" content={data.meta.seoTitle} />
-        <meta property="og:description" content={data.meta.seoDescription} />
-        <meta property="og:url" content="https://tideinternational.org/education-for-harmony" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://tideinternational.org/assets/images/shared/tide-logo.png" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tideinternational.org/"},
-            {"@type": "ListItem", "position": 2, "name": "Education for Harmony", "item": "https://tideinternational.org/education-for-harmony"}
-          ]
-        })}</script>
-      </Helmet>
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/education-for-harmony"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Education for Harmony', path: '/education-for-harmony' },
+        ]}
+      />
 
       <PageHero
         badge={data.meta.badge}

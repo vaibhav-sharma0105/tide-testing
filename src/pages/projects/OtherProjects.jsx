@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { GraduationCap, Globe, Heart } from 'lucide-react'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import Card from '../../components/ui/Card'
 import SectionHeader from '../../components/ui/SectionHeader'
@@ -29,6 +30,7 @@ export default function OtherProjects() {
 
   return (
     <>
+      <SeoHead title={data.meta.seoTitle} description={data.meta.seoDescription} path="/projects/other-projects" noindex />
       <PageHero badge={data.meta.badge} title={t('projects.other.title', data.meta.title)} subtitle={t('projects.other.tagline', data.meta.tagline)} />
 
       <section className="section-padding bg-tide-bg">

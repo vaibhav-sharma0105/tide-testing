@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { BookOpen, FileEdit, Users, Building2, Briefcase, ArrowRight } from 'lucide-react'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import Card from '../../components/ui/Card'
@@ -31,6 +32,16 @@ export default function Volunteer() {
 
   return (
     <>
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/get-involved/volunteer"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Get Involved' },
+          { name: 'Volunteer', path: '/get-involved/volunteer' },
+        ]}
+      />
       <PageHero badge={data.meta.badge} title={t('getInvolved.volunteer.title', data.meta.title)} subtitle={t('getInvolved.volunteer.tagline', data.meta.tagline)} gradient />
 
       {/* Hero section */}

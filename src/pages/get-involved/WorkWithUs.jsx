@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Briefcase, Mail, ArrowRight } from 'lucide-react'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import Button from '../../components/ui/Button'
 import TodoPlaceholder from '../../components/ui/TodoPlaceholder'
@@ -10,6 +11,7 @@ export default function WorkWithUs() {
   const { t } = useTranslation()
   return (
     <>
+      <SeoHead title={data.meta.seoTitle} description={data.meta.seoDescription} path="/get-involved/work-with-us" noindex />
       <PageHero badge={data.meta.badge} title={t('getInvolved.work.title', data.meta.title)} subtitle={t('getInvolved.work.tagline', data.meta.tagline)} gradient />
 
       <section className="section-padding bg-tide-bg">

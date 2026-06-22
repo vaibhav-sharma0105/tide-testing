@@ -44,10 +44,14 @@ followup task that may or may not happen.
 
 **In scope:** `docs/*.md`, `CLAUDE.md`, `AGENTS.md`, the two interactive architecture diagrams
 (`docs/ARCHITECTURE.html` — actor/who-does-what view, `docs/ARCHITECTURE-DATAFLOW.html` —
-technical system-layer/dataflow view), and any project skill files under `.claude/skills/` that
-describe the changed area. The two HTML diagrams cover the same underlying system from two
-different organizing principles — a structural change (new pipeline, new subsystem, a node's
-contract/security posture changing) generally needs updating in **both**, not just one.
+technical system-layer/dataflow view), `public/llms.txt`, and any project skill files under
+`.claude/skills/` that describe the changed area. The two HTML diagrams cover the same underlying
+system from two different organizing principles — a structural change (new pipeline, new
+subsystem, a node's contract/security posture changing) generally needs updating in **both**, not
+just one. `llms.txt` needs review whenever a fact it states changes at the source — the ABL
+resource count, the grade range (`GRADES` in `src/components/abl/ResourceFilters.jsx`), or any
+top-level impact number in `content/pages/home.yaml` (a 2026-06-22 audit found it had drifted to
+claim 300+ resources and Grades 1–8 when the live figures were 161 and Grades 1–5).
 
 **Out of scope:** the user's persistent memory files under
 `~/.claude/projects/<project>/memory/*.md`. Those are a separate, auto-persisted system with

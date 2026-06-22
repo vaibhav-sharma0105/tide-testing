@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { ExternalLink, BookOpen, Video, FileText, Mic } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/resources-publications.json'
@@ -37,6 +38,7 @@ export default function Publications() {
   const { t } = useTranslation()
   return (
     <>
+      <SeoHead title={data.meta.seoTitle} description={data.meta.seoDescription} path="/resources/publications" noindex />
       <PageHero badge={data.meta.badge} title={t('resources.publications.title', data.meta.title)} subtitle={t('resources.publications.tagline', data.meta.tagline)} />
 
       <section className="section-padding bg-tide-bg">

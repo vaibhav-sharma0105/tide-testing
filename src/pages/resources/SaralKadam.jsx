@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Download, BookOpen } from 'lucide-react'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import Button from '../../components/ui/Button'
@@ -30,6 +31,7 @@ export default function SaralKadam() {
 
   return (
     <>
+      <SeoHead title={data.meta.seoTitle} description={data.meta.seoDescription} path="/resources/saral-kadam" noindex />
       <PageHero badge={data.meta.badge} title={t('resources.saralKadam.title', data.meta.title)} subtitle={t('resources.saralKadam.tagline', data.meta.tagline)} />
 
       {/* About */}

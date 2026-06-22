@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/about-our-partners.json'
@@ -25,6 +26,16 @@ export default function OurPartners() {
   const { t } = useTranslation()
   return (
     <>
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/about/our-partners"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'About Us' },
+          { name: 'Our Partners', path: '/about/our-partners' },
+        ]}
+      />
       <PageHero badge={data.meta.badge} title={t('about.partners.title', data.meta.title)} subtitle={t('about.partners.subtitle', data.meta.subtitle)} />
 
       {/* Partner logo showcase */}
@@ -35,7 +46,7 @@ export default function OurPartners() {
             title={data.logoGallery.sectionTitle}
             subtitle={data.logoGallery.sectionSubtitle}
           />
-          <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-8 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-6 lg:grid-cols-8 gap-3">
             {data.logoGallery.images.map((filename, i) => (
               <motion.div
                 key={filename}

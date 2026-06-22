@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { MapPin, Target, Zap } from 'lucide-react'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import Card from '../../components/ui/Card'
@@ -16,6 +17,7 @@ export default function BetterED() {
 
   return (
     <>
+      <SeoHead title={data.meta.seoTitle} description={data.meta.seoDescription} path="/projects/bettered" noindex />
       <PageHero badge={data.meta.badge} title={t('projects.bettered.title', data.meta.title)} subtitle={t('projects.bettered.tagline', data.meta.tagline)} gradient />
 
       {/* Stats */}

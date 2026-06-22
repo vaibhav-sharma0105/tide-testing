@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet-async'
+import SeoHead from '../../components/ui/SeoHead'
 import { FileText, Video, Image, Download, ExternalLink } from 'lucide-react'
 import PageHero from '../../components/ui/PageHero'
 import data from '../../data/about-publications.json'
@@ -27,10 +27,16 @@ export default function PublicationsCombined() {
 
   return (
     <>
-      <Helmet>
-        <title>{data.meta.seoTitle}</title>
-        <meta name="description" content={data.meta.seoDescription} />
-      </Helmet>
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/about/publications"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'About Us' },
+          { name: 'Publications', path: '/about/publications' },
+        ]}
+      />
       <PageHero
         badge={data.meta.badge}
         title={t('pubs.title', data.meta.title)}

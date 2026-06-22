@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet-async'
+import SeoHead from '../../components/ui/SeoHead'
 import { Link } from 'react-router-dom'
 import PageHero from '../../components/ui/PageHero'
 import data from '../../data/about-past-programs.json'
@@ -16,10 +16,16 @@ export default function PastPrograms() {
   const { t } = useTranslation()
   return (
     <>
-      <Helmet>
-        <title>{data.meta.seoTitle}</title>
-        <meta name="description" content={data.meta.seoDescription} />
-      </Helmet>
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/about/past-programs"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'About Us' },
+          { name: 'Past Programs', path: '/about/past-programs' },
+        ]}
+      />
       <PageHero badge={data.meta.badge} title={t('about.pastPrograms.title', data.meta.title)} subtitle={t('about.pastPrograms.tagline', data.meta.tagline)} gradient />
 
       <section className="section-padding bg-tide-bg">

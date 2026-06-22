@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- No hreflang annotations: hi/gu are served via client-side language
+       switching at the SAME URL, not separate per-language paths, so
+       there's nothing distinct for hreflang to point at — adding it would
+       be incorrect usage (it previously pointed all three language codes
+       at one identical URL, on only the home entry, which isn't what
+       hreflang means). -->
   <url>
     <loc>https://tideinternational.org/</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tideinternational.org/"/>
-    <xhtml:link rel="alternate" hreflang="hi" href="https://tideinternational.org/"/>
-    <xhtml:link rel="alternate" hreflang="gu" href="https://tideinternational.org/"/>
   </url>
   <url><loc>https://tideinternational.org/about/why-tide</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://tideinternational.org/about/past-programs</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>

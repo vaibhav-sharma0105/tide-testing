@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Clock, MessageCircle } from 'lucide-react'
-import { Helmet } from 'react-helmet-async'
 import { FacebookIcon, InstagramIcon, LinkedinIcon } from '../components/ui/SocialIcons'
+import SeoHead from '../components/ui/SeoHead'
 import PageHero from '../components/ui/PageHero'
 import Button from '../components/ui/Button'
 import data from '../data/contact.json'
@@ -17,23 +17,15 @@ export default function Contact() {
   const { t } = useTranslation()
   return (
     <>
-      <Helmet>
-        <title>{data.meta.seoTitle}</title>
-        <meta name="description" content={data.meta.seoDescription} />
-        <meta property="og:title" content={data.meta.seoTitle} />
-        <meta property="og:description" content={data.meta.seoDescription} />
-        <meta property="og:url" content="https://tideinternational.org/contact" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://tideinternational.org/assets/images/shared/tide-logo.png" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tideinternational.org/"},
-            {"@type": "ListItem", "position": 2, "name": "Contact Us", "item": "https://tideinternational.org/contact"}
-          ]
-        })}</script>
-      </Helmet>
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/contact"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Contact Us', path: '/contact' },
+        ]}
+      />
       <PageHero badge={data.meta.badge} title={t('contact.title', data.meta.title)} subtitle={t('contact.tagline', data.meta.tagline)} />
 
       <section className="section-padding bg-tide-bg">

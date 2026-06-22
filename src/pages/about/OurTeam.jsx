@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/about-our-team.json'
@@ -84,6 +85,16 @@ export default function OurTeam() {
   const { t } = useTranslation()
   return (
     <>
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/about/our-team"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'About Us' },
+          { name: 'Our Team', path: '/about/our-team' },
+        ]}
+      />
       <PageHero badge={data.meta.badge} title={t('about.team.title', data.meta.title)} subtitle={t('about.team.subtitle', data.meta.subtitle)} />
 
       <section className="section-padding bg-tide-bg">

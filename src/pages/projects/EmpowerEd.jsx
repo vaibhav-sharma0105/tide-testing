@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Users, BookOpen } from 'lucide-react'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import Card from '../../components/ui/Card'
@@ -30,6 +31,7 @@ export default function EmpowerEd() {
   const { t } = useTranslation()
   return (
     <>
+      <SeoHead title={data.meta.seoTitle} description={data.meta.seoDescription} path="/projects/empowered" noindex />
       <PageHero badge={data.meta.badge} title={t('projects.empowered.title', data.meta.title)} subtitle={t('projects.empowered.tagline', data.meta.tagline)} gradient />
 
       {/* Overview */}

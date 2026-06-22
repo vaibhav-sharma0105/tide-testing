@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Globe, Users, Heart, BookOpen, Lightbulb, ExternalLink, Download, Mail, ArrowRight, CheckCircle2 } from 'lucide-react'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import Card from '../../components/ui/Card'
@@ -30,6 +31,7 @@ export default function SdgDrives() {
 
   return (
     <>
+      <SeoHead title={data.meta.seoTitle} description={data.meta.seoDescription} path="/projects/sdg-drives" noindex />
       <PageHero badge={data.meta.badge} title={t('projects.sdgDrives.title', data.meta.title)} subtitle={t('projects.sdgDrives.tagline', data.meta.tagline)} gradient />
 
       {/* Overview + The Idea */}

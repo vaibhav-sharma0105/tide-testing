@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet-async'
+import SeoHead from '../../components/ui/SeoHead'
 import { CheckCircle2, Mail, MessageCircle } from 'lucide-react'
 import PageHero from '../../components/ui/PageHero'
 import data from '../../data/get-involved-donate.json'
@@ -28,10 +28,16 @@ export default function Donate() {
 
   return (
     <>
-      <Helmet>
-        <title>{data.meta.seoTitle}</title>
-        <meta name="description" content={data.meta.seoDescription} />
-      </Helmet>
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/get-involved/donate"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Get Involved' },
+          { name: 'Donate', path: '/get-involved/donate' },
+        ]}
+      />
       <PageHero
         badge={data.meta.badge}
         title={t('donate.title', data.meta.title)}

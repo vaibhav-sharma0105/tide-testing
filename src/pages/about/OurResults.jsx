@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import AnimatedCounter from '../../components/ui/AnimatedCounter'
@@ -29,6 +30,10 @@ export default function OurResults() {
   const { t } = useTranslation()
   return (
     <>
+      {/* Stranded route — not linked from any nav, pending a stakeholder
+          decision on redirect/removal (see "Stranded routes" in App.jsx).
+          noindex until that decision is made. */}
+      <SeoHead title={data.meta.seoTitle} description={data.meta.seoDescription} path="/about/our-results" noindex />
       <PageHero badge={data.meta.badge} title={t('about.results.title', data.meta.title)} subtitle={t('about.results.subtitle', data.meta.subtitle)} />
 
       <section className="py-16 bg-white border-b border-tide-border">

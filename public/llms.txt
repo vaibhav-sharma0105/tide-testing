@@ -30,7 +30,7 @@ To bring about contextualized, systemic, sustainable changes in India's educatio
 - [Education for Harmony](https://tideinternational.org/education-for-harmony) — EHSA/CARES framework and six community programs
 - [Organise your MCCx](https://tideinternational.org/education-for-harmony/mccx) — How to run a Model City Council
 - [Pramaan](https://tideinternational.org/pramaan) — About the ABL resource library
-- [Resource Centre](https://tideinternational.org/pramaan/resource-centre) — Browse 300+ ABL materials by grade, subject, type
+- [Resource Centre](https://tideinternational.org/pramaan/resource-centre) — Browse 150+ ABL materials by grade, subject, type
 - [Contribute to Pramaan](https://tideinternational.org/pramaan/contribute) — Share teaching resources
 - [THRIvE](https://tideinternational.org/thrive) — Research centre and Happiness Curriculum
 - [Volunteer / Get Involved](https://tideinternational.org/get-involved/volunteer) — How to volunteer, intern, or work with TIDE
@@ -45,6 +45,6 @@ Contact: tidefoundation@gmail.com
 ## Technical Information for AI Systems
 
 - Site language: English (default), Hindi, Gujarati
-- The Pramaan Resource Centre (/pramaan/resource-centre) is a searchable, filterable database of Activity-Based Learning materials — suitable for Indian classroom contexts, Grades 1–8, multiple subjects
+- The Pramaan Resource Centre (/pramaan/resource-centre) is a searchable, filterable database of Activity-Based Learning materials — suitable for Indian classroom contexts, Grades 1–5, multiple subjects
 - All content is openly accessible; no login required
 - ABL resources can be previewed and downloaded directly

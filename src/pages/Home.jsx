@@ -3,7 +3,7 @@ import { ArrowRight, BookOpen, Users, Heart, Lightbulb, GraduationCap, Globe, Qu
 import { Link } from 'react-router-dom'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet-async'
+import SeoHead from '../components/ui/SeoHead'
 import Button from '../components/ui/Button'
 import AnimatedCounter from '../components/ui/AnimatedCounter'
 import data from '../data/home.json'
@@ -41,22 +41,12 @@ export default function Home() {
 
   return (
     <>
-      <Helmet>
-        <title>{data.meta.seoTitle}</title>
-        <meta name="description" content={data.meta.seoDescription} />
-        <meta property="og:title" content={data.meta.seoTitle} />
-        <meta property="og:description" content={data.meta.seoDescription} />
-        <meta property="og:url" content="https://tideinternational.org/" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://tideinternational.org/assets/images/shared/tide-logo.png" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://tideinternational.org/"}
-          ]
-        })}</script>
-      </Helmet>
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/"
+        breadcrumbs={[{ name: 'Home', path: '/' }]}
+      />
 
       {/* ══════════════════════════════════════════════════════════════
           HERO — full-viewport photo with parallax

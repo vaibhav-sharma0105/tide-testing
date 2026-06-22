@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { BookOpen, Users, Heart } from 'lucide-react'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import Card from '../../components/ui/Card'
@@ -18,6 +19,7 @@ export default function BlockETI() {
   const { t } = useTranslation()
   return (
     <>
+      <SeoHead title={data.meta.seoTitle} description={data.meta.seoDescription} path="/projects/block-eti" noindex />
       <PageHero badge={data.meta.badge} title={t('projects.blockETI.title', data.meta.title)} subtitle={t('projects.blockETI.tagline', data.meta.tagline)} gradient />
 
       <section className="section-padding bg-tide-bg">

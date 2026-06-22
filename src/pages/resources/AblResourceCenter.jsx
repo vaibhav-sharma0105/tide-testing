@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SlidersHorizontal, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import ResourceFilters from '../../components/abl/ResourceFilters'
@@ -89,6 +90,22 @@ export default function AblResourceCenter() {
 
   return (
     <>
+      {/* Renders at the active /pramaan/resource-centre and a stranded
+          duplicate /resources/abl-resources/resource-center — canonical
+          always points at the active path. This page has no page-specific
+          YAML/JSON file (all its copy is inline t() fallback strings), so
+          the SEO title/description match that same pattern rather than
+          introducing a YAML file just for this. */}
+      <SeoHead
+        title="Resource Centre — TIDE Foundation"
+        description="Browse and download 150+ free Activity-Based Learning resources for Grades 1-5 — worksheets, games, kits, and flashcards, filterable by type, grade, and language."
+        path="/pramaan/resource-centre"
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Pramaan', path: '/pramaan' },
+          { name: 'Resource Centre', path: '/pramaan/resource-centre' },
+        ]}
+      />
       <PageHero
         badge="Resources · ABL"
         title={t('abl.resourceCenter.title', 'Resource Center')}
