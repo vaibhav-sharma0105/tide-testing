@@ -13,7 +13,7 @@ The site is a single-page app built with Vite and deployed as static files to Gi
 
 ## Quick start
 
-Requires Node 20 (the version the CI workflows use) and npm.
+Requires Node 20.19+ or 22.12+ (the CI workflows use Node 24) and npm.
 
 ```bash
 npm ci                 # or npm install

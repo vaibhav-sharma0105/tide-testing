@@ -1030,7 +1030,7 @@ Local builds use `base: '/'`. To reproduce the GitHub Pages path bugs (e.g. doub
 ### GitHub Actions
 
 **`.github/workflows/deploy.yml`** — triggered by push to `main` and manual `workflow_dispatch`:
-1. `npm ci` (Node 20)
+1. `npm ci` (Node 24)
 2. `npm run build` with `GITHUB_ACTIONS=true` and `VITE_ABL_API_URL` / `VITE_ABL_CONTRIBUTE_FORM_URL` from repository secrets (`prebuild` runs the YAML sync first)
 3. Upload `dist/` as Pages artifact
 4. Deploy to GitHub Pages
