@@ -32,3 +32,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local-only files
+TIDE_Website_Tracker.xlsx
+playwright-report/
+test-results/
