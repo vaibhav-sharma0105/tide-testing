@@ -1,19 +1,18 @@
 import { motion } from 'framer-motion'
 import { ClipboardList, CheckCircle2, BookOpen } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
 import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import Button from '../../components/ui/Button'
 import { CONTRIBUTE_FORM_URL } from '../../config/abl'
 import ablContributeData from '../../data/abl-contribute.json'
+import site from '../../data/site.json'
 
 const formReady = CONTRIBUTE_FORM_URL && CONTRIBUTE_FORM_URL !== 'REPLACE_WITH_GOOGLE_FORM_URL'
 
 const STEP_ICONS = [ClipboardList, CheckCircle2, BookOpen]
 
 export default function AblContribute() {
-  const { t } = useTranslation()
 
   const STEPS = ablContributeData.steps.map((s, i) => ({
     step: i + 1,
@@ -24,24 +23,20 @@ export default function AblContribute() {
 
   return (
     <>
-      {/* Renders at the active /pramaan/contribute and a stranded duplicate
-          /resources/abl-resources/contribute — canonical always points at
-          the active path. */}
       <SeoHead
         title={ablContributeData.meta.seoTitle}
         description={ablContributeData.meta.seoDescription}
         path="/pramaan/contribute"
         breadcrumbs={[
-          { name: 'Home', path: '/' },
-          { name: 'Pramaan', path: '/pramaan' },
-          { name: 'Contribute', path: '/pramaan/contribute' },
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: site.breadcrumbs.pramaan, path: '/pramaan' },
+          { name: ablContributeData.meta.breadcrumbName, path: '/pramaan/contribute' },
         ]}
       />
       <PageHero
         badge={ablContributeData.meta.badge}
-        title={t('abl.contribute.title', ablContributeData.meta.title)}
-        subtitle={t('abl.contribute.subtitle', ablContributeData.meta.subtitle)}
-        gradient
+        title={ablContributeData.meta.title}
+        subtitle={ablContributeData.meta.subtitle}
       />
       <AblNavBar />
 
@@ -55,9 +50,9 @@ export default function AblContribute() {
             transition={{ duration: 0.6 }}
             className="text-center mb-14"
           >
-            <h2 className="font-display text-3xl font-semibold text-tide-text mb-4">{t('abl.contribute.shareTitle', ablContributeData.shareSection.title)}</h2>
+            <h2 className="font-display text-3xl font-semibold text-tide-text mb-4">{ablContributeData.shareSection.title}</h2>
             <p className="font-body text-tide-muted leading-relaxed">
-              {t('abl.contribute.shareBody', ablContributeData.shareSection.body)}
+              {ablContributeData.shareSection.body}
             </p>
           </motion.div>
 
@@ -90,17 +85,17 @@ export default function AblContribute() {
           >
             {formReady ? (
               <Button href={CONTRIBUTE_FORM_URL} external size="lg">
-                {t('abl.contribute.cta', ablContributeData.cta)} ↗
+                {ablContributeData.cta} ↗
               </Button>
             ) : (
               <div className="inline-flex flex-col items-center gap-2">
                 <span className="px-5 py-3 rounded-full bg-tide-subtle text-tide-muted text-sm font-body font-semibold border border-tide-border cursor-not-allowed">
-                  {t('abl.contribute.cta', ablContributeData.cta)} ↗
+                  {ablContributeData.cta} ↗
                 </span>
-                <span className="text-xs font-body text-accent-deeper font-semibold">{t('abl.contribute.ctaPending', ablContributeData.ctaPending)}</span>
+                <span className="text-xs font-body text-accent-deeper font-semibold">{ablContributeData.ctaPending}</span>
               </div>
             )}
-            <p className="text-xs font-body text-tide-muted mt-3">{t('abl.contribute.disclaimer', ablContributeData.disclaimer)}</p>
+            <p className="text-xs font-body text-tide-muted mt-3">{ablContributeData.disclaimer}</p>
           </motion.div>
 
         </div>

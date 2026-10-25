@@ -2,6 +2,8 @@
 # planned section doesn't have a built page yet. A specific usage can pass
 # its own title/message as props instead of these defaults if needed.
 badge: "Coming Soon"
+# Browser-tab title; {badge} is replaced with the badge text (or a per-use badge prop).
+seoTitleTemplate: "{badge} — TIDE Foundation"
 title: "Something meaningful is taking shape"
 message: "This is part of TIDE's growing work in education — built with the same care we bring to every classroom and community we serve. Check back soon."
 ctaLabel: "Back to Home"

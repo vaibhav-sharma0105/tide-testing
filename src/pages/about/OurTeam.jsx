@@ -3,7 +3,8 @@ import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/about-our-team.json'
-import { useTranslation } from 'react-i18next'
+import site from '../../data/site.json'
+import common from '../../data/common.json'
 import { imgSrc } from '../../utils/imgSrc'
 
 const getInitials = name => name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
@@ -23,7 +24,7 @@ function PortraitCard({ name, role, bio, photo, suffix, delay = 0, size = 'md' }
     >
       <div className={`relative ${ratioClass} overflow-hidden`}>
         {photo ? (
-          <img src={imgSrc(photo)} alt={name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.06]" />
+          <img src={imgSrc(photo)} alt={name} loading="lazy" decoding="async" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.06]" />
         ) : (
           <div className="w-full h-full gradient-primary flex items-center justify-center">
             <span className="font-display text-white font-bold text-5xl opacity-40 select-none">{initials}</span>
@@ -64,7 +65,7 @@ function AdvisorCard({ name, role, photo, delay = 0 }) {
     >
       <div className="w-24 flex-shrink-0 overflow-hidden relative">
         {photo ? (
-          <img src={imgSrc(photo)} alt={name} className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.06]" />
+          <img src={imgSrc(photo)} alt={name} loading="lazy" decoding="async" className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.06]" />
         ) : (
           <div className="w-full h-full gradient-primary flex items-center justify-center">
             <span className="font-display text-white font-bold text-xl opacity-50">{initials}</span>
@@ -82,7 +83,6 @@ function AdvisorCard({ name, role, photo, delay = 0 }) {
 
 /* ══════════════════════════════════════════���═══════════════════════ */
 export default function OurTeam() {
-  const { t } = useTranslation()
   return (
     <>
       <SeoHead
@@ -90,21 +90,21 @@ export default function OurTeam() {
         description={data.meta.seoDescription}
         path="/about/our-team"
         breadcrumbs={[
-          { name: 'Home', path: '/' },
-          { name: 'About Us' },
-          { name: 'Our Team', path: '/about/our-team' },
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: site.breadcrumbs.aboutUs },
+          { name: data.meta.breadcrumbName, path: '/about/our-team' },
         ]}
       />
-      <PageHero badge={data.meta.badge} title={t('about.team.title', data.meta.title)} subtitle={t('about.team.subtitle', data.meta.subtitle)} />
+      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.subtitle} />
 
       <section className="section-padding bg-tide-bg">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <SectionHeader
             badge={data.coreTeam.sectionBadge}
-            title={t('about.team.coreTeam', data.coreTeam.sectionTitle)}
+            title={data.coreTeam.sectionTitle}
             subtitle={data.coreTeam.sectionSubtitle}
           />
-          <p className="text-xs font-body text-tide-muted mb-8 -mt-6 italic">{t('common.hoverForBio', 'Hover over a photo to read about each person.')}</p>
+          <p className="text-xs font-body text-tide-muted mb-8 -mt-6 italic">{common.hoverForBio}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-5 md:gap-6">
             {data.coreTeam.members.map((m, i) => (
               <PortraitCard key={m.name} {...m} delay={i * 0.06} />
@@ -117,7 +117,7 @@ export default function OurTeam() {
         <div className="max-w-5xl mx-auto px-4 md:px-8">
           <SectionHeader
             badge={data.advisoryBoard.sectionBadge}
-            title={t('about.team.advisors', data.advisoryBoard.sectionTitle)}
+            title={data.advisoryBoard.sectionTitle}
             subtitle={data.advisoryBoard.sectionSubtitle}
           />
           <div className="grid sm:grid-cols-2 gap-4">

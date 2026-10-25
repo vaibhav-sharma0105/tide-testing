@@ -1,9 +1,10 @@
 import { Helmet } from 'react-helmet-async'
+import site from '../../data/site.json'
 
-// The intended production domain — this is a rebuild of the live
-// tideinternational.org site, not a placeholder. Canonical/OG/breadcrumb URLs
+// The intended production domain (content/shared/site.yaml `url`) — this is a
+// rebuild of the live site, not a placeholder. Canonical/OG/breadcrumb URLs
 // point here even though the current build is served from GitHub Pages.
-const SITE_URL = 'https://tideinternational.org'
+const SITE_URL = site.url
 
 // Unlike canonical/og:url (pointers of intent), og:image is actually FETCHED
 // by social crawlers the moment a link is shared — it must resolve to
@@ -11,7 +12,7 @@ const SITE_URL = 'https://tideinternational.org'
 // BASE_URL is '/tide-testing/' on GitHub Pages, '/' locally — same pattern
 // vite.config.js already uses, so this is automatically correct wherever the
 // build is actually deployed, with no change needed after a future domain cutover.
-const DEFAULT_OG_IMAGE_PATH = `${import.meta.env.BASE_URL}assets/images/shared/tide-logo.png`
+const DEFAULT_OG_IMAGE_PATH = `${import.meta.env.BASE_URL}${site.logo.replace(/^\//, '')}`
 
 /**
  * Shared per-page <head> content: title, description, canonical, OG/Twitter

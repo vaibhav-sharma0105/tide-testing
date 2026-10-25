@@ -1,14 +1,42 @@
+> # STATUS: REMOVED on 2026-10-25 — historical reference only
+> Multilingual support (English / Hindi / Gujarati) has been **removed from the codebase entirely**. There is no `i18next` / `react-i18next` dependency, no `src/i18n/`, no `content/locales/`, no `LanguageSwitcher`, no `src/config/features.js` and no `t()` / `useTranslation()` anywhere; pages import the YAML-generated JSON from `src/data/` directly, and the site is English-only. **Everything below describes the removed design, not the current code.** That includes its page and file lists: the `src/pages/projects/*` pages, `TodoPlaceholder.jsx` and the `/resources/abl-resources*` routes it names existed when the framework was archived at `a4126d1` but were themselves deleted later on 2026-10-25 (the 16 "stranded" routes were removed with no redirects; see `docs/specs/site-restructure-plan.md`), so those paths no longer exist in the working tree. It is kept so the work can be re-introduced if multilingual support is wanted again.
+>
+> **Recovering the old implementation.** The last commit that still contains it is tagged `archive/multilingual-framework` (commit `a4126d1`, which is also on GitHub as that commit on `main`). The tag exists **only in the local clone**: it has not been pushed (`git push origin archive/multilingual-framework` would publish it; it has deliberately not been run). Anyone without that local tag can use the commit hash `a4126d1` instead.
+> - List what existed: `git ls-tree -r --name-only archive/multilingual-framework | grep -E "i18n|locales|LanguageSwitcher|features"`
+> - Read any old file without checking it out: `git show archive/multilingual-framework:<path>`, e.g. `src/i18n/index.js`, `src/config/features.js`, `src/components/ui/LanguageSwitcher.jsx`, `content/locales/hi/pages.yaml`, `scripts/yaml-to-json.js` (the old version also merged the locale YAML into `translation.json`).
+> - Restore a file into the working tree: `git checkout archive/multilingual-framework -- <path>`.
+> - A re-introduction would also have to restore the `t(key, default)` calls in the page components, the `i18nKey`/`descKey` fields in `navigation.yaml` / `footer.yaml`; none of that is in the current code.
+
 # Multilingual (EN / HI / GU) Implementation Spec
 **Version:** 1.0 — 2026-06-07  
-**Scope:** Full end-to-end i18n for all 24 pages, header, footer, and shared UI components.  
+**Scope:** Full end-to-end i18n for all 24 pages (the site now has more routes; see the status note), header, footer, and shared UI components.
 **Out of scope:** ABL content rows (Google Sheet data stays in English); navigation/footer structural URLs.
+
+> ## State of the removed implementation (as archived 2026-10-25, verified against the archive tag)
+> This document is the original pre-implementation spec (2026-06-07). It was implemented, but **the architecture that was actually built differs from §1 and §12 below**, so read this note first. Where the body disagrees with this note, this note is right. Everything in this note is also about the removed code (see the status banner above).
+>
+> **What was built**
+> - **English comes from the content YAML, not from `translation.json`.** Components call `t('some.key', data.field)`, where `data` is the JSON generated from `content/pages|shared/*.yaml`; for English the default argument is what renders. `src/i18n/locales/en/translation.json` is an empty object (`{}`) and is **not imported** by `src/i18n/index.js` (only `hi` and `gu` are registered as resources). The "YAML files are never touched / all text lives in translation.json" rule in §1 describes the opposite of the real design.
+> - **`fallbackLng` is `false`**, not `'en'` (`src/i18n/index.js`). A key missing from `hi`/`gu` falls through to the inline default (English) because every call supplies one; a missing key with no default would print the key itself (`TodoPlaceholder.jsx` was the known case).
+> - **Hindi and Gujarati are authored as YAML** in `content/locales/hi|gu/{pages,shared}.yaml`; `scripts/yaml-to-json.js` merges them into `src/i18n/locales/hi|gu/translation.json` (generated; each has 381 flat keys). Edit the YAML, not the generated JSON.
+> - **All pages call `useTranslation()`** (38 files under `src/` import it, including Header, Footer and the ABL components). Navigation and footer items carry `i18nKey` (and `descKey` for nav) in `content/shared/navigation.yaml` / `footer.yaml`.
+> - **Language persistence:** `LanguageSwitcher` stores the choice in `localStorage` under `tide-lang`; `src/i18n/index.js` reads it at startup, but only when the feature flag is on.
+> - **Switcher hidden on Pramaan:** `Header.jsx` hides it on any path starting with `/pramaan` or `/resources/abl-resources` (the spec only knew the latter).
+> - **Feature flag (not in the original spec):** `src/config/features.js` exports `MULTILINGUAL_ENABLED`, hard-coded `false`; `VITE_MULTILINGUAL_ENABLED` overrides it at build time (any value other than the string `false` turns it on). While it is off: the switcher is not rendered, the language is always `en`, and the stored `tide-lang` value is removed at startup. **So the site was English-only at the time it was archived.**
+>
+> **Known gaps (open; not decided)**
+> - About 60 static `t()` keys used by the code have no entry in `hi`/`gu` (e.g. `about.pastPrograms.*`, `pubs.*`, `efh.*`, `donate.*`, some `home.journey.*`, `home.padlet.*`, `abl.home.*`, `abl.detail.*`); they would render English if the flag were enabled. Some page fields are also rendered straight from the data without `t()`, so they stay English regardless.
+> - `<html lang>` is never updated when the language changes, and there is no per-language CSS; Hindi/Gujarati fonts rely on the font stack order in `tailwind.config.js`.
+> - The `id`-field-on-array-items idea (§12) was not adopted for Home programs; several pages use index-based key lookups instead (e.g. `PROGRAM_COLORS[i]`, `goals.g{i+1}`), which break if YAML list order changes.
+> - The "Gujarati corruption" in §7: no `ç` corruption markers remain in the generated `gu/translation.json` as of this date (translation quality itself was not reviewed).
+> - Whether and when to turn the flag on is an open decision; nothing in the repo records one.
 
 ---
 
 ## 1. Architecture
 
 ### Golden rule
-**YAML files are never touched.** They hold English structural data only (image paths, URLs, icon keys, link targets). All displayable text lives exclusively in `src/i18n/locales/*/translation.json`.
+> **Superseded — see the status note at the top.** The original rule said "YAML files are never touched; all displayable text lives in `src/i18n/locales/*/translation.json`". As built, the English text lives in the content YAML (and its generated JSON), and only the Hindi and Gujarati text lives in `translation.json` (generated from `content/locales/`).
 
 ### Data flow
 ```
@@ -21,7 +49,7 @@ content/*.yaml  →  src/data/*.json  (structural: paths, IDs, icon keys, URLs)
 ```
 
 ### Fallback chain
-`i18next` is configured with `fallbackLng: 'en'`. Every `t()` call uses the English string as its inline fallback:
+*(As built: `fallbackLng` is `false` and there is no English resource bundle; the inline default argument below is what renders for English and for any key missing in `hi`/`gu`.)* Every `t()` call uses the English string as its inline default:
 ```jsx
 t('home.hero.tagline', data.hero.tagline)   // JSON value = English fallback
 t('home.impact.label', 'Our Impact in Numbers')  // literal = English fallback
@@ -29,14 +57,16 @@ t('home.impact.label', 'Our Impact in Numbers')  // literal = English fallback
 This means HI/GU translations can be filled in gradually — users always see English until a translation exists.
 
 ### Language persistence
-`localStorage.setItem('tide-lang', code)` — stored under key `tide-lang`. Already implemented in `LanguageSwitcher.jsx`.
+`localStorage.setItem('tide-lang', code)` — stored under key `tide-lang`. Implemented in `LanguageSwitcher.jsx` and read in `src/i18n/index.js`; both are inactive while `MULTILINGUAL_ENABLED` is `false`.
 
 ### ABL pages
-Language switcher is **hidden** on all ABL routes (`/resources/abl-resources*`). The ABL content rows (fetched from Google Sheet) are English-only. Only ABL UI chrome (buttons, labels, filter options) is translated. See §6.
+Language switcher is **hidden** on all ABL routes (`/pramaan*` and the older `/resources/abl-resources*`). The ABL content rows (fetched from Google Sheet) are English-only. Only ABL UI chrome (buttons, labels, filter options) is translated. See §6.
 
 ---
 
 ## 2. Current State Audit
+
+> *Historical snapshot from 2026-06-07 — superseded; the "needs to be done" items below were carried out (see the status note at the top for the current state).*
 
 ### What already works
 - `i18next` + `react-i18next` installed and configured in `src/i18n/index.js`
@@ -397,7 +427,7 @@ const { t } = useTranslation()
 // Language switcher: hide on ABL routes
 import { useLocation } from 'react-router-dom'
 const location = useLocation()
-const isABL = location.pathname.startsWith('/resources/abl-resources')
+const isABL = location.pathname.startsWith('/pramaan') || location.pathname.startsWith('/resources/abl-resources')   // as built
 // Render LanguageSwitcher only when !isABL
 ```
 
@@ -548,7 +578,7 @@ Missing from both nav and projects sections in translation.json. Add `nav.sdgDri
 In `Header.jsx`, detect ABL routes and hide `<LanguageSwitcher>`:
 ```jsx
 const { pathname } = useLocation()
-const isABL = pathname.startsWith('/resources/abl-resources')
+const isABL = pathname.startsWith('/pramaan') || pathname.startsWith('/resources/abl-resources')   // as built
 // ...
 {!isABL && <LanguageSwitcher light={!scrolled} />}
 ```
@@ -766,7 +796,7 @@ export default function PageName() {
 ### Pattern E: Conditional language switcher (Header)
 ```jsx
 const { pathname } = useLocation()
-const isABL = pathname.startsWith('/resources/abl-resources')
+const isABL = pathname.startsWith('/pramaan') || pathname.startsWith('/resources/abl-resources')   // as built
 // ...
 {!isABL && <LanguageSwitcher light={!scrolled} />}
 ```
@@ -778,7 +808,7 @@ const isABL = pathname.startsWith('/resources/abl-resources')
 After implementation, verify:
 
 - [ ] Language switcher renders in Header on all non-ABL pages
-- [ ] Language switcher is hidden on `/resources/abl-resources`, `/resources/abl-resources/resource-center`, and `/resources/abl-resources/resource-center/:id`
+- [ ] Language switcher is hidden on `/pramaan*` and on the older `/resources/abl-resources*` routes (checks apply only with `MULTILINGUAL_ENABLED` on)
 - [ ] Switching to HI: navigation labels change, home page hero text changes, footer changes
 - [ ] Switching to GU: same as HI — no corrupted characters visible (i18next falls back to EN)
 - [ ] Switching back to EN: everything returns to English
@@ -840,7 +870,7 @@ After implementation, verify:
 
 | Decision | Rationale |
 |----------|-----------|
-| YAML stays English-only | Avoids per-locale YAML duplication; all translatable content centralised in one directory |
+| YAML stays English-only | *(Partly superseded.)* The page/shared content YAML holds the English text; Hindi and Gujarati are separate YAML files under `content/locales/`, merged into `translation.json` by `scripts/yaml-to-json.js` |
 | JSON values as EN fallback | `t('key', data.value)` means zero extra work for EN — it always renders; HI/GU can be added gradually |
 | `id` field on array items | Allows `t('home.programs.${id}.title')` without positional indexing fragility |
 | ABL routes hide language switcher | ABL content rows are English-only; showing a language switcher that only affects UI chrome would be misleading |

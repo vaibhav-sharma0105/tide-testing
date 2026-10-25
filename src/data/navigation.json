@@ -1,50 +1,44 @@
 {
   "donateLabel": "Donate",
   "donateMobileLabel": "Donate to TIDE",
+  "logo": "assets/images/shared/tide-logo.png",
+  "logoAlt": "TIDE Foundation",
+  "brandName": "TIDE",
+  "brandSuffix": "Foundation",
+  "skipLink": "Skip to main content",
+  "ariaMain": "Main navigation",
+  "menuToggleLabel": "Toggle menu",
   "items": [
     {
       "label": "About Us",
-      "i18nKey": "about",
       "children": [
         {
           "label": "Why TIDE?",
-          "i18nKey": "whyTide",
-          "descKey": "desc.whyTide",
           "to": "/about/why-tide",
           "desc": "Our story, vision & values"
         },
         {
           "label": "Past Programs",
-          "i18nKey": "pastPrograms",
-          "descKey": "desc.pastPrograms",
           "to": "/about/past-programs",
           "desc": "Our history and earlier initiatives"
         },
         {
           "label": "Our Team",
-          "i18nKey": "ourTeam",
-          "descKey": "desc.ourTeam",
           "to": "/about/our-team",
           "desc": "Meet the people behind TIDE"
         },
         {
           "label": "Our Partners",
-          "i18nKey": "ourPartners",
-          "descKey": "desc.ourPartners",
           "to": "/about/our-partners",
           "desc": "Our network of collaborators"
         },
         {
           "label": "Get Involved",
-          "i18nKey": "volunteer",
-          "descKey": "desc.volunteer",
           "to": "/get-involved/volunteer",
           "desc": "Volunteer, intern, or join the team"
         },
         {
           "label": "Our Publications",
-          "i18nKey": "ourPublications",
-          "descKey": "desc.ourPublications",
           "to": "/about/publications",
           "desc": "Annual reports, research & events"
         }
@@ -52,19 +46,14 @@
     },
     {
       "label": "Education for Harmony",
-      "i18nKey": "educationForHarmony",
       "children": [
         {
           "label": "Ecosystem of Programs",
-          "i18nKey": "efhEcosystem",
-          "descKey": "desc.efhEcosystem",
           "to": "/education-for-harmony",
           "desc": "EHSA framework & community programs"
         },
         {
           "label": "Organise your MCCx",
-          "i18nKey": "mccx",
-          "descKey": "desc.mccx",
           "to": "/education-for-harmony/mccx",
           "desc": "Run a Model City Council"
         }
@@ -72,26 +61,19 @@
     },
     {
       "label": "Pramaan",
-      "i18nKey": "pramaan",
       "children": [
         {
           "label": "About Pramaan",
-          "i18nKey": "pramaanHome",
-          "descKey": "desc.pramaanHome",
           "to": "/pramaan",
           "desc": "Open-access ABL resource centre"
         },
         {
           "label": "Resource Centre",
-          "i18nKey": "ablResourceCenter",
-          "descKey": "desc.ablResourceCenter",
           "to": "/pramaan/resource-centre",
           "desc": "Browse ABL materials by grade & subject"
         },
         {
           "label": "Contribute",
-          "i18nKey": "ablContribute",
-          "descKey": "desc.ablContribute",
           "to": "/pramaan/contribute",
           "desc": "Share your teaching resources"
         }
@@ -99,12 +81,10 @@
     },
     {
       "label": "THRIvE Research Centre",
-      "i18nKey": "thrive",
       "to": "/thrive"
     },
     {
       "label": "Contact Us",
-      "i18nKey": "contact",
       "to": "/contact"
     }
   ]

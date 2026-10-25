@@ -215,9 +215,16 @@ yet from GitHub's point of view.
 
 ## Step 11 — Verify on the Live Site
 
-1. Wait for the commit from Step 10 to finish deploying (check the
-   **"Deploy to GitHub Pages"** workflow also went green — it runs
-   automatically after the sync commit).
+1. Check whether the commit from Step 10 triggered a new
+   **"Deploy to GitHub Pages"** run in the **Actions** tab (that workflow
+   starts on pushes to `main`) and wait for it to go green.
+   A push made with the default `GITHUB_TOKEN` does not start other workflows
+   (checked in this repo: the June 2026 sync commits started no run), so the
+   sync workflow's last step starts the deploy itself (`gh workflow run
+   deploy.yml`, enabled by `actions: write`). If a sync commit appears but no
+   deploy run follows, start one by hand: **Actions → Deploy to GitHub Pages →
+   Run workflow**. Until a deploy has run, the live site will not show the new
+   thumbnails. (This step was added 2026-10-26 and has not yet run in GitHub.)
 2. Open the live Resource Center page.
 3. Resource cards should now show real photos instead of the light-blue
    placeholder icon.
@@ -255,6 +262,8 @@ Saving alone never updates what the live Web App actually serves.
 ---
 
 ## Monitoring & Troubleshooting
+
+> **What the workflow does (checked against `.github/workflows/sync-abl-thumbnails.yml`, 2026-10-25):** it is named **Sync ABL Thumbnails** and runs on a `repository_dispatch` event of type `abl-content-changed` (sent by `onSheetChange`), on a daily schedule (`0 2 * * *`, i.e. 02:00 UTC), and on manual **Run workflow**. It runs `npm run content:sync-abl-thumbnails` with the `VITE_ABL_API_URL` and `ABL_SYNC_TOKEN` repository secrets, and only if something changed commits `public/assets/images/abl` and `src/data/abl-thumbnails-manifest.json` as `github-actions[bot]` with the message `chore(abl-sync): update resource thumbnails`.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|

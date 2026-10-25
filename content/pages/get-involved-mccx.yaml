@@ -1,4 +1,5 @@
 meta:
+  breadcrumbName: "Organise an MCCx"
   badge: "Get Involved"
   title: "Organise Your MCCx"
   tagline: "Bring Model City Council to your community."
@@ -10,7 +11,7 @@ whatIs:
   body1: "Model City Council (MCC) is a public engagement event that puts young people in the role of city councillors — debating real civic issues, proposing sustainable solutions, and experiencing democratic participation first-hand."
   body2: "Want to organise an MCC event at your school, college, or organisation? Get in touch with us to learn how."
   ctaLabel: "Get in Touch"
-  ctaHref: "mailto:info@tideinternational.org?subject=MCCx Organisation Enquiry"
+  ctaHref: "mailto:tidefoundation@gmail.com?subject=MCCx Organisation Enquiry"
   photos:
     - src: "/assets/images/projects-mcc/mccx-2025-au.jpg"
       label: "Ahmedabad University 2025"

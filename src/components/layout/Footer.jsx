@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { Mail, Phone, Heart } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
 import { FacebookIcon, InstagramIcon, LinkedinIcon } from '../ui/SocialIcons'
 import footerData from '../../data/footer.json'
 import contactData from '../../data/contact.json'
@@ -12,7 +11,6 @@ const SOCIAL_ICONS = {
 }
 
 export default function Footer() {
-  const { t } = useTranslation()
 
   return (
     <footer role="contentinfo" className="bg-navy text-white relative overflow-hidden">
@@ -26,22 +24,22 @@ export default function Footer() {
       <div className="relative max-w-7xl mx-auto px-4 md:px-8 lg:px-16 pt-16 pb-10 md:pt-20 md:pb-12">
 
         {/* ── Main grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-12 lg:gap-8">
 
-          {/* Brand col (2 cols wide) */}
-          <div className="lg:col-span-2">
+          {/* Brand col: full row on tablet, 2 of 5 columns on desktop */}
+          <div className="md:col-span-3 lg:col-span-2">
             {/* Logo */}
             <Link to="/" className="inline-flex items-center gap-3 group mb-6 block">
               <div className="w-12 h-12 rounded-xl overflow-hidden shadow-float">
                 <img
-                  src={`${import.meta.env.BASE_URL}assets/images/shared/tide-logo.png`}
-                  alt="TIDE Foundation"
+                  src={`${import.meta.env.BASE_URL}${footerData.logo}`}
+                  alt={footerData.logoAlt}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <div>
-                <div className="font-display font-bold text-white text-xl leading-none">TIDE</div>
-                <div className="font-body text-white/50 text-xs mt-0.5 tracking-wide">Foundation</div>
+                <div className="font-display font-bold text-white text-xl leading-none">{footerData.brandName}</div>
+                <div className="font-body text-white/50 text-xs mt-0.5 tracking-wide">{footerData.brandSuffix}</div>
               </div>
             </Link>
 
@@ -55,7 +53,7 @@ export default function Footer() {
                 const Icon = SOCIAL_ICONS[platform]
                 return (
                   <a key={platform} href={href} target="_blank" rel="noopener noreferrer"
-                    aria-label={`Visit TIDE on ${platform.charAt(0).toUpperCase() + platform.slice(1)}`}
+                    aria-label={footerData.socialAriaLabel.replace('{platform}', platform.charAt(0).toUpperCase() + platform.slice(1))}
                     className="w-9 h-9 rounded-full bg-white/8 border border-white/10 hover:bg-primary hover:border-primary flex items-center justify-center transition-all duration-200 hover:scale-110"
                   >
                     <Icon className="w-4 h-4" />
@@ -85,13 +83,13 @@ export default function Footer() {
               to="/get-involved/donate"
               className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-body font-semibold rounded-full gradient-accent text-tide-text shadow-sm hover:shadow-glow-amber hover:scale-[1.03] transition-all duration-200"
             >
-              <Heart className="w-3.5 h-3.5" /> {t('common.supportWork', footerData.supportWork)}
+              <Heart className="w-3.5 h-3.5" /> {footerData.supportWork}
             </Link>
           </div>
 
           {/* Nav columns from data */}
           {footerData.columns.map(col => (
-            <nav key={col.title} aria-label={`Footer navigation: ${col.i18nKey ? t(`footer.columns.${col.i18nKey}`, col.title) : col.title}`}>
+            <nav key={col.title} aria-label={footerData.columnNavAriaLabel.replace('{title}', col.title)}>
               {/* Not a heading: the footer is reachable as a set of <nav>
                   landmarks (each with its own aria-label above), giving
                   screen reader users the same "jump to this group"
@@ -101,14 +99,14 @@ export default function Footer() {
                   heading-order audit — a shared global footer can't know
                   what level is "next" on every page that includes it). */}
               <p className="font-body text-[11px] font-bold text-white/50 uppercase tracking-[0.12em] mb-5">
-                {col.i18nKey ? t(`footer.columns.${col.i18nKey}`, col.title) : col.title}
+                {col.title}
               </p>
               <ul className="space-y-3">
                 {col.links.map(item => (
                   <li key={item.to}>
                     <Link to={item.to} className="font-body text-white/65 hover:text-white text-sm transition-colors duration-150 flex items-center gap-1.5 group">
                       <span className="w-1 h-1 rounded-full bg-white/25 group-hover:bg-accent transition-colors flex-shrink-0" />
-                      {item.i18nKey ? t(`nav.${item.i18nKey}`, item.label) : item.label}
+                      {item.label}
                     </Link>
                   </li>
                 ))}
@@ -121,10 +119,10 @@ export default function Footer() {
         {/* ── Bottom bar ── */}
         <div className="mt-14 pt-7 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-body text-white/55 text-xs">
-            {t('footer.rights', footerData.rights)}
+            {footerData.rights}
           </p>
           <p className="font-body text-white/55 text-xs flex items-center gap-1.5">
-            {t('footer.madeWithLove', footerData.madeWithLove)}
+            {footerData.madeWithLove}
           </p>
         </div>
       </div>

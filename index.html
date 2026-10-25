@@ -23,19 +23,18 @@
          deduplicated across the static/Helmet boundary) -- so a "fallback"
          here would in practice silently override every single page's real
          metadata with this one generic blurb. -->
-    <title>TIDE Foundation</title>
-    <meta name="theme-color" content="#3B7CB8" />
-    <meta property="og:site_name" content="TIDE Foundation" />
+    <!-- The page title and og:site_name are filled from site.yaml `name` by scripts/siteDataPlugin.js -->
+    <title></title>
+    <meta name="theme-color" content="#1E6BAA" />
+    <meta property="og:site_name" content="" />
     <!-- Google Fonts: Plus Jakarta Sans + Playfair Display + Noto scripts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@300;400;500;600;700&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@300;400;500;600;700&family=Noto+Serif+Gujarati:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"NGO","name":"TIDE Foundation","alternateName":"Together in Development and Education Foundation","url":"https://tideinternational.org","logo":"https://tideinternational.org/assets/images/shared/tide-logo.png","description":"TIDE Foundation is an NGO based in Ahmedabad, India working to bring sustainable, systemic change to India's education landscape since 2014. We have impacted 50,000+ lives across Gujarat.","foundingDate":"2014","foundingLocation":{"@type":"Place","name":"Ahmedabad, Gujarat, India"},"areaServed":{"@type":"Country","name":"India"},"contactPoint":{"@type":"ContactPoint","contactType":"general","email":"tidefoundation@gmail.com"},"keywords":"education NGO India, activity-based learning, holistic education, Gujarat education, TIDE Foundation"}
-</script>
-    <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"TIDE Foundation","url":"https://tideinternational.org","description":"Official website of TIDE Foundation — Together in Development and Education","inLanguage":["en","hi","gu"]}
-</script>
+    <!-- JSON-LD structured data (NGO + WebSite): generated at build/dev time
+         from content/shared/site.yaml by scripts/siteDataPlugin.js. Do not
+         hand-write it here — edit site.yaml instead. -->
+    <!-- site-jsonld -->
   </head>
   <body>
     <div id="root"></div>

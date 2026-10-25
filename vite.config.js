@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import siteDataPlugin from './scripts/siteDataPlugin.js'
 
 const base = process.env.GITHUB_ACTIONS ? '/tide-testing/' : '/'
 
@@ -10,7 +11,7 @@ if (process.env.GITHUB_ACTIONS && !process.env.VITE_ABL_API_URL) {
 
 export default defineConfig({
   base,
-  plugins: [react()],
+  plugins: [react(), siteDataPlugin()],
   build: {
     target: 'es2020',
     rollupOptions: {
@@ -19,7 +20,6 @@ export default defineConfig({
           if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) return 'vendor-react'
           if (id.includes('node_modules/react-router')) return 'vendor-router'
           if (id.includes('node_modules/framer-motion')) return 'vendor-motion'
-          if (id.includes('node_modules/i18next') || id.includes('node_modules/react-i18next')) return 'vendor-i18n'
           if (id.includes('node_modules/lucide-react') || id.includes('node_modules/react-helmet-async')) return 'vendor-ui'
         },
       },

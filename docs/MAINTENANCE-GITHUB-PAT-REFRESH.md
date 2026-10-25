@@ -25,7 +25,7 @@
 6. **Expiration:** pick a future date — GitHub will email a reminder again before this one expires too.
 7. **Resource owner:** your account.
 8. **Repository access:** **Only select repositories** → choose this one repository only.
-9. **Permissions → Repository permissions → Actions:** set to **Read and write**. Leave everything else as "No access."
+9. **Permissions → Repository permissions → Actions:** set to **Read and write**. Leave everything else as "No access." (This matches `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` Step 7. It has not been independently confirmed that this is the permission GitHub requires for triggering a workflow this way; if Step 3 below does not start a run, check the `onSheetChange` execution log in Apps Script for a non-204 response from GitHub and review the token's permissions.)
 10. Click **Generate token**, and **copy it immediately** — GitHub only shows it once.
 
 ---
@@ -41,7 +41,7 @@
 ## Step 3 — Test It
 
 1. Make a small, harmless edit in the Sheet (add a space to a description, then remove it, save).
-2. Within a couple of minutes, check the GitHub repo's **Actions** tab — a new "Sync ABL Thumbnails" run should appear automatically.
+2. Within a couple of minutes, check the GitHub repo's **Actions** tab — a new "Sync ABL Thumbnails" run should appear automatically. (Note: the workflow also runs by itself daily at 02:00 UTC regardless of the token, so a run that appears only once a day means the token or trigger is not working.)
 
 If it appears, you're done — no redeployment needed, no other steps. Only the Script Property changed.
 

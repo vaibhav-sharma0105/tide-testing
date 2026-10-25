@@ -2,7 +2,6 @@ import { useState, useCallback, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { SlidersHorizontal, X } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
 import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
@@ -12,6 +11,8 @@ import Pagination from '../../components/abl/Pagination'
 import { useABLData } from '../../hooks/useABLData'
 import { ABL_PAGE_SIZE } from '../../config/abl'
 import { applyResourceFilters } from '../../utils/filterResources'
+import pageData from '../../data/abl-resource-center.json'
+import site from '../../data/site.json'
 
 const DEFAULT_FILTERS = { search: '', type: '', grades: [], language: '', ownership: '' }
 
@@ -38,7 +39,6 @@ function filtersToSearch(filters, page) {
 }
 
 export default function AblResourceCenter() {
-  const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
   const gridRef  = useRef(null)
@@ -90,27 +90,20 @@ export default function AblResourceCenter() {
 
   return (
     <>
-      {/* Renders at the active /pramaan/resource-centre and a stranded
-          duplicate /resources/abl-resources/resource-center — canonical
-          always points at the active path. This page has no page-specific
-          YAML/JSON file (all its copy is inline t() fallback strings), so
-          the SEO title/description match that same pattern rather than
-          introducing a YAML file just for this. */}
       <SeoHead
-        title="Resource Centre — TIDE Foundation"
-        description="Browse and download 150+ free Activity-Based Learning resources for Grades 1-5 — worksheets, games, kits, and flashcards, filterable by type, grade, and language."
+        title={pageData.meta.seoTitle}
+        description={pageData.meta.seoDescription}
         path="/pramaan/resource-centre"
         breadcrumbs={[
-          { name: 'Home', path: '/' },
-          { name: 'Pramaan', path: '/pramaan' },
-          { name: 'Resource Centre', path: '/pramaan/resource-centre' },
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: site.breadcrumbs.pramaan, path: '/pramaan' },
+          { name: pageData.meta.breadcrumbName, path: '/pramaan/resource-centre' },
         ]}
       />
       <PageHero
-        badge="Resources · ABL"
-        title={t('abl.resourceCenter.title', 'Resource Center')}
-        subtitle={t('abl.resourceCenter.subtitle', 'Browse all Activity-Based Learning resources. Filter by type, grade, language, and more.')}
-        gradient
+        badge={pageData.meta.badge}
+        title={pageData.meta.title}
+        subtitle={pageData.meta.subtitle}
       />
       <AblNavBar />
 
@@ -138,7 +131,7 @@ export default function AblResourceCenter() {
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-tide-border bg-white text-sm font-body font-semibold text-tide-text hover:border-primary/40 transition-colors shadow-sm"
                 >
                   <SlidersHorizontal className="w-4 h-4" />
-                  {t('abl.resourceCenter.filterType', 'Filters')}
+                  {pageData.page.filtersButton}
                   {activeFilterCount > 0 && (
                     <span className="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center">
                       {activeFilterCount}
@@ -146,15 +139,15 @@ export default function AblResourceCenter() {
                   )}
                 </button>
                 <p className="text-sm font-body text-tide-muted">
-                  {loading ? t('abl.resourceCenter.loading', 'Loading…') : `${filtered.length} ${filtered.length !== 1 ? t('abl.resourceCenter.resources', 'resources') : t('abl.resourceCenter.resources', 'resource')}`}
+                  {loading ? pageData.page.loading : `${filtered.length} ${filtered.length !== 1 ? pageData.page.resourcePlural : pageData.page.resourceSingular}`}
                 </p>
               </div>
 
               {/* Desktop result count */}
               <p className="hidden lg:block text-sm font-body text-tide-muted mb-5">
                 {loading
-                  ? t('abl.resourceCenter.loading', 'Loading…')
-                  : `${t('abl.resourceCenter.showing', 'Showing')} ${pageItems.length} ${t('abl.pagination.of', 'of')} ${filtered.length} ${t('abl.resourceCenter.resources', 'resources')}`
+                  ? pageData.page.loading
+                  : `${pageData.page.showing} ${pageItems.length} ${pageData.page.of} ${filtered.length} ${pageData.page.resourcePlural}`
                 }
               </p>
 
@@ -198,10 +191,10 @@ export default function AblResourceCenter() {
               className="fixed left-0 top-0 bottom-0 w-80 max-w-[90vw] bg-tide-bg z-50 overflow-y-auto lg:hidden shadow-2xl"
             >
               <div className="flex items-center justify-between px-5 py-4 border-b border-tide-border bg-white">
-                <span className="font-display font-semibold text-tide-text">{t('abl.resourceCenter.filterType', 'Filters')}</span>
+                <span className="font-display font-semibold text-tide-text">{pageData.page.filtersButton}</span>
                 <button
                   onClick={() => setMobileFiltersOpen(false)}
-                  aria-label="Close filters"
+                  aria-label={pageData.page.closeFiltersLabel}
                   className="w-8 h-8 rounded-lg flex items-center justify-center text-tide-muted hover:bg-tide-subtle hover:text-tide-text transition-colors"
                 >
                   <X className="w-4 h-4" />

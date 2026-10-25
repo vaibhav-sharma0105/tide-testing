@@ -8,7 +8,7 @@ export default function NotFound() {
   return (
     <>
       <Helmet>
-        <title>{`${data.badge} — TIDE Foundation`}</title>
+        <title>{data.seoTitleTemplate.replace('{badge}', () => data.badge)}</title>
         <meta name="robots" content="noindex" />
       </Helmet>
 

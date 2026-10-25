@@ -1,28 +1,21 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { useTranslation } from 'react-i18next'
 import SeoHead from '../../components/ui/SeoHead'
 import { FileText, Video, Image, Download, ExternalLink } from 'lucide-react'
 import PageHero from '../../components/ui/PageHero'
 import data from '../../data/about-publications.json'
-
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6, delay, ease: [0.4, 0, 0.2, 1] },
-})
+import site from '../../data/site.json'
+import { fadeUp } from '../../utils/motionPresets'
 
 const TYPE_ICON = { video: Video, photo: Image }
 
 export default function PublicationsCombined() {
-  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState('annualReports')
 
   const tabs = [
-    { key: 'annualReports', label: t('pubs.tabs.annualReports', data.tabs.annualReports) },
-    { key: 'events',        label: t('pubs.tabs.events',        data.tabs.events) },
-    { key: 'research',      label: t('pubs.tabs.research',      data.tabs.research) },
+    { key: 'annualReports', label: data.tabs.annualReports },
+    { key: 'events',        label: data.tabs.events },
+    { key: 'research',      label: data.tabs.research },
   ]
 
   return (
@@ -32,16 +25,15 @@ export default function PublicationsCombined() {
         description={data.meta.seoDescription}
         path="/about/publications"
         breadcrumbs={[
-          { name: 'Home', path: '/' },
-          { name: 'About Us' },
-          { name: 'Publications', path: '/about/publications' },
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: site.breadcrumbs.aboutUs },
+          { name: data.meta.breadcrumbName, path: '/about/publications' },
         ]}
       />
       <PageHero
         badge={data.meta.badge}
-        title={t('pubs.title', data.meta.title)}
-        subtitle={t('pubs.tagline', data.meta.tagline)}
-        gradient
+        title={data.meta.title}
+        subtitle={data.meta.tagline}
       />
 
       <section className="section-padding bg-tide-bg">
@@ -67,7 +59,7 @@ export default function PublicationsCombined() {
           {/* Annual Reports tab */}
           {activeTab === 'annualReports' && (
             <motion.div key="annualReports" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-              <p className="font-body text-tide-muted mb-8">{t('pubs.ar.desc', data.annualReports.description)}</p>
+              <p className="font-body text-tide-muted mb-8">{data.annualReports.description}</p>
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {data.annualReports.items.map((item, i) => (
                   <motion.div key={item.year} {...fadeUp(i * 0.07)}
@@ -83,11 +75,11 @@ export default function PublicationsCombined() {
                     {item.link ? (
                       <a href={item.link} target="_blank" rel="noopener noreferrer"
                         className="mt-auto inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-white text-xs font-body font-semibold hover:bg-primary/90 transition-colors w-fit">
-                        <Download className="w-3.5 h-3.5" /> {t('pubs.ar.download', 'Download')}
+                        <Download className="w-3.5 h-3.5" /> {data.labels.download}
                       </a>
                     ) : (
                       <span className="mt-auto inline-flex items-center gap-2 px-4 py-2 rounded-full bg-tide-border text-tide-mutedOnLight text-xs font-body font-semibold cursor-not-allowed w-fit">
-                        <Download className="w-3.5 h-3.5" /> {t('pubs.ar.comingSoon', 'Coming soon')}
+                        <Download className="w-3.5 h-3.5" /> {data.labels.comingSoon}
                       </span>
                     )}
                   </motion.div>
@@ -99,7 +91,7 @@ export default function PublicationsCombined() {
           {/* Public Events tab */}
           {activeTab === 'events' && (
             <motion.div key="events" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-              <p className="font-body text-tide-muted mb-8">{t('pubs.events.desc', data.events.description)}</p>
+              <p className="font-body text-tide-muted mb-8">{data.events.description}</p>
               <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {data.events.items.map((item, i) => {
                   const TypeIcon = TYPE_ICON[item.type] || FileText
@@ -119,11 +111,11 @@ export default function PublicationsCombined() {
                       {item.link ? (
                         <a href={item.link} target="_blank" rel="noopener noreferrer"
                           className="mt-auto inline-flex items-center gap-2 text-xs font-body font-semibold text-primary hover:underline w-fit">
-                          <ExternalLink className="w-3 h-3" /> {t('pubs.events.view', 'View')}
+                          <ExternalLink className="w-3 h-3" /> {data.labels.view}
                         </a>
                       ) : (
                         <span className="mt-auto inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 text-amber-600 text-[10px] font-body font-bold uppercase tracking-wider w-fit">
-                          {t('pubs.events.comingSoon', 'Coming soon')}
+                          {data.labels.comingSoon}
                         </span>
                       )}
                     </motion.div>
@@ -136,11 +128,11 @@ export default function PublicationsCombined() {
           {/* Research tab */}
           {activeTab === 'research' && (
             <motion.div key="research" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-              <p className="font-body text-tide-muted mb-8">{t('pubs.research.desc', data.research.description)}</p>
+              <p className="font-body text-tide-muted mb-8">{data.research.description}</p>
               {data.research.items.length === 0 ? (
                 <div className="text-center py-20">
                   <FileText className="w-12 h-12 text-tide-border mx-auto mb-4" />
-                  <p className="font-body text-tide-muted">{t('pubs.research.placeholder', data.research.placeholder)}</p>
+                  <p className="font-body text-tide-muted">{data.research.placeholder}</p>
                 </div>
               ) : (
                 <div className="grid sm:grid-cols-2 gap-6">

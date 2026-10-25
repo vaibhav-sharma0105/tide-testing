@@ -1,0 +1,9 @@
+{
+  "lightbox": {
+    "viewerLabel": "Image viewer",
+    "close": "Close",
+    "previous": "Previous image",
+    "next": "Next image",
+    "goTo": "Go to image {n}"
+  }
+}

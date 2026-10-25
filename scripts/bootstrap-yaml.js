@@ -1,13 +1,12 @@
 // scripts/bootstrap-yaml.js
-// Bootstraps YAML content files from existing translation.json
+// Bootstraps starter YAML content files (navigation, footer, etc.)
 // Only creates files that don't already exist — safe to re-run.
 // Run: npm run content:bootstrap
 //
 // What it does:
-//   1. Reads src/i18n/locales/en/translation.json
-//   2. For each page, creates content/pages/<page>.yaml if it doesn't exist
-//   3. Embeds all i18n text into a `text:` section in the YAML
-//   4. Structured data (arrays, image paths) must be added manually or are
+//   1. For each shared/page file below, creates it under content/ if it
+//      doesn't already exist
+//   2. Structured data (arrays, image paths) must be added manually or are
 //      already present if you cloned the repo with content/ committed.
 
 import fs from 'fs'
@@ -38,67 +37,65 @@ console.log('\n🌱 Bootstrapping YAML content files...\n')
 
 // ── shared/navigation.yaml ──────────────────────────────────────────────────
 writeIfAbsent(path.join(SHARED_DIR, 'navigation.yaml'), `# Navigation — edit labels here to update all nav menus
-# DO NOT change the "to" paths — they are React Router routes
+# DO NOT change "to" paths — they are React Router routes
+
+donateLabel: "Donate"
+donateMobileLabel: "Donate to TIDE"
+
+# Brand lockup + accessibility labels (header)
+logo: "/assets/images/shared/tide-logo.png"
+logoAlt: "TIDE Foundation"
+brandName: "TIDE"
+brandSuffix: "Foundation"
+skipLink: "Skip to main content"
+ariaMain: "Main navigation"
+menuToggleLabel: "Toggle menu"
+
 items:
   - label: "About Us"
     children:
       - label: "Why TIDE?"
         to: "/about/why-tide"
         desc: "Our story, vision & values"
+      - label: "Past Programs"
+        to: "/about/past-programs"
+        desc: "Our history and earlier initiatives"
       - label: "Our Team"
         to: "/about/our-team"
         desc: "Meet the people behind TIDE"
       - label: "Our Partners"
         to: "/about/our-partners"
-        desc: "70+ school & university partners"
-      - label: "Our Results"
-        to: "/about/our-results"
-        desc: "Impact data & outcomes"
-
-  - label: "Projects"
-    children:
-      - label: "Block Educational Transformation Initiative"
-        to: "/projects/block-eti"
-        desc: "Systemic change in govt. schools"
-      - label: "BetterED"
-        to: "/projects/bettered"
-        desc: "Life skills in 12 urban slums"
-      - label: "EmpowerEd"
-        to: "/projects/empowered"
-        desc: "Teacher professional development"
-      - label: "CompletEd"
-        to: "/projects/completed"
-        desc: "Fellowships & civic education"
-      - label: "Other Projects"
-        to: "/projects/other-projects"
-        desc: "More initiatives & programs"
-
-  - label: "Get Involved"
-    children:
-      - label: "Volunteer / Intern With Us"
+        desc: "Our network of collaborators"
+      - label: "Get Involved"
         to: "/get-involved/volunteer"
-        desc: "Intern or volunteer with us"
-      - label: "Work With Us"
-        to: "/get-involved/work-with-us"
-        desc: "Full-time & part-time roles"
+        desc: "Volunteer, intern, or join the team"
+      - label: "Our Publications"
+        to: "/about/publications"
+        desc: "Annual reports, research & events"
+
+  - label: "Education for Harmony"
+    children:
+      - label: "Ecosystem of Programs"
+        to: "/education-for-harmony"
+        desc: "EHSA framework & community programs"
       - label: "Organise your MCCx"
-        to: "/get-involved/mccx"
-        desc: "Organise a Model City Council"
+        to: "/education-for-harmony/mccx"
+        desc: "Run a Model City Council"
+
+  - label: "Pramaan"
+    children:
+      - label: "About Pramaan"
+        to: "/pramaan"
+        desc: "Open-access ABL resource centre"
+      - label: "Resource Centre"
+        to: "/pramaan/resource-centre"
+        desc: "Browse ABL materials by grade & subject"
+      - label: "Contribute"
+        to: "/pramaan/contribute"
+        desc: "Share your teaching resources"
 
   - label: "THRIvE Research Centre"
     to: "/thrive"
-
-  - label: "Resources"
-    children:
-      - label: "Saral Kadam Materials"
-        to: "/resources/saral-kadam"
-        desc: "Foundational learning booklets"
-      - label: "Annual Reports"
-        to: "/resources/annual-reports"
-        desc: "Reports from 2014 to present"
-      - label: "Our Publications"
-        to: "/resources/publications"
-        desc: "Research papers & articles"
 
   - label: "Contact Us"
     to: "/contact"
@@ -108,7 +105,17 @@ items:
 writeIfAbsent(path.join(SHARED_DIR, 'footer.yaml'), `tagline: "Improving access to holistic education since 2014."
 together: "Together in Development and Education"
 rights: "© 2025 TIDE Foundation. All rights reserved."
+supportWork: "Support our work"
+madeWithLove: "Made with love for education in India"
+donateLabel: "Donate"
+donateMobileLabel: "Donate to TIDE"
 logo: "/assets/images/shared/tide-logo.png"
+logoAlt: "TIDE Foundation"
+brandName: "TIDE"
+brandSuffix: "Foundation"
+# {platform} = capitalised social platform name; {title} = column title
+socialAriaLabel: "Visit TIDE on {platform}"
+columnNavAriaLabel: "Footer navigation: {title}"
 
 columns:
   - title: "About"
@@ -119,21 +126,6 @@ columns:
         to: "/about/our-team"
       - label: "Our Partners"
         to: "/about/our-partners"
-      - label: "Our Results"
-        to: "/about/our-results"
-
-  - title: "Projects"
-    links:
-      - label: "Block ETI"
-        to: "/projects/block-eti"
-      - label: "BetterED"
-        to: "/projects/bettered"
-      - label: "EmpowerEd"
-        to: "/projects/empowered"
-      - label: "CompletEd"
-        to: "/projects/completed"
-      - label: "Other Projects"
-        to: "/projects/other-projects"
 
   - title: "Get Involved"
     links:
@@ -141,19 +133,13 @@ columns:
         to: "/get-involved/volunteer"
       - label: "Donate"
         to: "/get-involved/donate"
-      - label: "Work With Us"
-        to: "/get-involved/work-with-us"
       - label: "Organise MCCx"
-        to: "/get-involved/mccx"
+        to: "/education-for-harmony/mccx"
 
   - title: "Resources"
     links:
-      - label: "Saral Kadam"
-        to: "/resources/saral-kadam"
-      - label: "Annual Reports"
-        to: "/resources/annual-reports"
-      - label: "Publications"
-        to: "/resources/publications"
+      - label: "ABL Resources"
+        to: "/pramaan"
       - label: "THRIvE"
         to: "/thrive"
       - label: "Contact"

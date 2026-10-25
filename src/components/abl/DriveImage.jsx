@@ -22,6 +22,7 @@ export default function DriveImage({ id, alt, className = '', variant = 'thumb',
         <img
           src={src}
           alt={alt}
+          data-no-placeholder
           loading="lazy"
           onLoad={() => setLoaded(true)}
           onError={() => setErrored(true)}

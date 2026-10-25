@@ -1,4 +1,4 @@
-import { TAB_STYLE_MAP } from '../../config/abl'
+import { getTabStyle } from '../../config/abl'
 
 const COLOR_MAP = {
   blue:    'bg-blue-50    text-blue-700    border-blue-200',
@@ -9,7 +9,7 @@ const COLOR_MAP = {
 }
 
 export default function ResourceTypeBadge({ type }) {
-  const style    = TAB_STYLE_MAP[type] ?? TAB_STYLE_MAP._default
+  const style    = getTabStyle(type)
   const colorCls = COLOR_MAP[style.color] ?? COLOR_MAP.gray
   return (
     <span className={`inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full border ${colorCls}`}>

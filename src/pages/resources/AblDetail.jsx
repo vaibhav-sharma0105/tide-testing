@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, BookOpen, Expand, ExternalLink, MapPin, Layers, Play } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet-async'
 import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
@@ -16,9 +15,15 @@ import { useABLData } from '../../hooks/useABLData'
 import { useDelayedVisible } from '../../hooks/useDelayedVisible'
 import { getDrivePreviewUrl } from '../../utils/driveUtils'
 import { imgSrc } from '../../utils/imgSrc'
-import { TAB_STYLE_MAP } from '../../config/abl'
+import { GRADES, getTabStyle } from '../../config/abl'
+import data from '../../data/abl-detail.json'
+import rcData from '../../data/abl-resource-center.json'
+import site from '../../data/site.json'
 
-const GRADES = ['GRADE 1', 'GRADE 2', 'GRADE 3', 'GRADE 4', 'GRADE 5']
+
+// Fills {token} placeholders in a YAML template (function replacer so a value
+// containing "$&" etc. is inserted literally).
+const fill = (tpl, vars) => tpl.replace(/\{(\w+)\}/g, (_, k) => vars[k])
 
 const ACCENT_MAP = {
   blue:    { tile: 'bg-blue-50 text-blue-700 border-blue-200',       eyebrow: 'text-blue-700', solid: 'bg-blue-600' },
@@ -52,7 +57,7 @@ function CoverageMatrix({ chapters, accent, expanded, onToggle }) {
 
   return (
     <motion.div variants={fadeUp}>
-      <Eyebrow className={accent.eyebrow}>{'Grade'}</Eyebrow>
+      <Eyebrow className={accent.eyebrow}>{data.coverage.eyebrow}</Eyebrow>
       <div className="grid grid-cols-5 gap-2 mt-2">
         {rows.map(({ grade, list }, i) => {
           const has = list.length > 0
@@ -75,7 +80,7 @@ function CoverageMatrix({ chapters, accent, expanded, onToggle }) {
               >
                 {has ? list.length : '–'}
               </div>
-              <span className="text-xs font-body text-tide-muted">{grade.replace('GRADE ', 'G')}</span>
+              <span className="text-xs font-body text-tide-muted">{fill(data.coverage.shortGradeTemplate, { n: grade.replace('GRADE ', '') })}</span>
             </motion.button>
           )
         })}
@@ -92,8 +97,8 @@ function CoverageMatrix({ chapters, accent, expanded, onToggle }) {
             className="overflow-hidden"
           >
             <div className="mt-3 px-3 py-2.5 rounded-xl bg-tide-subtle text-sm font-body text-tide-muted">
-              <span className="font-semibold text-tide-text">{active.grade.replace('GRADE ', 'Grade ')}</span>
-              {' — '}{active.list.join(', ')}
+              <span className="font-semibold text-tide-text">{fill(data.coverage.gradeTemplate, { n: active.grade.replace('GRADE ', '') })}</span>
+              {data.coverage.chapterSeparator}{active.list.join(', ')}
             </div>
           </motion.div>
         )}
@@ -103,7 +108,6 @@ function CoverageMatrix({ chapters, accent, expanded, onToggle }) {
 }
 
 export default function AblDetail() {
-  const { t } = useTranslation()
   const { id } = useParams()
   const { allResources, loading, error } = useABLData()
   const [lightboxOpen, setLightboxOpen] = useState(false)
@@ -116,7 +120,7 @@ export default function AblDetail() {
       to="/pramaan/resource-centre"
       className="inline-flex items-center gap-2 text-sm font-body font-medium text-tide-muted hover:text-primary transition-colors mb-8"
     >
-      <ArrowLeft className="w-4 h-4" /> {t('abl.detail.back', 'Back to Resource Center')}
+      <ArrowLeft className="w-4 h-4" /> {data.backLabel}
     </Link>
   )
 
@@ -127,8 +131,8 @@ export default function AblDetail() {
       <>
         {/* Transient — no canonical/OG needed, just a non-empty <title> in
             case a crawler captures this exact instant. */}
-        <Helmet><title>Loading… — TIDE Pramaan</title></Helmet>
-        <PageHero badge="Resources · ABL" title={t('abl.resourceCenter.loading', 'Loading…')} />
+        <Helmet><title>{data.meta.loadingSeoTitle}</title></Helmet>
+        <PageHero badge={data.meta.badge} title={data.meta.loadingHeading} />
         <AblNavBar />
         <section className="section-padding bg-tide-bg min-h-[40vh] flex items-center justify-center">
           {showLoader && <CreativeLoader />}
@@ -143,18 +147,18 @@ export default function AblDetail() {
         {/* This specific resource id doesn't exist (or failed to load) —
             noindex so a stale/typo'd link never gets indexed as real content. */}
         <SeoHead
-          title="Resource Not Found — TIDE Pramaan"
-          description="This ABL resource could not be found. It may have been removed or the link may be incorrect."
+          title={data.notFound.seoTitle}
+          description={data.notFound.seoDescription}
           path={`/pramaan/resource-centre/${id}`}
           noindex
         />
-        <PageHero badge="Resources · ABL" title={t('abl.detail.notFound', 'Resource Not Found')} />
+        <PageHero badge={data.meta.badge} title={data.notFound.heading} />
         <AblNavBar />
         <section className="section-padding bg-tide-bg">
           <div className="max-w-5xl mx-auto text-center py-10">
             <BookOpen className="w-12 h-12 text-tide-muted/40 mx-auto mb-4" />
             <p className="font-body text-tide-muted mb-6">
-              {error ?? `No resource found with ID "${id}".`}
+              {error ?? fill(data.notFound.messageTemplate, { id })}
             </p>
             {backLink}
           </div>
@@ -165,24 +169,27 @@ export default function AblDetail() {
 
   const languages       = resource.language?.split(',').map(l => l.trim()).filter(Boolean) ?? []
   const videoPreviewUrl = getDrivePreviewUrl(resource.videoUrl)
-  const style           = TAB_STYLE_MAP[resource.type] ?? TAB_STYLE_MAP._default
+  const style           = getTabStyle(resource.type)
   const accent          = ACCENT_MAP[style.color] ?? ACCENT_MAP.gray
   const hasActions      = Boolean(resource.photoUrl || resource.referenceLink)
   const hasCoverage     = GRADES.some(g => (resource.chapters?.[g]?.length ?? 0) > 0)
   const gradesCovered   = GRADES.filter(g => (resource.chapters?.[g]?.length ?? 0) > 0).map(g => g.replace('GRADE ', ''))
   const seoDescription  = resource.description
-    || `${style.pluralLabel?.replace(/s$/, '') || resource.type} for ${gradesCovered.length ? `Grade ${gradesCovered.join(', ')}` : 'Indian classrooms'} — free Activity-Based Learning resource from TIDE Foundation's Pramaan library.`
+    || fill(data.meta.descriptionTemplate, {
+      type:   style.pluralLabel?.replace(/s$/, '') || resource.type,
+      grades: gradesCovered.length ? fill(data.meta.gradesTemplate, { grades: gradesCovered.join(', ') }) : data.meta.gradesFallback,
+    })
 
   return (
     <>
       <SeoHead
-        title={`${resource.name} — TIDE Pramaan`}
+        title={fill(data.meta.titleTemplate, { name: resource.name })}
         description={seoDescription}
         path={`/pramaan/resource-centre/${id}`}
         breadcrumbs={[
-          { name: 'Home', path: '/' },
-          { name: 'Pramaan', path: '/pramaan' },
-          { name: 'Resource Centre', path: '/pramaan/resource-centre' },
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: site.breadcrumbs.pramaan, path: '/pramaan' },
+          { name: site.breadcrumbs.resourceCentre, path: '/pramaan/resource-centre' },
           { name: resource.name, path: `/pramaan/resource-centre/${id}` },
         ]}
       />
@@ -199,14 +206,14 @@ export default function AblDetail() {
           ...(gradesCovered.length ? { educationalAlignment: gradesCovered.map(g => ({
             '@type': 'AlignmentObject',
             alignmentType: 'educationalLevel',
-            targetName: `Grade ${g}`,
+            targetName: fill(data.coverage.gradeTemplate, { n: g }),
           })) } : {}),
           ...(languages.length ? { inLanguage: languages } : {}),
           isAccessibleForFree: true,
-          provider: { '@type': 'NGO', name: 'TIDE Foundation', url: 'https://tideinternational.org' },
+          provider: { '@type': 'NGO', name: site.name, url: site.url },
         })}</script>
       </Helmet>
-      <PageHero badge={`Resources · ${resource.type}`} title={resource.name} />
+      <PageHero badge={fill(data.meta.badgeTemplate, { type: resource.type })} title={resource.name} />
       <AblNavBar />
 
       <section className="section-padding bg-tide-bg">
@@ -227,13 +234,13 @@ export default function AblDetail() {
                       onClick={() => resource.photoUrl && setLightboxOpen(true)}
                       disabled={!resource.photoUrl}
                       className={`group/img absolute inset-0 w-full h-full ${resource.photoUrl ? 'cursor-zoom-in' : 'cursor-default'}`}
-                      aria-label="View full image"
+                      aria-label={data.media.viewFullImageLabel}
                     >
                       {resource.photoUrl && (
                         <>
                           <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/15 transition-colors duration-300" />
                           <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-body font-medium">
-                            <Expand className="w-3.5 h-3.5" /> {t('abl.detail.viewLarger', 'Tap to view larger')}
+                            <Expand className="w-3.5 h-3.5" /> {data.media.viewLarger}
                           </div>
                         </>
                       )}
@@ -245,12 +252,12 @@ export default function AblDetail() {
                     <div className="flex gap-3 mt-4 flex-wrap">
                       {resource.photoUrl && (
                         <Button href={resource.photoUrl} external variant="accent">
-                          {t('abl.detail.openFull', 'Full Preview')} <ExternalLink className="w-4 h-4" />
+                          {data.media.fullPreview} <ExternalLink className="w-4 h-4" />
                         </Button>
                       )}
                       {resource.referenceLink && (
                         <Button href={resource.referenceLink} external variant="secondary">
-                          {t('abl.detail.sourceRef', 'Source Reference')}
+                          {data.media.sourceReference}
                         </Button>
                       )}
                     </div>
@@ -269,14 +276,14 @@ export default function AblDetail() {
                   <motion.div variants={fadeUp} className="flex flex-col sm:flex-row sm:items-start gap-4">
                     {resource.concept && (
                       <div className="flex-1 min-w-0">
-                        <Eyebrow className={accent.eyebrow}>{t('abl.detail.concept', 'Concept')}</Eyebrow>
+                        <Eyebrow className={accent.eyebrow}>{data.facts.concept}</Eyebrow>
                         <p className="font-display text-2xl font-semibold text-tide-text mt-1">{resource.concept}</p>
                       </div>
                     )}
 
                     {videoPreviewUrl && (
                       <div className="w-full sm:w-72 flex-shrink-0">
-                        <Eyebrow className="text-tide-muted mb-3">{t('abl.detail.explanationVideo', 'Explanation Video')}</Eyebrow>
+                        <Eyebrow className="text-tide-muted mb-3">{data.facts.explanationVideo}</Eyebrow>
                         <motion.div
                           className="group/video relative aspect-video rounded-xl overflow-hidden border-2 border-primary/25 shadow-card cursor-pointer bg-white"
                           whileHover={{ scale: 1.04, y: -3, boxShadow: '0 20px 40px -8px rgba(30,107,170,0.45)' }}
@@ -286,12 +293,12 @@ export default function AblDetail() {
                               unpredictably depending on the source video's own aspect ratio,
                               which we can't control or detect from a cross-origin embed. */}
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <img src={imgSrc('assets/images/shared/tide-logo.png')} alt="" className="w-28 h-28 opacity-70" />
+                            <img src={imgSrc(data.media.videoLogo)} alt="" className="w-28 h-28 opacity-70" />
                           </div>
                           <button
                             type="button"
                             onClick={() => setVideoOpen(true)}
-                            aria-label={t('abl.detail.playVideo', 'Play explanation video')}
+                            aria-label={data.facts.playVideoLabel}
                             className="absolute inset-0 w-full h-full flex items-center justify-center"
                           >
                             <span className="w-12 h-12 rounded-full bg-primary group-hover/video:bg-white border-2 border-transparent group-hover/video:border-primary/25 flex items-center justify-center shadow-lg transition-all duration-300 group-hover/video:scale-110">
@@ -314,7 +321,7 @@ export default function AblDetail() {
                     {resource.ownership && (
                       <span className="inline-flex items-center gap-1.5 text-sm font-body text-tide-muted">
                         <span className={`w-1.5 h-1.5 rounded-full ${resource.ownership === 'TIDE' ? 'bg-primary' : 'bg-tide-muted'}`} />
-                        {resource.ownership === 'TIDE' ? t('abl.resourceCard.tideResource', 'TIDE Resource') : t('abl.resourceCard.externalResource', 'External Resource')}
+                        {resource.ownership === 'TIDE' ? rcData.card.tideResource : rcData.card.externalResource}
                       </span>
                     )}
                   </motion.div>
@@ -340,7 +347,7 @@ export default function AblDetail() {
                     )}
                     {resource.quantity && (
                       <div className="flex items-center gap-2 text-sm font-body text-tide-muted">
-                        <Layers className="w-4 h-4 text-tide-muted/60" /> {resource.quantity} set(s)
+                        <Layers className="w-4 h-4 text-tide-muted/60" /> {fill(data.facts.setsTemplate, { quantity: resource.quantity })}
                       </div>
                     )}
                   </motion.div>
@@ -350,7 +357,7 @@ export default function AblDetail() {
 
             {resource.description && (
               <div className="mt-12 pt-8 border-t border-tide-border">
-                <Eyebrow className="text-tide-muted mb-3">{t('abl.detail.about', 'About This Resource')}</Eyebrow>
+                <Eyebrow className="text-tide-muted mb-3">{data.facts.about}</Eyebrow>
                 <p className="text-tide-text font-body leading-relaxed max-w-3xl">{resource.description}</p>
               </div>
             )}
@@ -366,7 +373,7 @@ export default function AblDetail() {
 
       <VideoLightbox
         src={videoOpen ? videoPreviewUrl : null}
-        title={t('abl.detail.explanationVideo', 'Explanation Video')}
+        title={data.facts.explanationVideo}
         onClose={() => setVideoOpen(false)}
       />
     </>

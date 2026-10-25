@@ -1,5 +1,6 @@
 {
   "badge": "Page Not Found",
+  "seoTitleTemplate": "{badge} — TIDE Foundation",
   "title": "This page wandered off",
   "message": "We couldn't find what you were looking for. It may have moved, or the link might have a typo.",
   "ctaLabel": "Back to Home",

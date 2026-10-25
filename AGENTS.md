@@ -21,8 +21,12 @@ One exception lives in the same directory but comes from a different pipeline: `
 npm install          # first time only
 npm run dev          # auto-syncs content, then starts dev server at localhost:5173
 npm run build        # auto-syncs content, then builds to dist/
-npm run content:validate   # check YAML syntax + verify all image paths exist
+npm run content:validate   # YAML syntax, leading-slash image paths, and email / lives-impacted consistency with site.yaml
+npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — NOT run in CI
+npm test             # Vitest unit/component tests (15 files, 189 tests) — NOT run in CI
 ```
+
+**Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
 
 ---
 
@@ -39,6 +43,7 @@ npm run content:validate   # check YAML syntax + verify all image paths exist
 9. [Common Tasks](#9-common-tasks)
 10. [Build & Deploy](#10-build--deploy)
 11. [Gotchas & Constraints](#11-gotchas--constraints)
+12. [Testing & Tooling](#12-testing--tooling)
 
 ---
 
@@ -46,7 +51,7 @@ npm run content:validate   # check YAML syntax + verify all image paths exist
 
 ### What this project is
 
-Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 24 pages. No server, no database. Built by Vite, deployed to GitHub Pages at `/tide-testing/`.
+Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 19 `<Route>`s in `src/App.jsx` (16 primary, 3 system) backed by 18 lazy-loaded page components. No server, no database. Built by Vite, deployed to GitHub Pages at `/tide-testing/`.
 
 ### Tech stack
 
@@ -54,60 +59,56 @@ Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 24 pag
 - **React Router v7** — `BrowserRouter` (clean URLs, e.g. `/pramaan/resource-centre`). GitHub Pages has no server-side rewrite, so deep links and hard reloads rely on `public/404.html` redirecting to `index.html`, which restores the original path via `history.replaceState`. **Do not assume HashRouter** — older notes in this repo's history said otherwise; `src/App.jsx` is the source of truth. A catch-all `<Route path="*" element={<NotFound />} />` is the last route in `src/App.jsx` — it only handles paths that don't match *any* route once React has mounted; the `404.html` trick above is a separate, earlier-stage mechanism for raw server-level 404s on a hard reload. `/404` is also a standalone, permanent route to the same `NotFound` page (so it can be linked/tested directly without relying on an actual unmatched path) — both must stay in sync if `NotFound` is ever replaced.
 - **Tailwind CSS v3** — utility classes, design tokens in `tailwind.config.js`
 - **Framer Motion 12** — page transitions, scroll animations
-- **i18next + react-i18next** — EN / HI / GU with localStorage persistence
+- **react-helmet-async** — head tags; every page except ComingSoon/NotFound renders the shared `SeoHead` component (which wraps `<Helmet>`) — don't hand-roll `<Helmet>` title/meta in new pages
 - **Lucide React** — icon library
+
+**English only.** The multilingual (EN/HI/GU) framework — i18next / react-i18next, `src/i18n/`, `content/locales/`, `LanguageSwitcher`, `src/config/features.js` (`MULTILINGUAL_ENABLED`) and the `t()` convention — has been removed; pages read the generated JSON directly (`data.x.y`). The old code is kept under the local git tag `archive/multilingual-framework` (commit `a4126d1`): `git show archive/multilingual-framework:<path>` reads a single file, `git checkout archive/multilingual-framework` browses the whole tree. `<html lang>` is a static `en` in `index.html`. Google Fonts still loads the Noto Devanagari and Gujarati families, and `font-display` / `font-body` keep them as glyph fallbacks (§3): Gujarati is needed because Pramaan resource data contains Gujarati titles; the owner chose to keep Devanagari as a fallback too.
 
 ### Data flows
 
 There are three distinct data pipelines:
 
-**1 — CMS pipeline (22 pages + header/footer)**
+**1 — CMS pipeline (16 page YAMLs + 9 shared YAMLs → 25 JSON files)**
 ```
-content/pages/*.yaml  ─┐
-content/shared/*.yaml ─┤  scripts/yaml-to-json.js  (predev/prebuild)
+content/pages/*.yaml  ─┐   (16: pages + the Pramaan screens)
+content/shared/*.yaml ─┤   (9: navigation, footer, common, ui, loader, error, not-found, coming-soon, site)
+                        │  scripts/yaml-to-json.js  (predev/prebuild)
                         ↓
-                     src/data/*.json  (auto-generated, never edit directly)
+                     src/data/*.json  (auto-generated, flat, git-tracked, never edit directly)
                         ↓  import data from '../../data/page.json'
-                     React page component (uses data.* as t() fallbacks)
+                     React page/component (reads data.* directly)
 ```
 
-**2 — Locale translation pipeline (HI / GU)**
+**2 — Site-data pipeline (`content/shared/site.yaml`)**
 ```
-content/locales/hi/*.yaml  →  deep-merge  →  src/i18n/locales/hi/translation.json
-content/locales/gu/*.yaml  →  deep-merge  →  src/i18n/locales/gu/translation.json
+content/shared/site.yaml ──→ src/data/site.json   (via yaml-to-json; SeoHead + pages read it: SITE_URL, logo, breadcrumb parents)
+content/shared/site.yaml ─┐
+content/shared/llms.txt  ─┴─ scripts/siteDataPlugin.js (Vite plugin, build + dev)
+                              ├─ index.html: two JSON-LD blocks (NGO, WebSite) at the `<!-- site-jsonld -->` marker, <title>, og:site_name
+                              └─ /llms.txt  (template tokens {{name}} {{url}} {{email}} {{livesImpacted}} {{gradeRange}} {{foundingYear}})
 ```
-Both run via the same `npm run content:sync` command.  
-`src/i18n/locales/en/translation.json` is intentionally empty — English always comes from YAML data.
+`siteDataPlugin.js` reads the YAML directly, so it doesn't depend on `content:sync` having run. `scripts/contentConsistency.js` + `validate-content.js` make `content:validate` fail if any email in `content/` differs from `site.yaml` `email`, or any lives-impacted total (a `NN,NNN+` figure next to "lives/people/impacted/changed" wording) differs from `livesImpacted`. `content/shared/llms.txt` is a template, not YAML, so `yaml-to-json.js` ignores it.
 
-**3 — ABL pipeline (4 pages)**
+**3 — ABL pipeline (resource data for 3 of the 4 Pramaan pages)**
 ```
 Google Sheet (private)
     ↓  Google Apps Script Web App (doGet, 15-min CacheService TTL)
 useABLData() hook
     ↓  sessionStorage cache (15-min TTL, key: abl_api_cache_v2)
-ABL page components
+AblHome / AblResourceCenter / AblDetail   (AblContribute is static and doesn't call the hook)
 ```
-
-### i18n Architecture
-
-Pattern used by every page component:
-```jsx
-import { useTranslation } from 'react-i18next'
-import data from '../data/page.json'
-
-const { t } = useTranslation()
-// EN users get data.hero.title (YAML source)
-// HI/GU users get translated string from translation.json (same YAML key)
-<h1>{t('home.hero.title', data.hero.title)}</h1>
-```
-
-- `MULTILINGUAL_ENABLED` flag in `src/config/features.js` gates the language switcher
-- ABL pages never show the language switcher (content rows stay English)
-- When `MULTILINGUAL_ENABLED = false`: switcher is hidden, localStorage key is cleared, site renders EN only
+Separately, a thumbnail sync (GitHub Actions) commits WebP images + `abl-thumbnails-manifest.json` — see §8.
 
 ### Routing
 
-All 24 routes registered in `src/App.jsx`. `BrowserRouter` wraps everything — clean URLs, no `#`. `Layout` (Header + Footer) wraps every route.
+`src/App.jsx` registers 19 `<Route>`s. `BrowserRouter` (`basename={import.meta.env.BASE_URL}`) wraps everything — clean URLs, no `#`. `Layout` (skip link + Header + Footer) wraps every route; each page chunk is `lazy()`-loaded behind a `Suspense` fallback that shows `CreativeLoader` only after 200 ms (`useDelayedVisible`). `src/components/ErrorBoundary.jsx` wraps the whole app (outside the Router and `HelmetProvider`): on a render crash it shows a friendly screen (heading/body/button labels from `content/shared/error.yaml`, a reload button and a plain `<a>` home link) and logs the error to the console; the error message and stack are rendered only when `import.meta.env.DEV`. `MotionConfig reducedMotion="user"` makes all Framer animations respect the OS setting.
+
+| Group | Count | Routes |
+|---|---|---|
+| Primary | 16 | `/`, `/about/{why-tide,past-programs,our-team,our-partners,publications}`, `/education-for-harmony`, `/education-for-harmony/mccx`, `/pramaan`, `/pramaan/resource-centre`, `/pramaan/resource-centre/:id`, `/pramaan/contribute`, `/get-involved/{volunteer,donate}`, `/thrive`, `/contact` |
+| System | 3 | `/coming-soon`, `/404`, `*` (the last two both render `NotFound`) |
+
+The 16 routes that predated the restructure (`/about/our-results`, `/projects/*`, `/get-involved/{work-with-us,mccx}`, `/resources/*`) were **removed outright** by owner decision, with no redirects: their pages, YAMLs and generated JSON are gone, and those URLs now fall through to `*` and render `NotFound`. `src/test/routing/removedRoutes.test.jsx` renders the real `<App />` at each removed path and asserts the NotFound page (plus a control that a live route does not). `OrganizeMCCx` is served only at `/education-for-harmony/mccx`. `git checkout a4126d1 -- <path>` recovers the old files.
 
 ---
 
@@ -119,128 +120,133 @@ tide-new/
 ├── CLAUDE.md              ← project overview and quick reference
 ├── AGENTS.md              ← this document — full technical reference
 ├── CONTENT-GUIDE.md       ← non-technical guide for content editors
-├── vite.config.js         ← base path: '/tide-testing/' on GITHUB_ACTIONS, '/' locally
+├── README.md · WHATS-NEXT.md · CONTENT-MANAGEMENT-PLAN.md  ← other root docs (check each file's own status line)
+├── vite.config.js         ← base path: '/tide-testing/' on GITHUB_ACTIONS, '/' locally; manualChunks; registers siteDataPlugin
+├── vitest.config.js       ← jsdom, setup file, include src/test/**
+├── playwright.config.js   ← e2e: chromium, runs/reuses `npm run dev` on :5173
+├── eslint.config.js       ← flat config; react/jsx-no-literals CMS guard for pages + components
 ├── tailwind.config.js     ← all design tokens (colours, fonts, shadows, animations)
-├── index.html             ← single HTML entry point
+├── postcss.config.js
+├── index.html             ← single HTML entry: SPA-redirect restorer, static head, CSP, Google Fonts; <title>, og:site_name and JSON-LD are filled in by siteDataPlugin
 ├── package.json           ← deps + scripts (predev/prebuild auto-sync YAML)
 ├── .env.example           ← documents required env vars (committed; no real values)
 │
 ├── content/               ← EDIT THIS — canonical content source
-│   ├── pages/             ← one .yaml per CMS page (22 files including abl-home, abl-contribute)
-│   ├── shared/
-│   │   ├── navigation.yaml  ← site nav (Header reads navigation.json)
-│   │   └── footer.yaml      ← footer columns + social links
-│   └── locales/           ← HI/GU translations (auto-merged → translation.json)
-│       ├── hi/
-│       │   ├── shared.yaml  ← nav, common, footer, abl, lang, todo
-│       │   └── pages.yaml   ← all page-specific HI translations
-│       └── gu/
-│           ├── shared.yaml
-│           └── pages.yaml
+│   ├── pages/             ← 16 .yaml files, one per page/screen (incl. abl-home, abl-resource-center,
+│   │                        abl-detail, abl-contribute)
+│   └── shared/            ← 9 .yaml files + llms.txt template
+│       ├── navigation.yaml  ← header nav + logo/skip-link/aria labels (Header + Layout read navigation.json)
+│       ├── footer.yaml      ← footer columns + social links + copy
+│       ├── common.yaml      ← micro-copy reused across pages: clickToZoom, hoverForRole, hoverForBio, step
+│       ├── ui.yaml          ← Lightbox aria-labels (lightbox.* only)
+│       ├── loader.yaml      ← CreativeLoader rotating messages
+│       ├── error.yaml       ← ErrorBoundary crash screen text
+│       ├── not-found.yaml   ← NotFound page
+│       ├── coming-soon.yaml ← ComingSoon page defaults
+│       ├── site.yaml        ← site-wide facts: name, url, logo, placeholderImage, email, livesImpacted, gradeRange, breadcrumb parents, … (single source of truth)
+│       └── llms.txt         ← template (NOT YAML — the sync ignores it) rendered to /llms.txt by siteDataPlugin
 │
 ├── src/
-│   ├── App.jsx            ← BrowserRouter + all 24 routes + ErrorBoundary
-│   ├── main.jsx           ← React root, i18n init
+│   ├── App.jsx            ← BrowserRouter + 19 routes + ErrorBoundary + lazy() pages
+│   ├── main.jsx           ← React root; imports index.css; calls installImagePlaceholder() before rendering
 │   ├── index.css          ← Tailwind directives + global styles + section-padding
 │   │
 │   ├── components/
+│   │   ├── ErrorBoundary.jsx      ← root crash screen (error.yaml); message/stack only in DEV
 │   │   ├── layout/
-│   │   │   ├── Header.jsx     ← sticky nav, dropdown + flyout, mobile hamburger
+│   │   │   ├── Header.jsx     ← fixed nav (transparent → glass on scroll), dropdowns + flyouts, mobile hamburger
 │   │   │   ├── Footer.jsx     ← columns from footer.json + contact.json
-│   │   │   └── Layout.jsx     ← page wrapper with transition + scroll-to-top
+│   │   │   └── Layout.jsx     ← skip link, page transition (AnimatePresence keyed by pathname), scroll-to-top
 │   │   │
 │   │   ├── ui/
 │   │   │   ├── Button.jsx           ← polymorphic (Link/a/button), 5 variants
 │   │   │   ├── Card.jsx             ← motion-wrapped card with fade-up
-│   │   │   ├── Badge.jsx            ← pill label, 4 variants
 │   │   │   ├── SectionHeader.jsx    ← badge + h2 + subtitle block
-│   │   │   ├── PageHero.jsx         ← dark banner for inner pages
+│   │   │   ├── PageHero.jsx         ← dark banner + h1 for inner pages
+│   │   │   ├── SeoHead.jsx          ← title/description/canonical/OG/Twitter + BreadcrumbList JSON-LD
 │   │   │   ├── AnimatedCounter.jsx  ← scroll-triggered number animation
 │   │   │   ├── CreativeLoader.jsx   ← open book + growing sprout SVG; gate behind useDelayedVisible
 │   │   │   ├── Lightbox.jsx         ← full-screen image gallery with keyboard nav
-│   │   │   ├── LanguageSwitcher.jsx ← EN/HI/GU toggle with localStorage
-│   │   │   ├── SocialIcons.jsx      ← inline SVG: FB, IG, LinkedIn, WhatsApp
-│   │   │   └── TodoPlaceholder.jsx  ← amber banner for incomplete pages
+│   │   │   ├── LightboxGallery.jsx  ← click-to-zoom grid + its Lightbox (owns useLightbox + AnimatePresence)
+│   │   │   ├── ComingSoonGraphic.jsx ← /coming-soon illustration: block-drop springs, then endless ambient loops + random gust/nudge events; static under prefers-reduced-motion
+│   │   │   └── SocialIcons.jsx      ← inline SVG: Facebook, Instagram, LinkedIn
 │   │   │
 │   │   └── abl/
-│   │       ├── AblNavBar.jsx        ← sticky sub-nav for 3 ABL sections
+│   │       ├── AblNavBar.jsx        ← sticky sub-nav for the 3 Pramaan sections (TABS keyed by activeSlug)
 │   │       ├── ResourceCard.jsx     ← resource card (portrait image + metadata)
 │   │       ├── ResourceGrid.jsx     ← grid with skeleton/error/empty states
 │   │       ├── ResourceFilters.jsx  ← sidebar filters (search, type, grade, etc.)
 │   │       ├── Pagination.jsx       ← numbered pagination with ellipsis
 │   │       ├── DriveImage.jsx       ← self-hosted thumbnail (id + variant), shimmer + fallback
 │   │       ├── ResourceTypeBadge.jsx ← colour pill for resource type
-│   │       ├── ImageLightbox.jsx    ← single-image lightbox with spring animation
+│   │       ├── ImageLightbox.jsx    ← single-image lightbox (scale + fade)
 │   │       └── VideoLightbox.jsx    ← full-screen video overlay, mirrors ImageLightbox
 │   │
 │   ├── pages/
-│   │   ├── Home.jsx          ← hero, mission, impact counters, programs, gallery, CTA
-│   │   ├── Contact.jsx       ← form + info sidebar
-│   │   ├── THRIvE.jsx        ← THRIvE programme page
-│   │   ├── NotFound.jsx      ← reachable at /404 AND the catch-all (*); content/shared/not-found.yaml
-│   │   ├── ComingSoon.jsx    ← reachable at /coming-soon (also reusable as a template — drop it on any other route, props override content/shared/coming-soon.yaml)
+│   │   ├── Home.jsx               ← hero, mission, impact counters, journey, programs, Padlet, testimonial, CTA
+│   │   ├── Contact.jsx            ← mailto form + info sidebar
+│   │   ├── THRIvE.jsx             ← THRIvE programme page
+│   │   ├── EducationForHarmony.jsx ← /education-for-harmony
+│   │   ├── NotFound.jsx           ← reachable at /404 AND the catch-all (*); content/shared/not-found.yaml (Helmet noindex, not SeoHead)
+│   │   ├── ComingSoon.jsx         ← reachable at /coming-soon (also reusable as a template — drop it on any other route, props override content/shared/coming-soon.yaml; Helmet noindex, not SeoHead)
 │   │   ├── about/
 │   │   │   ├── WhyTide.jsx   ← who we are, vision, goals
+│   │   │   ├── PastPrograms.jsx
 │   │   │   ├── OurTeam.jsx   ← portrait cards + advisor cards
 │   │   │   ├── OurPartners.jsx ← logo gallery
-│   │   │   └── OurResults.jsx  ← impact metrics
-│   │   ├── projects/
-│   │   │   ├── BlockETI.jsx  ← TODO content (uses TodoPlaceholder)
-│   │   │   ├── BetterED.jsx
-│   │   │   ├── EmpowerEd.jsx
-│   │   │   ├── CompletEd.jsx
-│   │   │   ├── SdgDrives.jsx
-│   │   │   └── OtherProjects.jsx
+│   │   │   └── PublicationsCombined.jsx ← tabs: annual reports / events / research (/about/publications)
 │   │   ├── get-involved/
 │   │   │   ├── Volunteer.jsx
-│   │   │   ├── Donate.jsx        ← TODO content
-│   │   │   ├── WorkWithUs.jsx    ← TODO content
-│   │   │   └── OrganizeMCCx.jsx  ← TODO content
-│   │   └── resources/
-│   │       ├── SaralKadam.jsx
-│   │       ├── AnnualReports.jsx
-│   │       ├── Publications.jsx
+│   │   │   ├── Donate.jsx
+│   │   │   └── OrganizeMCCx.jsx  ← served at /education-for-harmony/mccx
+│   │   └── resources/            ← the Pramaan screens
 │   │       ├── AblHome.jsx          ← ABL landing: stats bar, type cards
 │   │       ├── AblResourceCenter.jsx ← filter + grid + pagination, URL param sync
-│   │       ├── AblDetail.jsx         ← single resource detail + lightbox
+│   │       ├── AblDetail.jsx         ← single resource detail + lightboxes
 │   │       └── AblContribute.jsx     ← static contribute page + form CTA
 │   │
 │   ├── hooks/
-│   │   ├── useScrollAnimation.js ← IntersectionObserver → [ref, isVisible]
-│   │   ├── useLightbox.js        ← gallery open/close/prev/next state
+│   │   ├── useScrollAnimation.js ← IntersectionObserver → [ref, isVisible] (only AnimatedCounter uses it)
+│   │   ├── useLightbox.js        ← gallery open/close/prev/next state — takes the image count
+│   │   ├── useModalBehavior.js   ← Escape-to-close + body scroll lock for overlays (Lightbox/ImageLightbox/VideoLightbox)
 │   │   ├── useABLData.js         ← ABL API fetch + sessionStorage cache
 │   │   ├── useDelayedVisible.js  ← gates a loading UI behind a threshold so fast loads never flash it
 │   │   └── useFocusTrap.js       ← modal focus management (trap Tab, focus on open, restore on close) — used by all 3 lightbox components
 │   │
 │   ├── config/
-│   │   └── abl.js                ← ABL_API_URL, cache TTL, TAB_STYLE_MAP
+│   │   └── abl.js                ← ABL_API_URL, CONTRIBUTE_FORM_URL, cache TTL, page size, TAB_STYLE_MAP, getTabStyle
 │   │
 │   ├── utils/
-│   │   ├── driveUtils.js         ← Drive preview/download link transforms (NOT thumbnails)
+│   │   ├── imgSrc.js             ← imgSrc(path): prefixes BASE_URL (NOT idempotent — see §11)
+│   │   ├── motionPresets.js      ← makeFadeUp(opts) / default fadeUp — shared scroll-in animation props
+│   │   ├── driveUtils.js         ← Drive preview link transform (NOT thumbnails)
+│   │   ├── imagePlaceholder.js   ← installImagePlaceholder(): global swap of failed <img> for the site placeholder (called in main.jsx)
 │   │   ├── ablThumbnails.js      ← resolves a resource id to its synced thumbnail path
 │   │   └── filterResources.js    ← applyResourceFilters(resources, filters) — pure fn, sorts result by name asc
 │   │
 │   ├── data/                     ← AUTO-GENERATED — never edit
-│   │   ├── *.json                ← 22 JSON files (20 pages + navigation + footer) — from yaml-to-json.js
+│   │   ├── *.json                ← 26 JSON files (16 pages + 9 shared + the thumbnail manifest) — page/shared files come from yaml-to-json.js; git-tracked
 │   │   └── abl-thumbnails-manifest.json  ← id → synced thumbnail paths — from scripts/sync-abl-thumbnails.js (separate pipeline, not content:sync)
 │   │
-│   ├── config/
-│   │   ├── abl.js                ← ABL_API_URL, cache TTL, TAB_STYLE_MAP
-│   │   └── features.js           ← MULTILINGUAL_ENABLED feature flag
-│   │
-│   └── i18n/
-│       ├── index.js              ← i18next init, fallbackLng: false, EN empty
-│       └── locales/
-│           ├── en/translation.json  ← intentionally empty — EN comes from YAML data
-│           ├── hi/translation.json  ← AUTO-GENERATED from content/locales/hi/*.yaml
-│           └── gu/translation.json  ← AUTO-GENERATED from content/locales/gu/*.yaml
+│   └── test/                     ← Vitest + Testing Library (see §12)
+│       ├── setup.js · utils/renderWithProviders.jsx
+│       └── components/ · hooks/ · utils/ · routing/
+│
+├── e2e/                          ← Playwright specs: home, navigation, pramaan
+│
+├── public/
+│   ├── 404.html                  ← GitHub Pages deep-link redirect (pairs with index.html's restorer)
+│   ├── robots.txt · sitemap.xml  ← hard-code https://tideinternational.org (there is no public/llms.txt — /llms.txt is generated, see siteDataPlugin)
+│   └── assets/                   ← images; assets/images/abl/ holds the synced ABL WebPs; assets/images/shared/ holds the logo, banner texture and placeholder.svg
 │
 ├── scripts/
 │   ├── yaml-to-json.js          ← YAML → JSON sync (predev/prebuild hook)
-│   ├── validate-content.js      ← YAML syntax + image path validation
-│   ├── bootstrap-yaml.js        ← one-time YAML skeleton generator
+│   ├── siteDataPlugin.js        ← Vite plugin (registered in vite.config.js): site.yaml → JSON-LD/<title>/og:site_name in index.html; renders llms.txt
+│   ├── contentConsistency.js    ← pure email / lives-impacted detection used by validate-content.js (unit-tested)
+│   ├── validate-content.js      ← YAML syntax + image path validation + site.yaml consistency (also run in CI)
+│   ├── bootstrap-yaml.js        ← writes starter shared/navigation.yaml + footer.yaml (mirroring the current ones) only if absent
 │   ├── sync-abl-thumbnails.js   ← downloads + resizes ABL thumbnails, diffs against the manifest
-│   └── a11y-audit.cjs           ← axe-core scan across every route (run manually: `node scripts/a11y-audit.cjs` against a running dev server on :5175). Scrolls the full page first so whileInView animations settle before scanning — don't shorten that wait, it was added after a confirmed false positive.
+│   └── a11y-audit.cjs           ← axe-core scan across every route (manual — see §12). Scrolls the full page first so whileInView animations settle before scanning — don't shorten that wait, it was added after a confirmed false positive.
 │
 ├── docs/
 │   ├── ABL-RESOURCE-LIBRARY-SPEC.md         ← full ABL spec + Apps Script code (source of truth for Code.gs)
@@ -249,10 +255,13 @@ tide-new/
 │   ├── MIGRATION-OVERVIEW.md                ← start here when handing the whole project to a new owner
 │   ├── MIGRATION-GOOGLE-SHEET-APPSCRIPT.md  ← moving Sheet + Apps Script to a new Google account
 │   ├── MIGRATION-GITHUB-REPOSITORY.md       ← transferring the GitHub repo to a new owner
-│   └── MAINTENANCE-GITHUB-PAT-REFRESH.md    ← short recurring task when the GitHub token expires
+│   ├── MAINTENANCE-GITHUB-PAT-REFRESH.md    ← short recurring task when the GitHub token expires
+│   ├── ARCHITECTURE.html · ARCHITECTURE-DATAFLOW.html  ← interactive system diagrams (standalone)
+│   └── specs/                               ← site-restructure-plan.md, stranded-pages-review.md (historical), multilingual-i18n-spec.md (historical — framework removed), etc.
 │
+├── .claude/skills/              ← agent skills: content-management.md, cms-integrity/, doc-sync/, sheet-integration/
 └── .github/workflows/
-    ├── deploy.yml                  ← build → upload dist/ → deploy to GitHub Pages
+    ├── deploy.yml                  ← build → upload dist/ → deploy to GitHub Pages (no lint/test step)
     └── sync-abl-thumbnails.yml     ← runs scripts/sync-abl-thumbnails.js on dispatch/cron/manual
 ```
 
@@ -272,7 +281,7 @@ tide-new/
 | `text-accent` / `bg-accent` | `#F59E0B` | **Backgrounds/dark-backdrop text only** — see accessibility note below |
 | `text-accent-deeper` | `#B45309` | Accent-colored **text or icons on a light background** (cream/white) |
 | `bg-accent-dark` | `#D97706` | Gradient buttons, hover states |
-| `bg-navy` | `#0D2137` | `PageHero` dark banner background |
+| `bg-navy` | `#0D2137` | Dark section/card backgrounds (Footer, EFH, WhyTide vision, Volunteer/THRIvE dark sections). **Not** `PageHero` — that banner is the literal `bg-[#1c314d]` |
 | `text-tide-text` | `#0D1F3C` | Body copy |
 | `text-tide-muted` | `#5A6A7E` | Secondary labels, captions — passes 4.5:1 on `tide-bg`/white, but NOT on `bg-primary-light` (4.49:1, borderline) |
 | `text-tide-mutedOnLight` | `#4D5C6F` | Same role as `tide-muted`, but for text sitting on `bg-primary-light` or `bg-tide-border` specifically |
@@ -280,7 +289,7 @@ tide-new/
 | `bg-tide-subtle` | `#F0EDE8` | Input fields, card inner areas |
 | `border-tide-border` | `#E2DDD7` | Card and input borders |
 
-Full token map (incl. `deeper`/all shade variants): `tailwind.config.js`. **This table was previously wrong** (e.g. listed `#3B7CB8` for primary when the actual value has been `#1E6BAA` — corrected 2026-06-21). If a future audit finds another mismatch, trust `tailwind.config.js`, not this table.
+Full token map (incl. `deeper`/all shade variants): `tailwind.config.js`. If this table ever disagrees with that file, trust `tailwind.config.js`. The `<meta name="theme-color">` in `index.html` is `#1E6BAA` (same as `primary`).
 
 **Accessibility note on `text-accent` (2026-06-22 audit):** `#F59E0B` is too light to use as foreground text/icon color on a light background — only 2.09:1 on `tide-bg`, 2.15:1 on white, failing even the relaxed 3:1 "large text" threshold. It works well (5.9–7.6:1) on dark backdrops (navy footer, dark hero overlays, `bg-navy` cards) precisely because it's light — use `text-accent-deeper` instead whenever accent-colored text/icons sit on a light background. Same logic applies to the `text-tide-muted` → `text-tide-mutedOnLight` swap on light-blue chip backgrounds. Don't pattern-match the wrong fix from a different background context — check what's actually behind the text first.
 
@@ -291,7 +300,11 @@ Full token map (incl. `deeper`/all shade variants): `tailwind.config.js`. **This
 | `font-display` | Playfair Display | Headings h1–h3, card names, section titles |
 | `font-body` | Plus Jakarta Sans | All body text, labels, inputs, buttons |
 
-For HI/GU languages, the fonts switch to Noto Serif Devanagari / Noto Serif Gujarati (headings) and Noto Sans variants (body) via CSS on `<html lang="hi">` / `<html lang="gu">`.
+`font-display` and `font-body` are single combined stacks in `tailwind.config.js` (Playfair/Plus Jakarta Sans first, then the Noto Devanagari and Gujarati families as glyph fallbacks), and `index.html` loads those Noto families from Google Fonts. They exist so glyphs that appear in data still render: Gujarati for the Gujarati titles in Pramaan resource data; the owner chose to keep Devanagari as a fallback too. Nothing switches fonts by language, there is no CSS keyed on `<html lang>`, and `lang` stays `en`.
+
+### Keyboard focus ring
+
+The global `:focus-visible` rule in `src/index.css` draws a 2px outline in the brand blue (`theme('colors.primary.DEFAULT')`, `#1E6BAA`) with a 2px offset, plus a 2px white `box-shadow` band, so the ring stays visible on the dark navy sections (brand blue alone is only about 2.9:1 there). A few components (e.g. `LightboxGallery` tiles) opt out with `focus:outline-none` and draw their own Tailwind `ring` instead.
 
 ### Shadows and spacing
 
@@ -299,23 +312,22 @@ For HI/GU languages, the fonts switch to Noto Serif Devanagari / Noto Serif Guja
 |---|---|
 | `shadow-card` | Default card elevation |
 | `shadow-card-hover` | Card on hover |
-| `shadow-nav` | Sticky header when scrolled |
-| `section-padding` | `py-16 md:py-24` (defined in `index.css`) |
+| `shadow-nav` | Fixed header when scrolled |
+| `section-padding` | `py-20 md:py-28 px-4 md:px-8 lg:px-16` (defined in `index.css`; `section-tight` is the smaller `py-14 md:py-20` variant) |
 
 Max content widths: `max-w-5xl` for text-heavy pages, `max-w-7xl` for grid pages.
 
 ### Scroll animation pattern
 
-All scroll-triggered animations use this pattern consistently:
+Page sections share the presets in `src/utils/motionPresets.js` instead of redefining a local `fadeUp`:
 ```jsx
-<motion.div
-  initial={{ opacity: 0, y: 24 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, margin: '-40px' }}
-  transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
->
+import { fadeUp, makeFadeUp } from '../utils/motionPresets'
+
+<motion.div {...fadeUp()} />            // default: y 24, 0.6s, viewport { once: true }
+<motion.div {...fadeUp(0.1)} />         // argument = delay (seconds); stagger with i * 0.08
+const fadeUp = makeFadeUp({ y: 20, duration: 0.55, margin: '-60px' })  // page-specific variant
 ```
-Stagger siblings: add `delay={index * 0.08}` to the transition prop.
+`makeFadeUp({ y = 24, duration = 0.6, margin })` returns `(delay = 0) => ({ initial, whileInView, viewport, transition })` with ease `[0.4, 0, 0.2, 1]`. `Card`, `SectionHeader` and a few one-off blocks still inline their own `initial`/`whileInView`/`viewport` props — same shape, `once: true`, ease `[0.4, 0, 0.2, 1]`. `useScrollAnimation` is only used by `AnimatedCounter`.
 
 ### Non-serialisable values (Tailwind + icons in YAML)
 
@@ -344,11 +356,13 @@ const COLOR_MAP = {
   variant="primary"         // primary | secondary | accent | ghost | white
   size="md"                 // sm | md | lg
   to="/internal/path"       // renders as <Link> (React Router)
-  href="https://external"   // renders as <a target="_blank">
-  external                  // adds rel="noopener noreferrer"
+  href="https://external"   // renders as <a>
+  external                  // with href: adds target="_blank" rel="noopener noreferrer"
   className="mt-4"
 >Label</Button>
 ```
+
+With neither `to` nor `href` it renders a `<button>`; extra props are spread onto the element. `href` alone does **not** open a new tab — pass `external` for that.
 
 ### PageHero
 
@@ -357,11 +371,29 @@ const COLOR_MAP = {
   badge="Section · Subsection"    // small label above the title
   title="Page Title"              // h1
   subtitle="Optional description"
-  gradient                        // adds colour gradient overlay
+>{/* optional children, rendered under the subtitle */}</PageHero>
+```
+
+Props are exactly `{ badge, title, subtitle, children }`. Background is the literal `bg-[#1c314d]` plus a texture image. There is no `gradient` prop (it used to be passed, and ignored, by 10 pages; those were removed) — don't add one. The header is fixed and transparent with white text over the hero, so inner pages need a `PageHero` (or an equivalent dark top section) first, before `<AblNavBar>` or any content.
+
+### SeoHead
+
+```jsx
+<SeoHead
+  title={data.meta.seoTitle}
+  description={data.meta.seoDescription}
+  path="/get-involved/volunteer"           // required; canonical = site.url (site.yaml) + path
+  breadcrumbs={[
+    { name: site.breadcrumbs.home, path: '/' },
+    { name: site.breadcrumbs.getInvolved },                        // no path → no `item` in the JSON-LD
+    { name: data.meta.breadcrumbName, path: '/get-involved/volunteer' },
+  ]}                                        // import site from '../../data/site.json'
+  noindex                                   // optional, default false
+  ogImagePath="/some/image.png"             // optional; appended to window.location.origin WITHOUT the base path
 />
 ```
 
-Always the first element on every inner page, before `<AblNavBar>` or any content.
+Every page except `ComingSoon` and `NotFound` (which use `<Helmet>` directly with `noindex`) renders `SeoHead`. It emits title, description, canonical, og:*, twitter:*, optional `robots noindex`, and a BreadcrumbList JSON-LD block (a breadcrumb without `path` omits `item`). `SITE_URL` and the default og:image (`site.logo` under `BASE_URL`) come from `site.json`. Breadcrumb names are not hardcoded: parent steps come from `content/shared/site.yaml` `breadcrumbs.*` and each page's own last step is `meta.breadcrumbName` in its YAML (`AblDetail` uses the resource name). Head tags are injected client-side only (no prerender); `index.html` has no static description/canonical, but its `<title>`, `og:site_name` and the NGO/WebSite JSON-LD are generated from `site.yaml` by `scripts/siteDataPlugin.js`.
 
 ### SectionHeader
 
@@ -372,38 +404,80 @@ Always the first element on every inner page, before `<AblNavBar>` or any conten
   subtitle="Description"
   center                  // text-center
   light                   // white text (for dark section backgrounds)
+  className=""
 />
 ```
+
+### Card
+
+`<Card hover delay={0} className="">` — motion fade-up wrapper with `rounded-2xl shadow-card`. It applies `bg-tide-surface` **unless** `className` contains the substring `bg-` (so any `bg-*` class you pass replaces the default).
 
 ### AnimatedCounter
 
 ```jsx
 <AnimatedCounter
-  value="40,000+"   // string — parses number + suffix automatically
+  value="50,500+"   // string — parses the digits + suffix automatically; renders locale-formatted (e.g. "50500+" → "50,500+")
   label="Students"
+  duration={2000}   // ms, default 2000
   light             // white text variant
+  numClassName=""   // extra classes on the number element
 />
 ```
 
+Shows `0` until it scrolls into view (via `useScrollAnimation`, threshold 0.3), then counts up.
+
 ### Lightbox (gallery — for non-ABL pages)
 
+`Lightbox` is a controlled, presentational component — the page owns the open/index state (usually through `useLightbox(count)`):
+
 ```jsx
+import { AnimatePresence } from 'framer-motion'
 import { useLightbox } from '../hooks/useLightbox'
 import Lightbox from '../components/ui/Lightbox'
 
-const lb = useLightbox()
+const images = [{ src: 'assets/photo.jpg', label: 'Caption' }]   // or plain strings
+const lb = useLightbox(images.length)        // count is REQUIRED
 // Open: lb.openLightbox(index)
 
-{lb.isLightboxOpen && (
-  <Lightbox
-    images={[{ src: 'assets/photo.jpg', alt: 'Description', caption: 'Optional' }]}
-    initialIndex={lb.lightboxIndex}
-    onClose={lb.closeLightbox}
-  />
-)}
+<AnimatePresence>
+  {lb.isLightboxOpen && (
+    <Lightbox
+      images={images}                         // (string | { src, alt?, label? })[]
+      currentIndex={lb.lightboxIndex}
+      onClose={lb.closeLightbox}
+      onPrev={lb.prevLightbox}
+      onNext={lb.nextLightbox}
+      onGoTo={lb.openLightbox}                // optional; without it, clicking a dot CLOSES the lightbox
+    />
+  )}
+</AnimatePresence>
 ```
 
-Pages with multiple galleries: create multiple `useLightbox()` instances with distinct variable names.
+The caption/alt is `item.alt || item.label`. `Lightbox` applies `imgSrc()` to every `src` itself — **do not pre-apply `imgSrc`** (see §11). Escape closes, ←/→ navigate, body scroll is locked (`useModalBehavior`), focus is trapped (`useFocusTrap`), and the dot strip shows for 2–20 images. Its aria-labels come from `content/shared/ui.yaml` (`lightbox.*`).
+
+### LightboxGallery (preferred for a click-to-zoom photo grid)
+
+Wraps the grid **and** its lightbox (owns `useLightbox`, `AnimatePresence`, `Lightbox`). Used by `Volunteer` and `THRIvE`:
+
+```jsx
+<LightboxGallery
+  images={data.gallery.images}             // [{ src, label }] — label is also the thumbnail alt
+  gridClassName="grid grid-cols-2 md:grid-cols-3 gap-3"
+  itemClassName="rounded-xl overflow-hidden aspect-square"   // leading classes on each button
+  ringClassName="focus-visible:ring-primary"                 // focus ring colour
+  spanClassName={(i) => (i === 0 ? 'col-span-2' : '')}       // optional per-tile trailing classes
+  itemMotion={(i) => fadeUp(i * 0.05)}                       // motion props per tile
+  hoverDuration={700}                                        // 500 | 700 (hover-zoom duration)
+>
+  {(grid) => (<section className="section-padding">…{grid}…</section>)}   // render-prop: place `grid` where it belongs
+</LightboxGallery>
+```
+
+The lightbox is rendered after whatever `children(grid)` returns, so it stays a sibling of the section. For multiple galleries on one page, use separate `useLightbox(count)` instances with distinct names.
+
+### SocialIcons
+
+`SocialIcons.jsx` exports `FacebookIcon`, `InstagramIcon` and `LinkedinIcon` (used by Footer + Contact).
 
 ### ImageLightbox (single image — ABL only)
 
@@ -417,7 +491,7 @@ const [open, setOpen] = useState(false)
 />
 ```
 
-Resolves `id` → `getAblThumbnail(id, 'full')` internally. Spring-animated scale + fade, ESC closes, backdrop click closes.
+Resolves `id` → `getAblThumbnail(id, 'full')` internally. Scale + fade (cubic-bezier ease, not a spring); Escape and backdrop click close it. Uses `useFocusTrap` + `useModalBehavior`. Its text comes from `abl-resource-center.yaml`.
 
 ### VideoLightbox (full-screen video overlay)
 
@@ -447,6 +521,10 @@ Same backdrop/close conventions as `ImageLightbox` (ESC, backdrop click, close b
 
 Container always `aspect-[3/4]` (portrait). Shows shimmer while loading, `<BookOpen>` gradient fallback if the resource has no photo *or* hasn't been synced yet (no manifest entry) — never a broken image icon. **`DriveImage` never talks to Google at runtime** — see "Thumbnail sync pipeline" in §8.
 
+### AblNavBar
+
+`<AblNavBar />` — no props. Three tabs (Home / Resource Centre / Contribute) defined in a module-level `TABS` array, each with a `to` (`/pramaan`, `/pramaan/resource-centre`, `/pramaan/contribute`) and an `activeSlug` (`home` | `resource-centre` | `contribute`); the active slug is derived from `pathname` (`/contribute`, `/resource-centre` or the legacy spelling `/resource-center`, which no longer has a route but is still matched in the code; it also works on the stranded tree) and each tab is keyed by it. `sticky top-[70px]` to sit under the 70px header. Labels come from `abl-home.yaml` (`nav.*`).
+
 ### ResourceFilters
 
 ```jsx
@@ -460,7 +538,7 @@ Container always `aspect-[3/4]` (portrait). Shows shimmer while loading, `<BookO
 />
 ```
 
-FilterState: `{ search: string, type: string, grades: string[], language: string, ownership: string }`
+FilterState: `{ search: string, type: string, grades: string[], language: string, ownership: string }`. The grade list is the single constant `GRADES` (Grade 1–5) in `src/config/abl.js`, imported by this file and by `AblDetail.jsx`; the grade range shown in text comes from `gradeRange` in `content/shared/site.yaml` (pages write `{gradeRange}`; `yaml-to-json.js` and `llms.txt` fill it in), and a unit test fails if it disagrees with `GRADES`. If grades change, edit `GRADES` and `gradeRange` together. Search matches resource `name` only.
 
 ### ResourceGrid
 
@@ -474,6 +552,10 @@ FilterState: `{ search: string, type: string, grades: string[], language: string
 />
 ```
 
+### ResourceCard / ResourceTypeBadge
+
+`<ResourceCard resource={r} />` (used by `ResourceGrid`) links to `/pramaan/resource-centre/${id}`. `<ResourceTypeBadge type="Worksheet" />` picks colour/label from `getTabStyle(type)`.
+
 ### Pagination
 
 ```jsx
@@ -485,6 +567,14 @@ FilterState: `{ search: string, type: string, grades: string[], language: string
 />
 ```
 
+Renders nothing when there's only one page.
+
+### Layout components
+
+- `Layout` — `{ children }`; skip link (text from `navigation.yaml` `skipLink`), `Header`, `AnimatePresence mode="wait"` around `motion.main` keyed by `pathname`, `Footer`; scrolls to top on pathname change (not on query-only changes). Does not move focus on navigation.
+- `Header` — no props; reads `navigation.json` (all labels, logo, aria strings). `position: fixed`, transparent with white text until `scrollY > 20`, then glass. Dropdown triggers are `<button>`s (aria-expanded/controls, Escape closes); `subItems` render as desktop flyouts / indented mobile lists. There is no language switcher. Keep `overflow-visible` on the dropdown wrapper (§11).
+- `Footer` — no props; reads `footer.json` + `contact.json`. Three link columns from `footer.yaml`: About (Why TIDE?, Our Team, Our Partners), Get Involved (Volunteer With Us, Donate, Organise MCCx → `/education-for-harmony/mccx`), Resources (ABL Resources → `/pramaan`, THRIvE, Contact).
+
 ---
 
 ## 5. Hook Reference
@@ -492,19 +582,47 @@ FilterState: `{ search: string, type: string, grades: string[], language: string
 ### useScrollAnimation
 
 ```js
-const [ref, isVisible] = useScrollAnimation({ threshold: 0.15, once: true })
+const [ref, isVisible] = useScrollAnimation({ threshold: 0.15, rootMargin: '0px 0px -60px 0px', once: true })
 // Attach ref to any DOM element
-// isVisible = true once the element enters the viewport (stays true with once: true)
+// isVisible flips to true when the element enters the viewport and never flips back
 ```
+
+Only `AnimatedCounter` uses it; all other scroll animation is Framer `whileInView`.
 
 ### useLightbox
 
 ```js
 const { isLightboxOpen, lightboxIndex, openLightbox, closeLightbox, prevLightbox, nextLightbox }
-  = useLightbox()
+  = useLightbox(count)          // count = number of images — REQUIRED
 // openLightbox(index) — open at a specific image
-// prevLightbox() / nextLightbox() — cycle (wraps around)
+// prevLightbox() / nextLightbox() — cycle with wrap-around (modulo count)
 ```
+
+`lightboxIndex` is `null` while closed. Calling it without `count` makes prev/next produce `NaN`. Most gallery pages should use `LightboxGallery` (§4), which calls this for you.
+
+### useModalBehavior
+
+```js
+useModalBehavior({ active = true, onClose, onKeyExtra, target = 'document' })
+```
+
+Shared overlay behaviour: while `active` is truthy, Escape calls `onClose`, any keydown is also forwarded to `onKeyExtra(e)` (e.g. Lightbox arrow keys), and `document.body` scrolling is locked; cleanup resets `body.style.overflow` to `''`. `target` (`'window'` | `'document'`) chooses where the listener lives (Lightbox uses `window`, the ABL overlays `document`). Keep `onClose`/`onKeyExtra` referentially stable (`useCallback`) — a new identity re-registers the listener. Used by `Lightbox`, `ImageLightbox`, `VideoLightbox`; pair it with `useFocusTrap`, declared first.
+
+### useFocusTrap
+
+```js
+const containerRef = useFocusTrap(active = true)   // attach containerRef to the dialog element
+```
+
+On activation stores `document.activeElement`, focuses the first focusable child (selector `button, a[href], iframe, [tabindex]:not([tabindex="-1"])`), traps Tab/Shift+Tab inside the container, and restores focus on deactivation/unmount. For a conditionally *mounted* dialog, the default `true` is right; for an always-mounted one pass the open condition.
+
+### useDelayedVisible
+
+```js
+const show = useDelayedVisible(active, delayMs = 200)
+```
+
+True only if `active` stays true for longer than `delayMs` — gates loading UI so fast loads never flash it (used for the route `Suspense` fallback and `AblDetail`).
 
 ### useABLData
 
@@ -514,32 +632,57 @@ const { data, allResources, loading, error, lastUpdated, refetch } = useABLData(
 
 | Return value | Type | Notes |
 |---|---|---|
-| `data` | `object \| null` | Full API response: `{ tabs, resources, meta, lastUpdated }` |
-| `allResources` | `ResourceObject[]` | Flat array — all resources across all tabs, each with `.tab` added |
+| `data` | `object \| null` | Full API response: `{ success, tabs, resources, meta, lastUpdated }` |
+| `allResources` | `ResourceObject[]` | Flat array — all resources across all tabs, each with `.tab` added (new array identity every render) |
 | `loading` | `boolean` | True during fetch or cache read |
-| `error` | `string \| null` | Human-readable error message |
+| `error` | `string \| null` | One of three fixed messages from `abl-home.yaml` `errors.*` (not configured / timeout / generic) |
 | `lastUpdated` | `string \| null` | ISO timestamp from API |
-| `refetch()` | `function` | Clears sessionStorage cache and re-fetches |
+| `refetch()` | `function` | Clears the sessionStorage cache and re-fetches |
 
-`allResources` is empty (`[]`) while `loading` is true.
+Behaviour (all in `src/hooks/useABLData.js`):
+- Cache: `sessionStorage` key `abl_api_cache_v2`, TTL `ABL_CACHE_TTL_MS` (15 min), checked on read; read and write are wrapped in try/catch and a cached entry that fails validation is ignored. **Bump the key (`_v3`) when the payload schema changes.**
+- Validation: the payload must have a truthy `success`, `tabs` as an array, and `resources` as a plain object whose per-tab values are arrays (or absent). Anything else is rejected as `malformed-response` *before* it is cached or stored, so `allResources` can't crash on a bad payload.
+- Requests: 10 s timeout via `AbortController` (timer always cleared); each `fetchData` takes a request id, aborts any in-flight request, and only the latest request may set state — unmount and refetch retire older responses. No retry/backoff.
+- Errors: failures are logged by kind only (`console.warn`, never the URL, message or body) and surfaced as a fixed message. No logging happens at import time; a missing `VITE_ABL_API_URL` warns when a fetch is attempted and sets the "not configured" error.
+- `allResources` is `[]` while `loading` is true. Each page that calls the hook fetches independently (only the session cache is shared). Currently called by `AblHome`, `AblResourceCenter`, `AblDetail`.
 
 ---
 
 ## 6. Utility Reference
+
+### imgSrc.js
+
+```js
+import { imgSrc } from '../utils/imgSrc'
+
+imgSrc('/assets/images/foo.jpg')   // → BASE_URL + 'assets/images/foo.jpg'
+imgSrc('assets/images/foo.jpg')    // → same
+imgSrc('https://…')                // → returned as-is (also data: URLs)
+imgSrc('')                         // → ''  (null/undefined too)
+```
+
+Use it for any image path that comes from YAML/JSON so it works on both `/` (dev) and `/tide-testing/` (GitHub Pages). **It is not idempotent** — see the gotcha in §11. Some files (Home, Donate, OurPartners, Header, Footer, PageHero, SeoHead) instead build `${import.meta.env.BASE_URL}${path}` by hand; that only works because `yaml-to-json.js` strips the leading `/` from `/assets/...` values.
+
+### imagePlaceholder.js
+
+`installImagePlaceholder(doc = document)` is called once in `src/main.jsx` before the app renders. It adds one capturing `error` listener on the document (image `error` events don't bubble) and, for any `<img>` that fails to load, drops `srcset` and sets `src` to the placeholder: `imgSrc(site.placeholderImage)`, where `placeholderImage` is `/assets/images/shared/placeholder.svg` in `content/shared/site.yaml`. An image opts out with the `data-no-placeholder` attribute (`abl/DriveImage.jsx` does, because it draws its own `<BookOpen>` fallback); the placeholder's own URL is skipped so a missing placeholder can't loop. It returns an uninstall function (used by `src/test/utils/imagePlaceholder.test.js`). Because it's global, don't add per-image `onError` handlers for the same purpose.
+
+### motionPresets.js
+
+`makeFadeUp({ y = 24, duration = 0.6, margin })` → `(delay = 0) => motionProps`, and the default-parameter instance `fadeUp`. Spread onto a `motion.*` element: `<motion.div {...fadeUp(0.1)}>`. See §3 "Scroll animation pattern".
 
 ### driveUtils.js
 
 All functions return `null` for null/invalid input — never throw. **No longer builds thumbnail URLs** (that was the old `getDriveThumbnail`/`getDriveFullImage`/`getDriveLightboxImage` trio, removed — see "Thumbnail sync pipeline" in §8). Only handles explicit outbound links now.
 
 ```js
-import { extractDriveFileId, getDrivePreviewUrl, getDriveDownloadUrl }
+import { extractDriveFileId, getDrivePreviewUrl }
   from '../utils/driveUtils'
 
 extractDriveFileId('https://drive.google.com/file/d/ABC123/view?usp=sharing')
 // → 'ABC123'
 
 getDrivePreviewUrl(url)       // → drive.google.com/file/d/{id}/preview (for iframe embed)
-getDriveDownloadUrl(url)      // → drive.google.com/uc?export=download&id={id}
 ```
 
 ### ablThumbnails.js
@@ -547,7 +690,7 @@ getDriveDownloadUrl(url)      // → drive.google.com/uc?export=download&id={id}
 ```js
 import { getAblThumbnail } from '../utils/ablThumbnails'
 
-getAblThumbnail(resource.id, 'thumb')   // → '/assets/images/abl/W1-thumb.webp' (base-path resolved)
+getAblThumbnail(resource.id, 'thumb')   // → imgSrc('assets/images/abl/W1-thumb.webp') (base-path resolved)
 getAblThumbnail(resource.id, 'full')    // → larger rendition for detail page / lightbox
 getAblThumbnail('UNKNOWN_ID')           // → null (no manifest entry — not yet synced, or no photo)
 ```
@@ -561,9 +704,14 @@ import { applyResourceFilters } from '../utils/filterResources'
 
 const filtered = applyResourceFilters(allResources, filters)
 // Pure function — returns new array, does not mutate input
-// Handles: type, grades[], language, ownership, search
+// Handles: type (tab or type match), grades[] (any-of), language (substring, case-insensitive),
+//          ownership ('TIDE' | 'external' = not TIDE), search (name substring, case-insensitive)
 // Always returns the result sorted by resource name, ascending (localeCompare)
 ```
+
+### config/abl.js
+
+Exports `ABL_API_URL`, `CONTRIBUTE_FORM_URL` (both from `VITE_*` env, default `''`), `ABL_CACHE_TTL_MS` (15 min), `ABL_PAGE_SIZE` (24), `TAB_STYLE_MAP` and `getTabStyle(tab)` (returns the map entry, falling back to `_default` for unknown tabs). See §8 for how to add a tab.
 
 ---
 
@@ -573,9 +721,22 @@ const filtered = applyResourceFilters(allResources, filters)
 
 ```bash
 npm run content:sync       # YAML → JSON (also runs automatically via predev/prebuild)
-npm run content:validate   # YAML syntax + image path checks
-npm run content:bootstrap  # Generate YAML skeletons from translation.json (safe to re-run)
+npm run content:validate   # YAML syntax + image path checks + site.yaml consistency (see below)
+npm run content:bootstrap  # Writes starter shared/navigation.yaml + footer.yaml ONLY if absent. Does not touch pages; rarely needed.
 ```
+
+### What `scripts/yaml-to-json.js` does
+
+- Walks `content/pages/**` and `content/shared/**` (`*.yml|*.yaml`) and writes `src/data/<basename>.json`. The output is **flat**: directory names are dropped, so two YAMLs with the same basename (e.g. one in `pages/`, one in `shared/`) silently overwrite each other. It is run from the repo root (paths resolve from `process.cwd()`).
+- Any string value starting with `/assets/` has its leading `/` stripped (so `/assets/images/x.jpg` → `assets/images/x.jpg`); other leading-slash values (routes, `mailto:`) are untouched.
+- Fails fast on invalid YAML (non-zero exit → blocks `dev`/`build`, and CI). It does **not** delete JSON for a YAML you removed (the stale file stays importable), and has no schema/required-field checks. Only `*.yml|*.yaml` are read, so `content/shared/llms.txt` is ignored.
+- `src/data/*.json` is committed, but regenerated on every dev/build — never hand-edit it.
+
+### What `scripts/validate-content.js` checks (and doesn't)
+
+Walks all of `content/`; a YAML parse error is an error (exit 1), a missing image is only a warning (exit 0). Images are checked only for values under the keys `photo, src, logo, coverImage, image, poster, img, heroPhoto, mainPhoto, diagramPhoto, backgroundImage, donorPoster` **and** only when the value starts with `/` and isn't http(s). So values without a leading slash, other keys (e.g. `photo1`/`photo2`), and image arrays of bare strings are not checked. It does not check hrefs/routes.
+
+**Consistency errors (exit 1):** via `scripts/contentConsistency.js`, every string in every YAML (plus the `llms.txt` template) is scanned. Any email address that differs from `site.yaml` `email` is an error, and so is any lives-impacted total (a `NN,NNN+` / `NNNNN+` figure in the same sentence as "lives / people / impacted / changed", or a bare figure whose sibling fields say so) that differs from `site.yaml` `livesImpacted`. Other metrics such as "15,000+ students" are deliberately not flagged. To change the email or the figure, edit `site.yaml` and then every page string that quotes it. The validator is not run by CI or any hook.
 
 ### File naming convention
 
@@ -585,25 +746,34 @@ content/shared/navigation.yaml      →   src/data/navigation.json
 content/shared/footer.yaml          →   src/data/footer.json
 ```
 
+Shared files (`content/shared/`): `navigation` (header menu, logo, skip-link/aria labels, Donate CTA labels), `footer`, `common` (micro-copy reused across pages: `clickToZoom`, `hoverForRole`, `hoverForBio`, `step`), `ui` (Lightbox aria-labels), `loader` (CreativeLoader messages), `error` (ErrorBoundary crash screen), `not-found`, `coming-soon`, `site` (site-wide facts — see §1 "Site-data pipeline"; `breadcrumbs.*` are the parent steps of every breadcrumb trail). Alongside them sits `llms.txt`, a template that is not YAML. The Pramaan screens are `abl-home`, `abl-resource-center`, `abl-detail`, `abl-contribute` in `content/pages/`.
+
 ### Import pattern in components
 
-Every page imports BOTH data AND useTranslation. Use `data.*` as the second (fallback) argument to `t()`:
+Pages import the JSON for their YAML and read it directly:
 
 ```jsx
 // Top-level page  (src/pages/PageName.jsx)
-import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet-async'
+import SeoHead from '../components/ui/SeoHead'
+import PageHero from '../components/ui/PageHero'
 import data from '../data/page-name.json'
+import site from '../data/site.json'           // breadcrumb parent names, site-wide facts
+import common from '../data/common.json'      // only if you use shared micro-copy
 
 export default function PageName() {
-  const { t } = useTranslation()
   return (
     <>
-      <Helmet>
-        <title>{data.meta.seoTitle}</title>
-        <meta name="description" content={data.meta.seoDescription} />
-      </Helmet>
-      <h1>{t('pagename.hero.title', data.meta.title)}</h1>
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/page-name"
+        breadcrumbs={[
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: data.meta.breadcrumbName, path: '/page-name' },
+        ]}
+      />
+      <PageHero badge={data.meta.badge} title={data.meta.title} />
+      <p>{common.clickToZoom}</p>
     </>
   )
 }
@@ -612,23 +782,29 @@ export default function PageName() {
 import data from '../../data/about-why-tide.json'
 
 // Layout components
-import navData from '../../data/navigation.json'   // Header.jsx
+import navData from '../../data/navigation.json'   // Header.jsx, Layout.jsx
 import footerData from '../../data/footer.json'    // Footer.jsx
+import ui from '../../data/ui.json'                // Lightbox.jsx
 ```
 
-**Never hardcode an English string as the t() fallback.** Every fallback must come from `data.*` so non-developers can update it via YAML.
+**Never type visible English text into JSX.** Every string must come from `data.*` / `common.*` / `ui.*` so non-developers can update it via YAML. Dynamic strings use `{token}` placeholders in YAML (`"Grade {n}"`, `"{name} — TIDE Pramaan"`) that code fills in with `.replace('{n}', …)` or a small `fill()` helper — see `abl-detail.yaml`, `abl-resource-center.yaml`, `ui.yaml` (`goTo`), `not-found.yaml` (`seoTitleTemplate`).
+
+### Lint guard (`react/jsx-no-literals`)
+
+`eslint.config.js` makes `react/jsx-no-literals` an **error** in `src/pages/**/*.jsx` and `src/components/**/*.jsx` (`noStrings: false`, `ignoreProps: true`; allowed bare strings are punctuation/glyphs: `— – · → ↗ … | / - : . , & + ( ) % " ' “ ” ’`). Text typed straight into JSX therefore fails `npm run lint`. What it does **not** catch: string-literal props and attributes (`aria-label`, `alt`, `title`, …) and text in `{'…'}` expressions — review those by hand. JSON-LD and breadcrumb names are no longer hardcoded (they come from `site.yaml` / `meta.breadcrumbName`). CI doesn't run lint, so run it locally. Also see `.claude/skills/cms-integrity/SKILL.md`.
 
 ### Image paths in YAML
 
-Images live in `public/assets/`. Reference them **without** a leading slash:
+Images live in `public/assets/`. Both spellings work because the sync script strips a leading `/` from `/assets/…` values, and the repo overwhelmingly uses the leading-slash form (≈165 values vs 5 without):
 ```yaml
-photo: assets/team/jane-smith.jpg    # ✓ correct
-photo: /assets/team/jane-smith.jpg   # ✗ wrong (script strips it but avoid it)
+photo: /assets/team/jane-smith.jpg   # dominant style; also the only form `content:validate` checks
+photo: assets/team/jane-smith.jpg    # also works, but is invisible to the validator
 ```
+The one hard rule: components must pass YAML image values through `imgSrc()` (or prefix `import.meta.env.BASE_URL`), never use them raw (§6, §11). `CONTENT-GUIDE.md` tells editors the leading-slash form.
 
 ### Navigation subItems (flyout menus)
 
-In `content/shared/navigation.yaml`, adding `subItems` to a dropdown child creates a right-side flyout in the desktop header — no JSX changes needed:
+In `content/shared/navigation.yaml`, adding `subItems` to a dropdown child creates a right-side flyout in the desktop header — no JSX changes needed (none are currently defined):
 
 ```yaml
 - label: "Feature Name"
@@ -649,14 +825,16 @@ On mobile, `subItems` render as an indented inline list under the parent item.
 
 ### Pages and routes
 
-Current nav paths use `/pramaan/*` (post-restructure, see `docs/specs/site-restructure-plan.md`). The original `/resources/abl-resources/*` paths still resolve as stranded routes (not in nav) — see `src/App.jsx`'s "Stranded routes" block.
+Pramaan uses only the `/pramaan/*` route tree. The former `/resources/abl-resources/*` duplicates were removed with the other 16 stranded routes on 2026-10-25; those URLs now render `NotFound`. All internal links point at `/pramaan/*`: `AblHome.jsx` (the Browse button and per-type cards), `ResourceCard.jsx`, `AblNavBar`, and `footer.yaml` (ABL Resources → `/pramaan`).
 
-| Route (current) | Stranded equivalent | Page | Notes |
-|---|---|---|---|
-| `/pramaan` | `/resources/abl-resources` | `AblHome` | Stats bar + type cards — dynamic from API |
-| `/pramaan/resource-centre` | `/resources/abl-resources/resource-center` | `AblResourceCenter` | Sidebar filters + grid + pagination |
-| `/pramaan/resource-centre/:id` | `/resources/abl-resources/resource-center/:id` | `AblDetail` | Single resource + lightbox |
-| `/pramaan/contribute` | `/resources/abl-resources/contribute` | `AblContribute` | Static 3-step + Google Form CTA |
+**Screen text (all YAML):** `abl-home.yaml` (landing, nav tab labels, error messages, per-type labels), `abl-resource-center.yaml` (page chrome, filters, grid, pagination, card text, SEO), `abl-detail.yaml` (detail page text, SEO/title templates with `{token}` placeholders, not-found state), `abl-contribute.yaml`. Only the *resource rows* (name, grades, links…) come live from the API.
+
+| Route | Page | Notes |
+|---|---|---|
+| `/pramaan` | `AblHome` | Stats bar + type cards — dynamic from API |
+| `/pramaan/resource-centre` | `AblResourceCenter` | Sidebar filters + grid + pagination |
+| `/pramaan/resource-centre/:id` | `AblDetail` | Single resource + lightbox |
+| `/pramaan/contribute` | `AblContribute` | Static 3-step + Google Form CTA |
 
 ### ResourceObject schema
 
@@ -685,24 +863,21 @@ Current nav paths use `/pramaan/*` (post-restructure, see `docs/specs/site-restr
 }
 ```
 
-Fields that may be null: `quantity`, `storageLocation`, `photoUrl`, `videoUrl`, `canvaUrl`, `description`, `referenceLink`.  
+Fields that may be null: `quantity`, `storageLocation`, `photoUrl`, `videoUrl`, `canvaUrl`, `description`, `referenceLink`. (`canvaUrl` is in the API payload but no component reads it.)
 `grades` and `chapters[grade]` are always arrays.
 
 ### Tab style configuration
 
-When a new sheet tab is added, add it to `src/config/abl.js`:
+Resource-type **colour** stays in code; the visible **labels** live in YAML. In `src/config/abl.js`:
 
 ```js
-export const TAB_STYLE_MAP = {
-  Worksheet:  { color: 'blue',    label: 'Worksheet',  pluralLabel: 'Worksheets'  },
-  Games:      { color: 'emerald', label: 'Game',       pluralLabel: 'Games'       },
-  Kits:       { color: 'violet',  label: 'Kit',        pluralLabel: 'Kits'        },
-  Flashcards: { color: 'amber',   label: 'Flashcard',  pluralLabel: 'Flashcards'  },
-  _default:   { color: 'gray',    label: 'Resource',   pluralLabel: 'Resources'   },
-}
+const TAB_COLORS = { Worksheet: 'blue', Games: 'emerald', Kits: 'violet', Flashcards: 'amber', _default: 'gray' }
+
+export const TAB_STYLE_MAP = /* { [tab]: { color, label, pluralLabel } } — labels read from abl-home.yaml */
+export const getTabStyle = (tab) => TAB_STYLE_MAP[tab] ?? TAB_STYLE_MAP._default
 ```
 
-Unknown tabs fall back to `_default` — no crash. `ResourceFilters`'s "Resource Type" options are sorted alphabetically by `pluralLabel` at render time (not by `TAB_STYLE_MAP` insertion order) — Grades and Language options were already ascending and need no such sort.
+`label` (singular, badges) and `pluralLabel` (type cards, Resource Centre filter list) come from `content/pages/abl-home.yaml` → `resourceTypes.labels.<Tab>`. Always use `getTabStyle(tab)` — unknown tabs fall back to `_default` — never index `TAB_STYLE_MAP` directly. `ResourceFilters`'s "Resource Type" options are sorted alphabetically by `pluralLabel` at render time (not by insertion order). **Adding a tab needs both**: a `TAB_COLORS` entry in `abl.js` *and* a `labels.<Tab>` entry in `abl-home.yaml` — `TAB_STYLE_MAP` is built by reading `ablHome.resourceTypes.labels[tab]` at module load, so a colour with no YAML label throws on import. (A Sheet tab that is in neither place still renders, using `_default`.)
 
 ### Thumbnail sync pipeline
 
@@ -734,17 +909,17 @@ VITE_ABL_CONTRIBUTE_FORM_URL=https://forms.gle/FORM_ID
 # → VITE_ABL_CONTRIBUTE_FORM_URL
 ```
 
-If `VITE_ABL_API_URL` is not set, the ABL pages show an error state (no crash). `VITE_ABL_CONTRIBUTE_FORM_URL` is optional — the Contribute page shows "coming soon" if it's the placeholder value.
+If `VITE_ABL_API_URL` is not set, the ABL pages show an error state (no crash). `VITE_ABL_CONTRIBUTE_FORM_URL` is optional — the Contribute page shows a disabled button with a "pending" note when it's empty or the `REPLACE_WITH_GOOGLE_FORM_URL` placeholder. `.env.example` (committed) documents both variables; `.env.development` / `.env.production` / `.env.local` are gitignored.
 
 ### URL param sync (AblResourceCenter)
 
-Filters and page number are synced to URL search params so filtered views are shareable and back-navigation works:
+Filters and page number are synced to URL search params so filtered views are shareable:
 
 ```
 ?type=Worksheet&grade=GRADE+1,GRADE+3&lang=Gujarati&own=TIDE&search=Addition&page=2
 ```
 
-On mount, params are read to initialise filter state. On filter change, `navigate({ search: ... }, { replace: true })` updates the URL without adding to history.
+On mount, params are read **once** to initialise filter state (via `useState` initialisers). On filter change, `navigate({ search: ... }, { replace: true })` updates the URL without adding to history — so there is no history entry per filter change, and editing the URL or pressing back while the page is mounted does not re-sync the filter state. Note `URLSearchParams` percent-encodes the comma in `grade=` (`GRADE+1%2CGRADE+3`); it decodes fine on read.
 
 ### Full spec
 
@@ -766,64 +941,69 @@ npm run content:sync
 
 ### Add a team member
 
-In `content/pages/about-our-team.yaml`, append to the appropriate `members:` list. Place the photo in `public/assets/images/about-our-team/` or wherever that page expects it.
+In `content/pages/about-our-team.yaml`, append to `coreTeam.members:` (name, suffix, role, bio, photo) or `advisoryBoard.members:`. Place the photo in `public/assets/images/about-our-team/` and reference it as `/assets/images/about-our-team/<file>`.
 
 ### Add an annual report
 
-In `content/pages/resources-annual-reports.yaml`, prepend to `reports:` with `highlight: true`. Set the previous latest to `highlight: false`.
+The live page (`/about/publications`) reads `annualReports.items` in `content/pages/about-publications.yaml` (`year`, `title`, `link`; an empty `link` is currently rendered as "coming soon").
 
 ### Add a new CMS page
 
 ```bash
 # 1. Create content file with all English text + meta
 cp content/pages/contact.yaml content/pages/new-page.yaml
-# Edit the YAML — include meta.seoTitle, meta.seoDescription
+# Edit the YAML — include meta.seoTitle, meta.seoDescription, meta.badge, meta.title, meta.breadcrumbName
 
 # 2. Sync → generates src/data/new-page.json
 npm run content:sync
 
-# 3. Create page component
-# src/pages/section/NewPage.jsx
-import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet-async'
+# 3. Create the page component — src/pages/section/NewPage.jsx
+import SeoHead from '../../components/ui/SeoHead'
+import PageHero from '../../components/ui/PageHero'
 import data from '../../data/new-page.json'
+import site from '../../data/site.json'
 export default function NewPage() {
-  const { t } = useTranslation()
   return (
     <>
-      <Helmet><title>{data.meta.seoTitle}</title></Helmet>
-      <PageHero badge={data.meta.badge} title={t('newpage.title', data.meta.title)} />
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/section/new-page"
+        breadcrumbs={[
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: data.meta.breadcrumbName, path: '/section/new-page' },
+        ]}
+      />
+      <PageHero badge={data.meta.badge} title={data.meta.title} />
+      {/* sections: <section className="section-padding bg-tide-bg"> … {data.field} … */}
     </>
   )
 }
 
-# 4. Register route — src/App.jsx
+# 4. Register a lazy route — src/App.jsx (above the "Functional / system pages" block)
 # 5. Add nav entry — content/shared/navigation.yaml
-# 6. Add HI translations — content/locales/hi/pages.yaml
-# 7. Add GU translations — content/locales/gu/pages.yaml
+# 6. Add the URL to public/sitemap.xml
 npm run content:sync
+npm run lint && npm test && npm run build
 ```
 
-### Complete a TODO-placeholder page
-
-Pages marked "TODO content" have `<TodoPlaceholder />` at the bottom and `{/* TODO: replace with real content */}` comments. To complete:
-
-1. Fill in real content in `content/pages/*.yaml`
-2. `npm run content:sync`
-3. Remove `<TodoPlaceholder />` from the page component
-4. Remove TODO comments
+Also add `meta.breadcrumbName` to the new YAML (and use a `site.breadcrumbs.*` parent step if the page sits under About / Get Involved / etc.). Remember: no typed English in JSX (see §7); run `npm run lint` to catch bare JSX text.
 
 ### Add a new ABL resource type (new sheet tab)
 
 1. Add the tab to the Google Sheet
-2. Add to `TAB_STYLE_MAP` in `src/config/abl.js`
-3. Done — `useABLData` and all ABL components handle new tabs dynamically
+2. Add its colour to `TAB_COLORS` in `src/config/abl.js` **and** its `label` / `pluralLabel` under `resourceTypes.labels.<Tab>` in `content/pages/abl-home.yaml` (the map reads the YAML at module load — a colour with no label throws)
+3. Done — `useABLData` and the ABL components handle new tabs dynamically; a tab in neither place still renders with the `_default` style
+
+### Add a lightbox photo grid
+
+Prefer `LightboxGallery` (§4) — every gallery page today (`Volunteer`, `THRIvE`) uses it, and nothing in `src/pages` calls `useLightbox` or `Lightbox` directly. Only hand-roll `useLightbox(count)` + `Lightbox` for a layout it can't express.
 
 ### Fix broken images
 
 ```bash
 npm run content:validate
-# Lists all YAML image keys whose paths don't exist under public/
+# Lists YAML image values (leading-slash paths under the known image keys) that don't exist under public/
 ```
 
 ---
@@ -842,22 +1022,30 @@ npm run dev
 
 ```bash
 npm run build
-# Output: dist/ — self-contained static site
+# Output: dist/ — self-contained static site (includes the generated llms.txt and the JSON-LD/<title> filled into index.html by siteDataPlugin)
 ```
 
-### GitHub Actions (`.github/workflows/deploy.yml`)
+Local builds use `base: '/'`. To reproduce the GitHub Pages path bugs (e.g. double `imgSrc`), build with `GITHUB_ACTIONS=true` and preview at `/tide-testing/`.
 
-Triggered by push to `main`:
-1. `npm ci`
-2. `npm run build` (with `VITE_ABL_API_URL` and `VITE_ABL_CONTRIBUTE_FORM_URL` from repository secrets)
+### GitHub Actions
+
+**`.github/workflows/deploy.yml`** — triggered by push to `main` and manual `workflow_dispatch`:
+1. `npm ci` (Node 20)
+2. `npm run build` with `GITHUB_ACTIONS=true` and `VITE_ABL_API_URL` / `VITE_ABL_CONTRIBUTE_FORM_URL` from repository secrets (`prebuild` runs the YAML sync first)
 3. Upload `dist/` as Pages artifact
 4. Deploy to GitHub Pages
+
+There is **no lint, unit-test, `content:validate` or e2e step**: only a YAML syntax error (or a Vite build error) fails the pipeline. A missing image or a lint violation will deploy. If `VITE_ABL_API_URL` is unset on CI, `vite.config.js` prints a warning and the deployed Pramaan pages show "API not configured".
+
+**`.github/workflows/sync-abl-thumbnails.yml`** — runs `scripts/sync-abl-thumbnails.js` on `repository_dispatch: abl-content-changed` (sent by the Apps Script on Sheet edits), a daily cron (`0 2 * * *`) and manual dispatch; commits changed WebPs + the manifest as `github-actions[bot]` (needs `ABL_SYNC_TOKEN`). Whether those bot commits re-trigger `deploy.yml` has not been verified here.
 
 Deployed URL: `https://<user>.github.io/tide-testing/`
 
 ### Base path
 
-`vite.config.js` sets `base: '/tide-testing/'` when `process.env.GITHUB_ACTIONS` is set, otherwise `/`. **Never hardcode `/tide-testing/` in source** — use relative paths or `import.meta.env.BASE_URL`.
+`vite.config.js` sets `base: '/tide-testing/'` when `process.env.GITHUB_ACTIONS` is set, otherwise `/` (the router's `basename` is `import.meta.env.BASE_URL`). **Never hardcode `/tide-testing/` in source** — use relative paths, `imgSrc()` or `import.meta.env.BASE_URL`.
+
+`public/404.html` hard-codes the project-site shape (it keeps one leading path segment, `/tide-testing/`); serving from a custom-domain root with `base: '/'` would need that script revisited.
 
 ---
 
@@ -878,6 +1066,13 @@ Plain `href` triggers a real page navigation instead of client-side routing — 
 
 GitHub Pages serves static files only — there's no server-side rewrite for deep routes. The site uses the standard `404.html`-redirect trick: a hard reload or direct link to e.g. `/resources/abl-resources/resource-center?type=Worksheet` gets served `public/404.html`, which redirects to `/?/resources/abl-resources/resource-center&type=Worksheet`; `index.html`'s inline script then decodes that back into the real path via `history.replaceState` before React mounts. **If you touch either script, verify the query-string case specifically** — a previous bug here joined the restored path and query with `&` instead of `?`, which silently produced a malformed URL (no error, just a blank page) for any route with query params on a hard reload.
 
+### `imgSrc()` is not idempotent
+
+`imgSrc(path)` prepends `BASE_URL` to anything that isn't already `http(s):`/`data:`. On GitHub Pages `BASE_URL` is `/tide-testing/`, so applying it to an already-resolved path yields `/tide-testing/tide-testing/...` (a 404). In dev `BASE_URL` is `/`, which hides the bug completely.
+
+- `Lightbox` (and `LightboxGallery`) apply `imgSrc` to every image `src` themselves — pass **raw YAML paths** into them.
+- To check a change: `GITHUB_ACTIONS=true npm run build && npm run preview`, then open `/tide-testing/…`.
+
 ### Tailwind dynamic class construction is forbidden
 
 Tailwind scans source files for complete class strings. Constructing them at runtime means the class won't be in the CSS bundle:
@@ -890,19 +1085,19 @@ const COLOR_MAP = { blue: 'bg-blue-50 text-blue-700', emerald: 'bg-emerald-50 te
 const cls = COLOR_MAP[color]
 ```
 
-This is why all colour maps in components use lookup tables.
+This is why all colour maps in components use lookup tables (`LightboxGallery`'s `HOVER_DURATION` map is the same idea). Tailwind's `content` globs only `index.html` and `src/**`.
 
 ### ABL data is fetched on every ABL page mount
 
-`useABLData()` is called independently on each of the four ABL pages. When a user deep-links to `AblDetail/:id`, the hook fetches from scratch (or reads cache). **Do not assume `allResources` is pre-populated.** Every ABL page component handles its own loading skeleton.
+`useABLData()` is called independently on three ABL pages: `AblHome`, `AblResourceCenter` and `AblDetail` (`AblContribute` doesn't use it). When a user deep-links to `AblDetail/:id`, the hook fetches from scratch (or reads cache). **Do not assume `allResources` is pre-populated.** Every ABL page component handles its own loading skeleton.
 
 ### sessionStorage cache key versioning
 
-The ABL cache key is `abl_api_cache_v2`. If the API response schema changes, bump it to `v3` in `useABLData.js`. Without bumping, existing users will get a stale cached payload with the old schema, causing runtime errors.
+The ABL cache key is `abl_api_cache_v2`. If the API response schema changes, bump it to `v3` in `useABLData.js`. A stale cached entry is also re-validated against the expected shape on read, but don't rely on that for schema changes.
 
 ### Header overflow for flyout menus
 
-The `Dropdown` component in `Header.jsx` uses `overflow-visible` so that flyout submenus can render outside the dropdown container. Do not add `overflow-hidden` to the dropdown wrapper or the flyout will be clipped.
+The `Dropdown` component in `Header.jsx` uses `overflow-visible` so that flyout submenus can render outside the dropdown container. Do not add `overflow-hidden` to the dropdown wrapper or the flyout will be clipped. The header is `position: fixed` at 70px height; `AblNavBar` (`top-[70px]`) and the Resource Centre sidebar (`top-[130px]`) are positioned against that, so changing the header height breaks both.
 
 ### VITE_ prefix required for browser env vars
 
@@ -911,32 +1106,47 @@ MY_SECRET=foo          # NOT visible to browser code
 VITE_MY_SECRET=foo     # visible via import.meta.env.VITE_MY_SECRET
 ```
 
-### Image path leading slashes
+### Image paths in YAML
 
-```yaml
-photo: assets/hero.jpg     # ✓ correct
-photo: /assets/hero.jpg    # ✗ wrong (yaml-to-json.js strips it, but write it correctly)
-```
+Either `/assets/hero.jpg` or `assets/hero.jpg` works (the sync script strips the leading `/` from `/assets/…`); the repo's dominant style is the leading-slash form, and only that form is checked by `content:validate`. What breaks things is using the value raw without `imgSrc()` / `BASE_URL` — see §6.
 
 ### Multiple galleries on the same page
 
-Pages with more than one gallery (e.g. `CompletEd.jsx`) need separate `useLightbox()` instances:
+`LightboxGallery` keeps its own `useLightbox` state, so a page with several galleries just renders several `<LightboxGallery>`s. If you hand-roll the hook instead, use one `useLightbox(count)` instance per gallery with distinct names (the count argument is required):
 ```jsx
-const brochureLb = useLightbox()
-const galleryLb  = useLightbox()
+const first  = useLightbox(data.galleryA.images.length)
+const second = useLightbox(data.galleryB.images.length)
 ```
 
-### i18n — EN content always comes from YAML, never translation.json
 
-`src/i18n/locales/en/translation.json` is intentionally `{}`. When you call `t('some.key', data.someField)`, EN users always get `data.someField`. HI/GU users get the translated string from their locale file. Never write hardcoded English strings as the t() fallback — that bypasses the CMS and makes the text uneditable.
+### No hardcoded visible text (CMS convention + lint guard)
+
+Never type English into JSX — that bypasses the CMS and makes the text uneditable:
 
 ```jsx
 // ✓ Correct — CMS-editable
-<h1>{t('home.hero.title', data.hero.title)}</h1>
+<h1>{data.hero.title}</h1>
+<p>{common.clickToZoom}</p>                              // shared micro-copy → content/shared/common.yaml
 
 // ✗ Wrong — hardcoded, CMS cannot update it
-<h1>{t('home.hero.title', 'Education for India')}</h1>
+<p>Click any image to view full screen.</p>             // also fails `npm run lint`
 ```
+
+- Shared micro-copy goes in `content/shared/common.yaml` (page-agnostic hints/labels such as `clickToZoom`, `hoverForRole`, `hoverForBio`, `step`) and component chrome in `content/shared/ui.yaml` (Lightbox aria-labels). Component-specific text goes in the page/screen YAML (e.g. `abl-resource-center.yaml`).
+- `react/jsx-no-literals` is an **error** for `src/pages/**` and `src/components/**` (see §7), so bare JSX text fails `npm run lint`. It doesn't see string props or attributes (`aria-label`, `alt`, …), so review those by hand.
+- Lint isn't run in CI. Run `npm run lint` before pushing.
+
+### The e-mail and lives-impacted figure live in `site.yaml`
+
+The contact email is `tidefoundation@gmail.com` and the lives-impacted total is `50,500+` everywhere (owner decision). The single source is `content/shared/site.yaml` (`email`, `livesImpacted`); `npm run content:validate` errors on any other email or lives-impacted total in `content/`. Other metrics (e.g. "15,000+ students") are intentionally not flagged.
+
+### Don't put a literal `<title>` in an HTML comment in `index.html`
+
+`scripts/siteDataPlugin.js` fills the page title with `html.replace(/<title>[\s\S]*?<\/title>/, …)`, which replaces the first match — a commented-out `<title>…</title>` earlier in the file would be rewritten instead of the real tag. Likewise keep the `<!-- site-jsonld -->` marker (the plugin throws if it is missing) and don't hand-write JSON-LD in `index.html`.
+
+### Generated files are committed
+
+`src/data/*.json` is generated and git-tracked; it is re-written on every `dev`/`build`. A manual `git add content/` without re-running the sync leaves the committed JSON behind until CI/the next local run regenerates it.
 
 ### AnimatePresence requires key prop
 
@@ -946,6 +1156,71 @@ Exit animations on conditionally-rendered elements only fire when the child has 
   {isOpen && <motion.div key="drawer" initial={{ x: '-100%' }} ...>...</motion.div>}
 </AnimatePresence>
 ```
+
+### Smaller known issues (reported, not fixed)
+
+- The 16 former stranded routes were removed with no redirects; they now render `NotFound` (§1 Routing). The 97 images only those pages used were deleted too (recover with `git checkout a4126d1 -- public/assets/images/<folder>`); The old one-off downloader `scripts/download-images.mjs` (a hard-coded list of the original WordPress URLs) was deleted on 2026-10-26; recover it with `git checkout a4126d1 -- scripts/download-images.mjs`.
+- `content:validate` doesn't check bare filenames (e.g. `logoGallery.images` in `about-our-partners.yaml`); a missing one shows the placeholder image, so check those by eye. The one nonexistent entry there (`image-33-e1699293507264.png`) was removed.
+- Open: `Volunteer` `intro.ctaHref` in `content/pages/get-involved-volunteer.yaml` is still the placeholder `https://docs.google.com/forms` (owner: keep for now); `about-publications.yaml` has an empty `research.items` list and 10 entries with `link: ""`.
+- Deleted 2026-10-25 with the owner's approval: `ui/Badge.jsx`, `WhatsAppIcon`, `TodoPlaceholder`, `getDriveDownloadUrl` (and its tests), `src/App.css`, `src/assets/*`, `public/icons.svg`, `public/favicon.svg`, and 91 unreferenced images under `public/assets/images/` (recover with `git checkout a4126d1 -- <path>`). The Devanagari font families deliberately stay loaded.
+
+---
+
+## 12. Testing & Tooling
+
+### Unit / component tests (Vitest)
+
+```bash
+npm test               # vitest run — 15 files, 189 tests (jsdom, src/test/**)
+npm run test:watch     # watch mode
+npm run test:ui        # Vitest UI
+```
+
+| File (under `src/test/`) | Tests | Covers |
+|---|---|---|
+| `components/AnimatedCounter.test.jsx` | 11 | parsing, suffix/commas, classes, 0 before the observer fires |
+| `components/Button.test.jsx` | 16 | variants/sizes, button vs `<a>` vs `<Link>`, external target/rel |
+| `components/ErrorBoundary.test.jsx` | 5 | children pass-through, friendly screen + actions, console logging, message/stack hidden unless DEV |
+| `components/LightboxGallery.test.jsx` | 5 | grid + lightbox wiring |
+| `hooks/useABLData.test.js` | 26 | cache, validation, timeout/abort, refetch, error mapping |
+| `hooks/useLightbox.test.js` | 13 | open/close/prev/next wrap |
+| `utils/imgSrc.test.js` | 8 | path forms, passthrough, base prefix |
+| `utils/ablThumbnails.test.js` | 6 | manifest lookup |
+| `utils/motionPresets.test.js` | 10 | `makeFadeUp` / `fadeUp` shape |
+| `utils/driveUtils.test.js` | 13 | file-ID extraction and preview URLs |
+| `utils/filterResources.test.js` | 22 | each filter + combined |
+| `utils/siteDataPlugin.test.js` | 18 | JSON-LD generated from `site.yaml`, `transformHtml` (title/og:site_name/marker/escaping), `llms.txt` rendering, content-consistency detection (email / lives total) |
+| `utils/imagePlaceholder.test.js` | 4 | global image fallback, opt-out, recursion guard, listener cleanup |
+| `routing/routes.smoke.test.jsx` | 15 | lazy-imports each page in a `MemoryRouter` and checks it renders something (weak: not content) |
+| `routing/removedRoutes.test.jsx` | 17 | each removed URL renders `NotFound`; a live route remains live |
+
+`src/test/setup.js` globally mocks `framer-motion` (a fixed list of `motion.*` tags — HTML elements plus `svg/g/path/rect/ellipse/line/circle` — along with `AnimatePresence` and `MotionConfig`; any other export, e.g. `LayoutGroup`, is not mocked; `removedRoutes.test.jsx` renders the whole `<App />` through this mock), and `react-helmet-async` (`Helmet` renders nothing, so `SeoHead` tags can't be asserted). It also stubs `IntersectionObserver`, `ResizeObserver`, `matchMedia`, `scrollTo`, an in-memory `sessionStorage`, and sets `import.meta.env` (`BASE_URL: '/'`, empty ABL URLs). Not covered: `useFocusTrap`, `useModalBehavior`, the lightbox components, Header/Footer/Layout/App, `SeoHead`, the ABL components, and the scripts other than `siteDataPlugin.js` / `contentConsistency.js`.
+
+### End-to-end (Playwright)
+
+```bash
+npm run test:e2e       # playwright test — chromium only, workers 1
+npm run test:all       # unit + e2e
+```
+
+`playwright.config.js` starts (or reuses, outside CI) `npm run dev` on `http://localhost:5173`. Specs live in `e2e/` (`home`, `navigation`, `pramaan`): `navigation.spec` loads 11 routes without page errors, `home.spec` and `pramaan.spec` check basic structure and links; there are no lightbox, filter, mobile-viewport or axe flows. The removed routes are covered only by the Vitest suite. ABL pages only hit the live Apps Script if `.env.development` has the URL. Requires `npx playwright install chromium` once.
+
+### Accessibility scan
+
+```bash
+npx vite --port 5175                      # terminal 1: dev server on the port the script expects
+node scripts/a11y-audit.cjs [port]        # terminal 2 (port arg, or A11Y_PORT; default 5175)
+```
+
+Uses `@playwright/test` (Chromium) + `@axe-core/playwright` (tags wcag2a/aa, 21a/aa, 22aa) over a hard-coded list of 17 URLs (every primary route, with `/pramaan/resource-centre/W1` standing in for `:id` — that one needs the live API — plus a made-up path that exercises the 404 page; **not** `/coming-soon` or `/404`). It scrolls each page fully and waits 1.2 s so `whileInView` animations settle before scanning — don't shorten that. The JSON report is written to the OS temp dir as `a11y-report.json` (override with `A11Y_REPORT`). Update `ROUTES` in the script when routes change.
+
+### Lint
+
+`npm run lint` → ESLint 9 flat config: `@eslint/js` recommended, `react-hooks` (recommended), `react-refresh` (vite), `no-unused-vars` ignoring `^[A-Z_]`, plus the `react/jsx-no-literals` CMS guard for pages and components (§7). Node globals for config/scripts, Vitest globals under `src/test/`. No Prettier, no TypeScript.
+
+### CI
+
+Only `deploy.yml` (build + deploy) and `sync-abl-thumbnails.yml` exist. Nothing runs lint, tests, e2e, the a11y script or `content:validate`.
 
 ---
 
@@ -959,6 +1234,10 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 | `.claude/skills/cms-integrity/SKILL.md` | Auto-triggers when adding/editing page/component JSX with user-facing text or media — catches hardcoded strings bypassing the CMS before they ship |
 | `.claude/skills/doc-sync/SKILL.md` | Auto-triggers after structural changes — keeps human and agent docs truthful |
 | `.claude/skills/sheet-integration/SKILL.md` | Invoke when bootstrapping a new Google-Sheet-backed section — generalizes the ABL pattern, includes a security checklist |
+| `docs/specs/site-restructure-plan.md` | Route restructure plan (historical; the leftover routes it tracked have since been removed) |
+| `docs/specs/stranded-pages-review.md` | Historical stakeholder review of the pages that were later removed |
+| `content/shared/site.yaml` | Single source of site-wide facts (name, URL, email, lives-impacted figure, breadcrumb parents) |
+| `scripts/siteDataPlugin.js` | Vite plugin that generates JSON-LD / `<title>` / `og:site_name` and `/llms.txt` from `site.yaml` |
 | `docs/ABL-RESOURCE-LIBRARY-SPEC.md` | Full ABL spec + Apps Script code |
 | `docs/ABL-APPSCRIPT-SETUP-GUIDE.md` | GAS backend setup guide |
 | `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` | Thumbnail self-hosting pipeline setup guide (fresh setup only) |
@@ -970,4 +1249,6 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 | `docs/ARCHITECTURE-DATAFLOW.html` | Companion diagram for technical readers — organized by system layer/dataflow direction, with request/response contracts, caching, trust boundaries, and a secrets reference table. Keep both diagrams in sync. |
 | `content/pages/home.yaml` | Reference example of a full page YAML |
 | `src/pages/Home.jsx` | Reference example of a full page component |
+| `src/pages/get-involved/Volunteer.jsx` | Reference for `SeoHead` + `LightboxGallery` + `makeFadeUp` |
 | `src/pages/resources/AblResourceCenter.jsx` | Reference for filter + URL-param sync pattern |
+| `eslint.config.js` | The `react/jsx-no-literals` CMS guard and other lint rules |

@@ -1,11 +1,19 @@
-const { chromium } = require('playwright')
+const { chromium } = require('@playwright/test')
 const { AxeBuilder } = require('@axe-core/playwright')
 const fs = require('fs')
+const os = require('os')
+const path = require('path')
 
-const BASE = 'http://localhost:5175'
+// Usage: node scripts/a11y-audit.cjs [port]   (or A11Y_PORT=5175)
+// Needs a dev server already running on that port, e.g. `npx vite --port 5175`.
+// The report goes to the OS temp dir (a11y-report.json is not gitignored, so
+// writing it into the repo would leave an untracked file behind).
+const PORT = process.argv[2] || process.env.A11Y_PORT || '5175'
+const BASE = `http://localhost:${PORT}`
+const REPORT_PATH = process.env.A11Y_REPORT || path.join(os.tmpdir(), 'a11y-report.json')
 
-// Every route currently in src/App.jsx — header-reachable, stranded, and the
-// 404 catch-all. Dynamic detail routes use a real resource id (W1).
+// Every route currently in src/App.jsx plus a deliberately unmatched path that
+// exercises the 404 catch-all. Dynamic detail routes use a real resource id (W1).
 const ROUTES = [
   '/',
   '/about/why-tide',
@@ -23,21 +31,6 @@ const ROUTES = [
   '/get-involved/donate',
   '/thrive',
   '/contact',
-  '/about/our-results',
-  '/projects/block-eti',
-  '/projects/bettered',
-  '/projects/empowered',
-  '/projects/completed',
-  '/projects/other-projects',
-  '/projects/sdg-drives',
-  '/get-involved/work-with-us',
-  '/get-involved/mccx',
-  '/resources/saral-kadam',
-  '/resources/annual-reports',
-  '/resources/publications',
-  '/resources/abl-resources',
-  '/resources/abl-resources/resource-center',
-  '/resources/abl-resources/contribute',
   '/this-route-does-not-exist-404-check',
 ]
 
@@ -88,6 +81,7 @@ const ROUTES = [
     }
   }
 
-  fs.writeFileSync('a11y-report.json', JSON.stringify(report, null, 2))
+  fs.writeFileSync(REPORT_PATH, JSON.stringify(report, null, 2))
+  console.log('Report written to', REPORT_PATH)
   await browser.close()
 })()

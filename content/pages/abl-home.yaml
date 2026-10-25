@@ -1,20 +1,29 @@
 meta:
   badge: "Resources · ABL"
   title: "ABL Resource Library"
-  subtitle: "A curated library of Activity-Based Learning resources for Grades 1–5, developed and used by TIDE Foundation educators."
+  subtitle: "A curated library of Activity-Based Learning resources for Grades {gradeRange}, developed and used by TIDE Foundation educators."
   seoTitle: "ABL Resource Library — TIDE Foundation"
-  seoDescription: "Browse Activity-Based Learning resources for Grades 1–5 developed by TIDE Foundation educators."
+  seoDescription: "Browse Activity-Based Learning resources for Grades {gradeRange} developed by TIDE Foundation educators."
+  # Last crumb in the SEO breadcrumb trail (Home > ... > this page)
+  breadcrumbName: "Pramaan"
+
+# Tab bar shown on all Pramaan pages (About / Resource Centre / Contribute)
+nav:
+  home: "About Pramaan"
+  resourceCenter: "Resource Centre"
+  contribute: "Contribute"
 
 stats:
   totalResources: "Total Resources"
   resourceTypes: "Resource Types"
   gradeCovered: "Grades Covered"
+  gradeRange: "{gradeRange}"
   lastSynced: "Last Synced"
 
 about:
   badge: "About ABL"
   title: "What is Activity-Based Learning?"
-  body: "Activity-Based Learning (ABL) is a child-centred pedagogical approach in which students learn by doing — through games, worksheets, manipulatives, and hands-on activities — rather than passive instruction. TIDE Foundation has developed a rich library of ABL materials for Grades 1–5 across multiple subjects and languages."
+  body: "Activity-Based Learning (ABL) is a child-centred pedagogical approach in which students learn by doing — through games, worksheets, manipulatives, and hands-on activities — rather than passive instruction. TIDE Foundation has developed a rich library of ABL materials for Grades {gradeRange} across multiple subjects and languages."
   browseButton: "Browse All Resources"
   whyTitle: "Why ABL Works"
   whyPoints:
@@ -27,3 +36,29 @@ resourceTypes:
   badge: "Browse by Type"
   title: "Explore Resource Types"
   resourcesCount: "resources"
+  # Display names per resource type. Keys are the Google Sheet tab names;
+  # _default is used for any tab not listed. label = singular (badges),
+  # pluralLabel = type cards and the Resource Centre filter list.
+  # (Badge colours live in src/config/abl.js, not here.)
+  labels:
+    Worksheet:
+      label: "Worksheet"
+      pluralLabel: "Worksheets"
+    Games:
+      label: "Game"
+      pluralLabel: "Games"
+    Kits:
+      label: "Kit"
+      pluralLabel: "Kits"
+    Flashcards:
+      label: "Flashcard"
+      pluralLabel: "Flashcards"
+    _default:
+      label: "Resource"
+      pluralLabel: "Resources"
+
+# Messages shown when the resource data cannot be loaded (used by every Pramaan page)
+errors:
+  notConfigured: "API not configured. Add VITE_ABL_API_URL to your .env.development file."
+  timeout: "Request timed out. Please check your connection and try again."
+  generic: "Failed to load resources. Please try again."

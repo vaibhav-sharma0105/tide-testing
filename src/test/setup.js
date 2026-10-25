@@ -1,12 +1,6 @@
 import '@testing-library/jest-dom'
 import { vi } from 'vitest'
 
-// Stable mock fn for i18n.changeLanguage.
-// Must use vi.hoisted so it's defined before vi.mock factories execute.
-// Cannot export hoisted vars (ESM), so expose via globalThis instead.
-const _hoisted = vi.hoisted(() => ({ changeLanguage: vi.fn() }))
-globalThis.__viMocks = _hoisted
-
 // framer-motion — ESM-safe pass-through components
 vi.mock('framer-motion', async () => {
   const React = await import('react')
@@ -14,6 +8,7 @@ vi.mock('framer-motion', async () => {
     'div', 'section', 'article', 'main', 'header', 'footer', 'nav',
     'ul', 'ol', 'li', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
     'a', 'img', 'button', 'form', 'input', 'textarea', 'figure', 'aside', 'iframe',
+    'svg', 'g', 'path', 'rect', 'ellipse', 'line', 'circle',
   ]
   const mkEl = (tag) =>
     React.forwardRef(({
@@ -27,6 +22,7 @@ vi.mock('framer-motion', async () => {
     motion,
     m: motion,
     AnimatePresence: ({ children }) => children,
+    MotionConfig: ({ children }) => children,
     useAnimation: () => ({ start: vi.fn(), stop: vi.fn(), set: vi.fn() }),
     useInView: () => [null, true],
     useScroll: () => ({
@@ -41,16 +37,6 @@ vi.mock('framer-motion', async () => {
 vi.mock('react-helmet-async', () => ({
   Helmet: ({ children }) => null,
   HelmetProvider: ({ children }) => children,
-}))
-
-// react-i18next — changeLanguage is stable via the hoisted ref
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key, fallback) => fallback || key,
-    i18n: { changeLanguage: _hoisted.changeLanguage, language: 'en' },
-  }),
-  Trans: ({ children }) => children,
-  initReactI18next: { type: '3rdParty', init: vi.fn() },
 }))
 
 // IntersectionObserver — must be a class, not an arrow function

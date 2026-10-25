@@ -1,4 +1,5 @@
 meta:
+  breadcrumbName: "Our Partners"
   badge: "About TIDE"
   title: "Our Partners"
   subtitle: "A network of institutions, universities, and organisations that make our work possible."
@@ -9,6 +10,7 @@ logoGallery:
   sectionBadge: "Partner Network"
   sectionTitle: "A Network Built on Trust"
   sectionSubtitle: "70+ schools, universities, NGOs and organisations powering TIDE's work."
+  imageAltPrefix: "Partner"
   # Filenames only — component prepends /assets/images/about-our-partners/
   images:
     - "image_2024-06-03_015959653-e1717360355473.png"
@@ -50,7 +52,6 @@ logoGallery:
     - "image-29-e1699289341794.png"
     - "image-31-e1699293478698.png"
     - "image-32-e1699293494122.png"
-    - "image-33-e1699293507264.png"
     - "image-34-e1699293538439.png"
     - "Screenshot-2023-09-20-at-10.43.16-PM-e1699269167459.png"
     - "Screenshot-2023-09-20-at-10.53.05-PM.png"

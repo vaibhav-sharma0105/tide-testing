@@ -1,4 +1,5 @@
 meta:
+  breadcrumbName: "Publications"
   badge: "About Us · Publications"
   title: "Our Publications"
   tagline: "Annual reports, public event recordings, and research from a decade of work."
@@ -9,6 +10,11 @@ tabs:
   annualReports: "Annual Reports"
   events: "Public Events"
   research: "Research & Writing"
+
+labels:
+  download: "Download"
+  view: "View"
+  comingSoon: "Coming soon"
 
 annualReports:
   description: "Our annual reports document TIDE's journey, programs, and impact each year."

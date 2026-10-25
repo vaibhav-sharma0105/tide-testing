@@ -5,6 +5,15 @@
     "seoDescription": "TIDE Foundation works to bring sustainable, systemic change to India's education landscape through six independent projects — built to last, designed to disappear."
   },
   "hero": {
+    "backgroundImage": "assets/images/home/slider-1.jpg",
+    "floatPhotos": [
+      {
+        "src": "assets/images/projects-bettered/gallery-07.jpg"
+      },
+      {
+        "src": "assets/images/get-involved-volunteer/gallery-04.jpg"
+      }
+    ],
     "badge": "Together in Development & Education",
     "tagline": "Improving access to",
     "taglineHighlight": "holistic education",
@@ -12,11 +21,13 @@
     "ctaLabel": "Explore Our Work",
     "ctaSecondaryLabel": "Get Involved",
     "floatProjects": "Active programmes",
+    "floatProjectsValue": "6",
     "floatFounded": "Founded in Ahmedabad",
+    "floatFoundedValue": "2014",
     "scroll": "Scroll",
     "pills": [
       {
-        "value": "50,000+",
+        "value": "50,500+",
         "label": "Lives impacted"
       },
       {
@@ -30,10 +41,11 @@
     ]
   },
   "impact": {
+    "backgroundImage": "assets/images/home/bg-counter.jpg",
     "sectionLabel": "Our Impact in Numbers",
     "stats": [
       {
-        "value": "50500+",
+        "value": "50,500+",
         "label": "Lives Impacted",
         "detail": "across Gujarat since 2014"
       },
@@ -60,7 +72,9 @@
     "body": "TIDE builds and empowers systems to bring about holistic education of the whole child (education of the head, heart, hands, and soul) for all.",
     "quote": "We imagine an education that helps students develop as a whole person and learn to work together to counter the many 21st century challenges that India and the globe faces.",
     "learnMore": "Learn why we do this",
+    "image1": "assets/images/home/why-tide.jpg",
     "image1Alt": "TIDE Foundation students learning in a classroom",
+    "image2": "assets/images/home/join-us.jpg",
     "image2Alt": "Community members joining TIDE's mission"
   },
   "journey": {
@@ -129,10 +143,12 @@
   "testimonial": {
     "sectionLabel": "Voices from the field",
     "quote": "TIDE doesn't just run programs — it builds ecosystems. Their work with our teachers changed how our entire school thinks about education.",
+    "photo": "assets/images/home/testimonial-quote.png",
     "author": "School Principal, Ahmedabad",
     "role": "Partner since 2017"
   },
   "cta": {
+    "backgroundImage": "assets/images/home/bg-contact-strip.jpg",
     "badge": "Get Involved",
     "sectionTitle": "Be part of the change",
     "body": "Whether you donate time, resources, or expertise — there's a place for you in TIDE's mission.",

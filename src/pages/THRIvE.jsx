@@ -1,14 +1,15 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Microscope, BookOpen, TrendingUp, Lightbulb, Link2, Users } from 'lucide-react'
 import SeoHead from '../components/ui/SeoHead'
 import PageHero from '../components/ui/PageHero'
 import SectionHeader from '../components/ui/SectionHeader'
 import Card from '../components/ui/Card'
-import Lightbox from '../components/ui/Lightbox'
-import { useLightbox } from '../hooks/useLightbox'
+import LightboxGallery from '../components/ui/LightboxGallery'
 import data from '../data/thrive.json'
-import { useTranslation } from 'react-i18next'
+import site from '../data/site.json'
+import common from '../data/common.json'
 import { imgSrc } from '../utils/imgSrc'
+import { fadeUp } from '../utils/motionPresets'
 
 const ICONS = {
   BookOpen:   <BookOpen className="w-5 h-5" />,
@@ -33,7 +34,7 @@ function PersonCard({ name, role, photo, delay = 0 }) {
     >
       <div className="relative aspect-[3/4] overflow-hidden">
         {photo ? (
-          <img src={imgSrc(photo)} alt={name} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.06]" />
+          <img src={imgSrc(photo)} alt={name} loading="lazy" decoding="async" className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.06]" />
         ) : (
           <div className="w-full h-full gradient-primary flex items-center justify-center">
             <span className="font-display text-white font-bold text-4xl opacity-40 select-none">{initials}</span>
@@ -56,26 +57,7 @@ function PersonCard({ name, role, photo, delay = 0 }) {
   )
 }
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6, delay, ease: [0.4, 0, 0.2, 1] },
-})
-
-const LEADER_KEYS = {
-  'Dr. Jwalin Patel':  { name: 'jwalin',  role: 'jwalinRole'  },
-  'Dr. Seema Nath':    { name: 'seema',   role: 'seemaRole'   },
-  'Dr. Rohini Sen':    { name: 'rohini',  role: 'rohiniRole'  },
-}
-
-const PRINCIPLE_KEYS = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6']
-const PROJECT_KEYS   = ['p1', 'p2', 'p3', 'p4', 'p5']
-
 export default function THRIvE() {
-  const { t } = useTranslation()
-  const { lightboxIndex, isLightboxOpen, openLightbox, closeLightbox, prevLightbox, nextLightbox } = useLightbox(data.conferences.images.length)
-
   return (
     <>
       <SeoHead
@@ -83,16 +65,16 @@ export default function THRIvE() {
         description={data.meta.seoDescription}
         path="/thrive"
         breadcrumbs={[
-          { name: 'Home', path: '/' },
-          { name: 'THRIvE Research Centre', path: '/thrive' },
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: data.meta.breadcrumbName, path: '/thrive' },
         ]}
       />
-      <PageHero badge={data.meta.badge} title={t('thrive.title', data.meta.title)} subtitle={t('thrive.fullName', data.meta.fullName)} gradient />
+      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.fullName} />
 
       {/* Tagline band */}
       <section className="py-12 bg-primary-light border-b border-primary/10">
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center">
-          <p className="font-display text-2xl md:text-3xl italic text-primary font-medium">"{t('thrive.tagline', data.meta.tagline)}"</p>
+          <p className="font-display text-2xl md:text-3xl italic text-primary font-medium">"{data.meta.tagline}"</p>
         </div>
       </section>
 
@@ -103,18 +85,15 @@ export default function THRIvE() {
             <motion.div {...fadeUp()}>
               <span className="badge-primary mb-4 block w-fit">{data.about.sectionBadge}</span>
               <h2 className="font-display text-3xl font-semibold text-tide-text mb-5">{data.about.sectionTitle}</h2>
-              <p className="text-tide-muted font-body leading-relaxed">{t('thrive.overview', data.about.body)}</p>
+              <p className="text-tide-muted font-body leading-relaxed">{data.about.body}</p>
             </motion.div>
             <motion.div {...fadeUp(0.15)}>
               <span className="badge-primary mb-4 block w-fit">{data.leaders.sectionBadge}</span>
-              <h2 className="font-display text-2xl font-semibold text-tide-text mb-6">{t('thrive.leadership.title', data.leaders.sectionTitle)}</h2>
+              <h2 className="font-display text-2xl font-semibold text-tide-text mb-6">{data.leaders.sectionTitle}</h2>
               <div className="grid grid-cols-2 min-[420px]:grid-cols-3 gap-3">
-                {data.leaders.members.map((l, i) => {
-                  const lk = LEADER_KEYS[l.name]
-                  return (
-                    <PersonCard key={l.name} name={lk ? t(`thrive.leadership.${lk.name}`, l.name) : l.name} role={lk ? t(`thrive.leadership.${lk.role}`, l.role) : l.role} photo={l.photo} delay={i * 0.07} />
-                  )
-                })}
+                {data.leaders.members.map((l, i) => (
+                  <PersonCard key={l.name} name={l.name} role={l.role} photo={l.photo} delay={i * 0.07} />
+                ))}
               </div>
             </motion.div>
           </div>
@@ -125,7 +104,7 @@ export default function THRIvE() {
       <section className="section-padding bg-white border-t border-tide-border">
         <div className="max-w-5xl mx-auto">
           <SectionHeader badge={data.researchTeam.sectionBadge} title={data.researchTeam.sectionTitle} subtitle={data.researchTeam.sectionSubtitle} />
-          <p className="text-xs font-body text-tide-muted mb-8 -mt-6 italic">{t('common.hoverForRole', 'Hover over a photo to see the role.')}</p>
+          <p className="text-xs font-body text-tide-muted mb-8 -mt-6 italic">{common.hoverForRole}</p>
           <div className="grid grid-cols-2 min-[420px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-3 md:gap-4">
             {data.researchTeam.members.map((m, i) => (
               <PersonCard key={m.name} name={m.name} role={m.role} photo={m.photo} delay={i * 0.05} />
@@ -137,15 +116,15 @@ export default function THRIvE() {
       {/* Core Principles */}
       <section className="section-padding bg-tide-subtle">
         <div className="max-w-5xl mx-auto">
-          <SectionHeader badge={data.principles.sectionBadge} title={t('thrive.principles.title', data.principles.sectionTitle)} center />
+          <SectionHeader badge={data.principles.sectionBadge} title={data.principles.sectionTitle} center />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {data.principles.items.map((p, i) => (
               <Card key={p.title} delay={i * 0.07} className="p-6">
                 <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center mb-4">
                   {ICONS[p.iconKey] || <BookOpen className="w-5 h-5" />}
                 </div>
-                <h3 className="font-display font-semibold text-tide-text mb-2">{PRINCIPLE_KEYS[i] ? t(`thrive.principles.${PRINCIPLE_KEYS[i]}`, p.title) : p.title}</h3>
-                <p className="text-sm font-body text-tide-muted leading-relaxed">{PRINCIPLE_KEYS[i] ? t(`thrive.principles.${PRINCIPLE_KEYS[i]}desc`, p.desc) : p.desc}</p>
+                <h3 className="font-display font-semibold text-tide-text mb-2">{p.title}</h3>
+                <p className="text-sm font-body text-tide-muted leading-relaxed">{p.desc}</p>
               </Card>
             ))}
           </div>
@@ -155,7 +134,7 @@ export default function THRIvE() {
       {/* Research Projects */}
       <section className="section-padding bg-tide-bg">
         <div className="max-w-5xl mx-auto">
-          <SectionHeader badge={data.researchProjects.sectionBadge} title={t('thrive.projects.title', data.researchProjects.sectionTitle)} subtitle={data.researchProjects.sectionSubtitle} />
+          <SectionHeader badge={data.researchProjects.sectionBadge} title={data.researchProjects.sectionTitle} subtitle={data.researchProjects.sectionSubtitle} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {data.researchProjects.items.map((p, i) => (
               <motion.div
@@ -163,16 +142,16 @@ export default function THRIvE() {
                 {...fadeUp(i * 0.08)}
                 className="group relative overflow-hidden rounded-2xl bg-navy min-h-[240px] cursor-default"
               >
-                <img src={imgSrc(p.photo)} alt={p.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <img src={imgSrc(p.photo)} alt={p.title} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 photo-overlay" />
                 <div className="absolute top-4 left-4">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-body font-bold uppercase tracking-wider text-white bg-primary/80 backdrop-blur-sm border border-white/20">
-                    {t('thrive.projects.badge', data.researchProjects.cardBadge)}
+                    {data.researchProjects.cardBadge}
                   </span>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h3 className="font-display font-semibold text-white text-sm leading-tight mb-1">{PROJECT_KEYS[i] ? t(`thrive.projects.${PROJECT_KEYS[i]}`, p.title) : p.title}</h3>
-                  <p className="text-white/70 text-xs font-body leading-relaxed line-clamp-2">{PROJECT_KEYS[i] ? t(`thrive.projects.${PROJECT_KEYS[i]}desc`, p.desc) : p.desc}</p>
+                  <h3 className="font-display font-semibold text-white text-sm leading-tight mb-1">{p.title}</h3>
+                  <p className="text-white/70 text-xs font-body leading-relaxed line-clamp-2">{p.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -181,30 +160,23 @@ export default function THRIvE() {
       </section>
 
       {/* Conferences & Publications */}
-      <section className="section-padding bg-navy">
-        <div className="max-w-5xl mx-auto">
-          <SectionHeader badge={data.conferences.sectionBadge} title={data.conferences.sectionTitle} subtitle={data.conferences.sectionSubtitle} light />
-          <p className="text-xs font-body text-white/50 mb-8 -mt-6 italic">{t('common.clickToZoom', 'Click any image to view full screen.')}</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {data.conferences.images.map((item, i) => (
-              <motion.button
-                key={item.src}
-                {...fadeUp(i * 0.06)}
-                onClick={() => openLightbox(i)}
-                className="rounded-xl overflow-hidden aspect-video cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
-              >
-                <img src={imgSrc(item.src)} alt={item.label} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <AnimatePresence>
-        {isLightboxOpen && (
-          <Lightbox images={data.conferences.images} currentIndex={lightboxIndex} onClose={closeLightbox} onPrev={prevLightbox} onNext={nextLightbox} onGoTo={openLightbox} />
+      <LightboxGallery
+        images={data.conferences.images}
+        gridClassName="grid grid-cols-2 sm:grid-cols-3 gap-3"
+        itemClassName="rounded-xl overflow-hidden aspect-video"
+        ringClassName="focus-visible:ring-white/50"
+        itemMotion={(i) => fadeUp(i * 0.06)}
+      >
+        {(grid) => (
+          <section className="section-padding bg-navy">
+            <div className="max-w-5xl mx-auto">
+              <SectionHeader badge={data.conferences.sectionBadge} title={data.conferences.sectionTitle} subtitle={data.conferences.sectionSubtitle} light />
+              <p className="text-xs font-body text-white/50 mb-8 -mt-6 italic">{common.clickToZoom}</p>
+              {grid}
+            </div>
+          </section>
         )}
-      </AnimatePresence>
+      </LightboxGallery>
     </>
   )
 }

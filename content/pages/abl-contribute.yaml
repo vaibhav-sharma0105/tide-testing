@@ -4,6 +4,8 @@ meta:
   subtitle: "Help grow the ABL library. Share a resource you've used in your classroom and it will be reviewed by the TIDE team."
   seoTitle: "Contribute to ABL Library — TIDE Foundation"
   seoDescription: "Share your teaching materials with the TIDE ABL resource library."
+  # Last crumb in the SEO breadcrumb trail (Home > ... > this page)
+  breadcrumbName: "Contribute"
 
 shareSection:
   title: "Share What Works"

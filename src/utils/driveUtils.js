@@ -8,8 +8,3 @@ export function getDrivePreviewUrl(url) {
   const id = extractDriveFileId(url)
   return id ? `https://drive.google.com/file/d/${id}/preview` : null
 }
-
-export function getDriveDownloadUrl(url) {
-  const id = extractDriveFileId(url)
-  return id ? `https://drive.google.com/uc?export=download&id=${id}` : null
-}

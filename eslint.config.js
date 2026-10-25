@@ -30,6 +30,18 @@ export default defineConfig([
     },
   },
   {
+    // CMS guard: visible text must come from content/*.yaml (via data.*),
+    // never be typed into JSX. Allowed: punctuation/glyphs that are not copy.
+    files: ['src/pages/**/*.jsx', 'src/components/**/*.jsx'],
+    rules: {
+      'react/jsx-no-literals': ['error', {
+        noStrings: false,
+        ignoreProps: true,
+        allowedStrings: ['—', '–', '·', '→', '↗', '…', '|', '/', '-', ':', '.', ',', '&', '+', '(', ')', '%', '"', "'", '“', '”', '’'],
+      }],
+    },
+  },
+  {
     files: ['vite.config.js', 'vitest.config.js', 'playwright.config.js', 'scripts/**/*.js'],
     languageOptions: {
       globals: globals.node,

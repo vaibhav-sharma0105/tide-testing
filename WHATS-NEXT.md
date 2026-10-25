@@ -1,4 +1,49 @@
-# What's Next — Hardcoded UI Audit
+# What's Next — Open Items
+
+> Last verified against the code: 2026-10-25. Everything under "Open items" was re-checked in the repository on that date; nothing is listed from memory. The "Archive" section further down is a finished 2026-04-12 audit, kept for history only.
+
+## Open items
+
+### Decisions waiting on the site owner
+
+1. ~~Images left unused by the removed pages~~ — **done 2026-10-25:** the 97 unused files (about 21 MB) were deleted with the owner's approval; recover with `git checkout a4126d1 -- <path>`. The unused legacy downloader `scripts/download-images.mjs` was deleted on 2026-10-26 (recover with `git checkout a4126d1 -- scripts/download-images.mjs`).
+2. **`intro.ctaHref` in `content/pages/get-involved-volunteer.yaml`** is the placeholder `https://docs.google.com/forms`, not a real application form. Owner said keep as is for now. The page is reachable from the About menu.
+
+### Content and data issues
+
+3. **Bare-filename images are not validated.** `npm run content:validate` checks only leading-slash values under a fixed key list, so a wrong name in `logoGallery.images` (a list of bare filenames in `content/pages/about-our-partners.yaml`) is not caught; a missing file shows the grey placeholder from `src/utils/imagePlaceholder.js`. The one nonexistent entry (`image-33-e1699293507264.png`) was removed on 2026-10-25.
+4. **`content/pages/about-publications.yaml`:** `research.items` is empty (the page shows "Research publications will be listed here. Coming soon.") and 10 entries have `link: ""` (shown as "Coming soon").
+
+### Resolved
+
+- 2026-10-26: `GRADES` now lives once in `src/config/abl.js`; the dead `gradient` prop was removed from the 10 pages that passed it; `deploy.yml` now runs lint, `content:validate` and the unit tests before building; the thumbnail-sync workflow now starts the deploy itself (confirmed through the public Actions API that its June 2026 commits started no run).
+- The 16 stranded routes: removed outright, no redirects (`src/test/routing/removedRoutes.test.jsx`); pages, YAML, generated JSON and `TodoPlaceholder` are gone.
+- Unused code and assets (`Badge.jsx`, `WhatsAppIcon`, `src/App.css`, `src/assets/*`, 91 images, `getDriveDownloadUrl`, `public/icons.svg`, `public/favicon.svg`): deleted with the owner's approval on 2026-10-25.
+- Devanagari/Gujarati fonts: owner decided to keep them.
+- Contact email and lives-impacted figure: `tidefoundation@gmail.com` and `50,500+` everywhere, from `content/shared/site.yaml`, enforced by `npm run content:validate`.
+- Multilingual framework: removed (archived in the local git tag `archive/multilingual-framework`).
+
+---
+
+# Archive: Hardcoded UI Audit (2026-04-12) — RESOLVED
+
+> ## STATUS (2026-10-25): RESOLVED / SUPERSEDED — kept for history only
+> Every item below was re-checked against the current code and is **done**; nothing here is still pending. The file and line references in the body are obsolete (the files have changed, and several of the pages named, such as the Saral Kadam, Publications and project pages, no longer exist), so do not use them to locate code. The `t()` wording in the original proposals no longer applies: the i18n layer has since been removed and pages read the generated JSON directly.
+>
+> | # | Item | Current state (verified) |
+> |---|------|--------------------------|
+> | 1 | SEO tags never applied | Done. A `SeoHead` component (react-helmet-async) is used by 27 page files; `ComingSoon` and `NotFound` use `Helmet` directly with `noindex`. The "19 pages" count is outdated. |
+> | 2 | "Click any image…" hint x6 | Done. One shared string, `clickToZoom` in `content/shared/common.yaml`, read as `common.clickToZoom`. |
+> | 3 | Header donate labels | Done. `donateLabel` / `donateMobileLabel` in `content/shared/navigation.yaml`. |
+> | 4 | Footer brand text and taglines | Done. `brandName`, `brandSuffix`, `tagline`, `supportWork`, `rights`, `madeWithLove` come from `footer.json`. |
+> | 5 | Contact labels and email subject | Done. Labels from `data.labels.*`; subject from `data.form.mailSubject` in `contact.yaml`. |
+> | 6 | Publications type labels | Done. `data.typeLabels` in `resources-publications.yaml`, read in `Publications.jsx`. |
+> | 7 | THRIvE "Research" badge | Done. `researchProjects.cardBadge` in `thrive.yaml`. |
+> | 8 | "Hover over a photo" hints | Done. `common.hoverForBio` and `common.hoverForRole` in `common.yaml`. |
+> | 9 | "Step N" prefix | Done. `common.step` in `common.yaml`. |
+> | 10 | Saral Kadam booklet mailto | Done. `data.booklets.bookletRequestHref` in `resources-saral-kadam.yaml`. |
+>
+> **How this is guarded now:** `eslint.config.js` sets `react/jsx-no-literals` to `error` for `src/pages/**` and `src/components/**`, so bare visible text in JSX fails `npm run lint`. The rule ignores props (`ignoreProps: true`), so literal `aria-label`/`alt` text is not caught by it. `npm run lint` is also run by CI (`.github/workflows/deploy.yml`), so a violation stops the deploy. The `cms-integrity` skill (`.claude/skills/cms-integrity/SKILL.md`) is the other safeguard.
 
 > UI elements currently not covered by YAML/JSON, found during content audit on 2026-04-12.
 > Ordered by priority.

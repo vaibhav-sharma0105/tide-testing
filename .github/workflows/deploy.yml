@@ -30,6 +30,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Lint
+        run: npm run lint
+
+      - name: Validate content
+        run: npm run content:validate
+
+      - name: Unit tests
+        run: npm test
+
       - name: Build
         run: npm run build
         env:

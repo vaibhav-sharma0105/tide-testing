@@ -1,0 +1,71 @@
+meta:
+  badge: "Resources · ABL"
+  title: "Resource Center"
+  subtitle: "Browse all Activity-Based Learning resources. Filter by type, grade, language, and more."
+  seoTitle: "Resource Centre — TIDE Foundation"
+  seoDescription: "Browse and download 150+ free Activity-Based Learning resources for Grades {gradeRange} — worksheets, games, kits, and flashcards, filterable by type, grade, and language."
+  # Last crumb in the SEO breadcrumb trail (Home > ... > this page)
+  breadcrumbName: "Resource Centre"
+
+# Text on the Resource Centre page itself (mobile filter button/drawer, result counts)
+page:
+  filtersButton: "Filters"
+  closeFiltersLabel: "Close filters"
+  loading: "Loading…"
+  resourceSingular: "resource"
+  resourcePlural: "resources"
+  showing: "Showing"
+  of: "of"
+
+# Filter sidebar / drawer
+filters:
+  heading: "Filters"
+  clear: "Clear"
+  searchPlaceholder: "Search resources…"
+  searchLabel: "Search resources"
+  typeTitle: "Resource Type"
+  allTypes: "All types"
+  gradesTitle: "Grades"
+  gradeTemplate: "Grade {n}"
+  languageTitle: "Language"
+  languageLabel: "Filter by language"
+  allLanguages: "All Languages"
+  ownershipTitle: "Ownership"
+  ownershipLabel: "Filter by ownership"
+  allResources: "All Resources"
+  tideOwned: "TIDE Owned"
+  external: "External"
+
+# Resource grid states
+grid:
+  loadingLabel: "Loading resources"
+  retry: "Try again"
+  noResults: "No resources match your filters"
+  noResultsHint: "Try adjusting or clearing your filters"
+
+# Pagination bar
+pagination:
+  ariaLabel: "Pagination"
+  showing: "Showing"
+  of: "of"
+  resources: "resources"
+  previousLabel: "Previous"
+  previousShort: "Prev"
+  next: "Next"
+
+# One resource card (also reused on the resource detail page for the ownership line)
+card:
+  viewTemplate: "View {name}"
+  videoAvailable: "Video available"
+  moreGradesTemplate: "+{n} more"
+  imageAltFallback: "Resource"
+  tideResource: "TIDE Resource"
+  externalResource: "External Resource"
+
+# Image / video preview overlays
+lightbox:
+  closePreview: "Close preview"
+  closeVideo: "Close video"
+  imagePreviewFallback: "Image preview"
+  noImage: "No image available"
+  videoFallback: "Video"

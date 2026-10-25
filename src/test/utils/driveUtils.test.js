@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest'
 import {
   extractDriveFileId,
   getDrivePreviewUrl,
-  getDriveDownloadUrl,
 } from '../../utils/driveUtils'
 
 // A realistic Google Drive share URL
@@ -64,28 +63,5 @@ describe('getDrivePreviewUrl', () => {
 
   it('returns null for null', () => {
     expect(getDrivePreviewUrl(null)).toBeNull()
-  })
-})
-
-describe('getDriveDownloadUrl', () => {
-  it('returns a uc?export=download URL with correct ID', () => {
-    const url = getDriveDownloadUrl(SHARE_URL)
-    expect(url).toBe(`https://drive.google.com/uc?export=download&id=${FILE_ID}`)
-  })
-
-  it('returns null for a non-Drive URL', () => {
-    expect(getDriveDownloadUrl('https://example.com/doc.pdf')).toBeNull()
-  })
-
-  it('returns null for empty string', () => {
-    expect(getDriveDownloadUrl('')).toBeNull()
-  })
-
-  it('returns null for undefined', () => {
-    expect(getDriveDownloadUrl(undefined)).toBeNull()
-  })
-
-  it('returns null for null', () => {
-    expect(getDriveDownloadUrl(null)).toBeNull()
   })
 })

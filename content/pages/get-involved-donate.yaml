@@ -1,4 +1,5 @@
 meta:
+  breadcrumbName: "Donate"
   badge: "Get Involved · Donate"
   title: "Support TIDE Foundation"
   tagline: "Your donation directly funds programs that will reach thousands of people across India."
@@ -9,7 +10,7 @@ hero:
   heading: "Support TIDE Foundation"
   body: "Your donation directly funds programs that will reach thousands of people across India. To make a donation or learn about CSR partnerships, please reach out to us directly."
   highlights:
-    - "50,000+ lives impacted across Gujarat"
+    - "50,500+ lives impacted across Gujarat"
     - "80G tax exemption available for Indian donors"
     - "CSR partnership opportunities available"
   emailCta: "Email to donate"
@@ -22,10 +23,15 @@ bank:
   qrTitle: "Scan QR Code"
   qrPlaceholder: "QR code coming soon"
   transferTitle: "Bank Transfer"
+  accountNameLabel: "Account name"
   accountName: "TIDE Foundation"
+  accountNumberLabel: "Account number"
   accountNumber: "50200018421062"
+  bankNameLabel: "Bank"
   bankName: "HDFC Bank"
+  ifscLabel: "IFSC"
   ifsc: "HDFC0000006"
+  branchLabel: "Branch"
   branch: "HDFC Bank, Navrangpura"
 
 image:

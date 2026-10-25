@@ -1,0 +1,38 @@
+meta:
+  badge: "Resources · ABL"
+  badgeTemplate: "Resources · {type}"
+  titleTemplate: "{name} — TIDE Pramaan"
+  # Used when the resource has no description of its own
+  descriptionTemplate: "{type} for {grades} — free Activity-Based Learning resource from TIDE Foundation's Pramaan library."
+  gradesTemplate: "Grade {grades}"
+  gradesFallback: "Indian classrooms"
+  loadingSeoTitle: "Loading… — TIDE Pramaan"
+  loadingHeading: "Loading…"
+
+notFound:
+  seoTitle: "Resource Not Found — TIDE Pramaan"
+  seoDescription: "This ABL resource could not be found. It may have been removed or the link may be incorrect."
+  heading: "Resource Not Found"
+  messageTemplate: "No resource found with ID \"{id}\"."
+
+backLabel: "Back to Resource Center"
+
+media:
+  viewFullImageLabel: "View full image"
+  viewLarger: "Tap to view larger"
+  fullPreview: "Full Preview"
+  sourceReference: "Source Reference"
+  videoLogo: "assets/images/shared/tide-logo.png"
+
+facts:
+  concept: "Concept"
+  explanationVideo: "Explanation Video"
+  playVideoLabel: "Play explanation video"
+  setsTemplate: "{quantity} set(s)"
+  about: "About This Resource"
+
+coverage:
+  eyebrow: "Grade"
+  shortGradeTemplate: "G{n}"
+  gradeTemplate: "Grade {n}"
+  chapterSeparator: " — "

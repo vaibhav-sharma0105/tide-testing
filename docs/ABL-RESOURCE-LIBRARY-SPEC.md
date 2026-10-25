@@ -1,7 +1,7 @@
 # ABL Resource Library — Developer Specification
 
 **Version:** 2.1  
-**Status:** Implemented ✓  
+**Status:** Implemented ✓ (last brought in line with the code on 2026-10-25; see "Status as of 2026-10-25" below)
 **Target hosting:** GitHub Pages (static, `BrowserRouter` + `public/404.html` SPA fallback — not HashRouter)  
 **Architecture:** Apps Script JSON API + React frontend (no iframe, no gviz/tq)
 
@@ -12,7 +12,15 @@
 > - `ImageLightbox` is present on the **detail page only** (`AblDetail.jsx`), not on the listings page
 > - Filter logic is extracted to `src/utils/filterResources.js` (`applyResourceFilters`)
 > 
-> All other sections (API schema, Apps Script code, routing, edge cases) reflect exactly what was built.
+> All other sections (API schema, Apps Script code, edge cases) reflect what was built, subject to the 2026-10-25 notes below.
+
+> **Status as of 2026-10-25 (verified against the code):**
+> - **Routes:** Pramaan lives only at `/pramaan`, `/pramaan/resource-centre`, `/pramaan/resource-centre/:id`, `/pramaan/contribute` (UK spelling "centre"). The older `/resources/abl-resources`, `/resources/abl-resources/resource-center(/:id)` and `/resources/abl-resources/contribute` duplicate routes were **removed on 2026-10-25** (owner decision, no redirects): those URLs now render the NotFound page (`src/test/routing/removedRoutes.test.jsx`). `AblNavBar`, `ResourceCard`, `AblHome` (button and type cards) and `AblDetail` (back link) all link to `/pramaan/*`. Where §8 and the original sketches below still write `/resources/abl-resources/*`, read `/pramaan/*`.
+> - **Navigation:** the header menu item is "Pramaan" with children About Pramaan / Resource Centre / Contribute (`content/shared/navigation.yaml`). The footer (`content/shared/footer.yaml`, three link columns) has an "ABL Resources" link to `/pramaan`.
+> - **Copy is no longer hardcoded:** Pramaan UI text and image paths live in YAML — `content/pages/abl-home.yaml`, `abl-resource-center.yaml`, `abl-detail.yaml`, `abl-contribute.yaml` and the shared `content/shared/common.yaml` / `ui.yaml` (generated into `src/data/*.json`). The resource data itself (names, grades, etc.) stays dynamic from the Apps Script API. The ESLint rule `react/jsx-no-literals` (error) in `src/pages` and `src/components` blocks hardcoded visible text; lint is not run in CI.
+> - **`useABLData`** was hardened (payload shape validation, abort/ignore of stale requests, a 10-second timeout cleared on every outcome, no import-time logging; error strings come from `abl-home.yaml` `errors.*`). Cache key (`abl_api_cache_v2`), TTL (15 minutes) and return shape (`{ data, allResources, loading, error, lastUpdated, refetch }`) are unchanged — see §4.
+> - **Not in this repo:** the Apps Script `Code.gs` lives in the Google Sheet's script project; §2.5 is the only copy in the repository, so it could not be compared against the deployed script.
+> - **Tests:** the Vitest suite (`npm test`: 15 files, 189 tests) includes unit tests for `driveUtils`, `filterResources`, `imgSrc`, `ablThumbnails`, `imagePlaceholder` and `useABLData`, plus routing tests (`src/test/`); the Playwright specs in `e2e/` use clean URLs (not `/#/`) and need a dev server.
 
 ---
 
@@ -47,13 +55,10 @@ VITE_ABL_API_URL=https://script.google.com/macros/s/PROD_DEPLOYMENT_ID/exec
 VITE_ABL_CONTRIBUTE_FORM_URL=REPLACE_WITH_GOOGLE_FORM_URL
 ```
 
-**`.env.example`** — **committed to git**, documents what variables are needed (no real values):
+**`.env.example`** — **committed to git**, documents what variables are needed (placeholder values only). It currently contains, plus explanatory comments:
 ```
-# Apps Script Web App URL (get from GAS deploy screen — see docs/ABL-APPSCRIPT-SETUP-GUIDE.md)
-VITE_ABL_API_URL=
-
-# Google Form URL for the Contribute page
-VITE_ABL_CONTRIBUTE_FORM_URL=
+VITE_ABL_API_URL=https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec
+VITE_ABL_CONTRIBUTE_FORM_URL=https://forms.gle/YOUR_FORM_ID
 ```
 
 ### 0.3 `.gitignore` addition
@@ -75,7 +80,7 @@ In GitHub: **Settings → Secrets and variables → Actions → New repository s
 - Name: `VITE_ABL_API_URL` — Value: the production Apps Script URL
 - Name: `VITE_ABL_CONTRIBUTE_FORM_URL` — Value: the Google Form URL
 
-The existing `.github/workflows/` deploy file needs this addition in the build step:
+`.github/workflows/deploy.yml` already has this in its build step (the `ABL_SYNC_TOKEN` secret is used only by `sync-abl-thumbnails.yml`, see §2.4):
 ```yaml
 - name: Build
   run: npm run build
@@ -87,28 +92,28 @@ The existing `.github/workflows/` deploy file needs this addition in the build s
 ### 0.5 `src/config/abl.js` — reads from env
 
 ```js
-// src/config/abl.js
-// All ABL feature configuration in one place.
-// URLs come from .env files — never hardcode them here.
+// src/config/abl.js (current, abridged)
+import ablHome from '../data/abl-home.json'
 
-export const ABL_API_URL           = import.meta.env.VITE_ABL_API_URL           ?? ''
-export const CONTRIBUTE_FORM_URL   = import.meta.env.VITE_ABL_CONTRIBUTE_FORM_URL ?? ''
+export const ABL_API_URL          = import.meta.env.VITE_ABL_API_URL          ?? ''
+export const CONTRIBUTE_FORM_URL  = import.meta.env.VITE_ABL_CONTRIBUTE_FORM_URL ?? ''
+export const ABL_CACHE_TTL_MS     = 15 * 60 * 1000
+export const ABL_PAGE_SIZE        = 24
 
-export const ABL_CACHE_TTL_MS = 15 * 60 * 1000  // 15 minutes — matches GAS cache TTL
-export const ABL_PAGE_SIZE    = 24
+// Colour per resource type stays in code; the visible label/pluralLabel text
+// lives in content/pages/abl-home.yaml → resourceTypes.labels.<Tab>.
+const TAB_COLORS = { Worksheet: 'blue', Games: 'emerald', Kits: 'violet', Flashcards: 'amber', _default: 'gray' }
 
-// Maps GAS tab name → display config.
-// Add a new entry when a new sheet tab is added; unknown tabs fall back to _default.
-export const TAB_STYLE_MAP = {
-  'Worksheet':  { color: 'blue',    label: 'Worksheet',  pluralLabel: 'Worksheets'  },
-  'Games':      { color: 'emerald', label: 'Game',       pluralLabel: 'Games'       },
-  'Kits':       { color: 'violet',  label: 'Kit',        pluralLabel: 'Kits'        },
-  'Flashcards': { color: 'amber',   label: 'Flashcard',  pluralLabel: 'Flashcards'  },
-  _default:     { color: 'gray',    label: 'Resource',   pluralLabel: 'Resources'   },
-}
+// TAB_STYLE_MAP = { [tab]: { color, label, pluralLabel } }, built from TAB_COLORS
+// plus ablHome.resourceTypes.labels[tab].
+
+// Falls back to the neutral `_default` entry for any tab name not listed above.
+export const getTabStyle = (tab) => TAB_STYLE_MAP[tab] ?? TAB_STYLE_MAP._default
 ```
 
-If `ABL_API_URL` is empty (env var not set), `useABLData` must detect this and show a clear developer-facing error in the console: `[ABL] VITE_ABL_API_URL is not set. Add it to your .env.development file.` — and return `{ loading: false, error: 'API not configured', data: null }` so the UI shows the error state rather than a broken blank page.
+To add a resource type, add its colour to `TAB_COLORS` **and** its `label`/`pluralLabel` to `abl-home.yaml` → `resourceTypes.labels.<Tab>`. The map is built by reading `ablHome.resourceTypes.labels[tab]` for every key of `TAB_COLORS` (including `_default`), so a missing YAML entry would throw when the module loads.
+
+If `ABL_API_URL` is empty (env var not set), `useABLData` logs a `console.warn` (`[ABL] VITE_ABL_API_URL is not set. Add it to .env.development — see docs/ABL-APPSCRIPT-SETUP-GUIDE.md`) and returns `loading: false`, `data: null` and `error` set to the `errors.notConfigured` text from `content/pages/abl-home.yaml`, so the UI shows the error state rather than a broken blank page. `vite.config.js` also prints a build-time warning if `VITE_ABL_API_URL` is missing on GitHub Actions.
 
 ---
 
@@ -122,15 +127,16 @@ Google Sheet (private)
 Google Apps Script Web App
   • Reads sheet using owner credentials (sheet stays private)
   • Caches parsed JSON in CacheService (split by tab, 15-min TTL)
-  • doGet() returns combined JSON with CORS headers
+  • doGet() returns combined JSON
   • Endpoint: https://script.google.com/macros/s/DEPLOYMENT_ID/exec
         │
-        │  [React fetch() on app load — one request per session]
+        │  [React fetch() when a Pramaan page mounts and there is no fresh cache]
         ▼
 useABLData() hook
-  • Checks sessionStorage cache (15-min TTL)
-  • On cache miss: fetches from GAS endpoint, stores result
-  • Returns { data, loading, error, lastUpdated, refetch }
+  • Checks sessionStorage cache (key `abl_api_cache_v2`, 15-min TTL)
+  • On cache miss: fetches from GAS endpoint (10 s timeout), validates the
+    payload shape, then stores it
+  • Returns { data, allResources, loading, error, lastUpdated, refetch }
         │
         ▼
 React components render natively
@@ -601,155 +607,70 @@ function parseList(val, uppercase) {
 
 Create `src/config/abl.js` — see **Section 0.5** for the full content. All URLs are read from `import.meta.env`; never hardcode them in this file or anywhere else in the React codebase.
 
-### 3.2 New Files to Create
+### 3.2 Files created (current layout)
 
 ```
 src/
-  config/
-    abl.js                            # API URL, cache TTL, tab config
-  hooks/
-    useABLData.js                     # fetch + sessionStorage cache hook
+  config/abl.js                       # API URL, cache TTL, page size, tab colour/label map
+  hooks/useABLData.js                 # fetch + sessionStorage cache hook
   utils/
-    driveUtils.js                     # Drive URL → thumbnail/embed transforms
-  pages/
-    resources/
-      AblHome.jsx                     # static home with dynamic stats
-      AblResourceCenter.jsx           # listings page (all types, filters, pagination)
-      AblDetail.jsx                   # single resource detail page
-      AblContribute.jsx               # static contribute page + form CTA
-  components/
-    abl/
-      AblNavBar.jsx                   # sticky sub-nav: Home | Resource Center | Contribute
-      ResourceCard.jsx                # card for listing grid
-      ResourceFilters.jsx             # filter + search bar
-      ResourceGrid.jsx                # 3-col grid with loading/error/empty states
-      Pagination.jsx                  # page number + prev/next bar
-      DriveImage.jsx                  # Drive thumbnail with fallback
-      ResourceTypeBadge.jsx           # coloured type pill (Worksheet / Games / etc.)
+    driveUtils.js                     # Drive URL → file id / preview link (extractDriveFileId, getDrivePreviewUrl; no thumbnail transforms or download link)
+    ablThumbnails.js                  # resource id → self-hosted thumbnail path (reads abl-thumbnails-manifest.json)
+    filterResources.js                # applyResourceFilters() — pure filter + name-sort
+  pages/resources/
+    AblHome.jsx                       # /pramaan
+    AblResourceCenter.jsx             # /pramaan/resource-centre
+    AblDetail.jsx                     # /pramaan/resource-centre/:id
+    AblContribute.jsx                 # /pramaan/contribute
+  components/abl/
+    AblNavBar.jsx                     # sticky sub-nav: Home | Resource Centre | Contribute
+    ResourceCard.jsx
+    ResourceFilters.jsx               # left sidebar (desktop) / drawer (mobile)
+    ResourceGrid.jsx                  # loading / error / empty / grid
+    Pagination.jsx
+    DriveImage.jsx                    # self-hosted thumbnail with fallback
+    ResourceTypeBadge.jsx
+    ImageLightbox.jsx                 # detail page image viewer
+    VideoLightbox.jsx                 # detail page video overlay
+content/pages/abl-*.yaml              # abl-home, abl-resource-center, abl-detail, abl-contribute (UI copy)
 ```
 
-### 3.3 Files to Modify
+### 3.3 Files modified outside the ABL folders
 
 ```
-src/App.jsx                           # add routes + imports
-src/components/layout/Header.jsx      # add nested flyout for ABL Resources
-content/shared/navigation.yaml       # add ABL Resources with subItems
-content/shared/footer.yaml           # add ABL Resources to Resources column
+src/App.jsx                           # routes + lazy imports
+src/components/layout/Header.jsx      # Dropdown supports `subItems` flyouts (no current menu item uses them)
+content/shared/navigation.yaml        # "Pramaan" menu with three children
+content/shared/footer.yaml            # "ABL Resources" link → /pramaan
 ```
 
 ### 3.4 Routes (App.jsx)
 
-Add after the existing `/resources/publications` route, in this exact order:
+Current routes (all `lazy()` imports, inside `<Routes>`):
 
 ```jsx
-import { Navigate } from 'react-router-dom'
-import AblHome           from './pages/resources/AblHome'
-import AblResourceCenter from './pages/resources/AblResourceCenter'
-import AblDetail         from './pages/resources/AblDetail'
-import AblContribute     from './pages/resources/AblContribute'
-
-// Inside <Routes>:
-<Route path="/resources/abl-resources"                      element={<AblHome />} />
-<Route path="/resources/abl-resources/resource-center"      element={<AblResourceCenter />} />
-<Route path="/resources/abl-resources/resource-center/:id"  element={<AblDetail />} />
-<Route path="/resources/abl-resources/contribute"           element={<AblContribute />} />
+<Route path="/pramaan"                          element={<AblHome />} />
+<Route path="/pramaan/resource-centre"          element={<AblResourceCenter />} />
+<Route path="/pramaan/resource-centre/:id"      element={<AblDetail />} />
+<Route path="/pramaan/contribute"               element={<AblContribute />} />
 ```
 
-Order matters: `:id` must not shadow `resource-center` — it won't because `/resource-center/:id` is more specific than a bare `:id` segment.
+There are no other Pramaan routes: the former `/resources/abl-resources/*` duplicates were removed on 2026-10-25 and now fall through to the `*` NotFound route. `contribute` is a literal path segment, so it is never matched by `:id`.
 
 ---
 
 ## 4. Data Hook — `useABLData.js`
 
-```js
-// src/hooks/useABLData.js
-import { useState, useEffect, useCallback } from 'react'
-import { ABL_API_URL, ABL_CACHE_TTL_MS } from '../config/abl'
+The hook source is `src/hooks/useABLData.js`; read it rather than relying on a copy here. Its contract:
 
-// Guard: surface a clear error if the env var was never set
-if (!ABL_API_URL) {
-  console.error('[ABL] VITE_ABL_API_URL is not set. Add it to .env.development — see docs/ABL-APPSCRIPT-SETUP-GUIDE.md')
-}
-
-const STORAGE_KEY = 'abl_api_cache_v2'
-
-function readCache() {
-  try {
-    const raw = sessionStorage.getItem(STORAGE_KEY)
-    if (!raw) return null
-    const { payload, timestamp } = JSON.parse(raw)
-    if (Date.now() - timestamp > ABL_CACHE_TTL_MS) return null
-    return payload
-  } catch { return null }
-}
-
-function writeCache(payload) {
-  try {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ payload, timestamp: Date.now() }))
-  } catch { /* sessionStorage unavailable (e.g. private mode) — degrade gracefully */ }
-}
-
-export function useABLData() {
-  const [data,        setData]        = useState(null)   // full API response
-  const [loading,     setLoading]     = useState(true)
-  const [error,       setError]       = useState(null)
-  const [lastUpdated, setLastUpdated] = useState(null)
-
-  const fetchData = useCallback(async (bypassCache = false) => {
-    setLoading(true)
-    setError(null)
-
-    if (!bypassCache) {
-      const cached = readCache()
-      if (cached) {
-        setData(cached)
-        setLastUpdated(cached.lastUpdated)
-        setLoading(false)
-        return
-      }
-    }
-
-    try {
-      const controller = new AbortController()
-      const timeout    = setTimeout(() => controller.abort(), 10_000) // 10s timeout
-
-      const res  = await fetch(ABL_API_URL, { signal: controller.signal })
-      clearTimeout(timeout)
-
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const json = await res.json()
-
-      if (!json.success) throw new Error(json.error || 'API returned success: false')
-
-      writeCache(json)
-      setData(json)
-      setLastUpdated(json.lastUpdated)
-    } catch (err) {
-      if (err.name === 'AbortError') {
-        setError('Request timed out. Please check your connection and try again.')
-      } else {
-        setError('Failed to load resources. Please try again.')
-      }
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  useEffect(() => { fetchData() }, [fetchData])
-
-  const refetch = useCallback(() => {
-    try { sessionStorage.removeItem(STORAGE_KEY) } catch {}
-    fetchData(true)
-  }, [fetchData])
-
-  // Derive a flat array of all resources across all tabs
-  const allResources = data
-    ? data.tabs.flatMap(tab => (data.resources[tab] || []).map(r => ({ ...r, tab })))
-    : []
-
-  return { data, allResources, loading, error, lastUpdated, refetch }
-}
-```
+- **Returns** `{ data, allResources, loading, error, lastUpdated, refetch }`. `allResources` is `data.tabs.flatMap(tab => (data.resources[tab] || []).map(r => ({ ...r, tab })))`.
+- **Cache:** `sessionStorage` key **`abl_api_cache_v2`**, value `{ payload, timestamp }`, valid for `ABL_CACHE_TTL_MS` (15 minutes), checked on read. Bump the key suffix if the payload schema ever changes. Read/write are wrapped in try/catch, so a missing `sessionStorage` just means a refetch. Each page that calls the hook fetches independently on mount; the shared `sessionStorage` entry is what avoids duplicate requests.
+- **Fetch:** `fetch(ABL_API_URL)` with an `AbortController` and a 10-second timeout; non-2xx responses and `success: false` are treated as failures.
+- **Validation:** the payload must have a truthy `success`, `tabs` as an array, and `resources` as a plain object whose per-tab values are arrays (or absent). Anything else is rejected (not cached, not stored) and shown as the generic error. A cached entry that fails validation is ignored.
+- **Staleness:** each call takes a request id; unmount or `refetch` aborts the in-flight request and late responses are ignored.
+- **Errors:** user-visible text comes from `content/pages/abl-home.yaml` → `errors.notConfigured | timeout | generic`. Failures are logged with `console.warn` by kind only (never the URL or response body).
+- **`refetch()`** removes the cache entry and refetches (used by the Retry button in `ResourceGrid`).
+- **Consumers:** `AblHome`, `AblResourceCenter`, `AblDetail` (three pages; `AblContribute` does not use it).
 
 ---
 
@@ -762,7 +683,7 @@ export function useABLData() {
 > under ordinary page-load traffic. Thumbnails are now synced ahead of time
 > into self-hosted WebP assets by `scripts/sync-abl-thumbnails.js` — see
 > `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md`. `driveUtils.js` now only handles
-> explicit outbound links (preview/download), not passive image loads.
+> an explicit outbound link (the Drive preview URL) and file-id extraction, not passive image loads. (`getDriveDownloadUrl` was deleted as unused on 2026-10-25.)
 
 ```js
 // src/utils/driveUtils.js
@@ -777,12 +698,6 @@ export function extractDriveFileId(url) {
 export function getDrivePreviewUrl(url) {
   const id = extractDriveFileId(url)
   return id ? `https://drive.google.com/file/d/${id}/preview` : null
-}
-
-// For direct download link
-export function getDriveDownloadUrl(url) {
-  const id = extractDriveFileId(url)
-  return id ? `https://drive.google.com/uc?export=download&id=${id}` : null
 }
 ```
 
@@ -805,60 +720,29 @@ export function getAblThumbnail(id, variant = 'thumb') {
 
 ## 6. Navigation Changes
 
+> **Status 2026-10-25:** the original plan (an "ABL Resources" item with `subItems` under "Resources") was superseded by the site restructure (`docs/specs/site-restructure-plan.md`). What exists now:
+
 ### 6.1 content/shared/navigation.yaml
 
-Add `ABL Resources` with `subItems` to the Resources section. The `subItems` key is new and requires a Header.jsx change (see 6.3).
+A top-level **"Pramaan"** menu with three plain children (no `subItems`):
 
 ```yaml
-  - label: "Resources"
+  - label: "Pramaan"
     children:
-      - label: "Saral Kadam Materials"
-        to: "/resources/saral-kadam"
-        desc: "Foundational learning booklets"
-      - label: "Annual Reports"
-        to: "/resources/annual-reports"
-        desc: "Reports from 2014 to present"
-      - label: "Our Publications"
-        to: "/resources/publications"
-        desc: "Research papers & articles"
-      - label: "ABL Resources"
-        to: "/resources/abl-resources"
-        desc: "Activity-Based Learning resource library"
-        subItems:
-          - label: "Home"
-            to: "/resources/abl-resources"
-          - label: "Resource Center"
-            to: "/resources/abl-resources/resource-center"
-          - label: "Contribute"
-            to: "/resources/abl-resources/contribute"
+      - label: "About Pramaan"      # to: /pramaan
+      - label: "Resource Centre"    # to: /pramaan/resource-centre
+      - label: "Contribute"         # to: /pramaan/contribute
 ```
 
-Run `npm run content:sync` after editing.
+(Each child also has a `desc`; see the file for the full entries.) Run `npm run content:sync` after editing.
 
 ### 6.2 content/shared/footer.yaml
 
-Under the Resources column, add:
-```yaml
-      - label: "ABL Resources"
-        to: "/resources/abl-resources"
-```
-
-Run `npm run content:sync` after editing.
+The Resources column has a link labelled "ABL Resources" pointing at `/pramaan`. The footer has three link columns (About, Get Involved, Resources) and links to no removed route.
 
 ### 6.3 Header.jsx — Nested Flyout Support
 
-Modify the existing `Dropdown` component to detect `item.subItems`. When present, render a right-side flyout on hover. **Do not change behaviour for items without `subItems`.**
-
-**Implementation requirements:**
-- Wrap the item `<Link>` in `<div className="relative group/sub">` when `item.subItems` exists
-- Add `<ChevronRight className="w-3.5 h-3.5 ml-auto opacity-50" />` to the right of the item label
-- Flyout: `<motion.div className="absolute left-full top-0 ml-2 w-52 bg-white rounded-2xl shadow-float border border-tide-border/60 py-2 z-50 overflow-hidden">` — shown via `group/sub-hover:block`
-- Flyout items: same `<Link>` styling as parent dropdown items but without `desc` text
-- Add accent bar to flyout top (same `gradient-primary-soft` line as parent dropdown)
-- Use `AnimatePresence` + Framer Motion for the flyout animation (same as parent: `opacity 0→1, y 10→0, scale 0.97→1`)
-- On mobile (hamburger menu): render `subItems` as an indented list directly below the parent item (no flyout — just a 2-level accordion)
-- Clicking any sub-item closes the entire menu (call `onClose`)
-- Keyboard: `subItems` items are focusable; Escape closes flyout and returns focus to parent item
+`Header.jsx`'s `Dropdown` supports `item.subItems` (right-hand flyout on desktop), as originally specified, but no entry in `navigation.yaml` currently uses it. The site is English-only, so there is no language switcher to hide on Pramaan pages (the multilingual framework that had one was removed; see `docs/specs/multilingual-i18n-spec.md`).
 
 ---
 
@@ -866,21 +750,21 @@ Modify the existing `Dropdown` component to detect `item.subItems`. When present
 
 ### 7.1 `AblNavBar.jsx`
 
-Sticky sub-navigation bar shown on all 3 ABL pages.
+Sticky sub-navigation bar shown on the four Pramaan page components (`AblHome`, `AblResourceCenter`, `AblDetail`, `AblContribute`).
 
 ```
-Props: { active: 'home' | 'resource-center' | 'contribute' }
+Props: none (the active tab is derived from `useLocation()`; the originally specified `active` prop was not implemented)
 ```
 
-Layout: horizontal pill tabs. Sticky at `top-[72px]` (below main header), `z-30`, `bg-white border-b border-tide-border`.
+Layout: horizontal pill tabs. Sticky at `top-[70px]` (below the 70px fixed header), `z-30`, `bg-white border-b border-tide-border`.
 
 | Tab | Active route contains |
 |---|---|
-| Home | `/resources/abl-resources` (exact) |
-| Resource Center | `/resources/abl-resources/resource-center` |
-| Contribute | `/resources/abl-resources/contribute` |
+| Home | `/pramaan` (and, as a fallback, anything that is not one of the two below) |
+| Resource Centre | pathname contains `/resource-centre` or `/resource-center` |
+| Contribute | pathname contains `/contribute` |
 
-Detect active from `useLocation()` — do not rely on the `active` prop alone so back-navigation stays in sync.
+The tab links themselves always point at `/pramaan`, `/pramaan/resource-centre` and `/pramaan/contribute`; because the active tab is matched on path fragments, the same path-fragment match (it also accepts the `resource-center` spelling) is what picks the active tab. Tab labels come from `abl-home.yaml` → `nav.*`.
 
 ### 7.2 `DriveImage.jsx`
 
@@ -889,7 +773,7 @@ Props: { id: string, alt: string, className?: string, variant?: 'thumb' | 'full'
 ```
 
 - Resolve `id` → `getAblThumbnail(id, variant ?? 'thumb')` (self-hosted, synced ahead of time — see §5)
-- Render `<img loading="lazy" />`
+- Render `<img loading="lazy" data-no-placeholder />` — the `data-no-placeholder` attribute opts this image out of the site-wide image-placeholder swap (`src/utils/imagePlaceholder.js`, installed in `src/main.jsx`), so a failed thumbnail shows this component's own icon fallback instead of the generic site placeholder
 - `onError` or no manifest entry yet: fallback `<div className="w-full h-full bg-gradient-to-br from-primary-light to-primary/20 flex items-center justify-center"><BookOpen className="w-10 h-10 text-primary/40" /></div>`
 - The outer container must have a defined aspect ratio so layout does not shift: `aspect-[3/4]` (portrait), pass `className` to override
 
@@ -916,7 +800,7 @@ const COLOR_MAP = {
 
 ```
 Props: { resource: ResourceObject }
-Navigates to: /resources/abl-resources/resource-center/:id
+Navigates to: /pramaan/resource-centre/:id
 ```
 
 Full card is a `<Link>` for keyboard accessibility.
@@ -946,7 +830,7 @@ Card: `bg-white rounded-2xl border border-tide-border shadow-card hover:shadow-c
 ### 7.5 `ResourceFilters.jsx`
 
 ```
-Props: { allResources: ResourceObject[], filters: FilterState, onChange: fn, onClear: fn, tabs: string[] }
+Props: { allResources: ResourceObject[], filters: FilterState, onChange: fn, onClear: fn, tabs: string[], data }   (`data` is the useABLData payload, used for per-type counts)
 ```
 
 FilterState shape:
@@ -1007,6 +891,8 @@ Props: { resources: ResourceObject[], loading: boolean, error: string | null, on
 ---
 
 ## 8. Page Specifications
+
+> **Status 2026-10-25:** the JSX below is the original design sketch, kept for history. It is **not** the current UI: copy is now read from `content/pages/abl-*.yaml`, the routes are `/pramaan/*`, `AblDetail` has been substantially redesigned, and `PageHero` no longer takes a `gradient` prop (it is ignored). The sketches also still show the old `/resources/abl-resources/*` links, which no longer exist; the components link to `/pramaan/*`. Treat the page components themselves as the source of truth.
 
 ### 8.1 `AblHome.jsx`
 
@@ -1107,7 +993,7 @@ const pageItems = filtered.slice(startIdx, startIdx + ABL_PAGE_SIZE)
 
 ### 8.3 `AblDetail.jsx`
 
-Route: `/resources/abl-resources/resource-center/:id`
+Route: `/pramaan/resource-centre/:id` (originally sketched as `/resources/abl-resources/resource-center/:id`)
 
 On mount: read all resources from `useABLData()`, find `allResources.find(r => r.id === id)`. If not found after loading: show "Resource not found" with back link.
 
@@ -1286,7 +1172,7 @@ All existing Tailwind tokens apply. Do not add new colours to `tailwind.config.j
 - **CORS**: GAS sets appropriate CORS headers for GET requests when deployed as "Anyone". No proxy needed.
 - **Content validation**: the GAS script's `buildResource()` function normalises all fields before returning — null-coerces instead of passing raw sheet values.
 - **Thumbnail sync endpoints** (`?action=manifest`, `?action=fetchImage`) are gated by `SYNC_TOKEN`, a shared secret stored only in Script Properties (Apps Script) and a GitHub Actions encrypted secret — never in source. `fetchImage` additionally allowlists against the live resource list by `id`; it never accepts a raw Drive `fileId`, so a leaked token can only ever read images that are already public resources, not arbitrary files in the linked Drive.
-- **`GITHUB_PAT`** (used by `onSheetChange` to trigger the sync workflow) must be a *fine-grained* token scoped to this one repository with only the "Actions: Read and write" permission — no `contents`, no `admin`, no access to other repos. If it ever leaks, the blast radius is "can trigger a workflow run," nothing more.
+- **`GITHUB_PAT`** (used by `onSheetChange` to trigger the sync workflow) is meant to be a *fine-grained* token scoped to this one repository with the narrowest permission that works; the setup guides specify "Actions: Read and write". **Unverified (2026-10-25):** it was not confirmed that this is the permission GitHub requires for the `repository_dispatch` endpoint (GitHub's REST page checked did not state a fine-grained permission for it). If `onSheetChange` logs a non-204 response in the Apps Script execution log, check the token's permissions first. In any case the token should have no access to other repositories.
 - **Downloaded image bytes are never trusted blindly**: the sync job lets `sharp` validate the bytes actually decode as an image (not a hand-rolled magic-byte check — `sharp` covers far more real-world formats) and enforces a 25MB size cap before writing anything into the deployed site, since the Sheet is editable by non-developer staff and is a softer trust boundary than the codebase itself.
 - **Resource ids are not trusted as filesystem-safe** (2026-06-21): the sync script allowlist-validates every `id` (letters, digits, space, `_()-` only) before it reaches `path.join`/`fs.rm`, and independently verifies any path about to be deleted actually resolves inside the assets directory. Without this, a Sheet-supplied id containing `../` — malicious or just a typo — could write or delete files outside the intended directory.
 - **The sync script never lets `ABL_SYNC_TOKEN` reach a thrown `Error` or log line** (2026-06-21): error messages use a token-redacted copy of the request URL. This repo is public, so anything printed to a GitHub Actions log is publicly readable — GitHub's own secret redaction is a backstop, not something this code relies on.
@@ -1301,24 +1187,26 @@ All existing Tailwind tokens apply. Do not add new colours to `tailwind.config.j
 | Resource not yet synced (new sheet row before next sync run) | No manifest entry → `DriveImage` renders gradient fallback immediately. Never show broken img. |
 | Resource with no photo | `url=null` → fallback rendered immediately, no HTTP request made. |
 | Gujarati script in name/concept | Rendered as-is; Noto Sans Gujarati is already loaded globally. |
-| Flashcard concept is a full sentence | `ResourceCard` detects `type === 'Flashcard'` and omits concept line. `AblDetail` always renders concept in full. |
+| Flashcard concept is a full sentence | `ResourceCard` detects `type === 'Flashcards'` (plural, matching the sheet tab name) and omits the concept line. `AblDetail` always renders concept in full. |
 | Language field comma-separated ("Gujarati, English") | Split on comma, render each as a badge. |
 | "No Language" value | Display as "Language Independent" badge. |
 | Unknown ownership (not TIDE) | Group as "External" in ownership filter; display as-is on detail page. |
 | `grades` is null/empty | Show no grade chips; hide chapters accordion on detail page. |
-| GAS returns `success: false` | Show error state with retry button. Log `error` field to console. |
+| GAS returns `success: false` | Show the generic error state with a retry button. The hook logs only the failure kind (`api-error`), never the response body. |
 | GAS times out (10s client-side) | Show timeout error message with retry button. |
-| sessionStorage unavailable | `writeCache` silently fails (try/catch). Data still renders; just refetched each navigation. |
-| New sheet tab added | GAS picks it up automatically on next refresh. React uses `TAB_STYLE_MAP[tab] ?? TAB_STYLE_MAP._default` — renders with gray badge until `TAB_STYLE_MAP` in `abl.js` is updated. No crash. |
+| sessionStorage unavailable | `readCache`/`writeCache` fail silently (try/catch). Data still renders; just refetched on each page mount. |
+| New sheet tab added | GAS picks it up automatically on next refresh. React uses `getTabStyle(tab)` (`TAB_STYLE_MAP[tab] ?? TAB_STYLE_MAP._default`) — renders with the gray `_default` badge until the tab is added to `TAB_COLORS` in `src/config/abl.js` and `abl-home.yaml` → `resourceTypes.labels`. No crash. |
 | Empty sheet tab | `rows.length === 0` → tab not included in response `tabs` array → not shown in filters. |
 | Row with blank ID | Skipped in `buildResource` — GAS level check. Never reaches React. |
 | Filter produces 0 results | Empty state: "No resources match your filters" + "Clear filters" button. |
 | `id` in URL doesn't match any resource | "Resource not found" card with link back to Resource Center. |
-| Navigate to `/resources/abl-resources/resource-center/W99` (valid tab, non-existent ID) | After data loads: "not found" state. |
+| Navigate to `/pramaan/resource-centre/W99` (non-existent ID) | After data loads: "not found" state. |
 
 ---
 
 ## 12. Implementation Order
+
+> **Historical (2026-10-25):** this build order is how the feature was originally planned; it has been implemented. Step 1's `PENDING` placeholder and step 22 ("update `ABL_API_URL` in `src/config/abl.js`") no longer apply — the URL comes from `VITE_ABL_API_URL`.
 
 Implement strictly in this order. Do not skip ahead.
 
@@ -1363,6 +1251,8 @@ Implement strictly in this order. Do not skip ahead.
 
 ## 13. Testing
 
+> **Status 2026-10-25:** the tables below are a manual/aspirational test plan. Automated coverage that exists: Vitest unit tests for `driveUtils`, `filterResources`, `imgSrc`, `ablThumbnails`, `useABLData` a routes smoke test and a removed-routes test (`src/test/routing/`; whole suite 15 files / 189 tests), and Playwright specs in `e2e/` (`pramaan.spec.js` covers the three main Pramaan pages). The flows listed under integration/E2E (filter + pagination URL restore, back button, mobile nav, image fallback, full journey) are not automated.
+
 ### Unit tests — `driveUtils.js`
 
 | Input | Expected |
@@ -1378,10 +1268,10 @@ Implement strictly in this order. Do not skip ahead.
 
 | Test | Expected |
 |---|---|
-| Navigate to `/#/resources/abl-resources` | Renders AblHome |
-| Navigate to `/#/resources/abl-resources/resource-center` | Renders AblResourceCenter, loading state visible, then resources appear |
-| Navigate to `/#/resources/abl-resources/contribute` | Renders AblContribute (does NOT render AblResourceCenter with `:id='contribute'`) |
-| Navigate to `/#/resources/abl-resources/resource-center/W1` | Renders AblDetail for W1 |
+| Navigate to `/pramaan` | Renders AblHome |
+| Navigate to `/pramaan/resource-centre` | Renders AblResourceCenter, loading state visible, then resources appear |
+| Navigate to `/pramaan/contribute` | Renders AblContribute (does NOT render AblDetail with `:id='contribute'`) |
+| Navigate to `/pramaan/resource-centre/W1` | Renders AblDetail for W1 |
 | Filter by type "Worksheet" | Only Worksheet type resources shown |
 | Filter by grade G3 | Only resources with GRADE 3 in grades array |
 | Combined filter (type + grade) | Both filters applied |
@@ -1396,12 +1286,12 @@ Implement strictly in this order. Do not skip ahead.
 
 | Test | Steps | Expected |
 |---|---|---|
-| Nav flyout | Hover Resources → hover ABL Resources | Flyout shows Home / Resource Center / Contribute |
-| Nav flyout click | Click "Resource Center" in flyout | Navigates, flyout closes |
-| Footer link | Scroll to footer, click ABL Resources | Navigates to AblHome |
-| Mobile nav | Resize to 375px, open hamburger | ABL Resources shows inline sub-items |
-| Image fallback | Use DevTools to block `lh3.googleusercontent.com` | Gradient fallback shows on all cards, no broken icons |
-| Full user journey | Home → Resources → ABL Resources → Resource Center → filter by Kits → click a Kit → read detail → back button | All steps work, filter preserved on back |
+| Nav dropdown | Hover "Pramaan" in the header | Dropdown lists About Pramaan / Resource Centre / Contribute |
+| Nav click | Click "Resource Centre" in the dropdown | Navigates to `/pramaan/resource-centre`, dropdown closes |
+| Footer link | Scroll to footer, click ABL Resources | Navigates to AblHome at `/pramaan` |
+| Mobile nav | Resize to 375px, open hamburger | Pramaan group lists its three links |
+| Image fallback | Use DevTools to block requests to `assets/images/abl/` | Gradient fallback shows on all cards, no broken icons |
+| Full user journey | Home → Pramaan → Resource Centre → filter by Kits → click a Kit → read detail → back button | All steps work, filter preserved on back |
 | Build check | `npm run build` | Zero errors, zero warnings about missing files |
 
 ---
@@ -1415,7 +1305,7 @@ The **Apps Script JSON API + sessionStorage cache** pattern used here is reusabl
 3. Adapt `buildResource()` in GAS for the new schema
 4. Set up a new GAS Web App per feature (or add a `?dataset=name` param to one shared GAS)
 
-Document this pattern in `memory/` when this feature ships.
+The generalised version of this pattern, including a security checklist, is in `.claude/skills/sheet-integration/SKILL.md`.
 
 ---
 

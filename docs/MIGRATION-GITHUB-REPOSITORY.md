@@ -63,25 +63,21 @@ Before writing steps a non-technical reader will follow literally, this was chec
 
 ---
 
-## Step 5 — Update the New Live URL
+## Step 5 — Note the New Live URL
 
-The site's URL is now `https://<new-owner>.github.io/<repo-name>/` instead of the old one. One file references the *old* URL directly and needs updating:
+The site's URL is now `https://<new-owner>.github.io/<repo-name>/` instead of the old one.
 
-1. Open `index.html`.
-2. Find this line:
-   ```html
-   <meta property="og:image" content="https://OLD-OWNER.github.io/REPO-NAME/assets/images/shared/tide-logo.png" />
-   ```
-3. Replace `OLD-OWNER` with the new owner's GitHub username (keep the repo name the same unless you're also renaming the repository).
-4. Commit and push this change (Path A or B from `CONTENT-GUIDE.md`).
+**Checked 2026-10-25: no file in the repository needs editing for this.** An earlier version of this guide told you to edit an `og:image` line in `index.html`; that line no longer exists (`index.html` sets only the title and `og:site_name`, both filled in at build time from `content/shared/site.yaml`; each page sets its own Open Graph tags through the `SeoHead` component). A search of `src/`, `content/`, `index.html`, `public/`, `scripts/` and `vite.config.js` found no `github.io` address. The canonical links, Open Graph URLs, sitemap, `robots.txt`, `llms.txt` (generated at build time from `content/shared/llms.txt` and the `url` in `site.yaml`) and schema.org metadata all point at `https://tideinternational.org`, not at the GitHub Pages address, so they are unaffected by the transfer.
 
-> **Why only this one line?** Every other URL in the site (the canonical link, the `og:url` tag, the schema.org metadata) already points at `tideinternational.org` — the eventual real domain — not the GitHub Pages URL, so those are unaffected by this transfer. If a custom domain (like `tideinternational.org`) is ever connected to GitHub Pages via a `CNAME` file, this whole "the URL changes when ownership changes" problem goes away permanently — worth doing at some point, but out of scope for this migration.
+What *does* depend on the repository name is the build's base path: `vite.config.js` sets it to `/tide-testing/` when building on GitHub Actions, and `public/404.html` assumes the site lives under one path segment (`/<repo-name>/`). If the repository is **renamed** as part of the transfer, update `base` in `vite.config.js` to match (and check `404.html`); if only the owner changes, nothing needs to change.
+
+> If a custom domain (like `tideinternational.org`) is ever connected to GitHub Pages via a `CNAME` file, the "URL changes when ownership changes" problem goes away — but note that serving from a domain root would also require changing the base path and `public/404.html` (which hard-codes the one-path-segment project-site assumption). That is out of scope for this migration.
 
 ---
 
 ## Step 6 — Trigger a Fresh Deploy and Verify
 
-1. **Actions** tab → **Deploy to GitHub Pages** → **Run workflow** (or just wait — the commit from Step 5 triggers it automatically).
+1. **Actions** tab → **Deploy to GitHub Pages** → **Run workflow** (that workflow also runs on every push to `main`).
 2. Once green, visit the new live URL and confirm the site loads correctly.
 
 ---
@@ -103,8 +99,7 @@ Once this passes, the migration is fully complete — nothing in the live system
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| Site shows a blank/broken page at the new URL | `index.html`'s base path assumption — check `vite.config.js`'s base path still matches the repo name (only the owner changed, not the name, so this usually needs no change) | Confirm the repo name wasn't also changed during transfer |
-| Social media link previews show a broken image | Step 5 wasn't completed | Update the `og:image` line in `index.html` |
+| Site shows a blank/broken page at the new URL | The base path in `vite.config.js` (`/tide-testing/` on GitHub Actions) no longer matches the repository name | Confirm the repo name wasn't also changed during transfer; if it was, update `base` in `vite.config.js` and redeploy |
 | Auto-sync stops working after a while | `GITHUB_PAT` expired (fine-grained tokens have an expiration date) | See `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` |
 | New owner can't see repository secrets' values | Expected — GitHub never shows a secret's value again after creation, for anyone, regardless of ownership | Not an error; only matters if you need to know the value (you shouldn't, except `ABL_SYNC_TOKEN`/`GITHUB_PAT` which you set yourself in the other guide) |
 

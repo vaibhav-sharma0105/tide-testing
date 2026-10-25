@@ -7,7 +7,7 @@
  *  3. Waits for the Suspense boundary to resolve
  *  4. Asserts the container has content
  *
- * Mocks for framer-motion, react-i18next, react-helmet-async, and
+ * Mocks for framer-motion, react-helmet-async, and
  * IntersectionObserver are declared in src/test/setup.js.
  */
 
@@ -99,15 +99,6 @@ describe('Route smoke tests', () => {
     expect(container.firstChild).not.toBeNull()
   })
 
-  it('/about/our-results — OurResults renders without crashing', async () => {
-    const container = await renderRoute(
-      () => import('../../pages/about/OurResults'),
-      '/about/our-results',
-      '/about/our-results'
-    )
-    expect(container.firstChild).not.toBeNull()
-  })
-
   it('/about/past-programs — PastPrograms renders without crashing', async () => {
     const container = await renderRoute(
       () => import('../../pages/about/PastPrograms'),
@@ -171,20 +162,11 @@ describe('Route smoke tests', () => {
     expect(container.firstChild).not.toBeNull()
   })
 
-  it('/get-involved/work-with-us — WorkWithUs renders without crashing', async () => {
-    const container = await renderRoute(
-      () => import('../../pages/get-involved/WorkWithUs'),
-      '/get-involved/work-with-us',
-      '/get-involved/work-with-us'
-    )
-    expect(container.firstChild).not.toBeNull()
-  })
-
-  it('/get-involved/mccx — OrganizeMCCx renders without crashing', async () => {
+  it('/education-for-harmony/mccx — OrganizeMCCx renders without crashing', async () => {
     const container = await renderRoute(
       () => import('../../pages/get-involved/OrganizeMCCx'),
-      '/get-involved/mccx',
-      '/get-involved/mccx'
+      '/education-for-harmony/mccx',
+      '/education-for-harmony/mccx'
     )
     expect(container.firstChild).not.toBeNull()
   })
@@ -212,87 +194,6 @@ describe('Route smoke tests', () => {
       () => import('../../pages/resources/AblContribute'),
       '/pramaan/contribute',
       '/pramaan/contribute'
-    )
-    expect(container.firstChild).not.toBeNull()
-  })
-
-  it('/resources/saral-kadam — SaralKadam renders without crashing', async () => {
-    const container = await renderRoute(
-      () => import('../../pages/resources/SaralKadam'),
-      '/resources/saral-kadam',
-      '/resources/saral-kadam'
-    )
-    expect(container.firstChild).not.toBeNull()
-  })
-
-  it('/resources/annual-reports — AnnualReports renders without crashing', async () => {
-    const container = await renderRoute(
-      () => import('../../pages/resources/AnnualReports'),
-      '/resources/annual-reports',
-      '/resources/annual-reports'
-    )
-    expect(container.firstChild).not.toBeNull()
-  })
-
-  it('/resources/publications — Publications renders without crashing', async () => {
-    const container = await renderRoute(
-      () => import('../../pages/resources/Publications'),
-      '/resources/publications',
-      '/resources/publications'
-    )
-    expect(container.firstChild).not.toBeNull()
-  })
-
-  it('/projects/block-eti — BlockETI renders without crashing', async () => {
-    const container = await renderRoute(
-      () => import('../../pages/projects/BlockETI'),
-      '/projects/block-eti',
-      '/projects/block-eti'
-    )
-    expect(container.firstChild).not.toBeNull()
-  })
-
-  it('/projects/bettered — BetterED renders without crashing', async () => {
-    const container = await renderRoute(
-      () => import('../../pages/projects/BetterED'),
-      '/projects/bettered',
-      '/projects/bettered'
-    )
-    expect(container.firstChild).not.toBeNull()
-  })
-
-  it('/projects/empowered — EmpowerEd renders without crashing', async () => {
-    const container = await renderRoute(
-      () => import('../../pages/projects/EmpowerEd'),
-      '/projects/empowered',
-      '/projects/empowered'
-    )
-    expect(container.firstChild).not.toBeNull()
-  })
-
-  it('/projects/completed — CompletEd renders without crashing', async () => {
-    const container = await renderRoute(
-      () => import('../../pages/projects/CompletEd'),
-      '/projects/completed',
-      '/projects/completed'
-    )
-    expect(container.firstChild).not.toBeNull()
-  })
-
-  it('/projects/other-projects — OtherProjects renders without crashing', async () => {
-    const container = await renderRoute(
-      () => import('../../pages/projects/OtherProjects'),
-      '/projects/other-projects',
-      '/projects/other-projects'
-    )
-    expect(container.firstChild).not.toBeNull()
-  })
-
-  it('/projects/sdg-drives — SdgDrives renders without crashing', async () => {
-    const container = await renderRoute(
-      () => import('../../pages/projects/SdgDrives'),
-      '/projects/sdg-drives',
-      '/projects/sdg-drives'
     )
     expect(container.firstChild).not.toBeNull()
   })

@@ -1,18 +1,12 @@
 import { motion } from 'framer-motion'
-import { useTranslation } from 'react-i18next'
 import SeoHead from '../../components/ui/SeoHead'
 import { CheckCircle2, Mail, MessageCircle } from 'lucide-react'
 import PageHero from '../../components/ui/PageHero'
 import data from '../../data/get-involved-donate.json'
+import site from '../../data/site.json'
+import { fadeUp } from '../../utils/motionPresets'
 
 const B = import.meta.env.BASE_URL
-
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6, delay, ease: [0.4, 0, 0.2, 1] },
-})
 
 function BankRow({ label, value }) {
   return (
@@ -24,7 +18,6 @@ function BankRow({ label, value }) {
 }
 
 export default function Donate() {
-  const { t } = useTranslation()
 
   return (
     <>
@@ -33,16 +26,15 @@ export default function Donate() {
         description={data.meta.seoDescription}
         path="/get-involved/donate"
         breadcrumbs={[
-          { name: 'Home', path: '/' },
-          { name: 'Get Involved' },
-          { name: 'Donate', path: '/get-involved/donate' },
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: site.breadcrumbs.getInvolved },
+          { name: data.meta.breadcrumbName, path: '/get-involved/donate' },
         ]}
       />
       <PageHero
         badge={data.meta.badge}
-        title={t('donate.title', data.meta.title)}
-        subtitle={t('donate.tagline', data.meta.tagline)}
-        gradient
+        title={data.meta.title}
+        subtitle={data.meta.tagline}
       />
 
       <section className="section-padding bg-tide-bg">
@@ -52,10 +44,10 @@ export default function Donate() {
             {/* Left — hero content */}
             <motion.div {...fadeUp()}>
               <h2 className="font-display text-2xl font-semibold text-tide-text mb-4">
-                {t('donate.hero.heading', data.hero.heading)}
+                {data.hero.heading}
               </h2>
               <p className="font-body text-tide-muted leading-relaxed mb-6">
-                {t('donate.hero.body', data.hero.body)}
+                {data.hero.body}
               </p>
 
               <ul className="space-y-3 mb-8">
@@ -73,7 +65,7 @@ export default function Donate() {
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-primary text-white font-body font-semibold text-sm hover:bg-primary/90 transition-colors"
                 >
                   <Mail className="w-4 h-4" />
-                  {t('donate.hero.emailCta', data.hero.emailCta)}
+                  {data.hero.emailCta}
                 </a>
                 <a
                   href={data.hero.whatsappUrl}
@@ -82,7 +74,7 @@ export default function Donate() {
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-primary text-primary font-body font-semibold text-sm hover:bg-primary-light transition-colors"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  {t('donate.hero.whatsappCta', data.hero.whatsappCta)}
+                  {data.hero.whatsappCta}
                 </a>
               </div>
             </motion.div>
@@ -99,14 +91,14 @@ export default function Donate() {
 
               <div className="bg-white rounded-2xl border border-tide-border p-6">
                 <h3 className="font-display text-lg font-semibold text-tide-text mb-4">
-                  {t('donate.bank.transferTitle', data.bank.transferTitle)}
+                  {data.bank.transferTitle}
                 </h3>
                 <div className="space-y-0">
-                  <BankRow label={t('donate.bank.accountNameLabel', 'Account name')} value={data.bank.accountName} />
-                  <BankRow label={t('donate.bank.accountNumberLabel', 'Account number')} value={data.bank.accountNumber} />
-                  <BankRow label={t('donate.bank.bankNameLabel', 'Bank')} value={data.bank.bankName} />
-                  <BankRow label={t('donate.bank.ifscLabel', 'IFSC')} value={data.bank.ifsc} />
-                  <BankRow label={t('donate.bank.branchLabel', 'Branch')} value={data.bank.branch} />
+                  <BankRow label={data.bank.accountNameLabel} value={data.bank.accountName} />
+                  <BankRow label={data.bank.accountNumberLabel} value={data.bank.accountNumber} />
+                  <BankRow label={data.bank.bankNameLabel} value={data.bank.bankName} />
+                  <BankRow label={data.bank.ifscLabel} value={data.bank.ifsc} />
+                  <BankRow label={data.bank.branchLabel} value={data.bank.branch} />
                 </div>
               </div>
             </motion.div>

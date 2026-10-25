@@ -1,0 +1,34 @@
+# Site-wide facts used in places search engines and AI crawlers read:
+# the structured data (JSON-LD) in index.html, the breadcrumb trail each page
+# reports, and the llms.txt template (content/shared/llms.txt). Visible page text lives in the page's own YAML;
+# the email and lives-impacted figure below must match what those pages say
+# (npm run content:validate checks this).
+name: "TIDE Foundation"
+alternateName: "Together in Development and Education Foundation"
+url: "https://tideinternational.org"
+logo: "/assets/images/shared/tide-logo.png"
+# Shown in place of any image that fails to load (see src/utils/imagePlaceholder.js).
+placeholderImage: "/assets/images/shared/placeholder.svg"
+email: "tidefoundation@gmail.com"
+livesImpacted: "50,500+"
+# Grades the Pramaan library covers. Write {gradeRange} wherever a page says it (the YAML→JSON
+# sync and llms.txt fill it in). Keep it equal to the GRADES list in src/config/abl.js —
+# a unit test checks that.
+gradeRange: "1–5"
+foundingYear: "2014"
+location: "Ahmedabad, Gujarat, India"
+country: "India"
+language: "en"
+description: "TIDE Foundation is an NGO based in Ahmedabad, India working to bring sustainable, systemic change to India's education landscape since 2014. We have impacted {livesImpacted} lives across Gujarat."
+websiteDescription: "Official website of TIDE Foundation — Together in Development and Education"
+keywords: "education NGO India, activity-based learning, holistic education, Gujarat education, TIDE Foundation"
+
+# Names of the parent steps in each page's breadcrumb trail (the last step is
+# the page's own `meta.breadcrumbName` in its YAML).
+breadcrumbs:
+  home: "Home"
+  aboutUs: "About Us"
+  getInvolved: "Get Involved"
+  pramaan: "Pramaan"
+  educationForHarmony: "Education for Harmony"
+  resourceCentre: "Resource Centre"

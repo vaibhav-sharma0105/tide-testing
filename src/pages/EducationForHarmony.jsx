@@ -1,21 +1,13 @@
 import { motion } from 'framer-motion'
-import { useTranslation } from 'react-i18next'
 import SeoHead from '../components/ui/SeoHead'
 import { CheckCircle2, Mail } from 'lucide-react'
 import PageHero from '../components/ui/PageHero'
 import SectionHeader from '../components/ui/SectionHeader'
 import data from '../data/education-for-harmony.json'
-
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6, delay, ease: [0.4, 0, 0.2, 1] },
-})
+import site from '../data/site.json'
+import { fadeUp } from '../utils/motionPresets'
 
 export default function EducationForHarmony() {
-  const { t } = useTranslation()
-
   return (
     <>
       <SeoHead
@@ -23,16 +15,15 @@ export default function EducationForHarmony() {
         description={data.meta.seoDescription}
         path="/education-for-harmony"
         breadcrumbs={[
-          { name: 'Home', path: '/' },
-          { name: 'Education for Harmony', path: '/education-for-harmony' },
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: data.meta.breadcrumbName, path: '/education-for-harmony' },
         ]}
       />
 
       <PageHero
         badge={data.meta.badge}
-        title={t('efh.title', data.meta.title)}
-        subtitle={t('efh.tagline', data.meta.tagline)}
-        gradient
+        title={data.meta.title}
+        subtitle={data.meta.tagline}
       />
 
       {/* Intro */}
@@ -41,7 +32,7 @@ export default function EducationForHarmony() {
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <motion.div {...fadeUp()}>
               <p className="font-body text-lg text-tide-muted leading-relaxed">
-                {t('efh.intro.body', data.intro.body)}
+                {data.intro.body}
               </p>
             </motion.div>
             <motion.div {...fadeUp(0.1)}>
@@ -63,13 +54,13 @@ export default function EducationForHarmony() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fadeUp()} className="text-center mb-12">
             <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-white/15 text-white/90 border border-white/25">
-              {t('efh.cares.badge', data.cares.sectionBadge)}
+              {data.cares.sectionBadge}
             </span>
             <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
-              {t('efh.cares.title', data.cares.title)}
+              {data.cares.title}
             </h2>
             <p className="font-body text-white/70 max-w-2xl mx-auto">
-              {t('efh.cares.subtitle', data.cares.subtitle)}
+              {data.cares.subtitle}
             </p>
           </motion.div>
 
@@ -92,9 +83,9 @@ export default function EducationForHarmony() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fadeUp()} className="mb-12">
             <SectionHeader
-              badge={t('efh.programs.badge', data.programs.sectionBadge)}
-              title={t('efh.programs.title', data.programs.title)}
-              subtitle={t('efh.programs.subtitle', data.programs.subtitle)}
+              badge={data.programs.sectionBadge}
+              title={data.programs.title}
+              subtitle={data.programs.subtitle}
             />
           </motion.div>
 
@@ -122,9 +113,9 @@ export default function EducationForHarmony() {
       <section className="section-padding bg-tide-bg">
         <div className="max-w-4xl mx-auto">
           <motion.div {...fadeUp()} className="text-center mb-8">
-            <span className="badge-primary mb-4 mx-auto">{t('efh.video.badge', data.video.sectionBadge)}</span>
+            <span className="badge-primary mb-4 mx-auto">{data.video.sectionBadge}</span>
             <h2 className="font-display text-2xl font-semibold text-tide-text">
-              {t('efh.video.title', data.video.title)}
+              {data.video.title}
             </h2>
           </motion.div>
           <motion.div {...fadeUp(0.1)}
@@ -138,7 +129,7 @@ export default function EducationForHarmony() {
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              sandbox="allow-scripts allow-same-origin allow-presentation allow-fullscreen"
+              sandbox="allow-scripts allow-same-origin allow-presentation"
             />
           </motion.div>
         </div>
@@ -148,19 +139,19 @@ export default function EducationForHarmony() {
       <section className="section-padding bg-white border-t border-tide-border">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div {...fadeUp()}>
-            <span className="badge-primary mb-4 mx-auto">{t('efh.collaborate.badge', data.collaborate.sectionBadge)}</span>
+            <span className="badge-primary mb-4 mx-auto">{data.collaborate.sectionBadge}</span>
             <h2 className="font-display text-2xl font-semibold text-tide-text mb-4">
-              {t('efh.collaborate.title', data.collaborate.title)}
+              {data.collaborate.title}
             </h2>
             <p className="font-body text-tide-muted mb-8 leading-relaxed">
-              {t('efh.collaborate.body', data.collaborate.body)}
+              {data.collaborate.body}
             </p>
             <a
               href={`mailto:${data.collaborate.ctaEmail}`}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-white font-body font-semibold text-sm hover:bg-primary/90 transition-colors"
             >
               <Mail className="w-4 h-4" />
-              {t('efh.collaborate.ctaLabel', data.collaborate.ctaLabel)}
+              {data.collaborate.ctaLabel}
             </a>
           </motion.div>
         </div>

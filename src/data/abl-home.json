@@ -4,12 +4,19 @@
     "title": "ABL Resource Library",
     "subtitle": "A curated library of Activity-Based Learning resources for Grades 1–5, developed and used by TIDE Foundation educators.",
     "seoTitle": "ABL Resource Library — TIDE Foundation",
-    "seoDescription": "Browse Activity-Based Learning resources for Grades 1–5 developed by TIDE Foundation educators."
+    "seoDescription": "Browse Activity-Based Learning resources for Grades 1–5 developed by TIDE Foundation educators.",
+    "breadcrumbName": "Pramaan"
+  },
+  "nav": {
+    "home": "About Pramaan",
+    "resourceCenter": "Resource Centre",
+    "contribute": "Contribute"
   },
   "stats": {
     "totalResources": "Total Resources",
     "resourceTypes": "Resource Types",
     "gradeCovered": "Grades Covered",
+    "gradeRange": "1–5",
     "lastSynced": "Last Synced"
   },
   "about": {
@@ -28,6 +35,33 @@
   "resourceTypes": {
     "badge": "Browse by Type",
     "title": "Explore Resource Types",
-    "resourcesCount": "resources"
+    "resourcesCount": "resources",
+    "labels": {
+      "Worksheet": {
+        "label": "Worksheet",
+        "pluralLabel": "Worksheets"
+      },
+      "Games": {
+        "label": "Game",
+        "pluralLabel": "Games"
+      },
+      "Kits": {
+        "label": "Kit",
+        "pluralLabel": "Kits"
+      },
+      "Flashcards": {
+        "label": "Flashcard",
+        "pluralLabel": "Flashcards"
+      },
+      "_default": {
+        "label": "Resource",
+        "pluralLabel": "Resources"
+      }
+    }
+  },
+  "errors": {
+    "notConfigured": "API not configured. Add VITE_ABL_API_URL to your .env.development file.",
+    "timeout": "Request timed out. Please check your connection and try again.",
+    "generic": "Failed to load resources. Please try again."
   }
 }

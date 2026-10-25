@@ -1,0 +1,9 @@
+# Shared UI component microcopy (Lightbox)
+# {n} in a label is replaced in code with the item number.
+
+lightbox:
+  viewerLabel: "Image viewer"
+  close: "Close"
+  previous: "Previous image"
+  next: "Next image"
+  goTo: "Go to image {n}"

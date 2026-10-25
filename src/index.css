@@ -168,10 +168,13 @@
   overflow: visible;
 }
 
-/* Enhanced focus-visible for AAA — thick ring, high contrast */
+/* Keyboard focus ring: 2px brand blue. The white band between the element and
+   the ring keeps it visible on the dark navy sections, where brand blue alone
+   is only 2.9:1 (WCAG wants 3:1). */
 :focus-visible {
-  outline: 3px solid #3B7CB8;
-  outline-offset: 3px;
+  outline: 2px solid theme('colors.primary.DEFAULT');
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #fff;
   border-radius: 4px;
 }
 

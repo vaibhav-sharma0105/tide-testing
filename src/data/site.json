@@ -1,0 +1,25 @@
+{
+  "name": "TIDE Foundation",
+  "alternateName": "Together in Development and Education Foundation",
+  "url": "https://tideinternational.org",
+  "logo": "assets/images/shared/tide-logo.png",
+  "placeholderImage": "assets/images/shared/placeholder.svg",
+  "email": "tidefoundation@gmail.com",
+  "livesImpacted": "50,500+",
+  "gradeRange": "1–5",
+  "foundingYear": "2014",
+  "location": "Ahmedabad, Gujarat, India",
+  "country": "India",
+  "language": "en",
+  "description": "TIDE Foundation is an NGO based in Ahmedabad, India working to bring sustainable, systemic change to India's education landscape since 2014. We have impacted {livesImpacted} lives across Gujarat.",
+  "websiteDescription": "Official website of TIDE Foundation — Together in Development and Education",
+  "keywords": "education NGO India, activity-based learning, holistic education, Gujarat education, TIDE Foundation",
+  "breadcrumbs": {
+    "home": "Home",
+    "aboutUs": "About Us",
+    "getInvolved": "Get Involved",
+    "pramaan": "Pramaan",
+    "educationForHarmony": "Education for Harmony",
+    "resourceCentre": "Resource Centre"
+  }
+}

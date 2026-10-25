@@ -1,8 +1,10 @@
-import { useEffect } from 'react'
+import { useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { imgSrc } from '../../utils/imgSrc'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
+import { useModalBehavior } from '../../hooks/useModalBehavior'
+import ui from '../../data/ui.json'
 
 /**
  * Full-screen image lightbox with prev/next navigation.
@@ -16,19 +18,11 @@ export default function Lightbox({ images, currentIndex, onClose, onPrev, onNext
   const containerRef = useFocusTrap()
 
   /* ── keyboard ────────────────────────────────────────────────── */
-  useEffect(() => {
-    const handler = (e) => {
-      if (e.key === 'Escape')     onClose()
-      if (e.key === 'ArrowLeft')  onPrev()
-      if (e.key === 'ArrowRight') onNext()
-    }
-    window.addEventListener('keydown', handler)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      window.removeEventListener('keydown', handler)
-      document.body.style.overflow = ''
-    }
-  }, [onClose, onPrev, onNext])
+  const onArrowKey = useCallback((e) => {
+    if (e.key === 'ArrowLeft')  onPrev()
+    if (e.key === 'ArrowRight') onNext()
+  }, [onPrev, onNext])
+  useModalBehavior({ onClose, onKeyExtra: onArrowKey, target: 'window' })
 
   const item   = images[currentIndex] ?? images[0]
   const src    = imgSrc(typeof item === 'string' ? item : item.src)
@@ -41,7 +35,7 @@ export default function Lightbox({ images, currentIndex, onClose, onPrev, onNext
       ref={containerRef}
       role="dialog"
       aria-modal="true"
-      aria-label={caption || 'Image viewer'}
+      aria-label={caption || ui.lightbox.viewerLabel}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -64,7 +58,7 @@ export default function Lightbox({ images, currentIndex, onClose, onPrev, onNext
         <button
           onClick={onClose}
           className="w-9 h-9 rounded-full flex items-center justify-center text-white/50 hover:text-white border border-white/12 hover:border-white/30 hover:bg-white/8 transition-all duration-200"
-          aria-label="Close"
+          aria-label={ui.lightbox.close}
         >
           <X className="w-4 h-4" />
         </button>
@@ -76,14 +70,14 @@ export default function Lightbox({ images, currentIndex, onClose, onPrev, onNext
           <button
             onClick={e => { e.stopPropagation(); onPrev() }}
             className="absolute left-3 md:left-6 z-10 w-11 h-11 rounded-full flex items-center justify-center text-white/55 hover:text-white border border-white/12 hover:border-white/30 hover:bg-white/8 transition-all duration-200"
-            aria-label="Previous image"
+            aria-label={ui.lightbox.previous}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={e => { e.stopPropagation(); onNext() }}
             className="absolute right-3 md:right-6 z-10 w-11 h-11 rounded-full flex items-center justify-center text-white/55 hover:text-white border border-white/12 hover:border-white/30 hover:bg-white/8 transition-all duration-200"
-            aria-label="Next image"
+            aria-label={ui.lightbox.next}
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -124,7 +118,7 @@ export default function Lightbox({ images, currentIndex, onClose, onPrev, onNext
               key={i}
               onClick={e => { e.stopPropagation(); onGoTo ? onGoTo(i) : onClose() }}
               className={`rounded-full transition-all duration-200 ${i === currentIndex ? 'w-5 h-1.5 bg-white/80' : 'w-1.5 h-1.5 bg-white/25 hover:bg-white/50'}`}
-              aria-label={`Go to image ${i + 1}`}
+              aria-label={ui.lightbox.goTo.replace('{n}', i + 1)}
             />
           ))}
         </div>

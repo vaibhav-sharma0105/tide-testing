@@ -6,6 +6,8 @@
 
 > **Already have a working setup under a different Google account, and need to move it to a new one?** This guide is for setting up from scratch. For moving an *existing* setup to a new owner, use `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` instead — it has an important gotcha (Apps Script deployments don't transfer ownership the way you'd expect) that this guide doesn't need to cover.
 
+> **Which script is current? (checked 2026-10-25)** The code block in Step 3 is the original, listing-only version of `Code.gs` (it serves the resource JSON and refreshes the cache). The website now also relies on thumbnail-sync endpoints (`?action=manifest` / `?action=fetchImage`) and an `onSheetChange` trigger that are **not** in this block. The complete, up-to-date script is in `docs/ABL-RESOURCE-LIBRARY-SPEC.md` section 2.5 — see `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` for how to upgrade to it. The Apps Script project itself lives in the Google Sheet, not in this repository, so neither copy could be compared against the deployed script.
+
 ---
 
 ## Before You Start — What You Need
@@ -367,7 +369,7 @@ If you add a new tab to the Google Sheet (e.g. "Posters"):
 
 1. Make sure the new tab has data and follows the same column structure as existing tabs.
 2. The script picks it up automatically on the next 15-minute refresh — no code changes needed.
-3. Let your developer know so they can add the new tab's display name and colour to `src/config/abl.js` in the website.
+3. Let your developer know so they can add the new tab's colour to `TAB_COLORS` in `src/config/abl.js` and its display names (`label` / `pluralLabel`) to `content/pages/abl-home.yaml` under `resourceTypes.labels`. Until then the new type still appears, using a neutral gray badge and the `_default` labels.
 
 ---
 
@@ -377,7 +379,7 @@ If you delete or rename a tab:
 
 1. The tab disappears from the API response on the next 15-minute refresh.
 2. The website will automatically stop showing that resource type.
-3. Let your developer know so they can clean up `src/config/abl.js`.
+3. Let your developer know so they can clean up its entries in `src/config/abl.js` (`TAB_COLORS`) and `content/pages/abl-home.yaml` (`resourceTypes.labels`).
 
 ---
 

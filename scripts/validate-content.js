@@ -5,11 +5,13 @@
 import fs from 'fs'
 import path from 'path'
 import yaml from 'js-yaml'
+import { checkConsistency } from './contentConsistency.js'
 
 const CONTENT_DIR = path.resolve('content')
 const PUBLIC_DIR  = path.resolve('public')
 let warnings = 0
 let errors   = 0
+const parsedDocs = []   // { file, data } for the consistency check below
 
 function warn(file, msg)  { console.warn(`  ⚠  ${file}: ${msg}`);  warnings++ }
 function error(file, msg) { console.error(`  ✗  ${file}: ${msg}`); errors++ }
@@ -55,6 +57,7 @@ function processDir(dir) {
         error(relPath, `YAML parse error: ${e.message}`)
         continue
       }
+      parsedDocs.push({ file: relPath, data: parsed })
       walkObject(relPath, parsed)
     }
   }
@@ -62,5 +65,24 @@ function processDir(dir) {
 
 console.log('\n🔍 Validating YAML content...\n')
 processDir(CONTENT_DIR)
+
+// The e-mail and the lives-impacted total must match content/shared/site.yaml
+// everywhere they appear (YAML pages + the llms.txt template).
+function checkSiteConsistency() {
+  const siteFile = path.join('content', 'shared', 'site.yaml')
+  const siteDoc = parsedDocs.find(d => d.file === siteFile)
+  if (!siteDoc || !siteDoc.data) {
+    error(siteFile, 'missing or unparsable — cannot run the consistency check')
+    return
+  }
+  const docs = [...parsedDocs]
+  const llms = path.join(CONTENT_DIR, 'shared', 'llms.txt')
+  if (fs.existsSync(llms)) {
+    docs.push({ file: path.relative('.', llms), text: fs.readFileSync(llms, 'utf8') })
+  }
+  for (const { file, message } of checkConsistency(siteDoc.data, docs)) error(file, message)
+}
+checkSiteConsistency()
+
 console.log(`\n   ${warnings} warning(s), ${errors} error(s)\n`)
 if (errors > 0) process.exit(1)

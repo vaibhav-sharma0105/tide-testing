@@ -1,6 +1,29 @@
 # Site Restructure Plan — site_updates.docx Review
 
-> Drafted from feedback in `site_updates.docx`. Status: **DRAFT — Q2 (project page redirects) still open. All other blockers cleared.**
+> ## Status as of 2026-10-25 (re-checked against `src/App.jsx`, `content/`, `index.html`)
+> The body below is the original 2026-06 plan and is kept as history; the "DRAFT" line under it is out of date. Most of the restructure has been built. **Q2 (what to do with the orphaned/"stranded" pages) was resolved on 2026-10-25 as: removed entirely, no redirects.** All 16 stranded routes, their page components, YAML and generated JSON were deleted; those URLs now render the NotFound page (`src/test/routing/removedRoutes.test.jsx`). The Orphaned Pages Tracker, C3, Q2-Q5 and Q10 below describe the pre-removal state and are history. The deleted files can be recovered with `git checkout a4126d1 -- <path>`. What the code shows today:
+>
+> **Implemented**
+> - **Navigation (A3):** `content/shared/navigation.yaml` has About Us (Why TIDE?, Past Programs, Our Team, Our Partners, Get Involved -> `/get-involved/volunteer`, Our Publications -> `/about/publications`), Education for Harmony, Pramaan, THRIvE Research Centre, Contact Us, plus the Donate button.
+> - **New routes:** `/about/past-programs`, `/about/publications` (component `PublicationsCombined`, content from `about-publications.yaml`), `/education-for-harmony`, `/education-for-harmony/mccx`.
+> - **Pramaan (E1, Q7):** the ABL section moved to `/pramaan`, `/pramaan/resource-centre`, `/pramaan/resource-centre/:id`, `/pramaan/contribute` (UK spelling "centre"), not left at `/resources/abl-resources` as Q7 considered.
+> - **Home (B1-B7):** the impact figure is now "50,500+" everywhere (`home.yaml`, `loader.yaml`, `get-involved-donate.yaml`; the single source is `content/shared/site.yaml`; the former `about-our-results.yaml` was deleted with the stranded pages), a Journey section and a "Three approaches. One vision." programs section exist, the gallery strip is gone, and the Padlet board is embedded (`home.yaml` `padlet.url`).
+> - **Donate (F1):** bank details are in `get-involved-donate.yaml`; the QR code is still a placeholder ("QR code coming soon").
+> - **Favicon (A1):** `index.html` uses `/assets/images/shared/tide-logo.png` as the icon.
+>
+> **Differs from the plan**
+> - **C3 (remove Our Results):** the route `/about/our-results` was first kept as a "stranded" route (not in the header nav) and was then removed on 2026-10-25 with the other stranded routes (`OurResults.jsx` and `about-our-results.yaml` deleted); the impact figures live on Home.
+> - **Q2 / orphaned pages:** Option B (keep routes, drop nav links) was followed first, leaving 16 stranded routes served: `/about/our-results`, `/projects/{block-eti,bettered,empowered,completed,other-projects,sdg-drives}`, `/get-involved/{work-with-us,mccx}`, `/resources/{saral-kadam,annual-reports,publications}` and the four `/resources/abl-resources*` duplicates of Pramaan. **On 2026-10-25 the owner resolved Q2 as "remove", with no redirects:** all 16 routes and their components (`OurResults`, `WorkWithUs`, `SaralKadam`, `AnnualReports`, `resources/Publications`, everything under `src/pages/projects/`), YAML, generated JSON, and the `TodoPlaceholder` component were deleted, and `src/App.jsx` now registers 19 `<Route>`s (16 primary + `/coming-soon`, `/404`, `*`). Pramaan exists only at `/pramaan/*` and the MCCx page only at `/education-for-harmony/mccx` (the `/get-involved/mccx` duplicate is gone, i.e. D2 is fully done); old URLs fall through to NotFound.
+> - **Auto-updating Google Sheets (Q8, C6, C7, D2):** only the ABL/Pramaan resource library uses the Sheet -> Apps Script pattern. Publications, open positions, past MCC and past SCF are static YAML content (or not built); no other Sheet integration exists in the repo.
+> - **C6 (combined Get Involved page):** `Volunteer.jsx` has the opportunity boxes (e.g. Direct Teaching, Administration) but no "Join the team / open positions" section was found; the separate Work With Us page was removed on 2026-10-25. The Apply button's `ctaHref` in `get-involved-volunteer.yaml` is the generic `https://docs.google.com/forms`, i.e. a real form URL is still missing (Q15/Q16).
+> - **A2 (footer):** there is no Google Maps link in `footer.yaml`; the Contact page has one (`contact.yaml` `map.mapsUrl`).
+> - **Not done / skipped by decision:** Looker Studio dashboard (skipped), donation QR code (placeholder).
+>
+> **Resolved (2026-10-25):** the 16 stranded routes were removed, not redirected (see Q2 above). Nothing about them remains open.
+>
+> **Resolved since (owner decisions):** the contact email is `tidefoundation@gmail.com` and the lives-impacted figure is `50,500+`, both everywhere; `content/shared/site.yaml` holds them and `npm run content:validate` fails if any YAML page or the `llms.txt` template disagrees. Items in this plan not listed above (team card unification and LinkedIn links C4, partner list C5, Why TIDE text C1, Past Programs content C2) were not individually re-verified.
+
+> Drafted from feedback in `site_updates.docx`. Original status line (2026-06): **DRAFT — Q2 (project page redirects) still open. All other blockers cleared.** As of 2026-10-25 most of the plan is built and Q2 is resolved (stranded routes removed, no redirects) - see the status note above.
 >
 > Tasks are split into **Content** (YAML-only edits, no code) and **Structural** (routing, new components, new pages, code changes).
 >
@@ -91,7 +114,7 @@ Contact Us
 | tagline | "Improving access to" | "Improving access to" (keep) |
 | taglineHighlight | "holistic education" | "holistic education" (keep) |
 | description | current text | "TIDE Foundation works to bring sustainable, systemic and scalable change to India's education landscape — built to last, designed to disappear." |
-| pills[0] | 40,000+ / lives changed | **50,000+** / Lives impacted |
+| pills[0] | 40,000+ / lives changed | **50,000+** / Lives impacted (as planned; the built figure is now 50,500+, see the status note) |
 | pills[1] | 10 yrs / of impact | 10 yrs / of impact (keep) |
 | pills[2] | 70+ / partners | 70+ / partners (keep) |
 
@@ -407,7 +430,7 @@ Two CTAs: "Share your resources" button + "Contact us if you have many materials
 **Left side:**
 - Section heading: "Support TIDE Foundation"
 - Body: *"Your donation directly funds programs that will reach thousands of people across India. To make a donation or learn about CSR partnerships, please reach out to us directly."*
-- Three bullet points: 50,000+ lives impacted · 80G tax exemption for Indian donors · CSR partnership opportunities
+- Three bullet points: 50,000+ lives impacted (as planned; now 50,500+) · 80G tax exemption for Indian donors · CSR partnership opportunities
 - CTA 1: "Email to donate" → `mailto:tidefoundation@gmail.com`
 - CTA 2: "WhatsApp us" → `https://wa.me/919979882648`
 
@@ -457,6 +480,8 @@ No changes requested. Kept as-is.
 ---
 
 ## 🗂 Orphaned Pages Tracker — Pending Stakeholder Decision
+
+> **HISTORICAL (resolved 2026-10-25):** every page in this table was removed outright (no redirects); the "Pending" statuses below are the 2026-06 state and are no longer accurate. Recover any of them with `git checkout a4126d1 -- <path>`.
 
 These pages remain accessible via direct URL but will have **no nav link** after the restructure. Check with stakeholders whether to redirect, repurpose, or permanently remove.
 

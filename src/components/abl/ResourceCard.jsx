@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import { Play } from 'lucide-react'
 import DriveImage from './DriveImage'
 import ResourceTypeBadge from './ResourceTypeBadge'
+import rcData from '../../data/abl-resource-center.json'
 
 export default function ResourceCard({ resource }) {
-  const { t } = useTranslation()
   const grades      = resource.grades ?? []
   const shownGrades = grades.slice(0, 3)
   const extraGrades = grades.length - 3
@@ -20,21 +19,21 @@ export default function ResourceCard({ resource }) {
 
   return (
     <Link
-      to={`/resources/abl-resources/resource-center/${resource.id}`}
-      aria-label={`View ${resource.name}`}
+      to={`/pramaan/resource-centre/${resource.id}`}
+      aria-label={rcData.card.viewTemplate.replace('{name}', () => resource.name)}
       className="group/card bg-white rounded-2xl border border-tide-border shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col"
     >
       {/* Image with subtle zoom on hover */}
       <div className="relative overflow-hidden rounded-t-2xl">
         <DriveImage
           id={resource.id}
-          alt={resource.name ?? 'Resource'}
+          alt={resource.name ?? rcData.card.imageAltFallback}
           imgClassName="group-hover/card:scale-105"
         />
         {resource.videoUrl && (
           <div
             className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-black/55 backdrop-blur-sm flex items-center justify-center pointer-events-none"
-            aria-label="Video available"
+            aria-label={rcData.card.videoAvailable}
           >
             <Play className="w-3 h-3 text-white fill-white" />
           </div>
@@ -68,7 +67,7 @@ export default function ResourceCard({ resource }) {
             ))}
             {extraGrades > 0 && (
               <span className="bg-tide-subtle text-tide-muted text-[10px] font-bold px-2 py-0.5 rounded-full border border-tide-border">
-                +{extraGrades} more
+                {rcData.card.moreGradesTemplate.replace('{n}', () => extraGrades)}
               </span>
             )}
           </div>
@@ -76,7 +75,7 @@ export default function ResourceCard({ resource }) {
 
         <div className="flex items-center gap-1.5 mt-1">
           <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isOwned ? 'bg-primary' : 'bg-tide-muted'}`} />
-          <span className="text-xs font-body text-tide-muted">{isOwned ? t('abl.resourceCard.tideResource', 'TIDE Resource') : t('abl.resourceCard.externalResource', 'External Resource')}</span>
+          <span className="text-xs font-body text-tide-muted">{isOwned ? rcData.card.tideResource : rcData.card.externalResource}</span>
         </div>
       </div>
     </Link>

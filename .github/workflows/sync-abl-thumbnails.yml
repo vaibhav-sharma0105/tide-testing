@@ -19,6 +19,7 @@ on:
 
 permissions:
   contents: write
+  actions: write   # lets the last step start the deploy workflow (see below)
 
 concurrency:
   group: sync-abl-thumbnails
@@ -55,3 +56,13 @@ jobs:
           git add public/assets/images/abl src/data/abl-thumbnails-manifest.json
           git commit -m "chore(abl-sync): update resource thumbnails"
           git push
+
+      # A push made with the default GITHUB_TOKEN does not start other workflows
+      # (GitHub rule; confirmed: the 2026-06-20 sync commits started no run). Without
+      # this step the new thumbnails would stay out of the live site until the next
+      # manual push. Dispatching a workflow is the one thing GITHUB_TOKEN may trigger.
+      - name: Deploy the updated thumbnails
+        if: steps.sync.outputs.changed == 'true'
+        run: gh workflow run deploy.yml --ref "${{ github.ref_name }}"
+        env:
+          GH_TOKEN: ${{ github.token }}

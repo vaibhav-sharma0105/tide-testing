@@ -5,8 +5,10 @@ import PageHero from '../../components/ui/PageHero'
 import Button from '../../components/ui/Button'
 import SectionHeader from '../../components/ui/SectionHeader'
 import data from '../../data/get-involved-mccx.json'
-import { useTranslation } from 'react-i18next'
+import site from '../../data/site.json'
+import common from '../../data/common.json'
 import { imgSrc } from '../../utils/imgSrc'
+import { fadeUp } from '../../utils/motionPresets'
 
 const ICONS = {
   Mail:     <Mail className="w-5 h-5" />,
@@ -15,33 +17,20 @@ const ICONS = {
   Vote:     <Vote className="w-5 h-5" />,
 }
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.6, delay, ease: [0.4, 0, 0.2, 1] },
-})
-
 export default function OrganizeMCCx() {
-  const { t } = useTranslation()
   return (
     <>
-      {/* This component renders at two routes — the active /education-for-
-          harmony/mccx and a stranded duplicate /get-involved/mccx. Canonical
-          always points at the active path regardless of which URL rendered
-          it, which is exactly what canonical is for (duplicate content, one
-          preferred URL) — no noindex needed alongside it. */}
       <SeoHead
         title={data.meta.seoTitle}
         description={data.meta.seoDescription}
         path="/education-for-harmony/mccx"
         breadcrumbs={[
-          { name: 'Home', path: '/' },
-          { name: 'Education for Harmony', path: '/education-for-harmony' },
-          { name: 'Organise an MCCx', path: '/education-for-harmony/mccx' },
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: site.breadcrumbs.educationForHarmony, path: '/education-for-harmony' },
+          { name: data.meta.breadcrumbName, path: '/education-for-harmony/mccx' },
         ]}
       />
-      <PageHero badge={data.meta.badge} title={t('getInvolved.mccx.title', data.meta.title)} subtitle={t('getInvolved.mccx.tagline', data.meta.tagline)} gradient />
+      <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.tagline} />
 
       <section className="section-padding bg-tide-bg">
         <div className="max-w-5xl mx-auto">
@@ -76,7 +65,7 @@ export default function OrganizeMCCx() {
                 <div className="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center mb-4">
                   {ICONS[s.iconKey] || <Globe className="w-5 h-5" />}
                 </div>
-                <div className="text-xs font-body font-semibold text-tide-muted uppercase tracking-widest mb-2">{t('common.step', 'Step')} {i + 1}</div>
+                <div className="text-xs font-body font-semibold text-tide-muted uppercase tracking-widest mb-2">{common.step} {i + 1}</div>
                 <h3 className="font-display font-semibold text-tide-text mb-2">{s.title}</h3>
                 <p className="text-sm font-body text-tide-muted leading-relaxed">{s.desc}</p>
               </motion.div>

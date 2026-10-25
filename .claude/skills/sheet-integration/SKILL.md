@@ -108,15 +108,35 @@ This is the deeper, more systematic pass referenced when this skill was created 
 
 Mirror `src/hooks/useABLData.js` (fetch + `sessionStorage` cache, matching the Apps Script's
 `CacheService` TTL) and `src/config/abl.js` (API URL from env, cache TTL constant, any
-tab/category style mapping). New env vars go in `.env.development` (gitignored) and as GitHub
-Actions repository secrets for production — never hardcoded.
+tab/category style mapping). New env vars go in `.env.development` (gitignored), as GitHub
+Actions repository secrets, **and** must be listed in the `env:` block of the Build step in
+`.github/workflows/deploy.yml` (that is how `VITE_ABL_API_URL` and
+`VITE_ABL_CONTRIBUTE_FORM_URL` reach the production build) — never hardcoded. The hook's cache
+key (`abl_api_cache_v2` for ABL) should be unique per integration and bumped whenever the payload
+shape changes.
+
+The section's **UI chrome** (headings, filter/button labels, empty/error messages, SEO strings)
+is *not* Sheet data: put it in a `content/pages/<name>.yaml` and wire it per the `cms-integrity`
+skill, exactly as `abl-home.yaml`, `abl-resource-center.yaml`, `abl-detail.yaml` and
+`abl-contribute.yaml` do for Pramaan (including `meta.breadcrumbName` for the breadcrumb trail;
+YAML pages read their data directly as `data.x.y` — there is no `t()` layer). Only the rows from
+the Sheet are dynamic. Also add the new URL to `public/sitemap.xml` and to the hand-maintained
+page list in the `content/shared/llms.txt` template.
 
 ### 5. If media needs self-hosting, scaffold the sync pipeline
 
 Mirror `scripts/sync-abl-thumbnails.js` and `.github/workflows/sync-abl-thumbnails.yml` —
 token-gated manifest/fetch actions, retry-with-backoff, the security checklist in step 3 above
 applied to the new script, committing only the specific asset directory + manifest path (not a
-broad `git add -A`).
+broad `git add -A`). The manifest lives in `src/data/` (ABL's is
+`src/data/abl-thumbnails-manifest.json`) but is **not** produced by `scripts/yaml-to-json.js`;
+because that script writes a flat `src/data/<basename>.json`, give a new manifest a name that
+cannot collide with any YAML basename.
+
+Also note the global image fallback: `src/utils/imagePlaceholder.js` swaps any `<img>` that fails
+to load for the grey `placeholderImage` from `content/shared/site.yaml`. An image component that
+draws its own fallback (as `src/components/abl/DriveImage.jsx` does) should carry the
+`data-no-placeholder` attribute so the global handler leaves it alone.
 
 ### 6. Generate the non-technical setup guide
 
@@ -134,7 +154,11 @@ file-structure entries. Invoke it (or apply its procedure directly) once the int
 built: update `AGENTS.md`'s repository tree and any relevant reference table, `CLAUDE.md`'s
 subsystem list, and both architecture diagrams (`docs/ARCHITECTURE.html` and
 `docs/ARCHITECTURE-DATAFLOW.html`) to include the new integration as a parallel block to the
-ABL one.
+ABL one. If the integration adds a Sheet, token, secret or PAT, also review
+`docs/MIGRATION-OVERVIEW.md`, `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md`,
+`docs/MIGRATION-GITHUB-REPOSITORY.md` and `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md`, which
+enumerate what a new owner must move or refresh. Add the new page's YAML file to
+`CONTENT-GUIDE.md`'s file table.
 
 ## Reference implementation
 

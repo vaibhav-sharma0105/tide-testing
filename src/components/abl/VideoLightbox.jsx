@@ -1,22 +1,12 @@
-import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
+import { useModalBehavior } from '../../hooks/useModalBehavior'
+import rcData from '../../data/abl-resource-center.json'
 
 export default function VideoLightbox({ src, title, onClose }) {
-  const { t } = useTranslation()
   const containerRef = useFocusTrap(!!src)
-  useEffect(() => {
-    if (!src) return
-    const handler = (e) => { if (e.key === 'Escape') onClose() }
-    document.addEventListener('keydown', handler)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', handler)
-      document.body.style.overflow = ''
-    }
-  }, [src, onClose])
+  useModalBehavior({ active: src, onClose })
 
   return (
     <AnimatePresence>
@@ -25,7 +15,7 @@ export default function VideoLightbox({ src, title, onClose }) {
           ref={containerRef}
           role="dialog"
           aria-modal="true"
-          aria-label={title || 'Video'}
+          aria-label={title || rcData.lightbox.videoFallback}
           key="video-lightbox-backdrop"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -40,7 +30,7 @@ export default function VideoLightbox({ src, title, onClose }) {
           {/* Close button */}
           <button
             onClick={onClose}
-            aria-label={t('common.closeVideo', 'Close video')}
+            aria-label={rcData.lightbox.closeVideo}
             className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition-colors duration-150"
           >
             <X className="w-5 h-5" />

@@ -1,4 +1,5 @@
 meta:
+  breadcrumbName: "Contact Us"
   badge: "Contact"
   title: "Get in Touch"
   tagline: "We'd love to hear from you."
@@ -10,7 +11,7 @@ info:
   phones:
     - "+91 99798 82648"
     - "+91 70410 94082"
-  email: "info@tideinternational.org"
+  email: "tidefoundation@gmail.com"
   officeHours: "Monday – Friday, 9:00 AM – 6:00 PM"
 
 labels:
@@ -20,6 +21,7 @@ labels:
   email: "Email"
   officeHours: "Office Hours"
   followUs: "Follow Us"
+  visitSocial: "Visit TIDE on {platform}"
 
 social:
   - platform: "facebook"
@@ -33,7 +35,7 @@ cta:
   whatsappLabel: "WhatsApp Us"
   whatsappHref: "https://wa.me/917041094082"
   emailLabel: "Email Us"
-  emailHref: "mailto:info@tideinternational.org"
+  emailHref: "mailto:tidefoundation@gmail.com"
 
 map:
   label: "Ahmedabad, Gujarat, India"
@@ -46,3 +48,8 @@ form:
   emailPlaceholder: "Your email"
   messagePlaceholder: "Your message"
   submitLabel: "Send Message"
+  ariaLabel: "Contact form"
+  mailSubject: "Message from TIDE Website"
+  mailName: "Name:"
+  mailEmail: "Email:"
+  mailMessage: "Message:"

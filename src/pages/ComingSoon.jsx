@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 import Button from '../components/ui/Button'
+import ComingSoonGraphic from '../components/ui/ComingSoonGraphic'
 import PageHero from '../components/ui/PageHero'
 import defaults from '../data/coming-soon.json'
 
@@ -23,7 +24,7 @@ export default function ComingSoon({ badge, title, message, ctaLabel, ctaHref })
   return (
     <>
       <Helmet>
-        <title>{`${copy.badge} — TIDE Foundation`}</title>
+        <title>{defaults.seoTitleTemplate.replace('{badge}', () => copy.badge)}</title>
         <meta name="robots" content="noindex" />
       </Helmet>
 
@@ -35,28 +36,7 @@ export default function ComingSoon({ badge, title, message, ctaLabel, ctaHref })
 
       <section className="py-16 md:py-20 bg-tide-bg px-4">
         <div className="max-w-lg w-full mx-auto text-center">
-          <svg width="140" height="120" viewBox="0 0 140 120" fill="none" className="mx-auto mb-6" aria-hidden="true">
-            {/* Foundation blocks, stacking — "building" something */}
-            <motion.rect x="35" y="80" width="70" height="18" rx="3" fill="#D4EBF8"
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} />
-            <motion.rect x="45" y="58" width="50" height="18" rx="3" fill="#A8D4F0"
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.15 }} />
-            <motion.rect x="55" y="36" width="30" height="18" rx="3" fill="#1E6BAA"
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.3 }} />
-            {/* Crane / flag on top, gentle sway */}
-            <motion.g
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.3 }}
-              style={{ transformOrigin: '70px 36px' }}
-            >
-              <line x1="70" y1="36" x2="70" y2="16" stroke="#15538A" strokeWidth="2" strokeLinecap="round" />
-              <motion.path
-                d="M70,16 L92,22 L70,28 Z" fill="#F59E0B"
-                animate={{ rotate: [0, 3, 0] }}
-                transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ transformOrigin: '70px 22px' }}
-              />
-            </motion.g>
-          </svg>
+          <ComingSoonGraphic />
 
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }}>
             <p className="font-body text-tide-muted leading-relaxed mb-8 max-w-md mx-auto">
