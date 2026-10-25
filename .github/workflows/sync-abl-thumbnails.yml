@@ -66,3 +66,20 @@ jobs:
         run: gh workflow run deploy.yml --ref "${{ github.ref_name }}"
         env:
           GH_TOKEN: ${{ github.token }}
+
+      # GitHub switches off scheduled workflows in a public repository after 60 days
+      # without repository activity (the daily run above then stops silently; it did
+      # after 2026-06-22). If the newest commit is 45+ days old, add one empty commit so
+      # the repository counts as active. It changes no files, and a push made with
+      # GITHUB_TOKEN starts no other workflow, so it does not redeploy the site.
+      # Only on the scheduled run: manual and Sheet-triggered runs are activity already.
+      - name: Keep the daily schedule alive
+        if: github.event_name == 'schedule'
+        run: |
+          age_days=$(( ( $(date +%s) - $(git log -1 --format=%ct) ) / 86400 ))
+          if [ "$age_days" -ge 45 ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit --allow-empty -m "chore: keep scheduled workflows active (no commits for ${age_days} days)"
+            git push
+          fi

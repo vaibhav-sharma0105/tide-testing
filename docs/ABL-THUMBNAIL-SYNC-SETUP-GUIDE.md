@@ -272,10 +272,24 @@ Saving alone never updates what the live Web App actually serves.
 | Sheet edits don't trigger an automatic run | The "On edit" trigger (Step 9) isn't installed, or the debounce window (2 minutes) hasn't passed since the last dispatch | Check Triggers list has `onSheetChange`; wait a bit and try again |
 | GitHub Action run fails immediately | A secret (`ABL_SYNC_TOKEN` or `VITE_ABL_API_URL`) is missing or wrong | Re-check Step 2; confirm `VITE_ABL_API_URL` secret already exists from the main setup guide |
 | Action succeeds but no commit appears | Nothing actually changed (this is normal — the job is a no-op if nothing differs) | Not an error. Edit a resource's photo and re-test if you want to confirm end-to-end |
+| Daily scheduled runs stopped appearing (Sheet edits still work) | GitHub disabled the schedule after 60 days without repository activity | See "Why the daily sync can stop by itself (the 60-day rule)" above: Enable workflow, then Run workflow |
 | `GITHUB_PAT` stops working after a while | Fine-grained PATs expire on the date you chose in Step 7 | Generate a new one (Step 7) and update the Script Property (Step 8) |
 | Cards show placeholders again after working fine before | A redeploy of the GitHub Pages site happened from an older commit, or the manifest file was manually edited | Re-run the workflow manually (Step 10) |
 | Sync log shows `Drive.Files is not defined` or similar | The "Drive API" advanced service (see Step 3) wasn't added, or wasn't added before the last redeploy | Add it, save, then redeploy (Step 5) again |
 | Sync log shows `Drive has no thumbnail for this file` for a specific resource | Some file types Drive genuinely can't preview (rare) | Check the file opens normally in Drive directly; otherwise it's expected to stay a placeholder |
+
+---
+
+## Why the daily sync can stop by itself (the 60-day rule)
+
+GitHub **automatically disables scheduled workflows in a public repository once the repository has had no activity for 60 days.** Nothing is deleted and no error is shown; the daily 02:00 UTC run just stops appearing in the Actions tab. In this repository the scheduled runs ran every day until 2026-08-22, which is 61 days after the last commit (2026-06-22), and none ran after that. (That date match is the evidence for the cause; GitHub does not show a notice.) The Sheet-edit trigger (`repository_dispatch`) is not a schedule, so it is not switched off this way.
+
+**What prevents it here:** the last step of the workflow ("Keep the daily schedule alive") checks, on scheduled runs only, how old the newest commit is. At 45 days or more it adds one **empty** commit (`chore: keep scheduled workflows active …`) so the repository counts as active. It changes no files and, because it is pushed with the default token, it does not start a deploy. Expect at most one such commit about every 45 days during quiet periods. Whether GitHub counts a bot commit as activity is based on GitHub's description of the rule, not tested here; see the check below.
+
+**If the schedule seems to have stopped anyway:**
+1. Open **Actions → Sync ABL Thumbnails**. A yellow banner saying the workflow was disabled because of inactivity has an **Enable workflow** button; click it.
+2. Click **Run workflow** once to confirm the sync works.
+3. Check **Actions → Sync ABL Thumbnails** now and then (for example when you review the site); a scheduled run should appear roughly every day.
 
 ---
 
