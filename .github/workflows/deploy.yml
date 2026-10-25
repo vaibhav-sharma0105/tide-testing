@@ -15,8 +15,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Runners are pinned to an explicit Ubuntu release (not ubuntu-latest) so a GitHub-side
+  # image change cannot alter the build unannounced. Bump deliberately, and in both workflows.
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -53,7 +55,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
