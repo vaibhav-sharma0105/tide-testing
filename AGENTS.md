@@ -137,7 +137,7 @@ tide-new/
 │   └── shared/            ← 9 .yaml files + llms.txt template
 │       ├── navigation.yaml  ← header nav + logo/skip-link/aria labels (Header + Layout read navigation.json)
 │       ├── footer.yaml      ← footer columns + social links + copy
-│       ├── common.yaml      ← micro-copy reused across pages: clickToZoom, hoverForRole, hoverForBio, step
+│       ├── common.yaml      ← micro-copy reused across pages: clickToZoom, hoverForRole, step, viewLinkedIn
 │       ├── ui.yaml          ← Lightbox aria-labels (lightbox.* only)
 │       ├── loader.yaml      ← CreativeLoader rotating messages
 │       ├── error.yaml       ← ErrorBoundary crash screen text
@@ -192,7 +192,7 @@ tide-new/
 │   │   ├── about/
 │   │   │   ├── WhyTide.jsx   ← who we are, vision, goals
 │   │   │   ├── PastPrograms.jsx
-│   │   │   ├── OurTeam.jsx   ← portrait cards + advisor cards
+│   │   │   ├── OurTeam.jsx   ← team + advisor portrait cards (LinkedIn tiles)
 │   │   │   ├── OurPartners.jsx ← logo gallery
 │   │   │   └── PublicationsCombined.jsx ← tabs: annual reports / events / research (/about/publications)
 │   │   ├── get-involved/
@@ -746,7 +746,7 @@ content/shared/navigation.yaml      →   src/data/navigation.json
 content/shared/footer.yaml          →   src/data/footer.json
 ```
 
-Shared files (`content/shared/`): `navigation` (header menu, logo, skip-link/aria labels, Donate CTA labels), `footer`, `common` (micro-copy reused across pages: `clickToZoom`, `hoverForRole`, `hoverForBio`, `step`), `ui` (Lightbox aria-labels), `loader` (CreativeLoader messages), `error` (ErrorBoundary crash screen), `not-found`, `coming-soon`, `site` (site-wide facts — see §1 "Site-data pipeline"; `breadcrumbs.*` are the parent steps of every breadcrumb trail). Alongside them sits `llms.txt`, a template that is not YAML. The Pramaan screens are `abl-home`, `abl-resource-center`, `abl-detail`, `abl-contribute` in `content/pages/`.
+Shared files (`content/shared/`): `navigation` (header menu, logo, skip-link/aria labels, Donate CTA labels), `footer`, `common` (micro-copy reused across pages: `clickToZoom`, `hoverForRole`, `step`, `viewLinkedIn`), `ui` (Lightbox aria-labels), `loader` (CreativeLoader messages), `error` (ErrorBoundary crash screen), `not-found`, `coming-soon`, `site` (site-wide facts — see §1 "Site-data pipeline"; `breadcrumbs.*` are the parent steps of every breadcrumb trail). Alongside them sits `llms.txt`, a template that is not YAML. The Pramaan screens are `abl-home`, `abl-resource-center`, `abl-detail`, `abl-contribute` in `content/pages/`.
 
 ### Import pattern in components
 
@@ -941,7 +941,7 @@ npm run content:sync
 
 ### Add a team member
 
-In `content/pages/about-our-team.yaml`, append to `coreTeam.members:` (name, suffix, role, bio, photo) or `advisoryBoard.members:`. Place the photo in `public/assets/images/about-our-team/` and reference it as `/assets/images/about-our-team/<file>`.
+In `content/pages/about-our-team.yaml`, append to `coreTeam.members:` (name, suffix, role, bio, photo, linkedin) or `advisoryBoard.members:` (name, role, photo, linkedin). A non-empty `linkedin` makes the whole tile open that profile in a new tab; leave it `""` for no link. The advisors section also has `moreDetails` (button label + PDF link). Photos are square, ideally 600px+, with the face centred and some headroom. Place the photo in `public/assets/images/about-our-team/` and reference it as `/assets/images/about-our-team/<file>`.
 
 ### Add an annual report
 
@@ -1132,7 +1132,7 @@ Never type English into JSX — that bypasses the CMS and makes the text unedita
 <p>Click any image to view full screen.</p>             // also fails `npm run lint`
 ```
 
-- Shared micro-copy goes in `content/shared/common.yaml` (page-agnostic hints/labels such as `clickToZoom`, `hoverForRole`, `hoverForBio`, `step`) and component chrome in `content/shared/ui.yaml` (Lightbox aria-labels). Component-specific text goes in the page/screen YAML (e.g. `abl-resource-center.yaml`).
+- Shared micro-copy goes in `content/shared/common.yaml` (page-agnostic hints/labels such as `clickToZoom`, `hoverForRole`, `step`, `viewLinkedIn`) and component chrome in `content/shared/ui.yaml` (Lightbox aria-labels). Component-specific text goes in the page/screen YAML (e.g. `abl-resource-center.yaml`).
 - `react/jsx-no-literals` is an **error** for `src/pages/**` and `src/components/**` (see §7), so bare JSX text fails `npm run lint`. It doesn't see string props or attributes (`aria-label`, `alt`, …), so review those by hand.
 - Lint isn't run in CI. Run `npm run lint` before pushing.
 

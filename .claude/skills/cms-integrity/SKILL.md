@@ -115,7 +115,7 @@ below. Don't silence the rule with `eslint-disable`; move the text to YAML inste
      `hoverForBio`, `step`) or `content/shared/ui.yaml` (shared UI component text:
      `lightbox.*`), then `import common from '../../data/common.json'` (or
      `ui from '../../data/ui.json'`) and use `common.clickToZoom`. See `OurTeam.jsx`'s
-     `common.hoverForBio` for a working example. Check `common.yaml` and `ui.yaml` for an
+     `common.viewLinkedIn` for a working example. Check `common.yaml` and `ui.yaml` for an
      existing key before adding a new one; duplicated near-identical strings across files are a
      sign one should have been shared from the start.
    - A string with a variable part uses a `{token}` in the YAML value and a

@@ -107,7 +107,7 @@ The former "stranded" pages (Our Results, the six `projects-*` pages, Work With 
 |---|---|---|
 | `navigation.yaml` | `navigation.json` | `layout/Header.jsx`, `layout/Layout.jsx` (also skip-link, aria labels, Donate CTA labels) |
 | `footer.yaml` | `footer.json` | `layout/Footer.jsx` (plus `contact.json` for email/phone). Three link columns: About, Get Involved, Resources; each link is `label` + `to` |
-| `common.yaml` | `common.json` | Reused micro-copy: keys `clickToZoom`, `hoverForRole`, `hoverForBio`, `step` (OurTeam, THRIvE, Volunteer, OrganizeMCCx) |
+| `common.yaml` | `common.json` | Reused micro-copy: keys `clickToZoom`, `hoverForRole`, `step`, `viewLinkedIn` (OurTeam, THRIvE, Volunteer, OrganizeMCCx) |
 | `ui.yaml` | `ui.json` | `ui/Lightbox.jsx` (`lightbox.*` aria-labels; `goTo` has an `{n}` token) |
 | `loader.yaml` | `loader.json` | `ui/CreativeLoader.jsx` (rotating `messages`) |
 | `not-found.yaml` | `not-found.json` | `NotFound.jsx` (`/404` and unmatched URLs) |

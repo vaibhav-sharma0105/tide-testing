@@ -1,5 +1,5 @@
 # Short UI phrases reused identically on several pages (hints, step labels).
 clickToZoom: "Click any image to view full screen."
 hoverForRole: "Hover over a photo to see the role."
-hoverForBio: "Hover over a photo to read about each person."
 step: "Step"
+viewLinkedIn: "View {name} on LinkedIn (opens in a new tab)"

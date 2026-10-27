@@ -216,12 +216,13 @@ coreTeam:
     - name: Jane Smith
       suffix: PhD, Example University   # optional; write null if none
       role: Programme Manager
-      bio: A one- or two-sentence description shown when hovering the photo.
-      photo: /assets/images/about-our-team/jane-smith.jpg
+      bio: A one- or two-sentence description shown under the photo.
+      photo: /assets/images/about-our-team/jane-smith.jpg   # square, 600px or more, face centred with headroom
+      linkedin: "https://www.linkedin.com/in/jane-smith/"   # clicking the tile opens this; use "" for no link
     # Add new member here, copying the lines above
 ```
 
-Advisors use `name`, `role` and `photo` only (no `suffix` or `bio`).
+Advisors use `name`, `role`, `photo` and `linkedin` only (no `suffix` or `bio`). The "More details" PDF button is `advisoryBoard.moreDetails`.
 
 > **Important:** Keep the same indentation (spaces before the dash `- `). Copy the format of an existing entry exactly.
 

@@ -9,71 +9,80 @@
   },
   "coreTeam": {
     "sectionBadge": "Leadership",
-    "sectionTitle": "Core Team & Founders",
-    "sectionSubtitle": "The founders and directors who built TIDE from the ground up — hover to learn more.",
+    "sectionTitle": "The people behind TIDE",
+    "sectionSubtitle": "The founders, trustees and team who built TIDE from the ground up and carry it forward.",
     "members": [
       {
         "name": "Jwalin Patel",
         "suffix": "PhD, University of Cambridge",
         "role": "President & Co-Founder",
         "bio": "Academic scholar, practitioner, and international development consultant with deep expertise in education systems.",
-        "photo": "assets/images/about-our-team/Jwalin-Patel-1.jpg"
+        "photo": "assets/images/about-our-team/Jwalin-Patel-hires.jpg",
+        "linkedin": "https://www.linkedin.com/in/jwalin10/"
       },
       {
         "name": "Gayatri Dave",
         "suffix": null,
         "role": "Trustee & Co-Founder",
         "bio": "Experienced teacher, school coordinator, and curriculum developer committed to holistic education.",
-        "photo": "assets/images/about-our-team/Gayatri-Oza-1.jpg"
+        "photo": "assets/images/about-our-team/Gayatri-Dave-hires.jpg",
+        "linkedin": "https://www.linkedin.com/in/gayatri-dave/"
       },
       {
         "name": "Om Patel",
         "suffix": null,
         "role": "Trustee & Co-Founder",
         "bio": "Director of Finance Strategy at Teladoc Health, USA — bringing global strategic and financial leadership.",
-        "photo": "assets/images/about-our-team/Om-Patel-1.jpg"
+        "photo": "assets/images/about-our-team/Om-Patel-hires.jpg",
+        "linkedin": "https://www.linkedin.com/in/omypatel/"
       },
       {
         "name": "Prathmesh Sharma",
         "suffix": null,
         "role": "Trustee & Co-Founder",
         "bio": "Manager at ShineHub, Australia — driving operational excellence and international partnerships.",
-        "photo": "assets/images/about-our-team/Prathmesh-Sharma-1.jpg"
+        "photo": "assets/images/about-our-team/Prathmesh-Sharma-hires.jpg",
+        "linkedin": "https://www.linkedin.com/in/prathmesh-sharma-50080b10a/"
       },
       {
         "name": "Deep Shah",
         "suffix": null,
         "role": "Trustee",
         "bio": "Senior Transportation Data Specialist at ICF, USA — expertise in data systems and policy.",
-        "photo": null
+        "photo": "assets/images/about-our-team/Deep-Shah-hires.jpg",
+        "linkedin": "https://www.linkedin.com/in/deep-shah-8b4572123/"
       },
       {
         "name": "Kaneesha Parikh",
         "suffix": null,
         "role": "Trustee",
         "bio": "Sports and fitness expert with a passion for physical education and youth development.",
-        "photo": "assets/images/about-our-team/Kaneesha-Parikh-1.jpeg"
+        "photo": "assets/images/about-our-team/Kaneesha-Parikh-hires.jpg",
+        "linkedin": "https://www.linkedin.com/in/kaneesha-parikh-bb2b96118/"
       },
       {
         "name": "Bhavik Dholu",
         "suffix": null,
         "role": "Trustee",
         "bio": "Architect with a strong belief in the built environment as a tool for social change.",
-        "photo": "assets/images/about-our-team/Bhavik-Dholu-1.jpg"
+        "photo": "assets/images/about-our-team/Bhavik-Dholu-hires.jpg",
+        "linkedin": "https://www.linkedin.com/in/bhavik-dholu-122a8728/"
       },
       {
         "name": "Nishi Nair",
         "suffix": null,
-        "role": "Strategy & Expansions Director",
+        "role": "Core Team Member",
         "bio": "Coordinates the Student Volunteer Programme and leads TIDE's strategic expansion initiatives.",
-        "photo": "assets/images/about-our-team/Nishi-Nair-180x180.jpeg"
+        "photo": "assets/images/about-our-team/Nishi-Nair-180x180.jpeg",
+        "linkedin": "https://www.linkedin.com/in/nishi-nair-a97521129/"
       },
       {
         "name": "Munira Jariwala",
         "suffix": null,
-        "role": "Operations Director",
+        "role": "Core Team Member",
         "bio": "Content writer and operations lead at TIDE, formerly at Designmate (I) Pvt. Ltd.",
-        "photo": "assets/images/about-our-team/Munira-Jariwala-1.jpg"
+        "photo": "assets/images/about-our-team/Munira-Jariwala-hires.jpg",
+        "linkedin": "https://www.linkedin.com/in/munira-jariwala-8058b61a8/"
       }
     ]
   },
@@ -85,33 +94,43 @@
       {
         "name": "Prof. Neelkanth Chhaya",
         "role": "Head of Architecture, CEPT University (till 2015)",
-        "photo": "assets/images/about-our-team/Prof.-Neelkanth-Chhaya-1.jpg"
+        "photo": "assets/images/about-our-team/Prof.-Neelkanth-Chhaya-1.jpg",
+        "linkedin": ""
       },
       {
         "name": "Prof. Raghavan Rangarajan",
         "role": "Dean, Arts & Sciences, Ahmedabad University; formerly Physical Research Laboratory",
-        "photo": "assets/images/about-our-team/Prof.-Raghavan-Rangarajan-1.jpg"
+        "photo": "assets/images/about-our-team/Prof.-Raghavan-Rangarajan-1.jpg",
+        "linkedin": ""
       },
       {
         "name": "Dr. Prerna Mohite",
         "role": "Professor Emeritus, Human Development & Family Studies, M.S. University Vadodara",
-        "photo": "assets/images/about-our-team/Dr.-Prerna-Mohite-1.jpg"
+        "photo": "assets/images/about-our-team/Dr.-Prerna-Mohite-1.jpg",
+        "linkedin": "https://www.linkedin.com/in/prerana-mohite-84500641/"
       },
       {
         "name": "Dr. Shailendra Gupta",
         "role": "CSR Consultant, GPPL APM Terminals; formerly Principal, Calorx Teachers' University",
-        "photo": "assets/images/about-our-team/Dr.-Shailendra-Gupta-1.png"
+        "photo": "assets/images/about-our-team/Shailendra-Gupta-hires.jpg",
+        "linkedin": "https://www.linkedin.com/in/dr-shailendra-gupta-a89b6051/"
       },
       {
         "name": "Mr. Hiren Parikh",
         "role": "Consultant, Reach to Teach; formerly Academic Director, Sanskardham",
-        "photo": "assets/images/about-our-team/Mr.-Hiren-Parikh-1.png"
+        "photo": "assets/images/about-our-team/Hiren-Parikh-hires.jpg",
+        "linkedin": "https://www.linkedin.com/in/hiren-parikh-3429b89b/"
       },
       {
         "name": "Mr. Keshav Chatterjee",
         "role": "Managing Trustee & Director, Prabhat Education Foundation",
-        "photo": "assets/images/about-our-team/Mr.-Keshav-Chatterjee-1.png"
+        "photo": "assets/images/about-our-team/Mr.-Keshav-Chatterjee-1.png",
+        "linkedin": ""
       }
-    ]
+    ],
+    "moreDetails": {
+      "label": "More details",
+      "href": "https://drive.google.com/file/d/11gpHJEicZd7eTkD-QwLWgD62CUi0bdCn/view?usp=sharing"
+    }
   }
 }
