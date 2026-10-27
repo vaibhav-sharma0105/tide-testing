@@ -25,6 +25,7 @@ vi.mock('framer-motion', async () => {
     MotionConfig: ({ children }) => children,
     useAnimation: () => ({ start: vi.fn(), stop: vi.fn(), set: vi.fn() }),
     useInView: () => [null, true],
+    useReducedMotion: () => false,
     useScroll: () => ({
       scrollY: { get: () => 0, onChange: vi.fn(), clearListeners: vi.fn() },
       scrollYProgress: { get: () => 0, onChange: vi.fn(), clearListeners: vi.fn() },
