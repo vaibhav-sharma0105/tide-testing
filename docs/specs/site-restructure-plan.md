@@ -7,7 +7,7 @@
 > - **Navigation (A3):** `content/shared/navigation.yaml` has About Us (Why TIDE?, Past Programs, Our Team, Our Partners, Get Involved -> `/get-involved/volunteer`, Our Publications -> `/about/publications`), Education for Harmony, Pramaan, THRIvE Research Centre, Contact Us, plus the Donate button.
 > - **New routes:** `/about/past-programs`, `/about/publications` (component `PublicationsCombined`, content from `about-publications.yaml`), `/education-for-harmony`, `/education-for-harmony/mccx`.
 > - **Pramaan (E1, Q7):** the ABL section moved to `/pramaan`, `/pramaan/resource-centre`, `/pramaan/resource-centre/:id`, `/pramaan/contribute` (UK spelling "centre"), not left at `/resources/abl-resources` as Q7 considered.
-> - **Home (B1-B7):** the impact figure is now "50,500+" everywhere (`home.yaml`, `loader.yaml`, `get-involved-donate.yaml`; the single source is `content/shared/site.yaml`; the former `about-our-results.yaml` was deleted with the stranded pages), a Journey section and a "Three approaches. One vision." programs section exist, the gallery strip is gone, and the Padlet board is embedded (`home.yaml` `padlet.url`).
+> - **Home (B1-B7):** the impact figure is now "52,500+" (was 50,500+ until the 2026-10-27 stakeholder update) everywhere (`home.yaml`, `loader.yaml`, `get-involved-donate.yaml`; the single source is `content/shared/site.yaml`; the former `about-our-results.yaml` was deleted with the stranded pages), a Journey section and a "Three approaches. One vision." programs section exist, the gallery strip is gone, and the Padlet board is embedded (`home.yaml` `padlet.url`).
 > - **Donate (F1):** bank details are in `get-involved-donate.yaml`; the QR code is still a placeholder ("QR code coming soon").
 > - **Favicon (A1):** `index.html` uses `/assets/images/shared/tide-logo.png` as the icon.
 >
@@ -21,7 +21,7 @@
 >
 > **Resolved (2026-10-25):** the 16 stranded routes were removed, not redirected (see Q2 above). Nothing about them remains open.
 >
-> **Resolved since (owner decisions):** the contact email is `tidefoundation@gmail.com` and the lives-impacted figure is `50,500+`, both everywhere; `content/shared/site.yaml` holds them and `npm run content:validate` fails if any YAML page or the `llms.txt` template disagrees. Items in this plan not listed above (team card unification and LinkedIn links C4, partner list C5, Why TIDE text C1, Past Programs content C2) were not individually re-verified.
+> **Resolved since (owner decisions):** the contact email is `tidefoundation@gmail.com` and the lives-impacted figure is `52,500+`, both everywhere; `content/shared/site.yaml` holds them and `npm run content:validate` fails if any YAML page or the `llms.txt` template disagrees. Items in this plan not listed above (team card unification and LinkedIn links C4, partner list C5, Why TIDE text C1, Past Programs content C2) were not individually re-verified.
 
 > Drafted from feedback in `site_updates.docx`. Original status line (2026-06): **DRAFT — Q2 (project page redirects) still open. All other blockers cleared.** As of 2026-10-25 most of the plan is built and Q2 is resolved (stranded routes removed, no redirects) - see the status note above.
 >

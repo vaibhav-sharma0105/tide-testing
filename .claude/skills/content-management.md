@@ -64,7 +64,7 @@ breadcrumbs={[
 ```
 Fourteen of the 16 page YAMLs carry `meta.breadcrumbName` (every page except `home` and `abl-detail`); `Home.jsx` uses only `site.breadcrumbs.home`, and `AblDetail.jsx` builds its last step from the resource name.
 
-**Consistency guard.** The contact email and the lives-impacted total must be identical everywhere. `npm run content:validate` (`scripts/validate-content.js` + `scripts/contentConsistency.js`) **errors** (exit 1) if any e-mail address in `content/` (YAML values and the `llms.txt` template) differs from `site.yaml` `email`, or if a 5-digit total such as `40,000+` that sits in a sentence with the words lives/people/impacted/changed differs from `livesImpacted`. Owner decisions: e-mail `tidefoundation@gmail.com`, lives impacted `50,500+`, everywhere. To change either, edit `site.yaml` **and** every page that states it — the validator prints which files and fields.
+**Consistency guard.** The contact email and the lives-impacted total must be identical everywhere. `npm run content:validate` (`scripts/validate-content.js` + `scripts/contentConsistency.js`) **errors** (exit 1) if any e-mail address in `content/` (YAML values and the `llms.txt` template) differs from `site.yaml` `email`, or if a 5-digit total such as `40,000+` that sits in a sentence with the words lives/people/impacted/changed differs from `livesImpacted`. Owner decisions: e-mail `tidefoundation@gmail.com`, lives impacted `52,500+`, everywhere. To change either, edit `site.yaml` **and** every page that states it — the validator prints which files and fields.
 
 ### Pipeline C — ABL / Pramaan (Google Sheets API)
 ```
@@ -167,10 +167,10 @@ meta:
   seoDescription: "Search engine description (150 chars)."
 
 # Sections use sectionBadge / sectionTitle / sectionSubtitle:
-impact:
+highlights:
   sectionLabel: "Our Impact"
   stats:
-    - value: "50500+"
+    - value: "52,500+"
       label: "Lives Impacted"
 
 # Image lists: pages read `src` + `label` (label doubles as the alt text):

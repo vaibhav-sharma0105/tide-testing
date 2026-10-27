@@ -2,7 +2,7 @@
   "meta": {
     "badge": "TIDE Foundation",
     "seoTitle": "TIDE Foundation — Holistic Education for India",
-    "seoDescription": "TIDE Foundation works to bring sustainable, systemic change to India's education landscape through six independent projects — built to last, designed to disappear."
+    "seoDescription": "TIDE Foundation works to bring sustainable, systemic change to India's education landscape through six independent projects."
   },
   "hero": {
     "backgroundImage": "assets/images/home/slider-1.jpg",
@@ -17,52 +17,24 @@
     "badge": "Together in Development & Education",
     "tagline": "Improving access to",
     "taglineHighlight": "holistic education",
-    "description": "TIDE Foundation works to bring sustainable, systemic and scalable change to India's education landscape — built to last, designed to disappear.",
+    "description": "TIDE Foundation works to bring sustainable, systemic and scalable change to India's education landscape.",
     "ctaLabel": "Explore Our Work",
+    "ctaHref": "/education-for-harmony",
     "ctaSecondaryLabel": "Get Involved",
-    "floatProjects": "Active programmes",
-    "floatProjectsValue": "6",
+    "ctaSecondaryHref": "/get-involved/volunteer",
+    "floatLives": "Lives impacted",
+    "floatLivesValue": "52,500+",
     "floatFounded": "Founded in Ahmedabad",
     "floatFoundedValue": "2014",
     "scroll": "Scroll",
     "pills": [
       {
-        "value": "50,500+",
-        "label": "Lives impacted"
-      },
-      {
-        "value": "10 yrs",
+        "value": "12 yrs",
         "label": "of impact"
       },
       {
-        "value": "70+",
-        "label": "partners"
-      }
-    ]
-  },
-  "impact": {
-    "backgroundImage": "assets/images/home/bg-counter.jpg",
-    "sectionLabel": "Our Impact in Numbers",
-    "stats": [
-      {
-        "value": "50,500+",
-        "label": "Lives Impacted",
-        "detail": "across Gujarat since 2014"
-      },
-      {
-        "value": "70+",
-        "label": "Partner Organisations",
-        "detail": "schools, NGOs & institutions since 2014"
-      },
-      {
-        "value": "10",
-        "label": "Years of Service",
-        "detail": "of continuous grassroots impact"
-      },
-      {
         "value": "100+",
-        "label": "Current Volunteers",
-        "detail": "from universities across India"
+        "label": "partners"
       }
     ]
   },
@@ -72,6 +44,7 @@
     "body": "TIDE builds and empowers systems to bring about holistic education of the whole child (education of the head, heart, hands, and soul) for all.",
     "quote": "We imagine an education that helps students develop as a whole person and learn to work together to counter the many 21st century challenges that India and the globe faces.",
     "learnMore": "Learn why we do this",
+    "learnMoreHref": "/about/why-tide",
     "image1": "assets/images/home/why-tide.jpg",
     "image1Alt": "TIDE Foundation students learning in a classroom",
     "image2": "assets/images/home/join-us.jpg",
@@ -90,7 +63,7 @@
       {
         "phase": "Phase 2",
         "period": "2019 to 2026",
-        "lives": "35,041 lives transformed",
+        "lives": "37,199 lives transformed",
         "desc": "Systems-based interventions to identify and develop scalable solutions."
       },
       {
@@ -104,7 +77,7 @@
   "programs": {
     "sectionBadge": "Our Approach",
     "sectionTitle": "Three approaches. One vision.",
-    "sectionSubtitle": "An ecosystem of interventions. A digital repository. A research centre.",
+    "sectionSubtitle": "An ecosystem of interventions. A digital repository. A research Centre.",
     "explore": "Explore",
     "items": [
       {
@@ -112,40 +85,23 @@
         "photo": "assets/images/home/gallery-1.jpg",
         "iconKey": "Heart",
         "title": "Education for Harmony",
-        "badge": "Community Programs",
-        "desc": "Promoting thinking skills, life skills, civic responsibility, social emotional learning, and sewa."
+        "desc": "Promoting thinking skills, life skills, civic responsibility, and value education through self and social transformation."
       },
       {
         "to": "/pramaan",
         "photo": "assets/images/projects-bettered/gallery-01.jpg",
         "iconKey": "BookOpen",
-        "title": "Pramaan",
-        "badge": "ABL Resources",
-        "desc": "Collating activity-based learning materials to inspire conceptual understanding."
+        "title": "Pramaan: Activity based learning",
+        "desc": "Collating activity based learning materials to inspire conceptual understanding."
       },
       {
         "to": "/thrive",
         "photo": "assets/images/thrive/research-happiness-curriculum.png",
         "iconKey": "Lightbulb",
-        "title": "THRIvE",
-        "badge": "Systems Research",
-        "desc": "Understanding and empowering educational systems through rigorous research."
+        "title": "THRIvE: Systems research",
+        "desc": "Understanding and empowering educational systems to promote holistic education."
       }
     ]
-  },
-  "padlet": {
-    "sectionBadge": "Student Work",
-    "title": "See some of the work that our students have done!",
-    "url": "https://padlet.com/jwalin10/sustainability-in-action-our-goals-our-world-298p6w36455b1bp5",
-    "iframeTitle": "Sustainability in Action — Student Work Padlet",
-    "fallbackLabel": "Open the student work Padlet board"
-  },
-  "testimonial": {
-    "sectionLabel": "Voices from the field",
-    "quote": "TIDE doesn't just run programs — it builds ecosystems. Their work with our teachers changed how our entire school thinks about education.",
-    "photo": "assets/images/home/testimonial-quote.png",
-    "author": "School Principal, Ahmedabad",
-    "role": "Partner since 2017"
   },
   "cta": {
     "backgroundImage": "assets/images/home/bg-contact-strip.jpg",
@@ -153,6 +109,8 @@
     "sectionTitle": "Be part of the change",
     "body": "Whether you donate time, resources, or expertise — there's a place for you in TIDE's mission.",
     "volunteerLabel": "Volunteer or work with us",
-    "donateLabel": "Make a Donation"
+    "volunteerHref": "/get-involved/volunteer",
+    "donateLabel": "Make a Donation",
+    "donateHref": "/get-involved/donate"
   }
 }

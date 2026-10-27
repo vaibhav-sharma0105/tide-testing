@@ -10,7 +10,7 @@ logo: "/assets/images/shared/tide-logo.png"
 # Shown in place of any image that fails to load (see src/utils/imagePlaceholder.js).
 placeholderImage: "/assets/images/shared/placeholder.svg"
 email: "tidefoundation@gmail.com"
-livesImpacted: "50,500+"
+livesImpacted: "52,500+"
 # Grades the Pramaan library covers. Write {gradeRange} wherever a page says it (the YAML→JSON
 # sync and llms.txt fill it in). Keep it equal to the GRADES list in src/config/abl.js —
 # a unit test checks that.

@@ -52,7 +52,7 @@ describe('JSON-LD generated from site.yaml', () => {
   it('NGO block equals the old hardcoded block except the lives figure', () => {
     expect(ngo).toEqual({
       ...OLD_NGO,
-      description: OLD_NGO.description.replace('50,000+', '50,500+'),
+      description: OLD_NGO.description.replace('50,000+', '52,500+'),
     })
     // key order is preserved too (matters for readability of the served JSON)
     expect(Object.keys(ngo)).toEqual(Object.keys(OLD_NGO))

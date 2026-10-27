@@ -8,20 +8,18 @@
     "seoDescription": "TIDE Foundation was established in 2014 to bring contextualized, sustainable change to India's education sector."
   },
   "whoWeAre": {
-    "sectionBadge": "Mission",
-    "sectionTitle": "Who We Are",
-    "mission": "TIDE (Together in Development and Education) Foundation was established on November 14, 2014 with a singular mission: to bring about contextualized, systemic, sustainable changes in India's education sector. We believe simple, well-aimed interventions can create domino effects throughout communities.",
-    "philosophy": "We believe simple, well-aimed interventions can create domino effects throughout communities. Rather than spreading thin across many places, we work intensively with fewer communities to catalyse organic, lasting transformation."
+    "sectionTitle": "Our Mission",
+    "mission": "TIDE (Together in Development and Education) Foundation was established on November 14, 2014 with a singular mission: to bring about contextualized, systemic, sustainable changes in India's education sector. We believe simple, well-aimed interventions can create domino effects throughout communities."
   },
   "vision": {
     "title": "Our Vision",
-    "body": "We envision an education system that propels students to think, respect other people and their perspectives, to learn to collaborate, and to deal with the many 21st century issues. Our vision is bold — to deplete the need for our own projects within 15 years, either by systemically resolving root issues or by developing independent systems that no longer need our support.",
-    "quote": "A sustainable change requires deep understanding of the complex system.",
+    "body": "We envision an education system that propels students to think, respect other people and their perspectives, to learn to collaborate, and to deal with the many 21st century issues.",
+    "policy": "National Education Policy 2020 calls for holistic education that can develop values including diversity, pluralism, equality and justice. Drawing on it we envision a pedagogical transformation relying on holistic, experiential, inquiry-based, multidisciplinary and learner-centred approaches to learning.",
+    "quote": "A sustainable change requires a deep understanding of the complex system.",
     "backgroundImage": "assets/images/home/bg-aim.jpg"
   },
   "goals": {
-    "sectionBadge": "Goals",
-    "sectionTitle": "Five Primary Goals",
+    "sectionTitle": "Four goals",
     "items": [
       {
         "iconKey": "Heart",
@@ -42,13 +40,33 @@
     ]
   },
   "principles": {
-    "sectionTitle": "Five Guiding Principles",
+    "sectionTitle": "Five guiding principles",
     "items": [
-      "Sustainable change",
-      "Empower existent systems",
-      "Systemic change",
-      "Scalable change",
-      "Meaningful impact"
+      {
+        "title": "Sustainable change",
+        "text": "Have an exit strategy where the change lasts after we leave.",
+        "image": "assets/images/projects-bettered/gallery-07.jpg"
+      },
+      {
+        "title": "Empowering existent systems",
+        "text": "Work with existent systems to bring about quality education for all.",
+        "image": "assets/images/get-involved-volunteer/gallery-07.jpg"
+      },
+      {
+        "title": "Systemic change",
+        "text": "Use a systems-based approach to identify and leverage key levers of change.",
+        "image": "assets/images/projects-bettered/gallery-04.jpg"
+      },
+      {
+        "title": "Scalable change",
+        "text": "Develop replicable models (and while we may not scale, others should be able to do so).",
+        "image": "assets/images/projects-mcc/mccx-2025-au.jpg"
+      },
+      {
+        "title": "Meaningful change",
+        "text": "Create a deep and meaningful impact (especially on the intangibles).",
+        "image": "assets/images/home/bg-counter.jpg"
+      }
     ]
   }
 }

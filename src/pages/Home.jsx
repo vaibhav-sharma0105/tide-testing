@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { useRef } from 'react'
 import SeoHead from '../components/ui/SeoHead'
 import Button from '../components/ui/Button'
-import AnimatedCounter from '../components/ui/AnimatedCounter'
 import data from '../data/home.json'
 import site from '../data/site.json'
 import { makeFadeUp } from '../utils/motionPresets'
@@ -81,12 +80,12 @@ export default function Home() {
             </motion.p>
 
             <motion.div {...fadeUp(0.4)} className="mt-10 flex flex-wrap gap-4">
-              <Button to="/about/why-tide" size="lg"
+              <Button to={data.hero.ctaHref} size="lg"
                 className="bg-white text-primary hover:bg-primary-faint font-semibold shadow-float px-8 py-4"
               >
                 {data.hero.ctaLabel} <ArrowRight className="w-4 h-4" />
               </Button>
-              <Button to="/get-involved/volunteer" size="lg"
+              <Button to={data.hero.ctaSecondaryHref} size="lg"
                 className="gradient-accent text-tide-text border-none shadow-float px-8 py-4"
               >
                 {data.hero.ctaSecondaryLabel}
@@ -133,8 +132,8 @@ export default function Home() {
                 transition={{ delay: 1.1, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
                 className="absolute bottom-24 right-4 glass rounded-2xl px-4 py-3 shadow-float"
               >
-                <div className="font-display font-bold text-primary text-xl leading-none">{data.hero.floatProjectsValue}</div>
-                <div className="text-xs text-tide-muted font-body mt-0.5">{data.hero.floatProjects}</div>
+                <div className="font-display font-bold text-primary text-xl leading-none">{data.hero.floatLivesValue}</div>
+                <div className="text-xs text-tide-muted font-body mt-0.5">{data.hero.floatLives}</div>
               </motion.div>
             </div>
           </div>
@@ -173,7 +172,7 @@ export default function Home() {
                 </p>
               </blockquote>
               <div className="mt-8">
-                <Button to="/about/why-tide" variant="ghost"
+                <Button to={data.mission.learnMoreHref} variant="ghost"
                   className="text-primary hover:bg-primary-faint px-0 font-semibold"
                 >
                   {data.mission.learnMore} <ArrowRight className="w-4 h-4" />
@@ -206,33 +205,39 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════
-          IMPACT METRICS
+          PROGRAMS
       ══════════════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={`${B}${data.impact.backgroundImage}`} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover object-center" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(13,33,55,0.93) 0%, rgba(13,33,55,0.82) 100%)' }} />
-        </div>
-        <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: 'linear-gradient(90deg, transparent 0%, #F59E0B 30%, #F59E0B 70%, transparent 100%)' }} />
-
-        <div className="relative max-w-6xl mx-auto px-4 md:px-8 py-16 md:py-20">
-          <motion.div {...fadeUp()} className="text-center mb-12">
-            <span className="inline-flex items-center gap-2 text-[10px] font-body font-bold uppercase tracking-[0.22em] text-accent">
-              <span className="h-px w-8 bg-accent/60 inline-block" />
-              {data.impact.sectionLabel}
-              <span className="h-px w-8 bg-accent/60 inline-block" />
-            </span>
+      <section className="section-padding bg-white">
+        <div className="max-w-7xl mx-auto container-wide">
+          <motion.div {...fadeUp()} className="text-center mb-14">
+            <span className="badge-primary mb-4 mx-auto">{data.programs.sectionBadge}</span>
+            <h2 className="display-md text-tide-text mt-3">{data.programs.sectionTitle}</h2>
+            <p className="body-md max-w-xl mx-auto mt-4">{data.programs.sectionSubtitle}</p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-y md:divide-y-0 md:divide-x divide-white/10">
-            {data.impact.stats.map((s, i) => (
-              <motion.div key={s.label} {...fadeUp(i * 0.1)} className="text-center px-3 sm:px-6 py-6 md:py-2 group">
-                <AnimatedCounter value={s.value} label="" light numClassName="font-display font-bold text-4xl sm:text-5xl md:text-6xl leading-none text-white mb-2" />
-                <div className="h-[2px] w-10 mx-auto mb-3 rounded-full bg-accent opacity-70 group-hover:w-16 group-hover:opacity-100 transition-all duration-400" />
-                <div className="font-body font-semibold text-sm text-white/90 uppercase tracking-wider mb-1">{s.label}</div>
-                <div className="font-body text-xs text-white/55 leading-relaxed">{s.detail}</div>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {data.programs.items.map((p, i) => {
+              const Icon  = ICON_MAP[p.iconKey] || Globe
+              const color = PROGRAM_COLORS[i] || 'from-primary to-primary'
+              return (
+                <motion.div key={p.to} {...fadeUp(i * 0.07)}>
+                  <Link to={p.to} className="card-photo group block h-full min-h-[320px]">
+                    <img src={`${B}${p.photo}`} alt={p.title} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div className="absolute inset-0 photo-overlay transition-opacity duration-300 group-hover:opacity-90" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                      <div className={`inline-flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br ${color} mb-3`}>
+                        <Icon className="w-4 h-4 text-white" />
+                      </div>
+                      <h3 className="font-display text-lg font-bold text-white leading-tight">{p.title}</h3>
+                      <p className="text-sm text-white/75 font-body mt-1.5 leading-relaxed">{p.desc}</p>
+                      <div className="mt-3 flex items-center gap-1 text-accent text-sm font-semibold font-body translate-y-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                        {data.programs.explore} <ArrowRight className="w-3.5 h-3.5" />
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -240,7 +245,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════════════════
           JOURNEY TIMELINE
       ══════════════════════════════════════════════════════════════ */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-tide-bg">
         <div className="max-w-5xl mx-auto container-wide">
           <motion.div {...fadeUp()} className="mb-12">
             <span className="badge-primary mb-4 block w-fit">{data.journey.sectionBadge}</span>
@@ -261,126 +266,6 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════
-          PROGRAMS
-      ══════════════════════════════════════════════════════════════ */}
-      <section className="section-padding bg-tide-bg">
-        <div className="max-w-7xl mx-auto container-wide">
-          <motion.div {...fadeUp()} className="text-center mb-14">
-            <span className="badge-primary mb-4 mx-auto">{data.programs.sectionBadge}</span>
-            <h2 className="display-md text-tide-text mt-3">{data.programs.sectionTitle}</h2>
-            <p className="body-md max-w-xl mx-auto mt-4">{data.programs.sectionSubtitle}</p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {data.programs.items.map((p, i) => {
-              const Icon  = ICON_MAP[p.iconKey] || Globe
-              const color = PROGRAM_COLORS[i] || 'from-primary to-primary'
-              return (
-                <motion.div key={p.to} {...fadeUp(i * 0.07)}>
-                  <Link to={p.to} className="card-photo group block h-full min-h-[320px]">
-                    <img src={`${B}${p.photo}`} alt={p.title} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                    <div className="absolute inset-0 photo-overlay transition-opacity duration-300 group-hover:opacity-90" />
-                    <div className="absolute top-4 left-4">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-body font-bold uppercase tracking-[0.14em] text-white border border-accent/40 backdrop-blur-sm" style={{ background: 'rgba(245,158,11,0.82)' }}>{p.badge}</span>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-5">
-                      <div className={`inline-flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br ${color} mb-3`}>
-                        <Icon className="w-4 h-4 text-white" />
-                      </div>
-                      <h3 className="font-display text-lg font-bold text-white leading-tight">{p.title}</h3>
-                      <p className="text-sm text-white/75 font-body mt-1.5 leading-relaxed line-clamp-2">{p.desc}</p>
-                      <div className="mt-3 flex items-center gap-1 text-accent text-sm font-semibold font-body translate-y-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                        {data.programs.explore} <ArrowRight className="w-3.5 h-3.5" />
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════
-          STUDENT WORK PADLET
-      ══════════════════════════════════════════════════════════════ */}
-      <section className="section-padding bg-tide-bg">
-        <div className="max-w-7xl mx-auto container-wide">
-          <motion.div {...fadeUp()} className="text-center mb-8">
-            <span className="badge-primary mb-4 mx-auto">{data.padlet.sectionBadge}</span>
-            <h2 className="display-md text-tide-text">{data.padlet.title}</h2>
-          </motion.div>
-          <motion.div {...fadeUp(0.1)} className="relative rounded-2xl overflow-hidden border border-tide-border shadow-card"
-            style={{ paddingBottom: '56.25%', height: 0 }}>
-            <iframe
-              src={data.padlet.url}
-              title={data.padlet.iframeTitle}
-              className="absolute inset-0 w-full h-full"
-              frameBorder="0"
-              allow="camera;microphone;geolocation"
-              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-            />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════
-          TESTIMONIAL
-      ══════════════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden py-24 md:py-32 px-4 md:px-8 lg:px-16">
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #FEF9EF 0%, #FDF3DC 45%, #F9E8C4 100%)' }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 70% 55% at 50% 55%, rgba(245,158,11,0.12) 0%, transparent 70%)' }} />
-        <div
-          className="absolute -top-6 right-4 md:right-12 leading-none text-amber-400/[0.09] pointer-events-none select-none font-display"
-          style={{ fontSize: 'clamp(18rem, 28vw, 32rem)', lineHeight: 0.82, fontFamily: '"Playfair Display", serif' }}
-        >
-          "
-        </div>
-
-        <div className="relative max-w-4xl mx-auto">
-          <motion.div {...fadeUp()}>
-            <div
-              className="rounded-3xl p-8 md:p-12 border border-amber-200/70"
-              style={{
-                background: 'rgba(255,255,255,0.52)',
-                backdropFilter: 'blur(16px)',
-                boxShadow: '0 8px 48px rgba(180,120,20,0.10), 0 2px 12px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)',
-              }}
-            >
-              <div className="flex items-center gap-3 mb-8">
-                <div className="h-px flex-1" style={{ background: 'linear-gradient(to right, transparent, rgba(245,158,11,0.45))' }} />
-                <span className="text-[10px] font-body font-bold uppercase tracking-[0.22em] text-amber-600/80">{data.testimonial.sectionLabel}</span>
-                <div className="h-px flex-1" style={{ background: 'linear-gradient(to left, transparent, rgba(245,158,11,0.45))' }} />
-              </div>
-
-              <blockquote className="font-display text-xl md:text-2xl font-normal leading-[1.72] italic mb-10" style={{ color: '#3D2200', letterSpacing: '0.01em' }}>
-                "{data.testimonial.quote}"
-              </blockquote>
-
-              <div className="flex items-center gap-4">
-                <div className="relative flex-shrink-0">
-                  <div className="w-14 h-14 rounded-xl overflow-hidden shadow-md border-2 border-white">
-                    <img src={`${B}${data.testimonial.photo}`} alt={data.testimonial.author} loading="lazy" decoding="async" className="w-full h-full object-cover" />
-                  </div>
-                  <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full gradient-accent flex items-center justify-center shadow-sm">
-                    <Quote className="w-3 h-3 text-tide-text" />
-                  </div>
-                </div>
-                <div>
-                  <div className="font-display font-bold text-base leading-tight" style={{ color: '#2C1800' }}>
-                    {data.testimonial.author}
-                  </div>
-                  <div className="font-body text-sm mt-0.5" style={{ color: '#8B5E1A' }}>
-                    {data.testimonial.role}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════
           JOIN CTA
       ══════════════════════════════════════════════════════════════ */}
       <section className="relative overflow-hidden min-h-[420px] flex items-center">
@@ -397,12 +282,12 @@ export default function Home() {
                 <h2 className="display-md text-white">{data.cta.sectionTitle}</h2>
                 <p className="body-lg mt-4 text-white/75">{data.cta.body}</p>
                 <div className="mt-8 flex flex-wrap gap-4">
-                  <Button to="/get-involved/volunteer" size="lg"
+                  <Button to={data.cta.volunteerHref} size="lg"
                     className="bg-white text-primary hover:bg-primary-faint font-semibold shadow-float"
                   >
                     {data.cta.volunteerLabel} <ArrowRight className="w-4 h-4" />
                   </Button>
-                  <Button to="/get-involved/donate" size="lg"
+                  <Button to={data.cta.donateHref} size="lg"
                     className="gradient-accent text-tide-text border-none shadow-float"
                   >
                     <Heart className="w-4 h-4" /> {data.cta.donateLabel}

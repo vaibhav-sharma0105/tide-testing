@@ -90,7 +90,7 @@ below. Don't silence the rule with `eslint-disable`; move the text to YAML inste
    JSON-LD, `<title>`, `og:site_name` and `/llms.txt` through `scripts/siteDataPlugin.js`; pages
    take SEO strings from `data.meta.seoTitle` / `seoDescription`. Don't hardcode them.
 6. **Facts that must match `site.yaml`** — if a page YAML states the contact e-mail or the
-   lives-impacted total, it must equal `site.yaml` (`tidefoundation@gmail.com`, `50,500+`).
+   lives-impacted total, it must equal `site.yaml` (`tidefoundation@gmail.com`, `52,500+`).
    `npm run content:validate` fails otherwise.
 7. **Exempt:** the ABL/Pramaan live resource data from the Apps Script API.
 

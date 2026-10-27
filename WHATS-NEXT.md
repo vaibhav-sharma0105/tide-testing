@@ -1,6 +1,6 @@
 # What's Next — Open Items
 
-> Last verified against the code: 2026-10-25. Everything under "Open items" was re-checked in the repository on that date; nothing is listed from memory. The "Archive" section further down is a finished 2026-04-12 audit, kept for history only.
+> Last verified against the code: 2026-10-27. Everything under "Open items" was re-checked in the repository on that date; nothing is listed from memory. The "Archive" section further down is a finished 2026-04-12 audit, kept for history only.
 
 ## Open items
 
@@ -8,6 +8,9 @@
 
 1. ~~Images left unused by the removed pages~~ — **done 2026-10-25:** the 97 unused files (about 21 MB) were deleted with the owner's approval; recover with `git checkout a4126d1 -- <path>`. The unused legacy downloader `scripts/download-images.mjs` was deleted on 2026-10-26 (recover with `git checkout a4126d1 -- scripts/download-images.mjs`).
 2. **`intro.ctaHref` in `content/pages/get-involved-volunteer.yaml`** is the placeholder `https://docs.google.com/forms`, not a real application form. Owner said keep as is for now. The page is reachable from the About menu.
+3. **Unused images:** none left from the 2026-10-27 pass. `home/testimonial-quote.png` (the removed Home testimonial) was deleted; recover with `git checkout HEAD~ -- public/assets/images/home/testimonial-quote.png` if needed.
+4. **Placeholder photos (owner to replace):** the five guiding-principle thumbnails in `about-why-tide.yaml`, the three closing-card photos in `about-past-programs.yaml` (`cta.links[].image`), and the Home "Approach" card photos are stand-ins picked from the existing library.
+5. **Unconfirmed figure:** the Home "Journey" Phase 2 total (`37,199`) was derived so the phases sum to 52,500; confirm with the stakeholder.
 
 ### Content and data issues
 
@@ -20,7 +23,7 @@
 - The 16 stranded routes: removed outright, no redirects (`src/test/routing/removedRoutes.test.jsx`); pages, YAML, generated JSON and `TodoPlaceholder` are gone.
 - Unused code and assets (`Badge.jsx`, `WhatsAppIcon`, `src/App.css`, `src/assets/*`, 91 images, `getDriveDownloadUrl`, `public/icons.svg`, `public/favicon.svg`): deleted with the owner's approval on 2026-10-25.
 - Devanagari/Gujarati fonts: owner decided to keep them.
-- Contact email and lives-impacted figure: `tidefoundation@gmail.com` and `50,500+` everywhere, from `content/shared/site.yaml`, enforced by `npm run content:validate`.
+- Contact email and lives-impacted figure: `tidefoundation@gmail.com` and `52,500+` everywhere, from `content/shared/site.yaml`, enforced by `npm run content:validate`.
 - Multilingual framework: removed (archived in the local git tag `archive/multilingual-framework`).
 
 ---

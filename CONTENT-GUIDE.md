@@ -265,14 +265,14 @@ A few facts appear in many places: in page text, in the footer, in the informati
 name: "TIDE Foundation"
 url: "https://tideinternational.org"
 email: "tidefoundation@gmail.com"
-livesImpacted: "50,500+"
+livesImpacted: "52,500+"
 gradeRange: "1–5"      # grades the Pramaan library covers; pages write {gradeRange}
 foundingYear: "2014"
 ```
 
 (The same file also holds the logo, location, search-engine description and keywords, and the parent names used in page breadcrumbs.) Anything you change in `site.yaml` flows automatically into the search-engine information in the page header and into `/llms.txt`.
 
-**Rule: the email address and the lives-impacted figure must be the same everywhere.** The decided values today are `tidefoundation@gmail.com` and `50,500+`. If you ever need to change one:
+**Rule: the email address and the lives-impacted figure must be the same everywhere.** The decided values today are `tidefoundation@gmail.com` and `52,500+`. If you ever need to change one:
 
 1. Change it in `content/shared/site.yaml`.
 2. Change it in **every page that states it** (for example the Contact, Donate and Home pages, the loading messages in `loader.yaml`, and the `llms.txt` template).

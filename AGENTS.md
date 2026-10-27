@@ -183,7 +183,7 @@ tide-new/
 │   │       └── VideoLightbox.jsx    ← full-screen video overlay, mirrors ImageLightbox
 │   │
 │   ├── pages/
-│   │   ├── Home.jsx               ← hero, mission, impact counters, journey, programs, Padlet, testimonial, CTA
+│   │   ├── Home.jsx               ← hero, mission, approach (3 programme cards), journey, CTA
 │   │   ├── Contact.jsx            ← mailto form + info sidebar
 │   │   ├── THRIvE.jsx             ← THRIvE programme page
 │   │   ├── EducationForHarmony.jsx ← /education-for-harmony
@@ -587,7 +587,7 @@ const [ref, isVisible] = useScrollAnimation({ threshold: 0.15, rootMargin: '0px 
 // isVisible flips to true when the element enters the viewport and never flips back
 ```
 
-Only `AnimatedCounter` uses it; all other scroll animation is Framer `whileInView`.
+Only `AnimatedCounter` uses it (now only on the Pramaan home page); all other scroll animation is Framer `whileInView`.
 
 ### useLightbox
 
@@ -1138,7 +1138,7 @@ Never type English into JSX — that bypasses the CMS and makes the text unedita
 
 ### The e-mail and lives-impacted figure live in `site.yaml`
 
-The contact email is `tidefoundation@gmail.com` and the lives-impacted total is `50,500+` everywhere (owner decision). The single source is `content/shared/site.yaml` (`email`, `livesImpacted`); `npm run content:validate` errors on any other email or lives-impacted total in `content/`. Other metrics (e.g. "15,000+ students") are intentionally not flagged.
+The contact email is `tidefoundation@gmail.com` and the lives-impacted total is `52,500+` everywhere (owner decision). The single source is `content/shared/site.yaml` (`email`, `livesImpacted`); `npm run content:validate` errors on any other email or lives-impacted total in `content/`. Other metrics (e.g. "15,000+ students") are intentionally not flagged.
 
 ### Don't put a literal `<title>` in an HTML comment in `index.html`
 

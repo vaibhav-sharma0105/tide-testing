@@ -15,17 +15,17 @@ To bring about contextualized, systemic, sustainable changes in India's educatio
 ## Impact (as of 2025)
 
 - {{livesImpacted}} lives impacted across Gujarat since {{foundingYear}}
-- 70+ partner organisations (schools, NGOs, institutions)
-- 10 years of continuous grassroots impact
+- 100+ partner organisations (schools, NGOs, institutions)
+- 12 years of continuous grassroots impact
 - 100+ current volunteers from universities across India
 
 ## Key Pages
 
 - [Home]({{url}}/) — Mission, impact stats, three pillars, student work
 - [Why TIDE?]({{url}}/about/why-tide) — Mission, vision, five guiding principles, organizational goals
-- [Past Programs]({{url}}/about/past-programs) — History of Prerak, BetterED, CompletED, EmpowerED
+- [Past Programs]({{url}}/about/past-programs) — History of Prerak, BetterEd, CompletEd, EmpowerEd
 - [Our Team]({{url}}/about/our-team) — Founders and core team
-- [Our Partners]({{url}}/about/our-partners) — 70+ partner schools, NGOs, and institutions
+- [Our Partners]({{url}}/about/our-partners) — 100+ partner schools, NGOs, and institutions
 - [Publications]({{url}}/about/publications) — Annual reports, events, research
 - [Education for Harmony]({{url}}/education-for-harmony) — EHSA/CARES framework and six community programs
 - [Organise your MCCx]({{url}}/education-for-harmony/mccx) — How to run a Model City Council

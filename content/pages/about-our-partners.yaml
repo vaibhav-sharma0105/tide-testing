@@ -4,12 +4,12 @@ meta:
   title: "Our Partners"
   subtitle: "A network of institutions, universities, and organisations that make our work possible."
   seoTitle: "Our Partners — TIDE Foundation"
-  seoDescription: "70+ schools, universities, NGOs and organisations partnering with TIDE Foundation."
+  seoDescription: "100+ schools, universities, NGOs and organisations partnering with TIDE Foundation."
 
 logoGallery:
   sectionBadge: "Partner Network"
   sectionTitle: "A Network Built on Trust"
-  sectionSubtitle: "70+ schools, universities, NGOs and organisations powering TIDE's work."
+  sectionSubtitle: "100+ schools, universities, NGOs and organisations powering TIDE's work."
   imageAltPrefix: "Partner"
   # Filenames only — component prepends /assets/images/about-our-partners/
   images:
