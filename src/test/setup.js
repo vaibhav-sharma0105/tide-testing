@@ -13,7 +13,7 @@ vi.mock('framer-motion', async () => {
   const mkEl = (tag) =>
     React.forwardRef(({
       children, initial, animate, exit, transition, variants,
-      whileInView, viewport, whileHover, whileTap, layout, layoutId,
+      whileInView, viewport, whileHover, whileTap, onTap, layout, layoutId,
       ...rest
     }, ref) => React.createElement(tag, { ...rest, ref }, children))
 

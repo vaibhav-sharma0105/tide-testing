@@ -42,6 +42,7 @@ export default {
       fontFamily: {
         display: ['"Playfair Display"', '"Noto Serif Devanagari"', '"Noto Serif Gujarati"', 'serif'],
         body:    ['"Plus Jakarta Sans"', '"Noto Sans Devanagari"', '"Noto Sans Gujarati"', 'sans-serif'],
+        hand:    ['Caveat', 'cursive'],
       },
       boxShadow: {
         card:         '0 1px 4px rgba(13,33,55,0.06), 0 4px 20px rgba(13,33,55,0.04)',

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, useAnimation, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { BookOpen, Users, Briefcase, ArrowRight, ArrowUpRight, ExternalLink, Mail } from 'lucide-react'
 import SeoHead from '../../components/ui/SeoHead'
@@ -25,6 +25,111 @@ const PRINTS = [
   { box: 'left-[4%] bottom-0 w-[44%]', tilt: -4, ratio: 'aspect-square' },
 ]
 
+// Real pendulum: released off-angle, it overshoots and rings down (low damping).
+const PENDULUM = { type: 'spring', stiffness: 90, damping: 5.5, mass: 1 }
+
+const PIN_SHADOW = 'shadow-[0_2px_3px_rgba(0,0,0,0.4),inset_-1px_-1px_2px_rgba(0,0,0,0.25),inset_1px_1px_2px_rgba(255,255,255,0.5)]'
+
+// Hangs under gravity: the curve sags by `sag` x 18% of the span.
+function threadPath(a, b, sag) {
+  const len = Math.hypot(b.x - a.x, b.y - a.y)
+  return `M${a.x} ${a.y} Q${(a.x + b.x) / 2} ${(a.y + b.y) / 2 + sag * len * 0.18} ${b.x} ${b.y}`
+}
+
+// Thrown over the pins taut, then drops and bobs as it settles (damped oscillation).
+const SAG_SETTLE = [0.15, 1.5, 0.75, 1.2, 0.95, 1.05, 1]
+const SAG_TIMES = [0, 0.3, 0.5, 0.68, 0.82, 0.92, 1]
+
+// Measures each pin's centre inside `wallRef` so the thread follows the layout.
+function usePinPoints() {
+  const wallRef = useRef(null)
+  const pinRefs = useRef([])
+  const [pts, setPts] = useState(null)
+
+  useEffect(() => {
+    const wall = wallRef.current
+    if (!wall) return undefined
+    const measure = () => {
+      const origin = wall.getBoundingClientRect()
+      setPts(pinRefs.current.filter(Boolean).map((el) => {
+        const r = el.getBoundingClientRect()
+        return { x: r.left + r.width / 2 - origin.left, y: r.top + r.height / 2 - origin.top }
+      }))
+    }
+    measure()
+    if (typeof ResizeObserver === 'undefined') return undefined
+    const ro = new ResizeObserver(measure)
+    ro.observe(wall)
+    return () => ro.disconnect()
+  }, [])
+
+  return { wallRef, pinRefs, pts }
+}
+
+// Amber thread strung pin to pin, always above the prints so hovering never hides it.
+function PinThread({ pts, reduce }) {
+  if (!pts || pts.length < 2) return null
+  return (
+    <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ zIndex: 10 }} aria-hidden="true">
+      {pts.slice(1).map((b, i) => {
+        const a = pts[i]
+        const move = {
+          fill: 'none',
+          strokeWidth: 2,
+          strokeLinecap: 'round',
+          initial: reduce ? false : { d: threadPath(a, b, SAG_SETTLE[0]), opacity: 0 },
+          whileInView: { d: SAG_SETTLE.map((v) => threadPath(a, b, v)), opacity: 1 },
+          viewport: { once: true, margin: '-60px' },
+          transition: { d: { duration: 2.2, delay: 0.7 + i * 0.25, times: SAG_TIMES, ease: 'easeInOut' }, opacity: { duration: 0.2, delay: 0.7 + i * 0.25 } },
+        }
+        // The shadow is a second, offset stroke: far cheaper to repaint than a CSS filter on a moving path.
+        return (
+          <g key={i}>
+            <motion.path {...move} stroke="rgba(13,31,60,0.22)" style={{ transform: 'translateY(2.5px)' }} />
+            <motion.path {...move} stroke="#D97706" />
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
+
+function Pin({ color, pinRef }) {
+  return (
+    <span
+      ref={pinRef}
+      className={`absolute left-1/2 -top-1.5 -translate-x-1/2 w-3.5 h-3.5 rounded-full ${color} ${PIN_SHADOW}`}
+      aria-hidden="true"
+    />
+  )
+}
+
+// A print or tag hanging from a pin. It swings in once on scroll, straightens under a mouse
+// hover, and swings again on a touch tap (a finger can't hover).
+function Swing({ as = 'div', tilt, kick, delay, reduce, className, style, children }) {
+  const controls = useAnimation()
+  const Tag = motion[as]
+  const swing = (e) => {
+    if (reduce || e?.pointerType === 'mouse') return
+    controls.start({ rotate: [tilt + kick, tilt], transition: PENDULUM })
+  }
+  return (
+    <Tag
+      className={className}
+      style={{ ...style, transformOrigin: '50% 0' }}
+      initial={reduce ? { rotate: tilt } : { opacity: 0, rotate: tilt + kick }}
+      whileInView={{ opacity: 1, rotate: tilt }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={reduce ? undefined : { ...PENDULUM, delay, opacity: { duration: 0.2, delay } }}
+      animate={controls}
+      onTap={(e) => swing(e)}
+      whileHover={reduce ? undefined : { rotate: 0, transition: { type: 'spring', stiffness: 220, damping: 9 } }}
+    >
+      {children}
+    </Tag>
+  )
+}
+
 function Collage({ images, stat, statLabel }) {
   const reduce = useReducedMotion()
   return (
@@ -32,29 +137,36 @@ function Collage({ images, stat, statLabel }) {
       {images.slice(0, PRINTS.length).map((item, i) => {
         const p = PRINTS[i]
         return (
-          <motion.figure
+          <Swing
+            as="figure"
             key={item.src}
+            tilt={p.tilt}
+            kick={i % 2 ? -16 : 16}
+            delay={0.1 + i * 0.2}
+            reduce={reduce}
             className={`absolute ${p.box} bg-white p-2 pb-2 rounded-md shadow-float`}
             style={{ zIndex: i + 1 }}
-            initial={reduce ? { rotate: p.tilt } : { opacity: 0, y: 36, rotate: p.tilt * 3 }}
-            whileInView={{ opacity: 1, y: 0, rotate: p.tilt }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.15 + i * 0.18, ease: [0.22, 1, 0.36, 1] }}
           >
             <img src={imgSrc(item.src)} alt={item.label} className={`w-full ${p.ratio} object-cover rounded-sm`} />
-          </motion.figure>
+            <Pin color={i === 1 ? 'bg-accent' : 'bg-primary'} />
+          </Swing>
         )
       })}
-      <motion.div
-        className="absolute right-[2%] top-[-3%] z-10 rounded-full bg-accent text-tide-text px-5 py-3 text-center shadow-float rotate-6"
-        initial={reduce ? false : { opacity: 0, scale: 0.6 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.9, type: 'spring', stiffness: 220, damping: 16 }}
-      >
-        <p className="font-display text-2xl font-bold leading-none">{stat}</p>
-        <p className="text-[11px] font-body font-semibold leading-tight mt-1 max-w-[7rem]">{statLabel}</p>
-      </motion.div>
+      {/* Paper tag: threaded through a punched hole on a pin, swings like the prints */}
+      <Swing tilt={4} kick={-20} delay={0.9} reduce={reduce} className="absolute right-[3%] -top-[4%] z-20 w-36">
+        <Pin color="bg-primary" />
+        <span className="absolute left-1/2 top-[7px] h-[29px] w-0.5 -translate-x-1/2 bg-accent-dark" aria-hidden="true" />
+        <div className="mt-[22px]" style={{ filter: 'drop-shadow(0 6px 8px rgba(13,31,60,0.22))' }}>
+          <div
+            className="relative bg-accent text-tide-text text-center px-4 pt-7 pb-4"
+            style={{ clipPath: 'polygon(14% 0, 86% 0, 100% 14%, 100% 100%, 0 100%, 0 14%)' }}
+          >
+            <span className="absolute left-1/2 top-2 h-3 w-3 -translate-x-1/2 rounded-full bg-tide-bg shadow-[inset_0_1px_2px_rgba(0,0,0,0.35)]" aria-hidden="true" />
+            <p className="font-hand text-4xl font-bold leading-none">{stat}</p>
+            <p className="font-hand text-xl font-semibold leading-[1.1] mt-1">{statLabel}</p>
+          </div>
+        </div>
+      </Swing>
     </div>
   )
 }
@@ -97,102 +209,42 @@ const WALL_PRINTS = [
   { tilt: -2.5, drop: 'md:mt-7',  pinned: false },
 ]
 
-// Real pendulum: released off-angle, it overshoots and rings down (low damping).
-const PENDULUM = { type: 'spring', stiffness: 90, damping: 5.5, mass: 1 }
-
-const PIN_SHADOW = 'shadow-[0_2px_3px_rgba(0,0,0,0.4),inset_-1px_-1px_2px_rgba(0,0,0,0.25),inset_1px_1px_2px_rgba(255,255,255,0.5)]'
-
-// Hangs under gravity: the curve sags by `sag` x 18% of the span.
-function threadPath(a, b, sag) {
-  const len = Math.hypot(b.x - a.x, b.y - a.y)
-  return `M${a.x} ${a.y} Q${(a.x + b.x) / 2} ${(a.y + b.y) / 2 + sag * len * 0.18} ${b.x} ${b.y}`
-}
-
-// Thrown over the pins taut, then drops and bobs as it settles (damped oscillation).
-const SAG_SETTLE = [0.15, 1.5, 0.75, 1.2, 0.95, 1.05, 1]
-const SAG_TIMES = [0, 0.3, 0.5, 0.68, 0.82, 0.92, 1]
-
 function PhotoWall({ images }) {
   const reduce = useReducedMotion()
-  const wallRef = useRef(null)
-  const pinRefs = useRef([])
-  const [pts, setPts] = useState(null)
-
-  useEffect(() => {
-    const wall = wallRef.current
-    if (!wall) return undefined
-    const measure = () => {
-      const origin = wall.getBoundingClientRect()
-      const list = pinRefs.current.filter(Boolean).map((el) => {
-        const r = el.getBoundingClientRect()
-        return { x: r.left + r.width / 2 - origin.left, y: r.top + r.height / 2 - origin.top }
-      })
-      setPts(list)
-    }
-    measure()
-    if (typeof ResizeObserver === 'undefined') return undefined
-    const ro = new ResizeObserver(measure)
-    ro.observe(wall)
-    return () => ro.disconnect()
-  }, [])
+  const { wallRef, pinRefs, pts } = usePinPoints()
 
   return (
     <div ref={wallRef} className="relative grid grid-cols-2 gap-x-5 gap-y-9 md:gap-x-6 md:gap-y-10 max-w-md mx-auto w-full md:max-w-none">
       {images.slice(0, WALL_PRINTS.length).map((item, i) => {
         const p = WALL_PRINTS[i]
-        const motionProps = p.pinned
-          ? {
-              style: { transformOrigin: '50% 0' },
-              initial: reduce ? { rotate: p.tilt } : { opacity: 0, rotate: p.tilt + (i % 2 ? -16 : 16) },
-              whileInView: { opacity: 1, rotate: p.tilt },
-              viewport: { once: true, margin: '-60px' },
-              transition: reduce ? undefined : { ...PENDULUM, delay: 0.1 + i * 0.2, opacity: { duration: 0.2, delay: 0.1 + i * 0.2 } },
-              whileHover: reduce ? undefined : { rotate: 0, transition: { type: 'spring', stiffness: 220, damping: 9 } },
-            }
-          : {
-              // Taped: fixed in place, only fades in.
-              style: { rotate: p.tilt },
-              initial: reduce ? false : { opacity: 0 },
-              whileInView: { opacity: 1 },
-              viewport: { once: true, margin: '-60px' },
-              transition: { duration: 0.5, delay: 0.1 + i * 0.2 },
-            }
+        const className = `relative bg-white p-2 rounded-md shadow-float ${p.drop}`
+        const img = <img src={imgSrc(item.src)} alt={item.label} className="w-full aspect-square object-cover object-top rounded-sm" />
+        if (p.pinned) {
+          return (
+            <Swing as="figure" key={item.src} tilt={p.tilt} kick={i % 2 ? -16 : 16} delay={0.1 + i * 0.2} reduce={reduce} className={className}>
+              {img}
+              <Pin color={p.pin} pinRef={(el) => { pinRefs.current[i] = el }} />
+            </Swing>
+          )
+        }
+        // Taped: fixed in place, only fades in.
         return (
           <motion.figure
             key={item.src}
-            className={`relative bg-white p-2 rounded-md shadow-float ${p.drop}`}
-            {...motionProps}
+            className={className}
+            style={{ rotate: p.tilt }}
+            initial={reduce ? false : { opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.5, delay: 0.1 + i * 0.2 }}
           >
-            <img src={imgSrc(item.src)} alt={item.label} className="w-full aspect-square object-cover object-top rounded-sm" />
-            {p.pinned ? (
-              <span
-                ref={(el) => { pinRefs.current[i] = el }}
-                className={`absolute left-1/2 -top-1.5 -translate-x-1/2 w-3.5 h-3.5 rounded-full ${p.pin} ${PIN_SHADOW}`}
-                aria-hidden="true"
-              />
-            ) : (
-              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rotate-[-3deg] w-14 h-5 bg-amber-200/80 border-x border-dashed border-amber-300/70 shadow-sm" aria-hidden="true" />
-            )}
+            {img}
+            <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rotate-[-3deg] w-14 h-5 bg-amber-200/80 border-x border-dashed border-amber-300/70 shadow-sm" aria-hidden="true" />
           </motion.figure>
         )
       })}
 
-      {pts && pts.length > 1 && (
-        <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ zIndex: 10 }} aria-hidden="true">
-          <motion.path
-            d={threadPath(pts[0], pts[1], 1)}
-            fill="none"
-            stroke="#D97706"
-            strokeWidth="2"
-            strokeLinecap="round"
-            style={{ filter: 'drop-shadow(0 2px 1.5px rgba(13,31,60,0.3))' }}
-            initial={reduce ? false : { d: threadPath(pts[0], pts[1], SAG_SETTLE[0]), opacity: 0 }}
-            whileInView={{ d: SAG_SETTLE.map((v) => threadPath(pts[0], pts[1], v)), opacity: 1 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ d: { duration: 2.2, delay: 0.7, times: SAG_TIMES, ease: 'easeInOut' }, opacity: { duration: 0.2, delay: 0.7 } }}
-          />
-        </svg>
-      )}
+      <PinThread pts={pts} reduce={reduce} />
     </div>
   )
 }
