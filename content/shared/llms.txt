@@ -8,7 +8,7 @@ To bring about contextualized, systemic, sustainable changes in India's educatio
 
 ## Our Three Pillars
 
-- **Education for Harmony**: Community programs promoting life skills, civic responsibility, social-emotional learning, and sewa. Built on the CARES framework (Consciousness, Awaken Empathy, Reflect & Reimagine, Engage & Empower, Sense of Responsibility). Six programs including Model City Councils, Community Changemaker, and Social Transformers — reaching 15,000+ students.
+- **Education for Harmony**: An ecosystem of educational interventions for self- and social-transformation, built on the CARES framework (Compassion & Empathy, Awareness & Consciousness, Reflect & Reimagine, Engage & Empower, Sense of responsibility). Interventions include Model City Councils and Parivartan Melas, workshops and Disha camps, Social Changemakers fellowships, and educator programs — reaching 15,000+ students.
 - **Pramaan**: Open-access Activity-Based Learning (ABL) resource library collating materials from teachers across India to inspire conceptual understanding. Available at /pramaan/resource-centre.
 - **THRIvE Research Centre**: Systems research to understand and empower educational systems, including the Happiness Curriculum — India's first school-based happiness program backed by rigorous research.
 
@@ -27,7 +27,7 @@ To bring about contextualized, systemic, sustainable changes in India's educatio
 - [Our Team]({{url}}/about/our-team) — Founders and core team
 - [Our Partners]({{url}}/about/our-partners) — 100+ partner schools, NGOs, and institutions
 - [Publications]({{url}}/about/publications) — Annual reports, events, research
-- [Education for Harmony]({{url}}/education-for-harmony) — EHSA/CARES framework and six community programs
+- [Education for Harmony]({{url}}/education-for-harmony) — the EHSA/CARES framework and our ecosystem of interventions
 - [Organise your MCCx]({{url}}/education-for-harmony/mccx) — How to run a Model City Council
 - [Pramaan]({{url}}/pramaan) — About the ABL resource library
 - [Resource Centre]({{url}}/pramaan/resource-centre) — Browse 150+ ABL materials by grade, subject, type
