@@ -13,24 +13,41 @@
     "body2": "Want to organise an MCC event at your school, college, or organisation? Get in touch with us to learn how.",
     "ctaLabel": "Get in Touch",
     "ctaHref": "mailto:tidefoundation@gmail.com?subject=MCCx Organisation Enquiry",
+    "learnMoreLabel": "Learn more",
+    "learnMoreAriaLabel": "Learn more about Model City Council (PDF, opens in a new tab)",
+    "learnMoreHref": "https://drive.google.com/file/d/1OxwZ0-VjOCmwLYuFC3IGF0vrQAvD7X4q/view?usp=drive_link",
+    "highlights": [
+      {
+        "iconKey": "MessagesSquare",
+        "label": "Debate real civic issues"
+      },
+      {
+        "iconKey": "Leaf",
+        "label": "Propose sustainable solutions"
+      },
+      {
+        "iconKey": "Landmark",
+        "label": "Experience democracy first-hand"
+      }
+    ],
     "photos": [
       {
         "src": "assets/images/projects-mcc/mccx-2025-au.jpg",
         "label": "Ahmedabad University 2025"
       },
       {
-        "src": "assets/images/projects-mcc/mccx-2025-ggis.jpg",
-        "label": "GGIS 2025"
-      },
-      {
-        "src": "assets/images/projects-mcc/mcc-2024-navjeevan.jpeg",
-        "label": "Navjeevan 2024"
-      },
-      {
         "src": "assets/images/projects-mcc/mcc-4-copy.png",
         "label": "MCC Session"
+      },
+      {
+        "src": "assets/images/projects-mcc/mccx-2025-ggis.jpg",
+        "label": "GGIS 2025"
       }
     ]
+  },
+  "past": {
+    "title": "Past MCC Sessions",
+    "body": "Photos and stories from MCC sessions at schools, colleges and organisations will be shared here."
   },
   "steps": {
     "sectionBadge": "Process",
