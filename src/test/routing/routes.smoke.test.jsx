@@ -171,6 +171,15 @@ describe('Route smoke tests', () => {
     expect(container.firstChild).not.toBeNull()
   })
 
+  it('/education-for-harmony/social-changemakers — SocialChangemakers renders without crashing', async () => {
+    const container = await renderRoute(
+      () => import('../../pages/SocialChangemakers'),
+      '/education-for-harmony/social-changemakers',
+      '/education-for-harmony/social-changemakers'
+    )
+    expect(container.firstChild).not.toBeNull()
+  })
+
   it('/pramaan — AblHome renders without crashing', async () => {
     const container = await renderRoute(
       () => import('../../pages/resources/AblHome'),

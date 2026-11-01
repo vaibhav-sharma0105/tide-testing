@@ -48,13 +48,13 @@ src/
                    # useDelayedVisible, useScrollAnimation
   config/          # abl.js (API URL, TTL, page size, TAB_STYLE_MAP, getTabStyle)
   utils/           # imgSrc, motionPresets, ablThumbnails, driveUtils, filterResources, imagePlaceholder
-  test/            # Vitest suite (15 files, 189 tests)
-  App.jsx          # BrowserRouter + 19 <Route>s + ErrorBoundary
+  test/            # Vitest suite (15 files, 193 tests)
+  App.jsx          # BrowserRouter + 20 <Route>s + ErrorBoundary
   main.jsx         # Entry point; calls installImagePlaceholder()
   index.css        # Global styles + Tailwind base
 
 content/
-  pages/         # One YAML per page/screen (16 files) — edit these to change content
+  pages/         # One YAML per page/screen (17 files) — edit these to change content
   shared/        # 9 YAMLs: navigation, footer, common, ui, loader, error, not-found, coming-soon, site
                  # + llms.txt (template for /llms.txt — not YAML, so the sync ignores it)
 
@@ -75,7 +75,7 @@ docs/            # ABL spec/setup/migration guides, architecture diagrams, specs
 ```
 
 ## Pages
-`src/App.jsx` registers 19 `<Route>`s (18 lazy-loaded page components): 16 primary routes and 3 system routes (`/coming-soon`, `/404`, `*`).
+`src/App.jsx` registers 20 `<Route>`s (19 lazy-loaded page components): 17 primary routes and 3 system routes (`/coming-soon`, `/404`, `*`).
 
 > **Note:** the site underwent a route restructure (see `docs/specs/site-restructure-plan.md`) — current paths use `/pramaan/*` and `/education-for-harmony/*`. The 16 older routes (`/projects/*`, `/about/our-results`, `/get-involved/work-with-us`, `/get-involved/mccx`, `/resources/*`) were **removed outright** by owner decision, with no redirects: those URLs now fall through to the `*` route and render the NotFound page (`src/test/routing/removedRoutes.test.jsx` asserts this).
 
@@ -89,6 +89,7 @@ docs/            # ABL spec/setup/migration guides, architecture diagrams, specs
 | `/about/publications` | PublicationsCombined | `about-publications.json` |
 | `/education-for-harmony` | EducationForHarmony | `education-for-harmony.json` |
 | `/education-for-harmony/mccx` | OrganizeMCCx | `get-involved-mccx.json` |
+| `/education-for-harmony/social-changemakers` | SocialChangemakers | `social-changemakers.json` (placeholder grid until the Sheet sync is added) |
 | `/pramaan` | AblHome | `abl-home.json` + Apps Script API |
 | `/pramaan/resource-centre` | AblResourceCenter | `abl-resource-center.json` + API |
 | `/pramaan/resource-centre/:id` | AblDetail | `abl-detail.json` + API |
@@ -99,6 +100,8 @@ docs/            # ABL spec/setup/migration guides, architecture diagrams, specs
 | `/contact` | Contact | `contact.json` |
 | `/coming-soon` | ComingSoon | `coming-soon.json` (props can override) — reusable template, not page-specific |
 | `/404` and `*` (no route matched) | NotFound | `not-found.json` |
+
+`/education-for-harmony/social-changemakers` ("Past SCF") is deliberately **not** in the header or footer menus: it is reached only from the Social Changemakers row on `/education-for-harmony`, and is left out of `sitemap.xml` while it is a placeholder.
 
 Footer columns: About (Why TIDE?, Our Team, Our Partners), Get Involved (Volunteer With Us, Donate, Organise MCCx → `/education-for-harmony/mccx`), Resources (ABL Resources → `/pramaan`, THRIvE, Contact).
 
@@ -120,7 +123,7 @@ npm run content:bootstrap  # Write starter navigation.yaml/footer.yaml if missin
 npm run dev                # auto-syncs then starts Vite dev server (localhost:5173)
 npm run build              # auto-syncs then builds to dist/
 npm run lint               # ESLint — includes the no-hardcoded-text guard below
-npm test                   # Vitest (15 files / 189 tests)
+npm test                   # Vitest (15 files / 193 tests)
 npm run test:e2e           # Playwright (starts/reuses `npm run dev`)
 ```
 

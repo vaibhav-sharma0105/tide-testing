@@ -23,7 +23,7 @@ npm run dev          # auto-syncs content, then starts dev server at localhost:5
 npm run build        # auto-syncs content, then builds to dist/
 npm run content:validate   # YAML syntax, leading-slash image paths, and email / lives-impacted consistency with site.yaml
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — NOT run in CI
-npm test             # Vitest unit/component tests (15 files, 189 tests) — NOT run in CI
+npm test             # Vitest unit/component tests (15 files, 193 tests) — NOT run in CI
 ```
 
 **Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
@@ -51,7 +51,7 @@ npm test             # Vitest unit/component tests (15 files, 189 tests) — NOT
 
 ### What this project is
 
-Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 19 `<Route>`s in `src/App.jsx` (16 primary, 3 system) backed by 18 lazy-loaded page components. No server, no database. Built by Vite, deployed to GitHub Pages at `/tide-testing/`.
+Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 20 `<Route>`s in `src/App.jsx` (17 primary, 3 system) backed by 19 lazy-loaded page components. No server, no database. Built by Vite, deployed to GitHub Pages at `/tide-testing/`.
 
 ### Tech stack
 
@@ -101,11 +101,11 @@ Separately, a thumbnail sync (GitHub Actions) commits WebP images + `abl-thumbna
 
 ### Routing
 
-`src/App.jsx` registers 19 `<Route>`s. `BrowserRouter` (`basename={import.meta.env.BASE_URL}`) wraps everything — clean URLs, no `#`. `Layout` (skip link + Header + Footer) wraps every route; each page chunk is `lazy()`-loaded behind a `Suspense` fallback that shows `CreativeLoader` only after 200 ms (`useDelayedVisible`). `src/components/ErrorBoundary.jsx` wraps the whole app (outside the Router and `HelmetProvider`): on a render crash it shows a friendly screen (heading/body/button labels from `content/shared/error.yaml`, a reload button and a plain `<a>` home link) and logs the error to the console; the error message and stack are rendered only when `import.meta.env.DEV`. `MotionConfig reducedMotion="user"` makes all Framer animations respect the OS setting.
+`src/App.jsx` registers 20 `<Route>`s. `BrowserRouter` (`basename={import.meta.env.BASE_URL}`) wraps everything — clean URLs, no `#`. `Layout` (skip link + Header + Footer) wraps every route; each page chunk is `lazy()`-loaded behind a `Suspense` fallback that shows `CreativeLoader` only after 200 ms (`useDelayedVisible`). `src/components/ErrorBoundary.jsx` wraps the whole app (outside the Router and `HelmetProvider`): on a render crash it shows a friendly screen (heading/body/button labels from `content/shared/error.yaml`, a reload button and a plain `<a>` home link) and logs the error to the console; the error message and stack are rendered only when `import.meta.env.DEV`. `MotionConfig reducedMotion="user"` makes all Framer animations respect the OS setting.
 
 | Group | Count | Routes |
 |---|---|---|
-| Primary | 16 | `/`, `/about/{why-tide,past-programs,our-team,our-partners,publications}`, `/education-for-harmony`, `/education-for-harmony/mccx`, `/pramaan`, `/pramaan/resource-centre`, `/pramaan/resource-centre/:id`, `/pramaan/contribute`, `/get-involved/{volunteer,donate}`, `/thrive`, `/contact` |
+| Primary | 17 | `/`, `/about/{why-tide,past-programs,our-team,our-partners,publications}`, `/education-for-harmony`, `/education-for-harmony/mccx`, `/education-for-harmony/social-changemakers` (not in any menu), `/pramaan`, `/pramaan/resource-centre`, `/pramaan/resource-centre/:id`, `/pramaan/contribute`, `/get-involved/{volunteer,donate}`, `/thrive`, `/contact` |
 | System | 3 | `/coming-soon`, `/404`, `*` (the last two both render `NotFound`) |
 
 The 16 routes that predated the restructure (`/about/our-results`, `/projects/*`, `/get-involved/{work-with-us,mccx}`, `/resources/*`) were **removed outright** by owner decision, with no redirects: their pages, YAMLs and generated JSON are gone, and those URLs now fall through to `*` and render `NotFound`. `src/test/routing/removedRoutes.test.jsx` renders the real `<App />` at each removed path and asserts the NotFound page (plus a control that a live route does not). `OrganizeMCCx` is served only at `/education-for-harmony/mccx`. `git checkout a4126d1 -- <path>` recovers the old files.
@@ -147,7 +147,7 @@ tide-new/
 │       └── llms.txt         ← template (NOT YAML — the sync ignores it) rendered to /llms.txt by siteDataPlugin
 │
 ├── src/
-│   ├── App.jsx            ← BrowserRouter + 19 routes + ErrorBoundary + lazy() pages
+│   ├── App.jsx            ← BrowserRouter + 20 routes + ErrorBoundary + lazy() pages
 │   ├── main.jsx           ← React root; imports index.css; calls installImagePlaceholder() before rendering
 │   ├── index.css          ← Tailwind directives + global styles + section-padding
 │   │
@@ -199,6 +199,7 @@ tide-new/
 │   │   │   ├── Volunteer.jsx
 │   │   │   ├── Donate.jsx
 │   │   │   └── OrganizeMCCx.jsx  ← served at /education-for-harmony/mccx
+│   │   ├── SocialChangemakers.jsx ← "Past SCF" placeholder grid, served at /education-for-harmony/social-changemakers (linked only from Education for Harmony)
 │   │   └── resources/            ← the Pramaan screens
 │   │       ├── AblHome.jsx          ← ABL landing: stats bar, type cards
 │   │       ├── AblResourceCenter.jsx ← filter + grid + pagination, URL param sync
@@ -1171,7 +1172,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 15 files, 189 tests (jsdom, src/test/**)
+npm test               # vitest run — 15 files, 193 tests (jsdom, src/test/**)
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```

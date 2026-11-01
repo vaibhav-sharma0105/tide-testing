@@ -30,6 +30,7 @@ const EducationForHarmony = lazy(() => import('./pages/EducationForHarmony'))
 const Volunteer           = lazy(() => import('./pages/get-involved/Volunteer'))
 const Donate              = lazy(() => import('./pages/get-involved/Donate'))
 const OrganizeMCCx        = lazy(() => import('./pages/get-involved/OrganizeMCCx'))
+const SocialChangemakers  = lazy(() => import('./pages/SocialChangemakers'))
 const THRIvE              = lazy(() => import('./pages/THRIvE'))
 const Contact             = lazy(() => import('./pages/Contact'))
 const AblHome             = lazy(() => import('./pages/resources/AblHome'))
@@ -66,6 +67,8 @@ export default function App() {
               {/* Education for Harmony */}
               <Route path="/education-for-harmony" element={<EducationForHarmony />} />
               <Route path="/education-for-harmony/mccx" element={<OrganizeMCCx />} />
+              {/* Not in the menu or footer: reached from the Social Changemakers row on /education-for-harmony */}
+              <Route path="/education-for-harmony/social-changemakers" element={<SocialChangemakers />} />
 
               {/* Pramaan (ABL Resources) */}
               <Route path="/pramaan" element={<AblHome />} />

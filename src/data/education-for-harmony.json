@@ -98,7 +98,7 @@
         "statLabel": "students indirectly impacting 2,399 people",
         "cta": {
           "label": "Read more about the students' initiatives",
-          "href": ""
+          "to": "/education-for-harmony/social-changemakers"
         }
       },
       {
@@ -130,7 +130,7 @@
     "youtubeId": "y7pp0ABMu_4"
   },
   "dashboard": {
-    "title": "Our impact, live",
+    "title": "Our Impact",
     "body": "Follow our programmes, schools and numbers on the TIDE operations dashboard.",
     "ctaLabel": "Open the dashboard",
     "ctaHref": "https://sites.google.com/view/tide-operations/tide-operations",

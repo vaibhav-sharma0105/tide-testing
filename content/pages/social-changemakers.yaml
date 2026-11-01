@@ -1,0 +1,22 @@
+meta:
+  breadcrumbName: "Past SCF"
+  badge: "Social Changemakers"
+  title: "Past SCF"
+  seoTitle: "Past SCF — Social Changemakers — TIDE Foundation"
+  seoDescription: "Meet the students of TIDE Foundation's Social Changemakers fellowship and the projects they led, from environmental challenges to social justice."
+  backLabel: "Education for Harmony"
+  backHref: "/education-for-harmony"
+
+# The three sentences are read in order, one per stop on the thread; the highlighted words are underlined.
+intro:
+  highlights: ["positive change", "environmental challenges", "social justice"]
+  jumpLabel: "See the student profiles"
+  jumpHref: "#profiles"
+  lead: "We are proud to showcase the incredible work of our team of passionate individuals dedicated to driving positive change in various aspects of society."
+  body: "From addressing environmental challenges to advocating for social justice, they have embarked on impactful journeys, each contributing their unique skills and perspectives to create a better world. Explore their projects, learn about their inspiring stories, and join us in celebrating their commitment to making a difference!"
+
+# PLACEHOLDER until the Google Sheet sync is added (same Sheet -> Apps Script flow as Pramaan).
+# Each live entry will have: photo, student name, school and university graduation years,
+# SCF batch year and a 50-100 word project description. Newest batch first.
+grid:
+  note: "Student profiles will appear here, newest batch first."

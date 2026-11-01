@@ -23,6 +23,7 @@ const ROUTES = [
   '/about/publications',
   '/education-for-harmony',
   '/education-for-harmony/mccx',
+  '/education-for-harmony/social-changemakers',
   '/pramaan',
   '/pramaan/resource-centre',
   '/pramaan/resource-centre/W1',

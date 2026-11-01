@@ -73,8 +73,7 @@ ecosystem:
       statLabel: "students indirectly impacting 2,399 people"
       cta:
         label: "Read more about the students' initiatives"
-        # TODO(owner): link out to the student profiles (auto-updated from the form). Empty = button hidden.
-        href: ""
+        to: "/education-for-harmony/social-changemakers"
     - name: "Educator co-inquirer and transformation"
       desc: "We engage educators in deep inquiry on the philosophy, processes, pedagogies, and systems of education and engage them in a year-long diploma or a series of micro-videos."
       stat: "889"
@@ -96,7 +95,7 @@ video:
 
 # Until the live dashboard can be embedded, this links out to it.
 dashboard:
-  title: "Our impact, live"
+  title: "Our Impact"
   body: "Follow our programmes, schools and numbers on the TIDE operations dashboard."
   ctaLabel: "Open the dashboard"
   ctaHref: "https://sites.google.com/view/tide-operations/tide-operations"
