@@ -6,6 +6,7 @@ import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import ResourceFilters from '../../components/abl/ResourceFilters'
+import ActiveFilters from '../../components/abl/ActiveFilters'
 import ResourceGrid from '../../components/abl/ResourceGrid'
 import Pagination from '../../components/abl/Pagination'
 import { useABLData } from '../../hooks/useABLData'
@@ -114,7 +115,7 @@ export default function AblResourceCenter() {
             {/* ── Desktop sidebar ─────────────────────────────── */}
             <aside className="hidden lg:block w-72 flex-shrink-0">
               <div
-                className="sticky top-[130px] overflow-y-auto"
+                className="sticky top-[130px] -mx-2 overflow-y-auto px-2 [scrollbar-width:thin]"
                 style={{ maxHeight: 'calc(100vh - 136px)' }}
               >
                 <ResourceFilters {...filterProps} />
@@ -128,7 +129,7 @@ export default function AblResourceCenter() {
               <div className="flex items-center justify-between mb-5 lg:hidden">
                 <button
                   onClick={() => setMobileFiltersOpen(true)}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-tide-border bg-white text-sm font-body font-semibold text-tide-text hover:border-primary/40 transition-colors shadow-sm"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-tide-border bg-white text-sm font-body font-semibold text-tide-text hover:border-primary/40 transition-colors shadow-sm"
                 >
                   <SlidersHorizontal className="w-4 h-4" />
                   {pageData.page.filtersButton}
@@ -150,6 +151,8 @@ export default function AblResourceCenter() {
                   : `${pageData.page.showing} ${pageItems.length} ${pageData.page.of} ${filtered.length} ${pageData.page.resourcePlural}`
                 }
               </p>
+
+              <ActiveFilters filters={filters} onChange={handleFilterChange} onClear={handleClear} />
 
               <div ref={gridRef}>
                 <ResourceGrid

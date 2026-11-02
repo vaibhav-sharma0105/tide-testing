@@ -17,6 +17,10 @@
 3. **Bare-filename images are not validated.** `npm run content:validate` checks only leading-slash values under a fixed key list, so a wrong name in `logoGallery.images` (a list of bare filenames in `content/pages/about-our-partners.yaml`) is not caught; a missing file shows the grey placeholder from `src/utils/imagePlaceholder.js`. The one nonexistent entry (`image-33-e1699293507264.png`) was removed on 2026-10-25.
 4. **`content/pages/about-publications.yaml`:** `research.items` is empty (the page shows "Research publications will be listed here. Coming soon.") and 10 entries have `link: ""` (shown as "Coming soon").
 
+5. **Pramaan Sheet data (found 2026-11-02, owner to fix in the Sheet):** one Games row has the typo `Gmes` in its Type cell (it still displays correctly, because the site keys off the Sheet tab). Also, `ResourceCard` hides the concept line only when `resource.type !== 'Flashcards'`, but the Sheet's flashcard rows say `Flashcard` (singular), so the line is never hidden; comparing the tab instead would hide it on all 45 flashcard tiles. Decide which is wanted.
+6. **Contribute form link:** the live site still needs the new Google Form address in the `VITE_ABL_CONTRIBUTE_FORM_URL` GitHub secret and a re-run of the deploy; steps in `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md`.
+7. **Pramaan placeholders:** the ten gallery photos and their alt text (`abl-home.yaml` `gallery.items`) and the drawn promo-video poster are placeholders; the poster's "25,000+ learners in 120+ schools" repeats the About figures, so keep the two in step.
+
 ### Resolved
 
 - 2026-10-26: `GRADES` now lives once in `src/config/abl.js`; the dead `gradient` prop was removed from the 10 pages that passed it; `deploy.yml` now runs lint, `content:validate` and the unit tests before building; the thumbnail-sync workflow now starts the deploy itself (confirmed through the public Actions API that its June 2026 commits started no run).

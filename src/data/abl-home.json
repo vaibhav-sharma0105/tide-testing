@@ -1,9 +1,10 @@
 {
   "meta": {
     "badge": "Resources · ABL",
-    "title": "ABL Resource Library",
+    "title": "Pramaan",
+    "descriptor": "ABL Resource Library",
     "subtitle": "A curated library of Activity-Based Learning resources for Grades 1–5, developed and used by TIDE Foundation educators.",
-    "seoTitle": "ABL Resource Library — TIDE Foundation",
+    "seoTitle": "Pramaan — ABL Resource Library — TIDE Foundation",
     "seoDescription": "Browse Activity-Based Learning resources for Grades 1–5 developed by TIDE Foundation educators.",
     "breadcrumbName": "Pramaan"
   },
@@ -17,12 +18,25 @@
     "resourceTypes": "Resource Types",
     "gradeCovered": "Grades Covered",
     "gradeRange": "1–5",
-    "lastSynced": "Last Synced"
+    "lastSynced": "Updated"
   },
   "about": {
     "badge": "About ABL",
     "title": "What is Activity-Based Learning?",
-    "body": "Activity-Based Learning (ABL) is a child-centred pedagogical approach in which students learn by doing — through games, worksheets, manipulatives, and hands-on activities — rather than passive instruction. TIDE Foundation has developed a rich library of ABL materials for Grades 1–5 across multiple subjects and languages.",
+    "body": "Activity-Based Learning (ABL) is a child-centred pedagogical approach in which students learn by doing — through games, worksheets, manipulatives, and hands-on activities — rather than passive instruction. TIDE Foundation has developed a rich library of ABL materials for Grades 1–5 across multiple subjects and languages. Over the years, the materials have reached 120+ schools and 25,000+ learners. During these programs, we have continued developing new resources and refining them.",
+    "reach": [
+      {
+        "value": "120+",
+        "label": "schools"
+      },
+      {
+        "value": "25,000+",
+        "label": "learners"
+      }
+    ],
+    "highlights": [
+      "learn by doing"
+    ],
     "browseButton": "Browse All Resources",
     "whyTitle": "Why ABL Works",
     "whyPoints": [
@@ -30,6 +44,62 @@
       "Improves concept retention through hands-on practice",
       "Adaptable to mixed-ability classrooms",
       "Designed for Gujarati, Hindi, and English medium schools"
+    ]
+  },
+  "promo": {
+    "youtubeId": "12Kzj8bgTQA",
+    "title": "Pramaan promo video",
+    "playLabel": "Play the Pramaan promo video",
+    "posterTitle": "Learning by doing.",
+    "posterSub": "Reached 25,000+ learners in 120+ schools.",
+    "playText": "Watch the video"
+  },
+  "gallery": {
+    "title": "Hands-on learning, caught in action",
+    "subtitle": "Photos from our past ABL sessions and of the materials in use",
+    "prevLabel": "Previous photos",
+    "nextLabel": "Next photos",
+    "items": [
+      {
+        "src": "assets/images/projects-bettered/gallery-01.jpg",
+        "alt": "A volunteer leads a blindfolded group game for children in a courtyard"
+      },
+      {
+        "src": "assets/images/projects-bettered/gallery-05.jpg",
+        "alt": "Students writing on worksheets during a session"
+      },
+      {
+        "src": "assets/images/get-involved-volunteer/gallery-03.jpg",
+        "alt": "Children and volunteers cheering together outdoors"
+      },
+      {
+        "src": "assets/images/projects-bettered/gallery-04.jpg",
+        "alt": "Children and volunteers working together on a floor-based activity"
+      },
+      {
+        "src": "assets/images/projects-bettered/gallery-09.jpg",
+        "alt": "A group of children holding oranges after a session"
+      },
+      {
+        "src": "assets/images/get-involved-volunteer/gallery-02.jpg",
+        "alt": "Volunteers sitting on steps with children, mid-conversation"
+      },
+      {
+        "src": "assets/images/projects-bettered/gallery-08.jpg",
+        "alt": "A facilitator talking with a group of children in a courtyard"
+      },
+      {
+        "src": "assets/images/projects-bettered/gallery-07.jpg",
+        "alt": "Children seated on mats in a lane for a group activity"
+      },
+      {
+        "src": "assets/images/get-involved-volunteer/gallery-05.jpg",
+        "alt": "Volunteers and children smiling together for a photo"
+      },
+      {
+        "src": "assets/images/projects-bettered/gallery-03.jpg",
+        "alt": "Smiling children gathered outdoors after a session"
+      }
     ]
   },
   "resourceTypes": {

@@ -23,7 +23,7 @@ npm run dev          # auto-syncs content, then starts dev server at localhost:5
 npm run build        # auto-syncs content, then builds to dist/
 npm run content:validate   # YAML syntax, leading-slash image paths, and email / lives-impacted consistency with site.yaml
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — NOT run in CI
-npm test             # Vitest unit/component tests (15 files, 193 tests) — NOT run in CI
+npm test             # Vitest unit/component tests (16 files, 196 tests) — NOT run in CI
 ```
 
 **Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
@@ -162,25 +162,30 @@ tide-new/
 │   │   │   ├── Button.jsx           ← polymorphic (Link/a/button), 5 variants
 │   │   │   ├── Card.jsx             ← motion-wrapped card with fade-up
 │   │   │   ├── SectionHeader.jsx    ← badge + h2 + subtitle block
-│   │   │   ├── PageHero.jsx         ← dark banner + h1 for inner pages
+│   │   │   ├── PageHero.jsx         ← dark banner + h1 for inner pages (optional `aside` slot and `badgeClassName`)
+│   │   │   ├── Highlight.jsx        ← amber highlighter underline over listed words in a sentence
 │   │   │   ├── SeoHead.jsx          ← title/description/canonical/OG/Twitter + BreadcrumbList JSON-LD
 │   │   │   ├── AnimatedCounter.jsx  ← scroll-triggered number animation
 │   │   │   ├── CreativeLoader.jsx   ← open book + growing sprout SVG; gate behind useDelayedVisible
-│   │   │   ├── Lightbox.jsx         ← full-screen image gallery with keyboard nav
+│   │   │   ├── Lightbox.jsx         ← full-screen image gallery with keyboard nav; optional `translucent` backdrop; never shows a caption
 │   │   │   ├── LightboxGallery.jsx  ← click-to-zoom grid + its Lightbox (owns useLightbox + AnimatePresence)
 │   │   │   ├── ComingSoonGraphic.jsx ← /coming-soon illustration: block-drop springs, then endless ambient loops + random gust/nudge events; static under prefers-reduced-motion
 │   │   │   └── SocialIcons.jsx      ← inline SVG: Facebook, Instagram, LinkedIn
 │   │   │
 │   │   └── abl/
 │   │       ├── AblNavBar.jsx        ← sticky sub-nav for the 3 Pramaan sections (TABS keyed by activeSlug)
-│   │       ├── ResourceCard.jsx     ← resource card (portrait image + metadata)
+│   │       ├── ResourceCard.jsx     ← resource card: type band + type chip on the photo, title, grades, ownership/language footer
 │   │       ├── ResourceGrid.jsx     ← grid with skeleton/error/empty states
-│   │       ├── ResourceFilters.jsx  ← sidebar filters (search, type, grade, etc.)
+│   │       ├── ResourceFilters.jsx  ← sidebar filters: search, four colour-coded type tiles, grade pills, language, ownership
+│   │       ├── ActiveFilters.jsx    ← removable chips above the results showing what is filtering the list
 │   │       ├── Pagination.jsx       ← numbered pagination with ellipsis
 │   │       ├── DriveImage.jsx       ← self-hosted thumbnail (id + variant), shimmer + fallback
-│   │       ├── ResourceTypeBadge.jsx ← colour pill for resource type
-│   │       ├── ImageLightbox.jsx    ← single-image lightbox (scale + fade)
-│   │       └── VideoLightbox.jsx    ← full-screen video overlay, mirrors ImageLightbox
+│   │       ├── ResourceTypeBadge.jsx ← colour pill for resource type (optional icon / overlay-on-photo look)
+│   │       ├── typeIcons.jsx        ← `TypeIcon`: one lucide icon per resource type, shared by badge, filters and /pramaan cards
+│   │       ├── ImageLightbox.jsx    ← single-image lightbox (scale + fade), translucent blurred backdrop, no caption
+│   │       ├── VideoLightbox.jsx    ← full-screen video overlay, mirrors ImageLightbox; `translucent` prop = blurred see-through backdrop + larger player (PromoVideo, and the detail page's video). `ui/Lightbox` has the same prop
+│   │       ├── PromoVideo.jsx       ← promo video as a pinned print in the /pramaan banner (player loads on click)
+│   │       └── PhotoStrip.jsx       ← photo strip moved by one sub-pixel transform: eased drift, drag/swipe/wheel with momentum, arrow buttons; pauses on hover; a tap or Enter opens the photo in a translucent Lightbox
 │   │
 │   ├── pages/
 │   │   ├── Home.jsx               ← hero, mission, approach (3 programme cards), journey, CTA
@@ -212,10 +217,10 @@ tide-new/
 │   │   ├── useModalBehavior.js   ← Escape-to-close + body scroll lock for overlays (Lightbox/ImageLightbox/VideoLightbox)
 │   │   ├── useABLData.js         ← ABL API fetch + sessionStorage cache
 │   │   ├── useDelayedVisible.js  ← gates a loading UI behind a threshold so fast loads never flash it
-│   │   └── useFocusTrap.js       ← modal focus management (trap Tab, focus on open, restore on close) — used by all 3 lightbox components
+│   │   └── useFocusTrap.js       ← modal focus management (trap Tab, focus on open, restore on close, without scrolling the page) — used by all 3 lightbox components
 │   │
 │   ├── config/
-│   │   └── abl.js                ← ABL_API_URL, CONTRIBUTE_FORM_URL, cache TTL, page size, TAB_STYLE_MAP, getTabStyle
+│   │   └── abl.js                ← ABL_API_URL, CONTRIBUTE_FORM_URL, cache TTL, page size, TAB_STYLE_MAP, getTabStyle, TYPE_COLORS, getTypeColors
 │   │
 │   ├── utils/
 │   │   ├── imgSrc.js             ← imgSrc(path): prefixes BASE_URL (NOT idempotent — see §11)
@@ -257,6 +262,7 @@ tide-new/
 │   ├── MIGRATION-GOOGLE-SHEET-APPSCRIPT.md  ← moving Sheet + Apps Script to a new Google account
 │   ├── MIGRATION-GITHUB-REPOSITORY.md       ← transferring the GitHub repo to a new owner
 │   ├── MAINTENANCE-GITHUB-PAT-REFRESH.md    ← short recurring task when the GitHub token expires
+│   ├── MAINTENANCE-CONTRIBUTE-FORM-LINK.md  ← step-by-step: change the Contribute form link (GitHub secret + rebuild)
 │   ├── ARCHITECTURE.html · ARCHITECTURE-DATAFLOW.html  ← interactive system diagrams (standalone)
 │   └── specs/                               ← site-restructure-plan.md, stranded-pages-review.md (historical), multilingual-i18n-spec.md (historical — framework removed), etc.
 │
@@ -375,7 +381,7 @@ With neither `to` nor `href` it renders a `<button>`; extra props are spread ont
 >{/* optional children, rendered under the subtitle */}</PageHero>
 ```
 
-Props are exactly `{ badge, title, subtitle, children }`. Background is the literal `bg-[#1c314d]` plus a texture image. There is no `gradient` prop (it used to be passed, and ignored, by 10 pages; those were removed) — don't add one. The header is fixed and transparent with white text over the hero, so inner pages need a `PageHero` (or an equivalent dark top section) first, before `<AblNavBar>` or any content.
+Props are exactly `{ badge, badgeClassName, title, subtitle, children, aside }`; `aside` is an optional node placed to the right of the text on large screens (below it on small ones), used by `/pramaan` for the promo video. `badgeClassName` replaces the badge's default `bg-white/15 text-white/90 border-white/25` colour classes; the resource detail page passes the type's `heroBadge` so the banner pill wears the type colour. Background is the literal `bg-[#1c314d]` plus a texture image. There is no `gradient` prop (it used to be passed, and ignored, by 10 pages; those were removed) — don't add one. The header is fixed and transparent with white text over the hero, so inner pages need a `PageHero` (or an equivalent dark top section) first, before `<AblNavBar>` or any content.
 
 ### SeoHead
 
@@ -454,7 +460,7 @@ const lb = useLightbox(images.length)        // count is REQUIRED
 </AnimatePresence>
 ```
 
-The caption/alt is `item.alt || item.label`. `Lightbox` applies `imgSrc()` to every `src` itself — **do not pre-apply `imgSrc`** (see §11). Escape closes, ←/→ navigate, body scroll is locked (`useModalBehavior`), focus is trapped (`useFocusTrap`), and the dot strip shows for 2–20 images. Its aria-labels come from `content/shared/ui.yaml` (`lightbox.*`).
+`item.alt || item.label` is used as the image `alt` and the dialog's `aria-label`; **no caption is rendered under the image anywhere on the site** (owner decision) — don't add one. Pass `translucent` for a see-through, blurred backdrop (the `/pramaan` gallery) instead of the near-opaque default. The tint and blur ease in on their own layer and the controls fade separately: **never fade a parent that holds a `backdrop-filter`** (it pops at full strength on the first frame), and keep the picture `relative z-[1]` so the positioned backdrop does not paint over, and blur, it. `Lightbox` applies `imgSrc()` to every `src` itself — **do not pre-apply `imgSrc`** (see §11). Escape closes, ←/→ navigate, body scroll is locked (`useModalBehavior`), focus is trapped (`useFocusTrap`), and the dot strip shows for 2–20 images. Its aria-labels come from `content/shared/ui.yaml` (`lightbox.*`).
 
 ### LightboxGallery (preferred for a click-to-zoom photo grid)
 
@@ -492,7 +498,7 @@ const [open, setOpen] = useState(false)
 />
 ```
 
-Resolves `id` → `getAblThumbnail(id, 'full')` internally. Scale + fade (cubic-bezier ease, not a spring); Escape and backdrop click close it. Uses `useFocusTrap` + `useModalBehavior`. Its text comes from `abl-resource-center.yaml`.
+Resolves `id` → `getAblThumbnail(id, 'full')` internally. Translucent blurred backdrop (same layered-backdrop pattern as `Lightbox`), no caption; scale + fade (cubic-bezier ease, not a spring); Escape and backdrop click close it. Uses `useFocusTrap` + `useModalBehavior`. Its text comes from `abl-resource-center.yaml`.
 
 ### VideoLightbox (full-screen video overlay)
 
@@ -506,7 +512,7 @@ const [videoOpen, setVideoOpen] = useState(false)
 />
 ```
 
-Same backdrop/close conventions as `ImageLightbox` (ESC, backdrop click, close button) but renders a landscape 16:9 iframe instead of an `<img>`. There is intentionally no inline video player elsewhere in the app — `AblDetail.jsx`'s video tile shows a static poster (TIDE logo on white) and opens this lightbox on click. **Do not embed the live Drive `/preview` iframe as a resting-state poster** — its internal letterboxing depends on the source video's own aspect ratio, which can't be detected or controlled from a cross-origin embed, and was tried and reverted for this reason.
+Same backdrop/close conventions as `ImageLightbox` (ESC, backdrop click, close button) but renders a landscape 16:9 iframe instead of an `<img>`. `translucent` swaps the dark backdrop for the blurred see-through one and widens the player (used by `PromoVideo` and `AblDetail`). There is intentionally no inline video player elsewhere in the app — `AblDetail.jsx`'s video thumbnail (top fact card, right of the concept) is a drawn poster tinted in the resource type's colour, and opens this lightbox on click. **Do not embed the live Drive `/preview` iframe as a resting-state poster** — its internal letterboxing depends on the source video's own aspect ratio, which can't be detected or controlled from a cross-origin embed, and was tried and reverted for this reason.
 
 ### DriveImage
 
@@ -555,7 +561,7 @@ FilterState: `{ search: string, type: string, grades: string[], language: string
 
 ### ResourceCard / ResourceTypeBadge
 
-`<ResourceCard resource={r} />` (used by `ResourceGrid`) links to `/pramaan/resource-centre/${id}`. `<ResourceTypeBadge type="Worksheet" />` picks colour/label from `getTabStyle(type)`.
+`<ResourceCard resource={r} />` (used by `ResourceGrid`, which staggers the cards in) links to `/pramaan/resource-centre/${id}`. `<ResourceTypeBadge type="Worksheet" icon overlay />` picks colour/label from `getTabStyle(type)` and `getTypeColors(type)`; `icon` adds the type's `TypeIcon`, `overlay` is the white chip drawn on a photo. **Pass the Sheet tab (`resource.tab`), not `resource.type`**: a row's own `type` is free-typed text ("Kit", "Flashcard", even typos like "Gmes") and misses the tab-keyed tables, falling back to gray. `ResourceCard` and `AblDetail` use `resource.tab ?? resource.type`. `<ActiveFilters filters onChange onClear />` renders the removable filter chips on the Resource Centre. `parseLanguages(cell)` (`src/utils/resourceLanguages.js`) splits the Language cell and drops "No Language", so no language badge is drawn for it (cards and detail page).
 
 ### Pagination
 
@@ -615,7 +621,7 @@ Shared overlay behaviour: while `active` is truthy, Escape calls `onClose`, any 
 const containerRef = useFocusTrap(active = true)   // attach containerRef to the dialog element
 ```
 
-On activation stores `document.activeElement`, focuses the first focusable child (selector `button, a[href], iframe, [tabindex]:not([tabindex="-1"])`), traps Tab/Shift+Tab inside the container, and restores focus on deactivation/unmount. For a conditionally *mounted* dialog, the default `true` is right; for an always-mounted one pass the open condition.
+On activation stores `document.activeElement`, focuses the first focusable child (selector `button, a[href], iframe, [tabindex]:not([tabindex="-1"])`), traps Tab/Shift+Tab inside the container, and restores focus on deactivation/unmount (with `preventScroll`, so closing a dialog never scrolls or glides the page). For a conditionally *mounted* dialog, the default `true` is right; for an always-mounted one pass the open condition.
 
 ### useDelayedVisible
 
@@ -712,7 +718,7 @@ const filtered = applyResourceFilters(allResources, filters)
 
 ### config/abl.js
 
-Exports `ABL_API_URL`, `CONTRIBUTE_FORM_URL` (both from `VITE_*` env, default `''`), `ABL_CACHE_TTL_MS` (15 min), `ABL_PAGE_SIZE` (24), `TAB_STYLE_MAP` and `getTabStyle(tab)` (returns the map entry, falling back to `_default` for unknown tabs). See §8 for how to add a tab.
+Exports `ABL_API_URL`, `CONTRIBUTE_FORM_URL` (both from `VITE_*` env, default `''`), `ABL_CACHE_TTL_MS` (15 min), `ABL_PAGE_SIZE` (24), `TAB_STYLE_MAP` and `getTabStyle(tab)` (returns the map entry, falling back to `_default` for unknown tabs). Also `TYPE_COLORS` / `getTypeColors(tab)`: the single class palette per colour name (`badge`, `eyebrow`, `solid`, `soft`, `tint`, `selectedTile`, `poster`, `heroBadge`, `tileHover`, `cardHover`, `titleHover`) that `ResourceTypeBadge`, the `/pramaan` type cards, the Resource Centre filter tiles, chips and cards, and the detail page all read, so a type is the same colour everywhere. A new colour name needs an entry there (written out in full, for Tailwind). See §8 for how to add a tab.
 
 ---
 
@@ -1092,6 +1098,16 @@ This is why all colour maps in components use lookup tables (`LightboxGallery`'s
 
 `useABLData()` is called independently on three ABL pages: `AblHome`, `AblResourceCenter` and `AblDetail` (`AblContribute` doesn't use it). When a user deep-links to `AblDetail/:id`, the hook fetches from scratch (or reads cache). **Do not assume `allResources` is pre-populated.** Every ABL page component handles its own loading skeleton.
 
+### A modal's backdrop, scrollbar and caption
+
+- A blurred backdrop is its own layer, faded on its own (see `Lightbox` in §4): fading the parent that holds a `backdrop-filter` makes the blur pop, and a positioned backdrop paints over a non-positioned picture, so the picture needs `relative z-[1]`. If a viewer's photo looks blurry, check this first.
+- `html { scrollbar-gutter: stable }` (`src/index.css`) stops the page shifting sideways when a modal locks body scrolling.
+- Image previews show **no caption** anywhere on the site.
+
+### The photo strip tells a tap from a drag
+
+`PhotoStrip` captures the pointer on the strip, so a click lands on the container, not the photo. A tap (under ~6px of movement) is detected in `pointerup` from the tile index recorded at `pointerdown`; each photo is also a focusable button for the keyboard, and only keyboard focus (`:focus-visible`) slides the photo to the middle, so a mouse click never makes the photo jump before the viewer opens.
+
 ### sessionStorage cache key versioning
 
 The ABL cache key is `abl_api_cache_v2`. If the API response schema changes, bump it to `v3` in `useABLData.js`. A stale cached entry is also re-validated against the expected shape on read, but don't rely on that for schema changes.
@@ -1172,7 +1188,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 15 files, 193 tests (jsdom, src/test/**)
+npm test               # vitest run — 16 files, 196 tests (jsdom, src/test/**)
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```
@@ -1246,6 +1262,7 @@ Only `deploy.yml` (build + deploy) and `sync-abl-thumbnails.yml` exist. Nothing 
 | `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` | Moving the Sheet + Apps Script to a new Google account — uses a fresh-copy approach, not Google's "transfer ownership," because Apps Script Web App deployments don't transfer ownership the way you'd expect |
 | `docs/MIGRATION-GITHUB-REPOSITORY.md` | Transferring the GitHub repository to a new owner |
 | `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` | Short recurring task when the GitHub token expires |
+| `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md` | Step-by-step for the owner: change the Contribute form link (update the `VITE_ABL_CONTRIBUTE_FORM_URL` secret, re-run the deploy) |
 | `docs/ARCHITECTURE.html` | Interactive system diagram, organized by who does each step (non-technical-friendly). Open directly in a browser, click any block for details. Standalone, not part of the build. |
 | `docs/ARCHITECTURE-DATAFLOW.html` | Companion diagram for technical readers — organized by system layer/dataflow direction, with request/response contracts, caching, trust boundaries, and a secrets reference table. Keep both diagrams in sync. |
 | `content/pages/home.yaml` | Reference example of a full page YAML |

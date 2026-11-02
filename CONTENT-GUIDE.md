@@ -86,7 +86,7 @@ The Pramaan screens are fully editable from YAML. The **resources themselves** (
 - `abl-home.yaml` — the "About Pramaan" page: heading, the three-tab bar (`nav:`), the statistics labels, the "What is Activity-Based Learning?" text, the list of "Why ABL works" points, and the error messages.
 - `abl-resource-center.yaml` — the Resource Centre page: heading and search-result title (`meta:`), the Filters button and result counts (`page:`), every filter label (`filters:`), the "no results" and "try again" messages (`grid:`), the pagination bar (`pagination:`), the wording on each resource card (`card:`) and the image/video pop-up fallbacks (`lightbox:`).
 - `abl-detail.yaml` — a single resource's page: browser-tab title and description wording (`meta:`), the "Resource Not Found" page (`notFound:`), the "Back to Resource Center" link, the button and section labels (`media:`, `facts:`, `coverage:`).
-- `abl-contribute.yaml` — the Contribute page text and its three steps.
+- `abl-contribute.yaml` — the Contribute page text, its three steps and the heading above the form button. The form's web address is **not** here: it is a GitHub setting, changed by following `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md`.
 
 > **Placeholders in `{curly braces}`.** Some Pramaan and shared phrases contain a word in curly braces, for example `"Grade {n}"`, `"View {name}"`, `"{name} — TIDE Pramaan"` or `"Visit TIDE on {platform}"`. The website fills these in automatically (the grade number, the resource name, …). You can reword the text around them, but **keep the `{word}` exactly as written** — if you delete or misspell it, the site will show the raw `{word}` or leave a gap.
 

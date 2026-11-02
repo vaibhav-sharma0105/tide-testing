@@ -27,8 +27,8 @@ export default function Pagination({ total, page, perPage = ABL_PAGE_SIZE, onCha
           onClick={() => page > 1 && onChange(page - 1)}
           aria-disabled={page === 1}
           aria-label={rcData.pagination.previousLabel}
-          className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-body font-medium transition-colors ${
-            page === 1 ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
+          className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-body font-medium transition-colors ${
+            page === 1 ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-white hover:text-primary hover:shadow-sm'
           }`}
         >
           <ChevronLeft className="w-4 h-4" /> {rcData.pagination.previousShort}
@@ -42,10 +42,10 @@ export default function Pagination({ total, page, perPage = ABL_PAGE_SIZE, onCha
               key={p}
               onClick={() => onChange(p)}
               aria-current={p === page ? 'page' : undefined}
-              className={`w-9 h-9 rounded-lg text-sm font-body font-medium transition-colors ${
+              className={`w-9 h-9 rounded-full text-sm font-body font-medium transition-all ${
                 p === page
-                  ? 'bg-primary text-white shadow-sm'
-                  : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
+                  ? 'bg-gradient-to-br from-primary to-primary-dark text-white shadow-[0_2px_8px_rgba(30,107,170,0.32)]'
+                  : 'text-tide-muted hover:bg-white hover:text-primary hover:shadow-sm'
               }`}
             >
               {p}
@@ -57,8 +57,8 @@ export default function Pagination({ total, page, perPage = ABL_PAGE_SIZE, onCha
           onClick={() => page < totalPages && onChange(page + 1)}
           aria-disabled={page === totalPages}
           aria-label={rcData.pagination.next}
-          className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-body font-medium transition-colors ${
-            page === totalPages ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
+          className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-body font-medium transition-colors ${
+            page === totalPages ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-white hover:text-primary hover:shadow-sm'
           }`}
         >
           {rcData.pagination.next} <ChevronRight className="w-4 h-4" />

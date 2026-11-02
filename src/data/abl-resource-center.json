@@ -3,7 +3,7 @@
     "badge": "Resources · ABL",
     "title": "Resource Center",
     "subtitle": "Browse all Activity-Based Learning resources. Filter by type, grade, language, and more.",
-    "seoTitle": "Resource Centre — TIDE Foundation",
+    "seoTitle": "Resource Centre — Pramaan — TIDE Foundation",
     "seoDescription": "Browse and download 150+ free Activity-Based Learning resources for Grades 1–5 — worksheets, games, kits, and flashcards, filterable by type, grade, and language.",
     "breadcrumbName": "Resource Centre"
   },
@@ -19,6 +19,7 @@
   "filters": {
     "heading": "Filters",
     "clear": "Clear",
+    "removeTemplate": "Remove filter: {name}",
     "searchPlaceholder": "Search resources…",
     "searchLabel": "Search resources",
     "typeTitle": "Resource Type",

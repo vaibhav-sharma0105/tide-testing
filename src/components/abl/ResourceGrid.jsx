@@ -1,10 +1,11 @@
+import { motion } from 'framer-motion'
 import { AlertCircle, RefreshCw, BookOpen } from 'lucide-react'
 import ResourceCard from './ResourceCard'
 import rcData from '../../data/abl-resource-center.json'
 
 function SkeletonCard() {
   return (
-    <div className="bg-white rounded-2xl border border-tide-border overflow-hidden animate-pulse">
+    <div className="bg-white rounded-3xl border border-tide-border overflow-hidden animate-pulse">
       <div className="aspect-[3/4] bg-tide-subtle" />
       <div className="p-4 space-y-3">
         <div className="flex gap-2">
@@ -45,7 +46,7 @@ export default function ResourceGrid({ resources, loading, error, onRetry, colsC
         <p className="font-body text-tide-muted max-w-sm">{error}</p>
         <button
           onClick={onRetry}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-white text-sm font-body font-semibold hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-br from-primary to-primary-dark text-white text-sm font-body font-semibold shadow-[0_2px_8px_rgba(30,107,170,0.32)] hover:brightness-110 transition-all"
         >
           <RefreshCw className="w-4 h-4" /> {rcData.grid.retry}
         </button>
@@ -65,7 +66,18 @@ export default function ResourceGrid({ resources, loading, error, onRetry, colsC
 
   return (
     <div className={`grid ${gridCols} gap-5`}>
-      {resources.map(r => <ResourceCard key={r.id} resource={r} />)}
+      {resources.map((r, i) => (
+        // a short stagger as a page of cards arrives; capped so a full page never feels slow
+        <motion.div
+          key={r.id}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: Math.min(i, 8) * 0.04, ease: [0.4, 0, 0.2, 1] }}
+          className="flex"
+        >
+          <ResourceCard resource={r} />
+        </motion.div>
+      ))}
     </div>
   )
 }

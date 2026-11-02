@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion'
 
-export default function PageHero({ badge, title, subtitle, children }) {
+// `badgeClassName` (optional) replaces the badge's colour classes (e.g. a resource type's colour).
+// `aside` (optional) sits to the right of the text on large screens and below it on small ones.
+export default function PageHero({ badge, badgeClassName = 'bg-white/15 text-white/90 border-white/25', title, subtitle, children, aside }) {
   return (
     <section className="pt-28 pb-20 md:pt-36 md:pb-28 px-4 md:px-8 lg:px-16 bg-[#1c314d] relative overflow-hidden">
       {/* Background texture */}
@@ -11,14 +13,14 @@ export default function PageHero({ badge, title, subtitle, children }) {
       {/* Subtle decorative blobs */}
       <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-white/5 blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 -left-16 w-64 h-64 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
-      <div className="max-w-5xl mx-auto relative">
+      <div className={`mx-auto relative ${aside ? 'max-w-6xl grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14' : 'max-w-5xl'}`}>
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
         >
           {badge && (
-            <span className="inline-block mb-5 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-white/15 text-white/90 border border-white/25">
+            <span className={`inline-block mb-5 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase border ${badgeClassName}`}>
               {badge}
             </span>
           )}
@@ -32,6 +34,7 @@ export default function PageHero({ badge, title, subtitle, children }) {
           )}
           {children}
         </motion.div>
+        {aside}
       </div>
     </section>
   )

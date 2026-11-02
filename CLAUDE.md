@@ -34,11 +34,11 @@ React static site rebuild of [tideinternational.org](https://tideinternational.o
 src/
   components/
     layout/    # Header, Footer, Layout
-    ui/        # Button, Card, SectionHeader, PageHero, SeoHead, AnimatedCounter,
+    ui/        # Button, Card, SectionHeader, PageHero, SeoHead, AnimatedCounter, Highlight,
                # Lightbox, LightboxGallery, CreativeLoader, ComingSoonGraphic, SocialIcons
     ErrorBoundary.jsx  # friendly crash screen (text from error.yaml; message/stack shown only in DEV)
     abl/       # AblNavBar, ResourceCard, ResourceGrid, ResourceFilters, Pagination,
-               # ResourceTypeBadge, DriveImage, ImageLightbox, VideoLightbox
+               # ResourceTypeBadge, DriveImage, ImageLightbox, VideoLightbox, PromoVideo, PhotoStrip
   pages/
     Home.jsx / Contact.jsx / THRIvE.jsx / EducationForHarmony.jsx / ComingSoon.jsx / NotFound.jsx
     about/         # WhyTide, PastPrograms, OurTeam, OurPartners, PublicationsCombined
@@ -46,9 +46,9 @@ src/
     resources/     # AblHome, AblResourceCenter, AblDetail, AblContribute  (the Pramaan screens)
   hooks/           # useABLData, useLightbox, useModalBehavior, useFocusTrap,
                    # useDelayedVisible, useScrollAnimation
-  config/          # abl.js (API URL, TTL, page size, TAB_STYLE_MAP, getTabStyle)
+  config/          # abl.js (API URL, TTL, page size, TAB_STYLE_MAP, getTabStyle, TYPE_COLORS, getTypeColors)
   utils/           # imgSrc, motionPresets, ablThumbnails, driveUtils, filterResources, imagePlaceholder
-  test/            # Vitest suite (15 files, 193 tests)
+  test/            # Vitest suite (16 files, 196 tests)
   App.jsx          # BrowserRouter + 20 <Route>s + ErrorBoundary
   main.jsx         # Entry point; calls installImagePlaceholder()
   index.css        # Global styles + Tailwind base
@@ -123,7 +123,7 @@ npm run content:bootstrap  # Write starter navigation.yaml/footer.yaml if missin
 npm run dev                # auto-syncs then starts Vite dev server (localhost:5173)
 npm run build              # auto-syncs then builds to dist/
 npm run lint               # ESLint — includes the no-hardcoded-text guard below
-npm test                   # Vitest (15 files / 193 tests)
+npm test                   # Vitest (16 files / 196 tests)
 npm run test:e2e           # Playwright (starts/reuses `npm run dev`)
 ```
 
@@ -186,12 +186,13 @@ The thumbnail sync workflow additionally needs an `ABL_SYNC_TOKEN` repo
 secret — see the thumbnail sync setup guide above.
 
 ### Key files
-- `src/config/abl.js` — all ABL constants and tab config (`TAB_STYLE_MAP`, `getTabStyle(tab)`)
+- `src/config/abl.js` — all ABL constants and tab config (`TAB_STYLE_MAP`, `getTabStyle(tab)`, and the single resource-type colour palette `TYPE_COLORS` / `getTypeColors(tab)` — one colour per type on every Pramaan screen)
 - `src/hooks/useABLData.js` — fetch + cache hook
 - `src/utils/driveUtils.js` — `extractDriveFileId` + `getDrivePreviewUrl` (outbound preview links only; not thumbnails)
 - `src/utils/ablThumbnails.js` — resolves a resource id to its synced thumbnail path
 - `src/utils/filterResources.js` — pure filter function, also sorts results by name ascending
-- `src/components/abl/` — 9 UI components (incl. `VideoLightbox.jsx` — full-screen video overlay)
+- `src/utils/resourceLanguages.js` — `parseLanguages(cell)`: splits the Language cell and drops "No Language" (no badge for it)
+- `src/components/abl/` — 12 UI components plus the `typeIcons.jsx` icon helper (incl. `ActiveFilters.jsx` — removable filter chips, `ResourceTypeBadge.jsx` — the one place a type is named, `VideoLightbox.jsx` — full-screen video overlay, `PromoVideo.jsx` — the hero promo video, `PhotoStrip.jsx` — the drifting photo strip (drag, swipe, wheel, arrows))
 - `scripts/sync-abl-thumbnails.js` — thumbnail sync job (see setup guide)
 - `docs/ABL-RESOURCE-LIBRARY-SPEC.md` — full spec + Apps Script code
 - `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` — thumbnail sync setup procedure (fresh setup only)
@@ -199,6 +200,7 @@ secret — see the thumbnail sync setup guide above.
 - `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` — moving the Sheet + Apps Script to a new Google account
 - `docs/MIGRATION-GITHUB-REPOSITORY.md` — transferring the GitHub repository to a new owner
 - `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` — short recurring task when the GitHub token expires
+- `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md` — step-by-step to change the Contribute form link (the `VITE_ABL_CONTRIBUTE_FORM_URL` GitHub secret + a re-run of the deploy)
 - `docs/ARCHITECTURE.html` — interactive end-to-end system diagram, organized by **who does each step** (non-technical-friendly). Open directly in a browser — standalone, not part of the build.
 - `docs/ARCHITECTURE-DATAFLOW.html` — companion diagram for technical readers, organized by **system layer and direction of data flow** instead — request/response contracts, caching TTLs, trust boundaries (Google infra / GitHub infra / build-time / runtime), and a secrets/credentials reference table. Keep both diagrams in sync when the architecture changes.
 

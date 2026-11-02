@@ -9,7 +9,8 @@
 > - `ResourceFilters` is a **left sidebar** (not a horizontal filter bar as in section 7.5) — collapsible sections with independent scroll
 > - `DriveImage` uses **`aspect-[3/4]` (portrait)** rather than `aspect-[4/3]` — all images are portrait-oriented
 > - **(2026-06-20/21)** Thumbnails are self-hosted via an automated sync pipeline rather than built from a live Drive URL at runtime (§2.4–2.5, §5) — see `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md`. `AblDetail.jsx`'s layout has also been substantially redesigned beyond what §7–8 describe; the component file is the source of truth for current UI, the Apps Script code in §2.5 remains the source of truth for `Code.gs`.
-> - `ImageLightbox` is present on the **detail page only** (`AblDetail.jsx`), not on the listings page
+> - `ImageLightbox` is present on the **detail page only** (`AblDetail.jsx`), not on the listings page. **(2026-11-02)** Both lightboxes now use a translucent, blurred backdrop and show no caption.
+> - **(2026-11-02)** The Resource Centre and detail page were redesigned again: the type filter is four colour-coded tiles (not radios) with removable `ActiveFilters` chips above the grid; cards carry a type band and a type chip on the photo; the detail page is a pinned photo beside a stack of cards with the type pill and explanation-video thumbnail in the first one. Resource-type colours come from one palette (`TYPE_COLORS` in `src/config/abl.js`), keyed by the Sheet tab (`resource.tab`), never by a row's free-typed `type`. A language of "No Language" draws no badge. Treat §7–8 below as the original design, not the current layout.
 > - Filter logic is extracted to `src/utils/filterResources.js` (`applyResourceFilters`)
 > 
 > All other sections (API schema, Apps Script code, edge cases) reflect what was built, subject to the 2026-10-25 notes below.
@@ -20,7 +21,7 @@
 > - **Copy is no longer hardcoded:** Pramaan UI text and image paths live in YAML — `content/pages/abl-home.yaml`, `abl-resource-center.yaml`, `abl-detail.yaml`, `abl-contribute.yaml` and the shared `content/shared/common.yaml` / `ui.yaml` (generated into `src/data/*.json`). The resource data itself (names, grades, etc.) stays dynamic from the Apps Script API. The ESLint rule `react/jsx-no-literals` (error) in `src/pages` and `src/components` blocks hardcoded visible text; lint is not run in CI.
 > - **`useABLData`** was hardened (payload shape validation, abort/ignore of stale requests, a 10-second timeout cleared on every outcome, no import-time logging; error strings come from `abl-home.yaml` `errors.*`). Cache key (`abl_api_cache_v2`), TTL (15 minutes) and return shape (`{ data, allResources, loading, error, lastUpdated, refetch }`) are unchanged — see §4.
 > - **Not in this repo:** the Apps Script `Code.gs` lives in the Google Sheet's script project; §2.5 is the only copy in the repository, so it could not be compared against the deployed script.
-> - **Tests:** the Vitest suite (`npm test`: 15 files, 189 tests) includes unit tests for `driveUtils`, `filterResources`, `imgSrc`, `ablThumbnails`, `imagePlaceholder` and `useABLData`, plus routing tests (`src/test/`); the Playwright specs in `e2e/` use clean URLs (not `/#/`) and need a dev server.
+> - **Tests:** the Vitest suite (`npm test`: 16 files, 196 tests) includes unit tests for `driveUtils`, `filterResources`, `imgSrc`, `ablThumbnails`, `imagePlaceholder` and `useABLData`, plus routing tests (`src/test/`); the Playwright specs in `e2e/` use clean URLs (not `/#/`) and need a dev server.
 
 ---
 
@@ -783,7 +784,7 @@ Props: { id: string, alt: string, className?: string, variant?: 'thumb' | 'full'
 Props: { type: string }
 ```
 
-Maps type string to colour class using `TAB_STYLE_MAP` from `src/config/abl.js`. Falls back to `_default` for unknown types. Renders as a small pill: `px-2.5 py-0.5 text-xs font-semibold rounded-full border`.
+Maps type string to colour class using `TAB_STYLE_MAP` / `getTypeColors` from `src/config/abl.js` (as built it also takes optional `icon` and `overlay` props, and is given the Sheet tab, not the row's `type`). Falls back to `_default` for unknown types. Renders as a small pill: `px-2.5 py-0.5 text-xs font-semibold rounded-full border`.
 
 Colour class map:
 ```js
@@ -1251,7 +1252,7 @@ Implement strictly in this order. Do not skip ahead.
 
 ## 13. Testing
 
-> **Status 2026-10-25:** the tables below are a manual/aspirational test plan. Automated coverage that exists: Vitest unit tests for `driveUtils`, `filterResources`, `imgSrc`, `ablThumbnails`, `useABLData` a routes smoke test and a removed-routes test (`src/test/routing/`; whole suite 15 files / 189 tests), and Playwright specs in `e2e/` (`pramaan.spec.js` covers the three main Pramaan pages). The flows listed under integration/E2E (filter + pagination URL restore, back button, mobile nav, image fallback, full journey) are not automated.
+> **Status 2026-10-25:** the tables below are a manual/aspirational test plan. Automated coverage that exists: Vitest unit tests for `driveUtils`, `filterResources`, `imgSrc`, `ablThumbnails`, `useABLData` a routes smoke test and a removed-routes test (`src/test/routing/`; whole suite 16 files / 196 tests), and Playwright specs in `e2e/` (`pramaan.spec.js` covers the three main Pramaan pages). The flows listed under integration/E2E (filter + pagination URL restore, back button, mobile nav, image fallback, full journey) are not automated.
 
 ### Unit tests — `driveUtils.js`
 

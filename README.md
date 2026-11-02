@@ -92,6 +92,6 @@ A second workflow, `.github/workflows/sync-abl-thumbnails.yml`, keeps Pramaan th
 - [AGENTS.md](AGENTS.md) - detailed component, pattern and design-system reference
 - [CONTENT-GUIDE.md](CONTENT-GUIDE.md) - guide for non-technical content editors
 - `docs/ABL-RESOURCE-LIBRARY-SPEC.md`, `docs/ABL-APPSCRIPT-SETUP-GUIDE.md`, `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` - the Pramaan / ABL resource library
-- `docs/MIGRATION-OVERVIEW.md` (start here), `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md`, `docs/MIGRATION-GITHUB-REPOSITORY.md`, `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` - handover and maintenance
+- `docs/MIGRATION-OVERVIEW.md` (start here), `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md`, `docs/MIGRATION-GITHUB-REPOSITORY.md`, `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md`, `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md` - handover and maintenance
 - `docs/ARCHITECTURE.html`, `docs/ARCHITECTURE-DATAFLOW.html` - system diagrams (open in a browser)
 - `docs/specs/` - planning specs and reviews (the site restructure, a review of pages that have since been removed, and the multilingual spec for the removed framework)

@@ -45,7 +45,7 @@ export function useFocusTrap(active = true) {
     container.addEventListener('keydown', handleKeyDown)
     return () => {
       container.removeEventListener('keydown', handleKeyDown)
-      previouslyFocused.current?.focus?.()
+      previouslyFocused.current?.focus?.({ preventScroll: true })   // the page must not jump or glide as the dialog closes
     }
   }, [active])
 

@@ -7,6 +7,7 @@ import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import Button from '../../components/ui/Button'
+import ResourceTypeBadge from '../../components/abl/ResourceTypeBadge'
 import CreativeLoader from '../../components/ui/CreativeLoader'
 import DriveImage from '../../components/abl/DriveImage'
 import ImageLightbox from '../../components/abl/ImageLightbox'
@@ -15,7 +16,8 @@ import { useABLData } from '../../hooks/useABLData'
 import { useDelayedVisible } from '../../hooks/useDelayedVisible'
 import { getDrivePreviewUrl } from '../../utils/driveUtils'
 import { imgSrc } from '../../utils/imgSrc'
-import { GRADES, getTabStyle } from '../../config/abl'
+import { parseLanguages } from '../../utils/resourceLanguages'
+import { GRADES, getTabStyle, getTypeColors } from '../../config/abl'
 import data from '../../data/abl-detail.json'
 import rcData from '../../data/abl-resource-center.json'
 import site from '../../data/site.json'
@@ -24,14 +26,6 @@ import site from '../../data/site.json'
 // Fills {token} placeholders in a YAML template (function replacer so a value
 // containing "$&" etc. is inserted literally).
 const fill = (tpl, vars) => tpl.replace(/\{(\w+)\}/g, (_, k) => vars[k])
-
-const ACCENT_MAP = {
-  blue:    { tile: 'bg-blue-50 text-blue-700 border-blue-200',       eyebrow: 'text-blue-700', solid: 'bg-blue-600' },
-  emerald: { tile: 'bg-emerald-50 text-emerald-700 border-emerald-200', eyebrow: 'text-emerald-700', solid: 'bg-emerald-600' },
-  violet:  { tile: 'bg-violet-50 text-violet-700 border-violet-200',  eyebrow: 'text-violet-700', solid: 'bg-violet-600' },
-  amber:   { tile: 'bg-amber-50 text-amber-700 border-amber-200',    eyebrow: 'text-amber-700', solid: 'bg-amber-600' },
-  gray:    { tile: 'bg-tide-subtle text-tide-muted border-tide-border', eyebrow: 'text-tide-muted', solid: 'bg-tide-muted' },
-}
 
 const fadeUp = {
   hidden:  { opacity: 0, y: 10 },
@@ -58,7 +52,7 @@ function CoverageMatrix({ chapters, accent, expanded, onToggle }) {
   return (
     <motion.div variants={fadeUp}>
       <Eyebrow className={accent.eyebrow}>{data.coverage.eyebrow}</Eyebrow>
-      <div className="grid grid-cols-5 gap-2 mt-2">
+      <div className="grid grid-cols-5 gap-3 mt-3 max-w-lg">
         {rows.map(({ grade, list }, i) => {
           const has = list.length > 0
           const isActive = expanded === grade
@@ -74,9 +68,9 @@ function CoverageMatrix({ chapters, accent, expanded, onToggle }) {
               className={`flex flex-col items-center gap-1.5 ${has ? 'cursor-pointer' : 'cursor-default'}`}
             >
               <div
-                className={`w-full aspect-square rounded-lg border flex items-center justify-center text-base font-display font-semibold transition-all duration-200 ${
-                  has ? accent.tile : 'border-tide-border text-tide-muted/30'
-                } ${isActive ? 'ring-2 ring-offset-1 ring-primary' : ''}`}
+                className={`w-full aspect-square rounded-xl border flex items-center justify-center text-base font-display font-semibold transition-all duration-200 ${
+                  has ? (isActive ? `${accent.selectedTile} -translate-y-0.5` : `${accent.badge} hover:-translate-y-0.5 hover:shadow-card`) : 'border-tide-border text-tide-muted/30'
+                }`}
               >
                 {has ? list.length : '–'}
               </div>
@@ -96,7 +90,7 @@ function CoverageMatrix({ chapters, accent, expanded, onToggle }) {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="mt-3 px-3 py-2.5 rounded-xl bg-tide-subtle text-sm font-body text-tide-muted">
+            <div className="mt-3 px-4 py-3 rounded-2xl bg-tide-subtle text-sm font-body text-tide-muted">
               <span className="font-semibold text-tide-text">{fill(data.coverage.gradeTemplate, { n: active.grade.replace('GRADE ', '') })}</span>
               {data.coverage.chapterSeparator}{active.list.join(', ')}
             </div>
@@ -118,9 +112,9 @@ export default function AblDetail() {
   const backLink = (
     <Link
       to="/pramaan/resource-centre"
-      className="inline-flex items-center gap-2 text-sm font-body font-medium text-tide-muted hover:text-primary transition-colors mb-8"
+      className="group/back inline-flex items-center gap-2 text-sm font-body font-medium text-tide-muted hover:text-primary transition-colors mb-8"
     >
-      <ArrowLeft className="w-4 h-4" /> {data.backLabel}
+      <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover/back:-translate-x-1" /> {data.backLabel}
     </Link>
   )
 
@@ -167,10 +161,12 @@ export default function AblDetail() {
     )
   }
 
-  const languages       = resource.language?.split(',').map(l => l.trim()).filter(Boolean) ?? []
+  const languages       = parseLanguages(resource.language)
   const videoPreviewUrl = getDrivePreviewUrl(resource.videoUrl)
-  const style           = getTabStyle(resource.type)
-  const accent          = ACCENT_MAP[style.color] ?? ACCENT_MAP.gray
+  // The Sheet tab is the reliable type: a row's own `type` text is free-typed ("Kit", "Flashcard", even typos)
+  const kind            = resource.tab ?? resource.type
+  const style           = getTabStyle(kind)
+  const accent          = getTypeColors(kind)
   const hasActions      = Boolean(resource.photoUrl || resource.referenceLink)
   const hasCoverage     = GRADES.some(g => (resource.chapters?.[g]?.length ?? 0) > 0)
   const gradesCovered   = GRADES.filter(g => (resource.chapters?.[g]?.length ?? 0) > 0).map(g => g.replace('GRADE ', ''))
@@ -213,43 +209,46 @@ export default function AblDetail() {
           provider: { '@type': 'NGO', name: site.name, url: site.url },
         })}</script>
       </Helmet>
-      <PageHero badge={fill(data.meta.badgeTemplate, { type: resource.type })} title={resource.name} />
+      <PageHero badge={fill(data.meta.badgeTemplate, { type: resource.type })} badgeClassName={accent.heroBadge} title={resource.name} />
       <AblNavBar />
 
-      <section className="section-padding bg-tide-bg">
-        <div className="max-w-5xl mx-auto">
+      <section className="section-padding bg-gradient-to-b from-tide-bg to-white">
+        <div className="max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
             {backLink}
 
-            <div className="grid md:grid-cols-5 gap-10">
+            <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-14">
 
-              {/* Left — media plate */}
-              <div className="md:col-span-2">
-                <div className="max-w-[280px]">
-                  <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-tide-border shadow-card">
-                    <DriveImage id={resource.id} alt={resource.name} variant="full" />
+              {/* Left: the resource itself, a pinned print that stays in view while the facts scroll */}
+              <div className="lg:sticky lg:top-[150px]">
+                <div className="mx-auto max-w-[320px] lg:mx-0">
+                  {/* a pinned white print, like the photos elsewhere on the site (kept straight: it is a document to read) */}
+                  <div className="relative rounded-md bg-white p-2 shadow-[0_14px_36px_rgba(13,33,55,0.16)] ring-1 ring-tide-border transition-transform duration-500 hover:-translate-y-1">
+                    <span className={`absolute left-1/2 -top-2 z-10 h-4 w-4 -translate-x-1/2 rounded-full ${accent.solid} shadow-[0_2px_3px_rgba(0,0,0,0.35)]`} aria-hidden="true" />
+                    <div className="relative aspect-[3/4] rounded-sm overflow-hidden">
+                      <DriveImage id={resource.id} alt={resource.name} variant="full" />
 
-                    <button
-                      type="button"
-                      onClick={() => resource.photoUrl && setLightboxOpen(true)}
-                      disabled={!resource.photoUrl}
-                      className={`group/img absolute inset-0 w-full h-full ${resource.photoUrl ? 'cursor-zoom-in' : 'cursor-default'}`}
-                      aria-label={data.media.viewFullImageLabel}
-                    >
-                      {resource.photoUrl && (
-                        <>
-                          <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/15 transition-colors duration-300" />
-                          <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-sm text-white text-xs font-body font-medium">
-                            <Expand className="w-3.5 h-3.5" /> {data.media.viewLarger}
-                          </div>
-                        </>
-                      )}
-                    </button>
-
+                      <button
+                        type="button"
+                        onClick={() => resource.photoUrl && setLightboxOpen(true)}
+                        disabled={!resource.photoUrl}
+                        className={`group/img absolute inset-0 w-full h-full ${resource.photoUrl ? 'cursor-zoom-in' : 'cursor-default'}`}
+                        aria-label={data.media.viewFullImageLabel}
+                      >
+                        {resource.photoUrl && (
+                          <>
+                            <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/15 transition-colors duration-300" />
+                            <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-navy/60 ring-1 ring-white/25 backdrop-blur-sm text-white text-xs font-body font-medium">
+                              <Expand className="w-3.5 h-3.5" /> {data.media.viewLarger}
+                            </div>
+                          </>
+                        )}
+                      </button>
+                    </div>
                   </div>
 
                   {hasActions && (
-                    <div className="flex gap-3 mt-4 flex-wrap">
+                    <div className="flex gap-3 mt-5 flex-wrap">
                       {resource.photoUrl && (
                         <Button href={resource.photoUrl} external variant="accent">
                           {data.media.fullPreview} <ExternalLink className="w-4 h-4" />
@@ -265,102 +264,107 @@ export default function AblDetail() {
                 </div>
               </div>
 
-              {/* Right — one consolidated fact sheet */}
+              {/* Right: what it is, how to watch it used, where it fits, where it lives, why it exists */}
               <motion.div
-                className="md:col-span-3 bg-white rounded-2xl border border-tide-border p-6 space-y-5"
+                className="min-w-0 space-y-6"
                 initial="hidden"
                 animate="visible"
-                variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
+                variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
               >
-                {(resource.concept || videoPreviewUrl) && (
-                  <motion.div variants={fadeUp} className="flex flex-col sm:flex-row sm:items-start gap-4">
-                    {resource.concept && (
-                      <div className="flex-1 min-w-0">
-                        <Eyebrow className={accent.eyebrow}>{data.facts.concept}</Eyebrow>
-                        <p className="font-display text-2xl font-semibold text-tide-text mt-1">{resource.concept}</p>
+                {/* identity: the type pill first, then language and ownership, then the concept */}
+                <motion.div variants={fadeUp} className="relative overflow-hidden rounded-3xl border border-tide-border bg-white p-6 shadow-card md:p-8">
+                  <span className={`absolute inset-x-0 top-0 h-1.5 ${accent.solid}`} aria-hidden="true" />
+                  <div className="flex flex-col gap-7 md:flex-row md:items-start">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <ResourceTypeBadge type={kind} icon className="!px-3.5 !py-1.5 !text-sm" />
+                        {languages.map(l => (
+                          <span key={l} className="inline-block rounded-full border border-tide-border bg-tide-subtle px-3.5 py-1 text-sm font-semibold text-tide-muted">
+                            {l}
+                          </span>
+                        ))}
+                        {resource.ownership && (
+                          <span className="inline-flex items-center gap-1.5 pl-1 font-body text-sm text-tide-muted">
+                            <span className={`h-1.5 w-1.5 rounded-full ${resource.ownership === 'TIDE' ? 'bg-primary' : 'bg-tide-muted'}`} />
+                            {resource.ownership === 'TIDE' ? rcData.card.tideResource : rcData.card.externalResource}
+                          </span>
+                        )}
                       </div>
-                    )}
+
+                      {resource.concept && (
+                        <div className="mt-6">
+                          <Eyebrow className={accent.eyebrow}>{data.facts.concept}</Eyebrow>
+                          <p className="mt-1.5 font-display text-2xl font-semibold leading-snug text-tide-text md:text-3xl">{resource.concept}</p>
+                        </div>
+                      )}
+                    </div>
 
                     {videoPreviewUrl && (
-                      <div className="w-full sm:w-72 flex-shrink-0">
-                        <Eyebrow className="text-tide-muted mb-3">{data.facts.explanationVideo}</Eyebrow>
-                        <motion.div
-                          className="group/video relative aspect-video rounded-xl overflow-hidden border-2 border-primary/25 shadow-card cursor-pointer bg-white"
-                          whileHover={{ scale: 1.04, y: -3, boxShadow: '0 20px 40px -8px rgba(30,107,170,0.45)' }}
-                          transition={{ type: 'spring', stiffness: 280, damping: 18 }}
+                      <div className="w-full shrink-0 md:w-80">
+                        <Eyebrow className={`${accent.eyebrow} mb-3`}>{data.facts.explanationVideo}</Eyebrow>
+                        {/* The poster is drawn: a live Drive iframe here would letterbox unpredictably depending
+                            on the source video's own aspect ratio, which we can't control or detect from a
+                            cross-origin embed. */}
+                        <motion.button
+                          type="button"
+                          onClick={() => setVideoOpen(true)}
+                          aria-label={data.facts.playVideoLabel}
+                          aria-haspopup="dialog"
+                          whileHover={{ y: -2 }}
+                          transition={{ type: 'spring', stiffness: 120, damping: 16 }}
+                          className={`group/video relative block aspect-video w-full overflow-hidden rounded-2xl border border-tide-border bg-gradient-to-br ${accent.poster} shadow-card`}
                         >
-                          {/* Static fallback poster — a live Drive iframe here would letterbox
-                              unpredictably depending on the source video's own aspect ratio,
-                              which we can't control or detect from a cross-origin embed. */}
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <img src={imgSrc(data.media.videoLogo)} alt="" className="w-28 h-28 opacity-70" />
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => setVideoOpen(true)}
-                            aria-label={data.facts.playVideoLabel}
-                            className="absolute inset-0 w-full h-full flex items-center justify-center"
-                          >
-                            <span className="w-12 h-12 rounded-full bg-primary group-hover/video:bg-white border-2 border-transparent group-hover/video:border-primary/25 flex items-center justify-center shadow-lg transition-all duration-300 group-hover/video:scale-110">
-                              <Play className="w-5 h-5 text-white group-hover/video:text-primary fill-white group-hover/video:fill-primary translate-x-px transition-colors duration-300" />
+                          <span className="absolute inset-0 flex items-center justify-center">
+                            <img src={imgSrc(data.media.videoLogo)} alt="" className="h-28 w-28 opacity-50 mix-blend-multiply" />
+                          </span>
+                          <span className="absolute inset-0 flex items-center justify-center">
+                            <span className={`flex h-14 w-14 items-center justify-center rounded-full ${accent.solid} text-white shadow-lg ring-4 ring-white/70 transition-transform duration-300 group-hover/video:scale-110`}>
+                              <Play className="h-5 w-5 translate-x-px fill-white" />
                             </span>
-                          </button>
-                        </motion.div>
+                          </span>
+                        </motion.button>
                       </div>
                     )}
-                  </motion.div>
-                )}
-
-                {(languages.length > 0 || resource.ownership) && (
-                  <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-2">
-                    {languages.map(l => (
-                      <span key={l} className="inline-block px-3 py-1 text-sm font-semibold rounded-full border bg-tide-subtle text-tide-muted border-tide-border">
-                        {l}
-                      </span>
-                    ))}
-                    {resource.ownership && (
-                      <span className="inline-flex items-center gap-1.5 text-sm font-body text-tide-muted">
-                        <span className={`w-1.5 h-1.5 rounded-full ${resource.ownership === 'TIDE' ? 'bg-primary' : 'bg-tide-muted'}`} />
-                        {resource.ownership === 'TIDE' ? rcData.card.tideResource : rcData.card.externalResource}
-                      </span>
-                    )}
-                  </motion.div>
-                )}
+                  </div>
+                </motion.div>
 
                 {hasCoverage && (
-                  <motion.div variants={fadeUp}><div className="h-px bg-tide-border" /></motion.div>
+                  <motion.div variants={fadeUp} className="rounded-3xl border border-tide-border bg-white p-6 shadow-card md:p-8">
+                    <CoverageMatrix
+                      chapters={resource.chapters ?? {}}
+                      accent={accent}
+                      expanded={expandedGrade}
+                      onToggle={setExpandedGrade}
+                    />
+                  </motion.div>
                 )}
 
-                <CoverageMatrix
-                  chapters={resource.chapters ?? {}}
-                  accent={accent}
-                  expanded={expandedGrade}
-                  onToggle={setExpandedGrade}
-                />
-
                 {(resource.storageLocation || resource.quantity) && (
-                  <motion.div variants={fadeUp} className="flex flex-wrap gap-6 pt-1">
+                  <motion.div variants={fadeUp} className="grid gap-4 sm:grid-cols-2">
                     {resource.storageLocation && (
-                      <div className="flex items-center gap-2 text-sm font-body text-tide-muted">
-                        <MapPin className="w-4 h-4 text-tide-muted/60" /> {resource.storageLocation}
+                      <div className="flex items-center gap-3 rounded-2xl border border-tide-border bg-white p-4 shadow-card">
+                        <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${accent.soft}`}><MapPin className="h-5 w-5" /></span>
+                        <span className="font-body text-sm text-tide-text">{resource.storageLocation}</span>
                       </div>
                     )}
                     {resource.quantity && (
-                      <div className="flex items-center gap-2 text-sm font-body text-tide-muted">
-                        <Layers className="w-4 h-4 text-tide-muted/60" /> {fill(data.facts.setsTemplate, { quantity: resource.quantity })}
+                      <div className="flex items-center gap-3 rounded-2xl border border-tide-border bg-white p-4 shadow-card">
+                        <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${accent.soft}`}><Layers className="h-5 w-5" /></span>
+                        <span className="font-body text-sm text-tide-text">{fill(data.facts.setsTemplate, { quantity: resource.quantity })}</span>
                       </div>
                     )}
+                  </motion.div>
+                )}
+
+                {resource.description && (
+                  <motion.div variants={fadeUp} className="relative overflow-hidden rounded-3xl border border-tide-border bg-white p-6 pl-8 shadow-card md:p-8 md:pl-10">
+                    <span className={`absolute inset-y-0 left-0 w-1.5 ${accent.solid}`} aria-hidden="true" />
+                    <Eyebrow className={`${accent.eyebrow} mb-3`}>{data.facts.about}</Eyebrow>
+                    <p className="max-w-3xl font-body leading-relaxed text-tide-text">{resource.description}</p>
                   </motion.div>
                 )}
               </motion.div>
             </div>
-
-            {resource.description && (
-              <div className="mt-12 pt-8 border-t border-tide-border">
-                <Eyebrow className="text-tide-muted mb-3">{data.facts.about}</Eyebrow>
-                <p className="text-tide-text font-body leading-relaxed max-w-3xl">{resource.description}</p>
-              </div>
-            )}
           </motion.div>
         </div>
       </section>
@@ -375,6 +379,7 @@ export default function AblDetail() {
         src={videoOpen ? videoPreviewUrl : null}
         title={data.facts.explanationVideo}
         onClose={() => setVideoOpen(false)}
+        translucent
       />
     </>
   )

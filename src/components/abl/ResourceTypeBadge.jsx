@@ -1,18 +1,17 @@
-import { getTabStyle } from '../../config/abl'
+import { getTabStyle, getTypeColors } from '../../config/abl'
+import { TypeIcon } from './typeIcons'
 
-const COLOR_MAP = {
-  blue:    'bg-blue-50    text-blue-700    border-blue-200',
-  emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  violet:  'bg-violet-50  text-violet-700  border-violet-200',
-  amber:   'bg-amber-50   text-amber-700   border-amber-200',
-  gray:    'bg-gray-50    text-gray-700    border-gray-200',
-}
-
-export default function ResourceTypeBadge({ type }) {
-  const style    = getTabStyle(type)
-  const colorCls = COLOR_MAP[style.color] ?? COLOR_MAP.gray
+// The one place a resource's type is named. `icon` adds the type's icon; `overlay` is the white
+// chip that sits on a photo (the type colour on white keeps it readable on any picture).
+export default function ResourceTypeBadge({ type, icon = false, overlay = false, className = '' }) {
+  const style = getTabStyle(type)
+  const colors = getTypeColors(type)
+  const look = overlay
+    ? `bg-white/95 ${colors.eyebrow} border-white shadow-sm backdrop-blur-sm`
+    : colors.badge
   return (
-    <span className={`inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full border ${colorCls}`}>
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-semibold rounded-full border ${look} ${className}`}>
+      {icon && <TypeIcon type={type} className="h-3.5 w-3.5" />}
       {style.label}
     </span>
   )

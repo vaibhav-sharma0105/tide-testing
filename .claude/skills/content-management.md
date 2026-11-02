@@ -146,7 +146,7 @@ export default function PageName() {
   )
 }
 ```
-(Adjust `../` depth for sub-directory pages. Which `meta` field holds the subtitle varies per page: `tagline` on some, `subtitle` on others — check the YAML.) `ComingSoon` and `NotFound` use `Helmet` directly instead of `SeoHead`. `PageHero` only accepts `badge`, `title`, `subtitle`, `children`; ten pages pass a `gradient` prop that it silently ignores (listed in `WHATS-NEXT.md`).
+(Adjust `../` depth for sub-directory pages. Which `meta` field holds the subtitle varies per page: `tagline` on some, `subtitle` on others — check the YAML.) `ComingSoon` and `NotFound` use `Helmet` directly instead of `SeoHead`. `PageHero` accepts `badge`, `badgeClassName`, `title`, `subtitle`, `children` and `aside`; ten pages pass a `gradient` prop that it silently ignores (listed in `WHATS-NEXT.md`).
 
 Header and Footer use shared data:
 ```jsx
@@ -233,7 +233,7 @@ npm run content:validate
 # Visible-text guard (react/jsx-no-literals) + other lint rules — also run in CI
 npm run lint
 
-# Unit tests (15 files / 189 tests as of 2026-10-25) and Playwright e2e (3 specs)
+# Unit tests (16 files / 196 tests as of 2026-11-02) and Playwright e2e (3 specs)
 npm test
 npm run test:e2e
 

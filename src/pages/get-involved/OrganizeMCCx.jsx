@@ -212,6 +212,7 @@ function SessionPrint({ spec, index, beat, reduce }) {
       viewport={{ once: true, margin: '-60px' }}
       transition={reduce ? undefined : { ...SOFT_SWING, delay: 0.2 + index * 0.2, opacity: { duration: 0.5, delay: 0.2 + index * 0.2 } }}
       animate={controls}
+      tabIndex={-1}   // a tap handler makes the figure focusable, and the whole row is aria-hidden
       onTap={(e) => { if (!reduce && e?.pointerType !== 'mouse') swing() }}
       whileHover={reduce ? undefined : { rotate: 0, y: -6, scale: 1.025, transition: SOFT_STRAIGHTEN }}
       className={`group relative rounded-md bg-white p-1.5 shadow-float transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(13,33,55,0.16)] md:p-2 ${spec.className}`}

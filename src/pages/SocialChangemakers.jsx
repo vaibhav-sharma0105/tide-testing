@@ -5,6 +5,7 @@ import { ArrowDown, ArrowLeft, CalendarDays, GraduationCap, Leaf, Lightbulb, Spr
 import SeoHead from '../components/ui/SeoHead'
 import PageHero from '../components/ui/PageHero'
 import Button from '../components/ui/Button'
+import Highlight from '../components/ui/Highlight'
 import data from '../data/social-changemakers.json'
 import site from '../data/site.json'
 import comingSoon from '../data/coming-soon.json'
@@ -47,15 +48,6 @@ function walkerAt(sec) {
     u -= LEG
   }
   return STOPS.length - 1
-}
-
-function Highlight({ text, words }) {
-  const parts = text.split(new RegExp(`(${words.join('|')})`, 'i'))
-  return parts.map((part, i) =>
-    words.some((w) => w.toLowerCase() === part.toLowerCase())
-      ? <mark key={i} className="bg-transparent text-inherit font-semibold [background:linear-gradient(transparent_62%,rgba(245,158,11,0.38)_62%)]">{part}</mark>
-      : <Fragment key={i}>{part}</Fragment>
-  )
 }
 
 function Intro() {

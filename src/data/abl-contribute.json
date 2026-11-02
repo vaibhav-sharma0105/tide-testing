@@ -3,7 +3,7 @@
     "badge": "Resources · ABL",
     "title": "Contribute a Resource",
     "subtitle": "Help grow the ABL library. Share a resource you've used in your classroom and it will be reviewed by the TIDE team.",
-    "seoTitle": "Contribute to ABL Library — TIDE Foundation",
+    "seoTitle": "Contribute to Pramaan — TIDE Foundation",
     "seoDescription": "Share your teaching materials with the TIDE ABL resource library.",
     "breadcrumbName": "Contribute"
   },
@@ -25,7 +25,7 @@
       "desc": "Approved resources are added to the library and become available to all educators."
     }
   ],
+  "formTitle": "Ready to share your resource?",
   "cta": "Open Contribution Form",
-  "ctaPending": "Form link coming soon.",
-  "disclaimer": "Opens in a new tab. Form data is handled by Google Forms."
+  "ctaPending": "Form link coming soon."
 }

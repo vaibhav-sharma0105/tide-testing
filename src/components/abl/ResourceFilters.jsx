@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, X, ChevronDown } from 'lucide-react'
-import { GRADES, getTabStyle } from '../../config/abl'
+import { Search, X, ChevronDown, Check, LayoutGrid } from 'lucide-react'
+import { GRADES, getTabStyle, getTypeColors } from '../../config/abl'
+import { TypeIcon } from './typeIcons'
 import rcData from '../../data/abl-resource-center.json'
 
 function FilterSection({ title, children, open, onToggle }) {
@@ -50,14 +51,17 @@ export default function ResourceFilters({ allResources, filters, onChange, onCle
     filters.ownership,
   ].filter(Boolean).length
 
-  const inputCls = 'w-full pl-3 pr-8 py-2 rounded-lg border border-tide-border bg-tide-subtle text-sm font-body text-tide-text focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors'
+  const inputCls = 'w-full pl-3 pr-8 py-2 rounded-xl border border-tide-border bg-white text-sm font-body text-tide-text focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors'
+
+  const sortedTabs = tabs.slice().sort((a, b) => getTabStyle(a).pluralLabel.localeCompare(getTabStyle(b).pluralLabel))
+  const allActive = !filters.type
 
   return (
-    <div className="bg-white rounded-2xl border border-tide-border overflow-hidden">
+    <div className="bg-white rounded-3xl border border-tide-border shadow-card overflow-hidden">
 
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-tide-border">
-        <span className="font-display text-sm font-semibold text-tide-text">{rcData.filters.heading}</span>
+      <div className="flex items-center justify-between px-5 py-3 border-b border-tide-border">
+        <span className="relative font-display text-base font-semibold text-tide-text after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-6 after:bg-accent">{rcData.filters.heading}</span>
         {activeCount > 0 && (
           <button
             onClick={onClear}
@@ -70,7 +74,7 @@ export default function ResourceFilters({ allResources, filters, onChange, onCle
       </div>
 
       {/* Search */}
-      <div className="px-4 py-3 border-b border-tide-border">
+      <div className="px-4 py-2.5 border-b border-tide-border">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-tide-muted pointer-events-none" />
           <input
@@ -79,42 +83,61 @@ export default function ResourceFilters({ allResources, filters, onChange, onCle
             onChange={e => onChange({ ...filters, search: e.target.value })}
             placeholder={rcData.filters.searchPlaceholder}
             aria-label={rcData.filters.searchLabel}
-
-            className="w-full pl-8 pr-3 py-2 rounded-lg border border-tide-border bg-tide-subtle text-sm font-body placeholder:text-tide-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+            className="w-full pl-8 pr-3 py-2.5 rounded-xl border border-tide-border bg-white text-sm font-body placeholder:text-tide-muted focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
           />
         </div>
       </div>
 
-      {/* Resource Type */}
+      {/* Resource Type: four colour-coded tiles (the same colours and icons as the badges on the cards) */}
       <FilterSection title={rcData.filters.typeTitle} open={open.type} onToggle={() => toggle('type')}>
-        <div className="space-y-0.5">
-          {/* All */}
-          <RadioRow
-            label={rcData.filters.allTypes}
-            count={allResources.length}
-            active={!filters.type}
+        <div className="space-y-2">
+          <button
+            type="button"
             onClick={() => onChange({ ...filters, type: '' })}
-          />
-          {tabs
-            .slice()
-            .sort((a, b) => {
-              const labelA = getTabStyle(a).pluralLabel
-              const labelB = getTabStyle(b).pluralLabel
-              return labelA.localeCompare(labelB)
-            })
-            .map(tab => {
-            const style = getTabStyle(tab)
-            const count = data?.meta?.counts?.[tab] ?? allResources.filter(r => r.tab === tab).length
-            return (
-              <RadioRow
-                key={tab}
-                label={style.pluralLabel}
-                count={count}
-                active={filters.type === tab}
-                onClick={() => onChange({ ...filters, type: filters.type === tab ? '' : tab })}
-              />
-            )
-          })}
+            aria-pressed={allActive}
+            className={`flex w-full items-center gap-2.5 rounded-2xl border px-3.5 py-2.5 font-body text-sm font-semibold transition-all duration-200 ${
+              allActive
+                ? 'border-primary bg-primary text-white shadow-lg shadow-primary/25'
+                : 'border-tide-border bg-white text-tide-muted hover:border-primary/40 hover:text-primary'
+            }`}
+          >
+            <LayoutGrid className="h-4 w-4" aria-hidden="true" />
+            <span className="flex-1 text-left">{rcData.filters.allTypes}</span>
+            <span className={`text-xs font-medium tabular-nums ${allActive ? 'text-white/80' : 'text-tide-muted'}`}>{allResources.length}</span>
+          </button>
+
+          <div className="grid grid-cols-2 gap-2">
+            {sortedTabs.map(tab => {
+              const style = getTabStyle(tab)
+              const colors = getTypeColors(tab)
+              const active = filters.type === tab
+              const count = data?.meta?.counts?.[tab] ?? allResources.filter(r => r.tab === tab).length
+              return (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => onChange({ ...filters, type: active ? '' : tab })}
+                  aria-pressed={active}
+                  className={`relative flex flex-col items-start gap-2 rounded-2xl border p-3 text-left font-body transition-all duration-200 ${
+                    active ? `${colors.selectedTile} -translate-y-0.5` : `${colors.tint} hover:-translate-y-0.5 hover:shadow-card`
+                  }`}
+                >
+                  <span className={`flex h-8 w-8 items-center justify-center rounded-xl ${active ? 'bg-white/20' : 'bg-white/80'}`}>
+                    <TypeIcon type={tab} className="h-4 w-4" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-semibold leading-tight">{style.pluralLabel}</span>
+                    <span className={`block text-xs font-medium tabular-nums ${active ? 'text-white/85' : 'opacity-70'}`}>{count}</span>
+                  </span>
+                  {active && (
+                    <span className="absolute right-2.5 top-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/25" aria-hidden="true">
+                      <Check className="h-3 w-3" />
+                    </span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
         </div>
       </FilterSection>
 
@@ -133,10 +156,10 @@ export default function ResourceFilters({ allResources, filters, onChange, onCle
                   onChange({ ...filters, grades: next })
                 }}
                 aria-pressed={active}
-                className={`px-3 py-1.5 rounded-lg text-xs font-body font-semibold border transition-all duration-150 ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-body font-semibold border transition-all duration-150 ${
                   active
-                    ? 'bg-primary text-white border-primary shadow-sm'
-                    : 'bg-tide-subtle text-tide-muted border-tide-border hover:border-primary/40 hover:text-primary hover:bg-primary-light'
+                    ? 'bg-primary text-white border-primary shadow-md shadow-primary/25'
+                    : 'bg-primary-faint text-primary-dark border-primary/20 hover:border-primary/50 hover:bg-primary-light'
                 }`}
               >
                 {rcData.filters.gradeTemplate.replace('{n}', g.replace('GRADE ', ''))}
@@ -175,25 +198,5 @@ export default function ResourceFilters({ allResources, filters, onChange, onCle
         </select>
       </FilterSection>
     </div>
-  )
-}
-
-function RadioRow({ label, count, active, onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      aria-pressed={active}
-      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-body transition-colors duration-150 ${
-        active ? 'bg-primary-light text-primary-dark font-semibold' : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
-      }`}
-    >
-      <span className={`w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-colors ${
-        active ? 'border-primary bg-primary' : 'border-tide-border'
-      }`}>
-        {active && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
-      </span>
-      <span className="flex-1 text-left">{label}</span>
-      <span className={`text-xs font-normal tabular-nums ${active ? 'text-tide-mutedOnLight' : 'text-tide-muted'}`}>{count}</span>
-    </button>
   )
 }
