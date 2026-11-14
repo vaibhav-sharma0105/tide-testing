@@ -1,5 +1,14 @@
 # ABL Resource Library — Thumbnail Sync Setup Guide
 
+> **⚠️ Updated 2026-11-15 — Apps Script version 3.** The script code now lives in the repository at
+> **`apps-script/abl/Code.gs`** (the single source of truth — never copy code from this page). Its triggers
+> are installed by running **`setup`** once, not by hand: exactly `onSheetChange` (**On change**) and `tick`
+> (every 5 minutes); the old `scheduledRefresh` 15-minute trigger and the "On edit" trigger are no longer used.
+> For the code, Script Properties, triggers and testing, follow **`docs/ABL-APPSCRIPT-V3-UPGRADE-GUIDE.md`**
+> Steps 2–9. The parts about the sync token, the GitHub secrets and creating the fine-grained token still apply; the embedded code, the "On edit" trigger step and the daily-run descriptions are outdated (the sync now runs every 6 hours and on every Sheet change, and also publishes the resource data).
+> Design and reasons: `docs/PRAMAAN-HARDENING-PLAN.md`.
+
+
 **Audience:** Site owner (non-developer)
 **Time required:** ~30 minutes
 **What you will set up:** An automated pipeline that copies resource thumbnail

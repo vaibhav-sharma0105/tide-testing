@@ -2,7 +2,7 @@
 
 **Who is this for?** The site owner. This is a short, recurring task — not a one-time setup.
 
-**When do I need this?** Fine-grained GitHub tokens expire on a date you chose when creating them (commonly 1 year). When the token used by `onSheetChange` expires, Sheet edits silently stop triggering automatic thumbnail syncs. GitHub emails you a reminder before this happens — don't ignore that email.
+**When do I need this?** Fine-grained GitHub tokens expire on a date you chose when creating them (commonly 1 year). When the token used by the Apps Script (`GITHUB_PAT`) expires, Sheet edits stop reaching the website quickly — they then wait for the automatic run every 6 hours. Two reminders arrive beforehand: GitHub's own email to the token's owner, and — only if GitHub reports the expiry date to the script, which is not documented — an Apps Script email **"[Pramaan website] GitHub token expires in N day(s)"** 30, 7 and 1 days before. **The reliable reminder is your own calendar entry** made when you create the token.
 
 **Time required:** ~10 minutes.
 
@@ -10,8 +10,10 @@
 
 ## How to tell if this has already happened
 
+- An email **"[Pramaan website] GitHub refused the update (HTTP 401)"** arrived.
 - You edited the Sheet, waited a few minutes, and no new run appeared in the GitHub repo's **Actions** tab.
-- The daily safety-net sync (runs automatically once a day) is still working, so you might not notice for up to 24 hours — this is exactly why it's worth renewing proactively when the reminder email arrives, rather than waiting for something to look broken.
+- In Apps Script, running **`showStatus`** shows "Last update request: HTTP 401 …" or a past "Token expires" date.
+- The 6-hourly automatic sync keeps working without the token, so content still updates slowly — renew proactively when the reminder arrives.
 
 ---
 
@@ -25,7 +27,7 @@
 6. **Expiration:** pick a future date — GitHub will email a reminder again before this one expires too.
 7. **Resource owner:** your account.
 8. **Repository access:** **Only select repositories** → choose this one repository only.
-9. **Permissions → Repository permissions → Actions:** set to **Read and write**. Leave everything else as "No access." (This matches `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` Step 7. It has not been independently confirmed that this is the permission GitHub requires for triggering a workflow this way; if Step 3 below does not start a run, check the `onSheetChange` execution log in Apps Script for a non-204 response from GitHub and review the token's permissions.)
+9. **Permissions → Repository permissions → Actions:** set to **Read and write**. Leave everything else as "No access." (Apps Script v3 starts the sync through GitHub's "run workflow" API — `POST /repos/{owner}/{repo}/actions/workflows/{file}/dispatches`. GitHub's REST page for it did not state the fine-grained permission when checked on 2026-11-15; **Actions: Read and write** is the expected one, and Step 3's `testDispatch` confirms it in practice — `HTTP 403` means it is missing.)
 10. Click **Generate token**, and **copy it immediately** — GitHub only shows it once.
 
 ---
@@ -40,10 +42,11 @@
 
 ## Step 3 — Test It
 
-1. Make a small, harmless edit in the Sheet (add a space to a description, then remove it, save).
-2. Within a couple of minutes, check the GitHub repo's **Actions** tab — a new "Sync ABL Thumbnails" run should appear automatically. (Note: the workflow also runs by itself daily at 02:00 UTC regardless of the token, so a run that appears only once a day means the token or trigger is not working.)
+1. Apps Script editor → function dropdown → **`testDispatch`** → **Run**.
+2. The Execution log must say **`SUCCESS (HTTP 204)`** or **`SUCCESS (HTTP 200)`**, and GitHub → **Actions** shows a new **Sync ABL Thumbnails** run within a minute. (`HTTP 401`: token pasted wrongly; `403`: missing Actions permission; `404`: wrong repository chosen in Step 1.8 or wrong `GITHUB_REPO`.)
+3. Write the new token's expiry date in `docs/OPERATIONS-INVENTORY.md` (GitHub token row) **and in your calendar** (2 weeks before). `showStatus` shows it too if GitHub reported it.
 
-If it appears, you're done — no redeployment needed, no other steps. Only the Script Property changed.
+If all three pass, you're done — no redeployment needed. Only the Script Property changed.
 
 ---
 

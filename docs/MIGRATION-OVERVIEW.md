@@ -4,6 +4,8 @@
 
 **Time required:** A few hours, ideally split across more than one sitting. Not urgent-feeling, but not a 10-minute task either — rushing this is how things break.
 
+> **Start with the inventory.** `docs/OPERATIONS-INVENTORY.md` lists every account, file, script, trigger, workflow, secret and expiry date that has to move. Walk it before you begin and again at the end; every row must point at the new owner.
+
 ---
 
 ## Why this is three separate documents, not one
@@ -54,7 +56,10 @@ Because of this, the Google-side guide does **not** use Google Drive's "transfer
 - [ ] New owner owns the GitHub repository, and the original developer still has collaborator access (this happens automatically for personal-to-personal transfers — see the GitHub guide).
 - [ ] Live site loads correctly at its new URL and shows current data.
 - [ ] A test edit in the Sheet shows up on the live site within a few minutes (confirms the whole pipeline survived the move, end to end).
-- [ ] New owner has bookmarked `CONTENT-GUIDE.md`, `docs/ABL-APPSCRIPT-SETUP-GUIDE.md`, `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md`, and `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` for future reference.
+- [ ] Drive photo folders are readable by the new owner (Google guide Step 2b).
+- [ ] Alerts reach the new owner: GitHub variable `ALERT_ASSIGNEE` and Script Property `ALERT_EMAIL` updated; the cron schedule changed once by the new owner (GitHub guide Step 7).
+- [ ] Every row of `docs/OPERATIONS-INVENTORY.md` points at the new owner, with the token expiry date in their calendar.
+- [ ] New owner has bookmarked `docs/OPERATIONS-RUNBOOK.md`, `CONTENT-GUIDE.md`, `docs/ABL-APPSCRIPT-SETUP-GUIDE.md`, `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md`, and `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` for future reference.
 
 ---
 

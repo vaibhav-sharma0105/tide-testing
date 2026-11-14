@@ -1,5 +1,14 @@
 # ABL Resource Library — Apps Script Setup Guide
 
+> **⚠️ Updated 2026-11-15 — Apps Script version 3.** The script code now lives in the repository at
+> **`apps-script/abl/Code.gs`** (the single source of truth — never copy code from this page). Its triggers
+> are installed by running **`setup`** once, not by hand: exactly `onSheetChange` (**On change**) and `tick`
+> (every 5 minutes); the old `scheduledRefresh` 15-minute trigger and the "On edit" trigger are no longer used.
+> For the code, Script Properties, triggers and testing, follow **`docs/ABL-APPSCRIPT-V3-UPGRADE-GUIDE.md`**
+> Steps 2–9. The parts of this guide about creating the Sheet, deploying the Web App (Execute as: Me, Who has access: Anyone) and the `VITE_ABL_API_URL` secret still apply; the embedded code and the 15-minute trigger step are outdated.
+> Design and reasons: `docs/PRAMAAN-HARDENING-PLAN.md`.
+
+
 **Audience:** Site owner (non-developer)  
 **Time required:** ~20 minutes  
 **What you will set up:** A Google Apps Script Web App that reads your private Google Sheet and serves its data as a JSON API for the website.

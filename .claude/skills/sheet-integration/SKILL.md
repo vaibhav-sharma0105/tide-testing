@@ -51,21 +51,28 @@ hook layer. Don't build the sync pipeline speculatively if there's no media invo
 
 ### 2. Scaffold the Apps Script Web App (`Code.gs`)
 
-Use `docs/ABL-RESOURCE-LIBRARY-SPEC.md` §2.5's `Code.gs` as the structural template — same
-shape, new Sheet ID and new field mapping. Carry over these patterns exactly, they're not
-optional extras:
+Use **`apps-script/abl/Code.gs`** (Pramaan v3) as the structural template — keep it in the repo as
+`apps-script/<section>/Code.gs` (the repo copy is the source of truth; the owner pastes it into Google)
+and cover it with a simulated-Google test like `src/test/scripts/appsScript.test.js`. Same shape, new
+field mapping and id header pattern. Carry over these patterns exactly, they're not optional extras:
 
 - `doGet(e)` dispatches on `e.parameter.action`, default action is the public unauthenticated
   read.
 - `CacheService` wraps the Sheet read (15-min TTL precedent) so traffic volume never translates
   into Sheet-read volume.
 - Any privileged action (anything beyond the public read) is gated by
-  `isAuthorizedSyncRequest(e)` — a shared-secret token compared with `===`, stored in
+  `isAuthorizedSyncRequest(e)` — a shared-secret token compared in constant time, stored in
   `PropertiesService.getScriptProperties()`, never hardcoded.
+- A token-gated **`export`** action does a **fresh** read and returns data + per-media results
+  (`{id, fileId, modifiedTime}` or `{id, fileId, error}`) + `scriptVersion` + `health` from the same
+  read, so the sync never sees stale cache or mismatched data/media.
+- The Sheet comes from `getActiveSpreadsheet()` (bound script) or Script Property `SHEET_ID` — never a
+  hard-coded id, so moving to a copy is a one-value change. Tabs are published by an explicit header
+  pattern (allowlist), never "every tab except…".
 - If the action accepts a client-supplied ID to fetch something (a file, a row), **look it up
   against the live data first and only act on a match** — never use a client-supplied ID
   (especially a Drive `fileId`) directly. This is what keeps a leaked token from being usable to
-  pull arbitrary files. See `handleFetchImage` in the spec doc for the working example.
+  pull arbitrary files. See `handleFetchImage` in `apps-script/abl/Code.gs` for the working example.
 
 ### 3. Security checklist — go through every line before calling Code.gs done
 
@@ -101,14 +108,26 @@ This is the deeper, more systematic pass referenced when this skill was created 
   validates the bytes actually decode as the claimed type, with a byte-size cap, rather than a
   hand-rolled magic-byte check — and don't disable the library's default pixel/dimension limits
   (these exist specifically to guard against decompression-bomb-style inputs).
-- [ ] **Any debounce/rate-limit on a Sheet-edit-triggered dispatch** (so rapid edits don't spam
-  GitHub Actions) — the ABL precedent uses a 2-minute debounce via a stored timestamp property.
+- [ ] **Sheet changes reach GitHub without dropping any** — use an installable **On change** trigger
+  (catches row/tab deletes; "On edit" doesn't), a **leading + trailing** debounce flushed by a
+  5-minute `tick` trigger under `LockService`, and the **workflow_dispatch** endpoint; treat any
+  **2xx** as success (GitHub now documents 200, it used to return 204). A leading-only debounce
+  silently drops later edits — that was a real Pramaan bug. Install triggers with an idempotent
+  `setup()`, never by hand.
+- [ ] **Failures reach a human:** auth failures back off and email (`MailApp`, max 1/day); the sync
+  and deploy workflows open GitHub Issues assigned to `vars.ALERT_ASSIGNEE` (`scripts/ci/alert-issue.sh`).
+- [ ] **The sync can't destroy content:** structural thresholds (mass removal, vanished tab, renamed
+  header) refuse to publish and keep the last good version; a media lookup error **keeps** the old
+  file — media is deleted only when its row is gone. See `scripts/lib/abl-snapshot.js` + its tests.
 
-### 4. Scaffold the client-side hook and config
+### 4. Default to snapshot mode, not a runtime fetch
 
-Mirror `src/hooks/useABLData.js` (fetch + `sessionStorage` cache, matching the Apps Script's
-`CacheService` TTL) and `src/config/abl.js` (API URL from env, cache TTL constant, any
-tab/category style mapping). New env vars go in `.env.development` (gitignored), as GitHub
+**Visitors should not call Apps Script** (30 simultaneous executions for the script owner, ~2 s per
+call — `docs/PLATFORM-LIMITS.md`). Default design: the sync writes a validated snapshot to
+`src/data/sheets/<section>.json` (a sub-folder, so it can't collide with YAML output) in the same
+commit as the media, and the page imports it statically (design: `docs/PRAMAAN-HARDENING-PLAN.md`
+§6.3). Only build a runtime fetch hook if the content truly must be live to the minute — then mirror
+`src/hooks/useABLData.js` (Pramaan's hook until Phase 3 of that plan) and `src/config/abl.js`. New env vars go in `.env.development` (gitignored), as GitHub
 Actions repository secrets, **and** must be listed in the `env:` block of the Build step in
 `.github/workflows/deploy.yml` (that is how `VITE_ABL_API_URL` and
 `VITE_ABL_CONTRIBUTE_FORM_URL` reach the production build) — never hardcoded. The hook's cache
@@ -125,10 +144,12 @@ page list in the `content/shared/llms.txt` template.
 
 ### 5. If media needs self-hosting, scaffold the sync pipeline
 
-Mirror `scripts/sync-abl-thumbnails.js` and `.github/workflows/sync-abl-thumbnails.yml` —
-token-gated manifest/fetch actions, retry-with-backoff, the security checklist in step 3 above
-applied to the new script, committing only the specific asset directory + manifest path (not a
-broad `git add -A`). The manifest lives in `src/data/` (ABL's is
+Mirror `scripts/sync-abl-thumbnails.js` (+ `scripts/lib/abl-snapshot.js`) and
+`.github/workflows/sync-abl-thumbnails.yml` — token-gated export/fetch actions, retry-with-backoff,
+the security checklist in step 3 applied to the new script, committing only the specific data +
+asset paths (not a broad `git add -A`), push retry with rebase, explicit `gh workflow run deploy.yml`,
+`npm ci --ignore-scripts`, per-job permissions. Prefer adding the section to the **same** sync workflow
+and concurrency group (`sheet-sync`) over a second workflow. The manifest lives in `src/data/` (ABL's is
 `src/data/abl-thumbnails-manifest.json`) but is **not** produced by `scripts/yaml-to-json.js`;
 because that script writes a flat `src/data/<basename>.json`, give a new manifest a name that
 cannot collide with any YAML basename.
@@ -157,12 +178,15 @@ subsystem list, and both architecture diagrams (`docs/ARCHITECTURE.html` and
 ABL one. If the integration adds a Sheet, token, secret or PAT, also review
 `docs/MIGRATION-OVERVIEW.md`, `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md`,
 `docs/MIGRATION-GITHUB-REPOSITORY.md` and `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md`, which
-enumerate what a new owner must move or refresh. Add the new page's YAML file to
+enumerate what a new owner must move or refresh — and add every new Sheet, Drive folder, script,
+trigger, secret and expiry to **`docs/OPERATIONS-INVENTORY.md`** and any new symptom to
+`docs/OPERATIONS-RUNBOOK.md`. Add the new page's YAML file to
 `CONTENT-GUIDE.md`'s file table.
 
 ## Reference implementation
 
-`docs/ABL-RESOURCE-LIBRARY-SPEC.md` (Apps Script + architecture), `src/hooks/useABLData.js`,
-`src/config/abl.js`, `scripts/sync-abl-thumbnails.js`, `.github/workflows/sync-abl-thumbnails.yml`,
-`docs/ABL-APPSCRIPT-SETUP-GUIDE.md`, `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md`. Read the actual
+`apps-script/abl/Code.gs`, `scripts/lib/abl-snapshot.js`, `scripts/sync-abl-thumbnails.js`,
+`.github/workflows/sync-abl-thumbnails.yml`, `scripts/ci/alert-issue.sh`, `src/test/scripts/`,
+`docs/PRAMAAN-HARDENING-PLAN.md` (design + reasons), `docs/ABL-APPSCRIPT-V3-UPGRADE-GUIDE.md` (owner guide
+style), `docs/ABL-RESOURCE-LIBRARY-SPEC.md`, `src/config/abl.js`. Read the actual
 current state of these before copying — don't pattern-match from memory of what they used to do.

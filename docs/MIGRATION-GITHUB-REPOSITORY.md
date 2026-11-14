@@ -57,7 +57,7 @@ Before writing steps a non-technical reader will follow literally, this was chec
 
 ## Step 4 — Verify Settings Survived
 
-1. **Settings → Secrets and variables → Actions** — confirm all three secrets are still listed (you won't be able to see their values, just confirm they exist with a prior "Updated" date — that's normal and expected, secrets are never shown again after creation).
+1. **Settings → Secrets and variables → Actions** — confirm the secrets listed in `docs/OPERATIONS-INVENTORY.md` are still there, and on the **Variables** tab that `ALERT_ASSIGNEE` exists. (Checked 2026-11-15: only `VITE_ABL_API_URL` and `ABL_SYNC_TOKEN` exist; `VITE_ABL_CONTRIBUTE_FORM_URL` was never set — see the inventory.) Confirm the secrets are still listed (you won't be able to see their values, just confirm they exist with a prior "Updated" date — that's normal and expected, secrets are never shown again after creation).
 2. **Settings → Pages** — confirm it's still configured to deploy from GitHub Actions (not "branch"), matching how it was set up before.
 3. **Actions** tab — confirm the workflows (`Deploy to GitHub Pages`, `Sync ABL Thumbnails`) are listed.
 
@@ -89,7 +89,10 @@ This is the step that fully removes the original developer's account from the on
 1. New owner: generate your own fine-grained GitHub PAT, following Step 7 of `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md` (resource owner = yourself, repository access = this one repo only, permission = Actions: Read and write only).
 2. In the Apps Script editor (your migrated copy from the other guide) → Project Settings → Script Properties → update `GITHUB_PAT` with your new token.
 3. Also double check `GITHUB_REPO` matches the repository's new path (`<new-owner>/<repo-name>`) — update it if the owner portion changed.
-4. Make a small test edit in the Sheet and confirm a sync run fires automatically within a couple of minutes, using your own credentials end to end.
+4. In the Apps Script editor run **`testDispatch`** → the log must say `SUCCESS`; then make a small test edit in the Sheet and confirm a sync run fires automatically within a couple of minutes, using your own credentials end to end.
+5. **Alerts go to you:** Settings → Secrets and variables → Actions → **Variables** → `ALERT_ASSIGNEE` → set it to **your** GitHub username. In Apps Script → Script Properties set `ALERT_EMAIL` to your email. (The new owner must be the repository owner or a collaborator to be assignable.)
+6. **Schedule emails go to you:** GitHub sends "scheduled workflow failed/disabled" emails to whoever last changed the `cron:` schedule. Edit `.github/workflows/sync-abl-thumbnails.yml` and change the minute once (e.g. `'17 */6 * * *'` → `'23 */6 * * *'`), commit.
+7. Fill in every ⚠️ row of `docs/OPERATIONS-INVENTORY.md` with the new owner's details and today's date.
 
 Once this passes, the migration is fully complete — nothing in the live system depends on the original developer's accounts anymore (their GitHub collaborator access is just for future code changes, not automation).
 
@@ -101,8 +104,9 @@ Once this passes, the migration is fully complete — nothing in the live system
 |---|---|---|
 | Site shows a blank/broken page at the new URL | The base path in `vite.config.js` (`/tide-testing/` on GitHub Actions) no longer matches the repository name | Confirm the repo name wasn't also changed during transfer; if it was, update `base` in `vite.config.js` and redeploy |
 | Auto-sync stops working after a while | `GITHUB_PAT` expired (fine-grained tokens have an expiration date) | See `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` |
+| Alert issues are created but nobody is emailed | `ALERT_ASSIGNEE` still names the old owner, or a user who isn't a collaborator (the workflow then opens the issue unassigned) | Step 7.5 |
 | New owner can't see repository secrets' values | Expected — GitHub never shows a secret's value again after creation, for anyone, regardless of ownership | Not an error; only matters if you need to know the value (you shouldn't, except `ABL_SYNC_TOKEN`/`GITHUB_PAT` which you set yourself in the other guide) |
 
 ---
 
-*Ongoing maintenance: `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md`.*
+*Ongoing maintenance: `docs/OPERATIONS-RUNBOOK.md` (what to do when something breaks) and `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md`.*

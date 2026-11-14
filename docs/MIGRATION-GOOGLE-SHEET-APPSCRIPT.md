@@ -46,34 +46,33 @@ So instead, the new owner makes a **fresh copy** of the Sheet (which also copies
 
 This copy includes all the existing resource data **and** a copy of the automation script — both now owned by you.
 
+### Step 2b — Photos: make sure the new owner can read them
+
+The Sheet's photo column links to files in Google Drive. **They are not copied with the Sheet.** The script reads them as the new owner, so the new owner's account must be able to open every photo.
+
+1. Current owner: find the Drive folder(s) holding the resource photos (open a few photo links from the Sheet; note the folder each one lives in) and record them in `docs/OPERATIONS-INVENTORY.md`.
+2. Share those folders with the new owner (**Editor**), or transfer ownership of the folders to the new owner (Drive → right-click the folder → **Share → Transfer ownership**). Transfer keeps every file's id, so the Sheet's links keep working. *(Whether Drive allows transfer between two personal Gmail accounts is not verified — if the option is missing, sharing as Editor is enough for the script to read them.)*
+3. Check: signed in as the new owner, open 3 photo links from the Sheet — each must open.
+
+If photos become unreadable, the sync **keeps the old photos** on the website and lists the affected rows in a `sheet-needs-attention` issue — nothing is deleted.
+
 ---
 
 ## Step 3 — New Owner: Open Apps Script and Re-authorize
 
 1. In your new copy, click **Extensions → Apps Script**.
-2. You should see `Code.gs` already there, full of code — this came along with the copy.
-3. In the function dropdown at the top, select **`scheduledRefresh`**.
-4. Click **Run** (▶). You'll be asked to authorize permissions — this is expected, since this is a fresh project under your account even though the code looks identical. Click through: **Review permissions → your account → Advanced → Go to [project] (unsafe) → Allow**.
-5. Check the **Execution log** — you should see `ABL cache refreshed at [timestamp]`. If you see an error instead, double check Step 4 below before re-running.
+2. You should see `Code.gs` already there. Check its first lines say **version 3**. If not (older copy), replace it with `apps-script/abl/Code.gs` from the repository (`docs/ABL-APPSCRIPT-V3-UPGRADE-GUIDE.md` Step 2).
+3. Function dropdown → **`showStatus`** → **Run** (▶). Authorize when asked: **Review permissions → your account → Advanced → Go to [project] (unsafe) → Allow**. This is expected — it's a fresh project under your account.
+4. The **Execution log** prints a status block.
 
----
+## Step 4 — ⚠️ Check it reads YOUR copy — Do Not Skip This
 
-## Step 4 — ⚠️ Update the Sheet ID — Do Not Skip This
+Version 3 reads the Sheet it is attached to, so a copy reads itself automatically — **unless** a Script Property called `SHEET_ID` exists (it overrides that).
 
-This is the single most important step in this whole guide, and it's easy to miss because nothing visibly breaks if you skip it.
+1. In the Step 3 log, find the line `Sheet: …`. It must show **your copy's** name (e.g. "TIDE ABL Resources (Live)"), not the old one.
+2. If it shows the old Sheet: Project Settings → Script Properties → delete `SHEET_ID` (or set it to your copy's id from Step 2.5) → run `showStatus` again.
 
-The script has a line near the top that looks like this:
-
-```javascript
-const SHEET_ID = '1Cdx2iVkzA_-mv9b0vKXmo1eTRdz3K7HmtBSKDrM8CgQ';
-```
-
-This is the ID of the **original** Sheet, hardcoded in the code itself. If you don't change it, your new copy's script will keep quietly reading data from the old Sheet under the old account forever — even though everything *looks* like it's using your new copy. The migration would be fake.
-
-1. In `Code.gs`, find the `SHEET_ID` line near the top.
-2. Replace the value between the quotes with the ID you copied in Step 2.5.
-3. Save (Ctrl+S).
-4. Re-run `scheduledRefresh` (same as Step 3) and check the execution log again — it should still say "refreshed" successfully, now reading from your copy.
+*(Older versions had the Sheet id written inside the code — if you ever see a line `const SHEET_ID = '…'` near the top of Code.gs, you have an old version: replace it as in Step 3.2.)*
 
 ---
 
@@ -91,12 +90,9 @@ This produces a **brand new Web App URL** — different from the old one. That's
 
 ---
 
-## Step 6 — Set Up the 15-Minute Auto-Refresh Trigger
+## Step 6 — (No 15-minute trigger any more)
 
-1. Click the **clock icon** (Triggers) in the left sidebar.
-2. **+ Add Trigger**.
-3. Function: `scheduledRefresh` · Deployment: `Head` · Source: `Time-driven` · Type: `Minutes timer` · Interval: `Every 15 minutes`.
-4. Save.
+Version 3 does not use the old `scheduledRefresh` 15-minute trigger. Its two triggers are installed in Step 10 by `setup`.
 
 ---
 
@@ -127,6 +123,8 @@ Same method as the original thumbnail-sync setup — using the Apps Script edito
 | `SYNC_TOKEN` | The token from Step 7 |
 | `GITHUB_PAT` | A fine-grained GitHub token — see the note below |
 | `GITHUB_REPO` | `owner/repo-name`, e.g. `vaibhav-sharma0105/tide-testing` (use whatever it currently is — this may need updating again after the GitHub repository transfer; see that guide's last step) |
+| `GITHUB_WORKFLOW` | `sync-abl-thumbnails.yml` |
+| `ALERT_EMAIL` | the new owner's email (problem alerts and token-expiry reminders go here) |
 
 > **About `GITHUB_PAT` at this stage:** if you're following `MIGRATION-OVERVIEW.md`'s recommended order, the GitHub repository hasn't transferred yet — so generate this PAT under whoever currently has admin access to the GitHub repo (likely the original developer, for now). Once the GitHub transfer is complete, the very last step of `MIGRATION-GITHUB-REPOSITORY.md` has the new owner generate their **own** PAT under their own account and update this property again, fully decoupling from the original developer. Don't worry about getting this perfectly "final" right now — getting it *working* is what matters at this stage.
 
@@ -143,23 +141,23 @@ Same method as the original thumbnail-sync setup — using the Apps Script edito
 
 ---
 
-## Step 10 — Set Up the "Sheet Edited" Trigger
+## Step 10 — Install the triggers (one click)
 
-1. Apps Script editor → **clock icon** (Triggers) → **+ Add Trigger**.
-2. Function: `onSheetChange` · Deployment: `Head` · Source: `From spreadsheet` · Type: `On edit`.
-3. Save, approve permissions if asked.
+1. Apps Script editor → function dropdown → **`setup`** → **Run**. Approve permissions if asked.
+2. Check: the log's `Triggers:` line lists exactly `onSheetChange` and `tick`; the clock icon (Triggers) shows those two rows.
+3. On the Triggers page, for each row: pencil → **Failure notification settings → Notify me immediately** → Save.
 
 ---
 
 ## Step 11 — Test Everything End to End
 
 1. Paste your new Web App URL into a browser — confirm you see `{"success":true,...}` JSON.
-2. GitHub repo → **Actions** tab → **Sync ABL Thumbnails** → **Run workflow** (manual trigger, to seed thumbnails from the new setup).
-3. Confirm a new commit appears (`chore(abl-sync): update resource thumbnails`).
-4. Make a small, harmless edit in your new Sheet copy. Within a couple of minutes, check the Actions tab — a sync run should start **on its own**, with nobody clicking anything.
-5. Visit the live site and confirm resources and images display correctly.
+2. Apps Script → function **`testDispatch`** → **Run** → the log says `SUCCESS (HTTP 204)` or `SUCCESS (HTTP 200)`. (Other results: `docs/ABL-APPSCRIPT-V3-UPGRADE-GUIDE.md` Step 8.)
+3. GitHub repo → **Actions** → a **Sync ABL Thumbnails** run started by step 2 finishes green.
+4. Make a small, harmless edit in your new Sheet copy. Within ~1 minute a sync run starts **on its own**.
+5. After **Deploy to GitHub Pages** finishes, visit the live site and confirm resources and images display correctly.
 
-If all five pass, the Google side of the migration is complete.
+If all five pass, the Google side of the migration is complete. Record the new owner, Web App URL date and token expiry in `docs/OPERATIONS-INVENTORY.md`.
 
 ---
 
@@ -173,9 +171,10 @@ If all five pass, the Google side of the migration is complete.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| New Web App URL returns the *old* data | Forgot Step 4 (updating `SHEET_ID`) | Go back to Step 4 |
+| New Web App URL returns the *old* data | Script still reads the old Sheet (a `SHEET_ID` property, or an old code version) | Go back to Step 4 |
+| Website photos stop updating, issue lists "photo couldn't be read" | New owner can't open the Drive photos | Step 2b |
 | `{"success":false,"error":"Unauthorized"}` on `?action=manifest` | `SYNC_TOKEN` script property doesn't match the GitHub secret | Re-check Steps 7–9 match exactly |
-| Sheet edits don't trigger an automatic sync | Step 10's trigger isn't installed, or `GITHUB_PAT`/`GITHUB_REPO` properties are wrong | Re-check Step 8 and Step 10 |
+| Sheet edits don't trigger an automatic sync | Triggers not installed, or `GITHUB_PAT`/`GITHUB_REPO`/`GITHUB_WORKFLOW` wrong | Run `testDispatch` and read the result; re-run `setup` |
 | Everything works except the live site never updates | GitHub secrets weren't actually saved in Step 9 | Re-open Settings → Secrets and confirm both show a recent "Updated" date |
 
 ---
