@@ -257,6 +257,22 @@ info:
 
 The footer reads its email and first phone number from this same file, so those update together.
 
+The **map** on the Contact page is controlled by the `map:` block of the same file:
+
+```yaml
+map:
+  eyebrow: "Find us"
+  title: "Visit us in Navrangpura, Ahmedabad"
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=BCM+Corporation%2C+Navrangpura%2C+Ahmedabad%2C+Gujarat+380009"
+  mapsLabel: "Open in Google Maps"
+  embedQuery: "BCM Corporation, Navrangpura, Ahmedabad, Gujarat 380009"
+  embedTitle: "Map showing the TIDE Foundation office in Navrangpura, Ahmedabad"
+```
+
+`mapsUrl` is where both "Open in Google Maps" links (the address and the one under the map) go; `embedQuery` is the place name Google searches for the embedded map. Keep the two pointing at the same place. The page has no contact form any more.
+
+The Donate page's bank details (account name, number, bank, IFSC, branch and their labels) are in the `bank:` block of `content/pages/get-involved-donate.yaml`.
+
 **The email address is special** — it must be the same on every page. Read "Site-wide facts" just below before changing it.
 
 ### Site-wide facts: email address and lives-impacted figure

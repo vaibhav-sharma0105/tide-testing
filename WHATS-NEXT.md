@@ -43,7 +43,7 @@
 > | 2 | "Click any image…" hint x6 | Done. One shared string, `clickToZoom` in `content/shared/common.yaml`, read as `common.clickToZoom`. |
 > | 3 | Header donate labels | Done. `donateLabel` / `donateMobileLabel` in `content/shared/navigation.yaml`. |
 > | 4 | Footer brand text and taglines | Done. `brandName`, `brandSuffix`, `tagline`, `supportWork`, `rights`, `madeWithLove` come from `footer.json`. |
-> | 5 | Contact labels and email subject | Done. Labels from `data.labels.*`; subject from `data.form.mailSubject` in `contact.yaml`. |
+> | 5 | Contact labels and email subject | Done. Labels from `data.labels.*`; the subject came from the contact form, which has since been removed (the Contact page now shows an embedded map instead). |
 > | 6 | Publications type labels | Done. `data.typeLabels` in `resources-publications.yaml`, read in `Publications.jsx`. |
 > | 7 | THRIvE "Research" badge | Done. `researchProjects.cardBadge` in `thrive.yaml`. |
 > | 8 | "Hover over a photo" hints | Done. `common.hoverForBio` and `common.hoverForRole` in `common.yaml`. |

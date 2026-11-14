@@ -127,7 +127,7 @@ tide-new/
 ├── eslint.config.js       ← flat config; react/jsx-no-literals CMS guard for pages + components
 ├── tailwind.config.js     ← all design tokens (colours, fonts, shadows, animations)
 ├── postcss.config.js
-├── index.html             ← single HTML entry: SPA-redirect restorer, static head, CSP, Google Fonts; <title>, og:site_name and JSON-LD are filled in by siteDataPlugin
+├── index.html             ← single HTML entry: SPA-redirect restorer, static head, CSP (its `frame-src` allows https://www.google.com for the Contact map, plus Padlet/YouTube/Google Docs/Drive/Apps Script/Forms), Google Fonts; <title>, og:site_name and JSON-LD are filled in by siteDataPlugin
 ├── package.json           ← deps + scripts (predev/prebuild auto-sync YAML)
 ├── .env.example           ← documents required env vars (committed; no real values)
 │
@@ -170,7 +170,8 @@ tide-new/
 │   │   │   ├── Lightbox.jsx         ← full-screen image gallery with keyboard nav; optional `translucent` backdrop; never shows a caption
 │   │   │   ├── LightboxGallery.jsx  ← click-to-zoom grid + its Lightbox (owns useLightbox + AnimatePresence)
 │   │   │   ├── ComingSoonGraphic.jsx ← /coming-soon illustration: block-drop springs, then endless ambient loops + random gust/nudge events; static under prefers-reduced-motion
-│   │   │   └── SocialIcons.jsx      ← inline SVG: Facebook, Instagram, LinkedIn
+│   │   │   ├── SocialIcons.jsx      ← inline SVG: Facebook, Instagram, LinkedIn
+│   │   │   └── WaveDivider.jsx      ← soft drifting wave at the top of a section, curving the light section above into it (Contact, Donate); static under prefers-reduced-motion
 │   │   │
 │   │   └── abl/
 │   │       ├── AblNavBar.jsx        ← sticky sub-nav for the 3 Pramaan sections (TABS keyed by activeSlug)
@@ -189,7 +190,7 @@ tide-new/
 │   │
 │   ├── pages/
 │   │   ├── Home.jsx               ← hero, mission, approach (3 programme cards), journey, CTA
-│   │   ├── Contact.jsx            ← mailto form + info sidebar
+│   │   ├── Contact.jsx            ← contact details (address, phones, email, hours, social) + embedded Google map card (`map.embedQuery`); no form
 │   │   ├── THRIvE.jsx             ← THRIvE programme page
 │   │   ├── EducationForHarmony.jsx ← /education-for-harmony
 │   │   ├── NotFound.jsx           ← reachable at /404 AND the catch-all (*); content/shared/not-found.yaml (Helmet noindex, not SeoHead)
@@ -485,6 +486,10 @@ The lightbox is rendered after whatever `children(grid)` returns, so it stays a 
 ### SocialIcons
 
 `SocialIcons.jsx` exports `FacebookIcon`, `InstagramIcon` and `LinkedinIcon` (used by Footer + Contact).
+
+### WaveDivider
+
+`WaveDivider.jsx` (`className` = the colour of the section above, as a text colour, e.g. `text-tide-bg`). Place it as the first child of a `relative` section with extra top padding (`pt-24`): it draws a 20px absolute wave at the top that curves the section above into this one and drifts one full period over 16 s (seamless loop). `aria-hidden`, `pointer-events-none`; no animation under `useReducedMotion`. Used by the blue banners on Contact and Donate.
 
 ### ImageLightbox (single image — ABL only)
 

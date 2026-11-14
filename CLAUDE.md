@@ -35,7 +35,7 @@ src/
   components/
     layout/    # Header, Footer, Layout
     ui/        # Button, Card, SectionHeader, PageHero, SeoHead, AnimatedCounter, Highlight,
-               # Lightbox, LightboxGallery, CreativeLoader, ComingSoonGraphic, SocialIcons
+               # Lightbox, LightboxGallery, CreativeLoader, ComingSoonGraphic, SocialIcons, WaveDivider
     ErrorBoundary.jsx  # friendly crash screen (text from error.yaml; message/stack shown only in DEV)
     abl/       # AblNavBar, ResourceCard, ResourceGrid, ResourceFilters, Pagination,
                # ResourceTypeBadge, DriveImage, ImageLightbox, VideoLightbox, PromoVideo, PhotoStrip
