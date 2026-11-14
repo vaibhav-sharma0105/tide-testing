@@ -235,7 +235,7 @@ Legend: `[x]` done (with commit) · `[ ]` to do · **(OWNER)** needs the owner's
 - [x] 1.6 *(4 tests)* `vite:preloadError` reload guard in `src/main.jsx` (H7)
 - [x] 1.7 Repo variable `ALERT_ASSIGNEE=vaibhav-sharma0105` (set 2026-11-15 via `gh variable set`)
 - [x] 1.8 *(local, 2026-11-15)* Docs (also new: `docs/ABL-APPSCRIPT-V3-UPGRADE-GUIDE.md` = the Phase 2 owner guide; spec §2.5 now points to the code file instead of embedding it; stale CI claims in AGENTS.md fixed): `docs/OPERATIONS-INVENTORY.md` (every Sheet, Drive folder, script, trigger, workflow, secret, PAT expiry, retirement dates), `docs/OPERATIONS-RUNBOOK.md` (symptom → action), update `MIGRATION-*` + `MAINTENANCE-GITHUB-PAT-REFRESH.md` (Drive folder, `setup()`, PAT permission/endpoint, cron-line edit, `ALERT_ASSIGNEE`), setup guides, `CLAUDE.md`, `AGENTS.md`, both `docs/ARCHITECTURE*.html`, the sheet-integration skill
-- [ ] 1.9 Commit + push Phase 1; run the sync manually once to confirm it still works against the current Apps Script (expected: legacy mode, first run commits the snapshot + fileId back-fill, no photo downloads). Gate before push: lint ✓, content:validate ✓, 246/246 unit tests ✓, build ✓ (2026-11-15)
+- [x] 1.9 *(2026-11-14 19:27–19:31 UTC: pushed e056ba3, aa3966f, d2321d5; manual sync run 43632228919 green — source legacy, 161 resources / 4 tabs, 0 photos fetched, 0 deleted, 0 row problems, committed 4447e2e (snapshot + fileId back-fill); the sync-started deploy 43632299055 green incl. content:validate 0 errors — the first deploy ever started by the sync)* Commit + push Phase 1; run the sync manually once to confirm it still works against the current Apps Script (expected: legacy mode, first run commits the snapshot + fileId back-fill, no photo downloads). Gate before push: lint ✓, content:validate ✓, 246/246 unit tests ✓, build ✓ (2026-11-15)
 
 ### Phase 2 — Google side (OWNER, ~20 min, click-by-click guide to be written in 1.8)
 - [ ] G1 **(OWNER)** Diagnose the dead instant path: Apps Script → Triggers (is `onSheetChange` installed?) and Executions log; note the PAT's permissions
@@ -246,7 +246,7 @@ Legend: `[x]` done (with commit) · `[ ]` to do · **(OWNER)** needs the owner's
 - [ ] G6 Verify: two edits 30 s apart → exactly 2 sync runs within ~7 min, second includes the second edit; a row delete triggers a run
 
 ### Phase 3 — Switch the site to the snapshot
-- [ ] 3.1 Seed: manual sync run commits the first validated snapshot + photos
+- [x] 3.1 Seed: manual sync run commits the first validated snapshot + photos *(done by the 1.9 run: commit 4447e2e)*
 - [ ] 3.2 Switch `useABLData.js` to the bundled snapshot; update its tests and `e2e/` spec; drop `VITE_ABL_API_URL` from the deploy build env and the warning in `vite.config.js`
 - [ ] 3.3 Verify live: Pramaan pages make no request to `script.google.com`; an edited row appears on the live site within ~10 min
 - [ ] 3.4 Update this checklist, the inventory and the memory notes
