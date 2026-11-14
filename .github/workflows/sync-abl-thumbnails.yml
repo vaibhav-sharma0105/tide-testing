@@ -1,36 +1,54 @@
 name: Sync ABL Thumbnails
 
-# Keeps ABL Resource Center thumbnails self-hosted instead of depending on
-# Google's undocumented thumbnail CDN at runtime. See
-# docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md for the full setup procedure.
+# Pramaan sync: copies the resource data (snapshot) AND photos from the Google Sheet into the repo
+# in ONE commit, then redeploys the site. Full design: docs/PRAMAAN-HARDENING-PLAN.md.
+# Keep this FILE NAME: the Apps Script calls it by name (Script Property GITHUB_WORKFLOW).
 #
 # Triggers:
-#   - repository_dispatch (abl-content-changed): fired by the Apps Script
-#     onSheetChange trigger within seconds of a real sheet edit.
-#   - schedule: daily safety net in case a dispatch is ever missed.
-#   - workflow_dispatch: manual run (e.g. the very first sync, or debugging).
+#   - workflow_dispatch: sent by the Apps Script after Sheet edits, by its daily heartbeat, or by
+#     a person (Actions → Sync ABL Thumbnails → Run workflow). Tick allow_large_change only after
+#     checking the Sheet, when a large removal is intended.
+#   - schedule: every 6 hours, at :17 past (top-of-the-hour schedules are the most delayed).
+#   - repository_dispatch: legacy trigger from Apps Script versions before v3.
+# No pull_request trigger: this workflow uses secrets and must never run fork code.
 
 on:
+  workflow_dispatch:
+    inputs:
+      allow_large_change:
+        description: 'Publish even if the safety checks refuse (only after checking the Sheet)'
+        type: boolean
+        default: false
+  schedule:
+    - cron: '17 */6 * * *'
   repository_dispatch:
     types: [abl-content-changed]
-  schedule:
-    - cron: '0 2 * * *'
-  workflow_dispatch: {}
 
-permissions:
-  contents: write
-  actions: write   # lets the last step start the deploy workflow (see below)
+permissions: {}
 
+# One group for every Sheet sync: a run is never cancelled mid-commit, and while one runs, the
+# newest request waits as the single pending run (it reads fresh data when it starts).
 concurrency:
-  group: sync-abl-thumbnails
+  group: sheet-sync
   cancel-in-progress: false
 
 jobs:
   sync:
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write   # commit data + photos
+      actions: write    # start the deploy workflow
+      issues: write     # alert / needs-attention issues
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ALERT_ASSIGNEE: ${{ vars.ALERT_ASSIGNEE }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v6
@@ -38,8 +56,10 @@ jobs:
           node-version: 24
           cache: npm
 
+      # --ignore-scripts: no dependency install script runs while a write token is on the runner.
+      # sharp ships prebuilt binaries as optional packages, so it needs no install script.
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Run sync
         id: sync
@@ -47,39 +67,73 @@ jobs:
         env:
           VITE_ABL_API_URL: ${{ secrets.VITE_ABL_API_URL }}
           ABL_SYNC_TOKEN: ${{ secrets.ABL_SYNC_TOKEN }}
+          ALLOW_LARGE_CHANGE: ${{ inputs.allow_large_change && 'true' || 'false' }}
+          SYNC_REPORT_PATH: ${{ runner.temp }}/abl-sync-report.md
 
-      - name: Commit changes
+      # Only the bot-owned paths are committed. Retries if someone pushed meanwhile; the paths
+      # don't overlap with human edits, so the rebase is conflict-free.
+      - name: Commit and push
+        id: push
         if: steps.sync.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/assets/images/abl src/data/abl-thumbnails-manifest.json
-          git commit -m "chore(abl-sync): update resource thumbnails"
-          git push
+          git add src/data/sheets/abl-resources.json src/data/abl-thumbnails-manifest.json public/assets/images/abl
+          if git diff --cached --quiet; then echo "pushed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          git commit -m "chore(abl-sync): update Pramaan data and photos"
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then echo "pushed=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+            echo "Push rejected (attempt $attempt); rebasing on the latest main…"
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort; echo "Rebase conflict — a person edited a bot-owned file."; exit 1; }
+            sleep $((attempt * 3))
+          done
+          exit 1
 
-      # A push made with the default GITHUB_TOKEN does not start other workflows
-      # (GitHub rule; confirmed: the 2026-06-20 sync commits started no run). Without
-      # this step the new thumbnails would stay out of the live site until the next
-      # manual push. Dispatching a workflow is the one thing GITHUB_TOKEN may trigger.
-      - name: Deploy the updated thumbnails
-        if: steps.sync.outputs.changed == 'true'
-        run: gh workflow run deploy.yml --ref "${{ github.ref_name }}"
-        env:
-          GH_TOKEN: ${{ github.token }}
+      # A push made with GITHUB_TOKEN starts no other workflow, so start the deploy explicitly.
+      - name: Deploy the update
+        if: steps.push.outputs.pushed == 'true'
+        run: gh workflow run deploy.yml --ref main
 
-      # GitHub switches off scheduled workflows in a public repository after 60 days
-      # without repository activity (the daily run above then stops silently; it did
-      # after 2026-06-22). If the newest commit is 45+ days old, add one empty commit so
-      # the repository counts as active. It changes no files, and a push made with
-      # GITHUB_TOKEN starts no other workflow, so it does not redeploy the site.
-      # Only on the scheduled run: manual and Sheet-triggered runs are activity already.
-      - name: Keep the daily schedule alive
-        if: github.event_name == 'schedule'
+      - name: Repository size check
+        if: always()
+        run: |
+          size_kb=$(git count-objects -v | awk '/size-pack/ {print $2}')
+          echo "Repository history size: $((size_kb / 1024)) MB (GitHub recommends < 1 GB; we act at 700 MB)" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$size_kb" -gt $((700 * 1024)) ]; then
+            printf '\n- ⚠️ The repository history is %s MB (limit we act at: 700 MB). See "Separate assets repository" in docs/PRAMAAN-HARDENING-PLAN.md section 8.\n' "$((size_kb / 1024))" >> "${{ runner.temp }}/abl-sync-report.md"
+          fi
+
+      - name: Report rows that need attention
+        if: success() && steps.sync.outputs.problems != '0'
+        run: |
+          bash scripts/ci/alert-issue.sh update sheet-needs-attention "Pramaan Sheet: some rows need attention" "${{ runner.temp }}/abl-sync-report.md"
+
+      - name: Close the needs-attention issue
+        if: success() && steps.sync.outputs.problems == '0'
+        run: |
+          bash scripts/ci/alert-issue.sh close sheet-needs-attention "Pramaan Sheet: some rows need attention"
+
+      - name: Alert the owner
+        if: failure()
+        run: |
+          bash scripts/ci/alert-issue.sh open automation-alert "Pramaan sync failed — the website is not updating" "${{ runner.temp }}/abl-sync-report.md"
+
+      - name: Close the alert
+        if: success()
+        run: |
+          bash scripts/ci/alert-issue.sh close automation-alert "Pramaan sync failed — the website is not updating"
+
+      # GitHub disables scheduled workflows in a public repo after 60 days without activity. If the
+      # newest commit is 45+ days old, add an empty commit (starts no workflow, changes no file).
+      # The Apps Script daily heartbeat is a second, independent safety net.
+      - name: Keep the schedule alive
+        if: success() && github.event_name == 'schedule' && steps.push.outputs.pushed != 'true'
         run: |
           age_days=$(( ( $(date +%s) - $(git log -1 --format=%ct) ) / 86400 ))
           if [ "$age_days" -ge 45 ]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git commit --allow-empty -m "chore: keep scheduled workflows active (no commits for ${age_days} days)"
-            git push
+            git push origin HEAD:main || echo "keep-alive push failed (will retry next run)"
           fi

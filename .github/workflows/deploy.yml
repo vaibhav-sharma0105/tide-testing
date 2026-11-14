@@ -10,9 +10,11 @@ permissions:
   pages: write
   id-token: write
 
+# Never cancel a deploy mid-flight; queued runs wait. Every run builds the newest main (see
+# Checkout), so the last one to finish always publishes the latest commit.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   # Runners are pinned to an explicit Ubuntu release (not ubuntu-latest) so a GitHub-side
@@ -20,8 +22,12 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
+      # Always the newest main — so "Re-run" of an old run, or a deploy started by the sync, can
+      # never republish an older commit.
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          ref: main
 
       - name: Setup Node
         uses: actions/setup-node@v6
@@ -63,3 +69,30 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+  # Tells the owner when the site failed to build/deploy (a GitHub Issue assigned to
+  # vars.ALERT_ASSIGNEE emails them, whoever started the run), and closes it on the next success.
+  notify:
+    needs: [build, deploy]
+    if: always() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    permissions:
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ALERT_ASSIGNEE: ${{ vars.ALERT_ASSIGNEE }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Checkout scripts
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          sparse-checkout: scripts/ci
+      - name: Alert the owner
+        if: needs.build.result == 'failure' || needs.deploy.result == 'failure'
+        run: |
+          printf 'The website build or deploy failed (build: %s, deploy: %s). The live site keeps showing the previous version.\n' "${{ needs.build.result }}" "${{ needs.deploy.result }}" > "${{ runner.temp }}/deploy.md"
+          bash scripts/ci/alert-issue.sh open automation-alert "Website deploy failed" "${{ runner.temp }}/deploy.md"
+      - name: Close the alert
+        if: needs.build.result == 'success' && needs.deploy.result == 'success'
+        run: bash scripts/ci/alert-issue.sh close automation-alert "Website deploy failed"
