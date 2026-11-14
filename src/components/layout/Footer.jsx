@@ -17,7 +17,9 @@ export default function Footer() {
   const rights = footerData.rights.replace('{year}', new Date().getFullYear())
 
   return (
-    <footer role="contentinfo" className="bg-navy text-white">
+    <footer role="contentinfo" className="relative bg-navy text-white">
+      {/* Lean amber edge: keeps the footer distinct where a page ends on a navy section (e.g. Our Team) */}
+      <div className="absolute inset-x-0 top-0 h-0.5 gradient-accent" aria-hidden="true" />
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
 
         {/* ── Main row: brand · contact · social · donate (stacks on small screens) ── */}
