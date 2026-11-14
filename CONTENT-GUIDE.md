@@ -57,7 +57,7 @@ Find the YAML file for the page you want to edit. Naming follows the URL (`/abou
 | Pramaan → Resource Centre (the list and filters) | `content/pages/abl-resource-center.yaml` |
 | Pramaan → a single resource's page | `content/pages/abl-detail.yaml` |
 | Pramaan → Contribute | `content/pages/abl-contribute.yaml` |
-| THRIvE Research Centre | `content/pages/thrive.yaml` |
+| THRIvE Research Centre (leaders, research associates with `role` + optional `suffix`, the four research areas) | `content/pages/thrive.yaml` |
 | Contact Us | `content/pages/contact.yaml` |
 | Volunteer (reached from the About menu) | `content/pages/get-involved-volunteer.yaml` |
 | Donate (the Donate button) | `content/pages/get-involved-donate.yaml` |
@@ -155,8 +155,9 @@ public/assets/images/
   about-our-partners/       ← partner logo files
   get-involved-volunteer/   ← volunteer gallery
   projects-mcc/             ← photos on the Organise your MCCx page
-  projects-bettered/        ← two of these are used on the homepage
-  thrive/, thrive-happiness/      ← THRIvE photos
+  projects-bettered/        ← two of these are used on the homepage; gallery-04 is also the photo for THRIvE research area 01
+  thrive/                   ← THRIvE team portraits and research-area photos
+  thrive-happiness/         ← no longer used on the page (the Conferences section was removed)
   abl/                      ← DO NOT TOUCH: Pramaan thumbnails, filled in
                               automatically from the Google Sheet
 ```
@@ -205,6 +206,31 @@ meta:
 ```
 
 Edit the values after the colon. The subtitle line is called `tagline` on some pages and `subtitle` on others. `seoTitle` and `seoDescription` are what Google and the browser tab show, not the on-page heading.
+
+### Update the THRIvE page (team and research areas)
+
+Everything on `/thrive` is in `content/pages/thrive.yaml`:
+
+```yaml
+leaders:                      # the "Our team" co-directors (large portraits)
+  members:
+    - name: "Dr. Jane Smith"
+      role: "Co-Director"
+      suffix: "PhD, Example University"        # optional smaller line (qualifications)
+      photo: "/assets/images/thrive/team-jane-smith.jpg"   # null shows initials
+      linkedin: "https://www.linkedin.com/in/jane-smith/"  # optional; whole portrait links
+researchTeam:                 # the Research Associates (same fields, shown in this order)
+researchAreas:                # the four numbered areas
+  items:
+    - title: "..."
+      overview: "..."         # the short line under the title
+      photo: "/assets/images/projects-bettered/gallery-04.jpg"
+      paragraphs:             # the write-up; the first is highlighted
+        - "..."
+        - "..."
+```
+
+The area photos are shown at about 16:10, so use landscape pictures. The "Research team" and "Our team" headings: `leaders.sectionTitle` is visible; `researchTeam.sectionBadge` is read aloud by screen readers but not shown.
 
 ### Add a team member
 

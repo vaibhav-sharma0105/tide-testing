@@ -11,68 +11,79 @@
   "about": {
     "sectionBadge": "About",
     "sectionTitle": "About THRIvE",
-    "body": "THRIvE is committed to creating transformative, inclusive, and equitable education systems through deep inquiry, strategic collaboration, holistic approaches, and actionable insights."
+    "body": "The THRIvE (Transformative Holistic Research for Integral and Inclusive Education) Research Centre is committed to creating transformative, inclusive, and equitable education systems through rigorous research, deep inquiry, strategic collaboration, holistic approaches, and actionable insights."
   },
   "leaders": {
-    "sectionBadge": "Co-Directors",
-    "sectionTitle": "Leadership",
+    "sectionTitle": "Our team",
     "members": [
       {
         "name": "Dr. Jwalin Patel",
-        "role": "Co-Director · PhD, University of Cambridge",
-        "photo": "assets/images/thrive/team-jwalin-patel.jpg"
+        "role": "Co-Director",
+        "suffix": "PhD, University of Cambridge",
+        "photo": "assets/images/thrive/team-jwalin-patel.jpg",
+        "linkedin": "https://www.linkedin.com/in/jwalin10/"
       },
       {
         "name": "Dr. Seema Nath",
-        "role": "Co-Director · PhD, University of Cambridge · Associate Director, Ummeed Child Development Center",
-        "photo": null
+        "role": "Co-Director",
+        "suffix": "PhD, University of Cambridge · Associate Director, Ummeed Child Development Center",
+        "photo": "assets/images/thrive/team-seema-nath.jpg",
+        "linkedin": "https://www.linkedin.com/in/seemanath/"
       },
       {
         "name": "Dr. Rohini Sen",
-        "role": "Co-Director · PhD candidate, University of Warwick · Associate Professor, Jindal Global Law School",
-        "photo": "assets/images/thrive/team-rohini-sen.jpg"
+        "role": "Co-Director",
+        "suffix": "PhD candidate, University of Warwick · Associate Professor, Jindal Global Law School",
+        "photo": "assets/images/thrive/team-rohini-sen.jpg",
+        "linkedin": "https://www.linkedin.com/in/senrohini/"
       }
     ]
   },
   "researchTeam": {
-    "sectionBadge": "Team",
-    "sectionTitle": "Research Associates",
-    "sectionSubtitle": "The team driving THRIvE's on-ground investigations",
+    "sectionBadge": "Research team",
     "members": [
       {
-        "name": "Sangeeta Bhatt",
-        "role": "Research Associate",
-        "photo": "assets/images/thrive/team-sangeeta-bhatt.jpg"
+        "name": "Dr. Mansi Nanda",
+        "role": "Investigator",
+        "suffix": "PhD, University of Cambridge",
+        "photo": "assets/images/thrive/team-mansi-nanda.jpg",
+        "linkedin": "https://www.linkedin.com/in/mansinanda502"
       },
       {
-        "name": "Mansi Nanda",
+        "name": "Dr. Sangeeta Bhatt",
         "role": "Research Associate",
-        "photo": "assets/images/thrive/team-mansi-nanda.jpg"
+        "photo": "assets/images/thrive/team-sangeeta-bhatt.jpg",
+        "linkedin": "https://www.linkedin.com/in/sangeeta-bhatt-4b7a8b134/"
+      },
+      {
+        "name": "Dr. Murari Jha",
+        "role": "Research Associate",
+        "photo": "assets/images/thrive/team-murari-jha.jpg",
+        "linkedin": "https://www.linkedin.com/in/murari-jha-phd-60931352/"
+      },
+      {
+        "name": "Dr. Thilanka Wijesinghe",
+        "role": "Research Associate",
+        "photo": "assets/images/thrive/team-thilanka-wijesinghe.jpg",
+        "linkedin": "https://www.linkedin.com/in/thilanka-wijesinghe-361210234/"
       },
       {
         "name": "Muskan Khanna",
         "role": "Research Associate",
-        "photo": "assets/images/thrive/team-muskan-khanna.jpg"
-      },
-      {
-        "name": "Murari Jha",
-        "role": "Research Associate",
-        "photo": "assets/images/thrive/team-murari-jha.jpg"
+        "photo": "assets/images/thrive/team-muskan-khanna.jpg",
+        "linkedin": "https://www.linkedin.com/in/muskan-khanna-96986328/"
       },
       {
         "name": "Magdhi Diksha",
         "role": "Research Associate",
-        "photo": "assets/images/thrive/team-magdhi-diksha.jpg"
+        "photo": "assets/images/thrive/team-magdhi-diksha.jpg",
+        "linkedin": "https://www.linkedin.com/in/magdhi-d-a6415217b/"
       },
       {
         "name": "Paran Amitava",
         "role": "Research Associate",
-        "photo": "assets/images/thrive/team-paran-amitava.jpg"
-      },
-      {
-        "name": "Thilanka Wijesinghe",
-        "role": "Research Associate",
-        "photo": "assets/images/thrive/team-thilanka-wijesinghe.jpg"
+        "photo": "assets/images/thrive/team-paran-amitava.jpg",
+        "linkedin": "https://www.linkedin.com/in/paranamitava/"
       }
     ]
   },
@@ -112,67 +123,46 @@
       }
     ]
   },
-  "researchProjects": {
+  "researchAreas": {
     "sectionBadge": "Research",
-    "sectionTitle": "Current Research Projects",
-    "sectionSubtitle": "Active investigations shaping the future of Indian education",
-    "cardBadge": "Research",
+    "sectionTitle": "Current Research Areas",
+    "navLabel": "Jump to a research area",
     "items": [
       {
-        "title": "Happiness Curriculum Study",
-        "desc": "Exploring teacher and student experiences with social-emotional development curricula.",
-        "photo": "assets/images/thrive/research-happiness-curriculum.png"
+        "title": "Systemic influences of teacher agency, wellbeing, and capability",
+        "overview": "Examining teachers' (and teachers with disabilities) agency, wellbeing, professional development, and work environments as a catalyst for educational change across India.",
+        "photo": "assets/images/projects-bettered/gallery-04.jpg",
+        "paragraphs": [
+          "Teachers are central to educational change, yet their ability to shape learning and education communities is deeply influenced by the environments in which they work. This programme explores teachers as professionals, reflective practitioners, and agents of change within complex education systems.",
+          "Our research examines how teachers experience and exercise agency, and how agency is shaped by professional capability, wellbeing, working conditions, leadership, institutional structures, policy, and relationships with colleagues and communities. Through mixed-methods and participatory approaches, we work alongside teachers to understand their lived experiences and the realities of their professional practice. Our work includes research on teacher agency in government schools in Bihar, as well as research foregrounding the experiences of teachers with disabilities and the barriers and enabling conditions they encounter within education systems."
+        ]
       },
       {
-        "title": "PRABHAV",
-        "desc": "Examining teacher agency as a catalyst for educational change across India.",
-        "photo": "assets/images/thrive/research-prabhav.png"
+        "title": "Systems transformation for socioemotional learning and mental health",
+        "overview": "Exploring teacher and student experiences of large scale social-emotional curricula, whole school approaches, and systematic changes.",
+        "photo": "assets/images/thrive/research-happiness-curriculum.png",
+        "paragraphs": [
+          "Socioemotional learning and mental health are increasingly recognised as central to educational quality, yet initiatives are often introduced as stand-alone programmes alongside an already crowded curriculum. Our research examines how social and emotional learning and wellbeing is understood, practiced, and scaled through the wider ecology of schooling.",
+          "We explore how students, teachers, school leaders, and other stakeholders experience large-scale social-emotional curricula and whole-school approaches, and how these initiatives interact with existing pedagogies, relationships, institutional cultures, and education systems. Our work includes research on Delhi's Happiness Curriculum, children's own understandings of happiness and wellbeing, and a national landscape study. We are particularly interested in the processes through which systemic change occurs: how interventions influence school environments; how changes in school environments shape students' and teachers' experiences; and what enables or constrains adoption, implementation, and sustainability."
+        ]
       },
       {
-        "title": "Teachers with Disabilities",
-        "desc": "Investigating professional experiences and identity among disabled educators.",
-        "photo": "assets/images/thrive/research-twd.png"
+        "title": "Education for harmony- philosophy and practices",
+        "overview": "Exploring philosophy, practices, processes for transformative education for self and social transformation.",
+        "photo": "assets/images/thrive/research-scf.jpg",
+        "paragraphs": [
+          "Education has the potential to transform not only what people know, but how they understand themselves, relate to others, and participate in the world. This programme explores education as a process of transformation—one that can cultivate greater awareness, connectedness, responsibility, and harmony within individuals, communities, and the wider living world.",
+          "Our work draws on philosophical traditions, educational thought, and practices that challenge fragmented understandings of learning and human development. We explore how education can nurture the whole person: integrating intellectual, emotional, relational, ethical, ecological, and social dimensions of development. Through empirical research and practitioner-led inquiry, we examine how transformative educational processes unfold in classrooms and communities. This includes studying reflective and contemplative pedagogies, social changemaking, children's relationships with self, others and society, and educational practices that seek to cultivate responsibility and collective flourishing."
+        ]
       },
       {
-        "title": "Social Changemakers Program",
-        "desc": "Autoethnographic study of student engagement in immersive social justice projects.",
-        "photo": "assets/images/thrive/research-scf.jpg"
-      },
-      {
-        "title": "Model City Council",
-        "desc": "Qualitative study of collaborative sustainability discussions and civic education.",
-        "photo": "assets/images/thrive/research-mcc.png"
-      }
-    ]
-  },
-  "conferences": {
-    "sectionBadge": "Impact",
-    "sectionTitle": "Conferences & Publications",
-    "sectionSubtitle": "Sharing THRIvE's findings on global stages and in peer-reviewed research.",
-    "images": [
-      {
-        "src": "assets/images/thrive-happiness/bg-cies-2024-poster.jpg",
-        "label": "CIES 2024 Poster"
-      },
-      {
-        "src": "assets/images/thrive-happiness/bg-cies-2024-talk.png",
-        "label": "CIES 2024 Talk"
-      },
-      {
-        "src": "assets/images/thrive-happiness/bg-selebrating-summit.png",
-        "label": "SEL Celebrating Summit"
-      },
-      {
-        "src": "assets/images/thrive-happiness/bg-sel-paper.jpeg",
-        "label": "SEL Research Paper"
-      },
-      {
-        "src": "assets/images/thrive-happiness/bg-templeton-conf.png",
-        "label": "Templeton Conference"
-      },
-      {
-        "src": "assets/images/thrive-happiness/bg-blog-research.png",
-        "label": "Research Blog"
+        "title": "Higher education and Inclusive Learning",
+        "overview": "Examining how higher education institutions, their structures, cultures, and everyday practices can be reimagined to be inclusive and transformative.",
+        "photo": "assets/images/thrive/research-mcc.png",
+        "paragraphs": [
+          "Higher education institutions are more than sites of specialised instruction; they are living systems whose pedagogies, cultures, and everyday practices shape the well-being and learning landscapes of students and faculty. Higher education institutions, understood as sites of specialisation, often treat well-being and intellectual growth as individual responsibilities, layered onto institutions whose underlying practices - what counts as knowledge, how is knowledge conveyed, how emotional life is integrated into holistic well being - remain unexamined. This programme engages with the ways in which teaching approaches, social-emotional learning, mental health support, and the wider cultures of knowledge-making within higher education institutions enable or constrain flourishing across university communities.",
+          "We explore how knowledge, learning and teaching are understood and experienced differently by different stakeholders and how these experiences are shaped by classroom practice, institutional cultures, and the values embedded in what knowledge is and how knowledge is taught. Through mixed-methods, critical frameworks and participatory approaches, we work alongside institutions to understand how pedagogical and systemic change unfold in practice, and what enables it to be sustained over time."
+        ]
       }
     ]
   }

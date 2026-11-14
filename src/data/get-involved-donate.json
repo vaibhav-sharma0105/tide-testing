@@ -30,9 +30,6 @@
     "body": "To make a donation or learn about CSR partnerships, please reach out to us directly."
   },
   "bank": {
-    "title": "Donate Directly",
-    "qrTitle": "Scan QR Code",
-    "qrPlaceholder": "QR code coming soon",
     "transferTitle": "Bank transfer",
     "transferIntro": "Please use following bank detail:",
     "copiedLabel": "Copied",
@@ -47,9 +44,5 @@
     "ifsc": "HDFC0000006",
     "branchLabel": "Bank Branch",
     "branch": "HDFC Bank, Navrangpura"
-  },
-  "image": {
-    "src": "assets/images/get-involved-volunteer/gallery-01.jpg",
-    "alt": "TIDE Foundation volunteers working with students"
   }
 }

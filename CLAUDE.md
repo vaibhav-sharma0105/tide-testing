@@ -35,7 +35,7 @@ src/
   components/
     layout/    # Header, Footer, Layout
     ui/        # Button, Card, SectionHeader, PageHero, SeoHead, AnimatedCounter, Highlight,
-               # Lightbox, LightboxGallery, CreativeLoader, ComingSoonGraphic, SocialIcons, WaveDivider
+               # Lightbox, LightboxGallery, CreativeLoader, ComingSoonGraphic, SocialIcons, WaveDivider, ArchPortrait
     ErrorBoundary.jsx  # friendly crash screen (text from error.yaml; message/stack shown only in DEV)
     abl/       # AblNavBar, ResourceCard, ResourceGrid, ResourceFilters, Pagination,
                # ResourceTypeBadge, DriveImage, ImageLightbox, VideoLightbox, PromoVideo, PhotoStrip
@@ -132,9 +132,9 @@ npm run test:e2e           # Playwright (starts/reuses `npm run dev`)
 import data from '../data/page-name.json'          // sub-directory page: '../../data/...'
 import common from '../data/common.json'           // shared micro-copy
 <h1>{data.hero.title}</h1>
-<p>{common.clickToZoom}</p>
+<p>{common.step}</p>
 ```
-Every visible string must come from YAML (`data.*`, `common.*`, `ui.*`) — never typed into JSX. Reusable micro-copy lives in `content/shared/common.yaml` (`clickToZoom`, `hoverForRole`, `hoverForBio`, `step`) and `content/shared/ui.yaml` (Lightbox aria-labels only); the crash-screen text is `error.yaml`. The Pramaan screens are fully YAML-backed too: `abl-resource-center.yaml` (filters, grid, pagination, card text, SEO) and `abl-detail.yaml` (SEO/title templates with `{token}` placeholders such as `{name}`, `{type}`, `{n}`, filled in code).
+Every visible string must come from YAML (`data.*`, `common.*`, `ui.*`) — never typed into JSX. Reusable micro-copy lives in `content/shared/common.yaml` (`step`, `viewLinkedIn`) and `content/shared/ui.yaml` (Lightbox aria-labels only); the crash-screen text is `error.yaml`. The Pramaan screens are fully YAML-backed too: `abl-resource-center.yaml` (filters, grid, pagination, card text, SEO) and `abl-detail.yaml` (SEO/title templates with `{token}` placeholders such as `{name}`, `{type}`, `{n}`, filled in code).
 
 **Site-wide facts** live in `content/shared/site.yaml` → `site.json`: name, alternateName, url, logo, `placeholderImage`, email, `livesImpacted`, `gradeRange`, foundingYear, location, country, language, descriptions, keywords and `breadcrumbs.*` (parent steps: home, aboutUs, getInvolved, pramaan, educationForHarmony, resourceCentre). A page's last breadcrumb name is `meta.breadcrumbName` in its own YAML; `SeoHead` takes its site URL and default og:image from `site.json`. `scripts/siteDataPlugin.js` generates the two JSON-LD blocks, `<title>` and `og:site_name` into `index.html` at the `<!-- site-jsonld -->` marker, and renders `content/shared/llms.txt` (tokens `{{name}} {{url}} {{email}} {{livesImpacted}} {{foundingYear}}`) to `/llms.txt` at build and in dev. **Don't write a literal `<title>` inside an HTML comment in `index.html`** — the plugin's regex would match it.
 

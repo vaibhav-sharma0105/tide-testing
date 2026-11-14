@@ -19,7 +19,8 @@
 
 5. **Pramaan Sheet data (found 2026-11-02, owner to fix in the Sheet):** one Games row has the typo `Gmes` in its Type cell (it still displays correctly, because the site keys off the Sheet tab). Also, `ResourceCard` hides the concept line only when `resource.type !== 'Flashcards'`, but the Sheet's flashcard rows say `Flashcard` (singular), so the line is never hidden; comparing the tab instead would hide it on all 45 flashcard tiles. Decide which is wanted.
 6. **Contribute form link:** the live site still needs the new Google Form address in the `VITE_ABL_CONTRIBUTE_FORM_URL` GitHub secret and a re-run of the deploy; steps in `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md`. The address to paste into the secret (a public Google Form link, set 2026-11-02): `https://docs.google.com/forms/d/e/1FAIpQLSfbWm7Jtp73QUe0y3pVjdsQ-1ywTh-OpW9U63QRbDONdWrUeg/viewform?usp=dialog`
-7. **Pramaan placeholders:** the ten gallery photos and their alt text (`abl-home.yaml` `gallery.items`) and the drawn promo-video poster are placeholders; the poster's "25,000+ learners in 120+ schools" repeats the About figures, so keep the two in step.
+7. **THRIvE page (`/thrive`), waiting on the stakeholder's team (Sangeeta):** better-than-site photos if she has them (the team photos now come from the older tideinternational.org/thrive-research-centre page, including Dr. Seema Nath's, which was missing; Dr. Rohini Sen, Paran Amitava and Thilanka Wijesinghe only exist there at 400-550 px wide); highest educational qualifications for each Research Associate (only Dr. Mansi Nanda's is listed); and representative photos for the four research areas. The four research-area photos in `thrive.yaml` (`researchAreas.items[].photo`) are existing site photos used as placeholders, and the Higher education one (`research-mcc.png`) is the weakest match. The feedback said "3 sub sections" but listed four, so all four are on the page. The Conferences & Publications section was removed as asked; its six images in `public/assets/images/thrive-happiness/` are now unused.
+8. **Pramaan placeholders:** the ten gallery photos and their alt text (`abl-home.yaml` `gallery.items`) and the drawn promo-video poster are placeholders; the poster's "25,000+ learners in 120+ schools" repeats the About figures, so keep the two in step.
 
 ### Resolved
 
@@ -45,7 +46,7 @@
 > | 4 | Footer brand text and taglines | Done. `brandName`, `brandSuffix`, `tagline`, `supportWork`, `rights`, `madeWithLove` come from `footer.json`. |
 > | 5 | Contact labels and email subject | Done. Labels from `data.labels.*`; the subject came from the contact form, which has since been removed (the Contact page now shows an embedded map instead). |
 > | 6 | Publications type labels | Done. `data.typeLabels` in `resources-publications.yaml`, read in `Publications.jsx`. |
-> | 7 | THRIvE "Research" badge | Done. `researchProjects.cardBadge` in `thrive.yaml`. |
+> | 7 | THRIvE "Research" badge | Done at the time; the card badge was later removed when the page's research cards became the four Research Areas sections (`researchAreas` in `thrive.yaml`). |
 > | 8 | "Hover over a photo" hints | Done. `common.hoverForBio` and `common.hoverForRole` in `common.yaml`. |
 > | 9 | "Step N" prefix | Done. `common.step` in `common.yaml`. |
 > | 10 | Saral Kadam booklet mailto | Done. `data.booklets.bookletRequestHref` in `resources-saral-kadam.yaml`. |

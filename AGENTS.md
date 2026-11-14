@@ -137,7 +137,7 @@ tide-new/
 │   └── shared/            ← 9 .yaml files + llms.txt template
 │       ├── navigation.yaml  ← header nav + logo/skip-link/aria labels (Header + Layout read navigation.json)
 │       ├── footer.yaml      ← footer columns + social links + copy
-│       ├── common.yaml      ← micro-copy reused across pages: clickToZoom, hoverForRole, step, viewLinkedIn
+│       ├── common.yaml      ← micro-copy reused across pages: step, viewLinkedIn
 │       ├── ui.yaml          ← Lightbox aria-labels (lightbox.* only)
 │       ├── loader.yaml      ← CreativeLoader rotating messages
 │       ├── error.yaml       ← ErrorBoundary crash screen text
@@ -170,6 +170,7 @@ tide-new/
 │   │   │   ├── Lightbox.jsx         ← full-screen image gallery with keyboard nav; optional `translucent` backdrop; never shows a caption
 │   │   │   ├── LightboxGallery.jsx  ← click-to-zoom grid + its Lightbox (owns useLightbox + AnimatePresence)
 │   │   │   ├── ComingSoonGraphic.jsx ← /coming-soon illustration: block-drop springs, then endless ambient loops + random gust/nudge events; static under prefers-reduced-motion
+│   │   │   ├── ArchPortrait.jsx     ← team portrait (arched photo on a tilted colour frame, same look as /about/our-team); `layout` card | row; initials on the brand gradient when `photo` is null; used by THRIvE
 │   │   │   ├── SocialIcons.jsx      ← inline SVG: Facebook, Instagram, LinkedIn
 │   │   │   └── WaveDivider.jsx      ← soft drifting wave at the top of a section, curving the light section above into it (Contact, Donate); static under prefers-reduced-motion
 │   │   │
@@ -191,7 +192,7 @@ tide-new/
 │   ├── pages/
 │   │   ├── Home.jsx               ← hero, mission, approach (3 programme cards), journey, CTA
 │   │   ├── Contact.jsx            ← contact details (address, phones, email, hours, social) + embedded Google map card (`map.embedQuery`); no form
-│   │   ├── THRIvE.jsx             ← THRIvE programme page
+│   │   ├── THRIvE.jsx             ← THRIvE page: statement, centred About, "Our team" co-directors (three large `size="lg"` ArchPortrait cards), research associates (ArchPortrait grid), dark core-principles band, then four full-width Research Area bands under a sticky jump nav with scroll-spy (numeral, organic parallax photo; static under reduced motion)
 │   │   ├── EducationForHarmony.jsx ← /education-for-harmony
 │   │   ├── NotFound.jsx           ← reachable at /404 AND the catch-all (*); content/shared/not-found.yaml (Helmet noindex, not SeoHead)
 │   │   ├── ComingSoon.jsx         ← reachable at /coming-soon (also reusable as a template — drop it on any other route, props override content/shared/coming-soon.yaml; Helmet noindex, not SeoHead)
@@ -203,7 +204,7 @@ tide-new/
 │   │   │   └── PublicationsCombined.jsx ← tabs: annual reports / events / research (/about/publications)
 │   │   ├── get-involved/
 │   │   │   ├── Volunteer.jsx
-│   │   │   ├── Donate.jsx
+│   │   │   ├── Donate.jsx             ← intro + large impact figure + bank-transfer card (icon-only copy buttons) + blue banner (WaveDivider) with Email/WhatsApp buttons
 │   │   │   └── OrganizeMCCx.jsx  ← served at /education-for-harmony/mccx
 │   │   ├── SocialChangemakers.jsx ← "Past SCF" placeholder grid, served at /education-for-harmony/social-changemakers (linked only from Education for Harmony)
 │   │   └── resources/            ← the Pramaan screens
@@ -289,7 +290,7 @@ tide-new/
 | `text-accent` / `bg-accent` | `#F59E0B` | **Backgrounds/dark-backdrop text only** — see accessibility note below |
 | `text-accent-deeper` | `#B45309` | Accent-colored **text or icons on a light background** (cream/white) |
 | `bg-accent-dark` | `#D97706` | Gradient buttons, hover states |
-| `bg-navy` | `#0D2137` | Dark section/card backgrounds (Footer, EFH, WhyTide vision, Volunteer/THRIvE dark sections). **Not** `PageHero` — that banner is the literal `bg-[#1c314d]` |
+| `bg-navy` | `#0D2137` | Dark section/card backgrounds (Footer, EFH, WhyTide vision, Volunteer dark sections). **Not** `PageHero` — that banner is the literal `bg-[#1c314d]` |
 | `text-tide-text` | `#0D1F3C` | Body copy |
 | `text-tide-muted` | `#5A6A7E` | Secondary labels, captions — passes 4.5:1 on `tide-bg`/white, but NOT on `bg-primary-light` (4.49:1, borderline) |
 | `text-tide-mutedOnLight` | `#4D5C6F` | Same role as `tide-muted`, but for text sitting on `bg-primary-light` or `bg-tide-border` specifically |
@@ -465,7 +466,7 @@ const lb = useLightbox(images.length)        // count is REQUIRED
 
 ### LightboxGallery (preferred for a click-to-zoom photo grid)
 
-Wraps the grid **and** its lightbox (owns `useLightbox`, `AnimatePresence`, `Lightbox`). Used by `Volunteer` and `THRIvE`:
+Wraps the grid **and** its lightbox (owns `useLightbox`, `AnimatePresence`, `Lightbox`). Used by `Volunteer`:
 
 ```jsx
 <LightboxGallery
@@ -486,6 +487,10 @@ The lightbox is rendered after whatever `children(grid)` returns, so it stays a 
 ### SocialIcons
 
 `SocialIcons.jsx` exports `FacebookIcon`, `InstagramIcon` and `LinkedinIcon` (used by Footer + Contact).
+
+### ArchPortrait
+
+`ArchPortrait.jsx` props: `name`, `role`, `suffix` (optional smaller line, e.g. qualifications), `photo` (path or null → initials), `linkedin` (optional URL: the whole portrait becomes a new-tab link with the hover badge, label from `common.viewLinkedIn`), `index` (cycles the frame colour/tilt), `layout` (`card` default | `row`), `size` (`md` default | `lg` for featured people: bigger name and text), `delay`, `className`. The THRIvE page reads `role` and `suffix` straight from each member in `thrive.yaml`. `/about/our-team` still has its own copy of this style inline; keep the two looking the same.
 
 ### WaveDivider
 
@@ -599,7 +604,7 @@ const [ref, isVisible] = useScrollAnimation({ threshold: 0.15, rootMargin: '0px 
 // isVisible flips to true when the element enters the viewport and never flips back
 ```
 
-Only `AnimatedCounter` uses it (now only on the Pramaan home page); all other scroll animation is Framer `whileInView`.
+Only `AnimatedCounter` uses it (on the Pramaan home page and Education for Harmony); all other scroll animation is Framer `whileInView`.
 
 ### useLightbox
 
@@ -758,7 +763,7 @@ content/shared/navigation.yaml      →   src/data/navigation.json
 content/shared/footer.yaml          →   src/data/footer.json
 ```
 
-Shared files (`content/shared/`): `navigation` (header menu, logo, skip-link/aria labels, Donate CTA labels), `footer`, `common` (micro-copy reused across pages: `clickToZoom`, `hoverForRole`, `step`, `viewLinkedIn`), `ui` (Lightbox aria-labels), `loader` (CreativeLoader messages), `error` (ErrorBoundary crash screen), `not-found`, `coming-soon`, `site` (site-wide facts — see §1 "Site-data pipeline"; `breadcrumbs.*` are the parent steps of every breadcrumb trail). Alongside them sits `llms.txt`, a template that is not YAML. The Pramaan screens are `abl-home`, `abl-resource-center`, `abl-detail`, `abl-contribute` in `content/pages/`.
+Shared files (`content/shared/`): `navigation` (header menu, logo, skip-link/aria labels, Donate CTA labels), `footer`, `common` (micro-copy reused across pages: `step`, `viewLinkedIn`), `ui` (Lightbox aria-labels), `loader` (CreativeLoader messages), `error` (ErrorBoundary crash screen), `not-found`, `coming-soon`, `site` (site-wide facts — see §1 "Site-data pipeline"; `breadcrumbs.*` are the parent steps of every breadcrumb trail). Alongside them sits `llms.txt`, a template that is not YAML. The Pramaan screens are `abl-home`, `abl-resource-center`, `abl-detail`, `abl-contribute` in `content/pages/`.
 
 ### Import pattern in components
 
@@ -785,7 +790,7 @@ export default function PageName() {
         ]}
       />
       <PageHero badge={data.meta.badge} title={data.meta.title} />
-      <p>{common.clickToZoom}</p>
+      <p>{common.step}</p>
     </>
   )
 }
@@ -1009,7 +1014,7 @@ Also add `meta.breadcrumbName` to the new YAML (and use a `site.breadcrumbs.*` p
 
 ### Add a lightbox photo grid
 
-Prefer `LightboxGallery` (§4) — every gallery page today (`Volunteer`, `THRIvE`) uses it, and nothing in `src/pages` calls `useLightbox` or `Lightbox` directly. Only hand-roll `useLightbox(count)` + `Lightbox` for a layout it can't express.
+Prefer `LightboxGallery` (§4) — the only gallery page today (`Volunteer`) uses it, and nothing in `src/pages` calls `useLightbox` or `Lightbox` directly. Only hand-roll `useLightbox(count)` + `Lightbox` for a layout it can't express.
 
 ### Fix broken images
 
@@ -1148,13 +1153,13 @@ Never type English into JSX — that bypasses the CMS and makes the text unedita
 ```jsx
 // ✓ Correct — CMS-editable
 <h1>{data.hero.title}</h1>
-<p>{common.clickToZoom}</p>                              // shared micro-copy → content/shared/common.yaml
+<p>{common.step}</p>                                       // shared micro-copy → content/shared/common.yaml
 
 // ✗ Wrong — hardcoded, CMS cannot update it
 <p>Click any image to view full screen.</p>             // also fails `npm run lint`
 ```
 
-- Shared micro-copy goes in `content/shared/common.yaml` (page-agnostic hints/labels such as `clickToZoom`, `hoverForRole`, `step`, `viewLinkedIn`) and component chrome in `content/shared/ui.yaml` (Lightbox aria-labels). Component-specific text goes in the page/screen YAML (e.g. `abl-resource-center.yaml`).
+- Shared micro-copy goes in `content/shared/common.yaml` (page-agnostic hints/labels such as `step`, `viewLinkedIn`) and component chrome in `content/shared/ui.yaml` (Lightbox aria-labels). Component-specific text goes in the page/screen YAML (e.g. `abl-resource-center.yaml`).
 - `react/jsx-no-literals` is an **error** for `src/pages/**` and `src/components/**` (see §7), so bare JSX text fails `npm run lint`. It doesn't see string props or attributes (`aria-label`, `alt`, …), so review those by hand.
 - Lint isn't run in CI. Run `npm run lint` before pushing.
 

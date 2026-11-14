@@ -111,10 +111,9 @@ below. Don't silence the rule with `eslint-disable`; move the text to YAML inste
    - **Page-specific content** → add a field to that page's YAML and read it as
      `data.section.field`.
    - **Reusable micro-copy used identically across multiple pages** (a caption, a generic hint,
-     an aria-label) → add it to `content/shared/common.yaml` (`clickToZoom`, `hoverForRole`,
-     `hoverForBio`, `step`) or `content/shared/ui.yaml` (shared UI component text:
+     an aria-label) → add it to `content/shared/common.yaml` (`step`, `viewLinkedIn`) or `content/shared/ui.yaml` (shared UI component text:
      `lightbox.*`), then `import common from '../../data/common.json'` (or
-     `ui from '../../data/ui.json'`) and use `common.clickToZoom`. See `OurTeam.jsx`'s
+     `ui from '../../data/ui.json'`) and use `common.step`. See `OurTeam.jsx`'s
      `common.viewLinkedIn` for a working example. Check `common.yaml` and `ui.yaml` for an
      existing key before adding a new one; duplicated near-identical strings across files are a
      sign one should have been shared from the start.
