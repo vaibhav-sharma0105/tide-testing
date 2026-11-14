@@ -69,7 +69,7 @@ A web address that is not one of the pages above shows the "page not found" scre
 | What it controls | File |
 |------|------|
 | Header menu labels, Donate button, "Skip to main content" link, logo text | `content/shared/navigation.yaml` |
-| Footer: tagline, copyright line, the three link columns (About, Get Involved, Resources) | `content/shared/footer.yaml` |
+| Footer: tagline (byline under the logo), copyright line, Donate button label, social links | `content/shared/footer.yaml` |
 | Short phrases reused on several pages ("Click any image to view full screen.", "Hover over a photo to see the role.", "Hover over a photo to read about each person.", the word "Step") | `content/shared/common.yaml` |
 | Labels of the full-screen photo viewer (Close / Previous / Next buttons, "Image viewer", "Go to image {n}") | `content/shared/ui.yaml` |
 | Messages shown while a page is loading | `content/shared/loader.yaml` |
@@ -361,19 +361,15 @@ items:
         desc: Our story, vision & values
 ```
 
-Change only the `label` and `desc` values. **Never change the `to:` paths** — those are URL routes that must match the app code. (The same applies to the `to:` lines in `footer.yaml` and the `ctaHref` / `secondaryHref` lines in `not-found.yaml` and `ctaHref` in `coming-soon.yaml`.)
+Change only the `label` and `desc` values. **Never change the `to:` paths** — those are URL routes that must match the app code. (The same applies to `donateHref` in `footer.yaml` and the `ctaHref` / `secondaryHref` lines in `not-found.yaml` and `ctaHref` in `coming-soon.yaml`.)
 
-The footer has three link columns — About, Get Involved and Resources — in `content/shared/footer.yaml`. Each column is a `title` and a list of links, each with a `label` and a `to`:
+The footer (`content/shared/footer.yaml`) has no link columns. It is one short row: the logo, name and tagline on the left; the email, phone number, social icons and a Donate button on the right. Change the button's wording with `donateLabel`. The email and phone come from `content/pages/contact.yaml`.
+
+The copyright line keeps `{year}` where the year goes — leave it in, and the site always shows the current year:
 
 ```yaml
-columns:
-  - title: "About"
-    links:
-      - label: "Why TIDE?"
-        to: "/about/why-tide"
+rights: "© {year} TIDE Foundation. All rights reserved."
 ```
-
-Change a link's wording by editing its `label`. Only point a `to:` at a page that exists, and ask a developer before adding or removing a link.
 
 ---
 

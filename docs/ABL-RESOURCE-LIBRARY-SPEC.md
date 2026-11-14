@@ -17,7 +17,7 @@
 
 > **Status as of 2026-10-25 (verified against the code):**
 > - **Routes:** Pramaan lives only at `/pramaan`, `/pramaan/resource-centre`, `/pramaan/resource-centre/:id`, `/pramaan/contribute` (UK spelling "centre"). The older `/resources/abl-resources`, `/resources/abl-resources/resource-center(/:id)` and `/resources/abl-resources/contribute` duplicate routes were **removed on 2026-10-25** (owner decision, no redirects): those URLs now render the NotFound page (`src/test/routing/removedRoutes.test.jsx`). `AblNavBar`, `ResourceCard`, `AblHome` (button and type cards) and `AblDetail` (back link) all link to `/pramaan/*`. Where §8 and the original sketches below still write `/resources/abl-resources/*`, read `/pramaan/*`.
-> - **Navigation:** the header menu item is "Pramaan" with children About Pramaan / Resource Centre / Contribute (`content/shared/navigation.yaml`). The footer (`content/shared/footer.yaml`, three link columns) has an "ABL Resources" link to `/pramaan`.
+> - **Navigation:** the header menu item is "Pramaan" with children About Pramaan / Resource Centre / Contribute (`content/shared/navigation.yaml`). The footer has no link columns (removed 2026-11-14), so it does not link to Pramaan.
 > - **Copy is no longer hardcoded:** Pramaan UI text and image paths live in YAML — `content/pages/abl-home.yaml`, `abl-resource-center.yaml`, `abl-detail.yaml`, `abl-contribute.yaml` and the shared `content/shared/common.yaml` / `ui.yaml` (generated into `src/data/*.json`). The resource data itself (names, grades, etc.) stays dynamic from the Apps Script API. The ESLint rule `react/jsx-no-literals` (error) in `src/pages` and `src/components` blocks hardcoded visible text; lint is not run in CI.
 > - **`useABLData`** was hardened (payload shape validation, abort/ignore of stale requests, a 10-second timeout cleared on every outcome, no import-time logging; error strings come from `abl-home.yaml` `errors.*`). Cache key (`abl_api_cache_v2`), TTL (15 minutes) and return shape (`{ data, allResources, loading, error, lastUpdated, refetch }`) are unchanged — see §4.
 > - **Not in this repo:** the Apps Script `Code.gs` lives in the Google Sheet's script project; §2.5 is the only copy in the repository, so it could not be compared against the deployed script.
@@ -642,7 +642,6 @@ content/pages/abl-*.yaml              # abl-home, abl-resource-center, abl-detai
 src/App.jsx                           # routes + lazy imports
 src/components/layout/Header.jsx      # Dropdown supports `subItems` flyouts (no current menu item uses them)
 content/shared/navigation.yaml        # "Pramaan" menu with three children
-content/shared/footer.yaml            # "ABL Resources" link → /pramaan
 ```
 
 ### 3.4 Routes (App.jsx)
@@ -739,7 +738,7 @@ A top-level **"Pramaan"** menu with three plain children (no `subItems`):
 
 ### 6.2 content/shared/footer.yaml
 
-The Resources column has a link labelled "ABL Resources" pointing at `/pramaan`. The footer has three link columns (About, Get Involved, Resources) and links to no removed route.
+The footer no longer has link columns (removed by owner decision, 2026-11-14), so it has no Pramaan link. It shows the brand block, email, phone and a Donate button.
 
 ### 6.3 Header.jsx — Nested Flyout Support
 
@@ -1289,7 +1288,6 @@ Implement strictly in this order. Do not skip ahead.
 |---|---|---|
 | Nav dropdown | Hover "Pramaan" in the header | Dropdown lists About Pramaan / Resource Centre / Contribute |
 | Nav click | Click "Resource Centre" in the dropdown | Navigates to `/pramaan/resource-centre`, dropdown closes |
-| Footer link | Scroll to footer, click ABL Resources | Navigates to AblHome at `/pramaan` |
 | Mobile nav | Resize to 375px, open hamburger | Pramaan group lists its three links |
 | Image fallback | Use DevTools to block requests to `assets/images/abl/` | Gradient fallback shows on all cards, no broken icons |
 | Full user journey | Home → Pramaan → Resource Centre → filter by Kits → click a Kit → read detail → back button | All steps work, filter preserved on back |

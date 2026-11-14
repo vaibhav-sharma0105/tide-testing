@@ -103,7 +103,7 @@ docs/            # ABL spec/setup/migration guides, architecture diagrams, specs
 
 `/education-for-harmony/social-changemakers` ("Past SCF") is deliberately **not** in the header or footer menus: it is reached only from the Social Changemakers row on `/education-for-harmony`, and is left out of `sitemap.xml` while it is a placeholder.
 
-Footer columns: About (Why TIDE?, Our Team, Our Partners), Get Involved (Volunteer With Us, Donate, Organise MCCx → `/education-for-harmony/mccx`), Resources (ABL Resources → `/pramaan`, THRIvE, Contact).
+Footer: no link columns (removed by owner decision, 2026-11-14) — one compact row — logo, name + tagline byline on the left; email, phone, social icons and a Donate button (`donateLabel` → `donateHref`) on the right — above a thin copyright strip. Deliberately quiet: Donate is the only coloured element. The copyright line's `{year}` token is filled with the current year in the browser.
 
 ## CMS Pipeline
 All page content is managed through YAML files. **Never edit `src/data/` directly** — it is auto-generated.

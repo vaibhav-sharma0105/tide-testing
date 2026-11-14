@@ -136,7 +136,7 @@ tide-new/
 │   │                        abl-detail, abl-contribute)
 │   └── shared/            ← 9 .yaml files + llms.txt template
 │       ├── navigation.yaml  ← header nav + logo/skip-link/aria labels (Header + Layout read navigation.json)
-│       ├── footer.yaml      ← footer columns + social links + copy
+│       ├── footer.yaml      ← social links, Donate button, copy
 │       ├── common.yaml      ← micro-copy reused across pages: step, viewLinkedIn
 │       ├── ui.yaml          ← Lightbox aria-labels (lightbox.* only)
 │       ├── loader.yaml      ← CreativeLoader rotating messages
@@ -155,7 +155,7 @@ tide-new/
 │   │   ├── ErrorBoundary.jsx      ← root crash screen (error.yaml); message/stack only in DEV
 │   │   ├── layout/
 │   │   │   ├── Header.jsx     ← fixed nav (transparent → glass on scroll), dropdowns + flyouts, mobile hamburger
-│   │   │   ├── Footer.jsx     ← columns from footer.json + contact.json
+│   │   │   ├── Footer.jsx     ← footer.json + contact.json
 │   │   │   └── Layout.jsx     ← skip link, page transition (AnimatePresence keyed by pathname), scroll-to-top
 │   │   │
 │   │   ├── ui/
@@ -590,7 +590,7 @@ Renders nothing when there's only one page.
 
 - `Layout` — `{ children }`; skip link (text from `navigation.yaml` `skipLink`), `Header`, `AnimatePresence mode="wait"` around `motion.main` keyed by `pathname`, `Footer`; scrolls to top on pathname change (not on query-only changes). Does not move focus on navigation.
 - `Header` — no props; reads `navigation.json` (all labels, logo, aria strings). `position: fixed`, transparent with white text until `scrollY > 20`, then glass. Dropdown triggers are `<button>`s (aria-expanded/controls, Escape closes); `subItems` render as desktop flyouts / indented mobile lists. There is no language switcher. Keep `overflow-visible` on the dropdown wrapper (§11).
-- `Footer` — no props; reads `footer.json` + `contact.json`. Three link columns from `footer.yaml`: About (Why TIDE?, Our Team, Our Partners), Get Involved (Volunteer With Us, Donate, Organise MCCx → `/education-for-harmony/mccx`), Resources (ABL Resources → `/pramaan`, THRIvE, Contact).
+- `Footer` — no props; reads `footer.json` + `contact.json`. No link columns (removed by owner decision, 2026-11-14): one compact row — logo, name + tagline byline on the left; email, phone, social icons and a Donate button (`donateLabel` → `donateHref`) on the right — above a thin copyright strip; stacks on small screens. `rights` contains a `{year}` token replaced with `new Date().getFullYear()` at render, so the static build never shows a stale year.
 
 ---
 

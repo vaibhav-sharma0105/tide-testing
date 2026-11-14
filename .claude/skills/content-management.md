@@ -106,7 +106,7 @@ The former "stranded" pages (Our Results, the six `projects-*` pages, Work With 
 | Content file | Generated JSON | Consumed by |
 |---|---|---|
 | `navigation.yaml` | `navigation.json` | `layout/Header.jsx`, `layout/Layout.jsx` (also skip-link, aria labels, Donate CTA labels) |
-| `footer.yaml` | `footer.json` | `layout/Footer.jsx` (plus `contact.json` for email/phone). Three link columns: About, Get Involved, Resources; each link is `label` + `to` |
+| `footer.yaml` | `footer.json` | `layout/Footer.jsx` (plus `contact.json` for email/phone). No link columns. One compact row: logo, name + tagline byline left; email, phone, social icons and Donate button (`donateLabel`, `donateHref`) right. `rights` has a `{year}` token filled in at render |
 | `common.yaml` | `common.json` | Reused micro-copy: keys `step`, `viewLinkedIn` (OrganizeMCCx; OurTeam and THRIvE via `ArchPortrait`) |
 | `ui.yaml` | `ui.json` | `ui/Lightbox.jsx` (`lightbox.*` aria-labels; `goTo` has an `{n}` token) |
 | `loader.yaml` | `loader.json` | `ui/CreativeLoader.jsx` (rotating `messages`) |
@@ -251,7 +251,7 @@ npm run build
 2. Run `npm run content:sync` → creates `src/data/new-page.json`
 3. Create `src/pages/NewPage.jsx` following the `SeoHead` + `PageHero` pattern above
 4. Add a lazy-loaded route to `src/App.jsx`
-5. Add a nav entry to `content/shared/navigation.yaml` (and a footer link in `footer.yaml` if wanted); review `public/sitemap.xml` and the page list in `content/shared/llms.txt`, which are maintained by hand
+5. Add a nav entry to `content/shared/navigation.yaml`; review `public/sitemap.xml` and the page list in `content/shared/llms.txt`, which are maintained by hand
 6. Add the page to `CONTENT-GUIDE.md`'s file table
 7. Run `npm run content:sync` again, then `npm run content:validate`, `npm run lint`, `npm test` and `npm run build`
 

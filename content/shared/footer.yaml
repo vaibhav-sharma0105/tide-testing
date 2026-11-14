@@ -1,50 +1,29 @@
+# Byline shown under "TIDE Foundation" in the footer
 tagline: "Improving access to holistic education since 2014."
 together: "Together in Development and Education"
-rights: "© 2025 TIDE Foundation. All rights reserved."
-supportWork: "Support our work"
+# {year} is replaced with the current year in the visitor's browser, so it never goes stale
+rights: "© {year} TIDE Foundation. All rights reserved."
 madeWithLove: "Made with love for education in India"
+# Footer Donate button (the email and phone beside it come from contact.yaml)
 donateLabel: "Donate"
+donateHref: "/get-involved/donate"
 donateMobileLabel: "Donate to TIDE"
 logo: "/assets/images/shared/tide-logo.png"
+logoHref: "/"
 logoAlt: "TIDE Foundation"
 brandName: "TIDE"
 brandSuffix: "Foundation"
-# {platform} = capitalised social platform name; {title} = column title
+# {platform} = the social link's "name" below
 socialAriaLabel: "Visit TIDE on {platform}"
-columnNavAriaLabel: "Footer navigation: {title}"
-
-columns:
-  - title: "About"
-    links:
-      - label: "Why TIDE?"
-        to: "/about/why-tide"
-      - label: "Our Team"
-        to: "/about/our-team"
-      - label: "Our Partners"
-        to: "/about/our-partners"
-
-  - title: "Get Involved"
-    links:
-      - label: "Volunteer With Us"
-        to: "/get-involved/volunteer"
-      - label: "Donate"
-        to: "/get-involved/donate"
-      - label: "Organise MCCx"
-        to: "/education-for-harmony/mccx"
-
-  - title: "Resources"
-    links:
-      - label: "ABL Resources"
-        to: "/pramaan"
-      - label: "THRIvE"
-        to: "/thrive"
-      - label: "Contact"
-        to: "/contact"
 
 social:
+  # platform picks the icon (facebook / instagram / linkedin); name is what screen readers hear
   - platform: "facebook"
+    name: "Facebook"
     href: "https://facebook.com/togetherindevelopmentandeducation"
   - platform: "instagram"
+    name: "Instagram"
     href: "https://instagram.com/tide_foundation_"
   - platform: "linkedin"
+    name: "LinkedIn"
     href: "https://linkedin.com/company/13326412"

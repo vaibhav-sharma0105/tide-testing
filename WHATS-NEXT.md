@@ -43,7 +43,7 @@
 > | 1 | SEO tags never applied | Done. A `SeoHead` component (react-helmet-async) is used by 27 page files; `ComingSoon` and `NotFound` use `Helmet` directly with `noindex`. The "19 pages" count is outdated. |
 > | 2 | "Click any image…" hint x6 | Done. One shared string, `clickToZoom` in `content/shared/common.yaml`, read as `common.clickToZoom`. |
 > | 3 | Header donate labels | Done. `donateLabel` / `donateMobileLabel` in `content/shared/navigation.yaml`. |
-> | 4 | Footer brand text and taglines | Done. `brandName`, `brandSuffix`, `tagline`, `supportWork`, `rights`, `madeWithLove` come from `footer.json`. |
+> | 4 | Footer brand text and taglines | Done. `brandName`, `brandSuffix`, `tagline`, `donateLabel`, `rights`, `madeWithLove` come from `footer.json`. |
 > | 5 | Contact labels and email subject | Done. Labels from `data.labels.*`; the subject came from the contact form, which has since been removed (the Contact page now shows an embedded map instead). |
 > | 6 | Publications type labels | Done. `data.typeLabels` in `resources-publications.yaml`, read in `Publications.jsx`. |
 > | 7 | THRIvE "Research" badge | Done at the time; the card badge was later removed when the page's research cards became the four Research Areas sections (`researchAreas` in `thrive.yaml`). |
