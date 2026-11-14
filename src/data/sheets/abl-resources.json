@@ -1,0 +1,5325 @@
+{
+  "schemaVersion": 1,
+  "section": "abl",
+  "success": true,
+  "lastUpdated": "2026-11-14T19:28:42.898Z",
+  "contentHash": "sha256:2b26c97a1d87edf31bcebf54b809ec126c592ade544363f9b3b83a266d65f55a",
+  "tabs": [
+    "Worksheet",
+    "Games",
+    "Kits",
+    "Flashcards"
+  ],
+  "resources": {
+    "Worksheet": [
+      {
+        "id": "W1",
+        "name": "૧૫ નો મેળાપ",
+        "type": "Worksheet",
+        "concept": "Addition",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1zSvZJbSpbCAJk4plGwAl1Mg_7SdAoAx_/view?usp=sharing",
+        "videoUrl": "https://drive.google.com/file/d/1Mr0VgHuNXsW-2g3VfnCiRjcacIzYYOxx/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAHDzeoSPHs/_EdYOiVrf1plJ5n-JACWDA/edit?utm_content=DAHDzeoSPHs&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 3",
+          "GRADE 1",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 2",
+            "ch 5"
+          ],
+          "GRADE 2": [
+            "ch 10",
+            "ch 14"
+          ],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W2",
+        "name": "રંગોત્સવ",
+        "type": "Worksheet",
+        "concept": "Multiplication",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1dh-TnvmDv5Pa5BdeKKMyGBGGfjI4mhsq/view?usp=sharing",
+        "videoUrl": "https://drive.google.com/file/d/1kfFEF_7EPU6YohRGDZAE3JZRUGjigxod/view?usp=drive_link https://drive.google.com/file/d/1kfFEF_7EPU6YohRGDZAE3JZRUGjigxod/view?usp=drive_link https://drive.google.com/file/d/1YCGMXj37RMMyGoN35igFAg5CElrBKivP/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMNXlm4k/nqCeC3YtSv2KU5IlmmEKSw/edit?utm_content=DAGmMNXlm4k&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 3",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 9"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 6",
+            "ch 13"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W3",
+        "name": "ઘડિયા",
+        "type": "Worksheet",
+        "concept": "Multiplication",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1BUMczagKShgqxM690wog4R_Efaq9tY_0/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1dhPUdCfpq20E8I7n8uKZrn__tzhOKrm4/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMP6ENTE/P60SLJtG9LFYlr3zrZ2T8w/edit?utm_content=DAGmMP6ENTE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 9"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 6"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W4",
+        "name": "ગણિતકિલ્લો",
+        "type": "Worksheet",
+        "concept": "Addition L1",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1o8GVR2g6tGJNMpLZe3dBDpP7Ky3ujXmo/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/16n9kpF_MHHV5PaCJQHRlLQs14aCEWBNH/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMNPyxWc/Zg1rXKldBAT2-4mhCUoxIA/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 1",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 10",
+            "ch 14"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 6"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": [
+            "ch 6"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W5",
+        "name": "ગણિતકિલ્લો",
+        "type": "Worksheet",
+        "concept": "Addition L2",
+        "language": "English, Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1qteVaJBnON0OdC78GsPyoqtE5ogHGrNe/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1E98rJyP1sTpS8Rc8v_hEoa8mmuzqDKgL/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMNPyxWc/Zg1rXKldBAT2-4mhCUoxIA/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 14",
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 6"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": [
+            "ch 6"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W6",
+        "name": "જોડો પણ ગણો પણ",
+        "type": "Worksheet",
+        "concept": "Addition and Multiplication L1",
+        "language": "English, Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1V4HslMpyzbYnOpIT1TUd9HHj8XCfShTB/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1euyqBS9mJs8Y4noV9VlIl0E77iYItFQG/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMA4rqFw/0oRk3m4OHuydmGHOw3P6bQ/edit",
+        "grades": [
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 10",
+            "ch 14"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 10"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 13"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W7",
+        "name": "જોડો પણ ગણો પણ",
+        "type": "Worksheet",
+        "concept": "Addition and Multiplication L2",
+        "language": "English, Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/15jIew8k1r6KGNIs6kdwZt0WYA8YbC8zE/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/108xmUOsAos7ci8mUMaZBuBlUFYgg2lxB/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMA4rqFw/0oRk3m4OHuydmGHOw3P6bQ/edit",
+        "grades": [
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 14",
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 10"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 13"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W8",
+        "name": "પડોશીઅંક",
+        "type": "Worksheet",
+        "concept": "Addition L1",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1M7r2BMo0JCxAXTUvgfgGRmrswmHCKR3L/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1eF7zrTRRCjwZuErp0n-O5SJXA1Yxqec9/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMIZg2fQ/8Ql4Rn9Jw3eYNKE4qivzmA/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": [
+            "ch 13",
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W9",
+        "name": "પડોશીઅંક",
+        "type": "Worksheet",
+        "concept": "Addition L2",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1Q2vYvaMlSotsq-q54XwcatlzdRY2tHVv/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1eF7zrTRRCjwZuErp0n-O5SJXA1Yxqec9/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMIZg2fQ/8Ql4Rn9Jw3eYNKE4qivzmA/edit",
+        "grades": [
+          "GRADE 4",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 2",
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": [
+            "ch 7",
+            "ch 13"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W10",
+        "name": "પડોશીઅંક",
+        "type": "Worksheet",
+        "concept": "Multiplication L3",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1pd1ioBDIz-P4JRsTOVR6QR-zuKqb35z4/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1DhQoGvE0DZciz6ZxCankOzKb5mLiJWdE/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMIZg2fQ/8Ql4Rn9Jw3eYNKE4qivzmA/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 7",
+            "ch 13"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W11",
+        "name": "પડોશીઅંક",
+        "type": "Worksheet",
+        "concept": "Multiplication L4",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1ydlJfxAX2Zc8RgyjYdMKtBkGJ26M-HeT/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1DhQoGvE0DZciz6ZxCankOzKb5mLiJWdE/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMIZg2fQ/8Ql4Rn9Jw3eYNKE4qivzmA/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 10"
+          ],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 7",
+            "ch 13"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W12",
+        "name": "મસ્તીગણિત",
+        "type": "Worksheet",
+        "concept": "Adddition L1",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/18VoofDUsEoB0v6fAe42PsCGAjjY16R-r/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/19TPxOspP5ENzyfZ-9cdG0C9ExK7tFjy_/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMG-3_Pg/PuQlOtDgpT0zQTp35UCk_g/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 2"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W13",
+        "name": "મસ્તીગણિત",
+        "type": "Worksheet",
+        "concept": "Adddition L2",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1Q-fGmPLftzeXl7HvEQD8wyg8Qi4-9slq/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/19TPxOspP5ENzyfZ-9cdG0C9ExK7tFjy_/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMG-3_Pg/PuQlOtDgpT0zQTp35UCk_g/edit",
+        "grades": [
+          "GRADE 5",
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 2"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W14",
+        "name": "મસ્તીગણિત",
+        "type": "Worksheet",
+        "concept": "Adddition L3",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1TvrpMbRk478t6Fg9HgAZFYfuDMDwFeAV/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1Lee83ZEsRUss-kg9e1ojq8OAZHY-KVAl/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMG-3_Pg/PuQlOtDgpT0zQTp35UCk_g/edit",
+        "grades": [
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 2"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W15",
+        "name": "મસ્તીગણિત",
+        "type": "Worksheet",
+        "concept": "Multiplication",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1DNuwghPK-wTHrLA0yICtE_EcX0z-T75Z/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1Lee83ZEsRUss-kg9e1ojq8OAZHY-KVAl/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMG-3_Pg/PuQlOtDgpT0zQTp35UCk_g/edit",
+        "grades": [
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 2"
+          ],
+          "GRADE 3": [
+            "ch 9"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W16",
+        "name": "દિશામંડળ સરવાળો",
+        "type": "Worksheet",
+        "concept": "Addition L1",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/10CjSxshKM0F4MVotTnPHBc6Qk4NnyF4q/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1CKXzcl5BkIx8_B4WSufiLGpzF28WhIlW/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMKPD2YU/OzOWDo39y0ocnzYkF5-5FQ/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W17",
+        "name": "દિશામંડળ સરવાળો",
+        "type": "Worksheet",
+        "concept": "Addition L2",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1T8OU2vE0NLvqeIfCONzH5n2TC0Q_vZtp/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1-zy_8rPIJsiQUUM5p7kw8wn2pwaZVkxm/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMKPD2YU/OzOWDo39y0ocnzYkF5-5FQ/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W18",
+        "name": "દિશામંડળ બાદબાકી",
+        "type": "Worksheet",
+        "concept": "Substraction L1",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1xrjWM7FEHR9zt-9hRQYpC2XNqkoB3lYZ/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1-zy_8rPIJsiQUUM5p7kw8wn2pwaZVkxm/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMKPD2YU/OzOWDo39y0ocnzYkF5-5FQ/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 3"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 6"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W19",
+        "name": "દિશામંડળ બાદબાકી",
+        "type": "Worksheet",
+        "concept": "Substraction L2",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1a0GhvxeGzI8o57-XfUsyLqmJaPD2jYr4/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/17yrEEGELABysJxA6lxHXxZQ4vatkAfk2/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMKPD2YU/OzOWDo39y0ocnzYkF5-5FQ/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 3"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 6"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W20",
+        "name": "દિશામંડળ બાદબાકી",
+        "type": "Worksheet",
+        "concept": "Substraction L3",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1fYAHV5ZmcmUm2_fDusrMDqO8fEF0r-d1/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/17yrEEGELABysJxA6lxHXxZQ4vatkAfk2/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMKPD2YU/OzOWDo39y0ocnzYkF5-5FQ/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 6"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W21",
+        "name": "દિશામંડળ બાદબાકી",
+        "type": "Worksheet",
+        "concept": "Substraction L4",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/15tjE5gMZmiTHLT3OatrDU-uw16-c3QbK/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/17yrEEGELABysJxA6lxHXxZQ4vatkAfk2/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMKPD2YU/OzOWDo39y0ocnzYkF5-5FQ/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 6"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W22",
+        "name": "જાદુઈચોરસ",
+        "type": "Worksheet",
+        "concept": "Additon L1",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1zMUGfgJ_obOesd7RUmqHkBr2eEm-Z3Du/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1kXGeErLjB5DW-rOxetc45vuahlpxZUtM/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMArmG6k/CYjznTpM3SDy7aw6X1gMOg/edit",
+        "grades": [
+          "GRADE 5",
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W23",
+        "name": "જાદુઈચોરસ",
+        "type": "Worksheet",
+        "concept": "Additon L2",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1KzOFORiZDaI6jQmYuuaCMGJeMAAfSh-N/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1kXGeErLjB5DW-rOxetc45vuahlpxZUtM/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMArmG6k/CYjznTpM3SDy7aw6X1gMOg/edit",
+        "grades": [
+          "GRADE 5",
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W24",
+        "name": "જાદુઈચોરસ",
+        "type": "Worksheet",
+        "concept": "Additon L3",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1kU0BrczDjYh1A6FkBBEe71ZVfvsuE6Mc/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1PGZsKQ9sthcxJa_j0MSwxGli5hPYCE4j/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMArmG6k/CYjznTpM3SDy7aw6X1gMOg/edit",
+        "grades": [
+          "GRADE 5",
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W25",
+        "name": "જાદુઈચોરસ",
+        "type": "Worksheet",
+        "concept": "Additon L4",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1UK1dVd0NjkgRqI5ivE9BPmCHMRVMdSeV/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1PGZsKQ9sthcxJa_j0MSwxGli5hPYCE4j/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMArmG6k/CYjznTpM3SDy7aw6X1gMOg/edit",
+        "grades": [
+          "GRADE 5",
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W26",
+        "name": "જાદુઈચોરસ",
+        "type": "Worksheet",
+        "concept": "Negative Number L1",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1GTrEfjDmLmGyOJ_mKdrEH8t8DSd-GXvH/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1586QQ2QA4Q8Sc6RRlE5GatBsj7vLmNWA/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMArmG6k/CYjznTpM3SDy7aw6X1gMOg/edit",
+        "grades": [
+          "GRADE 5",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W27",
+        "name": "જાદુઈચોરસ",
+        "type": "Worksheet",
+        "concept": "Negative Number L2",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1EDIbIh1XlX69-LeGT1av-jyw9W1F02Ig/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1586QQ2QA4Q8Sc6RRlE5GatBsj7vLmNWA/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMArmG6k/CYjznTpM3SDy7aw6X1gMOg/edit",
+        "grades": [
+          "GRADE 5",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W28",
+        "name": "બાદબાકીની સીડી",
+        "type": "Worksheet",
+        "concept": "Take away - Substraction",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1pAr8qbHJQ8nAR9zpGZQiuIy_kMqHz0Yr/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1serqwIQ-51cEPGozmgZdoEZwQAwqTelA/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMJkejVE/ikWYq4AZdb1QdqGgSn7PDQ/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 4"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 6"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W29",
+        "name": "ગુણાકારની સીડી",
+        "type": "Worksheet",
+        "concept": "Multiplication",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1e5lCBnlXnUE8iDwMk9B-n9bB0w1V3OGN/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1Qr3wwUnygZZXBNHOK_v5YQ3cXneHwf9g/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMJkejVE/ikWYq4AZdb1QdqGgSn7PDQ/edit",
+        "grades": [
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 9"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": [
+            "ch 13"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W30",
+        "name": "ભાગાકારની સીડી",
+        "type": "Worksheet",
+        "concept": "Division",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1rh-I1x5G81YIsX8q66Tu56APk5o_jRWg/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1RHTmxSsl7T9QZ_9-cUJBzfsczDUtFFeh/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMJkejVE/ikWYq4AZdb1QdqGgSn7PDQ/edit",
+        "grades": [
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 12"
+          ],
+          "GRADE 4": [
+            "ch 9",
+            "ch 11"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W31",
+        "name": "ગણિત રેખા સરવાળો",
+        "type": "Worksheet",
+        "concept": "Addition",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1mfP7uyh0fCw9rmMn7INzmr8CgLBHPGMZ/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1wH-GzYtvc9WA5k5AJvCEwIT2Fj2mVebl/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMMxSqhY/AoyEiaajfjXZrqfkvBABlA/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3"
+          ],
+          "GRADE 2": [
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W32",
+        "name": "ગણિત રેખા બાદબાકી",
+        "type": "Worksheet",
+        "concept": "Subsraction",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1vYE9_yALnDfnnWj8r_GyAFMiHkiljk1n/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1Qzlyb3wpjETyrKSPEruSmYrLA10Vd_8f/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMMxSqhY/AoyEiaajfjXZrqfkvBABlA/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W33",
+        "name": "ગણિત રેખા ભાગાકાર",
+        "type": "Worksheet",
+        "concept": "Multiplication",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1vGvqCLayEK8NWleLF9eAX5XfX-e1U1xq/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1Qzlyb3wpjETyrKSPEruSmYrLA10Vd_8f/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMMxSqhY/AoyEiaajfjXZrqfkvBABlA/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 12"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W34",
+        "name": "ગણિતમાર્ગ",
+        "type": "Worksheet",
+        "concept": "Addition and Substraction L1",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1TzQ-JeSKKjl9MvxOItVzmtnydlXgHEpw/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1uowEWGylVfdSDdCKZUu4zxj81OXDIUkb/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMFeT6n8/OVmlPiLbaQ-wXiP7YxfOxQ/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": [
+            "ch 6"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W35",
+        "name": "ગણિતમાર્ગ",
+        "type": "Worksheet",
+        "concept": "Addition and Substraction L2",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1o0YbO0iIv_UFErkrtvVjYDbOLIB0Bvhe/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1uowEWGylVfdSDdCKZUu4zxj81OXDIUkb/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMFeT6n8/OVmlPiLbaQ-wXiP7YxfOxQ/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": [
+            "ch 6"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W36",
+        "name": "ગણિતમાર્ગ",
+        "type": "Worksheet",
+        "concept": "Multiplication L1",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1rIkSpATUPxKfAYPSaoJh9_WWVOv366Pa/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1uowEWGylVfdSDdCKZUu4zxj81OXDIUkb/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMFeT6n8/OVmlPiLbaQ-wXiP7YxfOxQ/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 6"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W37",
+        "name": "ગણિતમાર્ગ",
+        "type": "Worksheet",
+        "concept": "Multiplication L2",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/19KW9A-xmJngxijWi284KAWzu_chfm7wp/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1uowEWGylVfdSDdCKZUu4zxj81OXDIUkb/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMFeT6n8/OVmlPiLbaQ-wXiP7YxfOxQ/edit",
+        "grades": [
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 6"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W38",
+        "name": "ગણિતમાર્ગ",
+        "type": "Worksheet",
+        "concept": "Multiplication L3",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1a4tzDssMRETtk6DzeNFY6VHhFjWWcDNB/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1uowEWGylVfdSDdCKZUu4zxj81OXDIUkb/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMFeT6n8/OVmlPiLbaQ-wXiP7YxfOxQ/edit",
+        "grades": [
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3",
+            "ch 2"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 6"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W39",
+        "name": "આકાર માપન",
+        "type": "Worksheet",
+        "concept": "Perameter and area",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1psXtH2_8lg5binWvdGqpSjTKg-FvC2lx/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1vMMYVWxQ-7qzCM6k-XPB2F-Zf4sDRtbB/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMMT6Uew/v7BxmdOVY9nl4UXsbnytBQ/edit",
+        "grades": [
+          "GRADE 5",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 3",
+            "ch 11"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W40",
+        "name": "સંખ્યા ગોઠવો જવાબ મેળવો",
+        "type": "Worksheet",
+        "concept": "Addition and Substraction",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/10YmnzP7eBO4dn1WoRyrJuckUpXaDeSue/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1-V8LaiZINbpG29o_rCHRDjfUpAe8b7Ss/view?usp=drive_link https://drive.google.com/file/d/11SYUZTvY7JrDVumhvc5_awAmb-SwOYbj/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMOnXfQI/-Ns02SbR5gRguwel_d6QOQ/edit",
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W41",
+        "name": "ત્રિકોણનીતિ",
+        "type": "Worksheet",
+        "concept": "Addition and Division",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/11_iRbtfv_n_8tXaCA1Hp67FWy77oiLWT/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1sWw_-YJ25RW_cXpQe9hUX1cZCzY-pVIk/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMA3o8pY/FfrJN4J2GYMZZZO5HEPUnQ/edit",
+        "grades": [
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W42",
+        "name": "બ્લેંક ક્લોક",
+        "type": "Worksheet",
+        "concept": "Time",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/11nJwt7b0h0rRipvtIUJzaV_rrBYSDYoK/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1CsSDo_iYblkBEz-V6KUoX4McyGV0Ul3-/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMNuef6Y/7_DJzA1k6VR2ncqx3Wml5w/edit",
+        "grades": [
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 4"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W43",
+        "name": "રંગીન આકાર",
+        "type": "Worksheet",
+        "concept": "Half",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1upeDSqmdQSVIr1ODWGQGPuSjxCXThjFX/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1zuOPAhYxMlEKkizGHYEvRHCvsrSjUBBs/view?usp=drive_link https://drive.google.com/file/d/1mvAJTT0Y8RiVANwrGGZ7EZsMMHvlIt_-/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMDVjC2E/iCK8r2vR6Wd_pevZ8LjGLQ/edit",
+        "grades": [
+          "GRADE 5",
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 1",
+            "ch 5",
+            "ch 12",
+            "ch 11"
+          ],
+          "GRADE 4": [
+            "ch 11",
+            "ch 9"
+          ],
+          "GRADE 5": [
+            "ch 4",
+            "ch 5"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W44",
+        "name": "રંગીન આકાર",
+        "type": "Worksheet",
+        "concept": "Quater",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Central file",
+        "photoUrl": "https://drive.google.com/file/d/1ZElNI24IowxDc5apfzIUvwI0c9UsmPk-/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1zuOPAhYxMlEKkizGHYEvRHCvsrSjUBBs/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGmMNt1FC0/FTVdA2guDo8UWPUlNpreRw/edit",
+        "grades": [
+          "GRADE 5",
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 5"
+          ],
+          "GRADE 4": [
+            "ch 9",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 4",
+            "ch 5"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "W45",
+        "name": "ક્રોસવર્ડ પઝલ",
+        "type": "Worksheet",
+        "concept": "Basic mathematical concepts, puzzles (addition, multiplication, mixed operations)",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 8,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1YF5cJJvN1IzfsGdETiRe9Usc90y2bhTQ/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/17-UlxN055Co7M4JGc7XXiJeXfGaFvS8s/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGZ5mFUU0I/8MWvWaVjHN_ugxIRCP7PBw/edit,  https://www.canva.com/design/DAGaevGTfp4/lRCScgxKqZJ7C3G7OOD6Rg/edit,  https://www.canva.com/design/DAGaegXj4uY/DIW9fZIY7jm17QSaKrzWKQ/edit",
+        "grades": [
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 10"
+          ],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 11",
+            "ch 13"
+          ]
+        },
+        "description": "Students of various standards could solve the crossword puzzle aimed at making them critical thinkers and enabling them to guess the probable answer even if they cannot solve the entire puzzle, since a crossword has given hints and they could also learn the technique of elimination of answers based on their previously solved values of other questions.",
+        "referenceLink": null
+      },
+      {
+        "id": "W46",
+        "name": "આકારો બનાવો",
+        "type": "Worksheet",
+        "concept": "Identifying shapes inside of other shapes",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 8,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1g_jiGNWaJdcnBq2fv0i7wq01d_R7l4_L/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1aOi68ius5l5Gx4IlYH5lS-9OffmXSuO3/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGad21TVGk/6jYo9lPGnF4Pl8gtMj2O8A/edit",
+        "grades": [
+          "GRADE 4",
+          "GRADE 1",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 1"
+          ],
+          "GRADE 2": [
+            "ch 1"
+          ],
+          "GRADE 3": [
+            "ch 10"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 5",
+            "ch 2",
+            "ch 8"
+          ],
+          "GRADE 5": [
+            "ch 2",
+            "ch 3"
+          ]
+        },
+        "description": "Class 3rd and 4th students who are being introduced to the idea of shapes, could be engaged with a small activity of identifying similar simpler shapes in larger more complex shapes. For example, students could identify how to triangles are there in a square. This would them develop a cognitive ability to identify underlying patterns in a much complex problem and solve it partwise.",
+        "referenceLink": null
+      },
+      {
+        "id": "W47",
+        "name": "લક્ષિતસીડી",
+        "type": "Worksheet",
+        "concept": "Addition, Multiplication",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 3,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1Kw08zB8UdIkB_NT-V1wMPUmxTSYm-WNd/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1VrpvmKHDw-AmbRZCxam7576pvFe0xM09/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAHBvPuh_88/-M2M7MYDO_UbepGShhRHcg/edit?utm_content=DAHBvPuh_88&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 4",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 10"
+          ],
+          "GRADE 5": []
+        },
+        "description": "This game can be played between 3 or more players in which each player throws 2 dice, the product of the two values are multiplied and that amount of ladders that player has climmed, this goes on until the sum of all the products does not reach or exceed the targeted ladders",
+        "referenceLink": null
+      },
+      {
+        "id": "W48",
+        "name": "ક્રમનંબરશોધ",
+        "type": "Worksheet",
+        "concept": "Number sequence",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/10BvtZzozEUwcsGLQ2JE21YE0aMWUhwM-/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1rfkk_9KkID2iOU0VLgj0dqE5fqGcRK7R/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAHBvvmpOTY/uVa1xTLDFjH50fARz1cWGg/edit?utm_content=DAHBvvmpOTY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 5",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 2",
+            "ch 5"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": "The Number Sequence Search is a worksheet similar to word search. It has incomplete sequences and a number search box wherein the student has to find the following number in the sequence and then find and circle the sequence in that box. If they cannot find the following number of the sequence, they can find it using the number search box.",
+        "referenceLink": null
+      },
+      {
+        "id": "W49",
+        "name": "પૂર્ણાંક સંખ્યારેખા",
+        "type": "Worksheet",
+        "concept": "Positive and negative integers",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1529YMMwdUbejVWVZmH_613S4rM3Z8b6y/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/10XbwKb1STWcld05EXcfBrG8UBtAa7bNT/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGaFURamJU/sGKASv4VvOUUZg5a8IJZrQ/edit",
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": "It tries to explain the concept of positive and negative integers through a number line. It is followed by mathematical operations based on the same.",
+        "referenceLink": null
+      },
+      {
+        "id": "W50",
+        "name": "જોવો, ગણો અને સરખાવો!",
+        "type": "Worksheet",
+        "concept": "Percentages and fractions",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1JSEO4HFhoSaMlMh8Va8wnolVaDNtIn1j/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1iCxrlCdZCXCdpfaQPhLnfoDIjt80E4Os/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGaVQGlYJ0/qhgwDu1hKEdbt5t4AQ90tQ/edit",
+        "grades": [
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 4"
+          ]
+        },
+        "description": "The concept of basic percentages like 10%, 20%,etc are explained using shapes and fractions. The shaded triangles are identified and divided by total number of triangles. This is how percentages are derived. This is followed by a worksheet based on the same.",
+        "referenceLink": null
+      },
+      {
+        "id": "W51",
+        "name": "પરિધ",
+        "type": "Worksheet",
+        "concept": "Geometry and perimeter",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1UtEp0tnllYAHMxm19AsPVaONUAJbuPjm/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1248o4nD1zQQCPZs-9sO0IRVpKvNHHPU7/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGaYQPSDME/HODHH6_eWo6rHGsPdGQ7SA/edit",
+        "grades": [
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 6",
+            "ch 7",
+            "ch 13"
+          ],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 13"
+          ],
+          "GRADE 5": [
+            "ch 3",
+            "ch 11"
+          ]
+        },
+        "description": "The concept of perimeter has been explained in a practical manner using a hands on approach. A measurement scale is required to measure the boundaries. The measurements have then to be added for finding out the perimeter. For measuring the same of a circle, a thread has to be coiled around the circle. The coil is then measured for deriving the perimeter.",
+        "referenceLink": null
+      },
+      {
+        "id": "W52",
+        "name": "ગણિતની રમત",
+        "type": "Worksheet",
+        "concept": "Mixture of concepts as given in the textbooks",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 3,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1mHXQGtRJSsROtgxZH4reQh3SkiGfD-Nt/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1pn8qwbSHmB-8q-iTDaEbteUj1uXrKJe2/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGaTGsIECY/80R_Wu8zVqGgxPgnE9-8Zw/edit",
+        "grades": [
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 1",
+            "ch 7",
+            "ch 13",
+            "ch 3"
+          ]
+        },
+        "description": "Worksheets for each grade with mathematical and aptitude based questions",
+        "referenceLink": null
+      }
+    ],
+    "Games": [
+      {
+        "id": "G1",
+        "name": "ચાલો કરીએ",
+        "type": "Games",
+        "concept": "Verb",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Bag 7",
+        "photoUrl": "https://drive.google.com/file/d/1bqWU4RLQHnoI4n5QJMXtaV31gTlcn7Xs/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1OJ7NvBTK3-_TBaEMnJpmLmBZqreBGLnN/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G2",
+        "name": "ચાઈનીઝ વ્હીસ્પર",
+        "type": "Games",
+        "concept": "Listening, Articultion",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Bag 7",
+        "photoUrl": "https://drive.google.com/file/d/1cnXmOHpDaWRPgHHoXpgZCt16sPZHbLpH/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/167AQSOXZuQC8LS6o33GDmHQWCHds8YV2/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G3",
+        "name": "યાદનું જાદુ",
+        "type": "Games",
+        "concept": "Memory power, Communication",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Bag 7",
+        "photoUrl": "https://drive.google.com/file/d/1tRI-hIksmQvbLJCv-bRRe9EkwnEfgQBs/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1mQ1Y8wkimzEqxWll0OGdm2GCsboTgIYE/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 2",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 5"
+          ],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G4",
+        "name": "ક્રિયા ઓળખો",
+        "type": "Games",
+        "concept": "Mimicry and To explain",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Bag 7",
+        "photoUrl": "https://drive.google.com/file/d/1cjuT5ty_eJfERzcTkyxoO2MS9yG1z-nL/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1lVvYA4T0TQwi-Aw9zs5AhGmUoZN-QioM/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G5",
+        "name": "સાયમન કહે છે",
+        "type": "Games",
+        "concept": "Addition, Substraction, Division, Multiplication",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Bag 7",
+        "photoUrl": "https://drive.google.com/file/d/1S8t_RCG9Ral6dCqPo0w9HR715E9unOD8/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1IMz4sbzAOfX8dzNSOOEMhtehQB1wCq3V/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G6",
+        "name": "મેમરી સ્ટોરી",
+        "type": "Games",
+        "concept": "Memory power",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 20,
+        "storageLocation": "Bag 7",
+        "photoUrl": "https://drive.google.com/file/d/1_ekbO1bBhxofZNimXN_dEzIre2vEiusj/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/19idxxD0PvsWQC3DcM0InT6b-fZCvdn__/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G7",
+        "name": "કાર્ડ કસોટી",
+        "type": "Games",
+        "concept": "Basic concepts of odd and even numbers with addition and subtraction operations",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1JSlVr-GCk1EUHmfUvWGdp4yActvtKjnY/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1DQ9SsCriiR_123brACTodeqDn2rxF7Dv/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 2",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 10",
+            "ch 14",
+            "ch 12"
+          ],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 6"
+          ]
+        },
+        "description": "The Odd-Even game with cards is a simple card game where players try to predict if the sum of the numbers on \ntwo cards will be odd or even. In the game, each player takes turns drawing two cards from a deck. If the sum of \nthe two cards' numbers is odd, the \"odd\" side wins; if it’s even, the \"even\" side wins. For example, if the cards drawn\nare 3 and 4, their sum is 7, which is odd, so the odd side wins. Players bet on whether the sum will be odd or \neven before the cards are revealed.",
+        "referenceLink": null
+      },
+      {
+        "id": "G8",
+        "name": "સમજદાર વપરાશ",
+        "type": "Games",
+        "concept": "Basic concepts of profit & loss, operations, budgeting and finance management",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1N0DxaW6paRM0GUxsVYFbLrpg832vPEny/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/16hEJ9rXnlVOfuv_IktiHhG5mtWw2TVOZ/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 14"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 1"
+          ]
+        },
+        "description": "A simple game where you manage your monthly budget using cards. Each card represents an expense like rent, food, or\n entertainment. At the start, you get a set amount of money. Every turn, you draw cards and decide how to pay for the \nexpenses without running out of money. You must plan carefully to balance your spending, save some money, and avoid \noverspending. The goal is to finish the month with money left over. The game helps you practice budgeting skills, make \nsmart financial decisions, and understand the importance of managing money effectively.",
+        "referenceLink": null
+      },
+      {
+        "id": "G9",
+        "name": "ખજાનાની શોધ",
+        "type": "Games",
+        "concept": "Basic concepts of operations such as addition, subtraction, multiplication and division along with the ability to appropriately interpret hints/questions",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1Ltx6TKrqGc5dCIrBOf6eMpCvDqXcFiGb/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1nX1OT8CXgMQ36SiTQGrME6SK4RWmyapK/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 2",
+          "GRADE 3",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 14",
+            "ch 12",
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 9"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 1"
+          ]
+        },
+        "description": "Treasure Hunt Math Challenge is a fun, educational game for kids in grades 1 to 5. Players solve math clues using \nnumber cards and basic operations. With quick thinking and mental math, they race to find answers and earn points.\n It’s perfect for learning while having an exciting adventure!",
+        "referenceLink": null
+      },
+      {
+        "id": "G10",
+        "name": "એક પછી એક",
+        "type": "Games",
+        "concept": "Addition, subtraction and multiplication",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/12RWUZPxbnl-60lZZKGgElLU1LtR3ExbB/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1I02-qeSCEdz6pWzddLle4l65aFFUl7IQ/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 2",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 14",
+            "ch 12",
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 9"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": "Divide the room into teams. Place math problems at stations around the room.",
+        "referenceLink": null
+      },
+      {
+        "id": "G11",
+        "name": "રકમ મેળવો",
+        "type": "Games",
+        "concept": "Rupees and Finance",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/11GWpgVcTqA1hGOoRbduF1NLwfsJJpKng/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1gCm2LVNULcPISo2lIsNrxEamBeDIUozJ/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 5",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 14"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 1"
+          ]
+        },
+        "description": "For the Given amount 2 digit number formed by 2 Flash Cards, Students need to give fake currency with various denominations",
+        "referenceLink": null
+      },
+      {
+        "id": "G12",
+        "name": "જીઓબોર્ડ",
+        "type": "Games",
+        "concept": "Different shapes, perimeter, area and real life objects",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1y6iCej25s1bWyS1C7AtnBxW73r3zQQAz/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1-lbqNV3xFVFn7-WSqqAStBHN87a7IDKt/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 2",
+          "GRADE 3",
+          "GRADE 5",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 5"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 2",
+            "ch 3",
+            "ch 4",
+            "ch 11"
+          ]
+        },
+        "description": "Geoboard is an individual game wherein the student has to make objects or shapes using thread on the board given. \nQuestion flashcards are provided, which contain different shapes, real-life objects, and diagrams with perimeter or \narea and half shapes (complete the shape).",
+        "referenceLink": null
+      },
+      {
+        "id": "G13",
+        "name": "યાદની રમત",
+        "type": "Games",
+        "concept": "Multiplication and Mathematica",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 50,
+        "storageLocation": "Box 4, Bag 4",
+        "photoUrl": "https://drive.google.com/file/d/1Lr4Cv1J0gz4Fdyf7MiCM89Nlrzy6yq49/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1G_b7sc3X09UpnUJ2yPB40w42E0S_CBqt/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 4",
+          "GRADE 3",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 9"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 1"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G14",
+        "name": "ફ્રેક્શન ગેમ",
+        "type": "Games",
+        "concept": "Fractions",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1ErT-vwnAbNKK8OiI2FcXqRB0aBPFl11D/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1jVyESGDp1D12CoBqvlVxIDbaMORu4Nr_/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 9",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 4"
+          ]
+        },
+        "description": "Fraction Bingo is an engaging two-player board game designed to make learning fractions fun and interactive. \nPlayers take turns rolling the dice, moving their game pieces, and identifying fractions represented on the spaces\n they land on. If necessary, they simplify the fraction and place a bingo chip on the corresponding fraction on the \ngame board. The objective is to get three chips in a row (horizontally, vertically, or diagonally) to win. This game \nis perfect for practicing fraction skills in an exciting and hands-on way.",
+        "referenceLink": null
+      },
+      {
+        "id": "G15",
+        "name": "સ્પિન એન્ડ કલાઇમ્બ",
+        "type": "Games",
+        "concept": "Addition and Subtraction",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 10",
+        "photoUrl": "https://drive.google.com/file/d/1NAxQp-Sv-06ZDZ8Le6AQM3_f8nLp0kzH/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1lMxjb0IvS-I57VgXIMUzJWW6lVceE2J-/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 2",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 14",
+            "ch 12",
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": "Spin & Climb is a fun two-player luck-based game where each player starts at number 1 and takes turns spinning \na central wheel. The wheel determines whether they move forward (+1, +2) or backward (-1, -2). The goal is to be\n the first to reach exactly 10. If a spin would take a player beyond 10, they must wait for the exact number needed. \nThe game adds excitement with unpredictable turns, making it a thrilling race to the finish!",
+        "referenceLink": null
+      },
+      {
+        "id": "G16",
+        "name": "સાપસીડી",
+        "type": "Games",
+        "concept": "Counting and Strategic Thinking",
+        "language": "English",
+        "ownership": "TIDE",
+        "quantity": 10,
+        "storageLocation": "Bag 4",
+        "photoUrl": "https://drive.google.com/file/d/1oh6b9fOkJV6u_7WpiHIDXpaLqj5PwhcB/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1w2SsLk9dIocF-VrAxLAt-laVxzOh9WWO/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G17",
+        "name": "ફન કીટ",
+        "type": "Games",
+        "concept": "General Knowledge, Mathematics, Science and Games",
+        "language": "English",
+        "ownership": "Other",
+        "quantity": 4,
+        "storageLocation": "Bag 3",
+        "photoUrl": "https://drive.google.com/file/d/1U29xZujN842wyzc8NxBD1NBkgR-jhG43/view?usp=drive_link",
+        "videoUrl": null,
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 3",
+            "ch 8"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G18",
+        "name": "વર્લ્ડમેપ",
+        "type": "Games",
+        "concept": "Geography, Critical Thinking and Creative Thinking",
+        "language": "English",
+        "ownership": "Other",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1WHAV2xEbf2HnZboLpyaWhDSJW-YiDhKM/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1UDaSp3weuPvw_w9ak75Ztawio1FkukB0/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G19",
+        "name": "સજીવ નિર્જીવ ઓળખો",
+        "type": "Games",
+        "concept": "Identification of living and non-living, curiosity and reasoning",
+        "language": "English",
+        "ownership": "Other",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1dYg315mDy6TtZB73p5nGU7R0NKr9pVRv/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1ltR8wyTcraph26eZrvsCpaUMQEFAXE-a/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G20",
+        "name": "કલરટ્રેક",
+        "type": "Games",
+        "concept": "Arrangement of shapes using critical thinking",
+        "language": "English",
+        "ownership": "Other",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1T0bNiOgTX2B3YUpiZNQab27KA1iwuo-F/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1QxX9EUOmgt7gVFxmwlt2WyHDhACSYats/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 4",
+          "GRADE 1",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 5"
+          ],
+          "GRADE 4": [
+            "ch 10",
+            "ch 5",
+            "ch 1"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G21",
+        "name": "પાર્કિંગપઝલ",
+        "type": "Games",
+        "concept": "Critical Thinking and Mathematics",
+        "language": "English",
+        "ownership": "Vikram Sarabhai",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1tVhcT8wUJbDazuKSFubF0qr_pIFCLIT2/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1L4tDvSCeTchaGJZIUZuxnxn9je9s5CtN/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G22",
+        "name": "જોય ઓફ મેથ્સ પઝલ",
+        "type": "Games",
+        "concept": "Utilisation of mathematic and logic to enjoy puzzle solving",
+        "language": "English",
+        "ownership": "Vikram Sarabhai",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1Qy_3xB7cStd--Bv2pfR36JqCFQzRjUbC/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1v38kYrQFxk-P2_rSmrSsjz1r-t16_0WM/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 2"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G23",
+        "name": "બુદ્ધી કસો",
+        "type": "Games",
+        "concept": "Book for basic and advanced mathematical concepts",
+        "language": "Gujarati",
+        "ownership": "Vikram Sarabhai",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/16j9g-7_2JAvySXth7oo4IyWWRNuL4vMX/view?usp=drive_link",
+        "videoUrl": null,
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G24",
+        "name": "ઘરચાલો",
+        "type": "Games",
+        "concept": "Numbers, Visual Art, Storytelling in hindi and english",
+        "language": "Hindi, English",
+        "ownership": "Jodo Gyan",
+        "quantity": 4,
+        "storageLocation": "Bag 2",
+        "photoUrl": "https://drive.google.com/file/d/1ipQr6jI4MiOfAK-7IgslWtgAhl-LNbtc/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/13Qqj_ICSJvbnWxbiKTYzKcQytzj4nE7f/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 8"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G25",
+        "name": "સો રંગની ખોજ",
+        "type": "Games",
+        "concept": "Visual Storytelling in both hindi and english and Number recognition with addition, subtraction and patters.",
+        "language": "Hindi, English",
+        "ownership": "Jodo Gyan",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1QWjumhJBgNiPJZIwf8hKtCpaTivOEHCm/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1TsVbwN7pToYai_KewBg2SZ7jmYVTmoEH/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 2",
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 10",
+            "ch 12",
+            "ch 14",
+            "ch 4"
+          ],
+          "GRADE 3": [
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G26",
+        "name": "નંબરપઝલ",
+        "type": "Games",
+        "concept": "Critical Thinking and Number Recognition",
+        "language": "No Language",
+        "ownership": "Other",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1drJT2ehVLh98Nnn0wkio8IkSs8wIWvY4/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1Rj6ZfqV7cjdjvyO4MrQZAEbXNPbvVHS2/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 2",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 2"
+          ],
+          "GRADE 2": [
+            "ch 4"
+          ],
+          "GRADE 3": [
+            "ch 2"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G27",
+        "name": "ટેનગ્રામ",
+        "type": "Games",
+        "concept": "Patterns, Shapes and Critical Thinking",
+        "language": "English, Gujarati",
+        "ownership": "Jodo Gyan",
+        "quantity": 19,
+        "storageLocation": "Bag 3",
+        "photoUrl": "https://drive.google.com/file/d/1bQL52zJlBjtfFwfJrexKmlrTLcL4FC4T/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1c3oypX1D7xj-Pm12zcwkTvy4YThGY4FM/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 10"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 5",
+            "ch 10"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 5",
+            "ch 9"
+          ],
+          "GRADE 5": [
+            "ch 2",
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G28",
+        "name": "ટેનગ્રામ TIDE",
+        "type": "Games",
+        "concept": "Patterns, Shapes and Critical Thinking",
+        "language": "No Language",
+        "ownership": "TIDE",
+        "quantity": 37,
+        "storageLocation": "Bag 1",
+        "photoUrl": "https://drive.google.com/file/d/1EDmT8_fzQK3hMaVqKe7GdtF5FFHW02Fe/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1c3oypX1D7xj-Pm12zcwkTvy4YThGY4FM/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 3",
+          "GRADE 2",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 10"
+          ],
+          "GRADE 2": [
+            "ch 1",
+            "ch 5"
+          ],
+          "GRADE 3": [
+            "ch 5",
+            "ch 10"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 5"
+          ],
+          "GRADE 5": [
+            "ch 2",
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G29",
+        "name": "કરન્સી",
+        "type": "Games",
+        "concept": "Currency",
+        "language": "English",
+        "ownership": "Jodo Gyan",
+        "quantity": 3,
+        "storageLocation": "Bag 1",
+        "photoUrl": "https://drive.google.com/file/d/13vp1pFr7MYNvNrHFMcV4lQQuheVIDsrL/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1sZmKnlXztonXwlXXAa5aK2v-z9-b4NKh/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 3",
+          "GRADE 1",
+          "GRADE 4",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 12"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 14"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 1"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G30",
+        "name": "ટમ્બલિંગ ટાવર",
+        "type": "Games",
+        "concept": "The game helps improve concentration, balance, and coordination.",
+        "language": "No Language",
+        "ownership": "Other",
+        "quantity": 2,
+        "storageLocation": "Bag 4",
+        "photoUrl": "https://drive.google.com/file/d/1O2CI9V6H2kN96NAB3jAoOeRRlGaT4DKU/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1GFk1rAGZ3W_jT6YF_tnX8CU3IZE7sSRk/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G31",
+        "name": "ફ્રિઝબી",
+        "type": "Games",
+        "concept": "Hand-eye coordination, focus and concentration",
+        "language": "No Language",
+        "ownership": "TIDE",
+        "quantity": 7,
+        "storageLocation": "Bag 4",
+        "photoUrl": "https://drive.google.com/file/d/1Ei6XnVunViuWNzAPe1WkKfap1IktyM8r/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/18aoeORxW25n_QRp12oz2It_7GrkWfR5l/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "G32",
+        "name": "ડિજિટકાર્ડ",
+        "type": "Gmes",
+        "concept": "Number making",
+        "language": "No Language",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 1",
+        "photoUrl": "https://drive.google.com/file/d/1ieQrg8-_ljLeR2LlrL9GNvQEkN0rEEKy/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1kKX8oIunlKp88RNUQ8dJYGLgBJFcUp84/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      }
+    ],
+    "Kits": [
+      {
+        "id": "K1",
+        "name": "Jodo cubes",
+        "type": "Kit",
+        "concept": "Counting, Addition, Substraction",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 5,
+        "storageLocation": "Bag 7, Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1p6xv2nIkLPsbqdhkGy6r1-MBP3g-lm_b/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1dIl0XXHvBkN9JjQsk16Zt648KvWEsOvG/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 3",
+            "ch 9"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K2",
+        "name": "Jodo straws",
+        "type": "Kit",
+        "concept": "3D Shapes",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 5,
+        "storageLocation": "Bag 7, Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1cWaOs2xoqdoqFxkChvMIevv-hccP3WQA/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1OjtMr4XYs9vHht74KWMrEvv0xzd8tDl-/view?usp=sharing",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 1",
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 5",
+            "ch 10"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 5"
+          ],
+          "GRADE 5": [
+            "ch 2",
+            "ch 9"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K3",
+        "name": "Aakar parivar",
+        "type": "Kit",
+        "concept": "Geometry",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 2,
+        "storageLocation": "Bag 7",
+        "photoUrl": "https://drive.google.com/file/d/1sis6cscaPVyGZ7SHppGzOQvtSJNMMhiN/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1lk0-tltuXcpbzq5aVSsL21Uo6WJN_taK/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 1",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 10",
+            "ch 1",
+            "ch 9"
+          ],
+          "GRADE 2": [
+            "ch 10",
+            "ch 1",
+            "ch 5",
+            "ch 7"
+          ],
+          "GRADE 3": [
+            "ch 5",
+            "ch 4"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 5",
+            "ch 2",
+            "ch 9"
+          ],
+          "GRADE 5": [
+            "ch 3",
+            "ch 9",
+            "ch 2",
+            "ch 5"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K4",
+        "name": "Rangometry kit",
+        "type": "Kit",
+        "concept": "Shapes, Pattern and Angle",
+        "language": "Gujarati, No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 1,
+        "storageLocation": "Bag 7",
+        "photoUrl": "https://drive.google.com/file/d/1aIg4ESiwyCZarMas5Z5aHoR1ySTmWrGn/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1yGfflgHu907w4yWsA4xQ-bVN8DBi6kjD/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 1",
+          "GRADE 2",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 1",
+            "ch 10"
+          ],
+          "GRADE 2": [
+            "ch 1",
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 5",
+            "ch 4",
+            "ch 10"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 5",
+            "ch 9"
+          ],
+          "GRADE 5": [
+            "ch 3",
+            "ch 5"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K5",
+        "name": "Decimal kit",
+        "type": "Kit",
+        "concept": "Decimals",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 4,
+        "storageLocation": "Bag 7",
+        "photoUrl": "https://drive.google.com/file/d/1BEMWfL7lMuwsNAd7fcCGh0Q7NkvNJw0_/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1OVqWcJYyuAvHpGScfDCVmIygxAexS9sJ/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 9"
+          ],
+          "GRADE 5": [
+            "ch 4",
+            "ch 10",
+            "ch 1"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K6",
+        "name": "Volume kit",
+        "type": "Kit",
+        "concept": "Liquid Measurement",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 1,
+        "storageLocation": "Bag 7",
+        "photoUrl": "https://drive.google.com/file/d/1ayvFxEAtIBTGAYL4VbhW1e9KiojsLeJ5/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1OSY62SlB173BdoEmMXY9UfA97alzUdVT/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 11"
+          ],
+          "GRADE 4": [
+            "ch 7",
+            "ch 9"
+          ],
+          "GRADE 5": [
+            "ch 14"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K7",
+        "name": "Balance kit",
+        "type": "Kit",
+        "concept": "Weight Measurement",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 3,
+        "storageLocation": "Bag 4",
+        "photoUrl": "https://drive.google.com/file/d/1ePKWzABUZCOy5w2LjNBVyqYi-rksTio4/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/18w4D_GvhUj96ykpYdbzRRkBJbumUICgd/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 1",
+          "GRADE 4",
+          "GRADE 2",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 7"
+          ],
+          "GRADE 2": [
+            "ch 3"
+          ],
+          "GRADE 3": [
+            "ch 8"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 14"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K8",
+        "name": "Sorting Kit",
+        "type": "Kit",
+        "concept": "Triangle sorting",
+        "language": "No Language",
+        "ownership": "TIDE",
+        "quantity": 10,
+        "storageLocation": "Bag 7",
+        "photoUrl": "https://drive.google.com/file/d/1fipduZmWaRfxBy30F1liFoZFq-eRNEDJ/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1bZlkiyLFskiMnnQrgIT-AhJ-G1Ors7ot/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 3",
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 2"
+          ],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 5"
+          ],
+          "GRADE 5": [
+            "ch 2"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K9",
+        "name": "Mathmat",
+        "type": "Kit",
+        "concept": "Puzzles and other holistic learning",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 2,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1DAhcrMcyq0A0BvP4uMlGq2ugSty1CbOz/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1y2xp6aXUUmdhbp6GhPiR4PmlSJk09j2G/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 4",
+          "GRADE 5",
+          "GRADE 3",
+          "GRADE 1",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 2"
+          ],
+          "GRADE 3": [
+            "ch 10",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 3"
+          ],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K10",
+        "name": "Two dice",
+        "type": "Kit",
+        "concept": "Addition & Subtraction",
+        "language": "English",
+        "ownership": "Jodo Gyan",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1UY2bGljZatC4NJ6jJixkH8RxWKkaO9Fw/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1nhUmbsBPCWpPfokteguMJ1pP5c4EjOxo/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 4",
+          "GRADE 1",
+          "GRADE 2",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 4",
+            "ch 3",
+            "ch 5",
+            "ch 8"
+          ],
+          "GRADE 2": [
+            "ch 2",
+            "ch 8",
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K11",
+        "name": "Number sticks",
+        "type": "Kit",
+        "concept": "Mathematical Pattern and Critical Thinking",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/133TEH2g_8ixMpRW-6UrmGMEAi_82KuoT/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/12DHImAWCych9oBh9nZwtLwJ0I-8qtjOy/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 1",
+          "GRADE 2",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 2",
+            "ch 10"
+          ],
+          "GRADE 2": [
+            "ch 10",
+            "ch 8",
+            "ch 2",
+            "ch 12"
+          ],
+          "GRADE 3": [
+            "ch 2",
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 5",
+            "ch 3"
+          ],
+          "GRADE 5": [
+            "ch 2",
+            "ch 3"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K12",
+        "name": "Cubes",
+        "type": "Kit",
+        "concept": "Patterns",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 13,
+        "storageLocation": "Bag 1",
+        "photoUrl": "https://drive.google.com/file/d/11iVO2Md1yXsy4Q1I1bNuUwbCXQqFUJk6/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1MdlpwjoBJH5VcKazIO6hzf5SR_gDvVyf/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 2",
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 5"
+          ],
+          "GRADE 5": [
+            "ch 9"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K13",
+        "name": "Ganit mala 1000",
+        "type": "Kit",
+        "concept": "Counting, Addition, Substraction",
+        "language": "Gujarati",
+        "ownership": "Jodo Gyan",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/169VRUuHRSHhgqH6Msfa30c52KAoalV8A/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1VhKs9lJp0EXu0n-Nwm6XFhLr2EoEMFFq/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 4",
+          "GRADE 5",
+          "GRADE 3",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 5",
+            "ch 8"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K14",
+        "name": "Ganit mala 100",
+        "type": "Kit",
+        "concept": "Counting, Addition, Substraction",
+        "language": "Gujarati",
+        "ownership": "Jodo Gyan",
+        "quantity": 1,
+        "storageLocation": "Bag 4",
+        "photoUrl": "https://drive.google.com/file/d/11Z4OCWkPwS5iVWwPCdkfgRaIZtZE-5g9/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1QAF-VM9wohSsFlAgEOf7zZa9gq6h3JZ0/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 5",
+            "ch 8",
+            "ch 2"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K15",
+        "name": "Ganit mala 100 (mini)",
+        "type": "Kit",
+        "concept": "Counting, Addition, Substraction",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1z1OyEhl1bIw4QL5wza3gl-DAUSe9x_oO/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1QAF-VM9wohSsFlAgEOf7zZa9gq6h3JZ0/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 4",
+          "GRADE 3",
+          "GRADE 1",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 2",
+            "ch 13",
+            "ch 1",
+            "ch 5",
+            "ch 8"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K16",
+        "name": "Ganit double rack rod",
+        "type": "Kit",
+        "concept": "Number sense upto 20, Addition, Substraction",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 21,
+        "storageLocation": "Box 2, bag 3,2",
+        "photoUrl": "https://drive.google.com/file/d/1ADzyhVvU1ghQ1c1xWLnKYsCwqf1bkstG/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/13EHulu1FyEghYEQXcluNOdsLuXId9a3d/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 4",
+          "GRADE 2",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 2",
+            "ch 3"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K17",
+        "name": "Triangle sorting kit (TIDE)",
+        "type": "Kit",
+        "concept": "Triangle sorting",
+        "language": "No Language",
+        "ownership": "TIDE",
+        "quantity": 10,
+        "storageLocation": "Bag 7",
+        "photoUrl": "https://drive.google.com/file/d/18kCiWJswppxyn5I3KAaIP2vdCuPdAcoB/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/12V3e1kyq1jvpze_ANbKkJtxPmmazZudh/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 3",
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 5"
+          ],
+          "GRADE 4": [
+            "ch 5"
+          ],
+          "GRADE 5": [
+            "ch 2"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K18",
+        "name": "Rangometry kit (TIDE)",
+        "type": "Kit",
+        "concept": "Making of shapes using visual understanding",
+        "language": "No Language, Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1dqPB6_9R-WWUG7VejPihD6z7RH9p5gkH/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1FmeeBxK9eyDro0meR0jA5etyQRLIll-i/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 4",
+          "GRADE 2",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 1",
+            "ch 10"
+          ],
+          "GRADE 2": [
+            "ch 10",
+            "ch 1"
+          ],
+          "GRADE 3": [
+            "ch 5"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 5",
+            "ch 9"
+          ],
+          "GRADE 5": [
+            "ch 3",
+            "ch 5"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K19",
+        "name": "Napier's strips",
+        "type": "Kit",
+        "concept": "Multiplication",
+        "language": "English",
+        "ownership": "Vikram Sarabhai",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1YFIg_OSQCFFFG91_mGkl9v9OxV2VnctP/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1SxUvXu2gThUbT7N7aYq1hHOSEB020t-4/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 4",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 9"
+          ],
+          "GRADE 4": [
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 6"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K20",
+        "name": "3D shapes",
+        "type": "Kit",
+        "concept": "Geometry",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1ytqLCqPzxzkhU7tKQcwB6fuLMgjeEaoi/view?usp=drive_link",
+        "videoUrl": null,
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 5"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 5"
+          ],
+          "GRADE 5": [
+            "ch 9"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K21",
+        "name": "Fraction strips (wood) (CSC)",
+        "type": "Kit",
+        "concept": "Fraction",
+        "language": "Gujarati",
+        "ownership": "Vikram Sarabhai",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1VNw5VlxPkxfa77qMI5HvXLPqzC-RHyyE/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1OciuJsTZer_M_nbkIZBEeHhVzvSKZzeT/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 11",
+            "ch 9"
+          ],
+          "GRADE 5": [
+            "ch 4",
+            "ch 10"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K22",
+        "name": "Fraction strips (chart paper)",
+        "type": "Kit",
+        "concept": "Fraction",
+        "language": "Gujarati",
+        "ownership": "Vikram Sarabhai",
+        "quantity": 49,
+        "storageLocation": "Cupboard 1",
+        "photoUrl": "https://drive.google.com/file/d/1s3d5UGqMXasHaa3i8hrqRponseXKtkaV/view?usp=drive_link https://drive.google.com/file/d/1_MYikccX_3y_KNbMEBQT8UC7rUUxLcs6/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1OciuJsTZer_M_nbkIZBEeHhVzvSKZzeT/view?usp=drive_link",
+        "canvaUrl": "https://canva.link/x65hqn8si971bfz",
+        "grades": [
+          "GRADE 5",
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 11",
+            "ch 9"
+          ],
+          "GRADE 5": [
+            "ch 4",
+            "ch 10"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K23",
+        "name": "Match box",
+        "type": "Kit",
+        "concept": "Pattern",
+        "language": "No Language",
+        "ownership": "TIDE",
+        "quantity": 59,
+        "storageLocation": "Bag 1",
+        "photoUrl": "https://drive.google.com/file/d/1xcAw9bFyXktpnnmeiu4CTz9LpcEZYYAy/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1CfZO8JRvA3BbJb5-UsXuSlyib9VCQEOy/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 3",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 11"
+          ],
+          "GRADE 3": [
+            "ch 5",
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 5"
+          ],
+          "GRADE 5": [
+            "ch 2",
+            "ch 3"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K24",
+        "name": "Mirrors for symmetry",
+        "type": "Kit",
+        "concept": "Line of Symmetry",
+        "language": "English",
+        "ownership": "TIDE",
+        "quantity": 17,
+        "storageLocation": "Bag 1",
+        "photoUrl": "https://drive.google.com/file/d/1Ogg9MtHIKn1mC91Rskptq3IqJ3dN-kCK/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1yY-VsTaRT-gFwUCTb5P6DXtXfYSW5Sz3/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 3",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K25",
+        "name": "Feel the number",
+        "type": "Kit",
+        "concept": "Number recognition",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 34,
+        "storageLocation": "Bag 2",
+        "photoUrl": "https://drive.google.com/file/d/1CPxCraJPmgqA7j9d3Ff8MZk8kJdqklhT/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1DdRkwwNuPn8jQo-QVSbXfmxbPOQohz0S/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 2"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K26",
+        "name": "Make your number (TIDE)",
+        "type": "Kit",
+        "concept": "Place value",
+        "language": "English",
+        "ownership": "TIDE",
+        "quantity": 80,
+        "storageLocation": "Bag 2",
+        "photoUrl": "https://drive.google.com/file/d/11_vfkpvTygDxEZyuFi6FugjIwtr6pgMi/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1QnNENmO0Xcfxwt8UP8I7VmrTXN8MVDlo/view?usp=drive_link",
+        "canvaUrl": "https://canva.link/kpflcp6o9iwo6gi",
+        "grades": [
+          "GRADE 5",
+          "GRADE 1",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 8"
+          ],
+          "GRADE 2": [
+            "ch 2"
+          ],
+          "GRADE 3": [
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": [
+            "ch 1",
+            "ch 10"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K27",
+        "name": "Fraction circle",
+        "type": "Kit",
+        "concept": "Visual aid to help in mathematical concept of fraction",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 27,
+        "storageLocation": "Bag 2",
+        "photoUrl": "https://drive.google.com/file/d/1bak-RWVS0MZ8KfAzpyDCkmjwoLJIIX6Q/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1B65EZEnkdXOf0g_-Z85b8ScF2gZ8ghGo/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 4",
+          "GRADE 5",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 12"
+          ],
+          "GRADE 4": [
+            "ch 9",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 4"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K28",
+        "name": "Hexagon number puzzle",
+        "type": "Kit",
+        "concept": "Arrangement of numerical values in hexagon shapes",
+        "language": "Gujarati",
+        "ownership": "TIDE, Other",
+        "quantity": 48,
+        "storageLocation": "Bag 1",
+        "photoUrl": "https://drive.google.com/file/d/1f40E-Qe96kMvlv-qTcQjpYVYaAl9fcp0/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1SpjTzgdfGpyllP29HI58DEo0m5zIXPdb/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 4",
+          "GRADE 1",
+          "GRADE 3",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 5"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": [
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K29",
+        "name": "360 measuring circle",
+        "type": "Kit",
+        "concept": "To measure various angles of a circle using a 360-degree measuring circle",
+        "language": "No Language",
+        "ownership": "TIDE",
+        "quantity": 19,
+        "storageLocation": "Bag 1",
+        "photoUrl": "https://drive.google.com/file/d/1GBzRzDH_INFETLU4D83BaJnsZlCPElW6/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1X3B0vBHmlZZ1ZCwNvQfRExbRy82q3vLX/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 4",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 13"
+          ],
+          "GRADE 4": [
+            "ch 8"
+          ],
+          "GRADE 5": [
+            "ch 2"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K30",
+        "name": "Spirograph",
+        "type": "Kit",
+        "concept": "Creating intricate geometric patterns using a geometric drawing tool",
+        "language": "No Language",
+        "ownership": "TIDE",
+        "quantity": 11,
+        "storageLocation": "Bag 4",
+        "photoUrl": "https://drive.google.com/file/d/1VSzVt_nySTOrkHlsBT70jq8TtP5--jKW/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1l99KZPivpHCA9C1oxivPLuJ9qXGwCRFy/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 4",
+          "GRADE 5",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 5"
+          ],
+          "GRADE 4": [
+            "ch 8"
+          ],
+          "GRADE 5": [
+            "ch 5",
+            "ch 7"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K 31",
+        "name": "3D Shapes wooden",
+        "type": "Kit",
+        "concept": "understanding of various 3D shapes",
+        "language": "No Language",
+        "ownership": "Jodo Gyan",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/14leCklYbOCoPCplj7vXQYyVFUsqWknYu/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1lhu6tI3yVk278KrNwa4EwGDHHfkK7IAd/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 4",
+          "GRADE 5",
+          "GRADE 2",
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 5"
+          ],
+          "GRADE 4": [
+            "ch 1",
+            "ch 5"
+          ],
+          "GRADE 5": [
+            "ch 9"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "K32 (26 in Gujarati)",
+        "name": "Make your number (TIDE)",
+        "type": "Kit",
+        "concept": "Place value",
+        "language": "English",
+        "ownership": "TIDE",
+        "quantity": 80,
+        "storageLocation": "Bag 2",
+        "photoUrl": "https://drive.google.com/file/d/11_vfkpvTygDxEZyuFi6FugjIwtr6pgMi/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1QnNENmO0Xcfxwt8UP8I7VmrTXN8MVDlo/view?usp=drive_link",
+        "canvaUrl": "https://canva.link/4cwwyecfjcmbz77",
+        "grades": [
+          "GRADE 5",
+          "GRADE 1",
+          "GRADE 4",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 8"
+          ],
+          "GRADE 2": [
+            "ch 2"
+          ],
+          "GRADE 3": [
+            "ch 2"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": [
+            "ch 1",
+            "ch 10"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      }
+    ],
+    "Flashcards": [
+      {
+        "id": "F1",
+        "name": "Ank Nu (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Helps students explore and understand numbers through identification and practice.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1-2O0qtTMmlzZQ9hahnm8zQzal6OJcBAg/view?usp=sharing",
+        "videoUrl": "https://drive.google.com/file/d/1NK0SpVq4JdnAfSI1Qd5tSmr04udi1CFd/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 3",
+          "GRADE 1",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 5",
+            "ch 2"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 2"
+          ],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F2",
+        "name": "Sabd Ank Nu (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Develops understanding of number names and their word forms.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1ILgWTukBJ7L2iQo5RjJZlptapBAfX-_J/view?usp=sharing",
+        "videoUrl": "https://drive.google.com/file/d/1spZKt3nkjign7HpdgrCQP4Ymi7n5eI_v/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 3",
+          "GRADE 1",
+          "GRADE 2",
+          "GRADE 4",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 2",
+            "ch 5"
+          ],
+          "GRADE 2": [
+            "ch 2",
+            "ch 8"
+          ],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6"
+          ],
+          "GRADE 5": [
+            "ch 1"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F3",
+        "name": "Sarvada nu (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Helps students learn addition through practice and problem solving.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1LB5oxuJ8QO_ofdgC1mGhIuOhkyLDOL4-/view?usp=sharing",
+        "videoUrl": "https://drive.google.com/file/d/19MyCXifCUGaqKH8w8gGYE3Aq-wpj_2PA/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 2",
+            "ch 6",
+            "ch 10",
+            "ch 12",
+            "ch 15"
+          ],
+          "GRADE 3": [
+            "ch 9",
+            "ch 6",
+            "ch 14",
+            "ch 2",
+            "ch 3"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6"
+          ],
+          "GRADE 5": [
+            "ch 1",
+            "ch 3"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F4",
+        "name": "Parimiti nu (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Introduces the concept of perimeter by measuring boundaries of shapes.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/11L3QfFFAouL2qDDKfJJwJA_dhu4xxJrp/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1MmNs7d1-rKdlP2ez3NTpObXXzjK6_b3V/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 13"
+          ],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 13"
+          ],
+          "GRADE 5": [
+            "ch 11"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F5",
+        "name": "Apurnanka nu (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Helps learners understand fractions and their parts.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/13Dp5ATyg9-XFWAeuB48oOjf9uOE97VAW/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/13vC9kvKYg1EyIzf3WnJgjuJm3OLPrbMe/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 9"
+          ],
+          "GRADE 5": [
+            "ch 4"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F6",
+        "name": "Shabd nu (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Enhances vocabulary and word recognition skills.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1Ik7MDvRcbeXgaMVhoE6ZPEs61k-IfC2Z/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1Mxs1poD5jx21XvIeKpPhvw3C7AlIDpKW/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F7",
+        "name": "Kram no niyam (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Teaches sequence and pattern recognition.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1F7meSaONdkwIxd2ASD10nDQROp08wCQx/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1NVXsqK79zgO-c9xhwRzC3nPlkB6Dkzti/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 12"
+          ],
+          "GRADE 4": [
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 13",
+            "ch 6"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F8",
+        "name": "Gajab nu (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Encourages logical thinking through fun problem-solving activities.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1WbfQkpt84gMeWVMCiFA3CTj_70oft4Nu/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1NVXsqK79zgO-c9xhwRzC3nPlkB6Dkzti/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 5",
+          "GRADE 2",
+          "CHGRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 2",
+            "ch 6",
+            "ch 11",
+            "ch 15"
+          ],
+          "GRADE 3": [
+            "ch 6",
+            "ch 10",
+            "ch 13"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 14"
+          ],
+          "GRADE 5": [
+            "ch 1",
+            "ch 3",
+            "ch 8",
+            "ch 12"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F9",
+        "name": "Samanarthi Sabd (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Helps students learn synonyms and similar meaning words.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/13rKp3p73IYpXHbNN-T3EHdGV0-9c1kGD/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1hDIZHHwh8m0IJ9HVEf5HTq_MEdVQC-iw/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F10",
+        "name": "Kudrat ne khodo (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Creates awareness about nature and the environment.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1YZg3EjomNe5rHa8UCzYeWS1rnMXPCcpa/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1hDIZHHwh8m0IJ9HVEf5HTq_MEdVQC-iw/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F11",
+        "name": "Gajab nu (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Develops observation and reasoning skills through activities.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1-okLTIa8f84NtpirIBvcJw7VCVWE1J7J/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1DadSrm0oAbyjQXIaNyUTQqAq6MA-KN7x/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 2",
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 2",
+            "ch 6",
+            "ch 11",
+            "ch 15"
+          ],
+          "GRADE 3": [
+            "ch 2",
+            "ch 14",
+            "ch 6"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 7"
+          ],
+          "GRADE 5": [
+            "ch 1",
+            "ch 3",
+            "ch 13"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F12",
+        "name": "Sabd Parthi Vakya Banavo (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Helps students form sentences using given words.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1K-9xLGGi1lZDs8yayPfy1AxrgzPJdTwM/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1R6UnLRff1UR1w_2qyGZJ4_te8A8ZYOdk/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F13",
+        "name": "Gundakar Nu (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Develops multiplication skills through practice.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1MwMjlT2sa10jLqsQHzkFiH-ZihPT0vid/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1N5lLXNNxgi-LvPZTqdJDyMQ3eP3Y5kiE/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 6",
+            "ch 13"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F14",
+        "name": "Samay Nu (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Helps students understand time and its measurement.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1CDFOxx6z-D6AmwiyLKyAnA9aaZaOEHyx/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1NQC8RaofM2R8S7bPoX9IHGITa5I9Voud/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 4"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F15",
+        "name": "Baadbaaki - yaadshakti ni ramat (Anusandhan)",
+        "type": "Flashcard",
+        "concept": "Improves subtraction skills and memory power.",
+        "language": "Gujarati",
+        "ownership": "Anusandhan",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1YcADCqLSsKYeIY3LqMfbED-Gx-aJfICh/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1UW74Idn2Lob6vL2qUIGF4QBMQvEiJGMV/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 2",
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 12"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 14"
+          ],
+          "GRADE 4": [
+            "ch 3"
+          ],
+          "GRADE 5": [
+            "ch 1"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F16",
+        "name": "ભાગાકાર ની મજા",
+        "type": "Flashcard",
+        "concept": "Helps students practice division concepts.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1qnqvfaiv7tQ18uZZExc3iD8NoFjUxZIm/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1SyJrQPsBp4TOYgaqpLxhJErWBU8_sORy/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAHCUDYydKA/Ze0x0D4WhaFq_XiM08W_Pw/edit?utm_content=DAHCUDYydKA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE3",
+          "GRADE4",
+          "GRADE5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 12"
+          ],
+          "GRADE 4": [
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 6",
+            "ch 13"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F17",
+        "name": "એકમની ધમાલ",
+        "type": "Flashcard",
+        "concept": "Develops number recognition and understanding.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1b-t5gYWhD28_A1R1ayGP74TicMsOjH5Q/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1yZA8Cqi1rWL8wsjMd0-BJhuE01-ochiZ/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGE02JtP4I/rQ83Zhjc0jpCcQx9rPqTVw/edit?utm_content=DAGE02JtP4I&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 3"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 6",
+            "ch 7"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 7"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 7"
+          ],
+          "GRADE 5": [
+            "ch 1"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F18",
+        "name": "બાદબાકી ની મજા",
+        "type": "Flashcard",
+        "concept": "Teaches subtraction through problem solving.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1j3qUXZ3KZIran35AKFUSbpxIkEL-mW-f/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1Y-amcVj-xY6lhP2fa8769yFI6lFDm7gQ/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGE004slPE/fDJpH-Pxbfs45qHymHkgPg/edit?utm_content=DAGE004slPE&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 2",
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 12"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 6",
+            "ch 14"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F19",
+        "name": "ભાગુસબાની મજા",
+        "type": "Flashcard",
+        "concept": "Provides practice of different math concepts together.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1sTEjD9WDFgZWbrzh7aaZkwgXPqGsWFc5/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1qQ7KWy_dtj_Ckgr6jl-8ZIhFn6vI147-/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGE0wBOTtQ/cyGmM0IzB62B6_qfUwlrNw/edit?utm_content=DAGE0wBOTtQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 1",
+          "GRADE 2",
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3",
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 2",
+            "ch 6",
+            "ch 15",
+            "ch 10"
+          ],
+          "GRADE 3": [
+            "ch 2",
+            "ch 6",
+            "ch 14"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 1",
+            "ch 4",
+            "ch 6",
+            "ch 12"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F20",
+        "name": "અપૂર્ણાંકની મજા",
+        "type": "Flashcard",
+        "concept": "Helps understand fractions and their values.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1wXI2YWBH9CZ9UHmaSaJIMHS0CXqTZoXm/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1Hm-6E-kIs-_D8Hz7W3i_SlgSOjcVz1MD/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGE03kReOs/u5eoHaGY-BNtZ4SEShMH7A/edit?utm_content=DAGE03kReOs&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 4",
+          "GRADE 3",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 12"
+          ],
+          "GRADE 4": [
+            "ch 9",
+            "ch 11"
+          ],
+          "GRADE 5": [
+            "ch 4"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F21",
+        "name": "સમયનું જ્ઞાન",
+        "type": "Flashcard",
+        "concept": "Strengthens understanding of time concepts.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1ON5YhpEUutzBcn2i47JzIOGsO6o83FZO/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1udbBIVShHiUN5kGM2GXd1lnURhxmAPyq/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGWoSVl-UI/km5xZSoF_o-n_-mHFKMe2g/edit?utm_content=DAGWoSVl-UI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 4"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F22",
+        "name": "સરવાળાની મજા",
+        "type": "Flashcard",
+        "concept": "Improves addition skills.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1XHW96XAT6nZNCqyhhobCcC0p4HMCh6Hh/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1PYrpoAwkMHtWF7RskG37-qOWr4o-JsJF/view?usp=drive_link",
+        "canvaUrl": "https://canva.link/yuywdgpt03p9b6u",
+        "grades": [
+          "GRADE1",
+          "GRADE2",
+          "GRADE3",
+          "GRADE4",
+          "GRADE5"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3"
+          ],
+          "GRADE 2": [
+            "ch 2",
+            "ch 6",
+            "ch 10",
+            "ch 11",
+            "ch 15"
+          ],
+          "GRADE 3": [
+            "ch 2",
+            "ch 6",
+            "ch 14"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6"
+          ],
+          "GRADE 5": [
+            "ch 1"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F23",
+        "name": "ગુણાકારની મજા",
+        "type": "Flashcard",
+        "concept": "Develops multiplication understanding.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1cbsO7CFXN1evw2JA-tJ1PLdqApjdPEDl/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1UJHsruL9GH964Y01Z1dRBDIQW8cZ3QYf/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGE0xS7qdA/Mb8U_8_7ggOxZs6zbWhA-g/edit?utm_content=DAGE0xS7qdA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 5",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 12"
+          ],
+          "GRADE 5": [
+            "ch 3",
+            "ch 11"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F24",
+        "name": "પરિમિતિની ઓળખ",
+        "type": "Flashcard",
+        "concept": "Helps learn perimeter measurement.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1iFsyDFCcAidbMLbQcKv69ync1aTfs0tA/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/16gH9rgiIGEbyryly95AubO8FsmZKxSJG/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGE0-Rb4UI/HLcBLJNYoA73vUMPInnNHw/edit?utm_content=DAGE0-Rb4UI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 13"
+          ],
+          "GRADE 5": [
+            "ch 11"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F25",
+        "name": "સરવાળાની મજા",
+        "type": "Flashcard",
+        "concept": "Reinforces addition concepts.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1s929Fc5nDpxfH_AsegXqKN4sVmtSirBm/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/19Wc9QF5WM7FXuwHPkqY3yvqCtybhxKQl/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAHCUfiKgKQ/Rj4uy5EXB3ik8OMFZNnkNA/edit?utm_content=DAHCUfiKgKQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 1",
+          "GRADE 2",
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 3"
+          ],
+          "GRADE 2": [
+            "ch 2",
+            "ch 6",
+            "ch 11",
+            "ch 10",
+            "ch 15"
+          ],
+          "GRADE 3": [
+            "ch 2",
+            "ch 6",
+            "ch 14"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6"
+          ],
+          "GRADE 5": [
+            "ch 1",
+            "ch 3"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F26",
+        "name": "વાક્ય નિર્માણ",
+        "type": "Flashcard",
+        "concept": "Develops sentence formation skills.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/18NYVTJKKJNSpaS35t5vxf7WqW21aSIvW/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1JEe5wDMc9P03IMeySueSUBhs9w7Lb1DS/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F27",
+        "name": "ટકાવારી",
+        "type": "Flashcard",
+        "concept": "Introduces percentage concepts and calculations.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1SRMoLJp1VzajXCChnAxYGWSX0eUdc4aI/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1MyGEv5PPUtNGVlA575bXvYdZWj7e5odz/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGE0xBRoL0/VseI3atdWRK_VnFsbcGpmg/edit?utm_content=DAGE0xBRoL0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F28",
+        "name": "હાવભાવ",
+        "type": "Flashcard",
+        "concept": "Helps understanding diffrent expressions.",
+        "language": "English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1fhKvC6pvZW-_fbJ6ZK5oHFVxSFlgZiLL/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1uHHQg66wFbHv_MRRPEsX8Gtqnru_fnrk/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGWdRsV1zs/SIeBpX8n625B9Zjl-pigiw/edit?utm_content=DAGWdRsV1zs&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F29",
+        "name": "એકમ થી સો",
+        "type": "Flashcard",
+        "concept": "Builds number recognition from 1 to 100.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1gV_PBI8JJtu9VJti7VJR0ycEGiM93gRt/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/17sKwST2YNQmxqG8FeGWtjbA1J8aHioKd/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGX2lKxYsc/RgDf1zjBzR3Jt5n1WbSL3w/edit?utm_content=DAGX2lKxYsc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 2",
+            "ch 5"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F30",
+        "name": "એકવચન બહુવચન",
+        "type": "Flashcard",
+        "concept": "Teaches singular and plural word forms.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/13h8XoUSp1K-EuFwkXkrH9dSkLKExSX2S/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1kGaXHW6ekwIW1cjFNQK6-iuy9tFCT7OW/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGJhMmhB_c/8UaWabI_R4_DmTttySA6eQ/edit?utm_content=DAGJhMmhB_c&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F31",
+        "name": "ગુજરાતી બારાક્ષરી",
+        "type": "Flashcard",
+        "concept": "Helps learn Gujarati letters and pronunciation.",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/13rnrdtRIHher4mmaG_2TAkXVR1hM-LFl/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1e67nIlAD8nELhevBbIcQZljR7Z0AZzj8/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGJghGZsWQ/RBE_Lqp-_OyVHe1dy-oHng/edit?utm_content=DAGJghGZsWQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F32",
+        "name": "આલેખ ની સમજણ",
+        "type": "Flashcard",
+        "concept": "Develops skills to read and understand data from charts.",
+        "language": "English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1zGRiTnkVnE96EUxTpZL_WUhynS7LDK1m/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1HR5hu4zlF8knHQVU4tBTKoU49VAVq55q/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGZ_90cvkA/QXzG5MkAXsPd28aDzsNMZg/edit?utm_content=DAGZ_90cvkA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 5",
+          "GRADE 3",
+          "GRADE 4"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [
+            "ch 13"
+          ],
+          "GRADE 4": [
+            "ch 14"
+          ],
+          "GRADE 5": [
+            "ch 12"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F33",
+        "name": "સારી આદતો",
+        "type": "Flashcard",
+        "concept": "Teaches positive daily habits and values.",
+        "language": "English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1SJfsabY4HI9RFeIgV39odxSCDhGuSy0Q/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1-tIkZ2ljld0Q43uGeyt3C0WmfCKTBVCv/view?usp=drive_link",
+        "canvaUrl": "https://www.canva.com/design/DAGZ55QIot8/xvRbLFNJwHTBrz6NGo8lKQ/edit?utm_content=DAGZ55QIot8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": "will cover the good habit written on the card and let the children guess through picture",
+        "referenceLink": null
+      },
+      {
+        "id": "F34",
+        "name": "આલેખ સરખાવો",
+        "type": "Flashcard",
+        "concept": "Helps understand graphs and data representation.",
+        "language": "English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1XX5bfuiP3l_rVFJ_-tK7dYCPspUb7kzv/view?usp=drive_link",
+        "videoUrl": null,
+        "canvaUrl": "https://www.canva.com/design/DAGZ_90cvkA/QXzG5MkAXsPd28aDzsNMZg/edit?utm_content=DAGZ_90cvkA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+        "grades": [
+          "GRADE 5",
+          "GRADE 4",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 7"
+          ],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [
+            "ch 14"
+          ],
+          "GRADE 5": [
+            "ch 12"
+          ]
+        },
+        "description": "There are two sets of flashcards- one with situation and other with type of data representation. Students will have to match the situation with appropriate graph(s)",
+        "referenceLink": null
+      },
+      {
+        "id": "F35",
+        "name": "પ્રાણીને ઓળખો",
+        "type": "Flashcard",
+        "concept": "Helps identify animals and learn about them.",
+        "language": "English",
+        "ownership": "Other",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1VlvGXNrAgynS-kJlhqJ1a95971uH8BAv/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1Y9mBU5FOn-VlaGYoNdTHyTHdJjhsxhYc/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F36",
+        "name": "આકારની સમજ",
+        "type": "Flashcard",
+        "concept": "Teaches identification of different shapes.",
+        "language": "English",
+        "ownership": "Other",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1ON1UaKkFVvz0u_FaUGsi9d7NzBATm35W/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1vEKmlBJigqLS9q2dKG7iYH8zKXAucfR4/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 2",
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 5"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 1"
+          ],
+          "GRADE 2": [
+            "ch 13"
+          ],
+          "GRADE 3": [
+            "ch 5"
+          ],
+          "GRADE 4": [
+            "ch 14"
+          ],
+          "GRADE 5": [
+            "ch 12"
+          ]
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F37",
+        "name": "રોજિંદુ જીવન",
+        "type": "Flashcard",
+        "concept": "Helps understand everyday activities and time management.",
+        "language": "English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1KPHZuUNsObtViqxWxTRBjrMSoyl6Ud6v/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1AddjY0d9erm4SbKnygUXqs3EGgBzxpBQ/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F38",
+        "name": "સામાજિક વ્યાવસાય",
+        "type": "Flashcard",
+        "concept": "Introduces different professions and their roles.",
+        "language": "English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1b3LPv55qWO2x8xfymZqozxPNSgJM859G/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/19Qq_V0XMMRbhTneD9iocHVgNNg6lagz8/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F39",
+        "name": "ફૂલ",
+        "type": "Flashcard",
+        "concept": "Helps identify plants and understand nature.",
+        "language": "Gujarati, English, Hindi",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1hvZcvRPnWwz5GyLOkwpU1237S0G_zmJH/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1tcQs-b0uIxHLFqakD5mimWIOTzqy6feE/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F40",
+        "name": "શાકભાજી",
+        "type": "Flashcard",
+        "concept": "understanding of aligning certain vegetables with their seasons",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Cupboard 2",
+        "photoUrl": "https://drive.google.com/file/d/1vxnbFYjlvSVA3zwvCLuGCWei3ozQeAx1/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1PyCVN5q-y0Dg7c7k-yC8yhxAOLkfvxBJ/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [
+          "GRADE 1",
+          "GRADE 2"
+        ],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [
+            "ch 2",
+            "ch 5"
+          ],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F41",
+        "name": "આકારજોડો",
+        "type": "Flashcard",
+        "concept": "Understanding shapes",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1dmFTXo06uOTIB6HleNVH8JTdvdd3ALWs/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1fBdezNe1dgi39jrOJE0_zwbLDbimmDFu/view?usp=drive_link",
+        "canvaUrl": null,
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F42",
+        "name": "માપન ઓળખો",
+        "type": "Flashcard",
+        "concept": "Understanding Measurements",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1ocEco0JOeCTufscz528ZYiJ-unjRyngF/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/1QQI6eGqRKFQ7lMO7CghZRBzqtb7M8la7/view?usp=drive_link",
+        "canvaUrl": "https://canva.link/x3pbeef4fepouyc",
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F43",
+        "name": "પરિમિતિની area ઓળખ",
+        "type": "Flashcard",
+        "concept": "Perimeter and area learning",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": "https://drive.google.com/file/d/1MAbFaA-6WULvuDLP1CEt88_qAPumzMLs/view?usp=drive_link",
+        "videoUrl": "https://drive.google.com/file/d/11zjigst5oe7HIY92anXVuwTA6PX81ANM/view?usp=drive_link",
+        "canvaUrl": "https://canva.link/z8cug4v5fphlcsu",
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F44",
+        "name": "પરિમિતિની area introduction",
+        "type": "Flashcard",
+        "concept": "Introduction to area and perimeter",
+        "language": "Gujarati, English",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": null,
+        "videoUrl": null,
+        "canvaUrl": "https://canva.link/8f3gc9hzhnqu1il",
+        "grades": [],
+        "chapters": {
+          "GRADE 1": [],
+          "GRADE 2": [],
+          "GRADE 3": [],
+          "GRADE 4": [],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      },
+      {
+        "id": "F45",
+        "name": "બાદબાકી with borrowing",
+        "type": "Flashcard",
+        "concept": "Introduction to area and perimeter",
+        "language": "Gujarati",
+        "ownership": "TIDE",
+        "quantity": 1,
+        "storageLocation": "Bag 5",
+        "photoUrl": null,
+        "videoUrl": null,
+        "canvaUrl": "https://canva.link/z8cug4v5fphlcsu",
+        "grades": [
+          "GRADE 2",
+          "GRADE 3",
+          "GRADE 4",
+          "GRADE 1"
+        ],
+        "chapters": {
+          "GRADE 1": [
+            "ch 4"
+          ],
+          "GRADE 2": [
+            "ch 12"
+          ],
+          "GRADE 3": [
+            "ch 3",
+            "ch 6",
+            "ch 14"
+          ],
+          "GRADE 4": [
+            "ch 3",
+            "ch 6"
+          ],
+          "GRADE 5": []
+        },
+        "description": null,
+        "referenceLink": null
+      }
+    ]
+  },
+  "meta": {
+    "counts": {
+      "Worksheet": 52,
+      "Games": 32,
+      "Kits": 32,
+      "Flashcards": 45
+    },
+    "total": 161
+  }
+}
