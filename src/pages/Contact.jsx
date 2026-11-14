@@ -3,6 +3,7 @@ import { Mail, Phone, MapPin, Clock, MessageCircle, ArrowUpRight } from 'lucide-
 import { FacebookIcon, InstagramIcon, LinkedinIcon } from '../components/ui/SocialIcons'
 import SeoHead from '../components/ui/SeoHead'
 import PageHero from '../components/ui/PageHero'
+import Highlight from '../components/ui/Highlight'
 import Button from '../components/ui/Button'
 import data from '../data/contact.json'
 import site from '../data/site.json'
@@ -51,7 +52,11 @@ export default function Contact() {
 
             <ul className="divide-y divide-tide-border border-y border-tide-border">
               <InfoRow icon={MapPin} label={data.labels.address}>
-                <a href={data.map.mapsUrl} target="_blank" rel="noopener noreferrer" className={`${LINK} leading-relaxed`}>{data.info.address}</a>
+                <a href={data.map.mapsUrl} target="_blank" rel="noopener noreferrer" className={`${LINK} leading-relaxed`}>
+                  {data.info.addressHighlights?.length
+                    ? <Highlight text={data.info.address} words={data.info.addressHighlights} />
+                    : data.info.address}
+                </a>
               </InfoRow>
               <InfoRow icon={Phone} label={data.labels.phone}>
                 {data.info.phones.map(phone => (

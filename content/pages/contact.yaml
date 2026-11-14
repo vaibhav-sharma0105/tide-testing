@@ -8,6 +8,10 @@ meta:
 
 info:
   address: "TIDE Foundation, 2nd floor of BCM corporation, 1 Kalpana Society, behind Navrangpura, Ahmedabad, Gujarat 380009"
+  # Words in the address given a soft amber highlight — the building the map pin points to.
+  # Must match the address text exactly (capitalisation aside).
+  addressHighlights:
+    - "BCM corporation"
   phones:
     - "+91 99798 82648"
     - "+91 70410 94082"
