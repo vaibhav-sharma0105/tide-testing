@@ -246,12 +246,13 @@ The address, phone numbers and office hours are in `content/pages/contact.yaml`:
 
 ```yaml
 info:
-  address: "8 Deepawali Centre (1st Floor), ..."
+  address: "TIDE Foundation, 2nd floor of BCM corporation, ..."
   phones:
     - "+91 99798 82648"
     - "+91 70410 94082"
   email: "tidefoundation@gmail.com"
-  officeHours: "Monday – Friday, 9:00 AM – 6:00 PM"
+  officeHours: "Monday – Saturday"
+  officeTimes: "9:00 AM – 6:00 PM"
 ```
 
 The footer reads its email and first phone number from this same file, so those update together.

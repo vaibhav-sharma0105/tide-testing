@@ -69,7 +69,7 @@ The feedback proposes a significant restructure of the site's information archit
 **File:** `content/shared/footer.yaml`
 
 Current footer columns need the following additions/changes:
-- Add Google Maps link for the Ahmedabad address: `https://maps.app.goo.gl/5bDtQ3RPQ5FXZMWr8`
+- Add Google Maps link for the Ahmedabad address: `https://www.google.com/maps/search/?api=1&query=BCM+Corporation%2C+Navrangpura%2C+Ahmedabad%2C+Gujarat+380009` (replaced the earlier short links, which did not land on BCM Corporation)
 - Confirm social links are live (FB, LinkedIn, Instagram — already present but verify URLs)
 - Footer column nav links will need updating once nav restructure is done (A3)
 

@@ -8,13 +8,14 @@
     "seoDescription": "Get in touch with TIDE Foundation — Ahmedabad, Gujarat, India."
   },
   "info": {
-    "address": "8 Deepawali Centre (1st Floor), Opp Old High Court, Nr Income Tax Circle, Ahmedabad 380014, Gujarat, India",
+    "address": "TIDE Foundation, 2nd floor of BCM corporation, 1 Kalpana Society, behind Navrangpura, Ahmedabad, Gujarat 380009",
     "phones": [
       "+91 99798 82648",
       "+91 70410 94082"
     ],
     "email": "tidefoundation@gmail.com",
-    "officeHours": "Monday – Friday, 9:00 AM – 6:00 PM"
+    "officeHours": "Monday – Saturday",
+    "officeTimes": "9:00 AM – 6:00 PM"
   },
   "labels": {
     "getInTouch": "Get in touch",
@@ -41,25 +42,16 @@
   ],
   "cta": {
     "whatsappLabel": "WhatsApp Us",
-    "whatsappHref": "https://wa.me/917041094082",
+    "whatsappHref": "https://wa.me/919979882648",
     "emailLabel": "Email Us",
     "emailHref": "mailto:tidefoundation@gmail.com"
   },
   "map": {
-    "label": "Ahmedabad, Gujarat, India",
-    "mapsUrl": "https://maps.google.com/?q=8+Deepawali+Centre+Ahmedabad",
-    "mapsLabel": "View on Google Maps →"
-  },
-  "form": {
-    "title": "Send a Message",
-    "namePlaceholder": "Your name",
-    "emailPlaceholder": "Your email",
-    "messagePlaceholder": "Your message",
-    "submitLabel": "Send Message",
-    "ariaLabel": "Contact form",
-    "mailSubject": "Message from TIDE Website",
-    "mailName": "Name:",
-    "mailEmail": "Email:",
-    "mailMessage": "Message:"
+    "eyebrow": "Find us",
+    "title": "Visit us in Navrangpura, Ahmedabad",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=BCM+Corporation%2C+Navrangpura%2C+Ahmedabad%2C+Gujarat+380009",
+    "mapsLabel": "Open in Google Maps",
+    "embedQuery": "BCM Corporation, Navrangpura, Ahmedabad, Gujarat 380009",
+    "embedTitle": "Map showing the TIDE Foundation office in Navrangpura, Ahmedabad"
   }
 }

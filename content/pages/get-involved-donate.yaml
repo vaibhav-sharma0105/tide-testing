@@ -9,29 +9,41 @@ meta:
 hero:
   heading: "Support TIDE Foundation"
   body: "Your donation directly funds programs that will reach thousands of people across India. To make a donation or learn about CSR partnerships, please reach out to us directly."
+  impactValue: "52,500+"
+  impactLabel: "lives impacted across Gujarat"
   highlights:
-    - "52,500+ lives impacted across Gujarat"
     - "80G tax exemption available for Indian donors"
     - "CSR partnership opportunities available"
   emailCta: "Email to donate"
   email: "tidefoundation@gmail.com"
-  whatsappCta: "WhatsApp us"
+  whatsappCta: "WhatsApp us to donate"
+  whatsappText: "wa.me/919979882648"
   whatsappUrl: "https://wa.me/919979882648"
+
+cue:
+  label: "Ready to support?"
+
+closing:
+  heading: "Together in Development and Education"
+  body: "To make a donation or learn about CSR partnerships, please reach out to us directly."
 
 bank:
   title: "Donate Directly"
   qrTitle: "Scan QR Code"
   qrPlaceholder: "QR code coming soon"
-  transferTitle: "Bank Transfer"
-  accountNameLabel: "Account name"
+  transferTitle: "Bank transfer"
+  transferIntro: "Please use following bank detail:"
+  copiedLabel: "Copied"
+  copyAria: "Copy {label}"
+  accountNameLabel: "Account Name"
   accountName: "TIDE Foundation"
-  accountNumberLabel: "Account number"
+  accountNumberLabel: "Bank A/c Number"
   accountNumber: "50200018421062"
-  bankNameLabel: "Bank"
+  bankNameLabel: "Bank Name"
   bankName: "HDFC Bank"
-  ifscLabel: "IFSC"
+  ifscLabel: "IFSC Code"
   ifsc: "HDFC0000006"
-  branchLabel: "Branch"
+  branchLabel: "Bank Branch"
   branch: "HDFC Bank, Navrangpura"
 
 image:
