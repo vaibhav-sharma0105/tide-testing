@@ -1,7 +1,7 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import { ArrowRight, BookOpen, Users, Heart, Lightbulb, GraduationCap, Globe, Quote } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SeoHead from '../components/ui/SeoHead'
 import Button from '../components/ui/Button'
 import data from '../data/home.json'
@@ -25,13 +25,38 @@ const fadeIn = (delay = 0) => ({
   viewport: { once: true },
   transition: { duration: 0.55, delay },
 })
+const EASE_OUT_EXPO = [0.16, 1, 0.3, 1]   // long, soft settle for the hero photo reveal
 
 /* ═══════════════════════════════════════════════════════════════════ */
 export default function Home() {
   const heroRef = useRef(null)
+  const heroImgRef = useRef(null)
+  const reduceMotion = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const heroY       = useTransform(scrollYProgress, [0, 1], ['0%', '25%'])
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
+  const heroY       = useTransform(scrollYProgress, [0, 1], reduceMotion ? ['0%', '0%'] : ['0%', '25%'])
+  // Hold the copy fully opaque for the first stretch of scroll so a tiny nudge doesn't dim it
+  const heroOpacity = useTransform(scrollYProgress, [0.12, 0.7], [1, 0])
+
+  // Reveal the hero photo only once it is fully downloaded AND decoded, so it never
+  // paints in strips (baseline JPEG) or pops in over a half-drawn frame.
+  const [heroReady, setHeroReady] = useState(false)
+  useEffect(() => {
+    const img = heroImgRef.current
+    if (!img) return
+    let live = true
+    const reveal = () => { if (live) setHeroReady(true) }
+    const decodeThenReveal = () => (img.decode ? img.decode().then(reveal, reveal) : reveal())
+    if (img.complete && img.naturalWidth) decodeThenReveal()       // already cached
+    else {
+      img.addEventListener('load', decodeThenReveal, { once: true })
+      img.addEventListener('error', reveal, { once: true })          // placeholder swap takes over
+    }
+    return () => {
+      live = false
+      img.removeEventListener('load', decodeThenReveal)
+      img.removeEventListener('error', reveal)
+    }
+  }, [])
 
   return (
     <>
@@ -45,11 +70,23 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════════════════
           HERO — full-viewport photo with parallax
       ══════════════════════════════════════════════════════════════ */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden">
+      {/* bg-navy matches the overlay's darkest tone, so before the photo arrives the hero
+          reads as a deliberate dark stage rather than a grey wash of the page background */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden bg-navy">
 
-        {/* Background photo with parallax */}
-        <motion.div style={{ y: heroY }} className="absolute inset-0 -top-[10%] -bottom-[10%]">
-          <img src={`${B}${data.hero.backgroundImage}`} alt="" fetchPriority="high" className="w-full h-full object-cover object-center" />
+        {/* Background photo with parallax (outer layer: scroll transform; inner: one-time reveal) */}
+        <motion.div style={{ y: heroY }} className="absolute inset-0 -top-[10%] -bottom-[10%] will-change-transform">
+          <motion.img
+            ref={heroImgRef}
+            src={`${B}${data.hero.backgroundImage}`}
+            alt=""
+            fetchPriority="high"
+            decoding="async"
+            initial={false}
+            animate={heroReady ? { opacity: 1, scale: 1 } : { opacity: 0, scale: reduceMotion ? 1 : 1.06 }}
+            transition={{ duration: reduceMotion ? 0.4 : 1.4, ease: EASE_OUT_EXPO }}
+            className="w-full h-full object-cover object-center will-change-transform"
+          />
         </motion.div>
 
         {/* Overlay */}
@@ -95,7 +132,7 @@ export default function Home() {
             <motion.div {...fadeUp(0.5)} className="mt-12 flex flex-wrap gap-3">
               {data.hero.pills.map((s) => (
                 <div key={s.label}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/12 border border-white/20 backdrop-blur-sm"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/12 border border-white/20"
                 >
                   <span className="font-display font-bold text-white text-sm">{s.value}</span>
                   <span className="text-white/60 text-xs font-body">{s.label}</span>
@@ -107,30 +144,38 @@ export default function Home() {
           {/* Floating photo cards — right side on large screens */}
           <div className="hidden xl:block absolute right-16 top-1/2 -translate-y-1/2">
             <div className="relative w-[280px] h-[400px]">
-              <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-                className="animate-float absolute top-0 right-0 w-52 h-64 rounded-2xl overflow-hidden shadow-float border-2 border-white/20"
-              >
-                <img src={`${B}${data.hero.floatPhotos[0].src}`} alt="" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 photo-overlay rounded-2xl" />
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.85, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-                className="absolute bottom-0 left-0 w-44 h-56 rounded-2xl overflow-hidden shadow-float border-2 border-white/20"
-                style={{ animationDelay: '2s' }}
-              >
-                <img src={`${B}${data.hero.floatPhotos[1].src}`} alt="" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 photo-overlay rounded-2xl" />
-              </motion.div>
+              {/* Each card: outer div owns the endless CSS float, inner motion.div owns the
+                  one-time slide-in — two transforms on one element would fight each other */}
+              <div className="animate-float absolute top-0 right-0 w-52 h-64">
+                <motion.div
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6, duration: 0.9, ease: EASE_OUT_EXPO }}
+                  className="relative h-full w-full rounded-2xl overflow-hidden shadow-float border-2 border-white/20"
+                >
+                  <img src={`${B}${data.hero.floatPhotos[0].src}`} alt="" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 photo-overlay rounded-2xl" />
+                </motion.div>
+              </div>
+              {/* negative delay = starts mid-cycle, so the two cards bob out of phase */}
+              <div className="animate-float absolute bottom-0 left-0 w-44 h-56" style={{ animationDelay: '-3s' }}>
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.85, duration: 0.9, ease: EASE_OUT_EXPO }}
+                  className="relative h-full w-full rounded-2xl overflow-hidden shadow-float border-2 border-white/20"
+                >
+                  <img src={`${B}${data.hero.floatPhotos[1].src}`} alt="" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 photo-overlay rounded-2xl" />
+                </motion.div>
+              </div>
+              {/* solid near-white instead of .glass: a backdrop blur over the moving parallax
+                  photo is re-computed every scroll frame and drops out when the copy fades */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.1, duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-                className="absolute bottom-24 right-4 glass rounded-2xl px-4 py-3 shadow-float"
+                className="absolute bottom-24 right-4 bg-white/95 rounded-2xl px-4 py-3 shadow-float"
               >
                 <div className="font-display font-bold text-primary text-xl leading-none">{data.hero.floatLivesValue}</div>
                 <div className="text-xs text-tide-muted font-body mt-0.5">{data.hero.floatLives}</div>
