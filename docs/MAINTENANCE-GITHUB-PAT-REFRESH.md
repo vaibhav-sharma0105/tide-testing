@@ -4,7 +4,9 @@
 
 **When do I need this?** Fine-grained GitHub tokens expire on a date you chose when creating them (commonly 1 year). When the token used by the Apps Script (`GITHUB_PAT`) expires, Sheet edits stop reaching the website quickly — they then wait for the automatic run every 6 hours. Two reminders arrive beforehand: GitHub's own email to the token's owner, and — only if GitHub reports the expiry date to the script, which is not documented — an Apps Script email **"[Pramaan website] GitHub token expires in N day(s)"** 30, 7 and 1 days before. **The reliable reminder is your own calendar entry** made when you create the token.
 
-**Time required:** ~10 minutes.
+**Two Sheets, two tokens.** The Pramaan Library Sheet's script has its own `GITHUB_PAT` (recommended name `pramaan-library-sheet`, permission **Actions: Read and write** on this repository only). Renew it the same way: Steps 1–3 below, in the library Sheet's Apps Script, and test with its `testDispatch`. Its failure email is titled **"[Pramaan Library website] GitHub refused the update"**.
+
+**Time required:** ~10 minutes (per token).
 
 ---
 

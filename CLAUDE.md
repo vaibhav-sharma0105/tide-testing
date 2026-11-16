@@ -46,27 +46,31 @@ src/
     ErrorBoundary.jsx  # friendly crash screen (text from error.yaml; message/stack shown only in DEV)
     abl/       # AblNavBar, ResourceCard, ResourceGrid, ResourceFilters, Pagination,
                # ResourceTypeBadge, DriveImage, ImageLightbox, VideoLightbox, PromoVideo, PhotoStrip
+    library/   # LibraryFilters, LibraryDropdown, LibraryCard, LibraryTypeBadge  (/pramaan-library)
   pages/
     Home.jsx / Contact.jsx / THRIvE.jsx / EducationForHarmony.jsx / ComingSoon.jsx / NotFound.jsx
     about/         # WhyTide, PastPrograms, OurTeam, OurPartners, PublicationsCombined
     get-involved/  # Volunteer, Donate, OrganizeMCCx
     resources/     # AblHome, AblResourceCenter, AblDetail, AblContribute  (the Pramaan screens)
+    library/       # PramaanLibrary, PramaanLibraryDetail  (unlinked, noindex)
   hooks/           # useABLData, useLightbox, useModalBehavior, useFocusTrap,
                    # useDelayedVisible, useScrollAnimation
-  config/          # abl.js (API URL, TTL, page size, TAB_STYLE_MAP, getTabStyle, TYPE_COLORS, getTypeColors)
-  utils/           # imgSrc, motionPresets, ablThumbnails, driveUtils, filterResources, imagePlaceholder
-  test/            # Vitest suite (19 files, 246 tests) — incl. test/scripts/ (snapshot rules, simulated Apps Script)
-  App.jsx          # BrowserRouter + 20 <Route>s + ErrorBoundary
+  config/          # abl.js (API URL, TTL, page size, TAB_STYLE_MAP, getTabStyle, TYPE_COLORS, getTypeColors), library.js
+  utils/           # imgSrc, motionPresets, ablThumbnails, driveUtils, filterResources, imagePlaceholder,
+                   # libraryFilters, videoLinks, libraryPhotos (Pramaan Library)
+  test/            # Vitest suite (23 files, 294 tests) — incl. test/scripts/ (snapshot rules, simulated Apps Script)
+  App.jsx          # BrowserRouter + 22 <Route>s + ErrorBoundary
   main.jsx         # Entry point; calls installImagePlaceholder()
   index.css        # Global styles + Tailwind base
 
 content/
-  pages/         # One YAML per page/screen (17 files) — edit these to change content
+  pages/         # One YAML per page/screen (18 files) — edit these to change content
   shared/        # 9 YAMLs: navigation, footer, common, ui, loader, error, not-found, coming-soon, site
                  # + llms.txt (template for /llms.txt — not YAML, so the sync ignores it)
 
 src/data/        # AUTO-GENERATED JSON — never edit directly
-                 # (abl-thumbnails-manifest.json and sheets/abl-resources.json are written by the Pramaan sync — also never hand-edit)
+                 # (abl-thumbnails-manifest.json and sheets/abl-resources.json are written by the Pramaan sync,
+                 #  pramaan-library-photos.json and sheets/pramaan-library.json by the library sync — also never hand-edit)
 
 scripts/
   yaml-to-json.js          # YAML → JSON (runs via predev/prebuild)
@@ -76,16 +80,18 @@ scripts/
   bootstrap-yaml.js        # Writes starter navigation.yaml/footer.yaml (mirroring the current ones) only if absent
   sync-abl-thumbnails.js   # Pramaan sync job (GitHub Actions): data snapshot + photos
   lib/abl-snapshot.js      # pure rules for the sync: field allowlist, safety thresholds, photo plan
-  ci/alert-issue.sh        # opens/updates/closes the owner-alert GitHub Issues (both workflows)
+  sync-pramaan-library.js  # Pramaan Library sync (GitHub Actions) + lib/library-snapshot.js (its rules)
+  ci/alert-issue.sh        # opens/updates/closes the owner-alert GitHub Issues (all three workflows)
   a11y-audit.cjs           # axe-core scan of every route (manual)
 
 e2e/             # Playwright specs (3 files, run against `npm run dev`)
 apps-script/abl/ # Code.gs — the Pramaan Apps Script (source of truth; pasted into Google by the owner)
+apps-script/pramaan-library/ # Code.gs — the Pramaan Library Apps Script (same idea, second Sheet)
 docs/            # ABL spec/setup/migration guides, architecture diagrams, specs/
 ```
 
 ## Pages
-`src/App.jsx` registers 20 `<Route>`s (19 lazy-loaded page components): 17 primary routes and 3 system routes (`/coming-soon`, `/404`, `*`).
+`src/App.jsx` registers 22 `<Route>`s (21 lazy-loaded page components): 19 primary routes and 3 system routes (`/coming-soon`, `/404`, `*`).
 
 > **Note:** the site underwent a route restructure (see `docs/specs/site-restructure-plan.md`) — current paths use `/pramaan/*` and `/education-for-harmony/*`. The 16 older routes (`/projects/*`, `/about/our-results`, `/get-involved/work-with-us`, `/get-involved/mccx`, `/resources/*`) were **removed outright** by owner decision, with no redirects: those URLs now fall through to the `*` route and render the NotFound page (`src/test/routing/removedRoutes.test.jsx` asserts this).
 
@@ -104,6 +110,7 @@ docs/            # ABL spec/setup/migration guides, architecture diagrams, specs
 | `/pramaan/resource-centre` | AblResourceCenter | `abl-resource-center.json` + API |
 | `/pramaan/resource-centre/:id` | AblDetail | `abl-detail.json` + API |
 | `/pramaan/contribute` | AblContribute | `abl-contribute.json` + env config |
+| `/pramaan-library` + `/:id` | PramaanLibrary, PramaanLibraryDetail | `pramaan-library.json` + snapshot `sheets/pramaan-library.json` (**unlinked**, noindex — see below) |
 | `/get-involved/volunteer` | Volunteer | `get-involved-volunteer.json` |
 | `/get-involved/donate` | Donate | `get-involved-donate.json` |
 | `/thrive` | THRIvE | `thrive.json` |
@@ -133,7 +140,7 @@ npm run content:bootstrap  # Write starter navigation.yaml/footer.yaml if missin
 npm run dev                # auto-syncs then starts Vite dev server (localhost:5173)
 npm run build              # auto-syncs then builds to dist/
 npm run lint               # ESLint — includes the no-hardcoded-text guard below
-npm test                   # Vitest (19 files / 246 tests)
+npm test                   # Vitest (23 files / 294 tests)
 npm run test:e2e           # Playwright (starts/reuses `npm run dev`)
 ```
 
@@ -219,6 +226,9 @@ The sync workflow additionally needs an `ABL_SYNC_TOKEN` repo secret and the rep
 - `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md` — step-by-step to change the Contribute form link (the `VITE_ABL_CONTRIBUTE_FORM_URL` GitHub secret + a re-run of the deploy)
 - `docs/ARCHITECTURE.html` — interactive end-to-end system diagram, organized by **who does each step** (non-technical-friendly). Open directly in a browser — standalone, not part of the build.
 - `docs/ARCHITECTURE-DATAFLOW.html` — companion diagram for technical readers, organized by **system layer and direction of data flow** instead — request/response contracts, caching TTLs, trust boundaries (Google infra / GitHub infra / build-time / runtime), and a secrets/credentials reference table. Keep both diagrams in sync when the architecture changes.
+
+## Pramaan Library (second Sheet, unlinked page)
+A separate form-format Sheet ("Contributing to Pramaan; Educators' Resource Bank (Responses)") feeds `/pramaan-library` — deliberately not in any menu, footer, sitemap or llms.txt, and `noindex`. Snapshot mode only (no live API): `apps-script/pramaan-library/Code.gs` (no public listing; publishes a row only when the three consent columns Q–S are "Yes"; never outputs the personal columns L–P) → `.github/workflows/sync-pramaan-library.yml` → `scripts/sync-pramaan-library.js` (+ `scripts/lib/library-snapshot.js`) → `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json`, `public/assets/images/pramaan-library/` (bot-owned, never hand-edit). Secrets `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`. UI: `src/pages/library/`, `src/components/library/`, `src/config/library.js`, `src/utils/libraryFilters.js`, `videoLinks.js`, `libraryPhotos.js`; text in `content/pages/pramaan-library.yaml`. Owner setup: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`; column rules: `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`; status/checklist: `docs/PRAMAAN-HARDENING-PLAN.md` §12.
 
 ## Known Gotchas and Open Decisions
 - **`imgSrc()` is not idempotent** when `BASE_URL` is `/tide-testing/`: applying it twice yields a wrong URL on GitHub Pages (invisible in dev). `Lightbox` already applies it to every image `src` itself, so don't pre-apply it. Verify with a `GITHUB_ACTIONS=true` build/preview at `/tide-testing/`.

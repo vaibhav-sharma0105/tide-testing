@@ -49,6 +49,10 @@ Because of this, the Google-side guide does **not** use Google Drive's "transfer
 
 ---
 
+## The second Sheet (Pramaan Library)
+
+The page `/pramaan-library` has its **own** Sheet ("Contributing to Pramaan; Educators' Resource Bank (Responses)") with its own Apps Script, token, GitHub secrets (`PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`) and workflow (`sync-pramaan-library.yml`). Move it the same way, after the main Sheet: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md` → "Moving everything to a new owner". That Sheet holds contributors' personal data (columns L–P) — share it only with the new owner.
+
 ## After both migrations are complete
 
 - [ ] New owner can see and edit the Google Sheet.
@@ -56,6 +60,7 @@ Because of this, the Google-side guide does **not** use Google Drive's "transfer
 - [ ] New owner owns the GitHub repository, and the original developer still has collaborator access (this happens automatically for personal-to-personal transfers — see the GitHub guide).
 - [ ] Live site loads correctly at its new URL and shows current data.
 - [ ] A test edit in the Sheet shows up on the live site within a few minutes (confirms the whole pipeline survived the move, end to end).
+- [ ] The same for the Pramaan Library Sheet: a test edit shows up on `/pramaan-library`.
 - [ ] Drive photo folders are readable by the new owner (Google guide Step 2b).
 - [ ] Alerts reach the new owner: GitHub variable `ALERT_ASSIGNEE` and Script Property `ALERT_EMAIL` updated; the cron schedule changed once by the new owner (GitHub guide Step 7).
 - [ ] Every row of `docs/OPERATIONS-INVENTORY.md` points at the new owner, with the token expiry date in their calendar.

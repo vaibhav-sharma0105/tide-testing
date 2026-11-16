@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "badge": "Pramaan · Library",
+    "title": "Pramaan Resource Library",
+    "subtitle": "Teaching materials shared by educators. Filter by subject, type, grade and owner.",
+    "seoTitle": "Pramaan Resource Library — TIDE Foundation",
+    "seoDescription": "Teaching materials shared by educators through the Pramaan resource bank.",
+    "emptyTitle": "No resources published yet",
+    "emptyHint": "Resources appear here once they are approved for sharing in the Pramaan Sheet.",
+    "lastUpdatedTemplate": "Last updated {date}"
+  },
+  "page": {
+    "filtersButton": "Filters",
+    "closeFiltersLabel": "Close filters",
+    "showResultsTemplate": "Show {n} {resources}",
+    "resourceSingular": "resource",
+    "resourcePlural": "resources",
+    "showing": "Showing",
+    "of": "of"
+  },
+  "filters": {
+    "heading": "Filters",
+    "clear": "Clear",
+    "removeTemplate": "Remove filter: {name}",
+    "searchPlaceholder": "Search by name, concept or description…",
+    "searchLabel": "Search resources",
+    "clearSearchLabel": "Clear search",
+    "subjectTitle": "Subject",
+    "allSubjects": "All subjects",
+    "typeTitle": "Type of material",
+    "allTypes": "All types",
+    "gradesTitle": "Grades",
+    "gradeTemplate": "Grade {n}",
+    "foundational": "Foundational",
+    "ownershipTitle": "Ownership",
+    "allOwners": "All owners",
+    "optionCountTemplate": "{name}, {n} resources"
+  },
+  "sort": {
+    "label": "Sort by",
+    "options": {
+      "subject": "Subject",
+      "type": "Type of material",
+      "owner": "Ownership"
+    },
+    "ascending": "A → Z",
+    "descending": "Z → A",
+    "directionLabelTemplate": "Sort order: {dir}. Click to reverse."
+  },
+  "grid": {
+    "noResults": "No resources match your filters",
+    "noResultsHint": "Try adjusting or clearing your filters"
+  },
+  "card": {
+    "viewTemplate": "View {name}",
+    "videoAvailable": "Video available",
+    "imageAltFallback": "Resource",
+    "ownedBy": "Owned by",
+    "moreGradesTemplate": "+{n} more"
+  },
+  "detail": {
+    "backLabel": "Back to the library",
+    "titleTemplate": "{name} — Pramaan Resource Library",
+    "notFoundSeoTitle": "Resource Not Found — Pramaan Resource Library",
+    "notFoundHeading": "Resource Not Found",
+    "notFoundTemplate": "No resource found with ID \"{id}\".",
+    "subject": "Subject",
+    "owner": "Owned by",
+    "concept": "Concept",
+    "about": "About this resource",
+    "explanationVideo": "Explanation video",
+    "playVideoLabel": "Play explanation video",
+    "openVideo": "Watch video",
+    "openFile": "Open the file",
+    "additionalInfo": "More links and information",
+    "viewFullImageLabel": "View full image",
+    "viewLarger": "Tap to view larger",
+    "videoLogo": "assets/images/shared/tide-logo.png",
+    "coverageTitle": "Curricular alignment (NCERT chapters)",
+    "coverageHint": "Tap a grade to see its chapters.",
+    "shortGradeTemplate": "G{n}",
+    "shortFoundational": "Fdn",
+    "chapterSeparator": " — "
+  }
+}

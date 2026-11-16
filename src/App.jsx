@@ -37,6 +37,8 @@ const AblHome             = lazy(() => import('./pages/resources/AblHome'))
 const AblResourceCenter   = lazy(() => import('./pages/resources/AblResourceCenter'))
 const AblDetail           = lazy(() => import('./pages/resources/AblDetail'))
 const AblContribute       = lazy(() => import('./pages/resources/AblContribute'))
+const PramaanLibrary      = lazy(() => import('./pages/library/PramaanLibrary'))
+const PramaanLibraryDetail = lazy(() => import('./pages/library/PramaanLibraryDetail'))
 const NotFound            = lazy(() => import('./pages/NotFound'))
 const ComingSoon          = lazy(() => import('./pages/ComingSoon'))
 
@@ -75,6 +77,10 @@ export default function App() {
               <Route path="/pramaan/resource-centre" element={<AblResourceCenter />} />
               <Route path="/pramaan/resource-centre/:id" element={<AblDetail />} />
               <Route path="/pramaan/contribute" element={<AblContribute />} />
+
+              {/* Pramaan Library (form-format Sheet). Deliberately unlinked: no menu, footer or sitemap entry, noindex */}
+              <Route path="/pramaan-library" element={<PramaanLibrary />} />
+              <Route path="/pramaan-library/:id" element={<PramaanLibraryDetail />} />
 
               {/* Get Involved */}
               <Route path="/get-involved/volunteer" element={<Volunteer />} />

@@ -27,13 +27,13 @@
 | Web app requests per day | not published | not published | Google publishes no daily cap. |
 | Time per execution | 6 min | 6 min | The sync's export must finish well inside this (alert above 120 s). |
 | Trigger run time, total per day | 90 min | 6 hours | Edit/tick triggers use < 5 min on a heavy day. |
-| Installable triggers | 20 per user per script | 20 per user per script | We use 2 (On change, 5-minute tick). |
+| Installable triggers | 20 per user per script | 20 per user per script | Pramaan Sheet: 2 (On change, 5-minute tick). Pramaan Library Sheet: 3 (On change, On form submit, 5-minute tick). |
 | URL Fetch calls per day | 20,000 | 100,000 | Dispatches to GitHub; < 350 on a heavy day. |
 | URL Fetch response size | 50 MB per call | 50 MB per call | Not relevant. |
 | Script Properties reads/writes per day | 50,000 | 500,000 | Debounce bookkeeping; ~3–4k on a heavy day. |
 | Script Property value size | 9 KB per value | 9 KB per value | Tokens and timestamps only. |
 | Script Properties total | 500 KB per store | 500 KB per store | Fine. |
-| CacheService value size | 100 KB per key | 100 KB per key | Large data must be split (Pramaan caches per tab). |
+| CacheService value size | 100 KB per key | 100 KB per key | Large data must be split (Pramaan caches per tab). The library's photo map is one key — about 1,500 IDs fit; beyond that photo requests re-read the Sheet (slower, still works). |
 | CacheService longest expiry | 6 hours | 6 hours | We use 15 minutes. |
 | CacheService items | 1,000 (oldest dropped beyond that) | same | Fine. |
 
@@ -45,7 +45,7 @@ Quotas reset 24 hours after the first request. Google may delete a personal acco
 | Limit | Value | This site today | Verdict |
 |---|---|---|---|
 | Repository visibility | **Public required** on GitHub Free | Public | Must stay public |
-| Published site size | 1 GB | 45 MB (Pramaan photos 29 MB / 318 files, ~90 KB each) | Room for ~10,000 more photos |
+| Published site size | 1 GB | 45 MB before the library (Pramaan photos 29 MB / 318 files, ~90 KB each) + Pramaan Library photos 31 MB / 332 files (2026-11-16) | Room for several thousand more photos |
 | Bandwidth | 100 GB / month (soft) | not measured; a few MB per visit | Tens of thousands of visits/month |
 | Builds per hour | 10 / hour (soft) | **does not apply** — we deploy with a custom Actions workflow | OK |
 | Deploy timeout | 10 minutes | ~1–2 minutes | OK |

@@ -9,8 +9,9 @@ import rcData from '../../data/abl-resource-center.json'
 const CLEAR = { background: 'rgba(8,16,32,0)', backdropFilter: 'blur(0px) saturate(100%)', WebkitBackdropFilter: 'blur(0px) saturate(100%)' }
 const TRANSLUCENT = { background: 'rgba(8,16,32,0.66)', backdropFilter: 'blur(18px) saturate(130%)', WebkitBackdropFilter: 'blur(18px) saturate(130%)' }
 
-export default function ImageLightbox({ id, alt, onClose }) {
-  const src = getAblThumbnail(id, 'full')
+// `src` overrides the Pramaan (ABL) photo lookup — the Pramaan Library passes its own photo path.
+export default function ImageLightbox({ id, alt, onClose, src: srcOverride }) {
+  const src = srcOverride !== undefined ? srcOverride : getAblThumbnail(id, 'full')
   const containerRef = useFocusTrap(!!id)
   useModalBehavior({ active: id, onClose })
 

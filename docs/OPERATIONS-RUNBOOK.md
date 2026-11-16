@@ -26,17 +26,20 @@
 | A photo doesn't show / shows an old photo | The `sheet-needs-attention` issue names the row if Drive couldn't be read. Check the photo link in the Sheet opens for the owner account. Changed photos can take a few minutes to appear (browser cache). |
 | Banner in GitHub Actions: "This scheduled workflow is disabled" | Click **Enable workflow**, then **Run workflow**. (GitHub disables schedules after 60 days without activity; the workflow and the Apps Script heartbeat normally prevent this.) |
 | Want to republish now | Actions → **Sync ABL Thumbnails** (data/photos) or **Deploy to GitHub Pages** (site code) → **Run workflow**. **Never use "Re-run" on an old run** — use Run workflow. |
+| **Pramaan Library** (`/pramaan-library`): an issue titled **"Pramaan Library sync failed"** or **"Pramaan Library Sheet: some rows need attention"** | Same actions as above, but for the library: the workflow is **Sync Pramaan Library**, the script is the one inside the library Sheet, the GitHub secrets are `PRAMAAN_LIBRARY_API_URL` / `PRAMAAN_LIBRARY_SYNC_TOKEN`. Full table: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md` → "How you hear about problems" and "Troubleshooting". |
+| Library run summary says **"N photo(s) still to download — the next run continues"** | Normal after many new photos: each run downloads at most 100 (about 20 minutes). Wait for the next run, or start one: Actions → **Sync Pramaan Library** → Run workflow. |
+| A library video shows "Sorry, the file you have requested does not exist" or "You need access" | The Drive video isn't shared publicly. Open it as its owner → **Share → General access → Anyone with the link (Viewer)**. No sync needed. |
 | Something looks badly wrong after a change and you need the old version back | Ask the developer to `git revert` the change; every published version is in the repository history. |
 
 ## Health checklists
 
 **Monthly (5 minutes)**
 - [ ] No open issues labelled `automation-alert` on GitHub.
-- [ ] GitHub → Actions → **Sync ABL Thumbnails** shows green runs in the last day.
+- [ ] GitHub → Actions → **Sync ABL Thumbnails** and **Sync Pramaan Library** show green runs in the last day.
 - [ ] `/pramaan` "Last updated" date matches the last time the Sheet was edited.
 
 **Yearly (30 minutes)**
-- [ ] Renew the GitHub token **before** its expiry date (`MAINTENANCE-GITHUB-PAT-REFRESH.md`).
+- [ ] Renew the GitHub token(s) **before** their expiry date (`MAINTENANCE-GITHUB-PAT-REFRESH.md`) — the library Sheet's script has its own `GITHUB_PAT`.
 - [ ] Sign in to the Google account that owns the Sheet (Google may delete accounts unused for 2 years).
 - [ ] Walk `docs/OPERATIONS-INVENTORY.md`; update anything that changed and the "Last verified" dates.
 - [ ] Re-check `docs/PLATFORM-LIMITS.md` against the official pages (limits can change).
@@ -46,6 +49,6 @@
 **At a handover (owner changes)**
 - [ ] Follow `docs/MIGRATION-OVERVIEW.md` (Google side first, then GitHub).
 - [ ] Update GitHub variable `ALERT_ASSIGNEE` and Script Property `ALERT_EMAIL` to the new owner.
-- [ ] New owner creates their **own** GitHub token and puts it in `GITHUB_PAT`.
-- [ ] New owner changes the `cron:` schedule in `.github/workflows/sync-abl-thumbnails.yml` once — e.g. the minute `17` → `23` — so GitHub's schedule emails go to them (GitHub notifies whoever last changed the cron syntax; a comment edit may not count).
+- [ ] New owner creates their **own** GitHub token(s) and puts them in `GITHUB_PAT` in **both** Sheets' scripts (Pramaan and Pramaan Library).
+- [ ] New owner changes the `cron:` schedule in `.github/workflows/sync-abl-thumbnails.yml` **and** `sync-pramaan-library.yml` once — e.g. the minute `17` → `23` — so GitHub's schedule emails go to them (GitHub notifies whoever last changed the cron syntax; a comment edit may not count).
 - [ ] Walk `docs/OPERATIONS-INVENTORY.md` together and fill every ⚠️ row.

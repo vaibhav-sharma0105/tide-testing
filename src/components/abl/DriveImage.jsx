@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { BookOpen } from 'lucide-react'
 import { getAblThumbnail } from '../../utils/ablThumbnails'
 
-export default function DriveImage({ id, alt, className = '', variant = 'thumb', imgClassName = '' }) {
+// `src` overrides the Pramaan (ABL) photo lookup — the Pramaan Library passes its own photo path.
+export default function DriveImage({ id, alt, className = '', variant = 'thumb', imgClassName = '', src: srcOverride }) {
   const [loaded,  setLoaded]  = useState(false)
   const [errored, setErrored] = useState(false)
-  const src = getAblThumbnail(id, variant)
+  const src = srcOverride !== undefined ? srcOverride : getAblThumbnail(id, variant)
 
   return (
     <div className={`relative aspect-[3/4] overflow-hidden bg-tide-subtle ${className}`}>

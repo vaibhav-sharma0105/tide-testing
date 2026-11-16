@@ -18,7 +18,8 @@
     "test:watch": "vitest --config vitest.config.js",
     "test:ui": "vitest --ui --config vitest.config.js",
     "test:e2e": "playwright test",
-    "test:all": "npm run test && npm run test:e2e"
+    "test:all": "npm run test && npm run test:e2e",
+    "content:sync-pramaan-library": "node scripts/sync-pramaan-library.js"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",

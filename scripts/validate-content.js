@@ -127,5 +127,39 @@ function checkAblSnapshot() {
 }
 checkAblSnapshot()
 
+// Pramaan Library snapshot (form-format Sheet, scripts/sync-pramaan-library.js). Same idea, plus a
+// privacy backstop: the snapshot may hold only the allowlisted fields and no email address, so a
+// mistake can never publish contributors' personal details.
+function checkLibrarySnapshot() {
+  const snapFile = path.join('src', 'data', 'sheets', 'pramaan-library.json')
+  const manFile = path.join('src', 'data', 'pramaan-library-photos.json')
+  const allowed = new Set(['id', 'name', 'subject', 'type', 'concept', 'language', 'ownership', 'description', 'photoUrl', 'videoUrl', 'additionalInfo', 'grades', 'chapters'])
+  let snap, manifest
+  try { snap = JSON.parse(fs.readFileSync(snapFile, 'utf8')) } catch (e) { error(snapFile, `missing or not valid JSON: ${e.message}`); return }
+  try { manifest = JSON.parse(fs.readFileSync(manFile, 'utf8')) } catch (e) { error(manFile, `missing or not valid JSON: ${e.message}`); return }
+  if (snap.schemaVersion !== 1 || snap.success !== true || !Array.isArray(snap.resources)) {
+    error(snapFile, 'unexpected shape (needs schemaVersion 1, success, resources[])')
+    return
+  }
+  const ids = new Set()
+  for (const r of snap.resources) {
+    if (!r || typeof r.id !== 'string' || !r.id || typeof r.name !== 'string' || !r.name) { error(snapFile, 'a row has no id or name'); continue }
+    if (ids.has(r.id)) error(snapFile, `duplicate id ${r.id}`)
+    ids.add(r.id)
+    const extra = Object.keys(r).filter(k => !allowed.has(k))
+    if (extra.length) error(snapFile, `${r.id}: field(s) not allowed in the public snapshot: ${extra.join(', ')}`)
+    if (/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(JSON.stringify(r))) error(snapFile, `${r.id}: contains an email address`)
+  }
+  if (snap.meta?.total !== snap.resources.length) error(snapFile, `meta.total is ${snap.meta?.total} but there are ${snap.resources.length} rows`)
+  for (const [id, entry] of Object.entries(manifest)) {
+    if (!ids.has(id)) error(manFile, `photo entry ${id} has no matching resource in the snapshot`)
+    for (const rel of [entry?.thumb, entry?.full]) {
+      if (typeof rel !== 'string' || !rel.startsWith('assets/images/pramaan-library/')) { error(manFile, `${id}: bad photo path ${JSON.stringify(rel)}`); continue }
+      if (!fs.existsSync(path.join(PUBLIC_DIR, rel))) error(manFile, `${id}: missing file public/${rel}`)
+    }
+  }
+}
+checkLibrarySnapshot()
+
 console.log(`\n   ${warnings} warning(s), ${errors} error(s)\n`)
 if (errors > 0) process.exit(1)

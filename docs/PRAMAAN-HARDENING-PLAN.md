@@ -279,3 +279,65 @@ Still open:
   deploys were affected. The owner chose deletion; #1–#4 were deleted the same day (repo back to 0
   issues). The two labels were kept (the workflows use them). **Rule:** when shadowing a command for a
   test, convert paths with `cygpath -u` and assert `command -v <cmd>` points at the fake before running.
+
+## 12. Pramaan Library — the new form-format Sheet (opened 2026-11-16)
+
+**What:** a second, separate Sheet ("Contributing to Pramaan; Educators' Resource Bank (Responses)",
+id `1-tjqKTutE7TRyG3ziAeFkarKfsOcLs9pKD_f9kQGcSU`) feeds a **new, unlinked page** `/pramaan-library`
+(+ `/pramaan-library/:id`): no menu, footer or sitemap entry, `noindex`. The old `/pramaan/*` pages and
+their Sheet are untouched.
+
+**Owner decisions (2026-11-16):** publish a row only when **Q, R, S** (the three consent questions) are
+all "Yes" (the stakeholder note said "P, Q, R"; P is "Position", so Q–S was confirmed by the owner);
+filters = **Subject (B), Type (E), Ownership (K)** + **grades and chapters kept** (T–Y; Y = Foundational);
+**no language filter** (G); show **name (C), description (D), ownership (K), photo (H), video (I),
+additional link (J)**; sync **directly from the Sheet** (no CSV export).
+
+**Design (same pattern as §6, snapshot mode from day one):**
+- `apps-script/pramaan-library/Code.gs` v1 — **no public listing** (the Sheet holds personal data);
+  token-gated `export` / `fetchImage`; columns found by header text; consent filter; L–P never read
+  out; id = Internal ID, else `R-` + hash of the timestamp; Drive `open?id=` links accepted; first of
+  repeated video links; triggers On change + **On form submit** + 5-min tick; heartbeat 04:00 UTC.
+- `scripts/sync-pramaan-library.js` + `scripts/lib/library-snapshot.js` — allowlisted fields, email
+  backstop, empty library allowed only before the first publish, removal/photo-deletion limits shared
+  with §6.3. Writes `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json`,
+  `public/assets/images/pramaan-library/`.
+- `.github/workflows/sync-pramaan-library.yml` — every 6 h at :47 + dispatch; **own** concurrency group
+  `pramaan-library-sync` (sharing `sheet-sync` with the ABL sync let one workflow's queued run silently
+  replace the other's); skipped quietly **only** while secrets are missing and the committed snapshot has
+  no rows, otherwise fails loudly with the same alert issues as §6. Each run fetches at most 100 photos
+  (~20 min budget, 60 s per request) and continues next run, so it always finishes inside the 30-minute job.
+- `npm run content:validate` fails the deploy if the library snapshot has a non-allowlisted field or an
+  email address.
+- Owner guide: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`; column rules: `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`.
+
+**Verified (2026-11-16):** lint clean; 23 test files / 294 tests pass; production build passes;
+end-to-end sync against a fake Apps Script server (publish + photo, no-change run, refusal on 15→1,
+token never printed, per-run photo cap continues on the next run). On Google: script installed and
+deployed as a web app; without the token it answers `Unknown action`; `showStatus` ran. Real local
+sync (owner's machine): 245 rows → **243 published** (2 duplicate IDs), 166 photos synced. Page reviewed
+in a browser with real data at phone/tablet/laptop sizes, portrait and landscape (no horizontal overflow).
+**Found on 2026-11-16 (owner to fix in the Sheet/Drive):** duplicate IDs W52, W62; 35 photos not
+readable by the owner account (F64–F71, W62–W88; W63/W65/W66/W81 are documents, not images);
+16 Drive videos not shared publicly; F12's video link is a YouTube Studio edit link.
+**Fixed after the readiness review (2026-11-16):** YouTube embeds were blocked by the CSP (added
+`https://www.youtube-nocookie.com` to `frame-src`); email scrub now covers chapter cells; per-request
+timeout + per-run photo cap; photo file-name clash reported; own concurrency group; the push loop's last
+rebase is pushed.
+**Not verified:** `GITHUB_PAT` / `GITHUB_REPO` / `ALERT_EMAIL` set, `setup` triggers installed,
+`testDispatch`, any GitHub Actions run (secrets not added yet).
+
+### Checklist
+- [x] L1 Apps Script v1, sync, workflow, page, tests, docs (local)
+- [ ] L2 Commit and push (owner to approve) — **only after the two GitHub secrets exist**: the committed
+      snapshot has rows, so a push without them makes every run fail and alert
+- [ ] L3 Owner: setup guide Steps 1–7 — done: script, Drive service, token, web app; pending: Script
+      Properties `GITHUB_PAT` (own token) / `GITHUB_REPO` / `ALERT_EMAIL`, `setup` triggers + "notify
+      immediately", GitHub secrets, confirm `ALERT_ASSIGNEE`
+- [x] L4 Owner: fill Q/R/S = "Yes" for rows that may be shared (243 rows published locally)
+- [ ] L4b Owner: fix duplicate IDs, share the 35 photos and 16 videos, fix F12's link (lists above)
+- [ ] L5 Owner: Steps 8–9 (`testDispatch`, first green Actions run, edit test)
+- [x] L6 Visual review of `/pramaan-library` with real data (local, 2026-11-16)
+- [x] L7 Doc sync (2026-11-16): CLAUDE.md, AGENTS.md, OPERATIONS-INVENTORY/RUNBOOK, PLATFORM-LIMITS,
+      MIGRATION-OVERVIEW, MAINTENANCE-GITHUB-PAT-REFRESH, setup guide, schema, both ARCHITECTURE diagrams
+- [ ] L8 Decide later: link the page from the site (then remove `noindex`, add to sitemap/llms.txt)

@@ -250,7 +250,7 @@ const NODES = {
     in:['sheet'], out:['gh-dispatch-workflow'] },
   'gh-dispatch-workflow': { layer:'backend', title:'sync-abl-thumbnails.yml', path:'.github/workflows/sync-abl-thumbnails.yml',
     desc:'Triggers: workflow_dispatch (Apps Script + manual; input allow_large_change), schedule (17 */6 * * *), legacy repository_dispatch. No pull_request trigger. Concurrency group sheet-sync, never cancelled. npm ci --ignore-scripts → sync → (if changed) ONE commit of src/data/sheets/abl-resources.json + public/assets/images/abl + the manifest, push with rebase retry → gh workflow run deploy.yml. Issues: automation-alert on failure, sheet-needs-attention for row problems (assigned to vars.ALERT_ASSIGNEE).',
-    contract:'permissions: contents: write\nconcurrency: sync-abl-thumbnails (no cancel-in-progress)\nenv: VITE_ABL_API_URL, ABL_SYNC_TOKEN  (from repo secrets)',
+    contract:'permissions: contents: write\nconcurrency: sheet-sync (no cancel-in-progress)\nenv: VITE_ABL_API_URL, ABL_SYNC_TOKEN  (from repo secrets)',
     in:['apps-script-onedit'], out:['sync-script'] },
   'sync-script': { layer:'backend', title:'sync-abl-thumbnails.js', path:'scripts/sync-abl-thumbnails.js',
     desc:'Validates the export with scripts/lib/abl-snapshot.js (field allowlist, row checks, structural thresholds — refuses and keeps the last good snapshot), writes the snapshot, re-downloads photos whose fileId or modifiedTime changed, and deletes photos only when their row is gone (a Drive error keeps the old photo). Each request is retried up to 3 times.',
@@ -270,6 +270,30 @@ const NODES = {
   'ablthumbnails-util': { layer:'app', title:'ablThumbnails.js', path:'src/utils/ablThumbnails.js',
     desc:'getAblThumbnail(id, variant) — the single chokepoint every image-rendering component goes through (src/components/abl/DriveImage.jsx and ImageLightbox.jsx, used by the resource cards and detail page). Returns null on a manifest miss; callers render a fallback, never a broken-image icon.',
     in:['manifest-json'], out:['abl-pages'] },
+
+  // ===== Pramaan Library dataflow (second Sheet) =====
+  'lib-sheet': { layer:'source', title:'Library Sheet (form responses)', path:'"Contributing to Pramaan; Educators\' Resource Bank (Responses)"',
+    desc:'Google Form answers, one row per resource. Columns found by header text, not letter. Published only when Q, R, S (consent) all start with "Yes". Columns L–P (timestamp, email, name, institution, position) are personal data and never leave Google.',
+    in:[], out:['lib-apps-script'] },
+  'lib-apps-script': { layer:'backend', title:'pramaan-library/Code.gs (v1)', path:'apps-script/pramaan-library/Code.gs',
+    desc:'No public listing. doGet answers only token-gated actions; anything else → { success:false, error:"Unknown action" }. Triggers: On change, On form submit, 5-min tick (debounced dispatch + daily heartbeat 04:00 UTC); failures email ALERT_EMAIL ("[Pramaan Library website] …").',
+    contract:'GET ?action=export&token=...\n  → { success, scriptVersion:1, resources:[allowlisted fields], stats{rows,published,notConsented,noName,generatedIds}, problems[], photos[{id,fileId,modifiedTime}] }\nGET ?action=fetchImage&id=...&token=...\n  → { success, base64, modifiedTime }  (id must be a consented row)\nPOST https://api.github.com/repos/{GITHUB_REPO}/actions/workflows/sync-pramaan-library.yml/dispatches',
+    security:'Constant-time token compare. fetchImage resolves the id through the consented rows first — never a raw Drive id from the request. Own GITHUB_PAT recommended (revocable separately from the ABL one).',
+    in:['lib-sheet'], out:['lib-workflow','lib-sync-script'] },
+  'lib-workflow': { layer:'backend', title:'sync-pramaan-library.yml', path:'.github/workflows/sync-pramaan-library.yml',
+    desc:'Triggers: workflow_dispatch (Apps Script + manual; allow_large_change), schedule 47 */6 * * *. No pull_request trigger. Job "check" skips quietly ONLY when the secrets are missing and the committed snapshot has no rows; otherwise job "sync" runs and any failure opens the automation-alert issue. Commits only the library paths, pushes with rebase retry, then gh workflow run deploy.yml. Row problems → sheet-needs-attention issue.',
+    contract:'concurrency: pramaan-library-sync (no cancel-in-progress; separate from the ABL queue)\ntimeout-minutes: 30\nenv: PRAMAAN_LIBRARY_API_URL, PRAMAAN_LIBRARY_SYNC_TOKEN',
+    in:['lib-apps-script'], out:['lib-sync-script'] },
+  'lib-sync-script': { layer:'backend', title:'sync-pramaan-library.js', path:'scripts/sync-pramaan-library.js + scripts/lib/library-snapshot.js',
+    desc:'Field allowlist; email addresses removed from any field (and chapter entries); refuses an empty library after a publish, removals over max(10, 20%) and large photo deletions; 2 MB cap. Photos: at most 100 per run within ~20 min, each request 60 s timeout and 3 tries; the rest continue next run. Photo file names come from the id; two ids mapping to one name are reported, not overwritten.',
+    security:'redactToken() on every log/error line. Ids allowlist-validated before any path use; deletions checked to stay inside public/assets/images/pramaan-library/.',
+    in:['lib-workflow','lib-apps-script'], out:['lib-snapshot'] },
+  'lib-snapshot': { layer:'artifact', title:'Library snapshot + photos', path:'src/data/sheets/pramaan-library.json · pramaan-library-photos.json · public/assets/images/pramaan-library/',
+    desc:'Bot-owned. npm run content:validate (in deploy.yml) fails on a non-allowlisted field, an email address, a duplicate id, or a photo entry without its files.',
+    in:['lib-sync-script'], out:['lib-pages','gh-pages-deploy'] },
+  'lib-pages': { layer:'app', title:'PramaanLibrary / PramaanLibraryDetail', path:'src/pages/library/*.jsx',
+    desc:'Imports the snapshot at build time (no runtime request to Google). Filters with counts that follow the other filters, sort subject|type|owner asc|desc, 9 per page, URL-synced state. Unlinked + noindex. Videos: Drive → /preview, YouTube → youtube-nocookie embed (both in the CSP frame-src).',
+    in:['lib-snapshot'], out:['vite-build'] },
 
   // ===== Build & deploy =====
   'vite-build': { layer:'app', title:'Vite build', path:'vite.config.js',
@@ -295,6 +319,9 @@ const SECRETS = [
   { name:'ABL_SYNC_TOKEN', where:'GitHub repo secret, mirrored as Code.gs Script Property SYNC_TOKEN', note:'Used only by sync-abl-thumbnails.yml (not the deploy build). Gates export/fetchImage/manifest actions. Compared in constant time (v3).' },
   { name:'GITHUB_PAT', where:'Code.gs Script Property only — never in the GitHub repo itself', note:'Fine-grained, single-repo, Actions:Read-and-write only. Used by onSheetChange/tick to call the workflow_dispatch endpoint. Expiry: record it in docs/OPERATIONS-INVENTORY.md.' },
   { name:'GITHUB_REPO', where:'Code.gs Script Property', note:'owner/repo string — must be updated if the repo is ever transferred to a new owner.' },
+  { name:'PRAMAAN_LIBRARY_API_URL', where:'GitHub repo secret (+ .env.development for a local sync)', note:'Web App URL of apps-script/pramaan-library/Code.gs. Used only by sync-pramaan-library.yml — never baked into the site bundle.' },
+  { name:'PRAMAAN_LIBRARY_SYNC_TOKEN', where:'GitHub repo secret, mirrored as the library script\'s SYNC_TOKEN', note:'Gates export/fetchImage. Used only by sync-pramaan-library.yml.' },
+  { name:'GITHUB_PAT / GITHUB_REPO / ALERT_EMAIL (library)', where:'Library Code.gs Script Properties', note:'Same roles as above but in the second Sheet\'s script; its own fine-grained token (e.g. pramaan-library-sheet) is recommended.' },
 ];
 
 function legendHtml() {
@@ -327,15 +354,15 @@ const BOUNDARIES = [
       ['artifact', ['data-json','site-outputs']],
     ] },
   { domain:'google', label:'Google infrastructure — Sheet + Apps Script', flow:[
-      ['source', ['sheet']],
-      ['backend', ['apps-script-doget','apps-script-onedit','apps-script-fetchimage']],
+      ['source', ['sheet','lib-sheet']],
+      ['backend', ['apps-script-doget','apps-script-onedit','apps-script-fetchimage','lib-apps-script']],
     ] },
   { domain:'github', label:'GitHub infrastructure — Actions + Pages', flow:[
-      ['backend', ['gh-dispatch-workflow','sync-script','gh-pages-deploy']],
-      ['artifact', ['webp-files','manifest-json']],
+      ['backend', ['gh-dispatch-workflow','sync-script','lib-workflow','lib-sync-script','gh-pages-deploy']],
+      ['artifact', ['webp-files','manifest-json','lib-snapshot']],
     ] },
   { domain:'browser', label:'Application code + visitor runtime', flow:[
-      ['app', ['react-pages','useabldata-hook','abl-pages','ablthumbnails-util','vite-build']],
+      ['app', ['react-pages','useabldata-hook','abl-pages','ablthumbnails-util','lib-pages','vite-build']],
       ['delivery', ['gh-pages-cdn','browser-spa']],
     ] },
 ];
