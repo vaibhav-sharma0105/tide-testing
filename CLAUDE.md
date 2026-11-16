@@ -170,15 +170,16 @@ See `.claude/skills/cms-integrity/SKILL.md` — auto-triggers when adding/editin
 component that renders user-facing text/media, to catch hardcoded JSX that bypasses the CMS
 before it ships, not after a full-site audit finds it later.  
 See `.claude/skills/doc-sync/SKILL.md` — auto-triggers after structural changes, to keep these docs truthful.
-See `.claude/skills/sheet-integration/SKILL.md` — invoke when bootstrapping a *new*
-Google-Sheet-backed section (generalizes the ABL/Pramaan pattern, includes a security checklist).
+See `.claude/skills/sheet-integration/SKILL.md` — invoke when connecting a *new* Google Sheet or Form
+to the site. It follows `docs/SHEET-INTEGRATION-PLAYBOOK.md`: **snapshot mode as built for the Pramaan Library**
+(token-gated Apps Script → GitHub Actions sync → committed snapshot → page). The ABL live-read pattern below is legacy — don't copy it.
 
 ## ABL Resource Library (Pramaan)
 The ABL (Activity-Based Learning) *resource data* has a separate data pipeline — no YAML files for the resources themselves. The screen text around them is YAML (`abl-home`, `abl-resource-center`, `abl-detail`, `abl-contribute`).
 
 ### Data flow
 ```
-Google Sheet (private) → Google Apps Script Web App → useABLData() → React
+Google Sheet (private) → Google Apps Script Web App → useABLData() → React      (legacy live read — not the model for new Sheets)
                                                               ↓
                                        sessionStorage cache (key abl_api_cache_v2, 15-min TTL)
 ```
@@ -228,7 +229,7 @@ The sync workflow additionally needs an `ABL_SYNC_TOKEN` repo secret and the rep
 - `docs/ARCHITECTURE-DATAFLOW.html` — companion diagram for technical readers, organized by **system layer and direction of data flow** instead — request/response contracts, caching TTLs, trust boundaries (Google infra / GitHub infra / build-time / runtime), and a secrets/credentials reference table. Keep both diagrams in sync when the architecture changes.
 
 ## Pramaan Library (second Sheet, unlinked page)
-A separate form-format Sheet ("Contributing to Pramaan; Educators' Resource Bank (Responses)") feeds `/pramaan-library` — deliberately not in any menu, footer, sitemap or llms.txt, and `noindex`. Snapshot mode only (no live API): `apps-script/pramaan-library/Code.gs` (no public listing; publishes a row only when the three consent columns Q–S are "Yes"; never outputs the personal columns L–P) → `.github/workflows/sync-pramaan-library.yml` → `scripts/sync-pramaan-library.js` (+ `scripts/lib/library-snapshot.js`) → `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json`, `public/assets/images/pramaan-library/` (bot-owned, never hand-edit). Secrets `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`. UI: `src/pages/library/`, `src/components/library/`, `src/config/library.js`, `src/utils/libraryFilters.js`, `videoLinks.js`, `libraryPhotos.js`; text in `content/pages/pramaan-library.yaml`. Owner setup: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`; column rules: `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`; status/checklist: `docs/PRAMAAN-HARDENING-PLAN.md` §12.
+A separate form-format Sheet ("Contributing to Pramaan; Educators' Resource Bank (Responses)") feeds `/pramaan-library` — deliberately not in any menu, footer, sitemap or llms.txt, and `noindex`. Snapshot mode only (no live API): `apps-script/pramaan-library/Code.gs` (no public listing; publishes a row only when the three consent columns Q–S are "Yes"; never outputs the personal columns L–P) → `.github/workflows/sync-pramaan-library.yml` → `scripts/sync-pramaan-library.js` (+ `scripts/lib/library-snapshot.js`) → `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json`, `public/assets/images/pramaan-library/` (bot-owned, never hand-edit). Secrets `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`. UI: `src/pages/library/`, `src/components/library/`, `src/config/library.js`, `src/utils/libraryFilters.js`, `videoLinks.js`, `libraryPhotos.js`; text in `content/pages/pramaan-library.yaml`. Owner setup: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`; column rules: `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`; status/checklist: `docs/PRAMAAN-HARDENING-PLAN.md` §12. **This is the reference implementation for every new Sheet integration** — the generalised standard is `docs/SHEET-INTEGRATION-PLAYBOOK.md`.
 
 ## Known Gotchas and Open Decisions
 - **`imgSrc()` is not idempotent** when `BASE_URL` is `/tide-testing/`: applying it twice yields a wrong URL on GitHub Pages (invisible in dev). `Lightbox` already applies it to every image `src` itself, so don't pre-apply it. Verify with a `GITHUB_ACTIONS=true` build/preview at `/tide-testing/`.

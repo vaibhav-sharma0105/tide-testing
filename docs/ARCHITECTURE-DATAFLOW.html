@@ -235,7 +235,7 @@ const NODES = {
     security:'Returns raw photoUrl/videoUrl Drive links in the public response — anyone can fetch the API directly and enumerate every Drive link faster than browsing the site. Accepted tradeoff, not a defect: these were always reachable by clicking through the UI.',
     in:['sheet'], out:['useabldata-hook'] },
   'useabldata-hook': { layer:'app', title:'useABLData()', path:'src/hooks/useABLData.js',
-    desc:'Client-side fetch + cache. Pramaan home, resource-centre and resource-detail pages mount this hook; within a 15-minute window only the first call per browser session hits the network. Validates the response shape before caching or using it (success, tabs array, resources object of arrays) and re-validates cache entries on read; aborts and ignores stale in-flight requests (unmount/refetch); the fetch timeout is cleared on every outcome. Failure messages come from content/pages/abl-home.yaml (errors.*) and only the failure kind is logged, never the URL.',
+    desc:'LEGACY live read — not the model for new Sheets (they use snapshot mode, see the lib-* nodes and docs/SHEET-INTEGRATION-PLAYBOOK.md); Phase 3 of the hardening plan retires it. Client-side fetch + cache. Pramaan home, resource-centre and resource-detail pages mount this hook; within a 15-minute window only the first call per browser session hits the network. Validates the response shape before caching or using it (success, tabs array, resources object of arrays) and re-validates cache entries on read; aborts and ignores stale in-flight requests (unmount/refetch); the fetch timeout is cleared on every outcome. Failure messages come from content/pages/abl-home.yaml (errors.*) and only the failure kind is logged, never the URL.',
     contract:'sessionStorage key: abl_api_cache_v2\nTTL: 900s = ABL_CACHE_TTL_MS in src/config/abl.js (must mirror Code.gs CACHE_DURATION_S, or staleness windows desync)\nFetch: GET VITE_ABL_API_URL, AbortController timeout 10s\nShape returned: { data, allResources, loading, error, lastUpdated, refetch }',
     in:['apps-script-doget'], out:['abl-pages'] },
   'abl-pages': { layer:'app', title:'AblHome / AblResourceCenter / AblDetail / AblContribute', path:'src/pages/resources/Abl*.jsx',
@@ -271,7 +271,7 @@ const NODES = {
     desc:'getAblThumbnail(id, variant) — the single chokepoint every image-rendering component goes through (src/components/abl/DriveImage.jsx and ImageLightbox.jsx, used by the resource cards and detail page). Returns null on a manifest miss; callers render a fallback, never a broken-image icon.',
     in:['manifest-json'], out:['abl-pages'] },
 
-  // ===== Pramaan Library dataflow (second Sheet) =====
+  // ===== Pramaan Library dataflow (second Sheet) — the reference for every new Sheet integration (docs/SHEET-INTEGRATION-PLAYBOOK.md) =====
   'lib-sheet': { layer:'source', title:'Library Sheet (form responses)', path:'"Contributing to Pramaan; Educators\' Resource Bank (Responses)"',
     desc:'Google Form answers, one row per resource. Columns found by header text, not letter. Published only when Q, R, S (consent) all start with "Yes". Columns L–P (timestamp, email, name, institution, position) are personal data and never leave Google.',
     in:[], out:['lib-apps-script'] },

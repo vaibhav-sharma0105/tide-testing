@@ -315,8 +315,9 @@ additional link (J)**; sync **directly from the Sheet** (no CSV export).
 end-to-end sync against a fake Apps Script server (publish + photo, no-change run, refusal on 15→1,
 token never printed, per-run photo cap continues on the next run). On Google: script installed and
 deployed as a web app; without the token it answers `Unknown action`; `showStatus` ran. Real local
-sync (owner's machine): 245 rows → **243 published** (2 duplicate IDs), 166 photos synced. Page reviewed
-in a browser with real data at phone/tablet/laptop sizes, portrait and landscape (no horizontal overflow).
+sync (owner's machine) while the owner had set Q/R/S = "Yes" on every row **for testing**: 245 rows →
+243 published (2 duplicate IDs), 166 photos synced. Page reviewed in a browser with that data at
+phone/tablet/laptop sizes, portrait and landscape (no horizontal overflow).
 **Found on 2026-11-16 (owner to fix in the Sheet/Drive):** duplicate IDs W52, W62; 35 photos not
 readable by the owner account (F64–F71, W62–W88; W63/W65/W66/W81 are documents, not images);
 16 Drive videos not shared publicly; F12's video link is a YouTube Studio edit link.
@@ -324,20 +325,36 @@ readable by the owner account (F64–F71, W62–W88; W63/W65/W66/W81 are documen
 `https://www.youtube-nocookie.com` to `frame-src`); email scrub now covers chapter cells; per-request
 timeout + per-run photo cap; photo file-name clash reported; own concurrency group; the push loop's last
 rebase is pushed.
-**Not verified:** `GITHUB_PAT` / `GITHUB_REPO` / `ALERT_EMAIL` set, `setup` triggers installed,
-`testDispatch`, any GitHub Actions run (secrets not added yet).
+**Went live (2026-11-16):** the owner set up the library token `pramaan-library-sheet`, the Script
+Properties and the `setup` triggers (with "notify immediately"); both GitHub secrets exist
+(`gh secret list`); `ALERT_ASSIGNEE` = `vaibhav-sharma0105` (`gh variable list`). Pushed as
+`1723ff3` — that commit carried the **test** snapshot (243 rows), which was then live on the unlinked
+page. Deploy green. `testDispatch` → HTTP 204 (owner's log). The owner had meanwhile reverted the test
+consent (Q/R/S empty again), so the first sync run (`43865385374`) read 0 publishable rows and
+**refused** (empty library after a publish + 166 of 166 photos) — the safety rule working; alert issue #5
+opened. Re-run with `allow_large_change` at the owner's request (`43867768722`): **0 resources
+published**, 166 photos removed, commit `a9c1826`, deploy green, issue #5 closed automatically.
+**Then (13:18 UTC, after the owner updated the Sheet):** sync run `43874559074` published **243
+resources** and 166 photos (37 row problems → issue #6 "Pramaan Library Sheet: some rows need attention");
+deploy `43875588619` green.
+**Current state:** 243 published. The earlier test data stays in git history
+(`1723ff3`) by owner decision — may be cleaned up later together with other test history (rewriting
+`main` + force-push; not done).
+**Not verified:** a scheduled run since go-live; the live page was not opened in a browser after
+these runs.
 
 ### Checklist
 - [x] L1 Apps Script v1, sync, workflow, page, tests, docs (local)
-- [ ] L2 Commit and push (owner to approve) — **only after the two GitHub secrets exist**: the committed
-      snapshot has rows, so a push without them makes every run fail and alert
-- [ ] L3 Owner: setup guide Steps 1–7 — done: script, Drive service, token, web app; pending: Script
-      Properties `GITHUB_PAT` (own token) / `GITHUB_REPO` / `ALERT_EMAIL`, `setup` triggers + "notify
-      immediately", GitHub secrets, confirm `ALERT_ASSIGNEE`
-- [x] L4 Owner: fill Q/R/S = "Yes" for rows that may be shared (243 rows published locally)
+- [x] L2 Commit and push (2026-11-16, `1723ff3`)
+- [x] L3 Owner: setup guide Steps 1–7 (script, Drive service, own token, Script Properties, web app,
+      `setup` triggers + "notify immediately", GitHub secrets, `ALERT_ASSIGNEE` confirmed) — 2026-11-16
+- [x] L4 Owner: fill Q/R/S = "Yes" for rows cleared for sharing (the first "Yes on every row" was a
+      test and was reverted; after the owner's Sheet update, 243 published at 13:25 UTC 2026-11-16)
 - [ ] L4b Owner: fix duplicate IDs, share the 35 photos and 16 videos, fix F12's link (lists above)
-- [ ] L5 Owner: Steps 8–9 (`testDispatch`, first green Actions run, edit test)
-- [x] L6 Visual review of `/pramaan-library` with real data (local, 2026-11-16)
+- [x] L5 Owner: Steps 8–9 — `testDispatch` (HTTP 204), first green Actions run (`43867768722`), Sheet
+      edit → automatic sync + deploy (`43874559074`, 2026-11-16)
+- [ ] L5b Optional, owner decision: remove the test snapshot from git history (`1723ff3`) later
+- [x] L6 Visual review of `/pramaan-library` with Sheet data (local, 2026-11-16; test consent)
 - [x] L7 Doc sync (2026-11-16): CLAUDE.md, AGENTS.md, OPERATIONS-INVENTORY/RUNBOOK, PLATFORM-LIMITS,
       MIGRATION-OVERVIEW, MAINTENANCE-GITHUB-PAT-REFRESH, setup guide, schema, both ARCHITECTURE diagrams
 - [ ] L8 Decide later: link the page from the site (then remove `noindex`, add to sitemap/llms.txt)

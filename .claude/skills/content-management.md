@@ -66,10 +66,15 @@ Fourteen of the 16 page YAMLs carry `meta.breadcrumbName` (every page except `ho
 
 **Consistency guard.** The contact email and the lives-impacted total must be identical everywhere. `npm run content:validate` (`scripts/validate-content.js` + `scripts/contentConsistency.js`) **errors** (exit 1) if any e-mail address in `content/` (YAML values and the `llms.txt` template) differs from `site.yaml` `email`, or if a 5-digit total such as `40,000+` that sits in a sentence with the words lives/people/impacted/changed differs from `livesImpacted`. Owner decisions: e-mail `tidefoundation@gmail.com`, lives impacted `52,500+`, everywhere. To change either, edit `site.yaml` **and** every page that states it — the validator prints which files and fields.
 
-### Pipeline C — ABL / Pramaan (Google Sheets API)
+### Pipeline C — Google Sheets
 ```
+New standard (Pramaan Library, /pramaan-library):
+Google Sheet → token-gated Apps Script → GitHub Actions sync → src/data/sheets/<slug>.json (+ photos) → page (build time)
+
+Legacy (ABL / Pramaan, until Phase 3):
 Google Sheet  →  Apps Script Web App  →  useABLData() hook  →  ABL page components
 ```
+New Sheet integrations follow `docs/SHEET-INTEGRATION-PLAYBOOK.md` (skill: `.claude/skills/sheet-integration/SKILL.md`). The Pramaan Library's UI text is YAML in `content/pages/pramaan-library.yaml`; its data is the snapshot.
 The **resource data** (title, description, grades…) comes from Google Sheets, not YAML. The **Pramaan UI chrome** (labels, headings, filter text, SEO titles) is YAML-backed in `abl-home`, `abl-resource-center`, `abl-detail` and `abl-contribute`. Thumbnails are a separate one-way sync into `public/assets/images/abl/`. Google Fonts still loads the Devanagari and Gujarati families because Pramaan resource titles from the Sheet can contain Gujarati.
 
 ## File Naming Convention

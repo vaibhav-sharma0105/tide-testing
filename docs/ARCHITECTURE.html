@@ -303,7 +303,7 @@ const NODES = {
     actionRequired:false, action:'Nothing, once set up. (Setup is a one-time non-technical task — see the "Secrets & Setup" tab.)',
     tech:{ 'Caching':'900s, per-tab; cleared on every Sheet change', 'Source':'apps-script/abl/Code.gs (v3)' }, connects:['google-sheet','useABLData-hook'] },
   'useABLData-hook': { actor:'automated', title:'Fetch resource data', path:'src/hooks/useABLData.js',
-    desc:'Runs in every visitor\'s browser, fetching the latest resource list and remembering it for 15 minutes so the page feels fast.',
+    desc:'Runs in every visitor\'s browser, fetching the latest resource list and remembering it for 15 minutes so the page feels fast. Older design (legacy): new Sheets use the Pramaan Library\'s snapshot pattern instead, and this step will be retired.',
     actionRequired:false, action:'Nothing — fully automatic in the visitor\'s browser.',
     tech:{ 'Cache':'sessionStorage key abl_api_cache_v2, 15-min TTL', 'Request':'10-second timeout; response shape is validated; stale/superseded requests are ignored', 'Config':'VITE_ABL_API_URL' }, connects:['apps-script-listing','abl-react-pages','env-local'] },
   'abl-react-pages': { actor:'developer', title:'Pramaan pages', path:'src/pages/resources/Abl*.jsx',
@@ -421,7 +421,7 @@ const TABS = [
       ['automated', ['apps-script-thumb-endpoints','apps-script-onchange-trigger','gh-actions-sync-workflow','sync-script','public-assets-abl','manifest-json','driveImage-component']],
       ['developer', ['ablThumbnails-util']],
     ] },
-  { id:'library', label:'Pramaan Library', intro:'A second, separate Sheet (form responses) feeding the unlinked page /pramaan-library. Snapshot only — visitors never reach Google, and only consented rows are ever published.',
+  { id:'library', label:'Pramaan Library', intro:'A second, separate Sheet (form responses) feeding the unlinked page /pramaan-library. Snapshot only — visitors never reach Google, and only consented rows are ever published. This is the standard pattern for connecting any new Sheet (docs/SHEET-INTEGRATION-PLAYBOOK.md).',
     lanes:[
       ['staff', ['library-sheet']],
       ['automated', ['library-apps-script','library-sync-workflow','library-snapshot']],

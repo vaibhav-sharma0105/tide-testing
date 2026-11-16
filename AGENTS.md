@@ -89,7 +89,7 @@ content/shared/llms.txt  ─┴─ scripts/siteDataPlugin.js (Vite plugin, build
 ```
 `siteDataPlugin.js` reads the YAML directly, so it doesn't depend on `content:sync` having run. `scripts/contentConsistency.js` + `validate-content.js` make `content:validate` fail if any email in `content/` differs from `site.yaml` `email`, or any lives-impacted total (a `NN,NNN+` figure next to "lives/people/impacted/changed" wording) differs from `livesImpacted`. `content/shared/llms.txt` is a template, not YAML, so `yaml-to-json.js` ignores it.
 
-**3 — ABL pipeline (resource data for 3 of the 4 Pramaan pages)**
+**3 — ABL pipeline (resource data for 3 of the 4 Pramaan pages) — legacy live read, do not copy**
 ```
 Google Sheet (private)
     ↓  Google Apps Script Web App (doGet, 15-min CacheService TTL)
@@ -97,9 +97,9 @@ useABLData() hook
     ↓  sessionStorage cache (15-min TTL, key: abl_api_cache_v2)
 AblHome / AblResourceCenter / AblDetail   (AblContribute is static and doesn't call the hook)
 ```
-Separately, the Pramaan sync (GitHub Actions) commits the data snapshot + WebP images + `abl-thumbnails-manifest.json` in one commit — see §8.
+Separately, the Pramaan sync (GitHub Actions) commits the data snapshot + WebP images + `abl-thumbnails-manifest.json` in one commit — see §8. The browser-side live read (`useABLData`) is **legacy**: Phase 3 of `docs/PRAMAAN-HARDENING-PLAN.md` moves these pages to the snapshot, and new Sheet integrations follow flow 4 instead.
 
-**4 — Pramaan Library pipeline (second Sheet, snapshot only — no live API)**
+**4 — Pramaan Library pipeline (second Sheet, snapshot only — no live API) — the standard for every new Sheet integration (`docs/SHEET-INTEGRATION-PLAYBOOK.md`)**
 ```
 Google Sheet "Contributing to Pramaan; Educators' Resource Bank (Responses)" (private, has personal data)
     ↓  apps-script/pramaan-library/Code.gs — token-gated export/fetchImage only; consented rows (Q, R, S = Yes); never columns L–P
@@ -295,6 +295,7 @@ tide-new/
 │   ├── MAINTENANCE-GITHUB-PAT-REFRESH.md    ← short recurring task when the GitHub token expires
 │   ├── MAINTENANCE-CONTRIBUTE-FORM-LINK.md  ← step-by-step: change the Contribute form link (GitHub secret + rebuild)
 │   ├── PRAMAAN-LIBRARY-SETUP-GUIDE.md       ← owner setup for the second Sheet → /pramaan-library
+│   ├── SHEET-INTEGRATION-PLAYBOOK.md        ← THE standard for connecting any new Sheet (snapshot mode)
 │   ├── PRAMAAN-LIBRARY-SHEET-SCHEMA.md      ← which columns the library reads and who gets published
 │   ├── PRAMAAN-HARDENING-PLAN.md · OPERATIONS-*.md · PLATFORM-LIMITS.md  ← current plan, inventory, runbook, free-tier limits
 │   ├── ARCHITECTURE.html · ARCHITECTURE-DATAFLOW.html  ← interactive system diagrams (standalone)
@@ -678,6 +679,8 @@ True only if `active` stays true for longer than `delayMs` — gates loading UI 
 
 ### useABLData
 
+> **Legacy pattern — do not copy for a new Sheet.** It reads the Sheet live in the browser. New integrations use snapshot mode (§2 flow 4, `docs/SHEET-INTEGRATION-PLAYBOOK.md`); Phase 3 of the hardening plan retires this hook.
+
 ```js
 const { data, allResources, loading, error, lastUpdated, refetch } = useABLData()
 ```
@@ -951,7 +954,7 @@ Requires a GitHub repo secret `ABL_SYNC_TOKEN` in addition to the existing `VITE
 
 ### Pramaan Library (second Sheet, `/pramaan-library`)
 
-Unlinked (no menu, footer, sitemap or llms.txt entry) and `noindex`. Snapshot only: the page imports `src/data/sheets/pramaan-library.json` at build time and never calls Google. The Sheet holds personal data, so `apps-script/pramaan-library/Code.gs` has **no public listing** — only token-gated `export` and `fetchImage`; it publishes a row only when the three consent columns (Q, R, S) all start with "Yes" and never reads out columns L–P. The sync (`scripts/sync-pramaan-library.js`, rules in `scripts/lib/library-snapshot.js`) allowlists fields, removes email addresses (also inside chapters), refuses mass removals, reports rows that need attention as a GitHub Issue, fetches at most 100 photos per run (the rest next run) and commits only its own paths. Workflow `.github/workflows/sync-pramaan-library.yml` (own concurrency group `pramaan-library-sync`); secrets `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`. `content:validate` fails the deploy on a non-allowlisted field or an email address in the snapshot. Video playback needs `https://www.youtube-nocookie.com` and `https://drive.google.com` in the CSP `frame-src` (`index.html`). Owner docs: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`; status: `docs/PRAMAAN-HARDENING-PLAN.md` §12.
+Unlinked (no menu, footer, sitemap or llms.txt entry) and `noindex`. Snapshot only: the page imports `src/data/sheets/pramaan-library.json` at build time and never calls Google. The Sheet holds personal data, so `apps-script/pramaan-library/Code.gs` has **no public listing** — only token-gated `export` and `fetchImage`; it publishes a row only when the three consent columns (Q, R, S) all start with "Yes" and never reads out columns L–P. The sync (`scripts/sync-pramaan-library.js`, rules in `scripts/lib/library-snapshot.js`) allowlists fields, removes email addresses (also inside chapters), refuses mass removals, reports rows that need attention as a GitHub Issue, fetches at most 100 photos per run (the rest next run) and commits only its own paths. Workflow `.github/workflows/sync-pramaan-library.yml` (own concurrency group `pramaan-library-sync`); secrets `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`. `content:validate` fails the deploy on a non-allowlisted field or an email address in the snapshot. Video playback needs `https://www.youtube-nocookie.com` and `https://drive.google.com` in the CSP `frame-src` (`index.html`). Owner docs: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`; status: `docs/PRAMAAN-HARDENING-PLAN.md` §12. **This is the reference implementation for new Sheet integrations** — principles, naming, page design and go-live lessons are generalised in `docs/SHEET-INTEGRATION-PLAYBOOK.md`.
 
 ### Environment configuration
 
@@ -1301,7 +1304,8 @@ Only `deploy.yml` (lint, `content:validate`, unit tests, build, deploy) and `syn
 | `.claude/skills/content-management.md` | Full CMS agent skill reference |
 | `.claude/skills/cms-integrity/SKILL.md` | Auto-triggers when adding/editing page/component JSX with user-facing text or media — catches hardcoded strings bypassing the CMS before they ship |
 | `.claude/skills/doc-sync/SKILL.md` | Auto-triggers after structural changes — keeps human and agent docs truthful |
-| `.claude/skills/sheet-integration/SKILL.md` | Invoke when bootstrapping a new Google-Sheet-backed section — generalizes the ABL pattern, includes a security checklist |
+| `.claude/skills/sheet-integration/SKILL.md` | Invoke when connecting any new Google Sheet / Form to the site — walks through `docs/SHEET-INTEGRATION-PLAYBOOK.md` (snapshot mode, the Pramaan Library pattern) |
+| `docs/SHEET-INTEGRATION-PLAYBOOK.md` | The standard for Sheet integrations: architecture, principles, naming, build order, page design, security checklist, go-live lessons |
 | `docs/specs/site-restructure-plan.md` | Route restructure plan (historical; the leftover routes it tracked have since been removed) |
 | `docs/specs/stranded-pages-review.md` | Historical stakeholder review of the pages that were later removed |
 | `content/shared/site.yaml` | Single source of site-wide facts (name, URL, email, lives-impacted figure, breadcrumb parents) |

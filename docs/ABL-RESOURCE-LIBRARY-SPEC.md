@@ -5,6 +5,8 @@
 **Target hosting:** GitHub Pages (static, `BrowserRouter` + `public/404.html` SPA fallback — not HashRouter)  
 **Architecture:** Apps Script JSON API + React frontend (no iframe, no gviz/tq)
 
+> **Not a template for new Sheets (2026-11-16).** This live-read design (public `doGet` listing, `useABLData()` in the browser) is legacy. New Sheet integrations follow `docs/SHEET-INTEGRATION-PLAYBOOK.md` (snapshot mode, reference: the Pramaan Library), and Phase 3 of `docs/PRAMAAN-HARDENING-PLAN.md` moves these pages to the snapshot too.
+
 > **As-built notes:** The spec was implemented faithfully with these deviations from the original design:
 > - `ResourceFilters` is a **left sidebar** (not a horizontal filter bar as in section 7.5) — collapsible sections with independent scroll
 > - `DriveImage` uses **`aspect-[3/4]` (portrait)** rather than `aspect-[4/3]` — all images are portrait-oriented

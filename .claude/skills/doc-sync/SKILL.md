@@ -125,6 +125,7 @@ repo docs.
 | `src/utils/imagePlaceholder.js` (installed in `src/main.jsx`), `placeholderImage` in `site.yaml`, the `data-no-placeholder` opt-out | `CONTENT-GUIDE.md` ("If an image is missing" and the validator note), `content-management.md` (Image Paths), `cms-integrity/SKILL.md` (checklist item 3), `AGENTS.md` |
    | `eslint.config.js` (`react/jsx-no-literals`), `deploy.yml` / other workflows | `CLAUDE.md`, `AGENTS.md`, `cms-integrity/SKILL.md`, `WHATS-NEXT.md` (what CI runs: lint, validate, unit tests — not e2e) |
    | `src/config/abl.js`, `useABLData`, the Sheet / Apps Script, thumbnail sync | `docs/ABL-*.md`, `docs/MIGRATION-*.md`, `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md`, both architecture diagrams, `sheet-integration/SKILL.md`, `CLAUDE.md`, `AGENTS.md` |
+   | A Sheet integration in snapshot mode (Pramaan Library or a new one): `apps-script/<slug>/`, `sync-<slug>.yml`, `scripts/sync-<slug>.js`, `scripts/lib/<slug>-snapshot.js`, its pages | the list in `docs/SHEET-INTEGRATION-PLAYBOOK.md` §8, plus the playbook itself when a principle, name, cron minute or lesson changes, and `sheet-integration/SKILL.md` |
    | Test files / counts (`npx vitest run --config vitest.config.js`, `e2e/`) | `CLAUDE.md`, `AGENTS.md`, `README.md`, `content-management.md` |
    | Design tokens (`tailwind.config.js`, `src/index.css`, e.g. the `:focus-visible` ring: 2px brand blue plus a white band) | `CLAUDE.md`, `AGENTS.md`, `content-management.md` |
 
