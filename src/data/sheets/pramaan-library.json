@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T18:34:10.473Z",
-  "contentHash": "sha256:fccf02e7976fc5dcf14325c8df531c49b6a3ccd92aec62c0d4012b30aea84b25",
+  "lastUpdated": "2026-11-19T18:39:54.957Z",
+  "contentHash": "sha256:df8429768ac3a60920a6992696cf226c05890f5aa2247cd45474efc72c989f9a",
   "resources": [
     {
       "id": "F1",
@@ -1372,7 +1372,7 @@
       "ownership": "NEEV",
       "description": "Number-to-object matching flashcards that help students connect numerals with the corresponding count of real objects, strengthening number recognition and one-to-one correspondence.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1ofs1AcsrvsWm1LllblbuNADsMCt2-KRx/view?usp=sharing",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1387,7 +1387,7 @@
       "ownership": "NEEV",
       "description": "Word reading strip flashcards presenting Gujarati words in a strip format, designed for guided reading practice and building reading fluency through repetition.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/168P5KO1RuVvIIkO6g1ZyjLJUnPEH4-dN/view?usp=sharing",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1402,7 +1402,7 @@
       "ownership": "NEEV",
       "description": "Alphabet reading strip flashcards that display Gujarati letters in sequence, supporting letter recognition and early reading practice in a portable, easy-to-use format.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/168P5KO1RuVvIIkO6g1ZyjLJUnPEH4-dN/view?usp=sharing",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1417,7 +1417,7 @@
       "ownership": "NEEV",
       "description": "Picture strip flashcards that display sequences of images for learners to identify and name, developing vocabulary, visual recognition, and descriptive language skills.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/168P5KO1RuVvIIkO6g1ZyjLJUnPEH4-dN/view?usp=sharing",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1432,7 +1432,7 @@
       "ownership": "NEEV",
       "description": "Multilingual number-word pocket flashcards that present numbers in multiple languages and scripts, building advanced numeracy and cross-language number literacy.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1x7e5j1xWHr1SwYq97Yip5bmT9d37Ci9h/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1447,7 +1447,7 @@
       "ownership": "NEEV",
       "description": "Domino-style object matching flashcards where students pair tiles with matching images, developing logical thinking and visual matching through playful activity.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1hWcVVALRNjJ0n8PpGC7L2vpgZ4DosvnQ/view?usp=sharing",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1462,7 +1462,7 @@
       "ownership": "NEEV",
       "description": "Domino-style number flashcards designed for sequencing and number recognition activities, reinforcing numeral order and basic math concepts through interactive play.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1ncvjSu463AZiQj-Yk1jKGoqzjGAeX7j_/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1477,14 +1477,14 @@
       "ownership": "NEEV",
       "description": "Gujarati domino alphabet flashcards that encourage learners to match and sequence Gujarati letters, combining alphabet recognition with a fun, game-like learning format.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1y1Pyly1fhhOYG09xIxPjHUroqYohyC0x/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
     },
     {
       "id": "F63",
-      "name": "ડોમિનો અંગ્રેજી",
+      "name": "Domino English",
       "subject": "Language- English",
       "type": "Flashcard",
       "concept": "English Alphabet\n Recognition",
@@ -1492,7 +1492,7 @@
       "ownership": "NEEV",
       "description": "English domino flashcards where students match and sequence English alphabet letters, building letter recognition and literacy readiness through structured play.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1Z6O9kcSp0UNhBEdyzsIPzog3V4FjFrUU/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
