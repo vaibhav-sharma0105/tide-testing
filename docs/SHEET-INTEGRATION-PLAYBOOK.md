@@ -187,7 +187,10 @@ Not done yet (2026-11-16).
    requires it) and git history keeps every commit. Test publish logic with the fake server or
    simulated Apps Script; if you run a real local sync for a visual check, don't commit its output
    unless the publish gate reflects real consent/approval. (The library's first push carried 243 rows
-   published from "Yes on every row" test consent; it stays in history in `1723ff3`.)
+   published from "Yes on every row" test consent; it stays in history in `1723ff3`. A clean-up was later
+   judged unnecessary because the same rows then received real consent — that was luck, not a plan.)
+   If a test snapshot *is* committed and the rows never get consent, removing it means rewriting `main`
+   (new ids for every later commit, force-push, sync paused) — plan it with the owner.
 2. **Add the GitHub secrets before the first push** that contains a non-empty snapshot — otherwise every
    run fails and alerts.
 3. **An intended mass change** (e.g. reverting test consent, a big clean-up) is refused by design; run the

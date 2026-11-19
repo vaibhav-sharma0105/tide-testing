@@ -337,9 +337,14 @@ published**, 166 photos removed, commit `a9c1826`, deploy green, issue #5 closed
 **Then (13:18 UTC, after the owner updated the Sheet):** sync run `43874559074` published **243
 resources** and 166 photos (37 row problems → issue #6 "Pramaan Library Sheet: some rows need attention");
 deploy `43875588619` green.
-**Current state:** 243 published. The earlier test data stays in git history
-(`1723ff3`) by owner decision — may be cleaned up later together with other test history (rewriting
-`main` + force-push; not done).
+**Current state:** 243 published. The earlier test data stays in git history (`1723ff3`).
+**History clean-up not needed (checked 2026-11-19, owner agreed):** every one of the 243 rows in the test
+snapshot is published now with real consent (239 identical, 4 edited since; 0 test-only rows) and every
+photo file in that commit is on the site now (0 test-only files), so removing `1723ff3` would hide
+nothing. A rewrite would still change the ids of every later commit, need a force-push to `main` with the
+sync bot paused, break links to old commits (Actions runs, issues, this file), and GitHub can keep serving
+old commits by id until it purges them. Revisit only if consent is **withdrawn** for some rows and they
+must also leave history — a targeted rewrite, planned with the owner, sync paused.
 **Not verified:** a scheduled run since go-live; the live page was not opened in a browser after
 these runs.
 
@@ -353,7 +358,7 @@ these runs.
 - [ ] L4b Owner: fix duplicate IDs, share the 35 photos and 16 videos, fix F12's link (lists above)
 - [x] L5 Owner: Steps 8–9 — `testDispatch` (HTTP 204), first green Actions run (`43867768722`), Sheet
       edit → automatic sync + deploy (`43874559074`, 2026-11-16)
-- [ ] L5b Optional, owner decision: remove the test snapshot from git history (`1723ff3`) later
+- [x] L5b Remove the test snapshot from git history — **not needed** (2026-11-19, owner agreed; reason above)
 - [x] L6 Visual review of `/pramaan-library` with Sheet data (local, 2026-11-16; test consent)
 - [x] L7 Doc sync (2026-11-16): CLAUDE.md, AGENTS.md, OPERATIONS-INVENTORY/RUNBOOK, PLATFORM-LIMITS,
       MIGRATION-OVERVIEW, MAINTENANCE-GITHUB-PAT-REFRESH, setup guide, schema, both ARCHITECTURE diagrams
