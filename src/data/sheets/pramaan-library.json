@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T17:20:01.628Z",
-  "contentHash": "sha256:6895452d6ff858662116106059ab24460a7cd060a9703601f8327b2bc1d3697d",
+  "lastUpdated": "2026-11-19T17:30:08.599Z",
+  "contentHash": "sha256:7bf7b66ea846bae1e94cee93a82a7c6908f6e02c8caa26a8b3189162b4ee4648",
   "resources": [
     {
       "id": "F1",
@@ -2020,7 +2020,7 @@
       "ownership": "Other",
       "description": "help children identify objects in nature while building curiosity, observation, and logical reasoning skills.",
       "photoUrl": "https://drive.google.com/file/d/1dYg315mDy6TtZB73p5nGU7R0NKr9pVRv/view?usp=drive_link",
-      "videoUrl": "https://youtu.be/r6ZogI2xtJ0",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -2035,7 +2035,7 @@
       "ownership": "Other",
       "description": "develops shape arrangement and pattern-building skills while improving critical thinking, focus, and problem-solving ability.",
       "photoUrl": "https://drive.google.com/file/d/1T0bNiOgTX2B3YUpiZNQab27KA1iwuo-F/view?usp=drive_link",
-      "videoUrl": "https://youtu.be/IEr7aEx9_i8",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [
         "GRADE 2",
@@ -3651,7 +3651,7 @@
       "ownership": "NEEV",
       "description": "An introductory worksheet designed to help young learners identify and recognize basic Gujarati letters (moolakshars), building foundational alphabet awareness for Jr.kg and Sr.kg students.",
       "photoUrl": null,
-      "videoUrl": null,
+      "videoUrl": "https://youtu.be/U-x2gHYzYNo",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3666,7 +3666,7 @@
       "ownership": "NEEV",
       "description": "An engaging worksheet that supports early learners in recognizing and distinguishing English alphabet letters, developing foundational reading readiness through visual practice.",
       "photoUrl": null,
-      "videoUrl": null,
+      "videoUrl": "https://youtu.be/U-x2gHYzYNo",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3771,7 +3771,7 @@
       "ownership": "NEEV",
       "description": "A word recognition worksheet where students identify and match similar-looking Gujarati words, sharpening letter discrimination and reading accuracy.",
       "photoUrl": null,
-      "videoUrl": null,
+      "videoUrl": "https://youtube.com/shorts/y2W02PJJDTw?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
