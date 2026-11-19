@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T17:14:59.684Z",
-  "contentHash": "sha256:540e43b6b3310ff20a932f0d0d17fa9a2f04dca3f9429f3cdfb47496ee163e0e",
+  "lastUpdated": "2026-11-19T17:20:01.628Z",
+  "contentHash": "sha256:6895452d6ff858662116106059ab24460a7cd060a9703601f8327b2bc1d3697d",
   "resources": [
     {
       "id": "F1",
@@ -3636,7 +3636,7 @@
       "ownership": "NEEV",
       "description": "A hands-on Gujarati worksheet that helps students practice building words by combining letters and syllables, strengthening early literacy and word construction skills.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1_JJf3IZ9cbZPrOi-SWMkUXei3h0F6zZd/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/IVwNeGySpco?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3651,7 +3651,7 @@
       "ownership": "NEEV",
       "description": "An introductory worksheet designed to help young learners identify and recognize basic Gujarati letters (moolakshars), building foundational alphabet awareness for Jr.kg and Sr.kg students.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1mkMFmopWanzKdmWuRKW99rJoeQZ7JxbX/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3666,7 +3666,7 @@
       "ownership": "NEEV",
       "description": "An engaging worksheet that supports early learners in recognizing and distinguishing English alphabet letters, developing foundational reading readiness through visual practice.",
       "photoUrl": null,
-      "videoUrl": "https://youtube.com/shorts/q4TWpksRyPE?feature=share",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3674,14 +3674,14 @@
     {
       "id": "NW4",
       "name": "ગણતરી અને સંખ્યાની ઓળખ",
-      "subject": "Language- Gujarati",
+      "subject": "Mathematics",
       "type": "Worksheet",
       "concept": "Counting & Number\n Recognition",
       "language": "Gujarati",
       "ownership": "NEEV",
       "description": "A practice-based worksheet that develops counting skills and number recognition in Gujarati, helping students connect numerals with quantities in a structured, visual format.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/15XRqUWIioeQjShN-HrV7wV5ItW47xiiD/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/BRntt8C7GDE?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3689,14 +3689,14 @@
     {
       "id": "NW5",
       "name": "કદ પ્રમાણે આકારોની ગોઠવણી અથવા ક્રમ સમજ",
-      "subject": "Language- Gujarati",
+      "subject": "Mathematics",
       "type": "Worksheet",
       "concept": "Shape Arrangement & \nSequencing Skills",
       "language": "Gujarati",
       "ownership": "NEEV",
       "description": "A sequencing worksheet where students arrange shapes in order by size, building logical thinking and foundational understanding of patterns and spatial relationships.",
       "photoUrl": null,
-      "videoUrl": null,
+      "videoUrl": "https://youtube.com/shorts/TYvuNG34Hbw?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3704,14 +3704,14 @@
     {
       "id": "NW6",
       "name": "પતંગિયું",
-      "subject": "Language- Gujarati",
+      "subject": "Mathematics",
       "type": "Worksheet",
       "concept": "Understanding Matras",
       "language": "Gujarati",
       "ownership": "NEEV",
       "description": "A butterfly-themed worksheet (Patangiyun) that introduces students to Gujarati matras (vowel diacritics), helping them understand how matras change the sound and meaning of words.",
       "photoUrl": null,
-      "videoUrl": null,
+      "videoUrl": "https://youtube.com/shorts/YSFNFWXi1EI?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3726,7 +3726,7 @@
       "ownership": "NEEV",
       "description": "A sentence-building worksheet that challenges students to arrange jumbled Gujarati words in the correct sequence, developing grammar sense and early writing skills.",
       "photoUrl": null,
-      "videoUrl": null,
+      "videoUrl": "https://youtube.com/shorts/JkExucNv1ZU?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3741,7 +3741,7 @@
       "ownership": "NEEV",
       "description": "A worksheet that teaches students the names and order of the days of the week in Gujarati, building vocabulary and awareness of time and routine.",
       "photoUrl": null,
-      "videoUrl": null,
+      "videoUrl": "https://youtube.com/shorts/pZsL_mYCoMY?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3756,7 +3756,7 @@
       "ownership": "NEEV",
       "description": "A visual reasoning worksheet where students identify and name the missing object from a familiar set, strengthening observational skills and logical thinking.",
       "photoUrl": null,
-      "videoUrl": null,
+      "videoUrl": "https://youtube.com/shorts/Js8SOZ7GTY4?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3786,7 +3786,7 @@
       "ownership": "NEEV",
       "description": "A number sequencing worksheet where students find and fill in missing numbers, reinforcing number order and early numeracy skills across multiple grade levels.",
       "photoUrl": null,
-      "videoUrl": null,
+      "videoUrl": "https://youtube.com/shorts/Js8SOZ7GTY4?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3801,7 +3801,7 @@
       "ownership": "NEEV",
       "description": "A fill-in-the-blank worksheet in Gujarati that challenges students to identify and complete missing words in given sentences or series, building vocabulary and reading comprehension.",
       "photoUrl": null,
-      "videoUrl": null,
+      "videoUrl": "https://youtube.com/shorts/Js8SOZ7GTY4?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3816,7 +3816,7 @@
       "ownership": "NEEV",
       "description": "An English-language worksheet where students complete sentences or word lists by identifying missing words, reinforcing English vocabulary and spelling recognition.",
       "photoUrl": null,
-      "videoUrl": null,
+      "videoUrl": "https://youtube.com/shorts/Js8SOZ7GTY4?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
