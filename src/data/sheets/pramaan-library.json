@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T16:18:32.408Z",
-  "contentHash": "sha256:bf54a184df0d11192240b878dd5d95458ad5664a22edbac77a0dffa66b6afb56",
+  "lastUpdated": "2026-11-19T16:38:25.307Z",
+  "contentHash": "sha256:05ab7bf970fd5711acb81d26eae65d97737961a895f61e72ef9704259ab88c23",
   "resources": [
     {
       "id": "F1",
@@ -3896,7 +3896,7 @@
       "ownership": "TIDE Foundation",
       "description": "activity shows numbers from 1 to 12 arranged to form multiplication tables. Students can use it to learn and practice multiplication patterns and improve their basic arithmetic skills.",
       "photoUrl": "https://drive.google.com/file/d/1BUMczagKShgqxM690wog4R_Efaq9tY_0/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1dhPUdCfpq20E8I7n8uKZrn__tzhOKrm4/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/DtjEqaJ8CrQ?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 3",
