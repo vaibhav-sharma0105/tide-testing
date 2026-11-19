@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T18:10:30.315Z",
-  "contentHash": "sha256:57e91f70f7b93551ec80b267e3afb5ae12e29ca8cf939dbd39b63c9f623a7328",
+  "lastUpdated": "2026-11-19T18:13:13.436Z",
+  "contentHash": "sha256:4c0b364d7a48b9e12b1665abd59ff7d97ca33a934f2c5ef26179486d30dde155",
   "resources": [
     {
       "id": "F1",
@@ -3522,7 +3522,7 @@
       "ownership": "NEEV",
       "description": "A place value kit with concrete manipulatives representing ones, tens, and hundreds, helping students understand positional value and build a strong foundation in number concepts.",
       "photoUrl": null,
-      "videoUrl": null,
+      "videoUrl": "https://youtube.com/shorts/bN7QsPTVofs",
       "additionalInfo": null,
       "grades": [
         "GRADE 1",
