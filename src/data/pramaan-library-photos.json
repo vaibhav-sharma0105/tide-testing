@@ -89,6 +89,12 @@
     "thumb": "assets/images/pramaan-library/F22-thumb.webp",
     "full": "assets/images/pramaan-library/F22-full.webp"
   },
+  "F22 repeat": {
+    "fileId": "1uCMvE1ly9wUTyAdXJ496WVhm4zqcFkIo",
+    "modifiedTime": "2024-12-27T11:42:21.000Z",
+    "thumb": "assets/images/pramaan-library/F22_repeat-thumb.webp",
+    "full": "assets/images/pramaan-library/F22_repeat-full.webp"
+  },
   "F23": {
     "fileId": "1cbsO7CFXN1evw2JA-tJ1PLdqApjdPEDl",
     "modifiedTime": "2026-03-13T08:16:10.551Z",
@@ -250,12 +256,6 @@
     "modifiedTime": "2024-12-27T11:40:43.000Z",
     "thumb": "assets/images/pramaan-library/F64-thumb.webp",
     "full": "assets/images/pramaan-library/F64-full.webp"
-  },
-  "F65": {
-    "fileId": "1uCMvE1ly9wUTyAdXJ496WVhm4zqcFkIo",
-    "modifiedTime": "2024-12-27T11:42:21.000Z",
-    "thumb": "assets/images/pramaan-library/F65-thumb.webp",
-    "full": "assets/images/pramaan-library/F65-full.webp"
   },
   "F66": {
     "fileId": "1_U8FmWBc5kqr3r-p3Q8HW8wnxZ4T-c0V",

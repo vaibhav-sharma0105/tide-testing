@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T18:55:14.525Z",
-  "contentHash": "sha256:b385b072f9f1d2db1ef028d153dca9817427e00b1fb139cfa6db5d76f90bee76",
+  "lastUpdated": "2026-11-19T19:09:44.687Z",
+  "contentHash": "sha256:ca6f4d756061f21ed430f3dcdac7fde71c39d785e3be5b3d448a021efa8b0550",
   "resources": [
     {
       "id": "F1",
@@ -684,6 +684,21 @@
       }
     },
     {
+      "id": "F22 repeat",
+      "name": "Addition flashcard game",
+      "subject": "Mathematics",
+      "type": "Flashcard",
+      "concept": "Addition",
+      "language": "Gujarati",
+      "ownership": "TIDE Foundation",
+      "description": "Learners solve addition problems using interactive flashcards, strengthening mental math and calculation skills.",
+      "photoUrl": "https://drive.google.com/file/d/1uCMvE1ly9wUTyAdXJ496WVhm4zqcFkIo/view?usp=sharing",
+      "videoUrl": null,
+      "additionalInfo": null,
+      "grades": [],
+      "chapters": {}
+    },
+    {
       "id": "F23",
       "name": "ગુણાકારની મજા",
       "subject": "Mathematics",
@@ -1101,7 +1116,7 @@
     {
       "id": "F43",
       "name": "પરિમિતિની area ઓળખ",
-      "subject": "Science",
+      "subject": "Mathematics",
       "type": "Flashcard",
       "concept": "Perimeter and area learning",
       "language": "Gujarati, English",
@@ -1112,57 +1127,6 @@
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
-    },
-    {
-      "id": "F44",
-      "name": "પરિમિતિની area introduction",
-      "subject": "Science",
-      "type": "Flashcard",
-      "concept": "Introduction to area and perimeter",
-      "language": "Gujarati, English",
-      "ownership": "TIDE Foundation",
-      "description": null,
-      "photoUrl": null,
-      "videoUrl": null,
-      "additionalInfo": null,
-      "grades": [],
-      "chapters": {}
-    },
-    {
-      "id": "F45",
-      "name": "બાદબાકી with borrowing",
-      "subject": "Science",
-      "type": "Flashcard",
-      "concept": "Introduction to area and perimeter",
-      "language": "Gujarati, English",
-      "ownership": "TIDE Foundation",
-      "description": null,
-      "photoUrl": null,
-      "videoUrl": null,
-      "additionalInfo": null,
-      "grades": [
-        "GRADE 1",
-        "GRADE 2",
-        "GRADE 3",
-        "GRADE 4"
-      ],
-      "chapters": {
-        "GRADE 1": [
-          "ch 4"
-        ],
-        "GRADE 2": [
-          "ch 12"
-        ],
-        "GRADE 3": [
-          "ch 3",
-          "ch 6",
-          "ch 14"
-        ],
-        "GRADE 4": [
-          "ch 3",
-          "ch 6"
-        ]
-      }
     },
     {
       "id": "F46",
@@ -1507,21 +1471,6 @@
       "ownership": "TIDE Foundation",
       "description": "Students calculate the perimeter of different shapes using flashcards, reinforcing measurement and geometry concepts.",
       "photoUrl": "https://drive.google.com/file/d/1JCpRCPhWL7mLVS_xsxoSehVPtSjZkpqk/view?usp=share_link",
-      "videoUrl": null,
-      "additionalInfo": null,
-      "grades": [],
-      "chapters": {}
-    },
-    {
-      "id": "F65",
-      "name": "Addition flashcard game",
-      "subject": "Mathematics",
-      "type": "Flashcard",
-      "concept": "Addition",
-      "language": "Gujarati",
-      "ownership": "TIDE Foundation",
-      "description": "Learners solve addition problems using interactive flashcards, strengthening mental math and calculation skills.",
-      "photoUrl": "https://drive.google.com/file/d/1uCMvE1ly9wUTyAdXJ496WVhm4zqcFkIo/view?usp=sharing",
       "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
@@ -5993,6 +5942,6 @@
     }
   ],
   "meta": {
-    "total": 243
+    "total": 241
   }
 }
