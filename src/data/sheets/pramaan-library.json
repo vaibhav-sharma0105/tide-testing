@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T17:00:06.016Z",
-  "contentHash": "sha256:abfff48fe10cd68aa3de5c02922c33c11eae9293e806885f21c7a4100c4072b5",
+  "lastUpdated": "2026-11-19T17:14:59.684Z",
+  "contentHash": "sha256:540e43b6b3310ff20a932f0d0d17fa9a2f04dca3f9429f3cdfb47496ee163e0e",
   "resources": [
     {
       "id": "F1",
@@ -3666,7 +3666,7 @@
       "ownership": "NEEV",
       "description": "An engaging worksheet that supports early learners in recognizing and distinguishing English alphabet letters, developing foundational reading readiness through visual practice.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1mkMFmopWanzKdmWuRKW99rJoeQZ7JxbX/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/q4TWpksRyPE?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3696,7 +3696,7 @@
       "ownership": "NEEV",
       "description": "A sequencing worksheet where students arrange shapes in order by size, building logical thinking and foundational understanding of patterns and spatial relationships.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1dNaqibPQw9xA--KB4g6arY6O-POyFFHA/view?usp=sharing",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3711,7 +3711,7 @@
       "ownership": "NEEV",
       "description": "A butterfly-themed worksheet (Patangiyun) that introduces students to Gujarati matras (vowel diacritics), helping them understand how matras change the sound and meaning of words.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1DoYVtGL47JuaVVgEbCfH1cpdwKRN-KpJ/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3726,7 +3726,7 @@
       "ownership": "NEEV",
       "description": "A sentence-building worksheet that challenges students to arrange jumbled Gujarati words in the correct sequence, developing grammar sense and early writing skills.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1A504dc0UaOcaXpFO5ZWyQSWyuistWJds/view?usp=sharing",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3741,7 +3741,7 @@
       "ownership": "NEEV",
       "description": "A worksheet that teaches students the names and order of the days of the week in Gujarati, building vocabulary and awareness of time and routine.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1SONO4x15QFZmZZP4JvB3q9_qzy4xZzEt/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3756,7 +3756,7 @@
       "ownership": "NEEV",
       "description": "A visual reasoning worksheet where students identify and name the missing object from a familiar set, strengthening observational skills and logical thinking.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1J-oyO5L_r-kf8nwrmnRns_n_0NMeIbK7/view?usp=sharing",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3771,7 +3771,7 @@
       "ownership": "NEEV",
       "description": "A word recognition worksheet where students identify and match similar-looking Gujarati words, sharpening letter discrimination and reading accuracy.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1efd3pOdnrNuN0mS6ytn-3_rsI6zqP7Y9/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3786,7 +3786,7 @@
       "ownership": "NEEV",
       "description": "A number sequencing worksheet where students find and fill in missing numbers, reinforcing number order and early numeracy skills across multiple grade levels.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1J-oyO5L_r-kf8nwrmnRns_n_0NMeIbK7/view?usp=sharing",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3801,7 +3801,7 @@
       "ownership": "NEEV",
       "description": "A fill-in-the-blank worksheet in Gujarati that challenges students to identify and complete missing words in given sentences or series, building vocabulary and reading comprehension.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1J-oyO5L_r-kf8nwrmnRns_n_0NMeIbK7/view?usp=sharing",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -3816,7 +3816,7 @@
       "ownership": "NEEV",
       "description": "An English-language worksheet where students complete sentences or word lists by identifying missing words, reinforcing English vocabulary and spelling recognition.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1J-oyO5L_r-kf8nwrmnRns_n_0NMeIbK7/view?usp=sharing",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -4971,7 +4971,7 @@
       "ownership": "TIDE Foundation",
       "description": "In this activity, students multiply the selected numbers and move along the path on the board. It helps learners practice multiplication and improve mental math skills in a fun game",
       "photoUrl": "https://drive.google.com/file/d/1rIkSpATUPxKfAYPSaoJh9_WWVOv366Pa/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1uowEWGylVfdSDdCKZUu4zxj81OXDIUkb/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/ojER-ch5E2g?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 3",
@@ -5003,7 +5003,7 @@
       "ownership": "TIDE Foundation",
       "description": "In this activity, students multiply the selected numbers and move along the path on the board. It helps learners practice multiplication and improve mental math skills in a fun game",
       "photoUrl": "https://drive.google.com/file/d/19KW9A-xmJngxijWi284KAWzu_chfm7wp/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1uowEWGylVfdSDdCKZUu4zxj81OXDIUkb/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/ojER-ch5E2g?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 3",
@@ -5028,7 +5028,7 @@
       "ownership": "TIDE Foundation",
       "description": "Students choose numbers and solve multiplication answers to move their counters across the board strategically.Useful for improving multiplication skills, quick thinking, concentration, and decision-making through interactive play.",
       "photoUrl": "https://drive.google.com/file/d/1a4tzDssMRETtk6DzeNFY6VHhFjWWcDNB/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1uowEWGylVfdSDdCKZUu4zxj81OXDIUkb/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/ojER-ch5E2g?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 3",
@@ -5076,7 +5076,7 @@
       "ownership": "TIDE Foundation",
       "description": "Arrange the given digits to form two numbers whose sum matches the target answer.Useful for developing addition accuracy, number sense, logical thinking, and fast calculation skills.",
       "photoUrl": "https://drive.google.com/file/d/10YmnzP7eBO4dn1WoRyrJuckUpXaDeSue/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1-V8LaiZINbpG29o_rCHRDjfUpAe8b7Ss/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/EEj-79Rjgm8?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 1",
@@ -5112,7 +5112,7 @@
       "ownership": "TIDE Foundation",
       "description": "Choose number pairs, add them, and mark answers to complete the largest possible triangle on the board. Useful for improving addition skills, strategic thinking, concentration, and problem-solving ability.",
       "photoUrl": "https://drive.google.com/file/d/11_iRbtfv_n_8tXaCA1Hp67FWy77oiLWT/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1sWw_-YJ25RW_cXpQe9hUX1cZCzY-pVIk/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/87a5aI0lH2I?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 3",
@@ -5137,7 +5137,7 @@
       "ownership": "TIDE Foundation",
       "description": "Fill in the correct time on each blank clock based on the given instructions or schedule.\nHelps develop time-reading skills, daily routine understanding, observation, and practical maths knowledge.",
       "photoUrl": "https://drive.google.com/file/d/11nJwt7b0h0rRipvtIUJzaV_rrBYSDYoK/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1CsSDo_iYblkBEz-V6KUoX4McyGV0Ul3-/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/5fngJEwL_1c?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 4"
@@ -5158,7 +5158,7 @@
       "ownership": "TIDE Foundation",
       "description": "Divide each shape into two equal parts and fill them with the given colors.\nHelps develop shape recognition, symmetry understanding, creativity.",
       "photoUrl": "https://drive.google.com/file/d/1upeDSqmdQSVIr1ODWGQGPuSjxCXThjFX/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1zuOPAhYxMlEKkizGHYEvRHCvsrSjUBBs/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/l-uBtR_hyqE?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 3",
@@ -5192,7 +5192,7 @@
       "ownership": "TIDE Foundation",
       "description": "Divide each shape into four equal parts and color one part red while filling the remaining parts with the given color.\nHelps develop fraction understanding, shape recognition, creativity.",
       "photoUrl": "https://drive.google.com/file/d/1ZElNI24IowxDc5apfzIUvwI0c9UsmPk-/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1zuOPAhYxMlEKkizGHYEvRHCvsrSjUBBs/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/l-uBtR_hyqE?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 3",
@@ -5223,7 +5223,7 @@
       "ownership": "TIDE Foundation",
       "description": "Students of various standards could solve the crossword puzzle aimed at making them critical thinkers and enabling them to guess the probable answer even if they cannot solve the entire puzzle, since a crossword has given hints and they could also learn the technique of elimination of answers based on their previously solved values of other questions.",
       "photoUrl": "https://drive.google.com/file/d/1YF5cJJvN1IzfsGdETiRe9Usc90y2bhTQ/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/17-UlxN055Co7M4JGc7XXiJeXfGaFvS8s/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/tVz7coEykPs?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 2",
@@ -5249,7 +5249,7 @@
       "ownership": "TIDE Foundation",
       "description": "Class 3rd and 4th students who are being introduced to the idea of shapes, could be engaged with a small activity of identifying similar simpler shapes in larger more complex shapes. For example, students could identify how to triangles are there in a square. This would them develop a cognitive ability to identify underlying patterns in a much complex problem and solve it partwise.",
       "photoUrl": "https://drive.google.com/file/d/1g_jiGNWaJdcnBq2fv0i7wq01d_R7l4_L/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1aOi68ius5l5Gx4IlYH5lS-9OffmXSuO3/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/5vbefOF864c?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 1",
@@ -5290,7 +5290,7 @@
       "ownership": "TIDE Foundation",
       "description": "This game can be played between 3 or more players in which each player throws 2 dice, the product of the two values are multiplied and that amount of ladders that player has climmed, this goes on until the sum of all the products does not reach or exceed the targeted ladders",
       "photoUrl": "https://drive.google.com/file/d/1Kw08zB8UdIkB_NT-V1wMPUmxTSYm-WNd/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1VrpvmKHDw-AmbRZCxam7576pvFe0xM09/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/UeIP8rx8o-U?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 1",
@@ -5318,7 +5318,7 @@
       "ownership": "TIDE Foundation",
       "description": "The Number Sequence Search is a worksheet similar to word search. It has incomplete sequences and a number search box wherein the student has to find the following number in the sequence and then find and circle the sequence in that box. If they cannot find the following number of the sequence, they can find it using the number search box.",
       "photoUrl": "https://drive.google.com/file/d/10BvtZzozEUwcsGLQ2JE21YE0aMWUhwM-/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1rfkk_9KkID2iOU0VLgj0dqE5fqGcRK7R/view?usp=drive_link",
+      "videoUrl": "https://youtu.be/tck1ej3hiD0",
       "additionalInfo": null,
       "grades": [
         "GRADE 1",
@@ -5344,7 +5344,7 @@
       "ownership": "TIDE Foundation",
       "description": "It tries to explain the concept of positive and negative integers through a number line. It is followed by mathematical operations based on the same.",
       "photoUrl": "https://drive.google.com/file/d/1529YMMwdUbejVWVZmH_613S4rM3Z8b6y/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/10XbwKb1STWcld05EXcfBrG8UBtAa7bNT/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/YQgEnz42g-4?feature=share",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -5359,7 +5359,7 @@
       "ownership": "TIDE Foundation",
       "description": "The concept of basic percentages like 10%, 20%,etc are explained using shapes and fractions. The shaded triangles are identified and divided by total number of triangles. This is how percentages are derived. This is followed by a worksheet based on the same.",
       "photoUrl": "https://drive.google.com/file/d/1JSEO4HFhoSaMlMh8Va8wnolVaDNtIn1j/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1iCxrlCdZCXCdpfaQPhLnfoDIjt80E4Os/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/OkfxUWBLq78?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 5"
@@ -5380,7 +5380,7 @@
       "ownership": "TIDE Foundation",
       "description": "The concept of perimeter has been explained in a practical manner using a hands on approach. A measurement scale is required to measure the boundaries. The measurements have then to be added for finding out the perimeter. For measuring the same of a circle, a thread has to be coiled around the circle. The coil is then measured for deriving the perimeter.",
       "photoUrl": "https://drive.google.com/file/d/1UtEp0tnllYAHMxm19AsPVaONUAJbuPjm/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1248o4nD1zQQCPZs-9sO0IRVpKvNHHPU7/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/q4TWpksRyPE?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 2",
@@ -5412,7 +5412,7 @@
       "ownership": "TIDE Foundation",
       "description": "Worksheets for each grade with mathematical and aptitude based questions",
       "photoUrl": "https://drive.google.com/file/d/1mHXQGtRJSsROtgxZH4reQh3SkiGfD-Nt/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1pn8qwbSHmB-8q-iTDaEbteUj1uXrKJe2/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/PVFc_aRoWb8?feature=share",
       "additionalInfo": null,
       "grades": [
         "GRADE 1",
