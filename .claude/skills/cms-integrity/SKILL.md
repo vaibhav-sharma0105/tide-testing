@@ -16,9 +16,10 @@ description: >
   structurally identical to an adjacent,
   *correctly* code-only map (icon/color lookups) but wasn't — plain text has no non-serializable
   reason to live in code, unlike a JSX icon element or a Tailwind class string.
-  SKIP for: the ABL/Pramaan subsystem's live resource data itself (title, description, grade,
-  etc. — that legitimately comes from the Apps Script API, not YAML, by design; the Pramaan UI
-  chrome around it is NOT exempt, it lives in content/pages/abl-*.yaml), CSS class names,
+  SKIP for: the Pramaan Resource Centre's resource data itself (title, description, grade,
+  etc. — that legitimately comes from the Sheet snapshot src/data/sheets/pramaan-library.json, not
+  YAML, by design; the Pramaan UI chrome around it is NOT exempt, it lives in
+  content/pages/abl-home.yaml, pramaan-library.yaml, abl-contribute.yaml), CSS class names,
   internal route paths (`to="/contact"` is code, not content, per this project's convention),
   console/log strings, and code comments.
 ---
@@ -44,14 +45,15 @@ files): a page reads its YAML-generated JSON directly, e.g. `{data.hero.title}`.
 
 **In scope:** any new or edited file under `src/pages/**` or `src/components/**` that renders
 visible text, `alt` / `aria-label` / `title` / `placeholder` attributes, or image/media paths to
-an end user. This includes the Pramaan pages and `src/components/abl/*`: their UI chrome
-(headings, filter/pagination/card labels, SEO titles, button text) is YAML-backed in
-`content/pages/abl-home.yaml`, `abl-resource-center.yaml`, `abl-detail.yaml` and
-`abl-contribute.yaml`. SEO titles/descriptions there use `{token}` placeholders that the code
-fills in (`.replace('{token}', …)` or the `fill()` helper in `AblDetail.jsx`).
+an end user. This includes the Pramaan pages, `src/components/abl/*` and `src/components/library/*`: their UI
+chrome (headings, filter/sort/pagination/card labels, SEO titles, button text) is YAML-backed in
+`content/pages/abl-home.yaml`, `pramaan-library.yaml` and `abl-contribute.yaml` (the photo/video
+viewer labels in `content/shared/ui.yaml` `mediaLightbox.*`). SEO titles there use `{token}`
+placeholders that the code fills in (`.replace('{token}', …)` or the `fill()` helper in
+`PramaanLibraryDetail.jsx`).
 
-**Out of scope:** the live ABL/Pramaan *resource data* itself (name, description, grades,
-chapters… from the Apps Script API), route paths, CSS, code comments, test files, and the
+**Out of scope:** the Pramaan *resource data* itself (name, description, grades,
+chapters… from the Sheet snapshot), route paths, CSS, code comments, test files, and the
 loader/404/Coming-Soon/error-screen components' own internals once they're already correctly
 wired (verify they're *used* correctly, don't re-litigate their existing wiring).
 
@@ -92,7 +94,7 @@ below. Don't silence the rule with `eslint-disable`; move the text to YAML inste
 6. **Facts that must match `site.yaml`** — if a page YAML states the contact e-mail or the
    lives-impacted total, it must equal `site.yaml` (`tidefoundation@gmail.com`, `52,500+`).
    `npm run content:validate` fails otherwise.
-7. **Exempt:** the ABL/Pramaan live resource data from the Apps Script API.
+7. **Exempt:** the Pramaan resource data from the Sheet snapshot (`src/data/sheets/pramaan-library.json`).
 
 ## Procedure
 
@@ -119,7 +121,7 @@ below. Don't silence the rule with `eslint-disable`; move the text to YAML inste
      sign one should have been shared from the start.
    - A string with a variable part uses a `{token}` in the YAML value and a
      `.replace('{token}', value)` in code (examples: `ui.yaml` `lightbox.goTo`, `footer.yaml`
-     `socialAriaLabel`, `abl-detail.yaml` `meta.titleTemplate`).
+     `socialAriaLabel`, `pramaan-library.yaml` `detail.titleTemplate`).
 
 3. **For every `<img>`/media element, check both `src` and `alt`** (see checklist item 2).
 
@@ -153,7 +155,7 @@ grep -rnE "assets/images" src/pages src/components
 grep -rnE "name: '[A-Z]" src/pages
 ```
 
-As of 2026-10-25, check (2) returns nothing, and `npm run lint` is clean. Check (3) matches two
+As of 2026-11-19, check (2) and check (4) return nothing, and `npm run lint` is clean. Check (3) matches two
 structural image paths still built in code: the `PageHero` banner texture and the `BASE` folder
 constant in `OurPartners.jsx` (its YAML holds bare filenames). Don't treat those as new
 findings, and don't copy them as precedent. None of the checks is exhaustive (multi-line JSX,
@@ -177,7 +179,8 @@ sweep afterward to catch what a read-through missed.
 
 A follow-up (documented 2026-10-25) moved roughly 100 remaining hardcoded strings and 12 image
 paths into YAML: the Pramaan screens became fully YAML-backed (`abl-resource-center.yaml`,
-`abl-detail.yaml`, additions to `abl-home.yaml`), shared micro-copy went to
+`abl-detail.yaml` — both retired 2026-11-19 with the old live-read Resource Centre; the
+Resource Centre text is now `pramaan-library.yaml` — and additions to `abl-home.yaml`), shared micro-copy went to
 `content/shared/common.yaml` and `ui.yaml`, and the `react/jsx-no-literals` lint guard was added.
 After that, the multilingual framework was removed (archived in the local git tag
 `archive/multilingual-framework`), breadcrumb names and JSON-LD facts moved into

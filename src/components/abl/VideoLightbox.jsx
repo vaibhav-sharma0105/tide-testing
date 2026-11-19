@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { useModalBehavior } from '../../hooks/useModalBehavior'
-import rcData from '../../data/abl-resource-center.json'
+import ui from '../../data/ui.json'
 
 const CLEAR = { background: 'rgba(8,16,32,0)', backdropFilter: 'blur(0px) saturate(100%)', WebkitBackdropFilter: 'blur(0px) saturate(100%)' }
 const TRANSLUCENT = { background: 'rgba(8,16,32,0.66)', backdropFilter: 'blur(24px) saturate(150%)', WebkitBackdropFilter: 'blur(24px) saturate(150%)' }
@@ -20,7 +20,7 @@ export default function VideoLightbox({ src, title, onClose, translucent = false
           ref={containerRef}
           role="dialog"
           aria-modal="true"
-          aria-label={title || rcData.lightbox.videoFallback}
+          aria-label={title || ui.mediaLightbox.videoFallback}
           key="video-lightbox-backdrop"
           className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10"
           onClick={onClose}
@@ -37,7 +37,7 @@ export default function VideoLightbox({ src, title, onClose, translucent = false
           {/* Close button */}
           <motion.button {...{ initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0, transition: { duration: 0.12 } }, transition: { duration: 0.22 } }}
             onClick={onClose}
-            aria-label={rcData.lightbox.closeVideo}
+            aria-label={ui.mediaLightbox.closeVideo}
             className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition-colors duration-150"
           >
             <X className="w-5 h-5" />

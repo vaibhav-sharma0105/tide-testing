@@ -1,5 +1,5 @@
 /**
- * Filters and option lists for the Pramaan Library page (/pramaan-library).
+ * Filters and option lists for the Pramaan Library page (/pramaan/resource-centre).
  * Pure functions — no side effects. Values come from free-typed Sheet cells, so matching
  * ignores case and extra spaces ("Mathematics " and "mathematics" are one subject).
  */
@@ -16,6 +16,20 @@ export const sortGrades = (grades) => LIBRARY_GRADES.filter(g => (grades ?? []).
 export const gradeLabel = (g) => g === 'FOUNDATIONAL' ? data.filters.foundational : data.filters.gradeTemplate.replace('{n}', g.replace('GRADE ', ''))
 
 export const normKey = (v) => (typeof v === 'string' ? v.trim().replace(/\s+/g, ' ').toLowerCase() : '')
+
+/**
+ * The ?type= value as a filter key. Accepts the normalised key ("kit") and, so links made for the
+ * former Resource Centre keep working, a type name in any case or number ("Kits", "Flashcards"):
+ * it matches the library's type of the same name ignoring case and a trailing "s".
+ */
+export function typeParamKey(value, resources) {
+  const key = normKey(value)
+  if (!key) return ''
+  const types = new Set((resources ?? []).map(r => normKey(r.type)).filter(Boolean))
+  if (types.has(key)) return key
+  const one = (s) => s.replace(/s$/, '')
+  return [...types].find(t => one(t) === one(key)) ?? key
+}
 
 /** [{ value, label, count }] for one field, sorted by label; value is the normalised key. */
 export function optionsFor(resources, field) {

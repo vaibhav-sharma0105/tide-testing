@@ -5,5 +5,12 @@
     "previous": "Previous image",
     "next": "Next image",
     "goTo": "Go to image {n}"
+  },
+  "mediaLightbox": {
+    "closePreview": "Close preview",
+    "closeVideo": "Close video",
+    "imagePreviewFallback": "Image preview",
+    "noImage": "No image available",
+    "videoFallback": "Video"
   }
 }

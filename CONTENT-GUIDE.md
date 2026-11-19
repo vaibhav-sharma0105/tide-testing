@@ -53,14 +53,13 @@ Find the YAML file for the page you want to edit. Naming follows the URL (`/abou
 | About → Our Publications | `content/pages/about-publications.yaml` |
 | Education for Harmony | `content/pages/education-for-harmony.yaml` |
 | Education for Harmony → Organise your MCCx | `content/pages/get-involved-mccx.yaml` |
+| Education for Harmony → Past SCF (Social Changemakers; reached only from the Education for Harmony page, still placeholder content) | `content/pages/social-changemakers.yaml` |
 | Pramaan → About Pramaan | `content/pages/abl-home.yaml` |
-| Pramaan → Resource Centre (the list and filters) | `content/pages/abl-resource-center.yaml` |
-| Pramaan → a single resource's page | `content/pages/abl-detail.yaml` |
-| Pramaan → Contribute | `content/pages/abl-contribute.yaml` |
-| Pramaan Library (`/pramaan-library`, unlinked page) | `content/pages/pramaan-library.yaml` |
+| Pramaan → Resource Centre (the list, filters, and each resource's page) | `content/pages/pramaan-library.yaml` |
+| Pramaan → Contribute (incl. the form link `formUrl`) | `content/pages/abl-contribute.yaml` |
 | THRIvE Research Centre (leaders, research associates with `role` + optional `suffix`, the four research areas) | `content/pages/thrive.yaml` |
 | Contact Us | `content/pages/contact.yaml` |
-| Volunteer (reached from the About menu) | `content/pages/get-involved-volunteer.yaml` |
+| Volunteer (the "Get Involved" item in the About menu) | `content/pages/get-involved-volunteer.yaml` |
 | Donate (the Donate button) | `content/pages/get-involved-donate.yaml` |
 
 A web address that is not one of the pages above shows the "page not found" screen (see `content/shared/not-found.yaml` below).
@@ -72,7 +71,7 @@ A web address that is not one of the pages above shows the "page not found" scre
 | Header menu labels, Donate button, "Skip to main content" link, logo text | `content/shared/navigation.yaml` |
 | Footer: tagline (byline under the logo), copyright line, Donate button label, social links | `content/shared/footer.yaml` |
 | Short phrases reused on several pages ("Click any image to view full screen.", "Hover over a photo to see the role.", "Hover over a photo to read about each person.", the word "Step") | `content/shared/common.yaml` |
-| Labels of the full-screen photo viewer (Close / Previous / Next buttons, "Image viewer", "Go to image {n}") | `content/shared/ui.yaml` |
+| Labels of the full-screen photo viewer (Close / Previous / Next buttons, "Image viewer", "Go to image {n}") and the Pramaan photo/video viewers (`mediaLightbox:`) | `content/shared/ui.yaml` |
 | Messages shown while a page is loading | `content/shared/loader.yaml` |
 | The "page not found" page | `content/shared/not-found.yaml` |
 | The "Coming Soon" page (`/coming-soon`) | `content/shared/coming-soon.yaml` |
@@ -82,13 +81,12 @@ A web address that is not one of the pages above shows the "page not found" scre
 
 ### What a Pramaan editor can change
 
-The Pramaan screens are fully editable from YAML. The **resources themselves** (name, description, grades, photos, videos…) do **not** come from YAML — they come live from the Google Sheet, so edit those in the Sheet. Everything *around* them is in YAML:
+The Pramaan screens are fully editable from YAML. The **resources themselves** (name, description, grades, photos, videos…) do **not** come from YAML — they come from the Google Sheet "Contributing to Pramaan; Educators' Resource Bank (Responses)", copied into the website automatically within minutes of an edit, so edit those in the Sheet. Everything *around* them is in YAML:
 
-- `abl-home.yaml` — the "About Pramaan" page: heading, the three-tab bar (`nav:`), the statistics labels, the "What is Activity-Based Learning?" text, the list of "Why ABL works" points, and the error messages.
-- `abl-resource-center.yaml` — the Resource Centre page: heading and search-result title (`meta:`), the Filters button and result counts (`page:`), every filter label (`filters:`), the "no results" and "try again" messages (`grid:`), the pagination bar (`pagination:`), the wording on each resource card (`card:`) and the image/video pop-up fallbacks (`lightbox:`).
-- `abl-detail.yaml` — a single resource's page: browser-tab title and description wording (`meta:`), the "Resource Not Found" page (`notFound:`), the "Back to Resource Center" link, the button and section labels (`media:`, `facts:`, `coverage:`).
-- `abl-contribute.yaml` — the Contribute page text, its three steps and the heading above the form button. The form's web address is **not** here: it is a GitHub setting, changed by following `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md`.
-- `pramaan-library.yaml` — the text around the Pramaan Library (page title, search, sort and filter labels, empty states, card and detail-page labels). The resources themselves come from the library Sheet, not this file — see `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`.
+- `abl-home.yaml` — the "About Pramaan" page: heading, the three-tab bar shown on every Pramaan page (`nav:`), the statistics labels (the resource and type counts are counted from the Sheet; the grade range is `gradeRange` in `site.yaml`), the reach figures (`about.reach`, keep them in step with the text and the video poster), the "What is Activity-Based Learning?" text, the list of "Why ABL works" points, and the name of each resource type (`resourceTypes.labels:`).
+- `pramaan-library.yaml` — the Resource Centre: page title and search-result title (`meta:`), the Filters button and result counts (`page:`), every filter and sort label (`filters:`, `sort:`), the "no results" message (`grid:`), the wording on each resource card (`card:`), a single resource's page (`detail:` — browser-tab title, "Back to Resource Center", "Resource Not Found", section labels) and the page-number bar (`pagination:`). Rules for the Sheet itself: `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`.
+- `abl-contribute.yaml` — the Contribute page text, its three steps, the heading above the form button, and the **form's web address** (`formUrl:`). Step by step: `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md`.
+- The labels of the full-screen photo and video viewers ("Close preview", "Close video"…) are in `content/shared/ui.yaml` (`mediaLightbox:`).
 
 > **Placeholders in `{curly braces}`.** Some Pramaan and shared phrases contain a word in curly braces, for example `"Grade {n}"`, `"View {name}"`, `"{name} — TIDE Pramaan"` or `"Visit TIDE on {platform}"`. The website fills these in automatically (the grade number, the resource name, …). You can reword the text around them, but **keep the `{word}` exactly as written** — if you delete or misspell it, the site will show the raw `{word}` or leave a gap.
 
@@ -159,12 +157,13 @@ public/assets/images/
   projects-mcc/             ← photos on the Organise your MCCx page
   projects-bettered/        ← two of these are used on the homepage; gallery-04 is also the photo for THRIvE research area 01
   thrive/                   ← THRIvE team portraits and research-area photos
+  education-for-harmony/    ← the CARES framework diagram on the Education for Harmony page
   thrive-happiness/         ← no longer used on the page (the Conferences section was removed)
-  abl/                      ← DO NOT TOUCH: Pramaan thumbnails, filled in
+  pramaan-library/          ← DO NOT TOUCH: Pramaan Resource Centre photos, filled in
                               automatically from the Google Sheet
 ```
 
-Other folders may exist in `public/assets/images/` (names starting `projects-` or `resources-`). They are left over from pages that were removed from the site, and no page uses them. See `WHATS-NEXT.md`.
+The `projects-` folder names are left over from older page names; the two `projects-` folders above are still used.
 
 ### If an image is missing
 
@@ -390,7 +389,7 @@ This will:
 
 It is a helper, not a guarantee: it does not check other image field names, links, or images written **without** a leading slash. In particular, the partner logos on the Our Partners page are a list of bare file names (`logoGallery.images:` in `about-our-partners.yaml`; the page adds the folder itself), so a misspelled or missing name there is not caught. A missing file shows the grey placeholder instead of the logo. Always look at the page in the preview too.
 
-If you're using Path A — editing directly on GitHub — there's no check beforehand, and the live build does not run this check either. The live build only stops for **YAML syntax errors** (the **Actions** tab will show a red ✕); a wrong image path, a mismatched email or a misspelled key does *not* stop the build. It just shows up as a missing picture, an inconsistent figure or missing text on the page.
+If you're using Path A — editing directly on GitHub — there's no check beforehand, but the live build runs this same check (plus the code checks and tests) before publishing. A YAML syntax error or a mismatched email / lives-impacted figure **stops the update** (the **Actions** tab shows a red ✕, and the site keeps showing the previous version). A wrong image path (only a warning) or a misspelled key does *not* stop it — it just shows up as a grey placeholder picture or missing text on the page.
 
 ---
 
@@ -468,6 +467,6 @@ You only need this if you're using Path B (terminal with local preview). Path A 
 - Files in `src/data/` — auto-generated, overwritten on every sync
 - Files in `src/pages/` or `src/components/` — these are the React components (code)
 - Files in `dist/` — auto-generated build output
-- The `public/assets/images/abl/` folder — filled in automatically from the Pramaan Google Sheet
+- The `public/assets/images/pramaan-library/` folder — filled in automatically from the Resource Centre's Google Sheet
 
 If you need to change layout, colours, or add new pages, that requires a developer. Everything else a visitor or search engine reads — including the search-engine "structured data" and page breadcrumbs — comes from YAML (`site.yaml` and each page's `breadcrumbName`).

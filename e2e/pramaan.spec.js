@@ -63,6 +63,19 @@ test.describe('Pramaan (ABL Resource Library)', () => {
     await expect(page).toHaveTitle(/TIDE/)
   })
 
+  test('a resource opens at /pramaan/resource-centre/<id> with the Pramaan tab bar', async ({ page }) => {
+    await page.goto('/pramaan/resource-centre/W1')
+    await expect(page.getByRole('link', { name: 'Contribute' })).toBeVisible()
+    await expect(page.getByRole('heading', { level: 1 })).not.toHaveText(/No resource/i)
+  })
+
+  test('the former /pramaan-library address redirects, keeping the id and filters', async ({ page }) => {
+    await page.goto('/pramaan-library/W1')
+    await expect(page).toHaveURL(/\/pramaan\/resource-centre\/W1$/)
+    await page.goto('/pramaan-library?type=kit')
+    await expect(page).toHaveURL(/\/pramaan\/resource-centre\?type=kit$/)
+  })
+
   test('/pramaan/contribute loads without error', async ({ page }) => {
     const errors = []
     page.on('pageerror', err => errors.push(err.message))

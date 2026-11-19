@@ -23,4 +23,8 @@ steps:
 formTitle: "Ready to share your resource?"
 
 cta: "Open Contribution Form"
+# The Google Form contributors fill in (it feeds the Pramaan Library Sheet). Paste the form's share
+# link here; leave it empty ("") to show the button greyed out with ctaPending beneath it.
+# npm run content:validate checks it is a Google Forms link.
+formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSfbWm7Jtp73QUe0y3pVjdsQ-1ywTh-OpW9U63QRbDONdWrUeg/viewform?usp=dialog"
 ctaPending: "Form link coming soon."

@@ -1,20 +1,23 @@
 # Pramaan Library — the resource page fed by the form-format Sheet
 # ("Contributing to Pramaan; Educators' Resource Bank (Responses)").
-# Routes: /pramaan-library (list) and /pramaan-library/<id> (one resource).
-# NOT linked from any menu, footer or sitemap, and marked noindex — reachable only with the link.
+# Routes: /pramaan/resource-centre (list) and /pramaan/resource-centre/<id> (one resource) — the
+# Pramaan Resource Centre. The former address /pramaan-library redirects there.
 # The resources themselves come from the Sheet (src/data/sheets/pramaan-library.json, written by
 # the sync); only the text around them lives here.
 
+# Badge, titles and back label are the former Resource Centre's (owner decision, 2026-11-19).
 meta:
-  badge: "Pramaan · Library"
-  title: "Pramaan Resource Library"
-  subtitle: "Teaching materials shared by educators. Filter by subject, type, grade and owner."
-  seoTitle: "Pramaan Resource Library — TIDE Foundation"
-  seoDescription: "Teaching materials shared by educators through the Pramaan resource bank."
+  badge: "Resources · ABL"
+  title: "Resource Center"
+  subtitle: "Browse all Activity-Based Learning resources. Filter by subject, type, grade and owner."
+  seoTitle: "Resource Centre — Pramaan — TIDE Foundation"
+  seoDescription: "Browse free Activity-Based Learning resources for Grades {gradeRange} — worksheets, games, kits and flashcards, filterable by subject, type, grade and owner."
   # Shown when nothing has been published yet (no row has all three consent answers "Yes")
   emptyTitle: "No resources published yet"
   emptyHint: "Resources appear here once they are approved for sharing in the Pramaan Sheet."
   lastUpdatedTemplate: "Last updated {date}"
+  # Last crumb in the SEO breadcrumb trail (Home > Pramaan > this page)
+  breadcrumbName: "Resource Centre"
 
 page:
   filtersButton: "Filters"
@@ -70,9 +73,9 @@ card:
   moreGradesTemplate: "+{n} more"
 
 detail:
-  backLabel: "Back to the library"
-  titleTemplate: "{name} — Pramaan Resource Library"
-  notFoundSeoTitle: "Resource Not Found — Pramaan Resource Library"
+  backLabel: "Back to Resource Center"
+  titleTemplate: "{name} — TIDE Pramaan"
+  notFoundSeoTitle: "Resource Not Found — TIDE Pramaan"
   notFoundHeading: "Resource Not Found"
   notFoundTemplate: "No resource found with ID \"{id}\"."
   subject: "Subject"
@@ -92,3 +95,13 @@ detail:
   shortGradeTemplate: "G{n}"
   shortFoundational: "Fdn"
   chapterSeparator: " — "
+
+# Page-number bar under the resource cards
+pagination:
+  ariaLabel: "Pagination"
+  showing: "Showing"
+  of: "of"
+  resources: "resources"
+  previousLabel: "Previous"
+  previousShort: "Prev"
+  next: "Next"

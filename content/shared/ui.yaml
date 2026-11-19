@@ -1,4 +1,4 @@
-# Shared UI component microcopy (Lightbox)
+# Shared UI component microcopy (Lightbox, and the Pramaan image/video viewers)
 # {n} in a label is replaced in code with the item number.
 
 lightbox:
@@ -7,3 +7,12 @@ lightbox:
   previous: "Previous image"
   next: "Next image"
   goTo: "Go to image {n}"
+
+# Full-screen photo and video viewers on the Pramaan pages (components/abl/ImageLightbox, VideoLightbox):
+# the promo video on /pramaan and the photo/explanation video on a Resource Centre resource.
+mediaLightbox:
+  closePreview: "Close preview"
+  closeVideo: "Close video"
+  imagePreviewFallback: "Image preview"
+  noImage: "No image available"
+  videoFallback: "Video"

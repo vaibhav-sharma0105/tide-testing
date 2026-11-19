@@ -11,8 +11,10 @@ import Button from '../../components/ui/Button'
 import Highlight from '../../components/ui/Highlight'
 import ResourceTypeBadge from '../../components/abl/ResourceTypeBadge'
 import { TypeIcon } from '../../components/abl/typeIcons'
-import { useABLData } from '../../hooks/useABLData'
-import { getTabStyle, getTypeColors } from '../../config/abl'
+import { getTabStyle, getTypeColors, TAB_STYLE_MAP } from '../../config/abl'
+import { libraryTypeKey } from '../../config/library'
+import { optionsFor } from '../../utils/libraryFilters'
+import snapshot from '../../data/sheets/pramaan-library.json'
 import ablData from '../../data/abl-home.json'
 import site from '../../data/site.json'
 import { fadeUp } from '../../utils/motionPresets'
@@ -33,8 +35,15 @@ function formatDate(iso) {
   } catch { return '' }
 }
 
+// Counts and types come from the Resource Centre's snapshot (built into the site, no live request).
+// A type is shown under its Pramaan name ("Kit" → Kits) and in the Pramaan order; unknown types follow.
+const resources = Array.isArray(snapshot.resources) ? snapshot.resources : []
+const ORDER = Object.keys(TAB_STYLE_MAP)
+const TYPES = optionsFor(resources, 'type')
+  .map(o => ({ ...o, tab: libraryTypeKey(o.label) ?? o.label }))
+  .sort((a, b) => (ORDER.indexOf(a.tab) + 1 || 99) - (ORDER.indexOf(b.tab) + 1 || 99) || a.label.localeCompare(b.label))
+
 export default function AblHome() {
-  const { data, loading, error } = useABLData()
   // the first sentence is the idea; the others (library, reach, ongoing work) follow beneath it
   const [lead, ...others] = ablData.about.body.split(/(?<=[.!?])\s+/)
   const rest = others.join(' ')
@@ -67,17 +76,9 @@ export default function AblHome() {
       <section className="py-10 bg-white border-b border-tide-border">
         <div className="max-w-5xl mx-auto px-4 md:px-8 lg:px-16">
           <div className="mx-auto grid max-w-3xl grid-cols-3 gap-4 text-center md:gap-6">
-            {loading ? (
-              Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="animate-pulse flex flex-col items-center gap-3">
-                  <div className="h-10 w-20 bg-tide-subtle rounded" />
-                  <div className="h-3 w-24 bg-tide-subtle rounded" />
-                </div>
-              ))
-            ) : (
-              [
-                <AnimatedCounter key="t" value={data?.meta?.total ?? 0} label={ablData.stats.totalResources} />,
-                <AnimatedCounter key="r" value={data?.tabs?.length ?? 0} label={ablData.stats.resourceTypes} />,
+            {[
+                <AnimatedCounter key="t" value={resources.length} label={ablData.stats.totalResources} />,
+                <AnimatedCounter key="r" value={TYPES.length} label={ablData.stats.resourceTypes} />,
                 <div key="g" className="text-center">
                   <div className="font-display text-4xl md:text-5xl font-bold leading-none text-primary">{ablData.stats.gradeRange}</div>
                   <div className="mt-2.5 text-xs font-body font-semibold uppercase tracking-widest text-tide-muted">{ablData.stats.gradeCovered}</div>
@@ -92,18 +93,17 @@ export default function AblHome() {
                     {cell}
                   </motion.div>
                 )
-              })
-            )}
+              })}
           </div>
 
           {/* Freshness is reassurance, not a headline number: a quiet chip under the stats */}
-          {!loading && formatDate(data?.lastUpdated) && (
+          {formatDate(snapshot.lastUpdated) && (
             <motion.p {...fadeUp(0.3)} className="mt-8 flex items-center justify-center gap-2 text-center font-body text-xs text-tide-muted">
               <span className="relative flex h-2 w-2" aria-hidden="true">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500/50 motion-reduce:animate-none" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600" />
               </span>
-              <span>{ablData.stats.lastSynced} {formatDate(data?.lastUpdated)}</span>
+              <span>{ablData.stats.lastSynced} {formatDate(snapshot.lastUpdated)}</span>
             </motion.p>
           )}
         </div>
@@ -188,27 +188,15 @@ export default function AblHome() {
             <h2 className="font-display text-3xl font-semibold leading-tight text-tide-text text-balance md:text-4xl lg:text-5xl">{ablData.resourceTypes.title}</h2>
           </motion.div>
 
-          {loading && (
+          {TYPES.length > 0 && (
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="animate-pulse bg-tide-subtle rounded-2xl h-44" />
-              ))}
-            </div>
-          )}
-
-          {error && (
-            <p className="text-sm font-body text-tide-muted text-center py-8">{error}</p>
-          )}
-
-          {!loading && !error && data && (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {data.tabs.map((tab, i) => {
+              {TYPES.map(({ tab, value, label, count }, i) => {
                 const style = getTabStyle(tab)
                 const colors = getTypeColors(tab)
                 return (
-                  <motion.div key={tab} {...fadeUp(i * 0.08)}>
+                  <motion.div key={value} {...fadeUp(i * 0.08)}>
                     <Link
-                      to={`/pramaan/resource-centre?type=${encodeURIComponent(tab)}`}
+                      to={`/pramaan/resource-centre?type=${encodeURIComponent(value)}`}
                       className={`group relative block h-full rounded-3xl border border-tide-border bg-tide-bg p-6 shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover ${colors.cardHover}`}
                     >
                       <ArrowUpRight className={`absolute right-5 top-5 h-5 w-5 ${colors.eyebrow} opacity-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100`} aria-hidden="true" />
@@ -217,10 +205,10 @@ export default function AblHome() {
                       </span>
                       <ResourceTypeBadge type={tab} />
                       <div className={`mt-3 font-display text-xl font-semibold text-tide-text transition-colors ${colors.titleHover}`}>
-                        {style.pluralLabel}
+                        {TAB_STYLE_MAP[tab] ? style.pluralLabel : label}
                       </div>
                       <div className="mt-1 font-body text-sm text-tide-muted">
-                        <span className="font-semibold text-tide-text">{data.meta?.counts?.[tab] ?? 0}</span> {ablData.resourceTypes.resourcesCount}
+                        <span className="font-semibold text-tide-text">{count}</span> {ablData.resourceTypes.resourcesCount}
                       </div>
                     </Link>
                   </motion.div>

@@ -108,9 +108,3 @@ resourceTypes:
     _default:
       label: "Resource"
       pluralLabel: "Resources"
-
-# Messages shown when the resource data cannot be loaded (used by every Pramaan page)
-errors:
-  notConfigured: "API not configured. Add VITE_ABL_API_URL to your .env.development file."
-  timeout: "Request timed out. Please check your connection and try again."
-  generic: "Failed to load resources. Please try again."

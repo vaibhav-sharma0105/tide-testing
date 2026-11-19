@@ -9,20 +9,8 @@
  */
 
 import { render, screen, cleanup } from '@testing-library/react'
-import { vi } from 'vitest'
 import App from '../../App'
 import notFound from '../../data/not-found.json'
-
-vi.mock('../../hooks/useABLData', () => ({
-  useABLData: () => ({
-    data: null,
-    allResources: [],
-    loading: false,
-    error: null,
-    lastUpdated: null,
-    refetch: vi.fn(),
-  }),
-}))
 
 const REMOVED_PATHS = [
   '/about/our-results',

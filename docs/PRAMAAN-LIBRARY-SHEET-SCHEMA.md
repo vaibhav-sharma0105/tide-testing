@@ -1,7 +1,7 @@
 # Pramaan Library — what the Sheet must look like
 
-The Sheet **"Contributing to Pramaan; Educators' Resource Bank (Responses)"** feeds the unlinked
-page `/pramaan-library`. This page lists every rule the website applies to it. The rules are
+The Sheet **"Contributing to Pramaan; Educators' Resource Bank (Responses)"** feeds the Pramaan
+Resource Centre, `/pramaan/resource-centre` (its former address `/pramaan-library` redirects there). This page lists every rule the website applies to it. The rules are
 written in code in `apps-script/pramaan-library/Code.gs`, `scripts/lib/library-snapshot.js`
 and `scripts/validate-content.js`. If you change a rule there, update this page too.
 
@@ -20,7 +20,7 @@ published.
 
 | Col (today) | Header starts with | Used for | Shown on the website? |
 |---|---|---|---|
-| A | `Internal ID` | The resource ID (the page link is `/pramaan-library/<ID>`) | In the link only |
+| A | `Internal ID` | The resource ID (the page link is `/pramaan/resource-centre/<ID>`) | In the link only |
 | B | `Subject` | The **Subject** filter | Yes (card and detail page) |
 | C | `Name of resource` | **Required.** Rows without a name are skipped and reported | Yes |
 | D | `Short description` | Description | Yes |
@@ -50,7 +50,7 @@ published for this reason.
 | What the cell says | Meaning |
 |---|---|
 | empty | Not for this grade |
-| `Doesn't fit the grade` (also `Does not fit…`, `N/A`, `-`) | Not for this grade |
+| `Doesn't fit the grade` (also `Does not fit…`, `Don't fit…`, `Not applicable`, `N/A`, `NA`, `-`; any case — `Code.gs` `NOT_THIS_GRADE`) | Not for this grade |
 | anything else, e.g. `ch 2, ch 5` | **For this grade.** The text is split at commas into chapters |
 
 ## IDs

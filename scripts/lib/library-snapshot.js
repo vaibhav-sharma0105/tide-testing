@@ -3,14 +3,14 @@
 // src/test/scripts/librarySnapshot.test.js exercises every rule.
 //
 // Shared building blocks (safe ids, hashing, photo plan, deletion limits) come from
-// abl-snapshot.js so both Sheets follow the same safety rules. Column rules for this Sheet:
+// snapshot-core.js, so every Sheet integration follows the same safety rules. Column rules for this Sheet:
 // docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md.
 
 import {
   THRESHOLDS, isSafeId, isHttpUrl, contentHash, serializeSnapshot, planPhotos as planPhotosForTabs,
-} from './abl-snapshot.js'
+} from './snapshot-core.js'
 
-export { isSafeId, serializeSnapshot, photoDeletionError, photosFromExport } from './abl-snapshot.js'
+export { isSafeId, serializeSnapshot, photoDeletionError, photosFromExport } from './snapshot-core.js'
 
 export const SCHEMA_VERSION = 1
 export const SECTION = 'pramaan-library'

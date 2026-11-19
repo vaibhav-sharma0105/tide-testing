@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { ABL_PAGE_SIZE } from '../../config/abl'
-import rcData from '../../data/abl-resource-center.json'
+import { LIBRARY_PAGE_SIZE } from '../../config/library'
+import data from '../../data/pramaan-library.json'
 
 function pageRange(current, total) {
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
@@ -9,7 +9,7 @@ function pageRange(current, total) {
   return [1, '...', current - 1, current, current + 1, '...', total]
 }
 
-export default function Pagination({ total, page, perPage = ABL_PAGE_SIZE, onChange }) {
+export default function Pagination({ total, page, perPage = LIBRARY_PAGE_SIZE, onChange }) {
   const totalPages = Math.ceil(total / perPage)
   if (totalPages <= 1) return null
 
@@ -18,20 +18,20 @@ export default function Pagination({ total, page, perPage = ABL_PAGE_SIZE, onCha
   const pages     = pageRange(page, totalPages)
 
   return (
-    <nav className="mt-10 flex flex-col items-center gap-4" aria-label={rcData.pagination.ariaLabel}>
+    <nav className="mt-10 flex flex-col items-center gap-4" aria-label={data.pagination.ariaLabel}>
       <p className="text-sm font-body text-tide-muted">
-        {rcData.pagination.showing} {startItem}–{endItem} {rcData.pagination.of} {total} {rcData.pagination.resources}
+        {data.pagination.showing} {startItem}–{endItem} {data.pagination.of} {total} {data.pagination.resources}
       </p>
       <div className="flex flex-wrap items-center justify-center gap-0.5 sm:gap-1">
         <button
           onClick={() => page > 1 && onChange(page - 1)}
           aria-disabled={page === 1}
-          aria-label={rcData.pagination.previousLabel}
+          aria-label={data.pagination.previousLabel}
           className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-full text-sm font-body font-medium transition-colors ${
             page === 1 ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-white hover:text-primary hover:shadow-sm'
           }`}
         >
-          <ChevronLeft className="w-4 h-4" aria-hidden="true" /> <span className="hidden sm:inline">{rcData.pagination.previousShort}</span>
+          <ChevronLeft className="w-4 h-4" aria-hidden="true" /> <span className="hidden sm:inline">{data.pagination.previousShort}</span>
         </button>
 
         {pages.map((p, i) =>
@@ -56,12 +56,12 @@ export default function Pagination({ total, page, perPage = ABL_PAGE_SIZE, onCha
         <button
           onClick={() => page < totalPages && onChange(page + 1)}
           aria-disabled={page === totalPages}
-          aria-label={rcData.pagination.next}
+          aria-label={data.pagination.next}
           className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-full text-sm font-body font-medium transition-colors ${
             page === totalPages ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-white hover:text-primary hover:shadow-sm'
           }`}
         >
-          <span className="hidden sm:inline">{rcData.pagination.next}</span> <ChevronRight className="w-4 h-4" aria-hidden="true" />
+          <span className="hidden sm:inline">{data.pagination.next}</span> <ChevronRight className="w-4 h-4" aria-hidden="true" />
         </button>
       </div>
     </nav>

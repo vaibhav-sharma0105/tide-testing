@@ -69,8 +69,6 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 Object.assign(import.meta.env, {
-  VITE_ABL_API_URL: '',
-  VITE_ABL_CONTRIBUTE_FORM_URL: '',
   BASE_URL: '/',
 })
 

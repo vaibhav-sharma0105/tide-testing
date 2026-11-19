@@ -4,12 +4,13 @@ import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import Button from '../../components/ui/Button'
-import { CONTRIBUTE_FORM_URL } from '../../config/abl'
 import ablContributeData from '../../data/abl-contribute.json'
 import site from '../../data/site.json'
 import { fadeUp } from '../../utils/motionPresets'
 
-const formReady = CONTRIBUTE_FORM_URL && CONTRIBUTE_FORM_URL !== 'REPLACE_WITH_GOOGLE_FORM_URL'
+// The form link is content (abl-contribute.yaml → formUrl); empty means "not ready yet".
+const formUrl = typeof ablContributeData.formUrl === 'string' ? ablContributeData.formUrl.trim() : ''
+const formReady = /^https:///.test(formUrl)
 
 // Icons cannot live in YAML: one per step, in YAML order.
 const STEP_ICONS = [ClipboardList, CheckCircle2, BookOpen]
@@ -84,7 +85,7 @@ export default function AblContribute() {
             <h2 className="mb-8 font-display text-3xl font-semibold leading-tight text-white text-balance md:text-4xl">{ablContributeData.formTitle}</h2>
 
             {formReady ? (
-              <Button href={CONTRIBUTE_FORM_URL} external variant="accent" size="lg">
+              <Button href={formUrl} external variant="accent" size="lg">
                 {ablContributeData.cta}
                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </Button>

@@ -84,50 +84,8 @@ function checkSiteConsistency() {
 }
 checkSiteConsistency()
 
-// Pramaan snapshot + photo manifest (bot-written by scripts/sync-abl-thumbnails.js). A broken or
-// hand-edited file must fail CI rather than reach the live site. Skipped until the first sync has
-// written the snapshot. Rules: docs/PRAMAAN-HARDENING-PLAN.md §6.3.
-function checkAblSnapshot() {
-  const snapFile = path.join('src', 'data', 'sheets', 'abl-resources.json')
-  const manFile = path.join('src', 'data', 'abl-thumbnails-manifest.json')
-  if (!fs.existsSync(snapFile)) return
-  let snap, manifest
-  try { snap = JSON.parse(fs.readFileSync(snapFile, 'utf8')) } catch (e) { error(snapFile, `not valid JSON: ${e.message}`); return }
-  try { manifest = JSON.parse(fs.readFileSync(manFile, 'utf8')) } catch (e) { error(manFile, `not valid JSON: ${e.message}`); return }
-
-  if (snap.schemaVersion !== 1 || snap.success !== true || !Array.isArray(snap.tabs) || !snap.resources || typeof snap.resources !== 'object') {
-    error(snapFile, 'unexpected shape (needs schemaVersion 1, success, tabs[], resources{})')
-    return
-  }
-  const ids = new Set()
-  let total = 0
-  for (const tab of snap.tabs) {
-    const rows = snap.resources[tab]
-    if (!Array.isArray(rows) || rows.length === 0) { error(snapFile, `tab "${tab}" has no rows`); continue }
-    for (const r of rows) {
-      if (!r || typeof r.id !== 'string' || !r.id || typeof r.name !== 'string' || !r.name) { error(snapFile, `a row in "${tab}" has no id or name`); continue }
-      if (ids.has(r.id)) error(snapFile, `duplicate id ${r.id}`)
-      ids.add(r.id)
-      total++
-    }
-  }
-  if (snap.meta?.total !== total) error(snapFile, `meta.total is ${snap.meta?.total} but there are ${total} rows`)
-
-  const assetsDir = path.resolve(PUBLIC_DIR, 'assets', 'images', 'abl')
-  for (const [id, entry] of Object.entries(manifest)) {
-    if (!ids.has(id)) error(manFile, `photo entry ${id} has no matching resource in the snapshot`)
-    for (const rel of [entry?.thumb, entry?.full]) {
-      if (typeof rel !== 'string' || !rel.startsWith('assets/images/abl/')) { error(manFile, `${id}: bad photo path ${JSON.stringify(rel)}`); continue }
-      if (!fs.existsSync(path.join(PUBLIC_DIR, rel))) error(manFile, `${id}: missing file public/${rel}`)
-    }
-  }
-  const known = new Set(Object.values(manifest).flatMap(e => [e?.thumb, e?.full]).filter(Boolean).map(p => path.basename(p)))
-  const strays = fs.existsSync(assetsDir) ? fs.readdirSync(assetsDir).filter(f => !known.has(f)) : []
-  if (strays.length) warn('public/assets/images/abl', `${strays.length} file(s) not referenced by the manifest (e.g. ${strays.slice(0, 3).join(', ')})`)
-}
-checkAblSnapshot()
-
-// Pramaan Library snapshot (form-format Sheet, scripts/sync-pramaan-library.js). Same idea, plus a
+// Pramaan Library snapshot (form-format Sheet, scripts/sync-pramaan-library.js). A broken or hand-edited
+// file must fail CI rather than reach the live site. Plus a
 // privacy backstop: the snapshot may hold only the allowlisted fields and no email address, so a
 // mistake can never publish contributors' personal details.
 function checkLibrarySnapshot() {
@@ -160,6 +118,20 @@ function checkLibrarySnapshot() {
   }
 }
 checkLibrarySnapshot()
+
+// The Contribute button's link (abl-contribute.yaml → formUrl): empty, or a Google Forms link.
+function checkContributeForm() {
+  const file = path.join('content', 'pages', 'abl-contribute.yaml')
+  let doc
+  try { doc = yaml.load(fs.readFileSync(file, 'utf8')) } catch { return } // syntax errors are reported above
+  const url = doc?.formUrl
+  if (url === undefined || url === null || url === '') { warn(file, 'formUrl is empty — the Contribute button shows as "coming soon"'); return }
+  let u
+  try { u = new URL(String(url)) } catch { error(file, `formUrl is not a valid link: ${JSON.stringify(url)}`); return }
+  const google = u.protocol === 'https:' && ((u.hostname === 'docs.google.com' && u.pathname.startsWith('/forms/')) || u.hostname === 'forms.gle')
+  if (!google) error(file, `formUrl must be a Google Forms link (https://docs.google.com/forms/… or https://forms.gle/…), got ${JSON.stringify(url)}`)
+}
+checkContributeForm()
 
 console.log(`\n   ${warnings} warning(s), ${errors} error(s)\n`)
 if (errors > 0) process.exit(1)

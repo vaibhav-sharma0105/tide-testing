@@ -24,8 +24,8 @@ function renderAt(path) {
     <HelmetProvider>
       <MemoryRouter initialEntries={[path]}>
         <Routes>
-          <Route path="/pramaan-library" element={<PramaanLibrary />} />
-          <Route path="/pramaan-library/:id" element={<PramaanLibraryDetail />} />
+          <Route path="/pramaan/resource-centre" element={<PramaanLibrary />} />
+          <Route path="/pramaan/resource-centre/:id" element={<PramaanLibraryDetail />} />
         </Routes>
       </MemoryRouter>
     </HelmetProvider>,
@@ -34,7 +34,7 @@ function renderAt(path) {
 
 describe('Pramaan Library pages', () => {
   it('lists resources with name, description and owner, and filters by subject', () => {
-    renderAt('/pramaan-library')
+    renderAt('/pramaan/resource-centre')
     expect(screen.getAllByText('Test worksheet').length).toBeGreaterThan(0)
     expect(screen.getByText('Test description one')).toBeInTheDocument()
     expect(screen.getAllByText('Owner B').length).toBeGreaterThan(0)
@@ -48,7 +48,7 @@ describe('Pramaan Library pages', () => {
   })
 
   it('sorts by the menu (rounded listbox, keyboard-operable) and keeps the choice in the URL', () => {
-    renderAt('/pramaan-library?sort=owner')
+    renderAt('/pramaan/resource-centre?sort=owner')
     const trigger = screen.getByRole('button', { name: 'Sort by: Ownership' })
     expect(trigger).toHaveAttribute('aria-haspopup', 'listbox')
     const names = () => screen.getAllByRole('heading', { level: 3 }).map(h => h.textContent)
@@ -69,7 +69,7 @@ describe('Pramaan Library pages', () => {
   })
 
   it('ownership picker: keyboard choose, then clear with ×', () => {
-    renderAt('/pramaan-library')
+    renderAt('/pramaan/resource-centre')
     const trigger = screen.getByRole('button', { name: /Ownership All owners/ })
     fireEvent.keyDown(trigger, { key: 'Enter' })
     const list = screen.getByRole('listbox', { name: 'Ownership' })
@@ -82,7 +82,7 @@ describe('Pramaan Library pages', () => {
   })
 
   it('search sits in the toolbar and can be cleared', () => {
-    renderAt('/pramaan-library')
+    renderAt('/pramaan/resource-centre')
     fireEvent.change(screen.getByRole('searchbox', { name: 'Search resources' }), { target: { value: 'game' } })
     expect(screen.queryByText('Test worksheet')).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Clear search' }))
@@ -90,12 +90,30 @@ describe('Pramaan Library pages', () => {
   })
 
   it('reads filters from the URL (grade)', () => {
-    renderAt('/pramaan-library?grade=FOUNDATIONAL')
+    renderAt('/pramaan/resource-centre?grade=FOUNDATIONAL')
     expect(screen.queryByText('Test worksheet')).not.toBeInTheDocument()
   })
 
+  it('accepts the former Resource Centre type names in the URL (?type=Games, ?type=Worksheets)', () => {
+    renderAt('/pramaan/resource-centre?type=Worksheets')
+    expect(screen.getAllByText('Test worksheet').length).toBeGreaterThan(0)
+    expect(screen.queryByText('Test game')).not.toBeInTheDocument()
+  })
+
+  it('shows the Pramaan tab bar with Resource Centre active, on the list and the detail page', () => {
+    renderAt('/pramaan/resource-centre')
+    expect(screen.getByRole('link', { name: 'About Pramaan' })).toHaveAttribute('href', '/pramaan')
+    expect(screen.getByRole('link', { name: 'Contribute' })).toHaveAttribute('href', '/pramaan/contribute')
+    expect(screen.getByRole('link', { name: 'Resource Centre' }).className).toContain('bg-primary')
+  })
+
+  it('cards link to the detail page under /pramaan/resource-centre', () => {
+    renderAt('/pramaan/resource-centre')
+    expect(screen.getByRole('link', { name: /Test worksheet/ })).toHaveAttribute('href', '/pramaan/resource-centre/W1')
+  })
+
   it('detail shows owner, video, linked extra info and chapters', () => {
-    renderAt('/pramaan-library/W1')
+    renderAt('/pramaan/resource-centre/W1')
     expect(screen.getByText('Owner A')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Play explanation video/ })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'https://example.org/more' })).toHaveAttribute('rel', 'noopener noreferrer')
@@ -106,7 +124,7 @@ describe('Pramaan Library pages', () => {
   })
 
   it('unknown id shows not-found', () => {
-    renderAt('/pramaan-library/NOPE')
+    renderAt('/pramaan/resource-centre/NOPE')
     expect(screen.getByText(/No resource found with ID "NOPE"/)).toBeInTheDocument()
   })
 })

@@ -3,7 +3,7 @@
  *
  * THIS FILE IS THE SOURCE OF TRUTH. It belongs to the NEW Sheet
  * "Contributing to Pramaan; Educators' Resource Bank (Responses)" — not the old Pramaan Sheet,
- * which has its own script in apps-script/abl/Code.gs.
+ * whose script (apps-script/abl/Code.gs) was retired with it — git tag archive/pramaan-live-read.
  * Click-by-click install: docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md. Column rules:
  * docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md.
  *

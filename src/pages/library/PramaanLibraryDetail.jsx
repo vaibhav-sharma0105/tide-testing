@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, BookOpen, Expand, ExternalLink, Play } from 'lucide-react'
 import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
+import AblNavBar from '../../components/abl/AblNavBar'
 import Button from '../../components/ui/Button'
 import DriveImage from '../../components/abl/DriveImage'
 import ImageLightbox from '../../components/abl/ImageLightbox'
@@ -16,6 +17,7 @@ import { LIBRARY_GRADES, gradeLabel, linkParts } from '../../utils/libraryFilter
 import { imgSrc } from '../../utils/imgSrc'
 import snapshot from '../../data/sheets/pramaan-library.json'
 import data from '../../data/pramaan-library.json'
+import site from '../../data/site.json'
 
 const d = data.detail
 const fill = (tpl, vars) => tpl.replace(/\{(\w+)\}/g, (_, k) => vars[k])
@@ -81,7 +83,7 @@ export default function PramaanLibraryDetail() {
   const resource = (snapshot.resources ?? []).find(r => r.id === id)
 
   const backLink = (
-    <Link to="/pramaan-library" className="group/back inline-flex items-center gap-2 text-sm font-body font-medium text-tide-muted hover:text-primary transition-colors mb-8">
+    <Link to="/pramaan/resource-centre" className="group/back inline-flex min-h-[44px] items-center gap-2 py-2 text-sm font-body font-medium text-tide-muted hover:text-primary transition-colors mb-6">
       <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover/back:-translate-x-1" /> {d.backLabel}
     </Link>
   )
@@ -89,8 +91,9 @@ export default function PramaanLibraryDetail() {
   if (!resource) {
     return (
       <>
-        <SeoHead title={d.notFoundSeoTitle} description={data.meta.seoDescription} path={`/pramaan-library/${encodeURIComponent(id)}`} noindex />
+        <SeoHead title={d.notFoundSeoTitle} description={data.meta.seoDescription} path={`/pramaan/resource-centre/${encodeURIComponent(id)}`} noindex />
         <PageHero badge={data.meta.badge} title={d.notFoundHeading} />
+        <AblNavBar />
         <section className="section-padding bg-tide-bg">
           <div className="max-w-5xl mx-auto text-center py-10">
             <BookOpen className="w-12 h-12 text-tide-muted/40 mx-auto mb-4" />
@@ -112,10 +115,16 @@ export default function PramaanLibraryDetail() {
       <SeoHead
         title={fill(d.titleTemplate, { name: resource.name })}
         description={resource.description || data.meta.seoDescription}
-        path={`/pramaan-library/${encodeURIComponent(resource.id)}`}
-        noindex
+        path={`/pramaan/resource-centre/${encodeURIComponent(resource.id)}`}
+        breadcrumbs={[
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: site.breadcrumbs.pramaan, path: '/pramaan' },
+          { name: site.breadcrumbs.resourceCentre, path: '/pramaan/resource-centre' },
+          { name: resource.name, path: `/pramaan/resource-centre/${encodeURIComponent(resource.id)}` },
+        ]}
       />
       <PageHero badge={resource.subject ? `${data.meta.badge} · ${resource.subject}` : data.meta.badge} badgeClassName={accent.heroBadge} title={resource.name} />
+      <AblNavBar />
 
       <section className="section-padding bg-gradient-to-b from-tide-bg to-white">
         <div className="max-w-6xl mx-auto">
@@ -123,12 +132,12 @@ export default function PramaanLibraryDetail() {
           <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,320px)_1fr] lg:gap-14">
 
             {/* Left: the photo (H) and the links to the original file and video (H, I) */}
-            <div className="lg:sticky lg:top-[130px]">
+            <div className="lg:sticky lg:top-[150px]">
               <div className="mx-auto max-w-[320px] lg:mx-0">
                 <div className="relative rounded-md bg-white p-2 shadow-[0_14px_36px_rgba(13,33,55,0.16)] ring-1 ring-tide-border">
                   <span className={`absolute left-1/2 -top-2 z-10 h-4 w-4 -translate-x-1/2 rounded-full ${accent.solid} shadow-[0_2px_3px_rgba(0,0,0,0.35)]`} aria-hidden="true" />
                   <div className="relative aspect-[3/4] rounded-sm overflow-hidden">
-                    <DriveImage id={resource.id} src={photoFull} alt={resource.name} variant="full" />
+                    <DriveImage src={photoFull} alt={resource.name} />
                     {photoFull && (
                       <button type="button" onClick={() => setLightboxOpen(true)} className="group/img absolute inset-0 w-full h-full cursor-zoom-in" aria-label={d.viewFullImageLabel}>
                         <span className="absolute inset-0 bg-black/0 group-hover/img:bg-black/15 transition-colors duration-300" />
@@ -160,7 +169,7 @@ export default function PramaanLibraryDetail() {
             <motion.div className="min-w-0 space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
               <motion.div variants={fadeUp} className="relative overflow-hidden rounded-3xl border border-tide-border bg-white p-6 shadow-card md:p-8">
                 <span className={`absolute inset-x-0 top-0 h-1.5 ${accent.solid}`} aria-hidden="true" />
-                <div className="flex flex-col gap-7 md:flex-row md:items-start">
+                <div className="flex flex-col gap-7 md:flex-row md:items-start lg:flex-col lg:items-stretch xl:flex-row xl:items-start">
                   <div className="min-w-0 flex-1 space-y-5">
                     <div className="flex flex-wrap items-center gap-2">
                       <LibraryTypeBadge type={resource.type} className="!px-3.5 !py-1.5 !text-sm" />
@@ -191,7 +200,7 @@ export default function PramaanLibraryDetail() {
                   </div>
 
                   {embedUrl && (
-                    <div className="w-full shrink-0 md:w-72">
+                    <div className="w-full shrink-0 md:w-72 lg:w-full lg:max-w-md xl:w-72">
                       <Eyebrow className={`${accent.eyebrow} mb-3`}>{d.explanationVideo}</Eyebrow>
                       <button
                         type="button"

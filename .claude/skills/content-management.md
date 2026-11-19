@@ -62,25 +62,22 @@ breadcrumbs={[
   { name: data.meta.breadcrumbName, path: '/about/our-partners' },
 ]}
 ```
-Fourteen of the 16 page YAMLs carry `meta.breadcrumbName` (every page except `home` and `abl-detail`); `Home.jsx` uses only `site.breadcrumbs.home`, and `AblDetail.jsx` builds its last step from the resource name.
+Fifteen of the 16 page YAMLs carry `meta.breadcrumbName` (every page except `home`); `Home.jsx` uses only `site.breadcrumbs.home`, and the Resource Centre's detail page (`library/PramaanLibraryDetail.jsx`) builds its last step from the resource name.
 
 **Consistency guard.** The contact email and the lives-impacted total must be identical everywhere. `npm run content:validate` (`scripts/validate-content.js` + `scripts/contentConsistency.js`) **errors** (exit 1) if any e-mail address in `content/` (YAML values and the `llms.txt` template) differs from `site.yaml` `email`, or if a 5-digit total such as `40,000+` that sits in a sentence with the words lives/people/impacted/changed differs from `livesImpacted`. Owner decisions: e-mail `tidefoundation@gmail.com`, lives impacted `52,500+`, everywhere. To change either, edit `site.yaml` **and** every page that states it — the validator prints which files and fields.
 
 ### Pipeline C — Google Sheets
 ```
-New standard (Pramaan Library, /pramaan-library):
+Snapshot mode (the only Sheet pattern; Pramaan Resource Centre, /pramaan/resource-centre):
 Google Sheet → token-gated Apps Script → GitHub Actions sync → src/data/sheets/<slug>.json (+ photos) → page (build time)
-
-Legacy (ABL / Pramaan, until Phase 3):
-Google Sheet  →  Apps Script Web App  →  useABLData() hook  →  ABL page components
 ```
-New Sheet integrations follow `docs/SHEET-INTEGRATION-PLAYBOOK.md` (skill: `.claude/skills/sheet-integration/SKILL.md`). The Pramaan Library's UI text is YAML in `content/pages/pramaan-library.yaml`; its data is the snapshot.
-The **resource data** (title, description, grades…) comes from Google Sheets, not YAML. The **Pramaan UI chrome** (labels, headings, filter text, SEO titles) is YAML-backed in `abl-home`, `abl-resource-center`, `abl-detail` and `abl-contribute`. Thumbnails are a separate one-way sync into `public/assets/images/abl/`. Google Fonts still loads the Devanagari and Gujarati families because Pramaan resource titles from the Sheet can contain Gujarati.
+New Sheet integrations follow `docs/SHEET-INTEGRATION-PLAYBOOK.md` (skill: `.claude/skills/sheet-integration/SKILL.md`). No page reads a Sheet in the browser (the former `useABLData` live read was retired on 2026-11-19; archived in git tag `archive/pramaan-live-read`).
+The **resource data** (title, description, grades…) comes from the Sheet snapshot (`src/data/sheets/pramaan-library.json`), not YAML. The **Pramaan UI chrome** (labels, headings, filter text, SEO titles) is YAML-backed in `abl-home`, `pramaan-library` and `abl-contribute` (+ `ui.yaml` `mediaLightbox.*`). Photos are a separate one-way sync into `public/assets/images/pramaan-library/`. Google Fonts still loads the Devanagari and Gujarati families because Pramaan resource titles from the Sheet can contain Gujarati.
 
 ## File Naming Convention
 
 ### Page YAML → JSON
-16 files in `content/pages/` (one per routed page; `src/App.jsx` registers 19 `<Route>`s: these 16 pages plus the 3 system routes `/coming-soon`, `/404` and `*`):
+16 files in `content/pages/` (one per page or screen; `src/App.jsx` registers 22 `<Route>`s: 17 primary routes — the Resource Centre list and detail share `pramaan-library.yaml` — plus 2 redirects (`/pramaan-library`, `/pramaan-library/:id`) and the 3 system routes `/coming-soon`, `/404` and `*`):
 
 | Content file | Generated JSON (in `src/data/`) | Component |
 |---|---|---|
@@ -97,13 +94,13 @@ The **resource data** (title, description, grades…) comes from Google Sheets, 
 | `thrive.yaml` | `thrive.json` | `src/pages/THRIvE.jsx` |
 | `contact.yaml` | `contact.json` | `src/pages/Contact.jsx` |
 | `abl-home.yaml` | `abl-home.json` | `resources/AblHome.jsx` |
-| `abl-resource-center.yaml` | `abl-resource-center.json` | `resources/AblResourceCenter.jsx` + `components/abl/*` |
-| `abl-detail.yaml` | `abl-detail.json` | `resources/AblDetail.jsx` |
+| `pramaan-library.yaml` | `pramaan-library.json` | `library/PramaanLibrary.jsx`, `library/PramaanLibraryDetail.jsx` + `components/library/*`, `abl/Pagination.jsx` |
+| `social-changemakers.yaml` | `social-changemakers.json` | `src/pages/SocialChangemakers.jsx` |
 | `abl-contribute.yaml` | `abl-contribute.json` | `resources/AblContribute.jsx` |
 
 The former "stranded" pages (Our Results, the six `projects-*` pages, Work With Us, Saral Kadam, the older Annual Reports / Publications pages and the duplicate `/get-involved/mccx` and `/resources/abl-resources/*` routes) were removed entirely, with no redirects: those URLs now show the NotFound page (`src/test/routing/removedRoutes.test.jsx`). Their YAML, generated JSON and page components are gone; `ui.yaml` no longer has a `todo:` block. Recover anything from git history (`git checkout a4126d1 -- <path>`).
 
-`abl-resource-center.yaml` / `abl-detail.yaml` hold Pramaan chrome: titles, filter/pagination/card labels, SEO strings. Strings with `{token}` placeholders (`{n}`, `{name}`, `{type}`, `{grades}`, `{id}`, `{quantity}` …) are filled in by code (`.replace('{token}', …)`, or the `fill()` helper in `AblDetail.jsx`) — keep the token names when editing and do not rename them without changing the component.
+`pramaan-library.yaml` holds the Resource Centre chrome: titles, filter/sort/pagination/card labels, detail-page labels, SEO strings. Strings with `{token}` placeholders (`{n}`, `{name}`, `{id}`, `{date}`, `{resources}` …) are filled in by code (`.replace('{token}', …)`, or the `fill()` helper in `PramaanLibraryDetail.jsx`) — keep the token names when editing and do not rename them without changing the component.
 
 ### Shared YAML → JSON
 9 YAML files in `content/shared/` (plus the `llms.txt` template, which is not synced):
@@ -113,15 +110,15 @@ The former "stranded" pages (Our Results, the six `projects-*` pages, Work With 
 | `navigation.yaml` | `navigation.json` | `layout/Header.jsx`, `layout/Layout.jsx` (also skip-link, aria labels, Donate CTA labels) |
 | `footer.yaml` | `footer.json` | `layout/Footer.jsx` (plus `contact.json` for email/phone). No link columns. One compact row: logo, name + tagline byline left; email, phone, social icons and Donate button (`donateLabel`, `donateHref`) right. `rights` has a `{year}` token filled in at render |
 | `common.yaml` | `common.json` | Reused micro-copy: keys `step`, `viewLinkedIn` (OrganizeMCCx; OurTeam and THRIvE via `ArchPortrait`) |
-| `ui.yaml` | `ui.json` | `ui/Lightbox.jsx` (`lightbox.*` aria-labels; `goTo` has an `{n}` token) |
+| `ui.yaml` | `ui.json` | `ui/Lightbox.jsx` (`lightbox.*` aria-labels; `goTo` has an `{n}` token); `abl/ImageLightbox.jsx`, `abl/VideoLightbox.jsx` (`mediaLightbox.*`) |
 | `loader.yaml` | `loader.json` | `ui/CreativeLoader.jsx` (rotating `messages`) |
 | `not-found.yaml` | `not-found.json` | `NotFound.jsx` (`/404` and unmatched URLs) |
 | `coming-soon.yaml` | `coming-soon.json` | `ComingSoon.jsx` (`/coming-soon`; props can override) |
 | `error.yaml` | `error.json` | `components/ErrorBoundary.jsx` (keys `heading`, `body`, `reloadLabel`, `homeLabel`) |
-| `site.yaml` | `site.json` | `ui/SeoHead.jsx`, the 16 page files that build breadcrumbs (`site.breadcrumbs.*`) and `src/utils/imagePlaceholder.js` (`placeholderImage`); also read directly by `scripts/siteDataPlugin.js` |
+| `site.yaml` | `site.json` | `ui/SeoHead.jsx`, the 17 page files that build breadcrumbs (`site.breadcrumbs.*`) and `src/utils/imagePlaceholder.js` (`placeholderImage`); also read directly by `scripts/siteDataPlugin.js` |
 | `llms.txt` | — (not synced) | Template rendered by `siteDataPlugin.js` into `/llms.txt` |
 
-`src/data/` also holds `abl-thumbnails-manifest.json`, which is **not** produced by this pipeline (it comes from `sync-abl-thumbnails`): 25 generated JSON files (16 + 9) plus that manifest = 26 files.
+`src/data/` also holds `pramaan-library-photos.json` and `sheets/pramaan-library.json`, which are **not** produced by this pipeline (they come from the Resource Centre sync, `sync-pramaan-library`): 25 generated JSON files (16 + 9) plus that manifest = 26 files at the top level, and the snapshot under `sheets/`.
 
 ## React Component Import Pattern
 
@@ -151,7 +148,7 @@ export default function PageName() {
   )
 }
 ```
-(Adjust `../` depth for sub-directory pages. Which `meta` field holds the subtitle varies per page: `tagline` on some, `subtitle` on others — check the YAML.) `ComingSoon` and `NotFound` use `Helmet` directly instead of `SeoHead`. `PageHero` accepts `badge`, `badgeClassName`, `title`, `subtitle`, `children` and `aside`; ten pages pass a `gradient` prop that it silently ignores (listed in `WHATS-NEXT.md`).
+(Adjust `../` depth for sub-directory pages. Which `meta` field holds the subtitle varies per page: `tagline` on some, `subtitle` on others — check the YAML.) `ComingSoon` and `NotFound` use `Helmet` directly instead of `SeoHead`. `PageHero` accepts exactly `badge`, `badgeClassName`, `title`, `subtitle`, `children` and `aside`; there is no `gradient` prop — don't pass one.
 
 Header and Footer use shared data:
 ```jsx
@@ -205,7 +202,7 @@ photo: assets/images/about-our-team/jane-smith.jpg    # works, but `content:vali
 
 `scripts/validate-content.js` only checks values that start with `/` and sit under these key names: `photo, src, logo, coverImage, image, poster, img, heroPhoto, mainPhoto, diagramPhoto, backgroundImage, donorPoster`. Other keys (e.g. `photo1`), bare-filename lists and slash-less paths are not validated, and a missing image is only a warning. CI runs it before the build, so an error stops the deploy.
 
-In components, resolve a data image with `imgSrc(path)` from `src/utils/imgSrc.js` (handles `BASE_URL` on GitHub Pages). `imgSrc` is not idempotent under `/tide-testing/`, and `Lightbox` already applies it to every `src` it receives, so never pre-apply it to lightbox images. A few spots build `${import.meta.env.BASE_URL}…` by hand (Header, Footer, `PageHero` banner texture, `SeoHead` default OG image, `OurPartners`, `Donate`, `Home`) — that works because the leading slash was stripped.
+In components, resolve a data image with `imgSrc(path)` from `src/utils/imgSrc.js` (handles `BASE_URL` on GitHub Pages). `imgSrc` is not idempotent under `/tide-testing/`, and `Lightbox` already applies it to every `src` it receives, so never pre-apply it to lightbox images. A few spots build `${import.meta.env.BASE_URL}…` by hand (Header, Footer, `PageHero` banner texture, `SeoHead` default OG image, `OurPartners`, `Home`, `ErrorBoundary`) — that works because the leading slash was stripped.
 
 **Missing-image fallback.** `src/utils/imagePlaceholder.js` (installed once in `src/main.jsx`) listens for failed `<img>` loads site-wide and swaps the source for the `placeholderImage` in `content/shared/site.yaml` (`public/assets/images/shared/placeholder.svg`). So a missing or mistyped file shows a grey placeholder rather than a broken icon, which hides the mistake: still check the filename. An `<img>` opts out with the `data-no-placeholder` attribute (`DriveImage.jsx` does, because it draws its own icon). Bare-filename lists like `logoGallery.images` are not covered by `content:validate`.
 
@@ -238,7 +235,7 @@ npm run content:validate
 # Visible-text guard (react/jsx-no-literals) + other lint rules — also run in CI
 npm run lint
 
-# Unit tests (16 files / 196 tests as of 2026-11-02) and Playwright e2e (3 specs)
+# Unit tests (18 files / 199 tests as of 2026-11-19) and Playwright e2e (3 specs; not run in CI)
 npm test
 npm run test:e2e
 

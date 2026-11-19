@@ -3,12 +3,14 @@ name: sheet-integration
 description: >
   TRIGGER — invoke this when the user wants to connect a Google Sheet (or Google Form responses)
   to the site, add a new site section backed by a Sheet that a non-technical person edits, or
-  "do what we did for the Pramaan Library / Pramaan but for X". The standard is SNAPSHOT MODE as
-  built for /pramaan-library: private Sheet → token-gated Apps Script (no public listing) →
+  "do what we did for the Pramaan Library / Resource Centre but for X". The standard is SNAPSHOT
+  MODE as built for the Pramaan Resource Centre (/pramaan/resource-centre, code named
+  "library"): private Sheet → token-gated Apps Script (no public listing) →
   GitHub Actions sync with safety rules → committed JSON snapshot + self-hosted photos → page
   built from the snapshot. Follow docs/SHEET-INTEGRATION-PLAYBOOK.md (principles, naming, build
-  order, page design, security checklist, go-live lessons). Do NOT copy the older live-API
-  pattern (useABLData / public doGet read / VITE_* Sheet URL in the bundle) — it is legacy.
+  order, page design, security checklist, go-live lessons). Never read a Sheet live in
+  the browser (no public doGet listing, no VITE_* Sheet URL in the bundle) — that older pattern
+  (useABLData) was retired and deleted on 2026-11-19.
   SKIP if the content is static (use the YAML CMS and cms-integrity) or if the change only
   extends an existing integration's Sheet (then it's a normal change to that integration).
 ---
@@ -25,17 +27,20 @@ blocked by the CSP; a snapshot built from **test** consent committed to a public
 one standard. This skill is the procedure for applying it, so the next integration starts with
 those lessons instead of rediscovering them.
 
-**Reference implementation:** the Pramaan Library — `apps-script/pramaan-library/Code.gs`,
-`scripts/sync-pramaan-library.js`, `scripts/lib/library-snapshot.js`,
+**Reference implementation:** the Pramaan Library, served as the Pramaan Resource Centre at
+`/pramaan/resource-centre` — `apps-script/pramaan-library/Code.gs`,
+`scripts/sync-pramaan-library.js`, `scripts/lib/library-snapshot.js` (+ the shared
+`scripts/lib/snapshot-core.js`),
 `.github/workflows/sync-pramaan-library.yml`, `checkLibrarySnapshot()` in
 `scripts/validate-content.js`, `src/pages/library/`, `src/components/library/`,
 `src/utils/libraryFilters.js`, `content/pages/pramaan-library.yaml`,
 `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`.
 Read the current files before copying — never pattern-match from memory.
 
-**Legacy, do not copy:** `src/hooks/useABLData.js`, the ABL script's public `doGet` read, and
-`VITE_ABL_API_URL` reaching the browser. They still run for `/pramaan/*` until Phase 3 of
-`docs/PRAMAAN-HARDENING-PLAN.md`; `docs/ABL-RESOURCE-LIBRARY-SPEC.md` describes that older design.
+**Retired, do not reintroduce:** a browser-side Sheet read (the former `useABLData` hook, a public
+`doGet` listing, a `VITE_*` Sheet URL in the bundle). It was deleted on 2026-11-19
+(`docs/PRAMAAN-HARDENING-PLAN.md` §13); the code is only in the local git tag
+`archive/pramaan-live-read`.
 
 ## Ground rules while doing this
 

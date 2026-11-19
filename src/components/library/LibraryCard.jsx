@@ -16,14 +16,13 @@ export default function LibraryCard({ resource }) {
   const shown = grades.slice(0, 3)
   return (
     <Link
-      to={`/pramaan-library/${encodeURIComponent(resource.id)}`}
+      to={`/pramaan/resource-centre/${encodeURIComponent(resource.id)}`}
       aria-label={data.card.viewTemplate.replace('{name}', () => resource.name)}
       className="group/card relative w-full bg-white rounded-3xl border border-tide-border shadow-card hover:shadow-card-hover hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col"
     >
       <span className={`absolute inset-x-0 top-0 z-10 h-1.5 ${colors.solid} opacity-75 transition-opacity duration-300 group-hover/card:opacity-100`} aria-hidden="true" />
       <div className="relative overflow-hidden">
         <DriveImage
-          id={resource.id}
           src={getLibraryPhoto(resource.id, 'thumb')}
           alt={resource.name ?? data.card.imageAltFallback}
           imgClassName="group-hover/card:scale-105"

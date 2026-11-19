@@ -30,7 +30,7 @@ To bring about contextualized, systemic, sustainable changes in India's educatio
 - [Education for Harmony]({{url}}/education-for-harmony) — the EHSA/CARES framework and our ecosystem of interventions
 - [Organise your MCCx]({{url}}/education-for-harmony/mccx) — How to run a Model City Council
 - [Pramaan]({{url}}/pramaan) — About the ABL resource library
-- [Resource Centre]({{url}}/pramaan/resource-centre) — Browse 150+ ABL materials by grade, subject, type
+- [Resource Centre]({{url}}/pramaan/resource-centre) — Browse ABL materials by subject, type, grade and owner
 - [Contribute to Pramaan]({{url}}/pramaan/contribute) — Share teaching resources
 - [THRIvE]({{url}}/thrive) — Research centre and Happiness Curriculum
 - [Volunteer / Get Involved]({{url}}/get-involved/volunteer) — How to volunteer, intern, or work with TIDE

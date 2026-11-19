@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { SlidersHorizontal, X, BookOpen, ArrowUpDown, ArrowDownAZ, ArrowUpZA, Search } from 'lucide-react'
 import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
+import AblNavBar from '../../components/abl/AblNavBar'
 import LibraryFilters from '../../components/library/LibraryFilters'
 import LibraryCard from '../../components/library/LibraryCard'
 import LibraryDropdown, { FOCUS_PILL } from '../../components/library/LibraryDropdown'
@@ -11,20 +12,23 @@ import Pagination from '../../components/abl/Pagination'
 import { LIBRARY_PAGE_SIZE } from '../../config/library'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { useModalBehavior } from '../../hooks/useModalBehavior'
-import { applyLibraryFilters, facetOptions, gradeLabel, LIBRARY_SORTS, DEFAULT_SORT } from '../../utils/libraryFilters'
+import { applyLibraryFilters, facetOptions, gradeLabel, typeParamKey, LIBRARY_SORTS, DEFAULT_SORT } from '../../utils/libraryFilters'
 import snapshot from '../../data/sheets/pramaan-library.json'
 import data from '../../data/pramaan-library.json'
+import site from '../../data/site.json'
 
-// Unlinked page (no menu, footer or sitemap entry; noindex): /pramaan-library.
+// The Pramaan Resource Centre: /pramaan/resource-centre (the old /pramaan-library address redirects here).
 // Data is the snapshot the sync writes from the form-format Sheet — no live request.
 
 const DEFAULT_FILTERS = { search: '', subject: '', type: '', grades: [], owner: '', sort: DEFAULT_SORT, dir: 'asc' }
+
+const resources = Array.isArray(snapshot.resources) ? snapshot.resources : []
 
 function paramsToFilters(p) {
   return {
     search: p.get('search') ?? '',
     subject: p.get('subject') ?? '',
-    type: p.get('type') ?? '',
+    type: typeParamKey(p.get('type'), resources),
     grades: p.get('grade') ? p.get('grade').split(',').filter(Boolean) : [],
     owner: p.get('owner') ?? '',
     sort: LIBRARY_SORTS.includes(p.get('sort')) ? p.get('sort') : DEFAULT_SORT,
@@ -46,8 +50,7 @@ function filtersToSearch(f, page) {
   return s ? `?${s}` : ''
 }
 
-const resources = Array.isArray(snapshot.resources) ? snapshot.resources : []
-const STICKY_TOP = 110 // px, matches top-[110px] (below the fixed header)
+const STICKY_TOP = 130 // px, matches top-[130px] (below the fixed header and the Pramaan tab bar)
 
 // Pin the sidebar only while it fits in the window; a taller sidebar (e.g. a picker list open on
 // a short laptop screen) scrolls with the page instead of getting a second scrollbar.
@@ -115,8 +118,18 @@ export default function PramaanLibrary() {
 
   return (
     <>
-      <SeoHead title={data.meta.seoTitle} description={data.meta.seoDescription} path="/pramaan-library" noindex />
+      <SeoHead
+        title={data.meta.seoTitle}
+        description={data.meta.seoDescription}
+        path="/pramaan/resource-centre"
+        breadcrumbs={[
+          { name: site.breadcrumbs.home, path: '/' },
+          { name: site.breadcrumbs.pramaan, path: '/pramaan' },
+          { name: data.meta.breadcrumbName, path: '/pramaan/resource-centre' },
+        ]}
+      />
       <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.subtitle} />
+      <AblNavBar />
 
       <section className="section-padding bg-tide-bg">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -130,7 +143,7 @@ export default function PramaanLibrary() {
             <div className="flex gap-7">
               <aside className="hidden lg:block w-72 flex-shrink-0">
                 {/* No inner scroll box: pinned while it fits the screen, otherwise it scrolls with the page. */}
-                <div ref={sidebarRef} className={sidebarSticky ? 'sticky top-[110px]' : ''}>
+                <div ref={sidebarRef} className={sidebarSticky ? 'sticky top-[130px]' : ''}>
                   <LibraryFilters {...filterProps} />
                 </div>
               </aside>

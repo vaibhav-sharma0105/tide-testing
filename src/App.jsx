@@ -34,11 +34,10 @@ const SocialChangemakers  = lazy(() => import('./pages/SocialChangemakers'))
 const THRIvE              = lazy(() => import('./pages/THRIvE'))
 const Contact             = lazy(() => import('./pages/Contact'))
 const AblHome             = lazy(() => import('./pages/resources/AblHome'))
-const AblResourceCenter   = lazy(() => import('./pages/resources/AblResourceCenter'))
-const AblDetail           = lazy(() => import('./pages/resources/AblDetail'))
 const AblContribute       = lazy(() => import('./pages/resources/AblContribute'))
 const PramaanLibrary      = lazy(() => import('./pages/library/PramaanLibrary'))
 const PramaanLibraryDetail = lazy(() => import('./pages/library/PramaanLibraryDetail'))
+const LibraryRedirect     = lazy(() => import('./pages/library/LibraryRedirect'))
 const NotFound            = lazy(() => import('./pages/NotFound'))
 const ComingSoon          = lazy(() => import('./pages/ComingSoon'))
 
@@ -72,15 +71,14 @@ export default function App() {
               {/* Not in the menu or footer: reached from the Social Changemakers row on /education-for-harmony */}
               <Route path="/education-for-harmony/social-changemakers" element={<SocialChangemakers />} />
 
-              {/* Pramaan (ABL Resources) */}
+              {/* Pramaan. The Resource Centre is the Pramaan Library (snapshot of the form-format Sheet) */}
               <Route path="/pramaan" element={<AblHome />} />
-              <Route path="/pramaan/resource-centre" element={<AblResourceCenter />} />
-              <Route path="/pramaan/resource-centre/:id" element={<AblDetail />} />
+              <Route path="/pramaan/resource-centre" element={<PramaanLibrary />} />
+              <Route path="/pramaan/resource-centre/:id" element={<PramaanLibraryDetail />} />
               <Route path="/pramaan/contribute" element={<AblContribute />} />
-
-              {/* Pramaan Library (form-format Sheet). Deliberately unlinked: no menu, footer or sitemap entry, noindex */}
-              <Route path="/pramaan-library" element={<PramaanLibrary />} />
-              <Route path="/pramaan-library/:id" element={<PramaanLibraryDetail />} />
+              {/* The library's former address — redirects, so old links keep working */}
+              <Route path="/pramaan-library" element={<LibraryRedirect />} />
+              <Route path="/pramaan-library/:id" element={<LibraryRedirect />} />
 
               {/* Get Involved */}
               <Route path="/get-involved/volunteer" element={<Volunteer />} />

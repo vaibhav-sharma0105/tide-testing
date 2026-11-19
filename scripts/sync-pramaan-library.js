@@ -4,7 +4,7 @@
 // (public/assets/images/pramaan-library/ + src/data/pramaan-library-photos.json). The workflow
 // commits them together, so data and photos always publish at once.
 //
-// Safety rules: scripts/lib/library-snapshot.js (and the shared ones in abl-snapshot.js). A
+// Safety rules: scripts/lib/library-snapshot.js (and the shared ones in snapshot-core.js). A
 // structural problem publishes NOTHING and fails the run unless ALLOW_LARGE_CHANGE=true. A photo
 // Drive can't read keeps its previous copy; photos are deleted only when their row is gone.
 //

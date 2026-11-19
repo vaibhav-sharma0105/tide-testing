@@ -24,11 +24,11 @@ on:
 
 permissions: {}
 
-# One group for every Sheet sync: a run is never cancelled mid-commit, and while one runs, the
+# One group for this sync: a run is never cancelled mid-commit, and while one runs, the
 # newest request waits as the single pending run (it reads fresh data when it starts).
-# Its own queue: sharing one with the ABL sync would let a queued run of one workflow silently
-# replace the other's (GitHub keeps one pending run per group). The two write different paths,
-# and the push step rebases and retries, so running side by side is safe.
+# Keep it this workflow's own queue: a group shared with another workflow would let a queued run
+# of one silently replace the other's (GitHub keeps one pending run per group). The push step
+# rebases and retries, so running side by side with other workflows is safe.
 concurrency:
   group: pramaan-library-sync
   cancel-in-progress: false

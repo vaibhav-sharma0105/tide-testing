@@ -3,7 +3,8 @@
 **Who is this for?** The person who owns the Sheet "Contributing to Pramaan; Educators' Resource
 Bank (Responses)". No coding is needed: you copy, paste and click.
 **Time:** about 30 minutes.
-**What you get:** the unlinked page `/pramaan-library` fills itself from the Sheet. Edits and new
+**What you get:** the Pramaan Resource Centre (`/pramaan/resource-centre`, and the counts on `/pramaan`)
+fills itself from the Sheet. Edits and new
 form answers show up within minutes, and you get an email or a GitHub issue whenever something
 goes wrong. Nothing fails silently.
 
@@ -21,11 +22,11 @@ Sheet (private, holds personal data)
 GitHub Actions "Sync Pramaan Library"  (also runs every 6 hours by itself)
   └─ checks the data (safety rules) → saves data + photos in the repository → deploys the site
         ▼
-Website page /pramaan-library  (reads the saved copy; no live calls to Google)
+Website /pramaan/resource-centre and /pramaan  (read the saved copy; no live calls to Google)
 ```
 
-This is a **separate** connection from the old Pramaan Sheet. The old one keeps working
-unchanged.
+Since 2026-11-19 this is the **only** Sheet the website reads: the older Pramaan Sheet and its
+connection were retired (`docs/PRAMAAN-HARDENING-PLAN.md` §13).
 
 ## Before you start
 
@@ -33,7 +34,7 @@ unchanged.
 |---|---|
 | The Sheet, opened with the **owner's** Google account | Google Drive |
 | The script file | GitHub → this repository → `apps-script/pramaan-library/Code.gs` |
-| A **new** fine-grained GitHub token for this Sheet (recommended name `pramaan-library-sheet`, repository: this one only, permission **Actions: Read and write**). Reusing the old Sheet's token works, but a separate one can be revoked or renewed on its own, and anyone who can edit either Sheet can read its Script Properties | `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` Step 1 |
+| A **new** fine-grained GitHub token for this Sheet (recommended name `pramaan-library-sheet`, repository: this one only, permission **Actions: Read and write**). Use a token made only for this Sheet, so it can be revoked or renewed on its own; anyone who can edit the Sheet can read its Script Properties | `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` Step 1 |
 | Admin access to the GitHub repository | github.com |
 
 ---
@@ -46,7 +47,7 @@ unchanged.
 4. On GitHub, open `apps-script/pramaan-library/Code.gs` and click **Copy raw file** (the two squares, top right).
 5. Paste it into `Code.gs` (**Ctrl+V**) and save it (**Ctrl+S**).
 
-✅ **Check:** the first line says `Pramaan Library (form-format Sheet) — Google Apps Script, version 1`, and saving shows no red error.
+✅ **Check:** the top of the file says `Pramaan Library (form-format Sheet) — Google Apps Script, version 1`, and saving shows no red error.
 
 ## Step 2: Turn on the Drive service (needed for photos)
 
@@ -123,7 +124,7 @@ Then, for each trigger: pencil → **Failure notification settings → Notify me
 3. Open the run's summary: it lists how many rows were published, how many lack consent, and any
    rows that need fixing.
 
-✅ **Check:** the run is green, and once the deploy finishes, `https://vaibhav-sharma0105.github.io/tide-testing/pramaan-library` shows the consented resources.
+✅ **Check:** the run is green, and once the deploy finishes, `https://vaibhav-sharma0105.github.io/tide-testing/pramaan/resource-centre` shows the consented resources.
 
 | `testDispatch` says | Meaning and fix |
 |---|---|
@@ -181,6 +182,7 @@ GitHub run does.
 
 ## Moving everything to a new owner
 
-Same order as the old Sheet (`docs/MIGRATION-OVERVIEW.md`): transfer the Sheet (the script moves
-with it). Then the new owner repeats **Steps 3–8** with their own accounts: new token, new
-deployment URL, both GitHub secrets updated, and `ALERT_EMAIL`.
+Follow `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` (start at `docs/MIGRATION-OVERVIEW.md`): the old owner
+removes their triggers, the Sheet and its Form are transferred (the script moves with the Sheet), then the
+new owner repeats **Steps 2–8** here with their own accounts: new token, new deployment URL, both GitHub
+secrets updated, and `ALERT_EMAIL`.

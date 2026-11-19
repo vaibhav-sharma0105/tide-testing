@@ -14,7 +14,7 @@ This move touches two completely different platforms (Google and GitHub), and ea
 
 | Document | Covers | When |
 |---|---|---|
-| `MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` | Moving the Sheet + Apps Script (resource listing + thumbnail sync) to the new owner's Google account | **Do this first** |
+| `MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` | Moving the Resource Centre Sheet, its Google Form and its Apps Script to the new owner's Google account | **Do this first** |
 | `MIGRATION-GITHUB-REPOSITORY.md` | Transferring the GitHub repository itself to the new owner's GitHub account | **Do this second** |
 | `MAINTENANCE-GITHUB-PAT-REFRESH.md` | A short, recurring task — regenerating an expired GitHub token | Ongoing, after migration is complete |
 
@@ -36,7 +36,7 @@ This move touches two completely different platforms (Google and GitHub), and ea
 
 Google Apps Script has a real, confirmed gotcha: **you cannot transfer ownership of an Apps Script Web App's deployment**, even if you transfer the underlying Sheet/script file to another account. The deployment keeps running as the *original* owner regardless. ([Source](https://support.google.com/a/thread/137654217/how-to-transfer-google-sheet-app-script-so-that-it-runs-from-another-account))
 
-Because of this, the Google-side guide does **not** use Google Drive's "transfer ownership" feature. Instead, it has the new owner make a fresh copy of the Sheet and a fresh deployment under their own account — the exact same reliable process as the original setup guides, just done once more under a different account. This is more steps than a single "click transfer" would be, but it's the version that's actually guaranteed to work.
+Because of this, the Google-side guide transfers the *files* (the Sheet with its script, and the Google Form that fills it — a transferred file keeps its id, so the Form is expected to keep sending answers to the same Sheet; the guide's end-to-end check confirms it) but has the new owner make a **fresh deployment and fresh triggers** under their own account — the same steps as the original setup guide (`docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`), done once more. The old owner removes their own triggers first, because triggers run as whoever installed them.
 
 ---
 
@@ -49,22 +49,21 @@ Because of this, the Google-side guide does **not** use Google Drive's "transfer
 
 ---
 
-## The second Sheet (Pramaan Library)
+## The one Sheet the site uses
 
-The page `/pramaan-library` has its **own** Sheet ("Contributing to Pramaan; Educators' Resource Bank (Responses)") with its own Apps Script, token, GitHub secrets (`PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`) and workflow (`sync-pramaan-library.yml`). Move it the same way, after the main Sheet: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md` → "Moving everything to a new owner". That Sheet holds contributors' personal data (columns L–P) — share it only with the new owner.
+The Pramaan Resource Centre (`/pramaan/resource-centre`, and the counts on `/pramaan`) is fed by **one** Sheet, "Contributing to Pramaan; Educators' Resource Bank (Responses)", filled by a Google Form, with its own Apps Script, token, GitHub secrets (`PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`) and workflow (`sync-pramaan-library.yml`). The Google guide covers all of it. That Sheet holds contributors' personal data (columns L–P) — share it only with the new owner. (The older Pramaan Sheet was retired on 2026-11-19 and does not need moving.)
 
 ## After both migrations are complete
 
-- [ ] New owner can see and edit the Google Sheet.
-- [ ] New owner can open the Apps Script project and see the deployed Web App.
+- [ ] New owner owns the Google Sheet and its Google Form.
+- [ ] New owner can open the Apps Script project and sees their own deployment and three triggers.
 - [ ] New owner owns the GitHub repository, and the original developer still has collaborator access (this happens automatically for personal-to-personal transfers — see the GitHub guide).
 - [ ] Live site loads correctly at its new URL and shows current data.
-- [ ] A test edit in the Sheet shows up on the live site within a few minutes (confirms the whole pipeline survived the move, end to end).
-- [ ] The same for the Pramaan Library Sheet: a test edit shows up on `/pramaan-library`.
-- [ ] Drive photo folders are readable by the new owner (Google guide Step 2b).
+- [ ] A test edit in the Sheet shows up on `/pramaan/resource-centre` within a few minutes (confirms the whole pipeline survived the move, end to end).
+- [ ] Drive photo folders are readable by the new owner (Google guide Step 3).
 - [ ] Alerts reach the new owner: GitHub variable `ALERT_ASSIGNEE` and Script Property `ALERT_EMAIL` updated; the cron schedule changed once by the new owner (GitHub guide Step 7).
 - [ ] Every row of `docs/OPERATIONS-INVENTORY.md` points at the new owner, with the token expiry date in their calendar.
-- [ ] New owner has bookmarked `docs/OPERATIONS-RUNBOOK.md`, `CONTENT-GUIDE.md`, `docs/ABL-APPSCRIPT-SETUP-GUIDE.md`, `docs/ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md`, and `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` for future reference.
+- [ ] New owner has bookmarked `docs/OPERATIONS-RUNBOOK.md`, `CONTENT-GUIDE.md`, `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md` and `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` for future reference.
 
 ---
 

@@ -5,6 +5,12 @@
 > what is left. Update the checklist (section 9) as items are completed — tick the box and add
 > the commit hash.
 >
+> **Status (2026-11-19):** sections 1–11 describe the *former* Pramaan Resource Centre (old Sheet, live
+> read through `useABLData`, `sync-abl-thumbnails.yml`). That setup was **replaced by the Pramaan Library
+> and its code deleted** — see section 13. Sections 1–11 are kept as the history of the decisions; the
+> files they name are in the local git tag `archive/pramaan-live-read`. Phase 2/3 of section 9 will not
+> be done.
+>
 > Opened: 2026-11-15. Owner of record (until the stakeholder handover): GitHub user
 > `vaibhav-sharma0105`. Platform limits referenced here are in `docs/PLATFORM-LIMITS.md`.
 
@@ -362,4 +368,77 @@ these runs.
 - [x] L6 Visual review of `/pramaan-library` with Sheet data (local, 2026-11-16; test consent)
 - [x] L7 Doc sync (2026-11-16): CLAUDE.md, AGENTS.md, OPERATIONS-INVENTORY/RUNBOOK, PLATFORM-LIMITS,
       MIGRATION-OVERVIEW, MAINTENANCE-GITHUB-PAT-REFRESH, setup guide, schema, both ARCHITECTURE diagrams
-- [ ] L8 Decide later: link the page from the site (then remove `noindex`, add to sitemap/llms.txt)
+- [x] L8 Linked from the site — it became the Resource Centre at `/pramaan/resource-centre`, public and
+      indexed (owner decision 2026-11-19; see section 13)
+
+## 13. The Pramaan Library replaces the former Resource Centre (2026-11-19)
+
+**Owner decisions (2026-11-19):** keep the new library and retire the old one; serve it at the old
+address `/pramaan/resource-centre` (+ `/:id`) with the Pramaan tab bar; make it public and indexed (the
+consent covers that); `/pramaan` counts from the library; Contribute form link in YAML; keep the
+grades shown as they are ("Grades 1–5" from `site.yaml`); use the former Resource Centre's titles
+("Resource Center", "{name} — TIDE Pramaan", "Back to Resource Center"); keep the Contribute text as it
+is ("old process is right for the end customer"); clean up **code only** — nothing on the Google side and
+no GitHub secrets were touched.
+
+**Checked before the switch:** all 161 former resource ids exist in the new data (152 same name, 9
+renamed); type names differ (old tabs Worksheet/Games/Kits/Flashcards vs typed Worksheet/Games/Kit/
+Flashcard — mapped by `libraryTypeKey` / `typeParamKey`, so `?type=Kits` still filters); no row has
+Foundational yet. The old language filter was not carried over (earlier stakeholder decision).
+
+**What changed in the site**
+- `/pramaan/resource-centre(/:id)` → `PramaanLibrary` / `PramaanLibraryDetail`, with `AblNavBar`,
+  breadcrumbs, no `noindex` (an unknown id stays `noindex`). `/pramaan-library(/:id)` redirects there,
+  keeping the query string (`LibraryRedirect`).
+- `/pramaan`: total, type count, type cards (count, `?type=<key>` link) and "Updated" date from the
+  snapshot at build time (was a live read).
+- Contribute: `formUrl` in `abl-contribute.yaml` (validated by `content:validate`); the
+  `VITE_ABL_CONTRIBUTE_FORM_URL` build secret is no longer read.
+- `llms.txt` no longer quotes "150+". CSP `connect-src` no longer allows `script.google.com` /
+  `script.googleusercontent.com` (nothing fetches from them now; `frame-src script.google.com` stays for
+  the Education for Harmony embed).
+- Responsive pass over all Pramaan pages (15 viewport sizes, portrait and landscape): the tab bar fits
+  phones without sideways scrolling and stops sticking on short screens (max-height 500px); the detail
+  facts card stacks the video below the facts at 1024–1279px; the back link is a 44px tap target. The
+  filter tiles' counts were raised to full contrast (axe found 3.6–4.2:1).
+
+**What was deleted** (all recoverable from the **local** tag `archive/pramaan-live-read`, commit
+`dd5b5a5`: `git show archive/pramaan-live-read:<path>`): `AblResourceCenter`, `AblDetail`,
+`ResourceCard/Grid/Filters`, `ActiveFilters`, `useABLData`, `filterResources`, `resourceLanguages`,
+`driveUtils`, `ablThumbnails`, `abl-resource-center.yaml`, `abl-detail.yaml` (+ JSON), the old snapshot
+`sheets/abl-resources.json`, `abl-thumbnails-manifest.json`, `public/assets/images/abl/` (318 files,
+29 MB — still in git history, so the repository does not shrink), `scripts/sync-abl-thumbnails.js`,
+`.github/workflows/sync-abl-thumbnails.yml`, `apps-script/abl/`, their tests, the
+`content:sync-abl-thumbnails` npm script, the `VITE_ABL_API_URL` build env and CI warning, and the docs
+`ABL-RESOURCE-LIBRARY-SPEC`, `ABL-APPSCRIPT-SETUP-GUIDE`, `ABL-APPSCRIPT-V3-UPGRADE-GUIDE`,
+`ABL-THUMBNAIL-SYNC-SETUP-GUIDE`. The shared safety rules the library sync used from
+`scripts/lib/abl-snapshot.js` were moved unchanged to `scripts/lib/snapshot-core.js` (tests ported to
+`src/test/scripts/snapshotCore.test.js`). The image/video viewer labels moved to `ui.yaml`
+(`mediaLightbox.*`), the pagination labels to `pramaan-library.yaml`.
+
+**Left as they are (owner decision — code clean-up only):** the old Pramaan Sheet, its Apps Script
+project, triggers and web-app deployment, its GitHub token, and the GitHub secrets `VITE_ABL_API_URL`,
+`ABL_SYNC_TOKEN`, `VITE_ABL_CONTRIBUTE_FORM_URL`. Nothing in the repository reads them now. What the
+old script does now depends on its version, which is **not verified**: Phase 2 (installing v3) was never
+ticked, so it is most likely the older script, whose `repository_dispatch` request GitHub accepts even
+with no workflow listening — nothing runs, no email. If v3 *was* installed, each old-Sheet edit and its
+daily heartbeat would get HTTP 404 (the workflow file is gone) and email "[Pramaan website] GitHub
+refused the update (HTTP 404)"; removing that script's triggers in Google stops it. Note: the old web app's
+public listing (`doGet` without a token) stays reachable by anyone who has its URL until its deployment
+is archived in Google.
+
+**Verification (local, 2026-11-19):** lint 0 errors; `content:validate` 0 errors; Vitest 18 files /
+199 tests pass; production build (`GITHUB_ACTIONS=true`) OK; Playwright e2e 25/25; axe scan 0 violations
+on every route; responsive audit 15 sizes × 6 Pramaan pages with no page overflow, no element off-screen,
+no tab-bar scrolling, no tap target under 24px.
+
+### Checklist
+- [x] R1 Switch `/pramaan/resource-centre` to the library; redirect `/pramaan-library`; public + indexed
+- [x] R2 `/pramaan` counts and type cards from the snapshot
+- [x] R3 Contribute form link in YAML (+ validation)
+- [x] R4 Former titles; responsive and accessibility pass
+- [x] R5 Archive tag `archive/pramaan-live-read` (local), delete the old code, docs, skills, diagrams updated
+- [ ] R6 Commit and push (waiting for the owner); then check the live site (all four Pramaan pages,
+      an old `/pramaan/resource-centre/<id>` link, `/pramaan-library` redirect)
+- [ ] R7 Optional: push the archive tag to GitHub (`git push origin archive/pramaan-live-read`) so it
+      survives a fresh clone — it exists only on this machine today, like `archive/multilingual-framework`

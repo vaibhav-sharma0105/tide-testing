@@ -14,21 +14,6 @@
 import { render, waitFor } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
-import { vi } from 'vitest'
-
-// ── Global mocks needed by several pages ─────────────────────────────────────
-
-// useABLData — prevents real fetch during tests
-vi.mock('../../hooks/useABLData', () => ({
-  useABLData: () => ({
-    data: null,
-    allResources: [],
-    loading: false,
-    error: null,
-    lastUpdated: null,
-    refetch: vi.fn(),
-  }),
-}))
 
 // ── Helper ────────────────────────────────────────────────────────────────────
 
@@ -189,9 +174,9 @@ describe('Route smoke tests', () => {
     expect(container.firstChild).not.toBeNull()
   })
 
-  it('/pramaan/resource-centre — AblResourceCenter renders without crashing', async () => {
+  it('/pramaan/resource-centre — PramaanLibrary renders without crashing', async () => {
     const container = await renderRoute(
-      () => import('../../pages/resources/AblResourceCenter'),
+      () => import('../../pages/library/PramaanLibrary'),
       '/pramaan/resource-centre',
       '/pramaan/resource-centre'
     )

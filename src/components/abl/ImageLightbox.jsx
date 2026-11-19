@@ -1,17 +1,15 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
-import { getAblThumbnail } from '../../utils/ablThumbnails'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { useModalBehavior } from '../../hooks/useModalBehavior'
-import rcData from '../../data/abl-resource-center.json'
+import ui from '../../data/ui.json'
 
 // A see-through, blurred backdrop, and no caption under the picture.
 const CLEAR = { background: 'rgba(8,16,32,0)', backdropFilter: 'blur(0px) saturate(100%)', WebkitBackdropFilter: 'blur(0px) saturate(100%)' }
 const TRANSLUCENT = { background: 'rgba(8,16,32,0.66)', backdropFilter: 'blur(18px) saturate(130%)', WebkitBackdropFilter: 'blur(18px) saturate(130%)' }
 
-// `src` overrides the Pramaan (ABL) photo lookup — the Pramaan Library passes its own photo path.
-export default function ImageLightbox({ id, alt, onClose, src: srcOverride }) {
-  const src = srcOverride !== undefined ? srcOverride : getAblThumbnail(id, 'full')
+// Open while `id` is set; `src` is the photo to show (null → "No image available").
+export default function ImageLightbox({ id, alt, onClose, src }) {
   const containerRef = useFocusTrap(!!id)
   useModalBehavior({ active: id, onClose })
 
@@ -22,7 +20,7 @@ export default function ImageLightbox({ id, alt, onClose, src: srcOverride }) {
           ref={containerRef}
           role="dialog"
           aria-modal="true"
-          aria-label={alt || rcData.lightbox.imagePreviewFallback}
+          aria-label={alt || ui.mediaLightbox.imagePreviewFallback}
           key="lightbox-backdrop"
           className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10"
           onClick={onClose}
@@ -39,7 +37,7 @@ export default function ImageLightbox({ id, alt, onClose, src: srcOverride }) {
           {/* Close button */}
           <motion.button {...{ initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0, transition: { duration: 0.12 } }, transition: { duration: 0.22 } }}
             onClick={onClose}
-            aria-label={rcData.lightbox.closePreview}
+            aria-label={ui.mediaLightbox.closePreview}
             className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition-colors duration-150"
           >
             <X className="w-5 h-5" />
@@ -63,7 +61,7 @@ export default function ImageLightbox({ id, alt, onClose, src: srcOverride }) {
               />
             ) : (
               <div className="w-96 h-64 rounded-xl bg-white/10 flex items-center justify-center">
-                <span className="text-white/50 text-sm font-body">{rcData.lightbox.noImage}</span>
+                <span className="text-white/50 text-sm font-body">{ui.mediaLightbox.noImage}</span>
               </div>
             )}
           </motion.div>

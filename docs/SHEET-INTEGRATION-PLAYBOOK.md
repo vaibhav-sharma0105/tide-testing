@@ -1,10 +1,11 @@
 # Sheet Integration Playbook — the standard for connecting a Google Sheet to the site
 
-**Status (2026-11-16):** this is **the** pattern for every new Sheet-backed section. The reference
-implementation is the **Pramaan Library** (`/pramaan-library`) — when in doubt, read its code and copy
-its shape. The older Pramaan (ABL) pipeline still reads its data **live** in the browser through
-`useABLData()`; that is **legacy, do not copy it** — `docs/PRAMAAN-HARDENING-PLAN.md` Phase 3 moves it
-to the same snapshot model.
+**Status (2026-11-19):** this is **the** pattern for every Sheet-backed section. The reference
+implementation is the **Pramaan Library**, which since 2026-11-19 is the Pramaan Resource Centre
+(`/pramaan/resource-centre`; code still named `library` / `pramaan-library`) — when in doubt, read its code
+and copy its shape. The older pattern that read a Sheet **live** in the browser (`useABLData()` → a public
+Apps Script listing) was retired and deleted that day; never reintroduce it (it is kept only in the local
+git tag `archive/pramaan-live-read`, for reference).
 
 Agents: the procedure that walks through this document step by step is
 `.claude/skills/sheet-integration/SKILL.md`.
@@ -66,7 +67,7 @@ Pick a short kebab-case slug (e.g. `pramaan-library`, `social-changemakers`) and
 | Apps Script source | `apps-script/<slug>/Code.gs` | `apps-script/pramaan-library/Code.gs` |
 | Workflow (keep the file name — the script calls it by name) | `.github/workflows/sync-<slug>.yml` | `sync-pramaan-library.yml` |
 | Concurrency group | `<slug>-sync` | `pramaan-library-sync` |
-| Cron | every 6 h at a **minute not used by another sync** (taken: `:17` ABL, `:47` library) | `47 */6 * * *` |
+| Cron | every 6 h at a **minute not used by another sync** (taken: `:47` Resource Centre / library; `:17` was the retired ABL sync — free again) | `47 */6 * * *` |
 | Sync script + rules | `scripts/sync-<slug>.js`, `scripts/lib/<slug>-snapshot.js` | `sync-pramaan-library.js`, `library-snapshot.js` |
 | npm script | `content:sync-<slug>` | `content:sync-pramaan-library` |
 | GitHub secrets | `<PREFIX>_API_URL`, `<PREFIX>_SYNC_TOKEN` | `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN` |
@@ -101,7 +102,7 @@ Do these in order; each step has a reference file to copy from.
    **using the real header row**.
 4. **Rules library** — copy `scripts/lib/library-snapshot.js`: field allowlist, normalisation, email
    scrub, id rules (`isSafeId`, `photoFileBase`, clash detection), `validate…` thresholds (reuses
-   `THRESHOLDS` from `abl-snapshot.js`), photo plan. Pure functions only; unit-test every rule.
+   `THRESHOLDS` from `snapshot-core.js`), photo plan. Pure functions only; unit-test every rule.
 5. **Sync script** — copy `scripts/sync-pramaan-library.js`: env names, `.env.development` loader
    limited to this prefix, `REQUEST_TIMEOUT_MS`, `MAX_PHOTOS_PER_RUN`, photo time budget, report file.
    Run it against a **fake Apps Script server** (no real data) to prove: publish, no-change run,
@@ -155,8 +156,11 @@ landscape, with no horizontal overflow (2026-11-16).
 - Unknown id → friendly not-found state, still `noindex`.
 
 **Unlinked pages** (until the owner decides to link): no menu/footer/sitemap/llms.txt entry and
-`SeoHead … noindex` on every state. When linking later: remove `noindex`, add to `public/sitemap.xml`
-and `content/shared/llms.txt`.
+`SeoHead … noindex` on every state. When linking later: remove `noindex` (keep it on the not-found state),
+add breadcrumbs, add to `public/sitemap.xml` and `content/shared/llms.txt`, and confirm with the owner that
+the consent wording covers a public, search-indexed listing. If the page replaces an older one, serve it at
+the old address and redirect the new one (as `/pramaan-library` → `/pramaan/resource-centre`, which keeps
+ids and `?type=` links working).
 
 **Reuse:** the library components are still named `Library*`. When the **next** snapshot integration
 needs the same listing UI, extract the generic parts (facet/sort utilities, `LibraryDropdown`, the picker,
@@ -217,4 +221,4 @@ secrets table), `CONTENT-GUIDE.md` (the new YAML), and the cron/heartbeat "taken
 
 | Shared (change with care — affects every integration) | Per integration |
 |---|---|
-| `scripts/ci/alert-issue.sh`, `deploy.yml`, `scripts/lib/abl-snapshot.js` helpers (`THRESHOLDS`, `isSafeId`, `serializeSnapshot`, `photoDeletionError`, `photosFromExport`, `contentHash`, `planPhotos`), `scripts/validate-content.js`, `src/components/abl/Pagination.jsx`, `DriveImage`/`ImageLightbox` (`src` override), `SeoHead`, `index.html` CSP, the repo variable `ALERT_ASSIGNEE` | Sheet, `Code.gs`, token, secrets, workflow + queue + cron, sync script + rules, snapshot + photos paths, page YAML, pages/components, setup guide + schema doc, issue titles |
+| `scripts/ci/alert-issue.sh`, `deploy.yml`, `scripts/lib/snapshot-core.js` (`THRESHOLDS`, `isSafeId`, `serializeSnapshot`, `photoDeletionError`, `photosFromExport`, `contentHash`, `planPhotos`; tests `src/test/scripts/snapshotCore.test.js`), `scripts/validate-content.js`, `src/components/abl/Pagination.jsx`, `DriveImage`/`ImageLightbox` (take a `src`), `VideoLightbox`, their labels in `ui.yaml` `mediaLightbox.*`, `SeoHead`, `index.html` CSP, the repo variable `ALERT_ASSIGNEE` | Sheet, `Code.gs`, token, secrets, workflow + queue + cron, sync script + rules, snapshot + photos paths, page YAML, pages/components, setup guide + schema doc, issue titles |

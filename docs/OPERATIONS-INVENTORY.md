@@ -15,18 +15,10 @@ handover). Last full review: 2026-11-15.
 
 | Item | Where / identifier | Owner account | Notes | Last verified |
 |---|---|---|---|---|
-| Pramaan Google Sheet | Google Drive; id is in its URL (`/d/<id>/edit`). The id in the old spec is `1Cdx2iVkzA_-mv9b0vKXmo1eTRdz3K7HmtBSKDrM8CgQ` | owner's personal Gmail | Tabs with a `UNIQUE ID NO FOR …` header are published; **everything in those tabs becomes public** | 2026-11-15 (live data: 4 tabs, 161 resources) |
-| Drive folder(s) with resource photos | Google Drive (linked from the Sheet's photo column) | ⚠️ not recorded — fill in | Photos must stay readable by the script owner; include in any ownership move (`MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` Step 2b) | not verified |
-| Apps Script project | Sheet → Extensions → Apps Script (attached to the Sheet) | same as Sheet | Source of truth: `apps-script/abl/Code.gs` in this repo. Deployed version unknown until Phase 2 (`showStatus` prints it) | 2026-11-15 |
-| Web App deployment | Deploy → Manage deployments; URL = GitHub secret `VITE_ABL_API_URL` | same | Execute as **Me**, access **Anyone**. Update with **Edit → New version** only (keeps the URL) | 2026-11-15 (URL answers, 161 resources) |
-| Drive API advanced service | Apps Script → Services | — | Needed for photo thumbnails; does not copy with the Sheet | not verified |
-| Triggers | Apps Script → Triggers | same | v3: exactly `onSheetChange` (On change) + `tick` (every 5 min), installed by `setup()`. Before v3: unknown — sync history shows the edit trigger never fired | 2026-11-15 |
-| Script Property `SYNC_TOKEN` | Apps Script → Project Settings | — | Must equal GitHub secret `ABL_SYNC_TOKEN` | not verified |
-| Script Property `GITHUB_PAT` | same | — | See "GitHub token" row below | not verified |
-| Script Properties `GITHUB_REPO`, `GITHUB_WORKFLOW`, `ALERT_EMAIL`, optional `SHEET_ID`, `GITHUB_REF` | same | — | Values: `docs/ABL-APPSCRIPT-V3-UPGRADE-GUIDE.md` Step 4. Other properties are bookkeeping written by the script | Phase 2 pending |
-| Contribute Google Form | link = GitHub secret `VITE_ABL_CONTRIBUTE_FORM_URL` | ⚠️ not recorded — fill in | `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md` | see GitHub row: secret not set |
-| Pramaan **Library** Sheet (form responses) | id `1-tjqKTutE7TRyG3ziAeFkarKfsOcLs9pKD_f9kQGcSU` | ⚠️ not recorded — fill in | **Holds personal data (cols L–P).** Only rows with Q, R, S = "Yes" are published; L–P never leave the Sheet. Rules: `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md` | 2026-11-16 (header read; 245-row range) |
-| Pramaan Library Apps Script + Web App | Sheet → Extensions → Apps Script; URL = GitHub secret `PRAMAAN_LIBRARY_API_URL` | same | Source: `apps-script/pramaan-library/Code.gs`. **Installed and deployed as a web app (v1) on 2026-11-16**; `GITHUB_PAT` (its own fine-grained token `pramaan-library-sheet`, created 2026-11-16 with a 1-year expiry per the setup steps — exact date ⚠️ not recorded), `GITHUB_REPO`, `ALERT_EMAIL` and the `setup` triggers ("notify immediately") set by the owner on 2026-11-16; `testDispatch` → HTTP 204. Setup: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`. Properties: `SYNC_TOKEN` (= `PRAMAAN_LIBRARY_SYNC_TOKEN`), `GITHUB_PAT`, `GITHUB_REPO`, `ALERT_EMAIL`. Triggers: On change + On form submit + tick | 2026-11-16 (owner) |
+| Contribute Google Form | link in `content/pages/abl-contribute.yaml` → `formUrl` (not a secret) | ⚠️ not recorded — fill in | Should feed the Resource Centre Sheet below. Change it: `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md` | 2026-11-19 (link set in YAML) |
+| Drive folder(s) with resource photos | Google Drive (linked from the Sheet's photo column) | ⚠️ not recorded — fill in | Photos must stay readable by the script owner; include in any ownership move (`MIGRATION-GOOGLE-SHEET-APPSCRIPT.md`) | not verified |
+| **Resource Centre Sheet** ("Contributing to Pramaan; Educators' Resource Bank (Responses)", the Pramaan Library) | id `1-tjqKTutE7TRyG3ziAeFkarKfsOcLs9pKD_f9kQGcSU` | ⚠️ not recorded — fill in | **Holds personal data (cols L–P).** Only rows with Q, R, S = "Yes" are published; L–P never leave the Sheet. Rules: `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md` | 2026-11-16 (header read; 245-row range) |
+| Resource Centre Apps Script + Web App | Sheet → Extensions → Apps Script; URL = GitHub secret `PRAMAAN_LIBRARY_API_URL` | same | Source: `apps-script/pramaan-library/Code.gs`. **Installed and deployed as a web app (v1) on 2026-11-16**; `GITHUB_PAT` (its own fine-grained token `pramaan-library-sheet`, created 2026-11-16 with a 1-year expiry per the setup steps — exact date ⚠️ not recorded), `GITHUB_REPO`, `ALERT_EMAIL` and the `setup` triggers ("notify immediately") set by the owner on 2026-11-16; `testDispatch` → HTTP 204. Setup: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`. Properties: `SYNC_TOKEN` (= `PRAMAAN_LIBRARY_SYNC_TOKEN`), `GITHUB_PAT`, `GITHUB_REPO`, `ALERT_EMAIL`. Triggers: On change + On form submit + tick | 2026-11-16 (owner) |
 | Google account activity | — | owner | Google may delete a personal account after **2 years without sign-in**; sign in at least yearly | — |
 
 ## GitHub side
@@ -36,25 +28,18 @@ handover). Last full review: 2026-11-15.
 | Repository | `vaibhav-sharma0105/tide-testing` — **must stay public** (free GitHub Pages requires it) | Owner: `vaibhav-sharma0105` | 2026-11-15 |
 | GitHub Pages | Settings → Pages; source **GitHub Actions**; live at https://vaibhav-sharma0105.github.io/tide-testing/ | Environment `github-pages` | 2026-11-15 |
 | Workflow `deploy.yml` | `.github/workflows/deploy.yml` | Builds + deploys on every push to `main`; opens an `automation-alert` issue on failure | 2026-11-15 |
-| Workflow `sync-abl-thumbnails.yml` | `.github/workflows/sync-abl-thumbnails.yml` — **keep this file name** (the Apps Script calls it by name) | Every 6 h at :17 + when the Sheet changes + manual; commits data + photos, starts the deploy | 2026-11-15 |
-| Secret `VITE_ABL_API_URL` | Settings → Secrets and variables → Actions | The Web App URL. Used by the sync (and by the site build until Phase 3) | 2026-11-15 (exists, set 2026-06-06) |
-| Secret `ABL_SYNC_TOKEN` | same | Must equal Script Property `SYNC_TOKEN` | 2026-11-15 (exists, set 2026-06-20) |
-| Secret `VITE_ABL_CONTRIBUTE_FORM_URL` | same | ⚠️ **Not set** as of 2026-11-15 (`gh secret list`), so the site build receives no form link; the effect on the live Contribute page is not verified here. Fix: `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md` | 2026-11-15 |
-| Workflow `sync-pramaan-library.yml` | `.github/workflows/sync-pramaan-library.yml` — **keep this file name** | Every 6 h at :47 + when the library Sheet changes; own concurrency group `pramaan-library-sync`. Skipped quietly only while its secrets are missing **and** the committed snapshot has no rows — once rows are committed, missing secrets fail loudly (alert issue every run), so add the secrets before pushing. First green run 2026-11-16 (`43867768722`); after the owner's Sheet update, **243 resources published** (run `43874559074`, 2026-11-16) | 2026-11-16 |
+| Workflow `sync-pramaan-library.yml` | `.github/workflows/sync-pramaan-library.yml` — **keep this file name** (the Apps Script calls it by name) | Every 6 h at :47 + when the library Sheet changes; own concurrency group `pramaan-library-sync`. Skipped quietly only while its secrets are missing **and** the committed snapshot has no rows — once rows are committed, missing secrets fail loudly (alert issue every run), so add the secrets before pushing. First green run 2026-11-16 (`43867768722`); after the owner's Sheet update, **243 resources published** (run `43874559074`, 2026-11-16) | 2026-11-16 |
 | Secrets `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN` | Settings → Secrets and variables → Actions | Set 2026-11-16 (`gh secret list`, names only) | 2026-11-16 |
 | Variable `ALERT_ASSIGNEE` | Settings → Secrets and variables → Actions → **Variables** | GitHub username alert issues are assigned to (emails them). Currently `vaibhav-sharma0105` | 2026-11-15 |
-| GitHub token (fine-grained PAT) used by the Apps Script | Owner's GitHub → Settings → Developer settings → Fine-grained tokens | Only this repository; **Actions: Read and write**; nothing else. **Expiry date: ⚠️ not recorded — fill in, and put it in a calendar.** (v3 also emails 30/7/1 days before *if* GitHub reports the date — not documented, so don't rely on it.) Renew: `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` | not verified |
-| Who receives schedule-failure emails | GitHub sends them to the last person who edited the `cron:` line | After a handover the new owner changes the schedule once (e.g. minute `17` → `23`) | — |
+| GitHub token (fine-grained PAT) used by the Resource Centre Apps Script (`pramaan-library-sheet`) | Owner's GitHub → Settings → Developer settings → Fine-grained tokens | Only this repository; **Actions: Read and write**; nothing else. **Expiry date: ⚠️ not recorded — fill in, and put it in a calendar** (created 2026-11-16 with a 1-year expiry per the setup steps). The script also emails before expiry *if* GitHub reports the date — not documented, so don't rely on it. Renew: `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` | not verified |
+| Who receives schedule-failure emails | GitHub sends them to the last person who edited the `cron:` line | After a handover the new owner changes the schedule once (e.g. minute `47` → `53`) | — |
 | Labels `automation-alert`, `sheet-needs-attention` | Issues → Labels | Created by the workflows | 2026-11-15 |
 
 ## Bot-owned files (never edit by hand)
 
 | Path | Written by |
 |---|---|
-| `src/data/sheets/abl-resources.json` | the sync (Pramaan data snapshot) |
-| `src/data/abl-thumbnails-manifest.json` | the sync (photo list) |
-| `public/assets/images/abl/*.webp` | the sync (photos) |
-| `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json`, `public/assets/images/pramaan-library/*` | the Pramaan Library sync |
+| `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json`, `public/assets/images/pramaan-library/*` | the Resource Centre sync (`scripts/sync-pramaan-library.js`) |
 | `src/data/*.json` (others) | `scripts/yaml-to-json.js` from `content/` |
 
 ## Dates to put in a calendar
@@ -62,7 +47,20 @@ handover). Last full review: 2026-11-15.
 | When | What | Action |
 |---|---|---|
 | PAT expiry (⚠️ fill in) | GitHub token stops working | Renew 2 weeks before (`MAINTENANCE-GITHUB-PAT-REFRESH.md`) |
-| ~2027-01 | Two months after the snapshot switch | Token-gate the old public data link (plan §8) |
 | Yearly | Health review | `docs/OPERATIONS-RUNBOOK.md` → yearly checklist |
-| 2028-04 | Node.js 24 end of life | Bump `node-version` in both workflows |
+| 2028-04 | Node.js 24 end of life | Bump `node-version` in both workflows (`deploy.yml`, `sync-pramaan-library.yml`) |
 | ~2029 | `ubuntu-24.04` runner retirement (GitHub announces dates) | Bump `runs-on` in both workflows |
+
+## Retired — no longer used by the website (since 2026-11-19)
+
+The former Resource Centre was replaced by the Pramaan Library (`docs/PRAMAAN-HARDENING-PLAN.md` §13). Its
+code is deleted from the repository (kept in the local git tag `archive/pramaan-live-read`). By owner
+decision these were **left as they are** — nothing in the repository reads them; remove them whenever
+convenient:
+
+| Item | Where | Note |
+|---|---|---|
+| Old Pramaan Google Sheet (4 tabs, 161 resources on 2026-11-15) | Google Drive, id `1Cdx2iVkzA_-mv9b0vKXmo1eTRdz3K7HmtBSKDrM8CgQ` (from the old spec) | Keep as an archive; all 161 ids also exist in the Resource Centre Sheet |
+| Its Apps Script project, triggers and Web App deployment | Sheet → Extensions → Apps Script | The web app's public listing (no token) stays reachable by anyone with its URL until the deployment is archived (Deploy → Manage deployments → Archive). Removing its triggers stops any requests to GitHub |
+| Its GitHub token (fine-grained PAT) | Owner's GitHub → Developer settings | Can be deleted once the script's triggers are removed |
+| GitHub secrets `VITE_ABL_API_URL`, `ABL_SYNC_TOKEN`, `VITE_ABL_CONTRIBUTE_FORM_URL` | Settings → Secrets and variables → Actions | Not read by any workflow |

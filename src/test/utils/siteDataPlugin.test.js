@@ -106,10 +106,11 @@ describe('transformHtml', () => {
 })
 
 describe('grade range', () => {
-  const gradeNumbers = (fs.readFileSync(path.join(ROOT, 'src/config/abl.js'), 'utf8')
-    .match(/export const GRADES = \[(.*?)\]/)[1].match(/\d+/g)).map(Number)
+  // Numbered grades of the Resource Centre's grade filter (Foundational has no number and is left out).
+  const gradeNumbers = (fs.readFileSync(path.join(ROOT, 'src/utils/libraryFilters.js'), 'utf8')
+    .match(/export const LIBRARY_GRADES = \[(.*?)\]/)[1].match(/\d+/g)).map(Number)
 
-  it('site.yaml gradeRange matches the GRADES list in src/config/abl.js', () => {
+  it('site.yaml gradeRange matches the numbered grades in LIBRARY_GRADES (src/utils/libraryFilters.js)', () => {
     expect(site.gradeRange).toBe(`${Math.min(...gradeNumbers)}–${Math.max(...gradeNumbers)}`)
   })
 
@@ -142,9 +143,9 @@ describe('llms.txt rendering', () => {
     expect(out).not.toContain('50,000+')
   })
 
-  it('keeps the different 15,000+ students metric and the 150+ resource count', () => {
+  it('keeps the different 15,000+ students metric; quotes no fixed resource count (it changes with every sync)', () => {
     expect(out).toContain('15,000+ students')
-    expect(out).toContain('150+ ABL materials')
+    expect(out).not.toContain('150+ ABL materials')
   })
 
   it('states English only and uses the site URL', () => {

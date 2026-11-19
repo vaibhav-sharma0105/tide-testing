@@ -1,169 +1,105 @@
 # Migrating the Google Sheet + Apps Script to a New Owner
 
-**Who is this for?** The new, non-technical owner, doing this together with (or guided by) the current owner. Covers both the resource-listing system and the thumbnail-sync system — they live in one shared Apps Script project, so this is one combined guide, not two.
+**Who is this for?** The new, non-technical owner, doing this together with the current owner. It covers the
+one Google Sheet the website uses: **"Contributing to Pramaan; Educators' Resource Bank (Responses)"** (the
+Pramaan Resource Centre, `/pramaan/resource-centre`), its Apps Script, the Google Form that fills it, and the
+Drive files its rows link to.
 
 **Time required:** ~45 minutes.
 
-**Read `docs/MIGRATION-OVERVIEW.md` first if you haven't already** — it explains why this happens before the GitHub repository transfer, not after.
+**Read `docs/MIGRATION-OVERVIEW.md` first** — it explains why this happens before the GitHub repository
+transfer, not after.
+
+> Until 2026-11-19 the site also used an older Pramaan Sheet with its own script. That one is retired and no
+> longer needs moving (`docs/PRAMAAN-HARDENING-PLAN.md` §13); it can simply be kept as an archive.
 
 ---
 
-## Why we don't use Google's "transfer ownership" feature
+## What moves, and what has to be redone
 
-You might expect this to be a simple "right-click → transfer ownership." It isn't, for a specific, confirmed reason: **Google Apps Script Web App deployments do not transfer ownership, even when the underlying file does.** If we transferred ownership the obvious way, the live Web App would keep quietly running as the *old* account forever, regardless of who owns the Sheet. ([Source](https://support.google.com/a/thread/137654217/how-to-transfer-google-sheet-app-script-so-that-it-runs-from-another-account))
+| Thing | Moves with the file? | What to do |
+|---|---|---|
+| The Sheet (rows, consent answers) | yes, when ownership is transferred | Step 2 |
+| The Apps Script code | yes — it is attached to the Sheet | nothing |
+| The **Google Form** that fills the Sheet | no — it is a separate file | Step 2 (transfer it too) |
+| Drive photos/videos linked from rows | no — separate files | Step 3 |
+| Script Properties (`SYNC_TOKEN`, `GITHUB_PAT`, …) | not verified | Step 4 re-creates them anyway |
+| Triggers | **no** — triggers belong to the person who installed them | Steps 1 and 4 |
+| The web app (its URL) | **no** | Step 4 makes a new one |
 
-So instead, the new owner makes a **fresh copy** of the Sheet (which also copies the script code automatically) and does a **fresh deployment** under their own account — the same reliable process as the original setup, just done once more. A bit more work, but it actually works.
+**Why the web app must be redone:** Google Apps Script web app deployments do not transfer ownership, even
+when the file does — a deployment keeps running as the account that made it.
+([Source](https://support.google.com/a/thread/137654217/how-to-transfer-google-sheet-app-script-so-that-it-runs-from-another-account))
+So the new owner makes a **fresh deployment** under their own account. With this Sheet that is safe: the
+script answers nothing without the secret key, and the website never calls it directly.
 
 ---
 
-## Before You Start — What You Need
+## Before you start
 
-- The new owner needs their own Google account.
-- The current owner needs to share the existing Sheet with the new owner (Editor access) — see Step 1.
+- The new owner needs their own Google account and a GitHub account with access to the repository.
 - Both people should be reachable during this process.
+- Have `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md` open — Step 4 below repeats its Steps 2–8.
 
 ---
 
-## Step 1 — Current Owner: Share the Sheet
+## Step 1 — Current owner: stop your own triggers
 
-1. Open the existing Google Sheet.
-2. Click **Share** (top right).
-3. Add the new owner's Google account email, set their role to **Editor**.
-4. Click **Send**.
+Apps Script → **Triggers** (clock icon) → delete the three triggers (`onSheetChange` On change,
+`onSheetChange` On form submit, `tick`). Triggers run as the person who installed them, so the new owner
+cannot remove yours, and yours would keep running after the transfer.
 
----
+## Step 2 — Transfer the Sheet and the Form
 
-## Step 2 — New Owner: Make Your Own Copy
+1. Open the Sheet → **Share** → add the new owner as **Editor** → in their row choose **Transfer ownership**.
+   The new owner accepts the invitation from their email.
+2. Do the same for the **Google Form** that fills the Sheet (Google Forms → the form → ⋮ → **Add
+   collaborators** → Editor → transfer ownership), so the new owner can edit questions and see responses.
+3. Record the new owner in `docs/OPERATIONS-INVENTORY.md`.
 
-1. Open the Sheet using the link/invite from Step 1.
-2. Click **File → Make a copy**.
-3. Save it to **your own** Google Drive (not a shared folder owned by someone else).
-4. Rename it to something clear, e.g. "TIDE ABL Resources (Live)".
-5. Open the new copy's URL bar and copy the long ID string between `/d/` and `/edit` — you'll need this in Step 4. It looks like:
-   ```
-   https://docs.google.com/spreadsheets/d/THIS_LONG_ID_HERE/edit
-   ```
+*Not verified here:* whether Google allows ownership transfer between two personal Gmail accounts in every
+case. If the option is missing, use **File → Make a copy** instead and then check, in the Form → **Responses**
+tab, which spreadsheet receives the answers — the website reads only the Sheet the script is attached to (or
+the one named in the Script Property `SHEET_ID`). Ask the developer before choosing this path: a copy needs its
+own form link and the Contribute button's `formUrl` may have to change (`MAINTENANCE-CONTRIBUTE-FORM-LINK.md`).
 
-This copy includes all the existing resource data **and** a copy of the automation script — both now owned by you.
+## Step 3 — Photos and videos: make sure the new owner can read them
 
-### Step 2b — Photos: make sure the new owner can read them
+Rows link to files in Google Drive (form uploads and shared links). **They are not moved with the Sheet.** The
+script reads photos as the new owner, so the new owner's account must be able to open every photo; videos must
+stay shared "Anyone with the link".
 
-The Sheet's photo column links to files in Google Drive. **They are not copied with the Sheet.** The script reads them as the new owner, so the new owner's account must be able to open every photo.
-
-1. Current owner: find the Drive folder(s) holding the resource photos (open a few photo links from the Sheet; note the folder each one lives in) and record them in `docs/OPERATIONS-INVENTORY.md`.
-2. Share those folders with the new owner (**Editor**), or transfer ownership of the folders to the new owner (Drive → right-click the folder → **Share → Transfer ownership**). Transfer keeps every file's id, so the Sheet's links keep working. *(Whether Drive allows transfer between two personal Gmail accounts is not verified — if the option is missing, sharing as Editor is enough for the script to read them.)*
+1. Current owner: find the Drive folder(s) holding the uploads (open a few photo links from the Sheet; for form
+   uploads it is usually the Form's upload folder) and record them in `docs/OPERATIONS-INVENTORY.md`.
+2. Share those folders with the new owner (**Editor**), or transfer their ownership. Transfer keeps every file's
+   id, so the Sheet's links keep working.
 3. Check: signed in as the new owner, open 3 photo links from the Sheet — each must open.
 
-If photos become unreadable, the sync **keeps the old photos** on the website and lists the affected rows in a `sheet-needs-attention` issue — nothing is deleted.
+If photos become unreadable, the sync **keeps the old photos** on the website and lists the affected rows in a
+`sheet-needs-attention` issue — nothing is deleted.
 
----
+## Step 4 — New owner: set up the script under your account
 
-## Step 3 — New Owner: Open Apps Script and Re-authorize
+Follow `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md` **Steps 2–8** in the transferred Sheet (the code is already
+there — skip pasting it in Step 1):
 
-1. In your new copy, click **Extensions → Apps Script**.
-2. You should see `Code.gs` already there. Check its first lines say **version 3**. If not (older copy), replace it with `apps-script/abl/Code.gs` from the repository (`docs/ABL-APPSCRIPT-V3-UPGRADE-GUIDE.md` Step 2).
-3. Function dropdown → **`showStatus`** → **Run** (▶). Authorize when asked: **Review permissions → your account → Advanced → Go to [project] (unsafe) → Allow**. This is expected — it's a fresh project under your account.
-4. The **Execution log** prints a status block.
+- Step 2: Drive service on · Step 3: `makeSyncToken` (new secret key) · Step 4: Script Properties with
+  **your own** GitHub token (`GITHUB_PAT`, see `MAINTENANCE-GITHUB-PAT-REFRESH.md` Step 1) and **your** `ALERT_EMAIL`
+- Step 5: **New deployment** (new web app URL) · Step 6: update the GitHub secrets
+  `PRAMAAN_LIBRARY_API_URL` and `PRAMAAN_LIBRARY_SYNC_TOKEN` (edit the existing ones)
+- Step 7: `setup` (installs your three triggers; set "Notify me immediately") · Step 8: `testDispatch` →
+  `SUCCESS (HTTP 204)` and a green **Sync Pramaan Library** run
 
-## Step 4 — ⚠️ Check it reads YOUR copy — Do Not Skip This
+## Step 5 — Check end to end
 
-Version 3 reads the Sheet it is attached to, so a copy reads itself automatically — **unless** a Script Property called `SHEET_ID` exists (it overrides that).
+1. Edit one published row in the Sheet (e.g. a description), wait ~10 minutes.
+2. GitHub → **Actions**: a **Sync Pramaan Library** run, then **Deploy to GitHub Pages**, both green.
+3. The change shows on `/pramaan/resource-centre/<that ID>` (hard-refresh with Ctrl+F5). Undo the test edit.
+4. In the Google Form → **Responses** tab, check it still sends answers to this Sheet (the link to the
+   spreadsheet opens the transferred one).
 
-1. In the Step 3 log, find the line `Sheet: …`. It must show **your copy's** name (e.g. "TIDE ABL Resources (Live)"), not the old one.
-2. If it shows the old Sheet: Project Settings → Script Properties → delete `SHEET_ID` (or set it to your copy's id from Step 2.5) → run `showStatus` again.
-
-*(Older versions had the Sheet id written inside the code — if you ever see a line `const SHEET_ID = '…'` near the top of Code.gs, you have an old version: replace it as in Step 3.2.)*
-
----
-
-## Step 5 — Deploy as a Web App
-
-This produces a **brand new Web App URL** — different from the old one. That's expected.
-
-1. Click **Deploy → New deployment** (this time it really is a new deployment, since this is a new project).
-2. Gear icon ⚙ next to "Select type" → **Web app**.
-3. Settings:
-   - **Execute as:** `Me (your email)`
-   - **Who has access:** `Anyone`
-4. Click **Deploy**, approve permissions again if asked.
-5. **Copy the new Web App URL and save it somewhere safe** — you'll paste it into a GitHub secret in Step 9.
-
----
-
-## Step 6 — (No 15-minute trigger any more)
-
-Version 3 does not use the old `scheduledRefresh` 15-minute trigger. Its two triggers are installed in Step 10 by `setup`.
-
----
-
-## Step 7 — Generate a New Sync Token
-
-Same method as the original thumbnail-sync setup — using the Apps Script editor itself, no extra tools.
-
-1. Add this temporary function to the bottom of `Code.gs`:
-   ```javascript
-   function generateToken() {
-     Logger.log(Utilities.getUuid() + Utilities.getUuid());
-   }
-   ```
-2. Save, select it from the function dropdown, click **Run**.
-3. Open **Execution log**, copy the long string shown.
-4. Delete the `generateToken` function and save again.
-
-**Save this token somewhere safe** — you'll need it twice: once here (Step 8) and once in GitHub (Step 9).
-
----
-
-## Step 8 — Set Script Properties
-
-1. Gear icon (Project Settings) → **Script Properties** → **Add script property**, for each of these:
-
-| Property | Value |
-|---|---|
-| `SYNC_TOKEN` | The token from Step 7 |
-| `GITHUB_PAT` | A fine-grained GitHub token — see the note below |
-| `GITHUB_REPO` | `owner/repo-name`, e.g. `vaibhav-sharma0105/tide-testing` (use whatever it currently is — this may need updating again after the GitHub repository transfer; see that guide's last step) |
-| `GITHUB_WORKFLOW` | `sync-abl-thumbnails.yml` |
-| `ALERT_EMAIL` | the new owner's email (problem alerts and token-expiry reminders go here) |
-
-> **About `GITHUB_PAT` at this stage:** if you're following `MIGRATION-OVERVIEW.md`'s recommended order, the GitHub repository hasn't transferred yet — so generate this PAT under whoever currently has admin access to the GitHub repo (likely the original developer, for now). Once the GitHub transfer is complete, the very last step of `MIGRATION-GITHUB-REPOSITORY.md` has the new owner generate their **own** PAT under their own account and update this property again, fully decoupling from the original developer. Don't worry about getting this perfectly "final" right now — getting it *working* is what matters at this stage.
-
-2. Add the "Drive API" advanced service (used for fetching thumbnails — easy to forget since the code already references it, but the *service* itself is per-project and doesn't carry over with a copy):
-   - **Services** (+ icon, left sidebar) → **Drive API** → **Add**.
-
----
-
-## Step 9 — Update GitHub Secrets
-
-1. Go to the GitHub repository → **Settings → Secrets and variables → Actions**.
-2. Update (don't just add a new one — edit the existing) **`VITE_ABL_API_URL`** with the new Web App URL from Step 5.
-3. Update **`ABL_SYNC_TOKEN`** with the new token from Step 7.
-
----
-
-## Step 10 — Install the triggers (one click)
-
-1. Apps Script editor → function dropdown → **`setup`** → **Run**. Approve permissions if asked.
-2. Check: the log's `Triggers:` line lists exactly `onSheetChange` and `tick`; the clock icon (Triggers) shows those two rows.
-3. On the Triggers page, for each row: pencil → **Failure notification settings → Notify me immediately** → Save.
-
----
-
-## Step 11 — Test Everything End to End
-
-1. Paste your new Web App URL into a browser — confirm you see `{"success":true,...}` JSON.
-2. Apps Script → function **`testDispatch`** → **Run** → the log says `SUCCESS (HTTP 204)` or `SUCCESS (HTTP 200)`. (Other results: `docs/ABL-APPSCRIPT-V3-UPGRADE-GUIDE.md` Step 8.)
-3. GitHub repo → **Actions** → a **Sync ABL Thumbnails** run started by step 2 finishes green.
-4. Make a small, harmless edit in your new Sheet copy. Within ~1 minute a sync run starts **on its own**.
-5. After **Deploy to GitHub Pages** finishes, visit the live site and confirm resources and images display correctly.
-
-If all five pass, the Google side of the migration is complete. Record the new owner, Web App URL date and token expiry in `docs/OPERATIONS-INVENTORY.md`.
-
----
-
-## What to Do With the Old Sheet
-
-**Don't delete it immediately.** Keep it (and the old Apps Script project) untouched for a few weeks as a safety fallback while you confirm the new setup is fully stable. Once confident, the original owner can delete it, or just leave it dormant indefinitely — it's no longer connected to anything once `VITE_ABL_API_URL` points elsewhere.
+Then the current owner archives **their** old deployment: Apps Script → **Deploy → Manage deployments** → the
+old one → **Archive** (it answers nothing without the old key anyway).
 
 ---
 
@@ -171,11 +107,12 @@ If all five pass, the Google side of the migration is complete. Record the new o
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| New Web App URL returns the *old* data | Script still reads the old Sheet (a `SHEET_ID` property, or an old code version) | Go back to Step 4 |
-| Website photos stop updating, issue lists "photo couldn't be read" | New owner can't open the Drive photos | Step 2b |
-| `{"success":false,"error":"Unauthorized"}` on `?action=manifest` | `SYNC_TOKEN` script property doesn't match the GitHub secret | Re-check Steps 7–9 match exactly |
-| Sheet edits don't trigger an automatic sync | Triggers not installed, or `GITHUB_PAT`/`GITHUB_REPO`/`GITHUB_WORKFLOW` wrong | Run `testDispatch` and read the result; re-run `setup` |
-| Everything works except the live site never updates | GitHub secrets weren't actually saved in Step 9 | Re-open Settings → Secrets and confirm both show a recent "Updated" date |
+| `testDispatch` says HTTP 401 / 403 / 404 | token pasted wrongly / missing **Actions: Read and write** / wrong repository | `MAINTENANCE-GITHUB-PAT-REFRESH.md` |
+| Sync run fails with "Unauthorized" | `PRAMAAN_LIBRARY_SYNC_TOKEN` doesn't match the Script Property `SYNC_TOKEN` | Step 4 (setup guide Steps 3 and 6) |
+| Issue lists "photo couldn't be read" for many rows | New owner can't open the Drive photos | Step 3 |
+| Sheet edits don't start a sync | Triggers not installed under the new owner | Run `setup` again; check the Triggers page shows three rows |
+| Two syncs per edit, or emails to the old owner | The old owner's triggers are still installed | Step 1 |
+| New form answers never reach the site | The Form sends answers to a different spreadsheet | Step 2 note — ask the developer |
 
 ---
 

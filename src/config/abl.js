@@ -1,13 +1,7 @@
+// Resource-type names, labels and colours for the Pramaan screens (/pramaan type cards, the Resource
+// Centre's type badges and filter tiles via config/library.js). Grades: LIBRARY_GRADES in
+// utils/libraryFilters.js. Page size: LIBRARY_PAGE_SIZE in config/library.js.
 import ablHome from '../data/abl-home.json'
-
-export const ABL_API_URL          = import.meta.env.VITE_ABL_API_URL          ?? ''
-export const CONTRIBUTE_FORM_URL  = import.meta.env.VITE_ABL_CONTRIBUTE_FORM_URL ?? ''
-export const ABL_CACHE_TTL_MS     = 15 * 60 * 1000
-export const ABL_PAGE_SIZE        = 24
-
-// Grade labels exactly as the Sheet writes them (also the keys of resource.chapters).
-// Single source for the filter sidebar and the detail page; add a grade here and both pick it up.
-export const GRADES = ['GRADE 1', 'GRADE 2', 'GRADE 3', 'GRADE 4', 'GRADE 5']
 
 // Colour per resource type stays in code (maps to Tailwind class lookups in the
 // consuming components). The visible label/pluralLabel text lives in

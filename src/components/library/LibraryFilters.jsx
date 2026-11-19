@@ -232,7 +232,7 @@ export default function LibraryFilters({ options, filters, onChange, onClear, ac
             >
               <LayoutGrid className="h-4 w-4" aria-hidden="true" />
               <span className="flex-1 text-left">{f.allTypes}</span>
-              <span className={`text-xs font-medium tabular-nums ${!filters.type ? 'text-white/80' : 'text-tide-muted'}`}>{options.totals.type}</span>
+              <span className={`text-xs font-medium tabular-nums ${!filters.type ? 'text-white' : 'text-tide-muted'}`}>{options.totals.type}</span>
             </button>
             <div className="grid grid-cols-2 gap-2">
               {options.types.map(o => {
@@ -253,7 +253,7 @@ export default function LibraryFilters({ options, filters, onChange, onClear, ac
                     </span>
                     <span className="min-w-0">
                       <span className="block text-sm font-semibold leading-tight break-words">{o.label}</span>
-                      <span className={`block text-xs font-medium tabular-nums ${active ? 'text-white/85' : 'opacity-70'}`}>{o.count}</span>
+                      <span className={`block text-xs font-medium tabular-nums ${active ? 'text-white' : ''}`}>{o.count}</span>
                     </span>
                     {active && (
                       <span className="absolute right-2.5 top-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-white/25" aria-hidden="true">

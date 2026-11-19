@@ -14,10 +14,10 @@ description: >
   primitives (Lightbox, LightboxGallery, useModalBehavior, useFocusTrap, motionPresets,
   imgSrc, imagePlaceholder, ErrorBoundary), OR a new or renamed shared/page YAML file or key convention (e.g.
   content/shared/common.yaml, ui.yaml, site.yaml, error.yaml, the llms.txt template, or
-  content/pages/abl-*.yaml) or a lint/CI guard that changes what contributors must do (e.g.
+  content/pages/abl-*.yaml / pramaan-library.yaml) or a lint/CI guard that changes what contributors must do (e.g.
   the react/jsx-no-literals rule, a new content:validate error), OR a documented constant's
-  set of valid values changed (e.g. a new entry added to TAB_STYLE_MAP, the GRADES list
-  growing past 5, a new Sheet tab) — these are easy to miss because they don't feel like
+  set of valid values changed (e.g. a new entry added to TAB_STYLE_MAP, the LIBRARY_GRADES
+  list changing, a new Sheet column) — these are easy to miss because they don't feel like
   "new architecture," but a doc stating "Grades 1-5" or listing four resource types is just
   as actively wrong as a doc describing a whole missing pipeline once a fifth type exists. Also
   trigger mid-task if you notice an EXISTING claim in docs/*.md, CLAUDE.md, or AGENTS.md is
@@ -53,8 +53,10 @@ followup task that may or may not happen.
 - Agent/contributor docs at the repo root: `CLAUDE.md`, `AGENTS.md`, `README.md`.
 - The non-technical editor guide `CONTENT-GUIDE.md` (YAML file list/paths, what each file
   controls, workflow commands, the validator).
-- Human guides and diagrams in `docs/`: `ABL-APPSCRIPT-SETUP-GUIDE.md`,
-  `ABL-RESOURCE-LIBRARY-SPEC.md`, `ABL-THUMBNAIL-SYNC-SETUP-GUIDE.md`,
+- Human guides and diagrams in `docs/`: `PRAMAAN-LIBRARY-SETUP-GUIDE.md`,
+  `PRAMAAN-LIBRARY-SHEET-SCHEMA.md`, `PRAMAAN-HARDENING-PLAN.md`, `SHEET-INTEGRATION-PLAYBOOK.md`,
+  `OPERATIONS-INVENTORY.md`, `OPERATIONS-RUNBOOK.md`, `PLATFORM-LIMITS.md`,
+  `MAINTENANCE-CONTRIBUTE-FORM-LINK.md`,
   `MAINTENANCE-GITHUB-PAT-REFRESH.md`, `MIGRATION-OVERVIEW.md`,
   `MIGRATION-GOOGLE-SHEET-APPSCRIPT.md`, `MIGRATION-GITHUB-REPOSITORY.md`, and the two
   interactive architecture diagrams (`docs/ARCHITECTURE.html` — actor/who-does-what view,
@@ -74,8 +76,8 @@ followup task that may or may not happen.
   and `public/robots.txt`, which list pages by hand.
 - Any project skill files under `.claude/skills/` that describe the changed area.
 
-The `llms.txt` template needs review whenever a fact it states changes at the source — the ABL
-resource count, the grade range (the `GRADES` constant in `src/config/abl.js` and `gradeRange` in
+The `llms.txt` template needs review whenever a fact it states changes at the source — the Pramaan
+resource count, the grade range (`LIBRARY_GRADES` in `src/utils/libraryFilters.js` and `gradeRange` in
 `content/shared/site.yaml`, which pages reference as `{gradeRange}`), or any top-level impact number in
 `content/pages/home.yaml` (a 2026-06-22 audit found it had drifted to claim 300+ resources and
 Grades 1–8 when the live figures were 161 and Grades 1–5). The e-mail and lives-impacted figure
@@ -120,11 +122,11 @@ repo docs.
    | `content/shared/error.yaml`, `src/components/ErrorBoundary.jsx` | `CONTENT-GUIDE.md` (shared-text table + error-screen section), `AGENTS.md`, `content-management.md` |
    | `content/shared/footer.yaml` / `navigation.yaml` structure, `Footer.jsx` / `Header.jsx` | `CONTENT-GUIDE.md` (navigation and footer sections), `content-management.md`, `docs/specs/site-restructure-plan.md` |
    | A new or renamed `content/pages/*.yaml`, or any page `meta` key (e.g. `breadcrumbName`) | `CONTENT-GUIDE.md` file tables, `content-management.md` file table, `CLAUDE.md` / `AGENTS.md` page tables, `public/sitemap.xml`, the llms template |
-   | Routes in `src/App.jsx` (a route added or removed; 16 pages + 3 system routes today), the removed-route test `src/test/routing/removedRoutes.test.jsx`, the footer link columns | `CLAUDE.md`, `AGENTS.md`, `README.md`, `CONTENT-GUIDE.md` (page file table), `content-management.md` (page YAML table and the 16 / 9 / 26 counts), `docs/specs/site-restructure-plan.md`, `docs/specs/stranded-pages-review.md` (a historical review of the pages since removed), `public/sitemap.xml`, the llms template, `WHATS-NEXT.md` |
-| A page deleted (component + YAML + generated JSON + its images) | All of the row above, plus `WHATS-NEXT.md` (images left unused by the removal), `cms-integrity/SKILL.md` examples, and a check that `src/data/` has no stale JSON (the sync never deletes it) |
-| `src/utils/imagePlaceholder.js` (installed in `src/main.jsx`), `placeholderImage` in `site.yaml`, the `data-no-placeholder` opt-out | `CONTENT-GUIDE.md` ("If an image is missing" and the validator note), `content-management.md` (Image Paths), `cms-integrity/SKILL.md` (checklist item 3), `AGENTS.md` |
+   | Routes in `src/App.jsx` (a route added or removed; 22 today: 17 primary, 2 redirects, 3 system), the removed-route test `src/test/routing/removedRoutes.test.jsx`, the footer link columns | `CLAUDE.md`, `AGENTS.md`, `README.md`, `CONTENT-GUIDE.md` (page file table), `content-management.md` (page YAML table and the 16 / 9 / 26 counts), `docs/specs/site-restructure-plan.md`, `docs/specs/stranded-pages-review.md` (a historical review of the pages since removed), `public/sitemap.xml`, the llms template, `WHATS-NEXT.md` |
+   | A page deleted (component + YAML + generated JSON + its images) | All of the row above, plus `WHATS-NEXT.md` (images left unused by the removal), `cms-integrity/SKILL.md` examples, and a check that `src/data/` has no stale JSON (the sync never deletes it) |
+   | `src/utils/imagePlaceholder.js` (installed in `src/main.jsx`), `placeholderImage` in `site.yaml`, the `data-no-placeholder` opt-out | `CONTENT-GUIDE.md` ("If an image is missing" and the validator note), `content-management.md` (Image Paths), `cms-integrity/SKILL.md` (checklist item 3), `AGENTS.md` |
    | `eslint.config.js` (`react/jsx-no-literals`), `deploy.yml` / other workflows | `CLAUDE.md`, `AGENTS.md`, `cms-integrity/SKILL.md`, `WHATS-NEXT.md` (what CI runs: lint, validate, unit tests — not e2e) |
-   | `src/config/abl.js`, `useABLData`, the Sheet / Apps Script, thumbnail sync | `docs/ABL-*.md`, `docs/MIGRATION-*.md`, `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md`, both architecture diagrams, `sheet-integration/SKILL.md`, `CLAUDE.md`, `AGENTS.md` |
+   | `src/config/abl.js`, `src/config/library.js`, the Resource Centre Sheet / Apps Script / sync (`sync-pramaan-library`, `scripts/lib/*-snapshot.js`, `snapshot-core.js`) | `docs/PRAMAAN-LIBRARY-*.md`, `docs/PRAMAAN-HARDENING-PLAN.md`, `docs/SHEET-INTEGRATION-PLAYBOOK.md`, `docs/OPERATIONS-*.md`, `docs/MIGRATION-*.md`, `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md`, both architecture diagrams, `sheet-integration/SKILL.md`, `CLAUDE.md`, `AGENTS.md` |
    | A Sheet integration in snapshot mode (Pramaan Library or a new one): `apps-script/<slug>/`, `sync-<slug>.yml`, `scripts/sync-<slug>.js`, `scripts/lib/<slug>-snapshot.js`, its pages | the list in `docs/SHEET-INTEGRATION-PLAYBOOK.md` §8, plus the playbook itself when a principle, name, cron minute or lesson changes, and `sheet-integration/SKILL.md` |
    | Test files / counts (`npx vitest run --config vitest.config.js`, `e2e/`) | `CLAUDE.md`, `AGENTS.md`, `README.md`, `content-management.md` |
    | Design tokens (`tailwind.config.js`, `src/index.css`, e.g. the `:focus-visible` ring: 2px brand blue plus a white band) | `CLAUDE.md`, `AGENTS.md`, `content-management.md` |
@@ -141,7 +143,7 @@ repo docs.
    - An entry in the repository-layout tree (`AGENTS.md`'s "Repository Layout" section) and
      the matching structure listing in `CLAUDE.md`
    - A new subsection explaining the pipeline (where? — find the most relevant existing
-     section, e.g. the "ABL Subsystem" section absorbed the thumbnail-sync pipeline)
+     section, e.g. `AGENTS.md` §8 "Pramaan Subsystem" holds the Resource Centre sync pipeline)
    - Updated "Key files" / utility-reference entries for any new or changed function signatures
    - A new dedicated `docs/*.md` guide **only if** the change needs step-by-step human
      instructions a non-developer would follow (e.g. a one-time Google account setup) — don't
@@ -171,4 +173,6 @@ and utility reference sections, plus a new "Thumbnail sync pipeline" subsection;
 detail page was flagged as diverging from the original spec doc; and two **pre-existing**,
 unrelated inaccuracies (a `HashRouter` claim that was actually `BrowserRouter`, and four wrong
 design-token hex values) were discovered, fixed, and called out separately. Use that diff as a
-concrete template for thoroughness and tone.
+concrete template for thoroughness and tone. (The thumbnail pipeline it documented was itself
+retired on 2026-11-19 — see the local tag `archive/pramaan-live-read`; only the procedure is the
+example here.)
