@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T17:49:46.091Z",
-  "contentHash": "sha256:96777ad4155a7329e5fae85affe8d2bcd9e36a1d0a909fad8cf27549c6219eaf",
+  "lastUpdated": "2026-11-19T17:54:45.366Z",
+  "contentHash": "sha256:89a426a5b494cb2669288f357f0358d69900fa4b4cfe3448689d66dc309101c5",
   "resources": [
     {
       "id": "F1",
@@ -1167,7 +1167,7 @@
     {
       "id": "F46",
       "name": "Fractions kit",
-      "subject": "Science",
+      "subject": "Mathematics",
       "type": "Flashcard",
       "concept": "Introduction to fractions",
       "language": null,
