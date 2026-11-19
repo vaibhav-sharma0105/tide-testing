@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T17:30:08.599Z",
-  "contentHash": "sha256:7bf7b66ea846bae1e94cee93a82a7c6908f6e02c8caa26a8b3189162b4ee4648",
+  "lastUpdated": "2026-11-19T17:35:07.045Z",
+  "contentHash": "sha256:4ec6aba3efe73063f9b34bc0ff4a91f028f4626a2cef22c6192701098ef86e09",
   "resources": [
     {
       "id": "F1",
@@ -2020,7 +2020,7 @@
       "ownership": "Other",
       "description": "help children identify objects in nature while building curiosity, observation, and logical reasoning skills.",
       "photoUrl": "https://drive.google.com/file/d/1dYg315mDy6TtZB73p5nGU7R0NKr9pVRv/view?usp=drive_link",
-      "videoUrl": null,
+      "videoUrl": "https://youtu.be/7HvoFGv_6D8",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
