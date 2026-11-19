@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T09:15:15.677Z",
-  "contentHash": "sha256:fab6be4ced2ea2391db40faa1161a0d75d769d93784fd7ca4c1e80a991c7819b",
+  "lastUpdated": "2026-11-19T13:26:07.557Z",
+  "contentHash": "sha256:b0f2fe179bd2745948d9067a6899f1b072c1953b1b5307be266a3d67db2c0be9",
   "resources": [
     {
       "id": "F1",
@@ -1566,7 +1566,7 @@
       "language": "Gujarati",
       "ownership": "TIDE Foundation",
       "description": null,
-      "photoUrl": "https://drive.google.com/file/d/19eSkPDDxOBGNJQyhVxzn6HcPzJpuSwPb/view?usp=sharing",
+      "photoUrl": "https://drive.google.com/file/d/1Kc5yy0cSAdELBMJT60wUhcQ1cHCbM3uD/view?usp=sharing",
       "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
