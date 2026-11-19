@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T13:40:10.474Z",
-  "contentHash": "sha256:99cb0da2658ac530410ab17650023eda4bb5c5a448620e5fe31e304d1254176e",
+  "lastUpdated": "2026-11-19T16:18:32.408Z",
+  "contentHash": "sha256:bf54a184df0d11192240b878dd5d95458ad5664a22edbac77a0dffa66b6afb56",
   "resources": [
     {
       "id": "F1",
@@ -3831,7 +3831,7 @@
       "ownership": "TIDE Foundation",
       "description": "worksheet asks students to find pairs of numbers in the grid that add up to 15. It helps students practice addition skills, number recognition, and logical thinking through a fun puzzle activity",
       "photoUrl": "https://drive.google.com/file/d/1zSvZJbSpbCAJk4plGwAl1Mg_7SdAoAx_/view?usp=sharing",
-      "videoUrl": "https://drive.google.com/file/d/1Mr0VgHuNXsW-2g3VfnCiRjcacIzYYOxx/view?usp=drive_link",
+      "videoUrl": "https://youtu.be/9BxdHHRLkjg",
       "additionalInfo": null,
       "grades": [
         "GRADE 1",
