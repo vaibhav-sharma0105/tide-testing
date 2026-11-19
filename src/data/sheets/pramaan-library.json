@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T18:13:13.436Z",
-  "contentHash": "sha256:4c0b364d7a48b9e12b1665abd59ff7d97ca33a934f2c5ef26179486d30dde155",
+  "lastUpdated": "2026-11-19T18:34:10.473Z",
+  "contentHash": "sha256:fccf02e7976fc5dcf14325c8df531c49b6a3ccd92aec62c0d4012b30aea84b25",
   "resources": [
     {
       "id": "F1",
@@ -1189,7 +1189,7 @@
       "ownership": "NEEV",
       "description": "Gujarati alphabet flashcards that pair each letter with a corresponding picture-word, helping students make strong letter–word associations for improved reading and recall.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1dQns2gBc2cGxDuroFsgiylUt709n3YBI/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [
         "GRADE 1",
@@ -1225,7 +1225,7 @@
       "ownership": "NEEV",
       "description": "English alphabet flashcards that associate each letter with a familiar word and image, supporting early English literacy through visual and language-based connections.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1dQns2gBc2cGxDuroFsgiylUt709n3YBI/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [
         "GRADE 1",
@@ -1261,7 +1261,7 @@
       "ownership": "NEEV",
       "description": "Pocket flashcards that match each English letter to a vivid picture, helping young learners connect alphabets with real-world objects for stronger letter recognition.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1iHZ5jYKnGjd8f_AUR5d6kEN7cqp5r3S1/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [
         "GRADE 1",
@@ -1297,7 +1297,7 @@
       "ownership": "NEEV",
       "description": "General knowledge pocket flashcards covering everyday topics that stimulate curiosity, build vocabulary, and promote cognitive development through visual learning.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1snMaWUItVxOwGewiBfjcuVShAaJutsWc/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1312,7 +1312,7 @@
       "ownership": "NEEV",
       "description": "Matra pocket flashcards introducing Gujarati vowel diacritics with visual examples, helping students understand how matras modify letter sounds in reading and writing.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1geUviFVgmKgaOxxAdi0Yry4bmb_fzQic/view?usp=sharing",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1327,7 +1327,7 @@
       "ownership": "NEEV",
       "description": "Flashcards that link numbers to corresponding real-world objects, helping early learners associate numerals with quantities for foundational number sense.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1ofs1AcsrvsWm1LllblbuNADsMCt2-KRx/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1342,7 +1342,7 @@
       "ownership": "NEEV",
       "description": "Word-object flashcards in Gujarati that pair written words with images of familiar items, supporting vocabulary development and early word recognition.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1yRIWZT92k5SyrbsCwus7onrZZ33e7GlO/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1357,7 +1357,7 @@
       "ownership": "NEEV",
       "description": "Consonant-word pocket flashcards presenting Gujarati vyanjans (consonants) alongside example words, reinforcing letter knowledge and early word formation skills.",
       "photoUrl": null,
-      "videoUrl": "https://drive.google.com/file/d/1yRIWZT92k5SyrbsCwus7onrZZ33e7GlO/view?usp=drive_link",
+      "videoUrl": null,
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
