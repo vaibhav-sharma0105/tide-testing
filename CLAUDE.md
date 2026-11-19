@@ -29,7 +29,7 @@ React static site rebuild of [tideinternational.org](https://tideinternational.o
 ## Repository Structure
 ```
 src/
-  components/  layout/ (Header, Footer, Layout) · ui/ (Button, Card, PageHero, SeoHead, Lightbox, LightboxGallery, …)
+  components/  layout/ (Header, Footer, Layout) · ui/ (Button, PageHero, SeoHead, Lightbox, …)
                abl/ (shared Pramaan pieces: AblNavBar, Pagination, DriveImage, ImageLightbox, VideoLightbox, …)
                library/ (Resource Centre: LibraryFilters, LibraryDropdown, LibraryCard, LibraryTypeBadge) · ErrorBoundary.jsx
   pages/       Home, Contact, THRIvE, EducationForHarmony, SocialChangemakers, ComingSoon, NotFound
@@ -72,7 +72,7 @@ content/pages/*.yaml + content/shared/*.yaml  →  scripts/yaml-to-json.js (pred
 content/shared/site.yaml + llms.txt           →  scripts/siteDataPlugin.js (Vite)  →  index.html JSON-LD/<title>/og:site_name, /llms.txt
 ```
 - **Never edit `src/data/`** — it is regenerated (flat: one JSON per YAML basename, so never reuse a basename across `pages/` and `shared/`; stale JSON is never deleted). The Resource Centre files there (`sheets/pramaan-library.json`, `pramaan-library-photos.json`) are written by the sync bot — never hand-edit those either.
-- Commands: `npm run content:sync` · `content:validate` (YAML syntax, leading-slash image paths, Resource Centre snapshot, `formUrl`, email/lives-impacted consistency) · `dev` (localhost:5173) · `build` · `lint` · `test` (Vitest, 18 files / 199 tests) · `test:e2e`.
+- Commands: `npm run content:sync` · `content:validate` (YAML syntax, leading-slash image paths, Resource Centre snapshot, `formUrl`, email/lives-impacted consistency) · `dev` (localhost:5173) · `build` · `lint` · `test` (Vitest, 17 files / 194 tests) · `test:e2e`.
 - **No hardcoded visible text:** every visible string comes from YAML (`data.*`, `common.*`, `ui.*`), never typed into JSX. `react/jsx-no-literals` is an **error** in `src/pages/**` and `src/components/**`, but it does not see string props (`aria-label`, `alt`, `title`) — follow the convention anyway (`cms-integrity` skill). Variable text uses `{token}` placeholders filled in code.
 - **Site-wide facts** (name, url, email, `livesImpacted`, `gradeRange`, `placeholderImage`, `breadcrumbs.*`, …) live only in `content/shared/site.yaml`. A page's last breadcrumb is `meta.breadcrumbName` in its own YAML.
 - Icons and Tailwind classes can't live in JSON: store a key in YAML (`iconKey`, `colorKey`) and map it in the component; never build Tailwind class names dynamically.
@@ -93,7 +93,7 @@ Google Sheet (private, has personal data)
 - Docs: `docs/PRAMAAN-HARDENING-PLAN.md` §12–13 (status), `PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `PRAMAAN-LIBRARY-SHEET-SCHEMA.md`, `OPERATIONS-RUNBOOK.md`, `PLATFORM-LIMITS.md`, `MIGRATION-OVERVIEW.md` (handover), `ARCHITECTURE*.html` (keep both diagrams in sync).
 
 ## Known Gotchas and Open Decisions
-- **`imgSrc()` is not idempotent** under `/tide-testing/`: applying it twice breaks the URL on GitHub Pages (invisible in dev). `Lightbox`/`LightboxGallery` apply it themselves — pass raw YAML paths. Verify with a `GITHUB_ACTIONS=true` build + preview.
+- **`imgSrc()` is not idempotent** under `/tide-testing/`: applying it twice breaks the URL on GitHub Pages (invisible in dev). `Lightbox` applies it itself — pass raw YAML paths. Verify with a `GITHUB_ACTIONS=true` build + preview.
 - **Don't write a literal `<title>` inside an HTML comment in `index.html`** — `siteDataPlugin`'s regex would replace it instead of the real one; keep the `<!-- site-jsonld -->` marker.
 - **Owner-decided facts:** email `tidefoundation@gmail.com`, lives impacted `52,500+`, everywhere; `content:validate` errors on any other value in `content/`.
 - **Failed images** are swapped site-wide for `site.placeholderImage` (`src/utils/imagePlaceholder.js`), which hides typos — check filenames. Opt out with `data-no-placeholder` (`DriveImage` does). `content:validate` doesn't check bare filenames (e.g. `logoGallery.images` in `about-our-partners.yaml`).

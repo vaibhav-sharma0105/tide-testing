@@ -105,7 +105,6 @@ items:
 // ── shared/footer.yaml ──────────────────────────────────────────────────────
 writeIfAbsent(path.join(SHARED_DIR, 'footer.yaml'), `# Byline shown under "TIDE Foundation" in the footer
 tagline: "Improving access to holistic education since 2014."
-together: "Together in Development and Education"
 # {year} is replaced with the current year in the visitor's browser, so it never goes stale
 rights: "© {year} TIDE Foundation. All rights reserved."
 madeWithLove: "Made with love for education in India"

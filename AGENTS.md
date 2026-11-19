@@ -23,7 +23,7 @@ npm run dev          # auto-syncs content, then starts dev server at localhost:5
 npm run build        # auto-syncs content, then builds to dist/
 npm run content:validate   # YAML syntax, leading-slash image paths, and email / lives-impacted consistency with site.yaml
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — run in CI (deploy.yml)
-npm test             # Vitest unit/component tests (18 files, 199 tests) — run in CI (deploy.yml)
+npm test             # Vitest unit/component tests (17 files, 194 tests) — run in CI (deploy.yml)
 ```
 
 **Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
@@ -161,7 +161,6 @@ tide-new/
 │   │   │
 │   │   ├── ui/
 │   │   │   ├── Button.jsx           ← polymorphic (Link/a/button), 5 variants
-│   │   │   ├── Card.jsx             ← motion-wrapped card with fade-up
 │   │   │   ├── SectionHeader.jsx    ← badge + h2 + subtitle block
 │   │   │   ├── PageHero.jsx         ← dark banner + h1 for inner pages (optional `aside` slot and `badgeClassName`)
 │   │   │   ├── Highlight.jsx        ← amber highlighter underline over listed words in a sentence
@@ -169,7 +168,6 @@ tide-new/
 │   │   │   ├── AnimatedCounter.jsx  ← scroll-triggered number animation
 │   │   │   ├── CreativeLoader.jsx   ← open book + growing sprout SVG; gate behind useDelayedVisible
 │   │   │   ├── Lightbox.jsx         ← full-screen image gallery with keyboard nav; optional `translucent` backdrop; never shows a caption
-│   │   │   ├── LightboxGallery.jsx  ← click-to-zoom grid + its Lightbox (owns useLightbox + AnimatePresence)
 │   │   │   ├── ComingSoonGraphic.jsx ← /coming-soon illustration: block-drop springs, then endless ambient loops + random gust/nudge events; static under prefers-reduced-motion
 │   │   │   ├── ArchPortrait.jsx     ← team portrait (arched photo on a tilted colour frame, same look as /about/our-team); `layout` card | row; initials on the brand gradient when `photo` is null; used by THRIvE
 │   │   │   ├── SocialIcons.jsx      ← inline SVG: Facebook, Instagram, LinkedIn
@@ -323,7 +321,7 @@ Full token map (incl. `deeper`/all shade variants): `tailwind.config.js`. If thi
 
 ### Keyboard focus ring
 
-The global `:focus-visible` rule in `src/index.css` draws a 2px outline in the brand blue (`theme('colors.primary.DEFAULT')`, `#1E6BAA`) with a 2px offset, plus a 2px white `box-shadow` band, so the ring stays visible on the dark navy sections (brand blue alone is only about 2.9:1 there). A few components (e.g. `LightboxGallery` tiles) opt out with `focus:outline-none` and draw their own Tailwind `ring` instead.
+The global `:focus-visible` rule in `src/index.css` draws a 2px outline in the brand blue (`theme('colors.primary.DEFAULT')`, `#1E6BAA`) with a 2px offset, plus a 2px white `box-shadow` band, so the ring stays visible on the dark navy sections (brand blue alone is only about 2.9:1 there). A few components (e.g. the `PhotoStrip` tiles and the Resource Centre filters) opt out with `focus:outline-none` and draw their own Tailwind `ring` instead.
 
 ### Shadows and spacing
 
@@ -427,10 +425,6 @@ Every page except `ComingSoon` and `NotFound` (which use `<Helmet>` directly wit
 />
 ```
 
-### Card
-
-`<Card hover delay={0} className="">` — motion fade-up wrapper with `rounded-2xl shadow-card`. It applies `bg-tide-surface` **unless** `className` contains the substring `bg-` (so any `bg-*` class you pass replaces the default).
-
 ### AnimatedCounter
 
 ```jsx
@@ -474,25 +468,7 @@ const lb = useLightbox(images.length)        // count is REQUIRED
 
 `item.alt || item.label` is used as the image `alt` and the dialog's `aria-label`; **no caption is rendered under the image anywhere on the site** (owner decision) — don't add one. Pass `translucent` for a see-through, blurred backdrop (the `/pramaan` gallery) instead of the near-opaque default. The tint and blur ease in on their own layer and the controls fade separately: **never fade a parent that holds a `backdrop-filter`** (it pops at full strength on the first frame), and keep the picture `relative z-[1]` so the positioned backdrop does not paint over, and blur, it. `Lightbox` applies `imgSrc()` to every `src` itself — **do not pre-apply `imgSrc`** (see §11). Escape closes, ←/→ navigate, body scroll is locked (`useModalBehavior`), focus is trapped (`useFocusTrap`), and the dot strip shows for 2–20 images. Its aria-labels come from `content/shared/ui.yaml` (`lightbox.*`).
 
-### LightboxGallery (preferred for a click-to-zoom photo grid)
-
-Wraps the grid **and** its lightbox (owns `useLightbox`, `AnimatePresence`, `Lightbox`). Used by `Volunteer`:
-
-```jsx
-<LightboxGallery
-  images={data.gallery.images}             // [{ src, label }] — label is also the thumbnail alt
-  gridClassName="grid grid-cols-2 md:grid-cols-3 gap-3"
-  itemClassName="rounded-xl overflow-hidden aspect-square"   // leading classes on each button
-  ringClassName="focus-visible:ring-primary"                 // focus ring colour
-  spanClassName={(i) => (i === 0 ? 'col-span-2' : '')}       // optional per-tile trailing classes
-  itemMotion={(i) => fadeUp(i * 0.05)}                       // motion props per tile
-  hoverDuration={700}                                        // 500 | 700 (hover-zoom duration)
->
-  {(grid) => (<section className="section-padding">…{grid}…</section>)}   // render-prop: place `grid` where it belongs
-</LightboxGallery>
-```
-
-The lightbox is rendered after whatever `children(grid)` returns, so it stays a sibling of the section. For multiple galleries on one page, use separate `useLightbox(count)` instances with distinct names.
+For a click-to-zoom photo grid, pair `useLightbox(count)` with `<AnimatePresence>{isLightboxOpen && <Lightbox …/>}</AnimatePresence>` — `src/components/abl/PhotoStrip.jsx` (the `/pramaan` photo strip) is the working example. For multiple galleries on one page, use separate `useLightbox(count)` instances with distinct names.
 
 ### SocialIcons
 
@@ -599,7 +575,7 @@ const { isLightboxOpen, lightboxIndex, openLightbox, closeLightbox, prevLightbox
 // prevLightbox() / nextLightbox() — cycle with wrap-around (modulo count)
 ```
 
-`lightboxIndex` is `null` while closed. Calling it without `count` makes prev/next produce `NaN`. Most gallery pages should use `LightboxGallery` (§4), which calls this for you.
+`lightboxIndex` is `null` while closed. Calling it without `count` makes prev/next produce `NaN`. `PhotoStrip.jsx` is the working example.
 
 ### useModalBehavior
 
@@ -897,7 +873,7 @@ Also add `meta.breadcrumbName` to the new YAML (and use a `site.breadcrumbs.*` p
 
 ### Add a lightbox photo grid
 
-Prefer `LightboxGallery` (§4) — the only gallery page today (`Volunteer`) uses it, and nothing in `src/pages` calls `useLightbox` or `Lightbox` directly. Only hand-roll `useLightbox(count)` + `Lightbox` for a layout it can't express.
+Use `useLightbox(count)` + `Lightbox` (§4). The only gallery today is the `/pramaan` photo strip (`src/components/abl/PhotoStrip.jsx`) — copy its pattern. Resource detail pages use `abl/ImageLightbox` / `abl/VideoLightbox` for a single photo or video.
 
 ### Fix broken images
 
@@ -971,7 +947,7 @@ GitHub Pages serves static files only — there's no server-side rewrite for dee
 
 `imgSrc(path)` prepends `BASE_URL` to anything that isn't already `http(s):`/`data:`. On GitHub Pages `BASE_URL` is `/tide-testing/`, so applying it to an already-resolved path yields `/tide-testing/tide-testing/...` (a 404). In dev `BASE_URL` is `/`, which hides the bug completely.
 
-- `Lightbox` (and `LightboxGallery`) apply `imgSrc` to every image `src` themselves — pass **raw YAML paths** into them.
+- `Lightbox` applies `imgSrc` to every image `src` themselves — pass **raw YAML paths** into them.
 - To check a change: `GITHUB_ACTIONS=true npm run build && npm run preview`, then open `/tide-testing/…`.
 
 ### Tailwind dynamic class construction is forbidden
@@ -986,7 +962,7 @@ const COLOR_MAP = { blue: 'bg-blue-50 text-blue-700', emerald: 'bg-emerald-50 te
 const cls = COLOR_MAP[color]
 ```
 
-This is why all colour maps in components use lookup tables (`LightboxGallery`'s `HOVER_DURATION` map is the same idea). Tailwind's `content` globs only `index.html` and `src/**`.
+This is why all colour maps in components use lookup tables. Tailwind's `content` globs only `index.html` and `src/**`.
 
 ### Pramaan data is built in, not fetched
 
@@ -1019,7 +995,7 @@ Either `/assets/hero.jpg` or `assets/hero.jpg` works (the sync script strips the
 
 ### Multiple galleries on the same page
 
-`LightboxGallery` keeps its own `useLightbox` state, so a page with several galleries just renders several `<LightboxGallery>`s. If you hand-roll the hook instead, use one `useLightbox(count)` instance per gallery with distinct names (the count argument is required):
+Use one `useLightbox(count)` instance per gallery with distinct names (the count argument is required):
 ```jsx
 const first  = useLightbox(data.galleryA.images.length)
 const second = useLightbox(data.galleryB.images.length)
@@ -1078,7 +1054,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 18 files, 199 tests (jsdom, src/test/**)
+npm test               # vitest run — 17 files, 194 tests (jsdom, src/test/**)
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```
@@ -1088,7 +1064,6 @@ npm run test:ui        # Vitest UI
 | `components/AnimatedCounter.test.jsx` | 11 | parsing, suffix/commas, classes, 0 before the observer fires |
 | `components/Button.test.jsx` | 16 | variants/sizes, button vs `<a>` vs `<Link>`, external target/rel |
 | `components/ErrorBoundary.test.jsx` | 5 | children pass-through, friendly screen + actions, console logging, message/stack hidden unless DEV |
-| `components/LightboxGallery.test.jsx` | 5 | grid + lightbox wiring |
 | `hooks/useLightbox.test.js` | 13 | open/close/prev/next wrap |
 | `utils/imgSrc.test.js` | 8 | path forms, passthrough, base prefix |
 | `utils/motionPresets.test.js` | 10 | `makeFadeUp` / `fadeUp` shape |
@@ -1159,6 +1134,6 @@ Only `deploy.yml` (lint, `content:validate`, unit tests, build, deploy) and `syn
 | `docs/ARCHITECTURE-DATAFLOW.html` | Companion diagram for technical readers — organized by system layer/dataflow direction, with request/response contracts, caching, trust boundaries, and a secrets reference table. Keep both diagrams in sync. |
 | `content/pages/home.yaml` | Reference example of a full page YAML |
 | `src/pages/Home.jsx` | Reference example of a full page component |
-| `src/pages/get-involved/Volunteer.jsx` | Reference for `SeoHead` + `LightboxGallery` + `makeFadeUp` |
+| `src/pages/get-involved/Volunteer.jsx` | Reference for `SeoHead` + `makeFadeUp` |
 | `src/pages/library/PramaanLibrary.jsx` | Reference for faceted filters + URL-param sync + phone filter drawer |
 | `eslint.config.js` | The `react/jsx-no-literals` CMS guard and other lint rules |

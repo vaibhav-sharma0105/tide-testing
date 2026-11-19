@@ -11,7 +11,7 @@ description: >
   (tailwind.config.js, index.css design tokens), OR the public API of any
   component/utility/hook that AGENTS.md already documents (props renamed or changed shape,
   a function's signature or return type changed, a file moved) — including the shared UI
-  primitives (Lightbox, LightboxGallery, useModalBehavior, useFocusTrap, motionPresets,
+  primitives (Lightbox, useModalBehavior, useFocusTrap, motionPresets,
   imgSrc, imagePlaceholder, ErrorBoundary), OR a new or renamed shared/page YAML file or key convention (e.g.
   content/shared/common.yaml, ui.yaml, site.yaml, error.yaml, the llms.txt template, or
   content/pages/abl-*.yaml / pramaan-library.yaml) or a lint/CI guard that changes what contributors must do (e.g.

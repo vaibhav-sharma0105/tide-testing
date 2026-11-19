@@ -79,7 +79,7 @@ below. Don't silence the rule with `eslint-disable`; move the text to YAML inste
    accessibility practice, not a bug.
 3. **Image paths** — live in YAML as `/assets/images/...` (`yaml-to-json` strips the leading
    `/`) and are resolved in code with `imgSrc()` from `src/utils/imgSrc.js`. Don't pre-apply
-   `imgSrc` to images handed to `Lightbox`/`LightboxGallery` — they apply it themselves.
+   `imgSrc` to images handed to `Lightbox` — it applies it itself.
    A failed `<img>` is swapped for the `placeholderImage` from `site.yaml` by
    `src/utils/imagePlaceholder.js`, so a wrong path never looks broken: check the file exists.
    Bare-filename lists (e.g. `logoGallery.images` in `about-our-partners.yaml`, with the folder
