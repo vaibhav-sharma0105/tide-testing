@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-19T19:09:44.687Z",
-  "contentHash": "sha256:ca6f4d756061f21ed430f3dcdac7fde71c39d785e3be5b3d448a021efa8b0550",
+  "lastUpdated": "2026-11-20T06:15:47.476Z",
+  "contentHash": "sha256:739db112cdd58a00fceb346c4892d0e19ed151ae51221952a9dc2f0026e7b1bb",
   "resources": [
     {
       "id": "F1",
@@ -1041,7 +1041,7 @@
       "ownership": "TIDE Foundation",
       "description": "This activity introduces students to different professions and the roles they play in society. It helps learners understand how community helpers contribute to daily life.",
       "photoUrl": "https://drive.google.com/file/d/1b3LPv55qWO2x8xfymZqozxPNSgJM859G/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/19Qq_V0XMMRbhTneD9iocHVgNNg6lagz8/view?usp=drive_link",
+      "videoUrl": "https://youtube.com/shorts/jXiBD9C7_mE",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
