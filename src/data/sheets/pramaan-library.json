@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-20T06:15:47.476Z",
-  "contentHash": "sha256:739db112cdd58a00fceb346c4892d0e19ed151ae51221952a9dc2f0026e7b1bb",
+  "lastUpdated": "2026-11-20T06:24:54.366Z",
+  "contentHash": "sha256:fc7b4313527ff9783ec8e3ab5fd82332915fe14a41015046849764eef2db0733",
   "resources": [
     {
       "id": "F1",
@@ -759,7 +759,7 @@
       "ownership": "TIDE Foundation",
       "description": "einforce addition concepts through simple number problems. They help students improve speed, accuracy, and basic maths confidence.",
       "photoUrl": "https://drive.google.com/file/d/1s929Fc5nDpxfH_AsegXqKN4sVmtSirBm/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/19Wc9QF5WM7FXuwHPkqY3yvqCtybhxKQl/view?usp=drive_link",
+      "videoUrl": "https://youtu.be/Bl2CB8ooG2I",
       "additionalInfo": null,
       "grades": [
         "GRADE 1",
@@ -804,7 +804,7 @@
       "ownership": "TIDE Foundation",
       "description": "develop sentence formation skills through meaningful Gujarati words. They help students improve vocabulary, grammar, and language expression.",
       "photoUrl": "https://drive.google.com/file/d/18NYVTJKKJNSpaS35t5vxf7WqW21aSIvW/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1JEe5wDMc9P03IMeySueSUBhs9w7Lb1DS/view?usp=drive_link",
+      "videoUrl": "https://youtu.be/m9r4nkHOkw8",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -819,7 +819,7 @@
       "ownership": "TIDE Foundation",
       "description": "ntroduce percentage concepts through numbers and decimal comparisons. They help students understand conversions and basic calculations easily",
       "photoUrl": "https://drive.google.com/file/d/1SRMoLJp1VzajXCChnAxYGWSX0eUdc4aI/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1MyGEv5PPUtNGVlA575bXvYdZWj7e5odz/view?usp=drive_link",
+      "videoUrl": "https://youtu.be/Tz5Wtma--CI",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1026,7 +1026,7 @@
       "ownership": "TIDE Foundation",
       "description": "students connect everyday activities with specific times of the day. It develops understanding of daily routines and basic time management skills.",
       "photoUrl": "https://drive.google.com/file/d/1KPHZuUNsObtViqxWxTRBjrMSoyl6Ud6v/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1AddjY0d9erm4SbKnygUXqs3EGgBzxpBQ/view?usp=drive_link",
+      "videoUrl": "https://youtu.be/meKAVWFm-MA",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1056,7 +1056,7 @@
       "ownership": "TIDE Foundation",
       "description": "Identify different plants and flowers using the flashcards. This activity helps develop observation skills and understanding of nature.",
       "photoUrl": "https://drive.google.com/file/d/1hvZcvRPnWwz5GyLOkwpU1237S0G_zmJH/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1tcQs-b0uIxHLFqakD5mimWIOTzqy6feE/view?usp=drive_link",
+      "videoUrl": "https://youtu.be/No6Xl9Jmqb4",
       "additionalInfo": null,
       "grades": [],
       "chapters": {}
@@ -1071,7 +1071,7 @@
       "ownership": "TIDE Foundation",
       "description": "Students match vegetables with the correct season. This activity helps build understanding of seasonal foods and environmental awareness.",
       "photoUrl": "https://drive.google.com/file/d/1vxnbFYjlvSVA3zwvCLuGCWei3ozQeAx1/view?usp=drive_link",
-      "videoUrl": "https://drive.google.com/file/d/1PyCVN5q-y0Dg7c7k-yC8yhxAOLkfvxBJ/view?usp=drive_link",
+      "videoUrl": "https://youtu.be/MMXkfoVt3cU",
       "additionalInfo": null,
       "grades": [
         "GRADE 2"
