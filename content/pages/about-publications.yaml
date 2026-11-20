@@ -1,17 +1,16 @@
-# TIDE Publications — /about/publications
+# TIDE Publications — /tide/publications
 # The publications themselves come from the "TIDE THRIvE Publications" Sheet (rows answered
 # "TIDE"), via the sync into src/data/sheets/publications.json. Only the text around them lives
 # here. The THRIvE page (/thrive/publications) is in thrive-publications.yaml.
 # Text in {curly braces} is filled in by the site — keep the {word} exactly as it is.
 #
 # Page layout:
-#   1. the latest annual report, shown large;
-#   2. a shelf with the other annual reports (newest period first; the first 6, then a
-#      "Show all" button);
-#   3. everything else, with buttons to show one type at a time (only when there are 2+ types)
-#      and numbered pages once there are more than 12.
-# Sections 1 and 2 only appear when there is at least one row of the type in `featuredType`.
-# A search box appears on its own once there are more than 24 TIDE publications.
+#   1. the latest annual report, shown large, with a "See all editions" button that filters the
+#      library below to annual reports (only when there is a row of the type in `featuredType`);
+#   2. the library: every TIDE publication (annual reports included) as cards, with a search box
+#      and Type / Year filters (as on the THRIvE page), 12 per page. The filters only narrow this
+#      list — the large card above stays in place. Every filter and count comes from the Sheet —
+#      nothing to update here when a new type or year appears.
 # (The numbers are in src/config/publications.js.)
 
 meta:
@@ -19,7 +18,7 @@ meta:
   breadcrumbName: "TIDE Publications"
   badge: "About Us · Publications"
   title: "TIDE Publications"
-  subtitle: "Annual reports, project reports and talks — an open record of TIDE Foundation's work in education."
+  subtitle: "Our reports, research and talks — an open, year-by-year record of TIDE Foundation's work in education."
   seoTitle: "Publications — TIDE Foundation"
   seoDescription: "Read TIDE Foundation's annual reports, project reports, presentations and public talks."
   # Shown while no TIDE publication has been published yet
@@ -35,50 +34,53 @@ stats:
   since: "since {year}"
 
 # Which "Type of material" (exactly as written in the Sheet; case does not matter) gets the
-# large "latest" card and the shelf.
+# large "latest" card and its "See all" button.
 featuredType: "Annual report"
 
 featured:
-  eyebrow: "Latest annual report"
+  eyebrow: "Latest edition"
   read: "Read report"
+  # Shows the library below filtered to this type. {n} = how many there are (hidden when only 1)
+  seeAllTemplate: "See all {n} editions"
 
-shelf:
-  heading: "Annual reports"
-  # {n} = number of annual reports on the shelf
-  showAllTemplate: "Show all {n} annual reports"
-  showFewer: "Show fewer"
-
-others:
-  heading: "Reports, talks & more"
-  # Label of the type buttons' group (screen readers) and the first button
-  filterLabel: "Show one type of material"
-  allTypes: "All"
+# Every TIDE publication, as one filterable list of cards
+library:
+  heading: "All publications"
+  intro: "Everything TIDE has published, newest first — search it, or narrow it by type and year."
   open: "Open"
 
-# Search box (only shown when there are more than 24 TIDE publications)
-search:
-  label: "Search TIDE publications"
-  placeholder: "Titles, descriptions, types…"
-  clearLabel: "Clear search"
+# Search box and filters above the library (the same bar as on the THRIvE page). The lists of
+# types and years come from the Sheet, with counts.
+toolbar:
+  searchPlaceholder: "Search titles, descriptions, types…"
+  searchLabel: "Search TIDE publications"
+  clearSearchLabel: "Clear search"
   # The key that jumps to the search box
-  shortcutKey: "/"
-  resultsHeading: "Search results"
-  # {total} = number found, {publications} = the word below
-  countTemplate: "{total} {publications} found"
+  searchShortcutKey: "/"
+  typeLabel: "Type of material"
+  allTypes: "All types"
+  yearLabel: "Year"
+  allYears: "All years"
+  newest: "Newest first"
+  oldest: "Oldest first"
+  directionLabelTemplate: "Order by date: {dir}. Click to reverse."
+  clearAll: "Clear all"
+  removeTemplate: "Remove filter: {name}"
+
+# The count line above the library, and what it says when nothing matches
+results:
   publicationSingular: "publication"
   publicationPlural: "publications"
-  noResults: "No publications match your search"
-  noResultsHint: "Try a different word, or clear the search."
+  countTemplate: "{total} {publications}"
+  # When the results take more than one page
+  rangeTemplate: "Showing {from}–{to} of {total} {publications}"
+  noResults: "No publications match your search or filters"
+  noResultsHint: "Try a different word, or clear the filters."
+  # Year-filter label for rows without a date
+  undatedHeading: "Undated"
 
 # Shown next to rows dated in the last few weeks (src/config/publications.js NEW_BADGE_DAYS)
 newBadge: "New"
-
-# Where a link leads, read from its web address
-source:
-  label: "Source"
-  doi: "DOI"
-  driveFile: "Google Drive"
-  driveFolder: "Google Drive folder"
 
 # Numbered pages (only shown when a list has more than one page)
 pagination:
@@ -98,5 +100,3 @@ a11y:
   typeLabel: "Type of material"
   # Read after the "New" badge; {days} = NEW_BADGE_DAYS
   newLabelTemplate: "dated within the last {days} days"
-  # Period of an annual report, e.g. "Period: 2024–25"
-  periodLabel: "Period"

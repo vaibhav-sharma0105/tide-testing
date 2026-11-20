@@ -8,7 +8,7 @@
 > **Sync Pramaan Library**. (The older Pramaan Sheet and its **Sync ABL Thumbnails** workflow were retired on
 > 2026-11-19 — see `docs/PRAMAAN-HARDENING-PLAN.md` §13.)
 >
-> The **Publications** pages (`/about/publications` for TIDE, `/thrive/publications` for THRIvE) come from a
+> The **Publications** pages (`/tide/publications` for TIDE, `/thrive/publications` for THRIvE) come from a
 > second, separate Sheet: "TIDE THRIvE Publications (Responses)". Its GitHub workflow is **Sync Publications**.
 > Not set up yet (2026-11-20) — `docs/PUBLICATIONS-SETUP-GUIDE.md`. The steps below work the same for it: use
 > its workflow, its issue titles and its Sheet's Apps Script.

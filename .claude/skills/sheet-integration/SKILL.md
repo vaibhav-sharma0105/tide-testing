@@ -42,8 +42,8 @@ Read the current files before copying — never pattern-match from memory.
 `.github/workflows/sync-publications.yml`, `checkPublicationsSnapshot()`, `src/pages/publications/`,
 `src/components/publications/`, `src/config/publications.js`. It shows one Sheet feeding two pages (split by a
 column, limits checked per page). Its pages have their own layouts fitted to their content (TIDE: featured
-report + shelf + type buttons, pages above 12, search only above 24 rows; THRIvE: per-year chart, year-grouped
-list with search, type/field/year selects and numbered pages of 20 in `?page=`), with every threshold a named
+report spotlight + one filterable library of cards, pages of 12; THRIvE: year-grouped list with search,
+type/field/year filters and numbered pages of 12 in `?page=`), with every threshold a named
 constant in `src/config/publications.js`. They have their own controls (`PublicationControls`,
 `src/hooks/usePublicationControls.js`) and share only `src/utils/listingFilters.js` and `focusRing`/`FOCUS_PILL`;
 `src/components/listing/`, `src/hooks/useSidebarFits.js` and `Pagination` are used by the Resource Centre —

@@ -71,7 +71,7 @@ items:
         to: "/get-involved/volunteer"
         desc: "Volunteer, intern, or join the team"
       - label: "Our Publications"
-        to: "/about/publications"
+        to: "/tide/publications"
         desc: "Annual reports, research & events"
 
   - label: "Education for Harmony"

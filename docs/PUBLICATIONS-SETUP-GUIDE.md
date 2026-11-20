@@ -5,7 +5,7 @@ of the publications Google Form). No coding is needed: you copy, paste and click
 **Time:** about 30 minutes.
 **What you get:** two pages fill themselves from the Sheet:
 
-- rows answered **TIDE** → `/about/publications` (TIDE Publications)
+- rows answered **TIDE** → `/tide/publications` (TIDE Publications)
 - rows answered **THRIvE** → `/thrive/publications` (THRIvE Publications)
 
 New form answers and edits show up within minutes, and you get an email or a GitHub issue whenever
@@ -34,7 +34,7 @@ Sheet (private; holds each submitter's email address)
 GitHub Actions "Sync Publications"  (also runs every 6 hours by itself)
   └─ checks the data (safety rules) → saves data + thumbnails in the repository → deploys the site
         ▼
-Website /about/publications (TIDE rows) and /thrive/publications (THRIvE rows)
+Website /tide/publications (TIDE rows) and /thrive/publications (THRIvE rows)
   (read the saved copy; no live calls to Google)
 ```
 
@@ -165,7 +165,7 @@ Then, for each trigger: pencil → **Failure notification settings → Notify me
    were not and why, and any rows that need fixing.
 
 ✅ **Check:** the run is green, and once the deploy finishes,
-`https://vaibhav-sharma0105.github.io/tide-testing/about/publications` shows the TIDE rows and
+`https://vaibhav-sharma0105.github.io/tide-testing/tide/publications` shows the TIDE rows and
 `https://vaibhav-sharma0105.github.io/tide-testing/thrive/publications` shows the THRIvE rows.
 
 | `testDispatch` says | Meaning and fix |

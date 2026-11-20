@@ -4,12 +4,12 @@ import { MemoryRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import {
   applyPublicationFilters, facetPublicationOptions, formatPublicationDate, safeLink,
-  groupByYear, publicationStats, splitShelf, yearOf, comparePublications, reportPeriod, formatPeriod,
-  paginate, pageWindow, parsePublicationParams, publicationParamsToSearch, yearCounts, sourceOf,
+  groupByYear, publicationStats, latestOfType, yearOf, comparePublications, reportPeriod, formatPeriod,
+  paginate, pageWindow, parsePublicationParams, publicationParamsToSearch, yearCounts, sourceOf, sourceName,
   countOfTypes, isNew, typeIconKey, frameForSize, highlightParts, searchTerms, publicationsJsonLd,
 } from '../../utils/publicationFilters'
 import {
-  THRIVE_PAGE_SIZE, TIDE_SHELF_VISIBLE, TIDE_OTHERS_PAGE_SIZE, TIDE_SEARCH_MIN_ITEMS, NEW_BADGE_DAYS,
+  THRIVE_PAGE_SIZE, TIDE_PAGE_SIZE, NEW_BADGE_DAYS,
 } from '../../config/publications'
 
 // Test rows only (made up, not real Sheet data). The real snapshot is never written by tests.
@@ -38,9 +38,9 @@ const snap = (resources) => ({
   meta: { total: resources.length }, resources,
 })
 const FIXTURE = snap([...TIDE_ROWS, ...THRIVE_ROWS])
-// n THRIvE rows, 3 per year from 2010 (so years run over page boundaries).
+// n THRIvE rows, 5 per year from 2040 down (so years run over page boundaries).
 const manyThrive = (n) => Array.from({ length: n }, (_, i) => row({
-  id: `M-${i}`, org: 'THRIvE', date: `${2040 - Math.floor(i / 3)}-01-0${3 - (i % 3)}`, title: `Paper ${String(i).padStart(2, '0')}`, type: 'Journal article',
+  id: `M-${i}`, org: 'THRIvE', date: `${2040 - Math.floor(i / 5)}-01-0${5 - (i % 5)}`, title: `Paper ${String(i).padStart(2, '0')}`, type: 'Journal article',
 }))
 
 function LocationProbe() {
@@ -56,7 +56,7 @@ async function renderAt(path, fixture = FIXTURE) {
     <HelmetProvider>
       <MemoryRouter initialEntries={[path]}>
         <Routes>
-          <Route path="/about/publications" element={<TidePublications />} />
+          <Route path="/tide/publications" element={<TidePublications />} />
           <Route path="/thrive/publications" element={<ThrivePublications />} />
         </Routes>
         <LocationProbe />
@@ -68,7 +68,29 @@ async function renderAt(path, fixture = FIXTURE) {
 const titles = (root = document.body) => within(root).queryAllByRole('article').map(a => within(a).getByRole('heading', { level: 3 }).textContent.replace(' (opens in a new tab)', ''))
 const search = () => screen.getByTestId('search').textContent
 const years = () => screen.queryAllByRole('heading', { level: 2 }).map(h => h.textContent)
-const optionTexts = (select) => [...select.options].map(o => o.textContent)
+// The filter menus (FilterMenu): a button labelled by the visible label + the current value,
+// opening a listbox whose options are "name" + right-aligned count.
+const filterButton = (label) => screen.getAllByRole('button').find(b =>
+  b.getAttribute('aria-haspopup') === 'listbox' && document.getElementById(b.getAttribute('aria-labelledby').split(' ')[0])?.textContent === label)
+const openMenu = (label) => { fireEvent.click(filterButton(label)); return screen.getByRole('listbox', { name: label }) }
+const optionCells = (o) => [o.children[1].textContent, o.children[2].textContent]
+const menuOptions = (label) => {
+  const list = openMenu(label)
+  const out = within(list).getAllByRole('option').map(o => { const [name, n] = optionCells(o); return `${name} (${n})` })
+  fireEvent.keyDown(list, { key: 'Escape' })
+  return out
+}
+const menuDisabled = (label) => {
+  const list = openMenu(label)
+  const out = within(list).getAllByRole('option').map(o => o.getAttribute('aria-disabled') === 'true')
+  fireEvent.keyDown(list, { key: 'Escape' })
+  return out
+}
+const choose = (label, name) => {
+  const list = openMenu(label)
+  fireEvent.click(within(list).getAllByRole('option').find(o => optionCells(o)[0] === name))
+}
+const menuValue = (label) => filterButton(label).querySelector('[id$="-value"]').textContent
 
 afterEach(() => {
   vi.doUnmock('../../data/sheets/publications.json')
@@ -76,120 +98,130 @@ afterEach(() => {
   vi.useRealTimers()
 })
 
-describe('TIDE publications (document shelf)', () => {
-  it('features the latest annual report, with stats in the hero and no chart', async () => {
-    await renderAt('/about/publications')
+describe('TIDE publications (spotlight + one library)', () => {
+  const library = () => screen.getAllByRole('region', { name: 'All publications' }).at(-1)
+
+  it('spotlights the latest annual report (no source line), with stats in the hero and no chart', async () => {
+    await renderAt('/tide/publications')
     const featured = screen.getByRole('region', { name: 'Annual Report 2024-2025' })
-    expect(within(featured).getByText('Latest annual report')).toBeInTheDocument()
+    expect(within(featured).getByText('Latest edition')).toBeInTheDocument()
     const read = within(featured).getByRole('link', { name: 'Read report: Annual Report 2024-2025 (opens in a new tab)' })
     expect(read).toHaveAttribute('href', 'https://example.org/ar25')
     expect(read).toHaveAttribute('rel', 'noopener noreferrer')
     expect(within(featured).getByText('29 September 2025').tagName).toBe('TIME')
-    expect(within(featured).getByText('example.org')).toBeInTheDocument()
+    expect(featured).not.toHaveTextContent('Source')
     // 6 rows, 3 types (case/space variants of "Annual report" are one), earliest 2019.
     const hero = screen.getByRole('heading', { level: 1 }).parentElement
     expect(within(hero).getAllByRole('listitem').map(li => li.textContent)).toEqual(['6 publications', '3 types', 'since 2019'])
     expect(screen.queryByText('Publications per year')).not.toBeInTheDocument()
-    // 6 rows ≤ TIDE_SEARCH_MIN_ITEMS: no search box; ≤ 12 others: no pagination.
-    expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
+  })
+
+  it('the library lists EVERY TIDE row (annual reports included) as cards, newest first, with search + Type + Year', async () => {
+    await renderAt('/tide/publications')
+    expect(titles(library())).toEqual([
+      'Annual Report 2024-2025', 'Field project report', 'Annual Report 2023-2024', 'Annual Report 2022-2023', 'Harmony talk', 'Why I do',
+    ])
+    expect(within(library()).getByText('6 publications')).toHaveAttribute('aria-live', 'polite')
+    expect(screen.getByRole('searchbox', { name: 'Search TIDE publications' })).toBeInTheDocument()
+    expect(filterButton('Type of material')).toBeTruthy()
+    expect(filterButton('Year')).toBeTruthy()
+    expect(filterButton('Field of work')).toBeUndefined()
+    expect(library()).not.toHaveTextContent('Source')
     expect(screen.queryByRole('navigation', { name: 'Pages' })).not.toBeInTheDocument()
   })
 
-  it('shelf: other annual reports, latest period first, each labelled with its period', async () => {
-    await renderAt('/about/publications')
-    const shelf = screen.getByRole('region', { name: 'Annual reports' })
-    const items = within(shelf).getAllByRole('listitem')
-    expect(items.map(li => li.textContent)).toEqual([
-      expect.stringContaining('2023–24'),
-      expect.stringContaining('2022–23'),
-    ])
-    expect(items[0]).toHaveTextContent('Period: 2023–24Annual Report 2023-2024')
-    expect(within(shelf).queryByText('Annual Report 2024-2025')).not.toBeInTheDocument()
-    expect(within(items[0]).queryByRole('link')).not.toBeInTheDocument()
-    expect(within(items[1]).getByRole('link')).toHaveAttribute('target', '_blank')
-    // ≤ TIDE_SHELF_VISIBLE reports: no toggle.
-    expect(within(shelf).queryByRole('button')).not.toBeInTheDocument()
-  })
-
-  it(`shelf shows ${TIDE_SHELF_VISIBLE}, then "Show all {n} annual reports"`, async () => {
-    const reports = Array.from({ length: TIDE_SHELF_VISIBLE + 3 }, (_, i) => row({
-      id: `AR-${i}`, org: 'TIDE', date: `${2025 - i}-09-29`, title: `Annual Report ${2024 - i}-${2025 - i}`, type: 'Annual report', link: `https://example.org/${i}`,
-    }))
-    await renderAt('/about/publications', snap(reports))
-    const shelf = screen.getByRole('region', { name: 'Annual reports' })
-    expect(within(shelf).getAllByRole('listitem')).toHaveLength(TIDE_SHELF_VISIBLE)
-    const toggle = within(shelf).getByRole('button', { name: `Show all ${TIDE_SHELF_VISIBLE + 2} annual reports` })
-    expect(toggle).toHaveAttribute('aria-expanded', 'false')
-    fireEvent.click(toggle)
-    expect(within(shelf).getAllByRole('listitem')).toHaveLength(TIDE_SHELF_VISIBLE + 2)
-    expect(within(shelf).getByRole('button', { name: 'Show fewer' })).toHaveAttribute('aria-expanded', 'true')
-  })
-
-  it('other types: buttons with counts filter the cards, kept in the URL; source shown', async () => {
-    await renderAt('/about/publications')
-    const others = screen.getByRole('region', { name: 'Reports, talks & more' })
-    expect(titles(others)).toEqual(['Field project report', 'Harmony talk', 'Why I do'])
-    const group = within(others).getByRole('group', { name: 'Show one type of material' })
-    const buttons = within(group).getAllByRole('button')
-    expect(buttons.map(b => b.textContent)).toEqual(['All3', 'Presentation2', 'Project report1'])
-    expect(buttons[0]).toHaveAttribute('aria-pressed', 'true')
-    const report = screen.getAllByRole('article').find(a => within(a).queryByText('Field project report'))
-    expect(report).toHaveTextContent('Source: Google Drive folder')
-    fireEvent.click(buttons[1])
-    expect(titles(others)).toEqual(['Harmony talk', 'Why I do'])
+  it('filters narrow the library only — the spotlight stays — and are kept in the URL', async () => {
+    await renderAt('/tide/publications')
+    expect(menuOptions('Type of material')).toEqual(['All types (6)', 'Annual report (3)', 'Presentation (2)', 'Project report (1)'])
+    choose('Type of material', 'Presentation')
     expect(search()).toBe('?type=presentation')
+    expect(titles(library())).toEqual(['Harmony talk', 'Why I do'])
+    expect(screen.getByRole('region', { name: 'Annual Report 2024-2025' })).toBeInTheDocument()
     const why = screen.getAllByRole('article').find(a => within(a).queryByText('Why I do'))
     expect(within(why).queryByRole('link')).not.toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Open: Harmony talk (opens in a new tab)' })).toHaveAttribute('href', 'https://example.org/p1')
+    choose('Type of material', 'Annual report')
+    choose('Year', '2023')
+    expect(search()).toBe('?type=annual+report&year=2023')
+    expect(titles(library())).toEqual(['Annual Report 2022-2023'])
+    fireEvent.click(screen.getByRole('button', { name: 'Clear all' }))
+    expect(search()).toBe('')
+    expect(titles(library())).toHaveLength(6)
   })
 
-  it('reads the type from the URL and ignores an unknown one', async () => {
-    await renderAt('/about/publications?type=project%20report')
-    expect(titles(screen.getByRole('region', { name: 'Reports, talks & more' }))).toEqual(['Field project report'])
-    await renderAt('/about/publications?type=nope')
-    expect(titles(screen.getAllByRole('region', { name: 'Reports, talks & more' }).at(-1))).toHaveLength(3)
+  it('"See all {n} editions" filters the library to the featured type and moves focus to its results line', async () => {
+    await renderAt('/tide/publications?year=2019')
+    fireEvent.click(screen.getByRole('button', { name: 'See all 3 editions' }))
+    expect(search()).toBe('?type=annual+report')
+    expect(titles(library())).toEqual(['Annual Report 2024-2025', 'Annual Report 2023-2024', 'Annual Report 2022-2023'])
+    expect(document.activeElement).toBe(within(library()).getByText('3 publications'))
   })
 
-  it(`numbered pages appear above ${TIDE_OTHERS_PAGE_SIZE} other items; a too-high page is clamped`, async () => {
-    const talks = Array.from({ length: TIDE_OTHERS_PAGE_SIZE + 2 }, (_, i) => row({
+  it('reads the filters from the URL; an unknown type shows as a removable chip with no results', async () => {
+    await renderAt('/tide/publications?type=project%20report')
+    expect(titles(library())).toEqual(['Field project report'])
+    await renderAt('/tide/publications?type=nope')
+    expect(within(library()).getByText('No publications match your search or filters')).toBeInTheDocument()
+    fireEvent.click(within(library()).getByRole('button', { name: 'Remove filter: nope' }))
+    expect(titles(library())).toHaveLength(6)
+  })
+
+  it(`numbered pages of ${TIDE_PAGE_SIZE}; a too-high page is clamped`, async () => {
+    const talks = Array.from({ length: TIDE_PAGE_SIZE + 2 }, (_, i) => row({
       id: `TK-${i}`, org: 'TIDE', date: `2020-01-${String(i + 1).padStart(2, '0')}`, title: `Talk ${i}`, type: 'Presentation',
     }))
-    await renderAt('/about/publications?page=9', snap(talks))
-    const others = screen.getByRole('region', { name: 'Reports, talks & more' })
-    expect(titles(others)).toHaveLength(2)
-    expect(within(others).getByText(`Showing ${TIDE_OTHERS_PAGE_SIZE + 1}–${TIDE_OTHERS_PAGE_SIZE + 2} of ${TIDE_OTHERS_PAGE_SIZE + 2}`)).toBeInTheDocument()
-    const nav = within(others).getByRole('navigation', { name: 'Pages' })
+    await renderAt('/tide/publications?page=9', snap(talks))
+    expect(titles(library())).toHaveLength(2)
+    expect(within(library()).getByText(`Showing ${TIDE_PAGE_SIZE + 1}–${TIDE_PAGE_SIZE + 2} of ${TIDE_PAGE_SIZE + 2} publications`)).toBeInTheDocument()
+    const nav = within(library()).getByRole('navigation', { name: 'Pages' })
     fireEvent.click(within(nav).getByRole('link', { name: 'Page 1' }))
-    expect(titles(others)).toHaveLength(TIDE_OTHERS_PAGE_SIZE)
+    expect(titles(library())).toHaveLength(TIDE_PAGE_SIZE)
     expect(search()).toBe('')
   })
 
-  it(`a search box appears above ${TIDE_SEARCH_MIN_ITEMS} rows and replaces the sections with results`, async () => {
-    const lots = Array.from({ length: TIDE_SEARCH_MIN_ITEMS + 1 }, (_, i) => row({
-      id: `L-${i}`, org: 'TIDE', date: `2020-02-${String((i % 28) + 1).padStart(2, '0')}`, title: i === 3 ? 'Harmony in schools' : `Item ${i}`, type: i % 2 ? 'Presentation' : 'Project report',
-    }))
-    await renderAt('/about/publications', snap(lots))
-    const box = screen.getByRole('searchbox', { name: 'Search TIDE publications' })
-    fireEvent.change(box, { target: { value: 'harmony' } })
+  it('search (debounced) highlights matches in the library', async () => {
+    await renderAt('/tide/publications')
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search TIDE publications' }), { target: { value: 'harmony' } })
     await waitFor(() => expect(search()).toBe('?search=harmony'))
-    expect(screen.getByRole('region', { name: 'Search results' })).toBeInTheDocument()
-    expect(screen.getByText('1 publication found')).toBeInTheDocument()
-    expect(titles()).toEqual(['Harmony in schools'])
-    expect(screen.getByText('Harmony').tagName).toBe('MARK')
-    expect(screen.queryByRole('region', { name: 'Reports, talks & more' })).not.toBeInTheDocument()
+    expect(titles(library())).toEqual(['Harmony talk'])
+    expect(within(library()).getByText('Harmony').tagName).toBe('MARK')
+    expect(within(library()).getByText('1 publication')).toBeInTheDocument()
   })
 
-  it('without annual reports, the featured card and shelf are not rendered; one type → no buttons', async () => {
-    await renderAt('/about/publications', snap(TIDE_ROWS.filter(r => r.type === 'Presentation')))
-    expect(screen.queryByText('Latest annual report')).not.toBeInTheDocument()
-    expect(screen.queryByRole('region', { name: 'Annual reports' })).not.toBeInTheDocument()
-    const others = screen.getByRole('region', { name: 'Reports, talks & more' })
-    expect(titles(others)).toEqual(['Harmony talk', 'Why I do'])
-    expect(within(others).queryByRole('group')).not.toBeInTheDocument()
+  it('without a row of the featured type there is no spotlight, only the library', async () => {
+    await renderAt('/tide/publications', snap(TIDE_ROWS.filter(r => r.type === 'Presentation')))
+    expect(screen.queryByText('Latest edition')).not.toBeInTheDocument()
+    expect(titles(library())).toEqual(['Harmony talk', 'Why I do'])
+  })
+
+  it('a single edition gets no "See all" button', async () => {
+    await renderAt('/tide/publications', snap(TIDE_ROWS.filter(r => r.id !== 'T-ar23' && r.id !== 'T-ar24')))
+    expect(screen.getByText('Latest edition')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /^See all/ })).not.toBeInTheDocument()
+  })
+
+  it('the old address /about/publications forwards to /tide/publications with its filters', async () => {
+    vi.resetModules()
+    vi.doMock('../../data/sheets/publications.json', () => ({ default: FIXTURE }))
+    const { default: TidePublications } = await import('../../pages/publications/TidePublications')
+    const { default: Redirect } = await import('../../pages/publications/TidePublicationsRedirect')
+    render(
+      <HelmetProvider>
+        <MemoryRouter initialEntries={['/about/publications?type=presentation']}>
+          <Routes>
+            <Route path="/about/publications" element={<Redirect />} />
+            <Route path="/tide/publications" element={<TidePublications />} />
+          </Routes>
+          <LocationProbe />
+        </MemoryRouter>
+      </HelmetProvider>,
+    )
+    expect(search()).toBe('?type=presentation')
+    expect(titles(library())).toEqual(['Harmony talk', 'Why I do'])
   })
 
   it('shows the empty state when there is no TIDE row', async () => {
-    await renderAt('/about/publications', snap(THRIVE_ROWS))
+    await renderAt('/tide/publications', snap(THRIVE_ROWS))
     expect(screen.getByText('No publications published yet')).toBeInTheDocument()
     expect(screen.getByText('Publications appear here as soon as they are added.')).toBeInTheDocument()
   })
@@ -197,10 +229,11 @@ describe('TIDE publications (document shelf)', () => {
   it('"New" badge for rows dated within the window (fixed clock)', async () => {
     vi.useFakeTimers({ toFake: ['Date'] })
     vi.setSystemTime(new Date('2025-10-10T12:00:00Z'))
-    await renderAt('/about/publications')
+    await renderAt('/tide/publications')
     const featured = screen.getByRole('region', { name: 'Annual Report 2024-2025' })
     expect(within(featured).getByText('New')).toBeInTheDocument()
-    expect(screen.getAllByText('New')).toHaveLength(1)
+    // The spotlight and the same report's card in the library.
+    expect(screen.getAllByText('New')).toHaveLength(2)
   })
 })
 
@@ -224,20 +257,11 @@ describe('THRIvE publications (research archive)', () => {
     expect(titles()).toEqual(['alpha', 'Beta', 'Zeta'])
   })
 
-  it('hero: per-year chart filters by year; social proof only when counted', async () => {
+  it('hero: no per-year chart (config HERO_CHART off); social proof only when counted', async () => {
     await renderAt('/thrive/publications')
-    expect(screen.getByText('Publications per year')).toBeInTheDocument()
-    // 2021…2025, empty years (2022, 2024) are not buttons.
-    const bars = screen.getAllByRole('button', { name: /Show only this year$/ })
-    expect(bars.map(b => b.getAttribute('aria-label'))).toEqual([
-      '2021: 1 publication. Show only this year', '2023: 1 publication. Show only this year', '2025: 2 publications. Show only this year',
-    ])
+    expect(screen.queryByText('Publications per year')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Show only this year$/ })).not.toBeInTheDocument()
     expect(screen.queryByText(/pieces? by others/)).not.toBeInTheDocument()
-    fireEvent.click(bars[1])
-    expect(search()).toBe('?year=2023')
-    expect(titles()).toEqual(['Teacher study'])
-    expect(screen.getByRole('button', { name: '2023: 1 publication. Show only this year' })).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByRole('button', { name: 'Remove filter: 2023' })).toBeInTheDocument()
   })
 
   it('social proof counts rows of the listed types', async () => {
@@ -284,23 +308,24 @@ describe('THRIvE publications (research archive)', () => {
     expect(document.activeElement).toBe(screen.getByRole('searchbox', { name: 'Search publications' }))
   })
 
-  it('type / field / year selects: visible labels, counts, zero-count options disabled', async () => {
+  it('type / field / year menus: visible labels, counts right of names, zero-count options disabled', async () => {
     await renderAt('/thrive/publications')
-    const type = screen.getByRole('combobox', { name: 'Type of material' })
-    const field = screen.getByRole('combobox', { name: 'Field of work' })
-    const year = screen.getByRole('combobox', { name: 'Year' })
-    expect(screen.getByText('Year').tagName).toBe('LABEL')
-    expect(optionTexts(type)).toEqual(['All types (5)', 'Blog (2)', 'Book (1)', 'Journal article (2)'])
-    expect(optionTexts(field)).toEqual([
+    for (const label of ['Type of material', 'Field of work', 'Year']) expect(filterButton(label)).toHaveAttribute('aria-expanded', 'false')
+    expect(menuValue('Year')).toBe('All years')
+    expect(menuOptions('Type of material')).toEqual(['All types (5)', 'Blog (2)', 'Book (1)', 'Journal article (2)'])
+    expect(menuOptions('Field of work')).toEqual([
       'All fields (5)', 'Assessment (2)', 'Curriculum (1)', 'Holistic Education (1)', `${TEACHER_FIELD} (1)`, 'Other (1)',
     ])
-    expect(optionTexts(year)).toEqual(['All years (5)', '2025 (2)', '2023 (1)', '2021 (1)', 'Undated (1)'])
-    fireEvent.change(field, { target: { value: 'assessment' } })
+    expect(menuOptions('Year')).toEqual(['All years (5)', '2025 (2)', '2023 (1)', '2021 (1)', 'Undated (1)'])
+    choose('Field of work', 'Assessment')
     expect(titles()).toEqual(['Assessment brief', 'Teacher study'])
-    expect(optionTexts(type)).toEqual(['All types (2)', 'Blog (0)', 'Book (0)', 'Journal article (2)'])
-    expect([...type.options].map(o => o.disabled)).toEqual([false, true, true, false])
-    fireEvent.change(type, { target: { value: 'journal article' } })
-    fireEvent.change(year, { target: { value: '2023' } })
+    expect(menuOptions('Type of material')).toEqual(['All types (2)', 'Blog (0)', 'Book (0)', 'Journal article (2)'])
+    expect(menuDisabled('Type of material')).toEqual([false, true, true, false])
+    choose('Type of material', 'Blog') // disabled: nothing happens
+    expect(search()).toBe('?field=assessment')
+    fireEvent.keyDown(screen.getByRole('listbox', { name: 'Type of material' }), { key: 'Escape' })
+    choose('Type of material', 'Journal article')
+    choose('Year', '2023')
     expect(search()).toBe('?type=journal+article&field=assessment&year=2023')
     expect(titles()).toEqual(['Teacher study'])
     fireEvent.click(screen.getByRole('button', { name: 'Remove filter: Assessment' }))
@@ -309,9 +334,9 @@ describe('THRIvE publications (research archive)', () => {
 
   it('URL values that no longer exist show as chips with (0) and clear easily; bad params are ignored', async () => {
     await renderAt('/thrive/publications?type=gone%20type&year=1999&foo=bar')
-    expect(screen.getByRole('combobox', { name: 'Type of material' })).toHaveValue('gone type')
-    expect(optionTexts(screen.getByRole('combobox', { name: 'Type of material' }))).toContain('gone type (0)')
-    expect(optionTexts(screen.getByRole('combobox', { name: 'Year' }))).toContain('1999 (0)')
+    expect(menuValue('Type of material')).toBe('gone type')
+    expect(menuOptions('Type of material')).toContain('gone type (0)')
+    expect(menuOptions('Year')).toContain('1999 (0)')
     expect(screen.getByRole('button', { name: 'Remove filter: gone type' })).toBeInTheDocument()
     expect(titles()).toEqual([])
     fireEvent.click(screen.getByRole('button', { name: 'Clear all' }))
@@ -323,14 +348,19 @@ describe('THRIvE publications (research archive)', () => {
   it('reads search, field and direction from the URL', async () => {
     await renderAt('/thrive/publications?field=assessment&dir=asc')
     expect(titles()).toEqual(['Teacher study', 'Assessment brief'])
-    expect(screen.getByRole('combobox', { name: 'Field of work' })).toHaveValue('assessment')
+    expect(menuValue('Field of work')).toBe('Assessment')
   })
 
-  it('APA citation under the title; field tags; source; Read hidden without a link', async () => {
+  it('APA citation under the title, then the summary, as two labelled blocks; field tags; source; Read hidden without a link', async () => {
     const { container } = await renderAt('/thrive/publications')
     const card = screen.getAllByRole('article').find(a => within(a).queryByText('Teacher study'))
     const heading = within(card).getByRole('heading', { level: 3 })
-    expect(heading.nextElementSibling.textContent).toBe('Citation: Doe, J. (2023). Teacher study. Journal of Tests.')
+    const citation = heading.nextElementSibling
+    expect(within(citation).getByRole('heading', { level: 4 })).toHaveTextContent('APA reference')
+    expect(within(citation).getByRole('blockquote').textContent).toBe('Citation: Doe, J. (2023). Teacher study. Journal of Tests.')
+    const summary = citation.nextElementSibling
+    expect(within(summary).getByRole('heading', { level: 4 })).toHaveTextContent('About this work')
+    expect(summary).toHaveTextContent('About teachers')
     expect(within(card).getByText(TEACHER_FIELD)).toBeInTheDocument()
     expect(within(card).queryByRole('link')).not.toBeInTheDocument()
     const linked = screen.getAllByRole('article').find(a => within(a).queryByText('Assessment brief'))
@@ -338,9 +368,12 @@ describe('THRIvE publications (research archive)', () => {
     expect(read).toHaveAttribute('href', 'https://example.org/a')
     expect(read).toHaveAttribute('target', '_blank')
     expect(read).toHaveAttribute('rel', 'noopener noreferrer')
-    expect(linked).toHaveTextContent('Source: example.org')
+    // Compact source: arrow (tooltip "Source") + the address; screen readers hear "Source: …".
+    const src = within(linked).getByText('example.org').parentElement
+    expect(src.querySelector('.sr-only')).toHaveTextContent('Source:')
+    expect(src).toHaveTextContent('Source')
     const book = screen.getAllByRole('article').find(a => within(a).queryByText('Second brief'))
-    expect(book).toHaveTextContent('Source: DOI')
+    expect(within(book).getByText((_, el) => el?.firstChild?.nodeValue === 'DOI')).toBeInTheDocument()
     const undated = screen.getAllByRole('article').find(a => within(a).queryByText('Undated note'))
     expect(within(undated).queryByRole('button', { name: /Copy citation/ })).not.toBeInTheDocument()
     expect(container.innerHTML).not.toContain('drive.google.com')
@@ -373,27 +406,29 @@ describe('THRIvE publications (research archive)', () => {
   it(`numbered pages of ${THRIVE_PAGE_SIZE}: page in the URL, "continued" year heading, focus to results`, async () => {
     await renderAt('/thrive/publications', snap(manyThrive(47)))
     expect(screen.getAllByRole('article')).toHaveLength(THRIVE_PAGE_SIZE)
-    expect(screen.getByText('Showing 1–20 of 47 publications')).toBeInTheDocument()
+    expect(screen.getByText('Showing 1–12 of 47 publications')).toBeInTheDocument()
     const nav = screen.getByRole('navigation', { name: 'Pages' })
     expect(within(nav).getByText('Page 1').closest('[aria-current="page"]')).toBeInTheDocument()
     expect(within(nav).queryByRole('link', { name: /Previous/ })).not.toBeInTheDocument()
     fireEvent.click(within(nav).getByRole('link', { name: 'Page 2' }))
     expect(search()).toBe('?page=2')
-    expect(screen.getByText('Showing 21–40 of 47 publications')).toBeInTheDocument()
-    expect(document.activeElement).toBe(screen.getByText('Showing 21–40 of 47 publications'))
-    // Rows 18–20 are 2034; row 20 (index) starts page 2 still in 2034 → "continued".
-    expect(years()[0]).toBe('2034(continued)')
+    expect(screen.getByText('Showing 13–24 of 47 publications')).toBeInTheDocument()
+    expect(document.activeElement).toBe(screen.getByText('Showing 13–24 of 47 publications'))
+    // Rows 10–14 are 2038; row 12 (index) starts page 2 still in 2038 → "continued".
+    expect(years()[0]).toBe('2038(continued)')
     fireEvent.click(within(screen.getByRole('navigation', { name: 'Pages' })).getByRole('link', { name: 'Page 3' }))
-    expect(screen.getAllByRole('article')).toHaveLength(7)
+    expect(screen.getAllByRole('article')).toHaveLength(12)
     expect(search()).toBe('?page=3')
+    fireEvent.click(within(screen.getByRole('navigation', { name: 'Pages' })).getByRole('link', { name: 'Page 4' }))
+    expect(screen.getAllByRole('article')).toHaveLength(11)
   })
 
   it('a page beyond the last is clamped; changing a filter returns to page 1', async () => {
     await renderAt('/thrive/publications?page=9', snap(manyThrive(27)))
-    expect(screen.getByText('Showing 21–27 of 27 publications')).toBeInTheDocument()
-    fireEvent.change(screen.getByRole('combobox', { name: 'Year' }), { target: { value: '2040' } })
+    expect(screen.getByText('Showing 25–27 of 27 publications')).toBeInTheDocument()
+    choose('Year', '2040')
     expect(search()).toBe('?year=2040')
-    expect(screen.getByText('3 publications')).toBeInTheDocument()
+    expect(screen.getByText('5 publications')).toBeInTheDocument()
   })
 
   it('shows the empty state when there is no THRIvE row', async () => {
@@ -427,16 +462,22 @@ describe('publication utilities', () => {
     expect(formatPeriod(null)).toBeNull()
   })
 
-  it('shelf: by period end, then date; featured is the latest period', () => {
-    const s = splitShelf([
+  it('latest of a type: by the period in the title (not the date), then date', () => {
+    const rows = [
       ...TIDE_ROWS,
       row({ id: 'T-beti', org: 'TIDE', date: '2025-05-31', title: 'BETI year 24-25 report', type: 'Annual report' }),
       row({ id: 'T-ar26', org: 'TIDE', date: '2025-01-01', title: 'Annual Report 2025-2026', type: 'Annual report' }),
-    ], 'Annual Report')
-    expect(s.featured.id).toBe('T-ar26')
-    expect(s.shelf.map(r => r.id)).toEqual(['T-ar25', 'T-beti', 'T-ar24', 'T-ar23'])
-    expect(s.others.map(r => r.id)).toEqual(['T-pr', 'T-p1', 'T-p2'])
-    expect(splitShelf(TIDE_ROWS, 'Nothing').featured).toBeNull()
+    ]
+    expect(latestOfType(rows, 'Annual Report').id).toBe('T-ar26')
+    expect(latestOfType(TIDE_ROWS, ' annual  report ').id).toBe('T-ar25')
+    expect(latestOfType(TIDE_ROWS, 'Nothing')).toBeNull()
+    // A title without a period counts by the year of its date of publication.
+    const untitled = (id, date) => row({ id, org: 'TIDE', date, title: 'Annual Report', type: 'Annual report' })
+    expect(latestOfType([...rows, untitled('U-27', '2027-03-01')], 'Annual report').id).toBe('U-27')
+    expect(latestOfType([...rows, untitled('U-25', '2025-03-01')], 'Annual report').id).toBe('T-ar26')
+    // Same year as the titled one's end: the newer date wins.
+    expect(latestOfType([...rows, untitled('U-26', '2026-10-01')], 'Annual report').id).toBe('U-26')
+    expect(latestOfType(TIDE_ROWS, '')).toBeNull()
   })
 
   it('groups by year, marking a year continued from the previous page; stats; yearOf', () => {
@@ -502,6 +543,17 @@ describe('publication utilities', () => {
     expect(sourceOf('https://drive.google.com/drive/folders/abc')).toEqual({ kind: 'driveFolder' })
     expect(sourceOf('javascript:alert(1)')).toBeNull()
     expect(sourceOf(null)).toBeNull()
+  })
+
+  it('source name: listed address or its closest listed parent, else the address itself', () => {
+    const names = { 'cam.ac.uk': 'University of Cambridge', 'news.educ.cam.ac.uk': 'Faculty of Education', 'osf.io': 'OSF', 'blank.org': ' ' }
+    expect(sourceName('osf.io', names)).toBe('OSF')
+    expect(sourceName('news.educ.cam.ac.uk', names)).toBe('Faculty of Education')
+    expect(sourceName('www2.cam.ac.uk', names)).toBe('University of Cambridge')
+    expect(sourceName('ac.uk', names)).toBe('ac.uk')
+    expect(sourceName('example.org', names)).toBe('example.org')
+    expect(sourceName('blank.org', names)).toBe('blank.org')
+    expect(sourceName('osf.io', undefined)).toBe('osf.io')
   })
 
   it('social-proof count, New window, icon families, frames', () => {

@@ -188,11 +188,11 @@ use them instead of copying the library's code:
 
 A listing does not have to use them all. The Publications pages first reused the library's listing UI
 (sidebar filters, drawer, pagination), then got their own layouts in `src/components/publications/`, fitted
-to each page's content: the TIDE page (16 rows in the Sheet on 2026-11-20) has a featured latest report,
-a shelf (6, then "Show all"), type buttons and numbered pages above 12, and a search box only above 24 rows
-(`TideCollection`); the THRIvE page (49 text-heavy rows) is a single year-grouped reading column with native
-selects (type, field, year), a per-year chart in the banner and numbered pages of 20 kept in `?page=`
-(`ResearchArchive`, `PublicationsPagination`). Every such threshold is a named constant in
+to each page's content: the TIDE page (16 rows in the Sheet on 2026-11-20) has the latest annual report
+spotlighted, then one library of every row as cards with numbered pages of 12 (`TideCollection`); the THRIvE
+page (49 text-heavy rows) is a single year-grouped reading column with numbered pages of 12 kept in `?page=`;
+both share one search + filter bar (`PublicationToolbar`, `usePublicationQuery`; `ResearchArchive`,
+`PublicationsPagination`). Every such threshold is a named constant in
 `src/config/publications.js`, so a control appears only when the row count makes it useful. They have their
 own controls (`PublicationControls`, `usePublicationControls`) and use none of `src/components/listing/`,
 `useSidebarFits` or `abl/Pagination`; of the shared parts they use `listingFilters.js`, `focusRing` and
@@ -206,7 +206,7 @@ and squeezed boxes. `scripts/lib/publications-images.js` (used by `scripts/sync-
 shape within a ratio range (THRIvE: 3:4…16:9; taller → `attention` crop to 3:4, wider → centre crop to
 16:9), never crop the full-size file, and record the pixel sizes (`thumbWidth`/`thumbHeight`/
 `fullWidth`/`fullHeight`) in the photo manifest so the page can set `width`/`height` and frame each image at
-its own ratio (`getPublicationThumb`, `MediaPanel`). The Resource Centre sync does not do this (plain resize).
+its own ratio (`getPublicationThumb`, `PublicationMedia`). The Resource Centre sync does not do this (plain resize).
 
 Still library-only: `LibraryDropdown` (the sort menu; it also exports `FOCUS_PILL`, which the shared pieces
 and the Publications components import), the type tiles and grade pills, and the per-integration

@@ -1,12 +1,12 @@
 # THRIvE Publications — /thrive/publications
 # The publications themselves come from the "TIDE THRIvE Publications" Sheet (rows answered
 # "THRIvE"), via the sync into src/data/sheets/publications.json. Only the text around them lives
-# here. The TIDE page (/about/publications) is in about-publications.yaml.
+# here. The TIDE page (/tide/publications) is in about-publications.yaml.
 # Text in {curly braces} is filled in by the site — keep the {word} exactly as it is.
 #
-# Page layout: a "publications per year" chart in the banner (each bar filters by that year),
-# then one reading column grouped by year (newest first), 20 per page, with search, type,
-# field-of-work and year filters and a newest/oldest switch above it.
+# Page layout: one reading column grouped by year (newest first), 12 per page, with search,
+# type, field-of-work and year filters and a newest/oldest switch above it. Each entry: the
+# thumbnail, then the APA reference and the summary as two separate blocks.
 
 meta:
   # Last crumb in the SEO breadcrumb trail (Home > THRIvE Research Centre > this page)
@@ -36,7 +36,7 @@ socialProofTypes:
   - "Published by others (TIDE acknowledged)"
   - "Mass media coverage"
 
-# "Publications per year" chart in the banner
+# "Publications per year" chart in the banner (switched off: src/config/publications.js HERO_CHART)
 chart:
   title: "Publications per year"
   hint: "Select a year to show only its publications."
@@ -57,8 +57,6 @@ toolbar:
   allFields: "All fields"
   yearLabel: "Year"
   allYears: "All years"
-  # Each choice in the two lists, e.g. "Book (9)"
-  optionTemplate: "{name} ({n})"
   newest: "Newest first"
   oldest: "Oldest first"
   directionLabelTemplate: "Order by date: {dir}. Click to reverse."
@@ -90,13 +88,46 @@ newBadge: "New"
 
 # Where a link leads, read from its web address
 source:
+  # Shown as a tooltip on the source icon, and read out by screen readers
   label: "Source"
   doi: "DOI"
   driveFile: "Google Drive"
   driveFolder: "Google Drive folder"
+  # Web address → the name shown instead of it. An address not listed here is shown as it is
+  # (e.g. "example.org"), so nothing breaks when a new site appears — add it here when you can.
+  # Write the address without "www."; it also covers its sub-addresses (cam.ac.uk covers
+  # news.cam.ac.uk unless that has its own line). Names as written in the publications' own APA
+  # citations in the Sheet, or the site's own name (2026-11-20).
+  names:
+    "ukfiet.org": "UKFIET"
+    "teacherplus.org": "Teacher Plus"
+    "osf.io": "OSF"
+    "lnkd.in": "LinkedIn"
+    "learninggeneration.org": "The Learning Generation Initiative"
+    "taylorfrancis.com": "Routledge"
+    "tandfonline.com": "Taylor & Francis Online"
+    "link.springer.com": "SpringerLink"
+    "sciencedirectassets.com": "ScienceDirect"
+    "sciencedirect.com": "ScienceDirect"
+    "scholarworks.bgsu.edu": "BGSU ScholarWorks"
+    "spotify.com": "Spotify"
+    "schools2030.org": "Schools2030"
+    "her.journals.publicknowledgeproject.org": "Holistic Education Review"
+    "norrag.org": "NORRAG"
+    "theprint.in": "The Print"
+    "mindandlife.org": "Mind and Life Institute"
+    "thersa.org": "The Royal Society of Arts"
+    "news.educ.cam.ac.uk": "Faculty of Education, University of Cambridge"
+    "cam.ac.uk": "University of Cambridge"
+    "nissem.org": "NISSEM"
+    "inee.org": "INEE"
+    "omprakash.org": "OmPrakash"
 
 entry:
   read: "Read"
+  # Small headings of the two blocks under each title
+  citationHeading: "APA reference"
+  summaryHeading: "About this work"
   copyCitation: "Copy citation"
   copied: "Copied"
   copyFailed: "Copy failed — select the citation instead"

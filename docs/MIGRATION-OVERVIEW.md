@@ -53,7 +53,7 @@ Because of this, the Google-side guide transfers the *files* (the Sheet with its
 
 The Pramaan Resource Centre (`/pramaan/resource-centre`, and the counts on `/pramaan`) is fed by **one** Sheet, "Contributing to Pramaan; Educators' Resource Bank (Responses)", filled by a Google Form, with its own Apps Script, token, GitHub secrets (`PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`) and workflow (`sync-pramaan-library.yml`). The Google guide covers all of it. That Sheet holds contributors' personal data (columns L–P) — share it only with the new owner. (The older Pramaan Sheet was retired on 2026-11-19 and does not need moving.)
 
-The Publications pages (`/about/publications` for TIDE rows, `/thrive/publications` for THRIvE rows) are fed by a **second**, separate Sheet, "TIDE THRIvE Publications (Responses)", also filled by a Google Form, with its own Apps Script (`apps-script/publications/Code.gs`), token (`publications-sheet`), GitHub secrets (`PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN`) and workflow (`sync-publications.yml`). Move it the same way as the first: transfer the Sheet and its Form, then the new owner repeats Steps 2–8 of `docs/PUBLICATIONS-SETUP-GUIDE.md`. It holds each submitter's email address — share it only with the new owner. (Not set up yet on 2026-11-20; if it still isn't at the handover, the new owner simply does the setup guide.)
+The Publications pages (`/tide/publications` for TIDE rows, `/thrive/publications` for THRIvE rows) are fed by a **second**, separate Sheet, "TIDE THRIvE Publications (Responses)", also filled by a Google Form, with its own Apps Script (`apps-script/publications/Code.gs`), token (`publications-sheet`), GitHub secrets (`PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN`) and workflow (`sync-publications.yml`). Move it the same way as the first: transfer the Sheet and its Form, then the new owner repeats Steps 2–8 of `docs/PUBLICATIONS-SETUP-GUIDE.md`. It holds each submitter's email address — share it only with the new owner. (Not set up yet on 2026-11-20; if it still isn't at the handover, the new owner simply does the setup guide.)
 
 ## After both migrations are complete
 
@@ -62,7 +62,7 @@ The Publications pages (`/about/publications` for TIDE rows, `/thrive/publicatio
 - [ ] New owner can open each Apps Script project and sees their own deployment and three triggers in each.
 - [ ] New owner owns the GitHub repository, and the original developer still has collaborator access (this happens automatically for personal-to-personal transfers — see the GitHub guide).
 - [ ] Live site loads correctly at its new URL and shows current data.
-- [ ] A test edit in the Sheet shows up on `/pramaan/resource-centre` within a few minutes (confirms the whole pipeline survived the move, end to end) — and the same for the Publications Sheet on `/about/publications` or `/thrive/publications`.
+- [ ] A test edit in the Sheet shows up on `/pramaan/resource-centre` within a few minutes (confirms the whole pipeline survived the move, end to end) — and the same for the Publications Sheet on `/tide/publications` or `/thrive/publications`.
 - [ ] Drive photo folders are readable by the new owner (Google guide Step 3).
 - [ ] Alerts reach the new owner: GitHub variable `ALERT_ASSIGNEE` and Script Property `ALERT_EMAIL` (in each Sheet's script) updated; the cron schedule changed once by the new owner (GitHub guide Step 7).
 - [ ] Every row of `docs/OPERATIONS-INVENTORY.md` points at the new owner, with the token expiry date in their calendar.

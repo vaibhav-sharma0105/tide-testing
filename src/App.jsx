@@ -27,6 +27,7 @@ const OurPartners         = lazy(() => import('./pages/about/OurPartners'))
 const PastPrograms        = lazy(() => import('./pages/about/PastPrograms'))
 const TidePublications    = lazy(() => import('./pages/publications/TidePublications'))
 const ThrivePublications  = lazy(() => import('./pages/publications/ThrivePublications'))
+const TidePublicationsRedirect = lazy(() => import('./pages/publications/TidePublicationsRedirect'))
 const EducationForHarmony = lazy(() => import('./pages/EducationForHarmony'))
 const Volunteer           = lazy(() => import('./pages/get-involved/Volunteer'))
 const Donate              = lazy(() => import('./pages/get-involved/Donate'))
@@ -65,7 +66,9 @@ export default function App() {
               <Route path="/about/our-team" element={<OurTeam />} />
               <Route path="/about/our-partners" element={<OurPartners />} />
               {/* TIDE and THRIvE publications: one Sheet snapshot, one shared listing (components/publications) */}
-              <Route path="/about/publications" element={<TidePublications />} />
+              <Route path="/tide/publications" element={<TidePublications />} />
+              {/* The TIDE page's first address; forwards to /tide/publications, keeping the query string */}
+              <Route path="/about/publications" element={<TidePublicationsRedirect />} />
 
               {/* Education for Harmony */}
               <Route path="/education-for-harmony" element={<EducationForHarmony />} />

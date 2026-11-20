@@ -1,37 +1,47 @@
 import { useState, useRef, useLayoutEffect, useEffect, useId, forwardRef } from 'react'
 import { ExternalLink, Copy, Check } from 'lucide-react'
 import TypeIcon from './TypeIcon'
-import MediaPanel from './MediaPanel'
+import PublicationMedia from './PublicationMedia'
 import { NewBadge, SourceLine, Highlight } from './PublicationBits'
 import { FOCUS_PILL } from '../library/LibraryDropdown'
 import { focusRing } from '../../utils/focusRing'
 import { copyText } from '../../utils/copyText'
 import { getPublicationThumb } from '../../utils/publicationPhotos'
-import { formatPublicationDate, safeLink } from '../../utils/publicationFilters'
+import { FAMILY_STYLE } from './typeStyles'
+import { formatPublicationDate, safeLink, typeIconKey } from '../../utils/publicationFilters'
 
-// One THRIvE publication in the archive list: type (with its family icon) + date (+ "New"),
-// title (links out), APA citation right under the title, description (3 lines, "Show more" only
-// when it is longer), field-of-work tags, "Read", "Copy citation" and the link's source.
+// One THRIvE publication in the archive list.
+//   Left (top on phones): the thumbnail, large (19rem / 22rem: covers carry small print), in the
+//   archive's one fixed 4:3 frame, 5px white padding on a softly fading mat (PublicationMedia:
+//   whole image on a wash of its own colours, type badge with a name tooltip bottom-right, slow
+//   drift on hover).
+//   Right, kept lean: one top line of facts — type (with its family icon) · date (+ "New") ·
+//   source — with the field-of-work tags right under it; the title (links out); then two clearly
+//   separate blocks — the APA reference (what to cite: a quiet tinted panel with its own heading
+//   and the "Copy citation" button) and the summary (what it is about: plain reading text with
+//   its own heading, 3 lines, "Show more" only when longer) — and "Read".
 // Search words are highlighted in the title and citation (`terms`).
-// Thumbnail: one column width, height following the image's own ratio (3:4…16:9) on a brand
-// panel tinted by type family; top-left on phones, on the right from sm up. Without one, a
-// stand-in page with the type's icon keeps the column aligned. Hovering or focusing anywhere in
-// the entry lifts the panel and zooms the image slightly (off under reduced motion).
 // Row text from the snapshot; labels from thrive-publications.yaml (`data`).
 
 const COPIED_MS = 2200
+// Display width of the thumbnail column (matches the grid below), so high-resolution screens
+// load the full-size file when the thumbnail would be too soft.
+const THUMB_SIZES = '(min-width: 1024px) 22rem, (min-width: 640px) 19rem, 24rem'
+const HEADING = 'font-body text-[11px] font-semibold uppercase tracking-[0.14em]'
 
-// Thumbnail on its brand panel (MediaPanel), framed at the image's own ratio within 3:4…16:9.
+// A quiet separator between the facts in the top line (decorative).
+const Dot = () => <span aria-hidden="true" className="font-semibold text-tide-muted/60">·</span>
+
 // The image repeats the title link for pointer users only (out of the tab order and hidden from
 // screen readers, which reach the same link through the title).
 function Thumb({ row, link }) {
-  const panel = <MediaPanel thumb={getPublicationThumb(row.id)} type={row.type} minRatio={3 / 4} maxRatio={16 / 9} standinRatio={4 / 3} />
+  const media = <PublicationMedia thumb={getPublicationThumb(row.id)} type={row.type} shape="landscape" sizes={THUMB_SIZES} />
   return link
-    ? <a href={link} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true" className="block">{panel}</a>
-    : <div aria-hidden="true">{panel}</div>
+    ? <a href={link} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true" className="block">{media}</a>
+    : media
 }
 
-function Description({ text, data }) {
+function Summary({ text, data }) {
   const id = useId()
   const ref = useRef(null)
   const [expanded, setExpanded] = useState(false)
@@ -51,7 +61,8 @@ function Description({ text, data }) {
 
   return (
     <div className="mt-4">
-      <p ref={ref} id={id} className={`font-body text-[15px] leading-relaxed text-tide-text/85 break-words ${expanded ? '' : 'line-clamp-3'}`}>
+      <h4 className={`${HEADING} text-tide-muted`}>{data.entry.summaryHeading}</h4>
+      <p ref={ref} id={id} className={`mt-1.5 font-body text-[15px] leading-[1.65] text-tide-text/85 break-words ${expanded ? '' : 'line-clamp-3'}`}>
         {text}
       </p>
       {(overflows || expanded) && (
@@ -60,7 +71,7 @@ function Description({ text, data }) {
           aria-expanded={expanded}
           aria-controls={id}
           onClick={() => setExpanded(e => !e)}
-          className={`-ml-1 mt-1 inline-flex min-h-11 items-center rounded-full px-1 font-body text-sm font-semibold text-primary hover:text-primary-dark ${FOCUS_PILL}`}
+          className={`-ml-1 mt-0.5 inline-flex min-h-11 items-center rounded-full px-1 font-body text-sm font-semibold text-primary hover:text-primary-dark ${FOCUS_PILL}`}
         >
           {expanded ? data.entry.showLess : data.entry.showMore}
         </button>
@@ -86,11 +97,11 @@ function CopyCitation({ citation, title, data }) {
         type="button"
         onClick={onClick}
         aria-label={data.a11y.copyLabelTemplate.replace('{title}', () => title ?? '')}
-        className={`inline-flex min-h-11 items-center gap-2 rounded-full border px-4 font-body text-sm font-semibold transition-colors ${FOCUS_PILL} ${
-          copied ? 'border-primary/30 bg-primary-faint text-primary-dark' : 'border-tide-border bg-white text-tide-text hover:border-primary/40'
+        className={`-my-2 -mr-2 inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 font-body text-xs font-semibold transition-colors ${FOCUS_PILL} ${
+          copied ? 'text-primary-dark' : 'text-primary hover:bg-white hover:text-primary-dark'
         }`}
       >
-        {copied ? <Check className="h-4 w-4" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
+        {copied ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
         <span aria-hidden="true">{copied ? data.entry.copied : data.entry.copyCitation}</span>
       </button>
       <span className="sr-only" aria-live="polite">{copied ? data.entry.copiedAnnouncement : state === 'failed' ? data.entry.copyFailed : ''}</span>
@@ -99,35 +110,65 @@ function CopyCitation({ citation, title, data }) {
   )
 }
 
+function Citation({ row, data, terms }) {
+  return (
+    <figure className="mt-4 rounded-2xl border border-primary/10 bg-primary-faint/60 px-4 py-3 sm:px-5">
+      <div className="flex flex-wrap items-center justify-between gap-x-3">
+        <h4 className={`${HEADING} text-primary-dark`}>{data.entry.citationHeading}</h4>
+        <CopyCitation citation={row.citation} title={row.title} data={data} />
+      </div>
+      <blockquote className="mt-2 font-body text-sm leading-relaxed text-tide-text/80 [overflow-wrap:anywhere]">
+        <span className="sr-only">{data.a11y.citationLabel}: </span>
+        <Highlight text={row.citation} terms={terms} />
+      </blockquote>
+    </figure>
+  )
+}
+
 const ResearchEntry = forwardRef(function ResearchEntry({ row, data, terms }, ref) {
   const link = safeLink(row.link)
   const date = formatPublicationDate(row.date)
   const fields = Array.isArray(row.fields) ? row.fields.filter(Boolean) : []
+  // One colour per type family (as the image badge): the type label, its icon and the tags share it.
+  const family = FAMILY_STYLE[typeIconKey(row.type)] ?? FAMILY_STYLE.file
   const openLabel = data.a11y.openLabelTemplate.replace('{action}', () => data.entry.read).replace('{title}', () => row.title ?? '')
 
   return (
     <article
       ref={ref}
       tabIndex={-1}
-      className="group/media grid grid-cols-[5.5rem_minmax(0,1fr)] gap-x-4 py-8 outline-none [grid-template-areas:'thumb_head'_'body_body'] sm:grid-cols-[minmax(0,1fr)_9rem] sm:gap-x-8 sm:[grid-template-areas:'head_thumb'_'body_thumb'] lg:grid-cols-[minmax(0,1fr)_10rem]"
+      className="group/media grid gap-x-8 gap-y-4 py-8 outline-none sm:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-x-10"
     >
-      <div className="[grid-area:thumb] pt-1">
+      <div className="max-w-sm sm:sticky sm:top-28 sm:max-w-none sm:self-start">
         <Thumb row={row} link={link} />
       </div>
 
-      <div className="[grid-area:head] min-w-0">
-        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-body text-[13px]">
+      <div className="min-w-0">
+        {/* Everything ABOUT the publication sits together above the title: type · date (+ New) ·
+            source, then its field-of-work tags. */}
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-body text-[13px]">
           {row.type && (
-            <span className="inline-flex items-center gap-1.5 font-semibold text-primary-dark">
+            <span className={`inline-flex items-center gap-1.5 font-semibold ${family.icon}`}>
               <TypeIcon type={row.type} />
               <span className="sr-only">{data.a11y.typeLabel}</span>
               {row.type}
             </span>
           )}
-          {date && <time dateTime={row.date} className="text-tide-muted">{date}</time>}
+          {date && <><Dot /><time dateTime={row.date} className="text-tide-muted">{date}</time></>}
           <NewBadge date={row.date} data={data} />
+          {link && <><Dot /><SourceLine url={link} data={data} compact /></>}
         </p>
-        <h3 className="mt-2 font-display text-xl font-semibold leading-snug text-tide-text break-words md:text-[1.375rem]">
+        {fields.length > 0 && (
+          <div className="mt-2">
+            <span className="sr-only">{data.a11y.fieldsLabel}</span>
+            <ul className="flex flex-wrap gap-1.5">
+              {fields.map(f => (
+                <li key={f} className={`max-w-full rounded-full px-2.5 py-0.5 font-body text-xs font-medium break-words ${family.tint} ${family.icon}`}>{f}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <h3 className="mt-3 font-display text-xl font-semibold leading-snug text-tide-text text-pretty break-words md:text-2xl">
           {link ? (
             <a href={link} target="_blank" rel="noopener noreferrer" className={`decoration-primary/40 underline-offset-4 hover:text-primary-dark hover:underline ${focusRing('focus-visible:rounded-sm')}`}>
               <Highlight text={row.title} terms={terms} />
@@ -135,42 +176,22 @@ const ResearchEntry = forwardRef(function ResearchEntry({ row, data, terms }, re
             </a>
           ) : <Highlight text={row.title} terms={terms} />}
         </h3>
-        {row.citation && (
-          <p className="mt-3 border-l-2 border-primary-light pl-3 font-body text-sm leading-relaxed text-tide-muted [overflow-wrap:anywhere]">
-            <span className="sr-only">{data.a11y.citationLabel}: </span>
-            <Highlight text={row.citation} terms={terms} />
-          </p>
-        )}
-      </div>
 
-      <div className="[grid-area:body] min-w-0">
-        {row.description && <Description text={row.description} data={data} />}
-        {fields.length > 0 && (
+        {row.citation && <Citation row={row} data={data} terms={terms} />}
+        {row.description && <Summary text={row.description} data={data} />}
+
+        {link && (
           <div className="mt-4">
-            <span className="sr-only">{data.a11y.fieldsLabel}</span>
-            <ul className="flex flex-wrap gap-1.5">
-              {fields.map(f => (
-                <li key={f} className="max-w-full rounded-full bg-primary-faint px-2.5 py-1 font-body text-xs font-medium text-primary-dark break-words">{f}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-        {(link || row.citation) && (
-          <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-3">
-            {link && (
-              <a
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={openLabel}
-                className={`inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 font-body text-sm font-semibold text-white shadow-sm shadow-primary/25 transition-colors hover:bg-primary-dark ${FOCUS_PILL}`}
-              >
-                {data.entry.read}
-                <ExternalLink className="h-4 w-4" aria-hidden="true" />
-              </a>
-            )}
-            {row.citation && <CopyCitation citation={row.citation} title={row.title} data={data} />}
-            <SourceLine url={link} data={data} className="sm:ml-2" />
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={openLabel}
+              className={`inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 font-body text-sm font-semibold text-white shadow-sm shadow-primary/25 transition-colors hover:bg-primary-dark ${FOCUS_PILL}`}
+            >
+              {data.entry.read}
+              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            </a>
           </div>
         )}
       </div>

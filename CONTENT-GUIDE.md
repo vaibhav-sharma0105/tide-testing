@@ -50,7 +50,7 @@ Find the YAML file for the page you want to edit. Naming follows the URL (`/abou
 | About → Past Programs | `content/pages/about-past-programs.yaml` |
 | About → Our Team | `content/pages/about-our-team.yaml` |
 | About → Our Partners | `content/pages/about-our-partners.yaml` |
-| About → Our Publications → TIDE Publications (`/about/publications`; the text around the list — the publications themselves come from the Sheet, see below) | `content/pages/about-publications.yaml` |
+| About → Our Publications → TIDE Publications (`/tide/publications`; the text around the list — the publications themselves come from the Sheet, see below) | `content/pages/about-publications.yaml` |
 | Education for Harmony | `content/pages/education-for-harmony.yaml` |
 | Education for Harmony → Organise your MCCx | `content/pages/get-involved-mccx.yaml` |
 | Education for Harmony → Past SCF (Social Changemakers; reached only from the Education for Harmony page, still placeholder content) | `content/pages/social-changemakers.yaml` |
@@ -91,7 +91,7 @@ The Pramaan screens are fully editable from YAML. The **resources themselves** (
 
 ### What a Publications editor can change
 
-Two pages list publications: **TIDE Publications** (`/about/publications`) and **THRIvE Publications**
+Two pages list publications: **TIDE Publications** (`/tide/publications`) and **THRIvE Publications**
 (`/thrive/publications`). The **publications themselves** (title, date, type, description, link, thumbnail,
 and for THRIvE the APA reference and field of work) do **not** come from YAML — they come from the Google
 Sheet "TIDE THRIvE Publications (Responses)", which the publications Google Form fills. Add a publication by
@@ -112,18 +112,19 @@ different sections:
   the numbered-page buttons (`pagination:` — "Previous", "Next", "Page {n}") and `source:` — the words
   shown after "Source:" under a link (`doi`, `driveFile` = "Google Drive", `driveFolder` = "Google Drive
   folder"; any other link shows its web address, e.g. "tandfonline.com").
-- `about-publications.yaml` (TIDE) — the page shows the latest report large, a shelf with the other reports
-  of the same type, then everything else:
-  - `featuredType:` — which "Type of material" gets the large card and the shelf. Write it exactly as in the
+- `about-publications.yaml` (TIDE) — the page shows the latest annual report large, then one list of every
+  TIDE publication (annual reports included) with a search box and Type / Year filters:
+  - `featuredType:` — which "Type of material" gets the large card. Write it exactly as in the
     Sheet (capital letters don't matter); today `"Annual report"`. If no publication has that type, the large
-    card and the shelf are simply not shown. The "latest" report is the one whose title names the latest
+    card is simply not shown. The "latest" report is the one whose title names the latest
     period (e.g. "2024-25"); without a period in the title, its date counts.
-  - `featured:` (the small heading above the large card and its button text), `shelf:` (the shelf heading and
-    the "Show all {n} annual reports" / "Show fewer" button), `others:` (the heading of the "everything else"
-    section, the "All" button and the "Open" link text), `search:` (the search box and its results wording —
-    the box only appears once there are many TIDE publications, see below).
-- `thrive-publications.yaml` (THRIvE) — a "publications per year" chart in the banner, then a list grouped by
-  year, 20 per page, with search and filters:
+  - `featured:` (the small heading above the large card, its button text, and `seeAllTemplate` — "See all {n}
+    editions", which shows only that type in the list below), `library:` (the list's heading, intro and the
+    "Open" link text), `toolbar:` (the search box and the "Type of material" and "Year" filters at the
+    list — their lists and counts come from the Sheet, so a new type or year appears on its own) and `results:`
+    (the count line above the list and the "no results" message).
+- `thrive-publications.yaml` (THRIvE) — a list grouped by year, 12 per page, with search and
+  filters; each publication shows its image, its APA reference and a short summary:
   - `socialProofTypes:` — a list of "Type of material" names (exactly as in the Sheet; capital letters don't
     matter) counted in the extra figure under the title, `stats.socialProofTemplate` ("{n} pieces by others
     citing or featuring our work"). That figure is hidden when no publication has one of these types. Today:
@@ -132,9 +133,10 @@ different sections:
     material", "Field of work" and "Year" lists, newest/oldest button, "Clear all"), `results:` (the count
     line, "Showing {from}–{to} of {total} …" when there are several pages, the "no results" message, the
     heading for undated publications and the "continued" label when a year carries on from the previous
-    page), `entry:` (the "Read", "Copy citation" and "Show more/less" wording on each publication).
-- **Not in YAML:** how many items show before a page or a button appears (THRIvE 20 per page; TIDE shelf 6
-  before "Show all", 12 cards per page, search box only above 24 TIDE publications), how long "New" lasts
+    page), `entry:` (the "Read", "Copy citation" and "Show more/less" wording, and the small headings "APA reference" and
+    "About this work" on each publication). `chart:` is only used if the year chart is switched back on.
+- **Not in YAML:** how many items show before a page or a button appears (THRIvE 12 per page; TIDE 12
+  cards per page), how long "New" lasts
   (120 days), whether a page has the year chart, and which icon each type gets. These are set in code
   (`src/config/publications.js`) — ask a developer to change them.
 - Both files also have `a11y:` — text read out by screen readers only (not visible on the page).
@@ -416,7 +418,7 @@ line — for example About Us → Our Publications:
         desc: "Annual reports, research & events"
         subItems:
           - label: "TIDE Publications"
-            to: "/about/publications"
+            to: "/tide/publications"
           - label: "THRIvE Publications"
             to: "/thrive/publications"
 ```

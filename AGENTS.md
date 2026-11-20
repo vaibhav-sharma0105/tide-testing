@@ -23,7 +23,7 @@ npm run dev          # auto-syncs content, then starts dev server at localhost:5
 npm run build        # auto-syncs content, then builds to dist/
 npm run content:validate   # YAML syntax, leading-slash image paths, and email / lives-impacted consistency with site.yaml
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — run in CI (deploy.yml)
-npm test             # Vitest unit/component tests (23 files, 281 tests) — run in CI (deploy.yml)
+npm test             # Vitest unit/component tests (23 files, 284 tests) — run in CI (deploy.yml)
 ```
 
 **Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
@@ -51,7 +51,7 @@ npm test             # Vitest unit/component tests (23 files, 281 tests) — run
 
 ### What this project is
 
-Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 23 `<Route>`s in `src/App.jsx` (18 primary, 2 redirects, 3 system) backed by 21 lazy-loaded page components. No server, no database. Built by Vite, deployed to GitHub Pages at `/tide-testing/`.
+Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 24 `<Route>`s in `src/App.jsx` (18 primary, 3 redirects, 3 system) backed by 22 lazy-loaded page components. No server, no database. Built by Vite, deployed to GitHub Pages at `/tide-testing/`.
 
 ### Tech stack
 
@@ -108,13 +108,13 @@ Google Sheet "TIDE THRIvE Publications (Responses)" (Google Form responses; priv
 .github/workflows/sync-publications.yml → scripts/sync-publications.js (+ scripts/lib/publications-snapshot.js, scripts/lib/snapshot-core.js, scripts/lib/sync-runner.js)
     ↓  thumbnails: scripts/lib/publications-images.js (trim borders; TIDE covers whole; THRIvE kept between 3:4 and 16:9) → 2 WebPs + pixel sizes in the manifest
     ↓  commits src/data/sheets/publications.json + src/data/publications-photos.json + public/assets/images/publications/
-TidePublications (/about/publications, TIDE rows) and ThrivePublications (/thrive/publications, THRIvE rows) — import the snapshot at build time
+TidePublications (/tide/publications, TIDE rows) and ThrivePublications (/thrive/publications, THRIvE rows) — import the snapshot at build time
 ```
 Not live yet (2026-11-20): the snapshot and photo manifest are committed **empty** (`resources: []`, `{}`) — `content:validate` requires both files to exist — and the first real sync run fills them. See §8 "Publications".
 
 ### Routing
 
-`src/App.jsx` registers 23 `<Route>`s (21 lazy-loaded page components). `BrowserRouter` (`basename={import.meta.env.BASE_URL}`) wraps everything — clean URLs, no `#`. `Layout` (skip link + Header + Footer) wraps every route; each page chunk is `lazy()`-loaded behind a `Suspense` fallback that shows `CreativeLoader` only after 200 ms (`useDelayedVisible`). `src/components/ErrorBoundary.jsx` wraps the whole app (outside the Router and `HelmetProvider`): on a render crash it shows a friendly screen (heading/body/button labels from `content/shared/error.yaml`, a reload button and a plain `<a>` home link) and logs the error to the console; the error message and stack are rendered only when `import.meta.env.DEV`. `MotionConfig reducedMotion="user"` makes all Framer animations respect the OS setting.
+`src/App.jsx` registers 24 `<Route>`s (22 lazy-loaded page components). `BrowserRouter` (`basename={import.meta.env.BASE_URL}`) wraps everything — clean URLs, no `#`. `Layout` (skip link + Header + Footer) wraps every route; each page chunk is `lazy()`-loaded behind a `Suspense` fallback that shows `CreativeLoader` only after 200 ms (`useDelayedVisible`). `src/components/ErrorBoundary.jsx` wraps the whole app (outside the Router and `HelmetProvider`): on a render crash it shows a friendly screen (heading/body/button labels from `content/shared/error.yaml`, a reload button and a plain `<a>` home link) and logs the error to the console; the error message and stack are rendered only when `import.meta.env.DEV`. `MotionConfig reducedMotion="user"` makes all Framer animations respect the OS setting.
 
 | Group | Count | Routes |
 |---|---|---|
@@ -207,19 +207,19 @@ tide-new/
 │   │   │   ├── FilterChips.jsx      ← active filters as removable chips
 │   │   │   ├── FilterDrawer.jsx     ← phone/tablet filter dialog (focus trap, Esc, scroll lock, "show results" button)
 │   │   │   └── PickerField.jsx      ← compact filter picker (inline listbox, type-ahead, clear ×)
-│   │   └── publications/           ← Publications pages (/about/publications, /thrive/publications), one layout per page (§4)
+│   │   └── publications/           ← Publications pages (/tide/publications, /thrive/publications), one layout per page (§4)
 │   │       ├── PublicationsHero.jsx    ← PublicationsHero (PageHero + figures line: count, types, "since" year, social proof; optional chart) and PublicationsEmpty
-│   │       ├── TideCollection.jsx      ← TIDE body: featured latest report, shelf (6, then "Show all"), "everything else" with type buttons + pages of 12; search only above 24 rows
-│   │       ├── ResearchArchive.jsx     ← THRIvE body: search + Type/Field/Year selects, chips, newest/oldest toggle, year-grouped column, 20 per page (?page=)
+│   │       ├── TideCollection.jsx      ← TIDE body: spotlight of the latest annual report ("See all {n} editions" filters the library), then one library of every TIDE row as 4:3 cards with search + Type/Year (PublicationToolbar) and pages of 12
+│   │       ├── ResearchArchive.jsx     ← THRIvE body: search + Type/Field/Year FilterMenus, chips, newest/oldest toggle, year-grouped column, 12 per page (?page=)
 │   │       ├── ResearchEntry.jsx       ← one THRIvE entry: type + date, title link, APA citation, clamped description, field tags, Read + Copy citation, source, thumbnail
 │   │       ├── PublicationCover.jsx    ← report cover on a paper stack (3:4 slot, cover at its own ratio) or a typeset stand-in (decorative)
-│   │       ├── MediaPanel.jsx          ← list thumbnail on a tinted brand panel, framed at its own ratio (clamped), or a stand-in page
+│   │       ├── PublicationMedia.jsx    ← every thumbnail: fixed frame per component (4:3 / 3:4), whole image on a blurred wash of itself, type badge bottom-right, slow hover drift
 │   │       ├── FadeImage.jsx           ← thumbnail <img> with manifest width/height, fades in, data-no-placeholder
-│   │       ├── PublicationControls.jsx ← SearchBox, FilterSelect, ActiveFilters
+│   │       ├── PublicationControls.jsx ← SearchBox, FilterMenu, ActiveFilters
 │   │       ├── PublicationsPagination.jsx ← numbered page links (?page=n), nothing for one page
 │   │       ├── YearChart.jsx           ← "publications per year" column chart for the banner; bars filter by year
 │   │       ├── PublicationsJsonLd.jsx  ← schema.org ItemList in <head>
-│   │       ├── PublicationBits.jsx     ← NewBadge, SourceLine, Highlight
+│   │       ├── PublicationBits.jsx     ← NewBadge, SourceLine (THRIvE), Highlight
 │   │       ├── TypeIcon.jsx            ← one lucide icon per type family (TYPE_ICON_RULES)
 │   │       └── typeStyles.js           ← static class sets: FAMILY_STYLE, DOT_PATTERN, LINE_PATTERN, COVER_TONES, LIFT, ZOOM, ratioOf
 │   │
@@ -248,7 +248,8 @@ tide-new/
 │   │   │   ├── PramaanLibraryDetail.jsx ← one resource: photo, open-file link, video lightbox, linked extra info, grades with chapters only
 │   │   │   └── LibraryRedirect.jsx      ← /pramaan-library(/:id) → /pramaan/resource-centre(/:id)
 │   │   └── publications/         ← SeoHead + PublicationsHero + the page's body (or PublicationsEmpty when the org has no row)
-│   │       ├── TidePublications.jsx     ← /about/publications (TIDE rows → TideCollection, about-publications.yaml)
+│   │       ├── TidePublications.jsx     ← /tide/publications (TIDE rows → TideCollection, about-publications.yaml)
+│   │       ├── TidePublicationsRedirect.jsx ← /about/publications → /tide/publications (keeps the query string)
 │   │       └── ThrivePublications.jsx   ← /thrive/publications (THRIvE rows → ResearchArchive, thrive-publications.yaml)
 │   │
 │   ├── hooks/
@@ -263,7 +264,7 @@ tide-new/
 │   ├── config/
 │   │   ├── abl.js                ← resource types: TAB_STYLE_MAP, getTabStyle, TYPE_COLORS, getTypeColors
 │   │   ├── library.js            ← LIBRARY_PAGE_SIZE (9), libraryTypeKey, libraryTypeColors
-│   │   └── publications.js       ← Publications thresholds (THRIVE_PAGE_SIZE 20, TIDE_SHELF_VISIBLE 6, TIDE_OTHERS_PAGE_SIZE 12, TIDE_SEARCH_MIN_ITEMS 24, NEW_BADGE_DAYS 120, LANDSCAPE_RATIO 1.2), HERO_CHART, TYPE_ICON_RULES, SCHEMA_TYPE_BY_ICON, PUBLICATION_PAGES
+│   │   └── publications.js       ← Publications thresholds (THRIVE_PAGE_SIZE 12, TIDE_PAGE_SIZE 12, NEW_BADGE_DAYS 120, LANDSCAPE_RATIO 1.2), HERO_CHART (both off), TYPE_ICON_RULES, SCHEMA_TYPE_BY_ICON, PUBLICATION_PAGES
 │   │
 │   ├── utils/
 │   │   ├── imgSrc.js             ← imgSrc(path): prefixes BASE_URL (NOT idempotent — see §11)
@@ -321,7 +322,7 @@ tide-new/
 │   ├── PRAMAAN-LIBRARY-SETUP-GUIDE.md       ← owner setup for the Resource Centre Sheet → /pramaan/resource-centre
 │   ├── SHEET-INTEGRATION-PLAYBOOK.md        ← THE standard for connecting any new Sheet (snapshot mode)
 │   ├── PRAMAAN-LIBRARY-SHEET-SCHEMA.md      ← which columns the library reads and who gets published
-│   ├── PUBLICATIONS-SETUP-GUIDE.md          ← owner setup for the Publications Sheet → /about/publications + /thrive/publications
+│   ├── PUBLICATIONS-SETUP-GUIDE.md          ← owner setup for the Publications Sheet → /tide/publications + /thrive/publications
 │   ├── PUBLICATIONS-SHEET-SCHEMA.md         ← which columns the Publications sync reads and who gets published
 │   ├── PRAMAAN-HARDENING-PLAN.md · OPERATIONS-*.md · PLATFORM-LIMITS.md  ← current plan, inventory, runbook, free-tier limits
 │   ├── ARCHITECTURE.html · ARCHITECTURE-DATAFLOW.html  ← interactive system diagrams (standalone)
@@ -618,16 +619,16 @@ Each page has its own layout. Both pages (`src/pages/publications/`) render `Seo
 
 - `PublicationsHero({ data, rows, chart })` — `PageHero` (`data.meta.badge/title/subtitle`) plus one line of figures: count, number of distinct types, "since {year}" (`publicationStats`, templates `data.stats.*`), and — when `data.socialProofTypes` is set and `countOfTypes(rows, data.socialProofTypes) > 0` — `data.stats.socialProofTemplate` / `socialProofSingular`. `chart` (optional node) is shown beside the text on large screens, below it on small ones. Nothing shown for 0 rows. `PublicationsEmpty({ meta })` — `meta.emptyTitle` / `meta.emptyHint`.
 - `YearChart({ counts, selected = '', onSelect, labels, noun })` — single-series column chart for the dark banner, from `yearCounts(rows)` (every year from first to last, 0 included). With `onSelect`, each column is an `aria-pressed` toggle button; years with 0 are not buttons. Only the tallest and the hovered/selected column print their number; every column's number is in its accessible label (`labels.barLabelTemplate`, plus `labels.filterAction`). `labels` = `data.chart`; `noun(n)` gives the singular/plural word. Used only on THRIvE (`HERO_CHART.THRIvE` and more than one year); selecting a year navigates to `?year=` (page 1) with router state `focusResults`.
-- `TideCollection({ rows, data })` — TIDE body. `splitShelf(rows, data.featuredType)` gives (1) `Featured`: the latest row of `featuredType` (by report period, `reportPeriod`) — large `PublicationCover` (`stack` 2), title, date, description, `data.featured.read` button + `SourceLine`, `NewBadge`; (2) `Shelf`: the other rows of that type, latest period first, each labelled with its period (`formatPeriod`) — a sideways scroll-snap row on phones, 4 columns from `md`, 6 from `lg`; the first `TIDE_SHELF_VISIBLE` (6), then a `data.shelf.showAllTemplate` / `showFewer` toggle (`aria-expanded`; focus moves to the first newly shown report); (3) `Others`: every other row as cards (a wide thumbnail spans the top of its card, a page sits in a left column), one `aria-pressed` button per type (`data.others.allTypes` first, with counts; only with 2+ types; choice in `?type=`, an unknown value ignored) and numbered pages above `TIDE_OTHERS_PAGE_SIZE` (12), with a `data.pagination.rangeTemplate` line that receives focus after a page change. A `SearchBox` (`data.search`, shortcut `data.search.shortcutKey`) appears only when there are more than `TIDE_SEARCH_MIN_ITEMS` (24) TIDE rows; while searching, one result list (`data.search.resultsHeading`, `countTemplate`, highlighted titles) replaces sections 1–3. Sections with no rows are not rendered.
-- `ResearchArchive({ rows, data })` — THRIvE body: one reading column. Toolbar: `SearchBox` (debounced, `/` shortcut) + three `FilterSelect`s (Type of material, Field of work, Year; faceted counts from `facetPublicationOptions`, types/fields ordered by `orderFilterOptions`, option text `data.toolbar.optionTemplate`; 0-count options disabled unless chosen); `ActiveFilters` chips + "Clear all"; a result line (`data.results.countTemplate`, or `rangeTemplate` when there is more than one page; `aria-live`) and a newest/oldest toggle. Entries grouped under year headings (`groupByYear`; undated last as `data.results.undatedHeading`; a year that started on the previous page gets "(`data.results.continuedLabel`)"). `THRIVE_PAGE_SIZE` (20) per page with `PublicationsPagination`; a filter change returns to page 1; a page change or a chart selection scrolls to and focuses the result line (`focusResults`).
-- `ResearchEntry({ row, data, terms })` (`forwardRef`) — type (with `TypeIcon`) + date (+ `NewBadge`), title (links out when `safeLink(row.link)` is set; search words highlighted), APA citation right under the title, description clamped to 3 lines with `data.entry.showMore/showLess` only when it overflows, field-of-work tags, a "Read" link (hidden without a link), `SourceLine`, and "Copy citation" (`copyText`; `data.entry.copied` / `copyFailed`, announced through an `aria-live` region). Thumbnail: a `MediaPanel` clamped to 3:4…16:9 (stand-in ratio 4:3), top-left on phones, a right-hand column from `sm`.
+- `TideCollection({ rows, data })` — TIDE body, two parts that never swap: (1) `Spotlight`: `latestOfType(rows, data.featuredType)` (latest by the report period in the title) — large `PublicationCover` (full-size image), title, type + date, description, `data.featured.read` button, `NewBadge`, and — when the type has 2+ rows — a `data.featured.seeAllTemplate` button that sets `?type=` to that type (other filters cleared) and moves focus to the library's results line (`q.change(next, { focus: true })`); (2) `Library`: every TIDE row (the spotlighted one included) as identical 4:3 cards (`PublicationMedia`, type + date, title, 3-line description, `data.library.open`), under `PublicationToolbar` with `filters={['type', 'year']}` (`usePublicationQuery`, labels `data.toolbar`), `ResultsBar` (`data.results`, newest/oldest) and numbered pages of `TIDE_PAGE_SIZE` (12); `NoResults` when nothing matches. Filters narrow only the library. No source line on this page.
+- `ResearchArchive({ rows, data })` — THRIvE body: one reading column. Toolbar: `SearchBox` (debounced, `/` shortcut) + three `FilterMenu`s (Type of material, Field of work, Year; faceted counts from `facetPublicationOptions`, types/fields ordered by `orderFilterOptions`; 0-count options disabled unless chosen); `ActiveFilters` chips + "Clear all"; a result line (`data.results.countTemplate`, or `rangeTemplate` when there is more than one page; `aria-live`) and a newest/oldest toggle. Entries grouped under year headings (`groupByYear`; undated last as `data.results.undatedHeading`; a year that started on the previous page gets "(`data.results.continuedLabel`)"). `THRIVE_PAGE_SIZE` (12) per page with `PublicationsPagination`; a filter change returns to page 1; a page change or a chart selection scrolls to and focuses the result line (`focusResults`).
+- `ResearchEntry({ row, data, terms })` (`forwardRef`) — thumbnail (`PublicationMedia`, 4:3; on top on phones, a sticky left column from `sm`), then type (with `TypeIcon`) + date (+ `NewBadge`), title (links out when `safeLink(row.link)` is set; search words highlighted), then two labelled blocks: the APA citation (`data.entry.citationHeading`, a tinted panel with "Copy citation" — `copyText`; `data.entry.copied` / `copyFailed`, announced through an `aria-live` region) and the summary (`data.entry.summaryHeading`, clamped to 4 lines with `data.entry.showMore/showLess` only when it overflows); field-of-work tags, a "Read" link (hidden without a link) and `SourceLine`.
 - `PublicationCover({ thumb, title, period, size = 'md', tone = 0, stack = 1, priority = false, className })` — a fixed 3:4 slot; the cover inside takes the slot's height at its own ratio (from the manifest), so a whole page is shown with no letterbox; `stack` paper sheets behind it; lifts/fans on hover or focus inside a `group` (off under reduced motion). Without a thumbnail (or on a load error): a typeset stand-in on one of `COVER_TONES` (period large, title small). `thumb` = `getPublicationThumb(id)`. Decorative (`aria-hidden`).
-- `MediaPanel({ thumb, type, minRatio, maxRatio, standinRatio = 3/4, maxHeightRem, className })` — a list thumbnail on a tinted panel coloured by type family (`FAMILY_STYLE`), framed with CSS `aspect-ratio` at the image's own ratio clamped to `[minRatio, maxRatio]` (`ratioOf`); `maxHeightRem` caps the height of wide images. Without a thumbnail (or on error): a white stand-in page with the family icon. Decorative (`aria-hidden`).
+- `PublicationMedia({ thumb, type, shape = 'landscape', src = 'thumb', priority, cover, standin, className })` — every publication thumbnail. A FIXED frame per component (`FRAME`: landscape 4:3 for lists and cards, portrait 3:4 for TIDE covers) so rows line up whatever the upload's shape; the image is shown whole (never cropped), inset from the edges, on a blurred copy of itself over the family tint (`FAMILY_STYLE`); a type-family icon badge bottom-right; inside a hovered/focused `group/media` the image drifts up ~3% and the wash more slowly (`DRIFT` / `DRIFT_SLOW`, off under reduced motion). `src: 'full'` uses the full-size file (featured cover). Without a thumbnail (or on error): `standin` or the family icon. Decorative (`aria-hidden`).
 - `FadeImage({ src, width, height, priority = false, onError, className })` — `<img alt="">` with the manifest's width/height (no layout shift), fades in when loaded, `data-no-placeholder` (the caller shows its own stand-in via `onError`).
-- `PublicationControls.jsx`: `SearchBox({ value, onChange, inputRef, labels, className })` (`labels` = `{ label, placeholder, clearLabel, shortcutKey }`; visible label, clear ×, shortcut shown on wide screens and in `aria-keyshortcuts`); `FilterSelect({ label, value, onChange, allLabel, total, options, template, className })` (native `<select>` with a visible label); `ActiveFilters({ chips, removeTemplate, clearAllLabel, onClearAll, className })` (`chips: [{ key, label, onRemove }]`).
+- `PublicationControls.jsx`: `SearchBox({ value, onChange, inputRef, labels, className })` (`labels` = `{ label, placeholder, clearLabel, shortcutKey }`; visible label, clear ×, shortcut shown on wide screens and in `aria-keyshortcuts`); `FilterMenu({ label, value, onChange, allLabel, total, options, align, className })` (listbox menu with a visible label; names left, counts right-aligned; the "all" row, then the options under a small heading with hairlines between rows; 0-count options greyed unless chosen); `ActiveFilters({ chips, removeTemplate, clearAllLabel, onClearAll, className })` (`chips: [{ key, label, onRemove }]`).
 - `PublicationsPagination({ page, totalPages, hrefFor, linkState, labels })` — numbered page **links** (`hrefFor(n)` → location keeping the other params; `linkState` = router state on each link); `pageWindow` with "…" gaps; current page `aria-current`; Previous/Next left out at the ends; renders nothing for one page. `labels` = the YAML `pagination` block (`label`, `previous`, `next`, `pageLabelTemplate`).
 - `PublicationsJsonLd({ rows, name, path })` — `publicationsJsonLd` ItemList added to `<head>` through react-helmet-async.
-- `PublicationBits.jsx`: `NewBadge({ date, data, now })` (`data.newBadge` when `isNew(date, now, NEW_BADGE_DAYS)`, plus `data.a11y.newLabelTemplate` for screen readers), `SourceLine({ url, data, className })` (`data.source.label` + `doi` / `driveFile` / `driveFolder` or the host, from `sourceOf`), `Highlight({ text, terms })` (`<mark>` via `highlightParts`).
+- `PublicationBits.jsx`: `NewBadge({ date, data, now })` (`data.newBadge` when `isNew(date, now, NEW_BADGE_DAYS)`, plus `data.a11y.newLabelTemplate` for screen readers), `SourceLine({ url, data, compact, className })` (THRIvE only: an "opens elsewhere" arrow + the name — `sourceName(host, data.source.names)` or the host — or an outlined `data.source.doi` tag; `data.source.label` as a CSS tooltip and for screen readers), `Highlight({ text, terms })` (`<mark>` via `highlightParts`).
 - `TypeIcon({ type, className = 'h-4 w-4' })` — one lucide icon per family (`typeIconKey` → `TYPE_ICON_RULES`); decorative. `typeStyles.js` — static Tailwind class sets (`FAMILY_STYLE` per family: `edge`, `tint`, `icon`; `DOT_PATTERN`, `LINE_PATTERN`, `COVER_TONES`, `LIFT`, `ZOOM`) and `ratioOf(thumb, { min, max, fallback = 3/4 })`.
 
 ### Layout components
@@ -747,14 +748,14 @@ Generic, pure helpers for snapshot listing pages (Resource Centre and Publicatio
 - `formatPublicationDate('YYYY-MM-DD')` → e.g. "5 March 2024" (en-IN, read as a calendar date) or `null`; `groupByYear(rows, before = null)` → `[{ year, rows, continued }]` (`continued` when `before`, the previous page's last row, has the same year as the first group); `yearCounts(rows)` → `[{ year, count }]` from the first to the last dated year, gaps as 0, undated left out.
 - `publicationStats(rows)` → `{ count, types, firstYear }`; `countOfTypes(rows, types)` (exact names, case/spaces ignored; 0 for an empty list).
 - `reportPeriod(row)` → `{ start, end }` read from the title ("2025-2026", "2025 - 2026", "2024–25", "24-25", "2014-2019"; only a forward span of at most 10 years), else the date's year, else `null`; `formatPeriod(period)` → "2025–26" / "2014–19" / "2025" / `null`.
-- `splitShelf(rows, featuredType)` → `{ featured, shelf, others }`: rows of `featuredType` (case/space-insensitive) ordered by period end (newest first), then date, then title — the first is `featured`, the rest `shelf`; all other rows (in `comparePublications` order) in `others`; `featured` `null` and `shelf` empty when no row has that type.
+- `latestOfType(rows, type)` → the row of `type` (case/space-insensitive) whose title names the latest report period (`reportPeriod`), then the newest date, then title; `null` when none (the TIDE spotlight).
 - `isNew(date, now, days)` (today counts, future dates don't); `safeLink(url)` (http(s) only, else `null`); `sourceOf(url)` → `{ kind: 'doi' | 'driveFile' | 'driveFolder' }`, `{ kind: 'host', host }` (no "www.") or `null`; `typeIconKey(type, rules = TYPE_ICON_RULES)` → icon family or `'file'`; `frameForSize(width, height)` → `'landscape'` when width/height > `LANDSCAPE_RATIO`, else `'portrait'` (also when unknown); `highlightParts(text, terms)` → `[{ text, match }]`; `publicationsJsonLd(rows, { name, url })` → schema.org `ItemList` (name/date/url only when present; `@type` from `SCHEMA_TYPE_BY_ICON`, else `CreativeWork`).
 
 `copyText(text)` (`src/utils/copyText.js`) → `Promise<boolean>`: Clipboard API when available, otherwise a hidden textarea + `execCommand('copy')`.
 
 `src/utils/publicationPhotos.js` reads `src/data/publications-photos.json`: `getPublicationPhoto(id, 'thumb'|'full')` → an already `imgSrc`-resolved path or `null`; `getPublicationThumb(id)` → `{ src, width, height, frame }` (sizes from `thumbWidth`/`thumbHeight`, `frame` from `frameForSize`) or `null`. Don't apply `imgSrc` again.
 
-`src/config/publications.js` (code, not YAML — a number changes here, not in the content files): `THRIVE_PAGE_SIZE` (20 per THRIvE page), `TIDE_SHELF_VISIBLE` (6 covers before "Show all"), `TIDE_OTHERS_PAGE_SIZE` (12 cards per page; pages only above it), `TIDE_SEARCH_MIN_ITEMS` (24; the TIDE search box appears only with more rows than this), `NEW_BADGE_DAYS` (120), `LANDSCAPE_RATIO` (1.2), `HERO_CHART` (`{ TIDE: false, THRIvE: true }`), `TYPE_ICON_RULES` (ordered `{ iconKey, keywords }`; the first rule with a keyword in the type wins, else `file`), `SCHEMA_TYPE_BY_ICON` (`{ article: 'ScholarlyArticle', book: 'Book' }`), `PUBLICATION_PAGES` (`{ TIDE: { path: '/about/publications' }, THRIvE: { path: '/thrive/publications' } }`, used for SEO). Tested in `src/test/pages/publications.test.jsx`.
+`src/config/publications.js` (code, not YAML — a number changes here, not in the content files): `THRIVE_PAGE_SIZE` (12 per THRIvE page), `TIDE_PAGE_SIZE` (12 cards per TIDE library page; pages only above it), `NEW_BADGE_DAYS` (120), `LANDSCAPE_RATIO` (1.2), `HERO_CHART` (`{ TIDE: false, THRIvE: false }`; chart off — uneven yearly output and a part-done current year read as decline), `TYPE_ICON_RULES` (ordered `{ iconKey, keywords }`; the first rule with a keyword in the type wins, else `file`), `SCHEMA_TYPE_BY_ICON` (`{ article: 'ScholarlyArticle', book: 'Book' }`), `PUBLICATION_PAGES` (`{ TIDE: { path: '/tide/publications' }, THRIvE: { path: '/thrive/publications' } }`, used for SEO). Tested in `src/test/pages/publications.test.jsx`.
 
 ### focusRing.js and navActive.js
 
@@ -868,7 +869,7 @@ In `content/shared/navigation.yaml`, adding `subItems` to a dropdown child turns
       desc: "Annual reports, research & events"
       subItems:
         - label: "TIDE Publications"
-          to: "/about/publications"
+          to: "/tide/publications"
         - label: "THRIvE Publications"
           to: "/thrive/publications"
 ```
@@ -942,10 +943,11 @@ Not part of Pramaan, but built the same way (snapshot mode, `docs/SHEET-INTEGRAT
 
 | Route | Page | Data |
 |---|---|---|
-| `/about/publications` | `TidePublications` | snapshot rows with `org: "TIDE"`; text `about-publications.yaml` |
+| `/tide/publications` | `TidePublications` | snapshot rows with `org: "TIDE"`; text `about-publications.yaml` |
+| `/about/publications` | `TidePublicationsRedirect` | forwards to `/tide/publications` with the query string (the old address) |
 | `/thrive/publications` | `ThrivePublications` | snapshot rows with `org: "THRIvE"`; text `thrive-publications.yaml` |
 
-Each page has its own layout (§4 "Publications components"). TIDE (`TideCollection`): featured latest report of `featuredType` (by period read from the title), a shelf of the other reports of that type (6, then "Show all"), then everything else with type buttons (`?type=`) and numbered pages above 12; a search box only above 24 TIDE rows; no year chart (`HERO_CHART.TIDE` false). THRIvE (`ResearchArchive`): a per-year chart in the banner (a bar filters by year), search, Type of material / Field of work / Year selects, newest/oldest toggle, year-grouped list, 20 per page with numbered page links; URL `?search=&type=&field=&year=&dir=asc&page=`. No detail page: entries link out to the publication (`link`). Thresholds: `src/config/publications.js`.
+Each page has its own layout (§4 "Publications components"). TIDE (`TideCollection`, at `/tide/publications`; `/about/publications` forwards there): the latest annual report spotlighted (with "See all {n} editions"), then one library of every TIDE row as cards with the same search + Type / Year bar as THRIvE (filters narrow only the library), 12 per page; no "Source" line; URL `?search=&type=&year=&dir=asc&page=`. No year chart on either page (`HERO_CHART`). THRIvE (`ResearchArchive`): search, Type of material / Field of work / Year menus, newest/oldest toggle, year-grouped list, 12 per page with numbered page links; URL `?search=&type=&field=&year=&dir=asc&page=`. No detail page: entries link out to the publication (`link`). Thresholds: `src/config/publications.js`.
 
 ```
 Google Sheet "TIDE THRIvE Publications (Responses)" (Google Form responses; "Email address" column is personal)
@@ -988,7 +990,7 @@ In `content/pages/about-our-team.yaml`, append to `coreTeam.members:` (name, suf
 
 ### Add a publication (annual report, research, …)
 
-Publications are no longer in YAML: submit the publications Google Form (or edit the "TIDE THRIvE Publications (Responses)" Sheet). Answer **TIDE** for `/about/publications` or **THRIvE** for `/thrive/publications`; the sync publishes it within minutes once set up (§8 "Publications"). `about-publications.yaml` / `thrive-publications.yaml` hold only the text around the list.
+Publications are no longer in YAML: submit the publications Google Form (or edit the "TIDE THRIvE Publications (Responses)" Sheet). Answer **TIDE** for `/tide/publications` or **THRIvE** for `/thrive/publications`; the sync publishes it within minutes once set up (§8 "Publications"). `about-publications.yaml` / `thrive-publications.yaml` hold only the text around the list.
 
 ### Add a new CMS page
 
@@ -1222,7 +1224,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 23 files, 281 tests (jsdom, src/test/**)
+npm test               # vitest run — 23 files, 284 tests (jsdom, src/test/**)
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```
@@ -1240,7 +1242,7 @@ npm run test:ui        # Vitest UI
 | `utils/reloadOnStaleChunk.test.js` | 4 | reload once when a lazy chunk is missing after a deploy |
 | `pages/pramaanLibrary.test.jsx` | 10 | Resource Centre list + detail: filters, sort, search, tab bar, old `?type=` names, card links |
 | `pages/pramaanSwitch.test.jsx` | 4 | `/pramaan` counts and type cards from the snapshot, Contribute `formUrl`, `/pramaan-library` redirect |
-| `pages/publications.test.jsx` | 39 | TIDE: featured latest annual report + hero stats (no chart), shelf by period with period labels, shelf 6 then "Show all {n}", type buttons + `?type=` (unknown ignored), numbered pages above 12 (clamped), search box only above 24 rows, no-featured-type / one-type case, empty state, "New" badge; THRIvE: year groups (undated last), same-date title order, hero chart filters by year + social proof, date toggle, debounced search + highlight + Clear all, "/" shortcut, Type/Field/Year selects (zero-count disabled), stale URL values as chips, URL state, citation/tags/source, Copy citation, description "Show more" only on overflow, pages of 20 (`?page=`, "continued" heading, focus), page clamp + reset on filter change, empty state; utilities (order + tie-break, `reportPeriod`, `splitShelf`, `groupByYear`, year filter + `yearCounts`, facets, URL params, `paginate`/`pageWindow`, `sourceOf`, social proof/`isNew`/icons/frames, highlight, JSON-LD, dates/links) |
+| `pages/publications.test.jsx` | 42 | TIDE (`/tide/publications`): spotlight of the latest annual report + hero stats (no chart, no source line), one library of every row (search + Type/Year menus, counts, chips, Clear all, URL state), "See all {n} editions" (filters + focus), unknown type as a chip, pages of 12 (clamped), search highlight, no-spotlight and single-edition cases, `/about/publications` redirect, empty state, "New" badge; THRIvE: year groups (undated last), same-date title order, no hero chart + social proof, date toggle, debounced search + highlight + Clear all, "/" shortcut, Type/Field/Year menus (counts, zero-count disabled), stale URL values as chips, URL state, citation + summary blocks, tags, compact source, Copy citation, summary "Show more" only on overflow, pages of 12 (`?page=`, "continued" heading, focus), page clamp + reset on filter change, empty state; utilities (order + tie-break, `reportPeriod`, `latestOfType`, `groupByYear`, year filter + `yearCounts`, facets, URL params, `paginate`/`pageWindow`, `sourceOf`, `sourceName`, social proof/`isNew`/icons/frames, highlight, JSON-LD, dates/links) |
 | `scripts/librarySnapshot.test.js` | 12 | Resource Centre sync rules (allowlist, email scrub, limits) |
 | `scripts/snapshotCore.test.js` | 18 | shared sync rules: hash, photo plan (never deletes on a Drive failure), deletion cap, helpers (both Drive-link readers, `photoFileBase`, `cleanString` vs `cleanStringCollapseSpaces`, `planListPhotos`) |
 | `scripts/syncRunner.test.js` | 6 | shared sync plumbing (`sync-runner.js`): token redaction, delete guard, `.env.development` loader (prefix only, never overrides), report texts, `readJson` fallback |
@@ -1262,7 +1264,7 @@ npm run test:e2e       # playwright test — chromium only, workers 1
 npm run test:all       # unit + e2e
 ```
 
-`playwright.config.js` starts (or reuses, outside CI) `npm run dev` on `http://localhost:5173`. Specs live in `e2e/` (`home`, `navigation`, `pramaan`): `navigation.spec` loads 13 routes without page errors (incl. `/about/publications` and `/thrive/publications`), `home.spec` and `pramaan.spec` check basic structure and links; there are no lightbox, filter, mobile-viewport or axe flows. The removed routes are covered only by the Vitest suite. `pramaan.spec` also opens a resource at `/pramaan/resource-centre/W1` and checks the `/pramaan-library` redirect. Requires `npx playwright install chromium` once.
+`playwright.config.js` starts (or reuses, outside CI) `npm run dev` on `http://localhost:5173`. Specs live in `e2e/` (`home`, `navigation`, `pramaan`): `navigation.spec` loads 13 routes without page errors (incl. `/tide/publications` and `/thrive/publications`), `home.spec` and `pramaan.spec` check basic structure and links; there are no lightbox, filter, mobile-viewport or axe flows. The removed routes are covered only by the Vitest suite. `pramaan.spec` also opens a resource at `/pramaan/resource-centre/W1` and checks the `/pramaan-library` redirect. Requires `npx playwright install chromium` once.
 
 ### Accessibility scan
 

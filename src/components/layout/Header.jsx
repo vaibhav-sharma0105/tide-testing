@@ -88,7 +88,7 @@ function SubGroup({ item, onClose }) {
             role="menu"
             aria-label={item.label}
             onKeyDown={onListKeyDown}
-            className="absolute left-full top-0 ml-2 w-56 bg-white rounded-2xl shadow-float border border-tide-border/60 py-2 z-50 overflow-hidden"
+            className="absolute left-full top-0 ml-2 w-64 bg-white rounded-2xl shadow-float border border-tide-border/60 py-2 z-50 overflow-hidden"
           >
             <div className="absolute top-0 left-4 right-4 h-[3px] rounded-full gradient-primary-soft pointer-events-none" />
             {item.subItems.map(sub => (
@@ -97,11 +97,16 @@ function SubGroup({ item, onClose }) {
                 to={sub.to}
                 onClick={onClose}
                 role="menuitem"
-                className="group flex items-center gap-3 px-4 py-3 mx-2 rounded-xl hover:bg-primary-faint transition-colors duration-150"
+                className="group flex items-start gap-3 px-4 py-3 mx-2 rounded-xl hover:bg-primary-faint transition-colors duration-150"
               >
-                <div className="w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
-                <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
-                  {sub.label}
+                <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
+                <div>
+                  <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
+                    {sub.label}
+                  </div>
+                  {sub.desc && (
+                    <div className="text-xs font-body text-tide-muted mt-0.5 leading-snug">{sub.desc}</div>
+                  )}
                 </div>
               </Link>
             ))}

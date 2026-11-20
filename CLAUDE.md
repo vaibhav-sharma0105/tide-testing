@@ -33,7 +33,7 @@ src/
                abl/ (shared Pramaan pieces: AblNavBar, Pagination, DriveImage, ImageLightbox, VideoLightbox, …)
                library/ (Resource Centre: LibraryFilters, LibraryDropdown, LibraryCard, LibraryTypeBadge)
                listing/ (SearchField, FilterChips, FilterDrawer, PickerField — all used by the Resource Centre)
-               publications/ (PublicationsHero, TideCollection, ResearchArchive, ResearchEntry, PublicationCover, MediaPanel,
+               publications/ (PublicationsHero, TideCollection, ResearchArchive, ResearchEntry, PublicationCover, PublicationMedia,
                  PublicationControls, PublicationsPagination, YearChart, PublicationsJsonLd, PublicationBits, TypeIcon, FadeImage, typeStyles.js) · ErrorBoundary.jsx
   pages/       Home, Contact, THRIvE, EducationForHarmony, SocialChangemakers, ComingSoon, NotFound
                about/ · get-involved/ · resources/ (AblHome, AblContribute) · library/ (PramaanLibrary, PramaanLibraryDetail, LibraryRedirect)
@@ -51,13 +51,13 @@ e2e/ (Playwright, 3 specs) · docs/ (guides, playbook, architecture diagrams, sp
 Full annotated tree: AGENTS.md §2.
 
 ## Pages
-`src/App.jsx` registers 23 `<Route>`s (21 lazy-loaded page components): 18 primary, 2 redirects, 3 system.
+`src/App.jsx` registers 24 `<Route>`s (22 lazy-loaded page components): 18 primary, 3 redirects, 3 system.
 
 | Route | Component | Data |
 |-------|-----------|------|
 | `/` | Home | `home.json` |
 | `/about/why-tide` · `/past-programs` · `/our-team` · `/our-partners` | WhyTide · PastPrograms · OurTeam · OurPartners | `about-*.json` |
-| `/about/publications` | TidePublications | `about-publications.json` + snapshot `sheets/publications.json` (TIDE rows) |
+| `/tide/publications` | TidePublications | `about-publications.json` + snapshot `sheets/publications.json` (TIDE rows) |
 | `/education-for-harmony` | EducationForHarmony | `education-for-harmony.json` |
 | `/education-for-harmony/mccx` | OrganizeMCCx | `get-involved-mccx.json` |
 | `/education-for-harmony/social-changemakers` | SocialChangemakers | `social-changemakers.json` (placeholder grid) |
@@ -65,6 +65,7 @@ Full annotated tree: AGENTS.md §2.
 | `/pramaan/resource-centre` (+ `/:id`) | PramaanLibrary (+ PramaanLibraryDetail) | `pramaan-library.json` + snapshot `sheets/pramaan-library.json` |
 | `/pramaan/contribute` | AblContribute | `abl-contribute.json` (`formUrl`) |
 | `/pramaan-library` (+ `/:id`) | LibraryRedirect | → `/pramaan/resource-centre(/:id)`, keeps the query string |
+| `/about/publications` | TidePublicationsRedirect | → `/tide/publications` (its address until 2026-11-20), keeps the query string |
 | `/get-involved/volunteer` · `/get-involved/donate` | Volunteer · Donate | `get-involved-*.json` |
 | `/thrive` · `/contact` | THRIvE · Contact | `thrive.json` · `contact.json` |
 | `/thrive/publications` | ThrivePublications | `thrive-publications.json` + snapshot `sheets/publications.json` (THRIvE rows) |
@@ -81,7 +82,7 @@ content/pages/*.yaml + content/shared/*.yaml  →  scripts/yaml-to-json.js (pred
 content/shared/site.yaml + llms.txt           →  scripts/siteDataPlugin.js (Vite)  →  index.html JSON-LD/<title>/og:site_name, /llms.txt
 ```
 - **Never edit `src/data/`** — it is regenerated (flat: one JSON per YAML basename, so never reuse a basename across `pages/` and `shared/`; stale JSON is never deleted). The Sheet files there (`sheets/pramaan-library.json`, `pramaan-library-photos.json`, `sheets/publications.json`, `publications-photos.json`) are written by the sync bots — never hand-edit those either.
-- Commands: `npm run content:sync` · `content:validate` (YAML syntax, leading-slash image paths, Resource Centre and Publications snapshots, `formUrl`, email/lives-impacted consistency) · `dev` (localhost:5173) · `build` · `lint` · `test` (Vitest, 23 files / 281 tests) · `test:e2e`.
+- Commands: `npm run content:sync` · `content:validate` (YAML syntax, leading-slash image paths, Resource Centre and Publications snapshots, `formUrl`, email/lives-impacted consistency) · `dev` (localhost:5173) · `build` · `lint` · `test` (Vitest, 23 files / 284 tests) · `test:e2e`.
 - **No hardcoded visible text:** every visible string comes from YAML (`data.*`, `common.*`, `ui.*`), never typed into JSX. `react/jsx-no-literals` is an **error** in `src/pages/**` and `src/components/**`, but it does not see string props (`aria-label`, `alt`, `title`) — follow the convention anyway (`cms-integrity` skill). Variable text uses `{token}` placeholders filled in code.
 - **Site-wide facts** (name, url, email, `livesImpacted`, `gradeRange`, `placeholderImage`, `breadcrumbs.*`, …) live only in `content/shared/site.yaml`. A page's last breadcrumb is `meta.breadcrumbName` in its own YAML.
 - Icons and Tailwind classes can't live in JSON: store a key in YAML (`iconKey`, `colorKey`) and map it in the component; never build Tailwind class names dynamically.
@@ -102,7 +103,7 @@ Google Sheet (private, has personal data)
 - Docs: `docs/PRAMAAN-HARDENING-PLAN.md` §12–13 (status), `PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `PRAMAAN-LIBRARY-SHEET-SCHEMA.md`, `OPERATIONS-RUNBOOK.md`, `PLATFORM-LIMITS.md`, `MIGRATION-OVERVIEW.md` (handover), `ARCHITECTURE*.html` (keep both diagrams in sync).
 
 ## Publications (second Sheet integration)
-`/about/publications` (TIDE rows) and `/thrive/publications` (THRIvE rows) are built from one snapshot, same pattern as the Resource Centre:
+`/tide/publications` (TIDE rows) and `/thrive/publications` (THRIvE rows) are built from one snapshot, same pattern as the Resource Centre:
 ```
 Google Sheet "TIDE THRIvE Publications (Responses)" (Form responses; private, has an "Email address" column)
   → apps-script/publications/Code.gs   token-gated; never reads the email column; Timestamp → anonymous id
@@ -113,7 +114,8 @@ Google Sheet "TIDE THRIvE Publications (Responses)" (Form responses; private, ha
 ```
 - **No approval column** (owner decision, 2026-11-20): every Form answer with TIDE/THRIvE + a title goes live; a `Hide from website` column = `Yes` takes a row down. Same safety rules (checked per page). Secrets: `PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN`.
 - **Not live yet** (2026-11-20): snapshot and manifest are committed **empty** (`content:validate` needs both files); the first real sync fills them. A local design preview (manifest `fileId: "preview"`) must be restored to the empty files before committing — its ids differ from the sync's, so the first real run would refuse it. Secrets go in **before** any push with a non-empty snapshot.
-- UI: both pages show `PublicationsHero` (figures line; THRIvE adds a social-proof count from YAML `socialProofTypes` and a per-year `YearChart` whose bars filter by year). **TIDE** = `TideCollection`: the latest report of `featuredType` (YAML, default "Annual report"; latest by the period read from the title) featured, a shelf of the other reports of that type (6, then "Show all"), then everything else with one button per type (`?type=`) and numbered pages above 12; a search box only above 24 TIDE rows. **THRIvE** = `ResearchArchive` + `ResearchEntry`: search + Type/Field/Year selects, chips, newest/oldest toggle, list grouped by year, 20 per page with numbered page links (`?page=`), "Copy citation". Thresholds are code (`src/config/publications.js`: `THRIVE_PAGE_SIZE`, `TIDE_SHELF_VISIBLE`, `TIDE_OTHERS_PAGE_SIZE`, `TIDE_SEARCH_MIN_ITEMS`, `NEW_BADGE_DAYS`, `HERO_CHART`, `TYPE_ICON_RULES`), not YAML. Helpers in `src/utils/publicationFilters.js`. Page text: `about-publications.yaml`, `thrive-publications.yaml`; the publications themselves are edited in the Sheet/Form.
+- UI: both pages show `PublicationsHero` (figures line; THRIvE adds a social-proof count from YAML `socialProofTypes`; the per-year `YearChart` is switched off by `HERO_CHART`). **TIDE** = `TideCollection`: the latest report of `featuredType` (YAML, default "Annual report"; latest by the period read from the title, `latestOfType`) spotlighted with "See all {n} editions" (filters the library to that type), then ONE library of every TIDE row (annual reports included) as identical cards under the shared search + Type/Year bar (`PublicationToolbar` + `usePublicationQuery`), 12 per page — filters narrow only the library, the layout never swaps; no "Source" line (owner decision). **THRIvE** = `ResearchArchive` + `ResearchEntry`: search + Type/Field/Year `FilterMenu`s (same `PublicationToolbar`; counts right-aligned), chips, newest/oldest toggle, list grouped by year, 12 per page with numbered page links (`?page=`); each entry = 4:3 thumbnail + APA-reference block (with "Copy citation") + summary block. Every thumbnail goes through `PublicationMedia` (fixed frame per component, whole image on a blur of itself, type badge bottom-right). Thresholds are code (`src/config/publications.js`: `THRIVE_PAGE_SIZE`, `TIDE_PAGE_SIZE`, `NEW_BADGE_DAYS`, `HERO_CHART`, `TYPE_ICON_RULES`), not YAML. Helpers in `src/utils/publicationFilters.js`. Page text: `about-publications.yaml`, `thrive-publications.yaml`; the publications themselves are edited in the Sheet/Form.
+- Every thumbnail on both pages: `PublicationMedia` — fixed frame per component, whole image with a 5px white mat on a blur of itself, type badge (tooltip) bottom-right.
 - Thumbnails (`scripts/lib/publications-images.js`): borders trimmed; TIDE covers kept whole; THRIvE keeps its own shape between 3:4 and 16:9 (taller → 3:4 attention crop, wider → 16:9 centre crop); full size ≤ 1200 px, never cropped. Rules for editors: `docs/PUBLICATIONS-SHEET-SCHEMA.md` "Thumbnails".
 - Pipeline details: links typed as `www.…` / `doi.org/…` get `https://` added; a title repeated on one page is published but reported (`possible-duplicate`).
 - Docs: `docs/PUBLICATIONS-SETUP-GUIDE.md`, `docs/PUBLICATIONS-SHEET-SCHEMA.md`.

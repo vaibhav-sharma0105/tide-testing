@@ -26,7 +26,7 @@ To bring about contextualized, systemic, sustainable changes in India's educatio
 - [Past Programs]({{url}}/about/past-programs) — History of Prerak, BetterEd, CompletEd, EmpowerEd
 - [Our Team]({{url}}/about/our-team) — Founders and core team
 - [Our Partners]({{url}}/about/our-partners) — 100+ partner schools, NGOs, and institutions
-- [Publications]({{url}}/about/publications) — Annual reports, events, research
+- [Publications]({{url}}/tide/publications) — Annual reports, events, research
 - [Education for Harmony]({{url}}/education-for-harmony) — the EHSA/CARES framework and our ecosystem of interventions
 - [Organise your MCCx]({{url}}/education-for-harmony/mccx) — How to run a Model City Council
 - [Pramaan]({{url}}/pramaan) — About the ABL resource library

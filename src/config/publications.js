@@ -4,18 +4,11 @@
 
 // THRIvE archive: entries per numbered page (?page= in the address, so a position can be
 // shared or bookmarked). Pagination appears only when the results don't fit on one page.
-export const THRIVE_PAGE_SIZE = 20
+export const THRIVE_PAGE_SIZE = 12
 
-// TIDE annual-report shelf: covers shown before a "Show all {n} annual reports" toggle.
-// 6 = one row at the widest layout (6 per row from xl up).
-export const TIDE_SHELF_VISIBLE = 6
-
-// TIDE "Reports, talks & more": cards per page. Numbered pages appear only above this many.
-export const TIDE_OTHERS_PAGE_SIZE = 12
-
-// TIDE search box: appears automatically only when the TIDE collection has MORE rows than this.
-// Below it, everything is visible on the page and a search box would only add a control.
-export const TIDE_SEARCH_MIN_ITEMS = 24
+// TIDE library ("All publications"): cards per numbered page (?page=). 12 = four rows of three.
+// Pagination appears only when the results don't fit on one page.
+export const TIDE_PAGE_SIZE = 12
 
 // "New" badge: rows dated within this many days before today (worked out when the page renders,
 // so the badge disappears on its own; no date is ever shown as new).
@@ -25,10 +18,11 @@ export const NEW_BADGE_DAYS = 120
 // the portrait page frame (3:4), so wide images are never squeezed into a tall box.
 export const LANDSCAPE_RATIO = 1.2
 
-// "Publications per year" chart in the hero, per page. THRIvE: on (49 rows over 7 years; each
-// bar filters the archive by that year). TIDE: off — 16 rows, 1–3 a year, mostly one annual
-// report a year, which the shelf already shows; the chart would add ink without a decision.
-export const HERO_CHART = { TIDE: false, THRIvE: true }
+// "Publications per year" chart in the hero, per page. Off on both (owner review, 2026-11-20):
+// output is uneven (THRIvE: 1 in 2020, 14 in 2023) and the current year is always part-done, so
+// its short bar reads as a decline — the opposite of the message. The Year filter and the year
+// headings in the list already cover "show me one year". Set true to bring the chart back.
+export const HERO_CHART = { TIDE: false, THRIvE: false }
 
 // Type → icon family. Rules are checked in order; the first rule with a keyword found in the
 // type (case-insensitive) wins; otherwise 'file'. Labels always come from the Sheet; only the
@@ -48,6 +42,6 @@ export const SCHEMA_TYPE_BY_ICON = { article: 'ScholarlyArticle', book: 'Book' }
 
 // Each page's address (used for SEO).
 export const PUBLICATION_PAGES = {
-  TIDE: { path: '/about/publications' },
+  TIDE: { path: '/tide/publications' },
   THRIvE: { path: '/thrive/publications' },
 }

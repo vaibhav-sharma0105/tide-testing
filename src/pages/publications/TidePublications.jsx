@@ -9,8 +9,8 @@ import snapshot from '../../data/sheets/publications.json'
 import data from '../../data/about-publications.json'
 import site from '../../data/site.json'
 
-// /about/publications — TIDE's publications (Sheet rows answered "TIDE"), laid out as a document
-// shelf (see components/publications/TideCollection). Rows from the Publications snapshot.
+// /tide/publications — TIDE's publications (Sheet rows answered "TIDE"): the latest annual report
+// spotlighted, then one filterable library (see components/publications/TideCollection). Rows from the Publications snapshot.
 // No year chart in the banner (config HERO_CHART.TIDE: too few rows per year to say anything).
 export default function TidePublications() {
   const rows = useMemo(() => rowsForOrg(snapshot.resources, 'TIDE'), [])

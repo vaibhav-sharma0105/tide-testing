@@ -68,7 +68,7 @@ Sixteen of the 17 page YAMLs carry `meta.breadcrumbName` (every page except `hom
 
 ### Pipeline C — Google Sheets
 ```
-Snapshot mode (the only Sheet pattern; Pramaan Resource Centre, /pramaan/resource-centre; Publications, /about/publications + /thrive/publications):
+Snapshot mode (the only Sheet pattern; Pramaan Resource Centre, /pramaan/resource-centre; Publications, /tide/publications + /thrive/publications):
 Google Sheet → token-gated Apps Script → GitHub Actions sync → src/data/sheets/<slug>.json (+ photos) → page (build time)
 ```
 New Sheet integrations follow `docs/SHEET-INTEGRATION-PLAYBOOK.md` (skill: `.claude/skills/sheet-integration/SKILL.md`). No page reads a Sheet in the browser (the former `useABLData` live read was retired on 2026-11-19; archived in git tag `archive/pramaan-live-read`).

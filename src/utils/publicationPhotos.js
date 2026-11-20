@@ -14,12 +14,18 @@ export function getPublicationPhoto(id, variant = 'thumb') {
 
 /**
  * The thumbnail with its pixel size (for width/height attributes, so nothing shifts while it
- * loads) and the frame that fits it ('portrait' page or 'landscape'), or null.
+ * loads), the frame that fits it ('portrait' page or 'landscape'), and the full-size file (for
+ * large display, e.g. the featured TIDE cover) with its size, or null.
  */
 export function getPublicationThumb(id) {
   const entry = manifest[id]
   if (!entry?.thumb) return null
   const width = Number(entry.thumbWidth) || undefined
   const height = Number(entry.thumbHeight) || undefined
-  return { src: imgSrc(entry.thumb), width, height, frame: frameForSize(width, height) }
+  return {
+    src: imgSrc(entry.thumb), width, height, frame: frameForSize(width, height),
+    full: entry.full ? imgSrc(entry.full) : null,
+    fullWidth: Number(entry.fullWidth) || undefined,
+    fullHeight: Number(entry.fullHeight) || undefined,
+  }
 }

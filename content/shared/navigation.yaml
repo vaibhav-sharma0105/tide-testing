@@ -36,9 +36,11 @@ items:
         desc: "Annual reports, research & events"
         subItems:
           - label: "TIDE Publications"
-            to: "/about/publications"
+            to: "/tide/publications"
+            desc: "Annual reports, project reports & talks"
           - label: "THRIvE Publications"
             to: "/thrive/publications"
+            desc: "Journal articles, books & talks"
 
   - label: "Education for Harmony"
     children:
@@ -68,6 +70,7 @@ items:
         desc: "Where rigorous inquiry meets real-world impact."
       - label: "THRIvE Publications"
         to: "/thrive/publications"
+        desc: "Journal articles, books & talks"
 
   - label: "Contact Us"
     to: "/contact"

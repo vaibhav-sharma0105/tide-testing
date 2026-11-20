@@ -3,7 +3,7 @@
     "breadcrumbName": "TIDE Publications",
     "badge": "About Us · Publications",
     "title": "TIDE Publications",
-    "subtitle": "Annual reports, project reports and talks — an open record of TIDE Foundation's work in education.",
+    "subtitle": "Our reports, research and talks — an open, year-by-year record of TIDE Foundation's work in education.",
     "seoTitle": "Publications — TIDE Foundation",
     "seoDescription": "Read TIDE Foundation's annual reports, project reports, presentations and public talks.",
     "emptyTitle": "No publications published yet",
@@ -18,39 +18,40 @@
   },
   "featuredType": "Annual report",
   "featured": {
-    "eyebrow": "Latest annual report",
-    "read": "Read report"
+    "eyebrow": "Latest edition",
+    "read": "Read report",
+    "seeAllTemplate": "See all {n} editions"
   },
-  "shelf": {
-    "heading": "Annual reports",
-    "showAllTemplate": "Show all {n} annual reports",
-    "showFewer": "Show fewer"
-  },
-  "others": {
-    "heading": "Reports, talks & more",
-    "filterLabel": "Show one type of material",
-    "allTypes": "All",
+  "library": {
+    "heading": "All publications",
+    "intro": "Everything TIDE has published, newest first — search it, or narrow it by type and year.",
     "open": "Open"
   },
-  "search": {
-    "label": "Search TIDE publications",
-    "placeholder": "Titles, descriptions, types…",
-    "clearLabel": "Clear search",
-    "shortcutKey": "/",
-    "resultsHeading": "Search results",
-    "countTemplate": "{total} {publications} found",
+  "toolbar": {
+    "searchPlaceholder": "Search titles, descriptions, types…",
+    "searchLabel": "Search TIDE publications",
+    "clearSearchLabel": "Clear search",
+    "searchShortcutKey": "/",
+    "typeLabel": "Type of material",
+    "allTypes": "All types",
+    "yearLabel": "Year",
+    "allYears": "All years",
+    "newest": "Newest first",
+    "oldest": "Oldest first",
+    "directionLabelTemplate": "Order by date: {dir}. Click to reverse.",
+    "clearAll": "Clear all",
+    "removeTemplate": "Remove filter: {name}"
+  },
+  "results": {
     "publicationSingular": "publication",
     "publicationPlural": "publications",
-    "noResults": "No publications match your search",
-    "noResultsHint": "Try a different word, or clear the search."
+    "countTemplate": "{total} {publications}",
+    "rangeTemplate": "Showing {from}–{to} of {total} {publications}",
+    "noResults": "No publications match your search or filters",
+    "noResultsHint": "Try a different word, or clear the filters.",
+    "undatedHeading": "Undated"
   },
   "newBadge": "New",
-  "source": {
-    "label": "Source",
-    "doi": "DOI",
-    "driveFile": "Google Drive",
-    "driveFolder": "Google Drive folder"
-  },
   "pagination": {
     "label": "Pages",
     "previous": "Previous",
@@ -63,7 +64,6 @@
     "openLabelTemplate": "{action}: {title} (opens in a new tab)",
     "dateLabel": "Date",
     "typeLabel": "Type of material",
-    "newLabelTemplate": "dated within the last {days} days",
-    "periodLabel": "Period"
+    "newLabelTemplate": "dated within the last {days} days"
   }
 }

@@ -20,7 +20,7 @@ const ROUTES = [
   '/about/past-programs',
   '/about/our-team',
   '/about/our-partners',
-  '/about/publications',
+  '/tide/publications',
   '/education-for-harmony',
   '/education-for-harmony/mccx',
   '/education-for-harmony/social-changemakers',

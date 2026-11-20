@@ -10,7 +10,7 @@ Drive files its rows link to.
 **Read `docs/MIGRATION-OVERVIEW.md` first** — it explains why this happens before the GitHub repository
 transfer, not after.
 
-> **Second Sheet (since 2026-11-20):** "TIDE THRIvE Publications (Responses)" feeds `/about/publications` and
+> **Second Sheet (since 2026-11-20):** "TIDE THRIvE Publications (Responses)" feeds `/tide/publications` and
 > `/thrive/publications`, with its own script (`apps-script/publications/Code.gs`), Form, token and GitHub secrets
 > (`PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN`). Once it is set up, move it with the same steps below, done a
 > second time for that Sheet; where a step points to `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`, use

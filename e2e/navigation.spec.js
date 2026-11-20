@@ -8,7 +8,7 @@ const routes = [
   { path: '/about/our-partners', title: 'TIDE' },
   { path: '/education-for-harmony', title: 'TIDE' },
   { path: '/pramaan',            title: 'TIDE' },
-  { path: '/about/publications', title: 'TIDE' },
+  { path: '/tide/publications', title: 'TIDE' },
   { path: '/thrive',             title: 'TIDE' },
   { path: '/thrive/publications', title: 'TIDE' },
   { path: '/contact',            title: 'TIDE' },

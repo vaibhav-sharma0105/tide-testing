@@ -93,11 +93,11 @@ describe('Route smoke tests', () => {
     expect(container.firstChild).not.toBeNull()
   })
 
-  it('/about/publications — TidePublications renders without crashing', async () => {
+  it('/tide/publications — TidePublications renders without crashing', async () => {
     const container = await renderRoute(
       () => import('../../pages/publications/TidePublications'),
-      '/about/publications',
-      '/about/publications'
+      '/tide/publications',
+      '/tide/publications'
     )
     expect(container.firstChild).not.toBeNull()
   })

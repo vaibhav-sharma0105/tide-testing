@@ -2,7 +2,7 @@
 // apps-script/publications/Code.gs). No network or filesystem access here — scripts/sync-publications.js
 // does the I/O, and src/test/scripts/publicationsSnapshot.test.js exercises every rule.
 //
-// One Sheet feeds two pages: rows answered "TIDE" go to /about/publications, rows answered "THRIvE"
+// One Sheet feeds two pages: rows answered "TIDE" go to /tide/publications, rows answered "THRIvE"
 // go to /thrive/publications. Column rules: docs/PUBLICATIONS-SHEET-SCHEMA.md.
 
 // Shared building blocks (safe ids, hashing, photo plan, deletion limits, Drive-link reading, photo

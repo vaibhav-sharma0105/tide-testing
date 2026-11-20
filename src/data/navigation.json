@@ -43,11 +43,13 @@
           "subItems": [
             {
               "label": "TIDE Publications",
-              "to": "/about/publications"
+              "to": "/tide/publications",
+              "desc": "Annual reports, project reports & talks"
             },
             {
               "label": "THRIvE Publications",
-              "to": "/thrive/publications"
+              "to": "/thrive/publications",
+              "desc": "Journal articles, books & talks"
             }
           ]
         }
@@ -98,7 +100,8 @@
         },
         {
           "label": "THRIvE Publications",
-          "to": "/thrive/publications"
+          "to": "/thrive/publications",
+          "desc": "Journal articles, books & talks"
         }
       ]
     },

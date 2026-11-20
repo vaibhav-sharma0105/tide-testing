@@ -1,6 +1,6 @@
 /**
  * Filters, search, order, paging and small derived facts for the Publications pages
- * (/about/publications for TIDE, /thrive/publications for THRIvE). Pure functions over the
+ * (/tide/publications for TIDE, /thrive/publications for THRIvE). Pure functions over the
  * snapshot rows (src/data/sheets/publications.json). Matching ignores case and extra spaces.
  * Nothing here invents data: every value is read or counted from the rows (or the row's URL).
  */
@@ -256,25 +256,21 @@ export function formatPeriod(period) {
 }
 
 /**
- * The TIDE page's sections. Rows of `featuredType` (case/space-insensitive) ordered by report
- * period end (newest first), then date, then title: the first is `featured`, the rest are the
- * `shelf`. Every other row (comparePublications order) is in `others`. featured is null (and
- * shelf empty) when there is no row of that type.
+ * The latest row of `type` (case/space-insensitive) for the TIDE page's spotlight: the one whose
+ * report period ends latest — the period named in its title (e.g. "2025-26"), or, when the title
+ * names none, the year of its date of publication (reportPeriod) — then the newest date, then
+ * title A→Z. Runs on every build, so it follows the Sheet with no code change.
+ * null when there is no row of that type.
  */
-export function splitShelf(rows, featuredType) {
-  const key = normKey(featuredType)
-  const ordered = [...rows].sort(comparePublications(DEFAULT_DIR))
-  const main = key ? ordered.filter(r => normKey(r.type) === key) : []
+export function latestOfType(rows, type) {
+  const key = normKey(type)
+  if (!key) return null
   const end = (r) => reportPeriod(r)?.end ?? -Infinity
-  const byPeriod = main
+  return [...rows]
+    .sort(comparePublications(DEFAULT_DIR))
+    .filter(r => normKey(r.type) === key)
     .map((r, i) => ({ r, i }))
-    .sort((a, b) => end(b.r) - end(a.r) || a.i - b.i)
-    .map(x => x.r)
-  return {
-    featured: byPeriod[0] ?? null,
-    shelf: byPeriod.slice(1),
-    others: ordered.filter(r => !key || normKey(r.type) !== key),
-  }
+    .sort((a, b) => end(b.r) - end(a.r) || a.i - b.i)[0]?.r ?? null
 }
 
 /**
@@ -312,6 +308,21 @@ export function sourceOf(url) {
     if (/\/file\//.test(u.pathname) || u.searchParams.has('id')) return { kind: 'driveFile' }
   }
   return { kind: 'host', host }
+}
+
+/**
+ * The display name for a web address from `names` ({ 'example.org': 'Example' }, from YAML): the
+ * address itself or its closest listed parent (news.cam.ac.uk → cam.ac.uk), else the address.
+ */
+export function sourceName(host, names) {
+  if (!host) return host
+  const map = names && typeof names === 'object' ? names : {}
+  const labels = host.toLowerCase().split('.')
+  for (let i = 0; i < labels.length - 1; i++) {
+    const name = map[labels.slice(i).join('.')]
+    if (typeof name === 'string' && name.trim()) return name.trim()
+  }
+  return host
 }
 
 /** Icon family for a type (TYPE_ICON_RULES in config): 'article', 'book', … or 'file'. */
