@@ -321,6 +321,7 @@ tide-new/
 │   ├── MAINTENANCE-CONTRIBUTE-FORM-LINK.md  ← step-by-step: change the Contribute form link (formUrl in abl-contribute.yaml)
 │   ├── PRAMAAN-LIBRARY-SETUP-GUIDE.md       ← owner setup for the Resource Centre Sheet → /pramaan/resource-centre
 │   ├── SHEET-INTEGRATION-PLAYBOOK.md        ← THE standard for connecting any new Sheet (snapshot mode)
+│   ├── NEW-SHEET-INTEGRATION-REQUEST.md     ← owner's message template for a new integration (facts to gather + working rules)
 │   ├── PRAMAAN-LIBRARY-SHEET-SCHEMA.md      ← which columns the library reads and who gets published
 │   ├── PUBLICATIONS-SETUP-GUIDE.md          ← owner setup for the Publications Sheet → /tide/publications + /thrive/publications
 │   ├── PUBLICATIONS-SHEET-SCHEMA.md         ← which columns the Publications sync reads and who gets published
@@ -1300,6 +1301,7 @@ Only `deploy.yml` (lint, `content:validate`, unit tests, build, deploy), `sync-p
 | `.claude/skills/doc-sync/SKILL.md` | Auto-triggers after structural changes — keeps human and agent docs truthful |
 | `.claude/skills/sheet-integration/SKILL.md` | Invoke when connecting any new Google Sheet / Form to the site — walks through `docs/SHEET-INTEGRATION-PLAYBOOK.md` (snapshot mode, the Pramaan Library pattern) |
 | `docs/SHEET-INTEGRATION-PLAYBOOK.md` | The standard for Sheet integrations: architecture, principles, naming, build order, page design, security checklist, go-live lessons |
+| `docs/NEW-SHEET-INTEGRATION-REQUEST.md` | The owner's request template for a new integration: what to gather, the message to paste into a new conversation, and the working rules learned on the first two integrations |
 | `docs/specs/site-restructure-plan.md` | Route restructure plan (historical; the leftover routes it tracked have since been removed) |
 | `docs/specs/stranded-pages-review.md` | Historical stakeholder review of the pages that were later removed |
 | `content/shared/site.yaml` | Single source of site-wide facts (name, URL, email, lives-impacted figure, breadcrumb parents) |

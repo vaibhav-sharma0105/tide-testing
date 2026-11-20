@@ -27,6 +27,12 @@ blocked by the CSP; a snapshot built from **test** consent committed to a public
 one standard. This skill is the procedure for applying it, so the next integration starts with
 those lessons instead of rediscovering them.
 
+**The owner's request** usually follows `docs/NEW-SHEET-INTEGRATION-REQUEST.md` (page, Sheet,
+column mapping, stakeholder notes, and eight working rules — e.g. never change the stakeholder's
+Sheet without approval, never commit locally made data, commit only when asked). If the request
+is missing any of that template's facts, ask for them before building; follow its working rules
+either way.
+
 **Reference implementation:** the Pramaan Library, served as the Pramaan Resource Centre at
 `/pramaan/resource-centre` — `apps-script/pramaan-library/Code.gs`,
 `scripts/sync-pramaan-library.js`, `scripts/lib/library-snapshot.js` (+ the shared

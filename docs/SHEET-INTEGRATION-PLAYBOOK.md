@@ -10,6 +10,9 @@ git tag `archive/pramaan-live-read`, for reference).
 Agents: the procedure that walks through this document step by step is
 `.claude/skills/sheet-integration/SKILL.md`.
 
+Owners: to ask for a new integration, copy the message in `docs/NEW-SHEET-INTEGRATION-REQUEST.md`
+into a new conversation and fill in the page, the Sheet and the stakeholder's notes.
+
 ---
 
 ## 1. The architecture (one picture)

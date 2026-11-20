@@ -98,7 +98,7 @@ Google Sheet (private, has personal data)
 ```
 - Safety rules: the sync refuses mass removals (> max(10, 20%) of rows) unless run with `allow_large_change` — never loosen the thresholds; it never deletes a photo because Drive failed; problems become GitHub Issues. Secrets: `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`.
 - **Never read a Sheet live in the browser.** The former live-read Resource Centre (`useABLData`, `apps-script/abl/`, its sync, pages and docs) was retired 2026-11-19 and is only in the local tag `archive/pramaan-live-read`. Details of what was kept/left: AGENTS.md §8.
-- **New Sheet integrations** copy this one: `docs/SHEET-INTEGRATION-PLAYBOOK.md` + the `sheet-integration` skill. Sync scripts share their I/O through `scripts/lib/sync-runner.js` and pure rules through `scripts/lib/snapshot-core.js` — reuse them, don't copy.
+- **New Sheet integrations** copy this one: `docs/SHEET-INTEGRATION-PLAYBOOK.md` + the `sheet-integration` skill; the owner's request template (facts to gather + working rules) is `docs/NEW-SHEET-INTEGRATION-REQUEST.md`. Sync scripts share their I/O through `scripts/lib/sync-runner.js` and pure rules through `scripts/lib/snapshot-core.js` — reuse them, don't copy.
 - Contribute form link = `content/pages/abl-contribute.yaml` → `formUrl` (not a secret; must be a Google Forms link or empty). Resource-type colours: `src/config/abl.js`; labels: `abl-home.yaml` → `resourceTypes.labels` (adding a type needs both).
 - Docs: `docs/PRAMAAN-HARDENING-PLAN.md` §12–13 (status), `PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `PRAMAAN-LIBRARY-SHEET-SCHEMA.md`, `OPERATIONS-RUNBOOK.md`, `PLATFORM-LIMITS.md`, `MIGRATION-OVERVIEW.md` (handover), `ARCHITECTURE*.html` (keep both diagrams in sync).
 
