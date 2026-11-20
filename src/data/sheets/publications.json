@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-20T05:41:28.378Z",
-  "contentHash": "sha256:1ac93e55d762c1736fb7757fd8ef219eca78709f03cbd345c8cb9b082c35df9e",
+  "lastUpdated": "2026-11-20T06:33:26.330Z",
+  "contentHash": "sha256:7ccef5d4e94b631da8ac2436b25fd8742aae32215d4e327ddaa0c9eb57eb0bf8",
   "resources": [
     {
       "id": "P-6bdd242cfb",
@@ -114,20 +114,6 @@
       "photoUrl": "https://drive.google.com/open?id=179dOErMS_U2zTAOEb5TbapGK_wuls3Ai"
     },
     {
-      "id": "P-55f87debde",
-      "org": "THRIvE",
-      "date": "2025-12-03",
-      "title": "A missing link for inclusive education: The importance of supporting teachers with disabilities to ensure learning for all by Nidhi Singal and Katie Godwin",
-      "type": "Published by others (TIDE acknowledged)",
-      "fields": [
-        "People with disability"
-      ],
-      "description": "Synthesis highlights inclusion of teachers with disabilities for education systems.",
-      "citation": "Singal, N., & Godwin, K. 2025. A missing link for inclusive education: The importance of supporting teachers with disabilities to ensure learning for all. The Learning Generation Initiative, Education Development Center",
-      "link": "https://learninggeneration.org/wp-content/uploads/2025/06/A-missing-link-for-inclusive-education-1-compressed.pdf",
-      "photoUrl": "https://drive.google.com/open?id=1PPkExQv5mPvPK3jxJ5kFW6Wa4o7c7UGq"
-    },
-    {
       "id": "P-024160b3ea",
       "org": "THRIvE",
       "date": "2025-11-10",
@@ -236,20 +222,6 @@
       "citation": null,
       "link": "https://drive.google.com/drive/folders/1p-YgdobKy7M-D4EF-AUOo5EXwOpj6q_59yhTlSL71nztjw7PYJfT8IkJklyPFlZ3bkamc58y?usp=sharing",
       "photoUrl": "https://drive.google.com/open?id=1lMQ3AdMIiT_XRXn7w5WBpfd4557N7LyC"
-    },
-    {
-      "id": "P-88fc05ebde",
-      "org": "THRIvE",
-      "date": "2025-03-22",
-      "title": "Happiness in education from the lens of children: Photovoice of students in government run schools in India",
-      "type": "Journal article",
-      "fields": [
-        "Social emotional learning"
-      ],
-      "description": "This study uses photovoice to explore how children in Indian government schools experience happiness, emphasizing relationships, self-awareness, and holistic well-being.",
-      "citation": "Nanda, M., Patel, J., Nath, S., & Ravindranath, S. (2025). Happiness in education from the lens of children: Photovoice of students in government-run schools in India. Social Sciences & Humanities Open, 11, Article 101244. https://doi.org/10.1016/j.ssaho.2025.101244",
-      "link": "https://pdf.sciencedirectassets.com/782145/1-s2.0-S2773233924X00030/1-s2.0-S2773233925000270/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCIQD6sMux5V208JbKfeKt%2FOH5%2BHgPE69hDGCN7jhCwS6KlgIgb9xNzUYr5N4X9L77d56dHAsL2cDstXCwW4rH%2FKCScm4qvAUIu%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAFGgwwNTkwMDM1NDY4NjUiDJYdsW3jUY3IFC6dYSqQBWceJl6WoxWGI12bMtBMvVSzvtuEijrDrVFNzTlE%2FIEORjQfHOlRLA5gwhS9QLgsaTTn3bHFxKsa%2BOjuIdtDZ8INzygbfnUVBBUYpC3FW6n8pc7%2BbSraw5%2BB%2B51mJCIroLKAH7DpA%2BXODpJjoomI6kQDQt%2BeB3S%2FYKoy0LDMoCtM8LD%2FJqVpplv9UeeZDE24Q2zQsuFoN%2FdECvDyGcVWn1uysc4gjuTQSWD2scC3bQG42BdIUcheR6WS8JrohuWTWGBAzN8%2FvWXKpy%2FalZ6ywOStEKndoLYVxk14RTVFWzNlPudlvlsAP88WSAsKdEuuvSjL1OhlmsooRmPgr%2BWsoHLlFfAa6zSBgCBt0r6ittBj4t2oJbW5dMcV9jMgjqvcCC01eR8sBiEKPg8SivFl2V5bz1JzqZqZZnd3cYNLpN8MWt7z5gkBAbOd1D7NOBrHtc68cxI0bN5Gxdh9tOwlBYfenIgwEm5UNc%2FyfUXNu7IcOPhh%2BW8nwTifv3Bd0TzqnMhnLgW5F%2F8CN5UaFdX9VPEEmuxysrHyfraB8KqpZpHyBPVnb7KHrY%2BA4%2FKeJfY8lbndgO8Qp61AC0IjqwlxR8lFNz4gCNT%2FN%2BOLy4TcN9tWorKsgT9574z8aM6EsTFfAaF37PUSEk8Lw5SbN0pRhGJmvEI1IYPxp9ZJhowintR763qVQD1eb3Pf6xOQhQ1km%2FhIhWDU5XGWcC91v9qWhO0%2BxMCTI%2B0ws0M41ZE8QwVZ8lyPU27%2FkB5syJ3kzVUtiDGL%2Bkklun7uDiLfao2A4S56T%2FbG%2F0DHrya2BZVvadumPYZQOSMCTkdsgOL8ZoosiLz3A0sLMU%2BLIuR4VwqIjv0d0Xxxy6Ama9ENdHmBP2RgMIau1NEGOrEB8yKqTjWykmyWaRFdJnhi%2BjtfsX2ZUBC9h97hvN2AA%2BoALoIm9qq0XTv1UDBQYya2aAj9AsY18QCmMNUM65INZxQS9fbAoGasy6rX%2Fj7oKtf95nPBSvKyvvC2srAEmuTv9jpg2lnjsA6AeNtrBOH6BCeyMDtWz9owHOR9ekuYZIB%2ByrM%2FqWohnQGlOZcHptOUlEIRY3DxIGr%2FAoXiNLStHDJRby8QWsRD1zENO%2FSXXDYl&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260619T113207Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAQ3PHCVTY6TOZUF7W%2F20260619%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=3a5661c4e5f585125cbc85bb76bfe7583340bf114217e9d49dab2b6c6a14394d&hash=bce4d70767dab680f329a30e73c5266b850f4b0e0a91d6deec203d6f299d7d46&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S2773233925000270&tid=spdf-ecd050db-1a93-4a49-a9cd-2a98014a5f47&sid=ebe3ae991dcb164661484b714cb973ec76dcgxrqa&type=client&tsoh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&rh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&ua=0f09075f03505359545b&rr=a0e236187971a784&cc=in",
-      "photoUrl": "https://drive.google.com/open?id=1ND9POGQKVeoVImRExTkjOHQNQak_2Xhr"
     },
     {
       "id": "P-3e369ed52c",
@@ -553,20 +525,6 @@
       "citation": "Patel, J. (2023). Learning to Live Together Harmoniously; Spiritual Perspectives from Indian Classrooms. Palgrave-Springer. https://doi.org/10.1007/978-3-031-23539-9. ISBN 978-3-031-23538-2",
       "link": "https://doi.org/10.1007/978-3-031-23539-9",
       "photoUrl": "https://drive.google.com/open?id=1sCSBr1PEURtZEwe78voETDYXMnLKfMg3"
-    },
-    {
-      "id": "P-43d9a5039d",
-      "org": "THRIvE",
-      "date": "2023-02-08",
-      "title": "Happiness Education in India: Two Researchers Set out to Ask What Students and Teachers Think",
-      "type": "Published by others (TIDE acknowledged)",
-      "fields": [
-        "Social emotional learning"
-      ],
-      "description": "A blog written for MIND & LIFE Institute, celebrating Dr. Seema Nath and Dr. Jwalin Patel, recipients of the Mind & Life PEACE Grant 2021, to explore how the Happiness Curriculum fosters social-emotional well-being in students.",
-      "citation": "Kinkade, S. (2023, February 8). Happiness education in India: Two researchers set out to ask what students and teachers think. Mind & Life Institute. https://www.mindandlife.org/media/happiness-education-in-india/",
-      "link": null,
-      "photoUrl": "https://drive.google.com/open?id=1eNqfCfqRMB6JJBvI0xihPOYW0tXgD7yU"
     },
     {
       "id": "P-ffa05bbb22",
@@ -891,10 +849,10 @@
     }
   ],
   "meta": {
-    "total": 65,
+    "total": 62,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 49
+      "THRIvE": 46
     }
   }
 }
