@@ -17,6 +17,7 @@
   <url><loc>https://tideinternational.org/pramaan/resource-centre</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://tideinternational.org/pramaan/contribute</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://tideinternational.org/thrive</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://tideinternational.org/thrive/publications</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://tideinternational.org/get-involved/volunteer</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://tideinternational.org/get-involved/donate</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://tideinternational.org/contact</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>

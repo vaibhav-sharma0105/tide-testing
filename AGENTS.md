@@ -23,7 +23,7 @@ npm run dev          # auto-syncs content, then starts dev server at localhost:5
 npm run build        # auto-syncs content, then builds to dist/
 npm run content:validate   # YAML syntax, leading-slash image paths, and email / lives-impacted consistency with site.yaml
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — run in CI (deploy.yml)
-npm test             # Vitest unit/component tests (17 files, 194 tests) — run in CI (deploy.yml)
+npm test             # Vitest unit/component tests (23 files, 281 tests) — run in CI (deploy.yml)
 ```
 
 **Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
@@ -51,7 +51,7 @@ npm test             # Vitest unit/component tests (17 files, 194 tests) — run
 
 ### What this project is
 
-Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 22 `<Route>`s in `src/App.jsx` (17 primary, 2 redirects, 3 system) backed by 20 lazy-loaded page components. No server, no database. Built by Vite, deployed to GitHub Pages at `/tide-testing/`.
+Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 23 `<Route>`s in `src/App.jsx` (18 primary, 2 redirects, 3 system) backed by 21 lazy-loaded page components. No server, no database. Built by Vite, deployed to GitHub Pages at `/tide-testing/`.
 
 ### Tech stack
 
@@ -66,11 +66,11 @@ Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 22 `<R
 
 ### Data flows
 
-There are three distinct data pipelines:
+There are four distinct data pipelines:
 
-**1 — CMS pipeline (16 page YAMLs + 9 shared YAMLs → 25 JSON files)**
+**1 — CMS pipeline (17 page YAMLs + 9 shared YAMLs → 26 JSON files)**
 ```
-content/pages/*.yaml  ─┐   (16: pages + the Pramaan screens abl-home, pramaan-library, abl-contribute)
+content/pages/*.yaml  ─┐   (17: pages + the Pramaan screens abl-home, pramaan-library, abl-contribute)
 content/shared/*.yaml ─┤   (9: navigation, footer, common, ui, loader, error, not-found, coming-soon, site)
                         │  scripts/yaml-to-json.js  (predev/prebuild)
                         ↓
@@ -93,19 +93,32 @@ content/shared/llms.txt  ─┴─ scripts/siteDataPlugin.js (Vite plugin, build
 ```
 Google Sheet "Contributing to Pramaan; Educators' Resource Bank (Responses)" (private, has personal data)
     ↓  apps-script/pramaan-library/Code.gs — token-gated export/fetchImage only; consented rows (Q, R, S = Yes); never columns L–P
-.github/workflows/sync-pramaan-library.yml → scripts/sync-pramaan-library.js (+ scripts/lib/library-snapshot.js, scripts/lib/snapshot-core.js)
+.github/workflows/sync-pramaan-library.yml → scripts/sync-pramaan-library.js (+ scripts/lib/library-snapshot.js, scripts/lib/snapshot-core.js, scripts/lib/sync-runner.js)
     ↓  commits src/data/sheets/pramaan-library.json + src/data/pramaan-library-photos.json + public/assets/images/pramaan-library/
 PramaanLibrary / PramaanLibraryDetail (/pramaan/resource-centre) and AblHome's counts (/pramaan) — import the snapshot at build time
 ```
 No page reads a Sheet in the browser. (The former live read — `useABLData` → Apps Script — was retired on 2026-11-19; archived in git tag `archive/pramaan-live-read`.) See §8.
 
+**4 — Publications pipeline (second Sheet integration, same pattern)**
+```
+Google Sheet "TIDE THRIvE Publications (Responses)" (Google Form responses; private, has an "Email address" column)
+    ↓  apps-script/publications/Code.gs — token-gated export/fetchImage only; rows answered TIDE/THRIvE with a title;
+    ↓  never reads the email column; Timestamp → anonymous id P-<10 hex> (rows typed in by hand without a Timestamp:
+    ↓  id from org + title + date); "www.…"/"doi.org/…" links get https:// added; optional "Hide from website" column
+.github/workflows/sync-publications.yml → scripts/sync-publications.js (+ scripts/lib/publications-snapshot.js, scripts/lib/snapshot-core.js, scripts/lib/sync-runner.js)
+    ↓  thumbnails: scripts/lib/publications-images.js (trim borders; TIDE covers whole; THRIvE kept between 3:4 and 16:9) → 2 WebPs + pixel sizes in the manifest
+    ↓  commits src/data/sheets/publications.json + src/data/publications-photos.json + public/assets/images/publications/
+TidePublications (/about/publications, TIDE rows) and ThrivePublications (/thrive/publications, THRIvE rows) — import the snapshot at build time
+```
+Not live yet (2026-11-20): the snapshot and photo manifest are committed **empty** (`resources: []`, `{}`) — `content:validate` requires both files to exist — and the first real sync run fills them. See §8 "Publications".
+
 ### Routing
 
-`src/App.jsx` registers 22 `<Route>`s (20 lazy-loaded page components). `BrowserRouter` (`basename={import.meta.env.BASE_URL}`) wraps everything — clean URLs, no `#`. `Layout` (skip link + Header + Footer) wraps every route; each page chunk is `lazy()`-loaded behind a `Suspense` fallback that shows `CreativeLoader` only after 200 ms (`useDelayedVisible`). `src/components/ErrorBoundary.jsx` wraps the whole app (outside the Router and `HelmetProvider`): on a render crash it shows a friendly screen (heading/body/button labels from `content/shared/error.yaml`, a reload button and a plain `<a>` home link) and logs the error to the console; the error message and stack are rendered only when `import.meta.env.DEV`. `MotionConfig reducedMotion="user"` makes all Framer animations respect the OS setting.
+`src/App.jsx` registers 23 `<Route>`s (21 lazy-loaded page components). `BrowserRouter` (`basename={import.meta.env.BASE_URL}`) wraps everything — clean URLs, no `#`. `Layout` (skip link + Header + Footer) wraps every route; each page chunk is `lazy()`-loaded behind a `Suspense` fallback that shows `CreativeLoader` only after 200 ms (`useDelayedVisible`). `src/components/ErrorBoundary.jsx` wraps the whole app (outside the Router and `HelmetProvider`): on a render crash it shows a friendly screen (heading/body/button labels from `content/shared/error.yaml`, a reload button and a plain `<a>` home link) and logs the error to the console; the error message and stack are rendered only when `import.meta.env.DEV`. `MotionConfig reducedMotion="user"` makes all Framer animations respect the OS setting.
 
 | Group | Count | Routes |
 |---|---|---|
-| Primary | 17 | `/`, `/about/{why-tide,past-programs,our-team,our-partners,publications}`, `/education-for-harmony`, `/education-for-harmony/mccx`, `/education-for-harmony/social-changemakers` (not in any menu), `/pramaan`, `/pramaan/resource-centre`, `/pramaan/resource-centre/:id`, `/pramaan/contribute`, `/get-involved/{volunteer,donate}`, `/thrive`, `/contact` |
+| Primary | 18 | `/`, `/about/{why-tide,past-programs,our-team,our-partners,publications}`, `/education-for-harmony`, `/education-for-harmony/mccx`, `/education-for-harmony/social-changemakers` (not in any menu), `/pramaan`, `/pramaan/resource-centre`, `/pramaan/resource-centre/:id`, `/pramaan/contribute`, `/get-involved/{volunteer,donate}`, `/thrive`, `/thrive/publications`, `/contact` |
 | Redirect | 2 | `/pramaan-library`, `/pramaan-library/:id` → `/pramaan/resource-centre(/:id)` (the Resource Centre's former address; `LibraryRedirect` keeps the query string) |
 | System | 3 | `/coming-soon`, `/404`, `*` (the last two both render `NotFound`) |
 
@@ -133,10 +146,11 @@ tide-new/
 ├── .env.example           ← documents required env vars (committed; no real values)
 │
 ├── content/               ← EDIT THIS — canonical content source
-│   ├── pages/             ← 16 .yaml files, one per page/screen (incl. the Pramaan screens abl-home,
-│   │                        pramaan-library (Resource Centre list + detail), abl-contribute)
+│   ├── pages/             ← 17 .yaml files, one per page/screen (incl. the Pramaan screens abl-home,
+│   │                        pramaan-library (Resource Centre list + detail), abl-contribute, and the
+│   │                        Publications pages about-publications, thrive-publications)
 │   └── shared/            ← 9 .yaml files + llms.txt template
-│       ├── navigation.yaml  ← header nav + logo/skip-link/aria labels (Header + Layout read navigation.json)
+│       ├── navigation.yaml  ← header nav (incl. nested `subItems` groups) + logo/skip-link/aria labels (Header + Layout read navigation.json)
 │       ├── footer.yaml      ← social links, Donate button, copy
 │       ├── common.yaml      ← micro-copy reused across pages: step, viewLinkedIn
 │       ├── ui.yaml          ← Lightbox aria-labels (lightbox.*) + Pramaan photo/video viewer labels (mediaLightbox.*)
@@ -148,14 +162,14 @@ tide-new/
 │       └── llms.txt         ← template (NOT YAML — the sync ignores it) rendered to /llms.txt by siteDataPlugin
 │
 ├── src/
-│   ├── App.jsx            ← BrowserRouter + 22 routes + ErrorBoundary + lazy() pages
+│   ├── App.jsx            ← BrowserRouter + 23 routes + ErrorBoundary + lazy() pages
 │   ├── main.jsx           ← React root; imports index.css; calls installImagePlaceholder() before rendering
 │   ├── index.css          ← Tailwind directives + global styles + section-padding
 │   │
 │   ├── components/
 │   │   ├── ErrorBoundary.jsx      ← root crash screen (error.yaml); message/stack only in DEV
 │   │   ├── layout/
-│   │   │   ├── Header.jsx     ← fixed nav (transparent → glass on scroll), dropdowns + flyouts, mobile hamburger
+│   │   │   ├── Header.jsx     ← fixed nav (transparent → glass on scroll), dropdowns + nested sub-menus (`SubGroup`), mobile hamburger; active state via utils/navActive.js
 │   │   │   ├── Footer.jsx     ← footer.json + contact.json
 │   │   │   └── Layout.jsx     ← skip link, page transition (AnimatePresence keyed by pathname), scroll-to-top
 │   │   │
@@ -175,7 +189,7 @@ tide-new/
 │   │   │
 │   │   ├── abl/
 │   │   │   ├── AblNavBar.jsx        ← tab bar under the hero on every Pramaan page (About / Resource Centre / Contribute)
-│   │   │   ├── Pagination.jsx       ← numbered pagination with ellipsis (Resource Centre)
+│   │   │   ├── Pagination.jsx       ← numbered pagination with ellipsis (Resource Centre only; optional `labels` prop)
 │   │   │   ├── DriveImage.jsx       ← self-hosted photo (src), shimmer + book-icon fallback
 │   │   │   ├── ResourceTypeBadge.jsx ← colour pill for resource type (optional icon / overlay-on-photo look)
 │   │   │   ├── typeIcons.jsx        ← `TypeIcon`: one lucide icon per resource type, shared by badges, filter tiles and /pramaan cards
@@ -183,11 +197,31 @@ tide-new/
 │   │   │   ├── VideoLightbox.jsx    ← full-screen video overlay, mirrors ImageLightbox; `translucent` prop = blurred see-through backdrop + larger player (PromoVideo, and the resource page's video). `ui/Lightbox` has the same prop
 │   │   │   ├── PromoVideo.jsx       ← promo video as a pinned print in the /pramaan banner (player loads on click)
 │   │   │   └── PhotoStrip.jsx       ← photo strip moved by one sub-pixel transform: eased drift, drag/swipe/wheel with momentum, arrow buttons; pauses on hover; a tap or Enter opens the photo in a translucent Lightbox
-│   │   └── library/                ← Pramaan Resource Centre (/pramaan/resource-centre)
-│   │       ├── LibraryFilters.jsx   ← sidebar/drawer filters: Ownership + Subject pickers (inline listbox), type tiles, grade pills; variant card | drawer
-│   │       ├── LibraryDropdown.jsx  ← rounded listbox replacing <select> (sort menu); exports FOCUS_PILL (see §11 focus note)
-│   │       ├── LibraryCard.jsx      ← resource card (photo, type badge, subject, name, description, grades, owner)
-│   │       └── LibraryTypeBadge.jsx ← colour pill for a library resource type
+│   │   ├── library/                ← Pramaan Resource Centre (/pramaan/resource-centre)
+│   │   │   ├── LibraryFilters.jsx   ← sidebar/drawer filters: Ownership + Subject pickers (listing/PickerField), type tiles, grade pills; variant card | drawer
+│   │   │   ├── LibraryDropdown.jsx  ← rounded listbox replacing <select> (sort menu); exports FOCUS_PILL (see §11 focus note)
+│   │   │   ├── LibraryCard.jsx      ← resource card (photo, type badge, subject, name, description, grades, owner)
+│   │   │   └── LibraryTypeBadge.jsx ← colour pill for a library resource type
+│   │   ├── listing/                ← generic listing pieces (§4), used by the Resource Centre only (the Publications pages have their own controls)
+│   │   │   ├── SearchField.jsx      ← rounded search box with a clear (×) button
+│   │   │   ├── FilterChips.jsx      ← active filters as removable chips
+│   │   │   ├── FilterDrawer.jsx     ← phone/tablet filter dialog (focus trap, Esc, scroll lock, "show results" button)
+│   │   │   └── PickerField.jsx      ← compact filter picker (inline listbox, type-ahead, clear ×)
+│   │   └── publications/           ← Publications pages (/about/publications, /thrive/publications), one layout per page (§4)
+│   │       ├── PublicationsHero.jsx    ← PublicationsHero (PageHero + figures line: count, types, "since" year, social proof; optional chart) and PublicationsEmpty
+│   │       ├── TideCollection.jsx      ← TIDE body: featured latest report, shelf (6, then "Show all"), "everything else" with type buttons + pages of 12; search only above 24 rows
+│   │       ├── ResearchArchive.jsx     ← THRIvE body: search + Type/Field/Year selects, chips, newest/oldest toggle, year-grouped column, 20 per page (?page=)
+│   │       ├── ResearchEntry.jsx       ← one THRIvE entry: type + date, title link, APA citation, clamped description, field tags, Read + Copy citation, source, thumbnail
+│   │       ├── PublicationCover.jsx    ← report cover on a paper stack (3:4 slot, cover at its own ratio) or a typeset stand-in (decorative)
+│   │       ├── MediaPanel.jsx          ← list thumbnail on a tinted brand panel, framed at its own ratio (clamped), or a stand-in page
+│   │       ├── FadeImage.jsx           ← thumbnail <img> with manifest width/height, fades in, data-no-placeholder
+│   │       ├── PublicationControls.jsx ← SearchBox, FilterSelect, ActiveFilters
+│   │       ├── PublicationsPagination.jsx ← numbered page links (?page=n), nothing for one page
+│   │       ├── YearChart.jsx           ← "publications per year" column chart for the banner; bars filter by year
+│   │       ├── PublicationsJsonLd.jsx  ← schema.org ItemList in <head>
+│   │       ├── PublicationBits.jsx     ← NewBadge, SourceLine, Highlight
+│   │       ├── TypeIcon.jsx            ← one lucide icon per type family (TYPE_ICON_RULES)
+│   │       └── typeStyles.js           ← static class sets: FAMILY_STYLE, DOT_PATTERN, LINE_PATTERN, COVER_TONES, LIFT, ZOOM, ratioOf
 │   │
 │   ├── pages/
 │   │   ├── Home.jsx               ← hero, mission, approach (3 programme cards), journey, CTA
@@ -200,8 +234,7 @@ tide-new/
 │   │   │   ├── WhyTide.jsx   ← who we are, vision, goals
 │   │   │   ├── PastPrograms.jsx
 │   │   │   ├── OurTeam.jsx   ← team + advisor portrait cards (LinkedIn tiles)
-│   │   │   ├── OurPartners.jsx ← logo gallery
-│   │   │   └── PublicationsCombined.jsx ← tabs: annual reports / events / research (/about/publications)
+│   │   │   └── OurPartners.jsx ← logo gallery
 │   │   ├── get-involved/
 │   │   │   ├── Volunteer.jsx
 │   │   │   ├── Donate.jsx             ← intro + large impact figure + bank-transfer card (icon-only copy buttons) + blue banner (WaveDivider) with Email/WhatsApp buttons
@@ -210,34 +243,47 @@ tide-new/
 │   │   ├── resources/            ← the Pramaan screens
 │   │   │   ├── AblHome.jsx          ← /pramaan: stats bar + type cards (from the Resource Centre snapshot), about, photo strip
 │   │   │   └── AblContribute.jsx     ← /pramaan/contribute: steps + form button (formUrl in abl-contribute.yaml)
-│   │   └── library/              ← the Resource Centre (/pramaan/resource-centre)
-│   │       ├── PramaanLibrary.jsx       ← list: toolbar (search + sort + direction), faceted filters, 9 per page, URL-synced state, phone drawer
-│   │       ├── PramaanLibraryDetail.jsx ← one resource: photo, open-file link, video lightbox, linked extra info, grades with chapters only
-│   │       └── LibraryRedirect.jsx      ← /pramaan-library(/:id) → /pramaan/resource-centre(/:id)
+│   │   ├── library/              ← the Resource Centre (/pramaan/resource-centre)
+│   │   │   ├── PramaanLibrary.jsx       ← list: toolbar (search + sort + direction), faceted filters, 9 per page, URL-synced state, phone drawer
+│   │   │   ├── PramaanLibraryDetail.jsx ← one resource: photo, open-file link, video lightbox, linked extra info, grades with chapters only
+│   │   │   └── LibraryRedirect.jsx      ← /pramaan-library(/:id) → /pramaan/resource-centre(/:id)
+│   │   └── publications/         ← SeoHead + PublicationsHero + the page's body (or PublicationsEmpty when the org has no row)
+│   │       ├── TidePublications.jsx     ← /about/publications (TIDE rows → TideCollection, about-publications.yaml)
+│   │       └── ThrivePublications.jsx   ← /thrive/publications (THRIvE rows → ResearchArchive, thrive-publications.yaml)
 │   │
 │   ├── hooks/
 │   │   ├── useScrollAnimation.js ← IntersectionObserver → [ref, isVisible] (only AnimatedCounter uses it)
 │   │   ├── useLightbox.js        ← gallery open/close/prev/next state — takes the image count
 │   │   ├── useModalBehavior.js   ← Escape-to-close + body scroll lock for overlays (Lightbox/ImageLightbox/VideoLightbox)
 │   │   ├── useDelayedVisible.js  ← gates a loading UI behind a threshold so fast loads never flash it
+│   │   ├── useSidebarFits.js     ← sticky listing sidebar only while it fits the window (Resource Centre)
+│   │   ├── usePublicationControls.js ← Publications: useDebouncedSearch, useFocusShortcut, focusResults
 │   │   └── useFocusTrap.js       ← modal focus management (trap Tab, focus on open, restore on close, without scrolling the page) — used by all 3 lightbox components
 │   │
 │   ├── config/
 │   │   ├── abl.js                ← resource types: TAB_STYLE_MAP, getTabStyle, TYPE_COLORS, getTypeColors
-│   │   └── library.js            ← LIBRARY_PAGE_SIZE (9), libraryTypeKey, libraryTypeColors
+│   │   ├── library.js            ← LIBRARY_PAGE_SIZE (9), libraryTypeKey, libraryTypeColors
+│   │   └── publications.js       ← Publications thresholds (THRIVE_PAGE_SIZE 20, TIDE_SHELF_VISIBLE 6, TIDE_OTHERS_PAGE_SIZE 12, TIDE_SEARCH_MIN_ITEMS 24, NEW_BADGE_DAYS 120, LANDSCAPE_RATIO 1.2), HERO_CHART, TYPE_ICON_RULES, SCHEMA_TYPE_BY_ICON, PUBLICATION_PAGES
 │   │
 │   ├── utils/
 │   │   ├── imgSrc.js             ← imgSrc(path): prefixes BASE_URL (NOT idempotent — see §11)
 │   │   ├── motionPresets.js      ← makeFadeUp(opts) / default fadeUp — shared scroll-in animation props
 │   │   ├── imagePlaceholder.js   ← installImagePlaceholder(): global swap of failed <img> for the site placeholder (called in main.jsx)
-│   │   ├── libraryFilters.js     ← Resource Centre: LIBRARY_GRADES (Foundational first), sortGrades, applyLibraryFilters (sort subject|type|owner, dir asc|desc), facetOptions (counts follow the other filters), orderFilterOptions + OWNER_PINNED (TIDE Foundation first, A→Z, Other last), typeParamKey, linkParts
+│   │   ├── listingFilters.js     ← generic: normKey, cleanLabel, optionsFor, optionsForMany, orderFilterOptions (pinned, A→Z, Other last)
+│   │   ├── libraryFilters.js     ← Resource Centre: LIBRARY_GRADES (Foundational first), sortGrades, applyLibraryFilters (sort subject|type|owner, dir asc|desc), facetOptions (counts follow the other filters), OWNER_PINNED (TIDE Foundation first), typeParamKey, linkParts; re-exports normKey/optionsFor/orderFilterOptions
+│   │   ├── publicationFilters.js ← Publications: filters (search/type/field/year), order (date, ties by title, undated last), facets, URL params, paginate, groupByYear, yearCounts, stats, reportPeriod/formatPeriod, splitShelf, isNew, sourceOf, typeIconKey, frameForSize, highlightParts, JSON-LD
+│   │   ├── publicationPhotos.js  ← getPublicationPhoto(id, 'thumb'|'full'), getPublicationThumb(id) (src + size + frame) from the publications photo manifest
+│   │   ├── focusRing.js          ← focusRing(radius): focus-visible ring classes keeping a control's own shape
+│   │   ├── navActive.js          ← Header active state: activeTopIndex, activeLeaf (most specific match)
 │   │   ├── videoLinks.js         ← getVideoEmbedUrl: Drive → /preview, YouTube → youtube-nocookie embed (needs the CSP frame-src entry), else null
 │   │   └── libraryPhotos.js      ← getLibraryPhoto(id, 'thumb'|'full') from the library photo manifest
 │   │
 │   ├── data/                     ← AUTO-GENERATED — never edit
-│   │   ├── *.json                ← 26 JSON files (16 pages + 9 shared from yaml-to-json.js, + the photo manifest); git-tracked
+│   │   ├── *.json                ← 28 JSON files (17 pages + 9 shared from yaml-to-json.js, + the 2 photo manifests); git-tracked
 │   │   ├── pramaan-library-photos.json   ← Resource Centre id → synced photo paths — from scripts/sync-pramaan-library.js (not content:sync)
-│   │   └── sheets/pramaan-library.json   ← Resource Centre snapshot (consented rows, allowlisted fields) — from scripts/sync-pramaan-library.js
+│   │   ├── publications-photos.json      ← Publications id → synced thumbnail paths + pixel sizes — from scripts/sync-publications.js
+│   │   ├── sheets/pramaan-library.json   ← Resource Centre snapshot (consented rows, allowlisted fields) — from scripts/sync-pramaan-library.js
+│   │   └── sheets/publications.json      ← Publications snapshot (TIDE + THRIvE rows, allowlisted fields) — from scripts/sync-publications.js
 │   │
 │   └── test/                     ← Vitest + Testing Library (see §12)
 │       ├── setup.js · utils/renderWithProviders.jsx
@@ -248,7 +294,7 @@ tide-new/
 ├── public/
 │   ├── 404.html                  ← GitHub Pages deep-link redirect (pairs with index.html's restorer)
 │   ├── robots.txt · sitemap.xml  ← hard-code https://tideinternational.org (there is no public/llms.txt — /llms.txt is generated, see siteDataPlugin)
-│   └── assets/                   ← images; assets/images/pramaan-library/ holds the synced Resource Centre WebPs; assets/images/shared/ holds the logo, banner texture and placeholder.svg
+│   └── assets/                   ← images; assets/images/pramaan-library/ and assets/images/publications/ hold the synced Resource Centre / Publications WebPs; assets/images/shared/ holds the logo, banner texture and placeholder.svg
 │
 ├── scripts/
 │   ├── yaml-to-json.js          ← YAML → JSON sync (predev/prebuild hook)
@@ -258,8 +304,12 @@ tide-new/
 │   ├── bootstrap-yaml.js        ← writes starter shared/navigation.yaml + footer.yaml (mirroring the current ones) only if absent
 │   ├── sync-pramaan-library.js  ← Resource Centre sync: snapshot + photos (≤ 100 photos / ~20 min per run, 60 s per request)
 │   ├── lib/library-snapshot.js  ← its rules: allowlist, email scrub (incl. chapters), photo file-name clash
-│   ├── lib/snapshot-core.js     ← shared rules for any Sheet sync: safe ids, content hash, photo plan, removal/photo-deletion limits — tested in src/test/scripts/
-│   ├── ci/alert-issue.sh        ← open/update/close the owner-alert GitHub Issues (used by both workflows)
+│   ├── sync-publications.js     ← Publications sync: snapshot + thumbnails (same photo/time limits as the library sync)
+│   ├── lib/publications-snapshot.js ← its rules: allowlist, Field of Work splitting (FIELDS_WITH_COMMAS), email scrub, per-page removal limits
+│   ├── lib/publications-images.js ← thumbnail rendering (sharp): trim borders, TIDE whole, THRIvE 3:4…16:9 — tested in src/test/scripts/
+│   ├── lib/snapshot-core.js     ← shared rules for any Sheet sync: safe ids, content hash, photo plan, removal/photo-deletion limits, Drive-link readers, photoFileBase, cleanString — tested in src/test/scripts/
+│   ├── lib/sync-runner.js       ← shared I/O for every sync script: .env.development loader (per prefix), token redaction, fetch + retry, report, GITHUB_OUTPUT, photo download/delete loops — tested in src/test/scripts/syncRunner.test.js
+│   ├── ci/alert-issue.sh        ← open/update/close the owner-alert GitHub Issues (used by all three workflows)
 │   └── a11y-audit.cjs           ← axe-core scan across every route (manual — see §12). Scrolls the full page first so whileInView animations settle before scanning — don't shorten that wait, it was added after a confirmed false positive.
 │
 ├── docs/
@@ -271,6 +321,8 @@ tide-new/
 │   ├── PRAMAAN-LIBRARY-SETUP-GUIDE.md       ← owner setup for the Resource Centre Sheet → /pramaan/resource-centre
 │   ├── SHEET-INTEGRATION-PLAYBOOK.md        ← THE standard for connecting any new Sheet (snapshot mode)
 │   ├── PRAMAAN-LIBRARY-SHEET-SCHEMA.md      ← which columns the library reads and who gets published
+│   ├── PUBLICATIONS-SETUP-GUIDE.md          ← owner setup for the Publications Sheet → /about/publications + /thrive/publications
+│   ├── PUBLICATIONS-SHEET-SCHEMA.md         ← which columns the Publications sync reads and who gets published
 │   ├── PRAMAAN-HARDENING-PLAN.md · OPERATIONS-*.md · PLATFORM-LIMITS.md  ← current plan, inventory, runbook, free-tier limits
 │   ├── ARCHITECTURE.html · ARCHITECTURE-DATAFLOW.html  ← interactive system diagrams (standalone)
 │   └── specs/                               ← site-restructure-plan.md, stranded-pages-review.md (historical), multilingual-i18n-spec.md (historical — framework removed), etc.
@@ -278,8 +330,10 @@ tide-new/
 ├── .claude/skills/              ← agent skills: content-management.md, cms-integrity/, doc-sync/, sheet-integration/
 └── .github/workflows/
     ├── deploy.yml                  ← lint → content:validate → unit tests → build → deploy to GitHub Pages; alert Issue on failure
-    └── sync-pramaan-library.yml    ← runs scripts/sync-pramaan-library.js every 6 h at :47, on Sheet change and manually; own concurrency group
+    ├── sync-pramaan-library.yml    ← runs scripts/sync-pramaan-library.js every 6 h at :47, on Sheet change and manually; own concurrency group
+    └── sync-publications.yml       ← runs scripts/sync-publications.js every 6 h at :27, on Sheet change and manually; own concurrency group publications-sync
 apps-script/pramaan-library/Code.gs ← the Resource Centre Sheet's Apps Script v1 (source of truth, pasted into Google by the owner; no public listing; consent filter)
+apps-script/publications/Code.gs    ← the Publications Sheet's Apps Script v1 (same pattern; no approval column — every TIDE/THRIvE row with a title)
 ```
 
 ---
@@ -541,15 +595,45 @@ Container always `aspect-[3/4]` (portrait). Shows a shimmer while loading and a 
   page={page}
   onChange={handlePageChange}
   perPage={LIBRARY_PAGE_SIZE}  // optional, defaults to LIBRARY_PAGE_SIZE (9, src/config/library.js)
+  labels={data.pagination}     // optional, defaults to pramaan-library.yaml → pagination
 />
 ```
 
-Renders nothing when there's only one page. Below `sm` it shows only the arrows (the Previous/Next words are hidden; the buttons keep their aria-labels) and smaller number buttons, so it fits a 360px phone. Text: `pramaan-library.yaml` → `pagination.*`.
+Renders nothing when there's only one page. Below `sm` it shows only the arrows (the Previous/Next words are hidden; the buttons keep their aria-labels) and smaller number buttons, so it fits a 360px phone. Text: `labels` = an object with the keys `ariaLabel, showing, of, resources, previousLabel, previousShort, next`; the default is `pramaan-library.yaml` → `pagination.*`. Only the Resource Centre uses `Pagination` (it passes no `labels`); the Publications pages have no numbered pages.
+
+### Listing pieces (`src/components/listing/`)
+
+Generic parts extracted from the Resource Centre (2026-11-20). All visible text comes from the caller's YAML.
+
+- `SearchField({ value, onChange, placeholder, label, clearLabel, className })` — rounded search input (`aria-label={label}`) with a clear (×) button once something is typed.
+- `FilterChips({ chips, removeTemplate })` — `chips: [{ key, label, onRemove }]`; renders nothing when empty. `removeTemplate` (e.g. `"Remove filter: {name}"`) labels each chip button.
+- `FilterDrawer({ open, onClose, title, closeLabel, clearLabel, activeCount, onClear, showResultsLabel, idPrefix = 'listing', children })` — the phone/tablet filter panel (hidden from `lg` up): `role="dialog"`, `useFocusTrap` + `useModalBehavior` (Esc/backdrop close, scroll lock), a header with "Clear (n)" and close, and a sticky "show results" button. Keep `onClose` stable (`useCallback`).
+- `PickerField({ labelId, options, value, onSelect, allLabel, total, open, onOpenChange, removeTemplate, optionCountTemplate })` — one rounded field showing the current choice; opens an inline listbox (no inner scrollbar) with an "All …" entry (`allLabel`, count `total`) above `options` (`[{ value, label, count }]`, already ordered by the caller, e.g. with `orderFilterOptions`). Keyboard: Enter/Space/↑/↓ open; ↑ ↓ Home End move; a letter jumps; Enter/Space choose; Esc closes. `open`/`onOpenChange` are controlled by the parent.
+
+Used by `PramaanLibrary` / `LibraryFilters` (all four). The Publications pages use none of them (they have their own `PublicationControls`, below).
+
+### Publications components (`src/components/publications/`)
+
+Each page has its own layout. Both pages (`src/pages/publications/`) render `SeoHead`, `PublicationsJsonLd`, `PublicationsHero`, then the page's body — or `PublicationsEmpty` when the org has no row. Rows = `rowsForOrg(snapshot.resources, org)`; `data` = the page's JSON (`about-publications.json` / `thrive-publications.json`). Row text comes from the snapshot, every label from the YAML. Every count threshold is a named constant in `src/config/publications.js` (§6), not YAML. The URL holds `?search=&type=&field=&year=&dir=asc&page=` (parsed by `parsePublicationParams`; unknown or impossible values are ignored and the page is clamped to the last one); filter changes use `navigate(…, { replace: true })`, page numbers are real links.
+
+- `PublicationsHero({ data, rows, chart })` — `PageHero` (`data.meta.badge/title/subtitle`) plus one line of figures: count, number of distinct types, "since {year}" (`publicationStats`, templates `data.stats.*`), and — when `data.socialProofTypes` is set and `countOfTypes(rows, data.socialProofTypes) > 0` — `data.stats.socialProofTemplate` / `socialProofSingular`. `chart` (optional node) is shown beside the text on large screens, below it on small ones. Nothing shown for 0 rows. `PublicationsEmpty({ meta })` — `meta.emptyTitle` / `meta.emptyHint`.
+- `YearChart({ counts, selected = '', onSelect, labels, noun })` — single-series column chart for the dark banner, from `yearCounts(rows)` (every year from first to last, 0 included). With `onSelect`, each column is an `aria-pressed` toggle button; years with 0 are not buttons. Only the tallest and the hovered/selected column print their number; every column's number is in its accessible label (`labels.barLabelTemplate`, plus `labels.filterAction`). `labels` = `data.chart`; `noun(n)` gives the singular/plural word. Used only on THRIvE (`HERO_CHART.THRIvE` and more than one year); selecting a year navigates to `?year=` (page 1) with router state `focusResults`.
+- `TideCollection({ rows, data })` — TIDE body. `splitShelf(rows, data.featuredType)` gives (1) `Featured`: the latest row of `featuredType` (by report period, `reportPeriod`) — large `PublicationCover` (`stack` 2), title, date, description, `data.featured.read` button + `SourceLine`, `NewBadge`; (2) `Shelf`: the other rows of that type, latest period first, each labelled with its period (`formatPeriod`) — a sideways scroll-snap row on phones, 4 columns from `md`, 6 from `lg`; the first `TIDE_SHELF_VISIBLE` (6), then a `data.shelf.showAllTemplate` / `showFewer` toggle (`aria-expanded`; focus moves to the first newly shown report); (3) `Others`: every other row as cards (a wide thumbnail spans the top of its card, a page sits in a left column), one `aria-pressed` button per type (`data.others.allTypes` first, with counts; only with 2+ types; choice in `?type=`, an unknown value ignored) and numbered pages above `TIDE_OTHERS_PAGE_SIZE` (12), with a `data.pagination.rangeTemplate` line that receives focus after a page change. A `SearchBox` (`data.search`, shortcut `data.search.shortcutKey`) appears only when there are more than `TIDE_SEARCH_MIN_ITEMS` (24) TIDE rows; while searching, one result list (`data.search.resultsHeading`, `countTemplate`, highlighted titles) replaces sections 1–3. Sections with no rows are not rendered.
+- `ResearchArchive({ rows, data })` — THRIvE body: one reading column. Toolbar: `SearchBox` (debounced, `/` shortcut) + three `FilterSelect`s (Type of material, Field of work, Year; faceted counts from `facetPublicationOptions`, types/fields ordered by `orderFilterOptions`, option text `data.toolbar.optionTemplate`; 0-count options disabled unless chosen); `ActiveFilters` chips + "Clear all"; a result line (`data.results.countTemplate`, or `rangeTemplate` when there is more than one page; `aria-live`) and a newest/oldest toggle. Entries grouped under year headings (`groupByYear`; undated last as `data.results.undatedHeading`; a year that started on the previous page gets "(`data.results.continuedLabel`)"). `THRIVE_PAGE_SIZE` (20) per page with `PublicationsPagination`; a filter change returns to page 1; a page change or a chart selection scrolls to and focuses the result line (`focusResults`).
+- `ResearchEntry({ row, data, terms })` (`forwardRef`) — type (with `TypeIcon`) + date (+ `NewBadge`), title (links out when `safeLink(row.link)` is set; search words highlighted), APA citation right under the title, description clamped to 3 lines with `data.entry.showMore/showLess` only when it overflows, field-of-work tags, a "Read" link (hidden without a link), `SourceLine`, and "Copy citation" (`copyText`; `data.entry.copied` / `copyFailed`, announced through an `aria-live` region). Thumbnail: a `MediaPanel` clamped to 3:4…16:9 (stand-in ratio 4:3), top-left on phones, a right-hand column from `sm`.
+- `PublicationCover({ thumb, title, period, size = 'md', tone = 0, stack = 1, priority = false, className })` — a fixed 3:4 slot; the cover inside takes the slot's height at its own ratio (from the manifest), so a whole page is shown with no letterbox; `stack` paper sheets behind it; lifts/fans on hover or focus inside a `group` (off under reduced motion). Without a thumbnail (or on a load error): a typeset stand-in on one of `COVER_TONES` (period large, title small). `thumb` = `getPublicationThumb(id)`. Decorative (`aria-hidden`).
+- `MediaPanel({ thumb, type, minRatio, maxRatio, standinRatio = 3/4, maxHeightRem, className })` — a list thumbnail on a tinted panel coloured by type family (`FAMILY_STYLE`), framed with CSS `aspect-ratio` at the image's own ratio clamped to `[minRatio, maxRatio]` (`ratioOf`); `maxHeightRem` caps the height of wide images. Without a thumbnail (or on error): a white stand-in page with the family icon. Decorative (`aria-hidden`).
+- `FadeImage({ src, width, height, priority = false, onError, className })` — `<img alt="">` with the manifest's width/height (no layout shift), fades in when loaded, `data-no-placeholder` (the caller shows its own stand-in via `onError`).
+- `PublicationControls.jsx`: `SearchBox({ value, onChange, inputRef, labels, className })` (`labels` = `{ label, placeholder, clearLabel, shortcutKey }`; visible label, clear ×, shortcut shown on wide screens and in `aria-keyshortcuts`); `FilterSelect({ label, value, onChange, allLabel, total, options, template, className })` (native `<select>` with a visible label); `ActiveFilters({ chips, removeTemplate, clearAllLabel, onClearAll, className })` (`chips: [{ key, label, onRemove }]`).
+- `PublicationsPagination({ page, totalPages, hrefFor, linkState, labels })` — numbered page **links** (`hrefFor(n)` → location keeping the other params; `linkState` = router state on each link); `pageWindow` with "…" gaps; current page `aria-current`; Previous/Next left out at the ends; renders nothing for one page. `labels` = the YAML `pagination` block (`label`, `previous`, `next`, `pageLabelTemplate`).
+- `PublicationsJsonLd({ rows, name, path })` — `publicationsJsonLd` ItemList added to `<head>` through react-helmet-async.
+- `PublicationBits.jsx`: `NewBadge({ date, data, now })` (`data.newBadge` when `isNew(date, now, NEW_BADGE_DAYS)`, plus `data.a11y.newLabelTemplate` for screen readers), `SourceLine({ url, data, className })` (`data.source.label` + `doi` / `driveFile` / `driveFolder` or the host, from `sourceOf`), `Highlight({ text, terms })` (`<mark>` via `highlightParts`).
+- `TypeIcon({ type, className = 'h-4 w-4' })` — one lucide icon per family (`typeIconKey` → `TYPE_ICON_RULES`); decorative. `typeStyles.js` — static Tailwind class sets (`FAMILY_STYLE` per family: `edge`, `tint`, `icon`; `DOT_PATTERN`, `LINE_PATTERN`, `COVER_TONES`, `LIFT`, `ZOOM`) and `ratioOf(thumb, { min, max, fallback = 3/4 })`.
 
 ### Layout components
 
 - `Layout` — `{ children }`; skip link (text from `navigation.yaml` `skipLink`), `Header`, `AnimatePresence mode="wait"` around `motion.main` keyed by `pathname`, `Footer`; scrolls to top on pathname change (not on query-only changes). Does not move focus on navigation.
-- `Header` — no props; reads `navigation.json` (all labels, logo, aria strings). `position: fixed`, transparent with white text until `scrollY > 20`, then glass. Dropdown triggers are `<button>`s (aria-expanded/controls, Escape closes); `subItems` render as desktop flyouts / indented mobile lists. There is no language switcher. Keep `overflow-visible` on the dropdown wrapper (§11).
+- `Header` — no props; reads `navigation.json` (all labels, logo, aria strings). `position: fixed`, transparent with white text until `scrollY > 20`, then glass. Dropdown triggers are `<button>`s (aria-expanded/controls, Escape closes). A dropdown child with `subItems` is a nested group (`SubGroup`): on desktop a button that opens a sub-menu to the right (Enter/Space/→ open and focus the first link, ↑ ↓ Home End move, ← or Esc close only the sub-menu); on mobile a collapsible list (§7 "Navigation subItems"). The highlighted entry is the most specific match (`activeTopIndex` / `activeLeaf` in `src/utils/navActive.js`). There is no language switcher. Keep `overflow-visible` on the dropdown wrapper (§11).
 - `Footer` — no props; reads `footer.json` + `contact.json`. No link columns (removed by owner decision, 2026-11-14): one compact row — logo, name + tagline byline on the left; email, phone, social icons and a Donate button (`donateLabel` → `donateHref`) on the right — above a thin copyright strip; stacks on small screens. `rights` contains a `{year}` token replaced with `new Date().getFullYear()` at render, so the static build never shows a stale year.
 
 ---
@@ -601,6 +685,21 @@ const show = useDelayedVisible(active, delayMs = 200)
 
 True only if `active` stays true for longer than `delayMs` — gates loading UI so fast loads never flash it (used for the route `Suspense` fallback).
 
+### useSidebarFits
+
+```js
+const [sidebarRef, sticky] = useSidebarFits(top)   // top = sticky offset in px, matching the top-[…] class
+```
+
+`sticky` is true only while the element's height + `top` + 16px fits in the window (re-checked with a `ResizeObserver` and on resize), so a tall listing sidebar scrolls with the page instead of getting an inner scrollbar. Used only by `PramaanLibrary` (`top` 130); the Publications pages have no sidebar.
+
+### usePublicationControls (`src/hooks/usePublicationControls.js`)
+
+Used by `TideCollection` and `ResearchArchive`.
+- `useDebouncedSearch(urlValue, commit, delay = 150)` → `[input, setInput]`: the box updates at once; `commit(value)` runs after a 150 ms pause in typing; a change of the URL value from elsewhere (Clear all, a chip, Back) is copied into the box. Keep `commit` stable (`useCallback`).
+- `useFocusShortcut(key, ref)` — pressing `key` (e.g. `/`) anywhere except a form field or editable element focuses `ref` (does nothing for an empty key).
+- `focusResults(el)` — scrolls `el` into view (instant under reduced motion) and focuses it without scrolling again.
+
 ---
 
 ## 6. Utility Reference
@@ -632,9 +731,42 @@ Use it for any image path that comes from YAML/JSON so it works on both `/` (dev
 
 `config/library.js` exports `LIBRARY_PAGE_SIZE` (9) and `libraryTypeKey(type)` / `libraryTypeColors(type)`: a Resource Centre row's free-typed type ("Kit", "worksheets") mapped to the Pramaan type key of the same name (case-insensitive, trailing "s" ignored), or `null` → neutral grey.
 
+### listingFilters.js
+
+Generic, pure helpers for snapshot listing pages (Resource Centre and Publications): `normKey(v)` (trimmed, single spaces, lower case; `''` for non-strings), `cleanLabel(v)`, `optionsFor(resources, field)` and `optionsForMany(resources, field)` (for list-valued fields; a row counts once per distinct value) → `[{ value, label, count }]` sorted by label, and `orderFilterOptions(options, pinned = [])` (pinned values first in the given order, then A→Z ignoring case, `other` last).
+
+### publicationFilters.js, publicationPhotos.js, config/publications.js
+
+`src/utils/publicationFilters.js` (pure; matching ignores case and extra spaces):
+- `rowsForOrg(resources, org)`; `DEFAULT_DIR = 'desc'`; `UNDATED = 'undated'`; `yearOf(date)` → number or `null`.
+- `comparePublications(dir)` — by date (`'asc'` oldest first, otherwise newest first); same date → title A→Z; undated always last (title A→Z among themselves).
+- `searchTerms(q)`, `matchesSearch(row, terms)` (every word in title, citation, description, type or fields); `applyPublicationFilters(rows, { search, type, field, year, dir })` (type/field are normalised keys; a row matches `field` if any of its fields does; `year` is `'YYYY'` or `UNDATED`).
+- `facetPublicationOptions(rows, filters, undatedLabel = 'Undated')` → `{ types, fields, years, totals: { type, field, year } }` — each filter counts the rows matching every other filter; every value is listed (count 0 when excluded); a chosen value no row has any more is added with count 0 (`missing: true`). Years newest first, undated last.
+- `parsePublicationParams(search)` → `{ search, type, field, year, dir, page }` (robust: impossible year and unknown params ignored, page a whole number ≥ 1); `publicationParamsToSearch(f)` → `'?…'` with only non-default values, or `''`.
+- `paginate(items, page, perPage)` → `{ page, totalPages, start, from, to, total, items }` (page clamped to 1…totalPages); `pageWindow(current, total)` → page numbers with `'…'` gaps (all when ≤ 7).
+- `formatPublicationDate('YYYY-MM-DD')` → e.g. "5 March 2024" (en-IN, read as a calendar date) or `null`; `groupByYear(rows, before = null)` → `[{ year, rows, continued }]` (`continued` when `before`, the previous page's last row, has the same year as the first group); `yearCounts(rows)` → `[{ year, count }]` from the first to the last dated year, gaps as 0, undated left out.
+- `publicationStats(rows)` → `{ count, types, firstYear }`; `countOfTypes(rows, types)` (exact names, case/spaces ignored; 0 for an empty list).
+- `reportPeriod(row)` → `{ start, end }` read from the title ("2025-2026", "2025 - 2026", "2024–25", "24-25", "2014-2019"; only a forward span of at most 10 years), else the date's year, else `null`; `formatPeriod(period)` → "2025–26" / "2014–19" / "2025" / `null`.
+- `splitShelf(rows, featuredType)` → `{ featured, shelf, others }`: rows of `featuredType` (case/space-insensitive) ordered by period end (newest first), then date, then title — the first is `featured`, the rest `shelf`; all other rows (in `comparePublications` order) in `others`; `featured` `null` and `shelf` empty when no row has that type.
+- `isNew(date, now, days)` (today counts, future dates don't); `safeLink(url)` (http(s) only, else `null`); `sourceOf(url)` → `{ kind: 'doi' | 'driveFile' | 'driveFolder' }`, `{ kind: 'host', host }` (no "www.") or `null`; `typeIconKey(type, rules = TYPE_ICON_RULES)` → icon family or `'file'`; `frameForSize(width, height)` → `'landscape'` when width/height > `LANDSCAPE_RATIO`, else `'portrait'` (also when unknown); `highlightParts(text, terms)` → `[{ text, match }]`; `publicationsJsonLd(rows, { name, url })` → schema.org `ItemList` (name/date/url only when present; `@type` from `SCHEMA_TYPE_BY_ICON`, else `CreativeWork`).
+
+`copyText(text)` (`src/utils/copyText.js`) → `Promise<boolean>`: Clipboard API when available, otherwise a hidden textarea + `execCommand('copy')`.
+
+`src/utils/publicationPhotos.js` reads `src/data/publications-photos.json`: `getPublicationPhoto(id, 'thumb'|'full')` → an already `imgSrc`-resolved path or `null`; `getPublicationThumb(id)` → `{ src, width, height, frame }` (sizes from `thumbWidth`/`thumbHeight`, `frame` from `frameForSize`) or `null`. Don't apply `imgSrc` again.
+
+`src/config/publications.js` (code, not YAML — a number changes here, not in the content files): `THRIVE_PAGE_SIZE` (20 per THRIvE page), `TIDE_SHELF_VISIBLE` (6 covers before "Show all"), `TIDE_OTHERS_PAGE_SIZE` (12 cards per page; pages only above it), `TIDE_SEARCH_MIN_ITEMS` (24; the TIDE search box appears only with more rows than this), `NEW_BADGE_DAYS` (120), `LANDSCAPE_RATIO` (1.2), `HERO_CHART` (`{ TIDE: false, THRIvE: true }`), `TYPE_ICON_RULES` (ordered `{ iconKey, keywords }`; the first rule with a keyword in the type wins, else `file`), `SCHEMA_TYPE_BY_ICON` (`{ article: 'ScholarlyArticle', book: 'Book' }`), `PUBLICATION_PAGES` (`{ TIDE: { path: '/about/publications' }, THRIvE: { path: '/thrive/publications' } }`, used for SEO). Tested in `src/test/pages/publications.test.jsx`.
+
+### focusRing.js and navActive.js
+
+`focusRing(radius)` returns the `focus-visible` ring classes plus the given `rounded-*` class (the global `:focus-visible` rule sets a 4px radius; see `FOCUS_PILL`). `activeTopIndex(items, path)` → index of the one top-level menu entry to highlight (longest matching `to`; on a tie the entry where the link sits least deep, then the first); `activeLeaf(items, path)` → the `to` of the most specific matching link anywhere in the menu. Items are `navigation.yaml` entries (`to` links, `children` dropdowns, `subItems` nested groups). Tested in `src/test/components/Header.test.jsx`.
+
+### Sync script helpers (`scripts/lib/`, Node only)
+
+Not bundled into the site; used by `scripts/sync-*.js`. **`snapshot-core.js`** (pure): `THRESHOLDS`, `isSafeId`, `contentHash`, `serializeSnapshot`, `planPhotos(tabbedSnapshot, photos, manifest)`, `photoDeletionError`, `photosFromExport`, `photoFileBase(id)`, `cleanString(v)` (trim → string or null) and `cleanStringCollapseSpaces(v)` (also squeezes inner whitespace — Publications uses it), `asSingleTab(tab, resources)`, `planListPhotos(tab, resources, photos, manifest)`. Two Drive-link readers, kept apart on purpose: `extractDriveFileId` reads `/d/<id>` only (what `planPhotos` uses), `extractDriveFileIdAnyLink` also reads Form-upload `?id=<id>` links (10+ chars); `library-snapshot.js` and `publications-snapshot.js` re-export the latter **as `extractDriveFileId`**. **`sync-runner.js`** (I/O): `loadLocalEnv(prefix)`, `createRedactor(token)`, `createFetchJson({ redactToken, timeoutMs })`, `readJson`, `isInsideAssetsDir(dir, absPath)`, `setOutputs`, `createReport({ reportPath, summaryTitle, setupGuide, workflowName })` (push to `errors`/`refused`/`problems`/`notes`, then `write(outcome)`), `fetchExport`, `notePatExpiry`, `refuseUnlessAllowed` (exits 1), `fetchPhotos` (backfill + capped downloads via the script's own `processPhoto`), `deletePhotos`, `writeResults`, `runSync(main, …)` (failure report + exit 1). Paths, names, messages, stats line and image processing stay in each sync script.
+
 ### libraryFilters.js
 
-`applyLibraryFilters(resources, filters)` (subject / type / owner by normalised key, grades any-of, search in name + concept + description, then the chosen sort), `facetOptions(resources, filters)` (faceted counts), `optionsFor`, `orderFilterOptions`, `typeParamKey(value, resources)` (the `?type=` value as a filter key; also accepts the former Resource Centre's names such as `Kits`, so old links still filter), `linkParts(text)`, `LIBRARY_GRADES` (Foundational + Grade 1–5, the grade filter list) and `gradeLabel`. Tested in `src/test/utils/libraryFilters.test.js` and `src/test/pages/`.
+`applyLibraryFilters(resources, filters)` (subject / type / owner by normalised key, grades any-of, search in name + concept + description, then the chosen sort), `facetOptions(resources, filters)` (faceted counts), `optionsFor` and `orderFilterOptions` (re-exported from `listingFilters.js`, as is `normKey`), `typeParamKey(value, resources)` (the `?type=` value as a filter key; also accepts the former Resource Centre's names such as `Kits`, so old links still filter), `linkParts(text)`, `LIBRARY_GRADES` (Foundational + Grade 1–5, the grade filter list) and `gradeLabel`. Tested in `src/test/utils/libraryFilters.test.js` and `src/test/pages/`.
 
 ---
 
@@ -659,7 +791,7 @@ npm run content:bootstrap  # Writes starter shared/navigation.yaml + footer.yaml
 
 Walks all of `content/`; a YAML parse error is an error (exit 1), a missing image is only a warning (exit 0). Images are checked only for values under the keys `photo, src, logo, coverImage, image, poster, img, heroPhoto, mainPhoto, diagramPhoto, backgroundImage, donorPoster` **and** only when the value starts with `/` and isn't http(s). So values without a leading slash, other keys (e.g. `photo1`/`photo2`), and image arrays of bare strings are not checked. It does not check hrefs/routes.
 
-**Consistency errors (exit 1):** via `scripts/contentConsistency.js`, every string in every YAML (plus the `llms.txt` template) is scanned. Any email address that differs from `site.yaml` `email` is an error, and so is any lives-impacted total (a `NN,NNN+` / `NNNNN+` figure in the same sentence as "lives / people / impacted / changed", or a bare figure whose sibling fields say so) that differs from `site.yaml` `livesImpacted`. Other metrics such as "15,000+ students" are deliberately not flagged. To change the email or the figure, edit `site.yaml` and then every page string that quotes it. CI (`deploy.yml`) runs the validator before building, so an error stops the deploy. It also checks the Resource Centre snapshot (`checkLibrarySnapshot()`: shape, unique ids, allowlisted fields only, no e-mail addresses, `meta.total`, photo manifest paths/files) and `abl-contribute.yaml` `formUrl` (empty → warning; anything but a Google Forms link → error).
+**Consistency errors (exit 1):** via `scripts/contentConsistency.js`, every string in every YAML (plus the `llms.txt` template) is scanned. Any email address that differs from `site.yaml` `email` is an error, and so is any lives-impacted total (a `NN,NNN+` / `NNNNN+` figure in the same sentence as "lives / people / impacted / changed", or a bare figure whose sibling fields say so) that differs from `site.yaml` `livesImpacted`. Other metrics such as "15,000+ students" are deliberately not flagged. To change the email or the figure, edit `site.yaml` and then every page string that quotes it. CI (`deploy.yml`) runs the validator before building, so an error stops the deploy. It also checks the Resource Centre snapshot (`checkLibrarySnapshot()`: shape, unique ids, allowlisted fields only, no e-mail addresses, `meta.total`, photo manifest paths/files), the Publications snapshot (`checkPublicationsSnapshot()`: the same checks plus `org` TIDE/THRIvE, `date` `YYYY-MM-DD` or null, `fields` a list, http(s)-only `link`/`photoUrl`, `meta.counts` per org) and `abl-contribute.yaml` `formUrl` (empty → warning; anything but a Google Forms link → error).
 
 ### File naming convention
 
@@ -669,7 +801,7 @@ content/shared/navigation.yaml      →   src/data/navigation.json
 content/shared/footer.yaml          →   src/data/footer.json
 ```
 
-Shared files (`content/shared/`): `navigation` (header menu, logo, skip-link/aria labels, Donate CTA labels), `footer`, `common` (micro-copy reused across pages: `step`, `viewLinkedIn`), `ui` (Lightbox aria-labels and the Pramaan photo/video viewer labels), `loader` (CreativeLoader messages), `error` (ErrorBoundary crash screen), `not-found`, `coming-soon`, `site` (site-wide facts — see §1 "Site-data pipeline"; `breadcrumbs.*` are the parent steps of every breadcrumb trail). Alongside them sits `llms.txt`, a template that is not YAML. The Pramaan screens are `abl-home`, `pramaan-library` (Resource Centre list + detail) and `abl-contribute` in `content/pages/`.
+Shared files (`content/shared/`): `navigation` (header menu, logo, skip-link/aria labels, Donate CTA labels), `footer`, `common` (micro-copy reused across pages: `step`, `viewLinkedIn`), `ui` (Lightbox aria-labels and the Pramaan photo/video viewer labels), `loader` (CreativeLoader messages), `error` (ErrorBoundary crash screen), `not-found`, `coming-soon`, `site` (site-wide facts — see §1 "Site-data pipeline"; `breadcrumbs.*` are the parent steps of every breadcrumb trail). Alongside them sits `llms.txt`, a template that is not YAML. The Pramaan screens are `abl-home`, `pramaan-library` (Resource Centre list + detail) and `abl-contribute` in `content/pages/`; the Publications pages are `about-publications` (TIDE: `meta`, `stats`, `featuredType`, `featured`, `shelf` (`heading`, `showAllTemplate`, `showFewer`), `others`, `search`, `newBadge`, `source`, `pagination`, `a11y`) and `thrive-publications` (THRIvE: `meta`, `stats` (incl. `socialProofTemplate`/`socialProofSingular`), `socialProofTypes`, `chart`, `toolbar` (incl. `yearLabel`/`allYears`), `results` (`countTemplate`, `rangeTemplate`, `undatedHeading`, `continuedLabel`, …), `pagination`, `newBadge`, `source`, `entry`, `a11y`). `featuredType` and `socialProofTypes` are values, not display text: "Type of material" names as written in the Sheet (case-insensitive) — the type that gets the TIDE page's featured card and shelf, and the types counted in THRIvE's social-proof figure. Thresholds (page sizes, shelf count, when search appears) are code constants in `src/config/publications.js`, not YAML.
 
 ### Import pattern in components
 
@@ -727,20 +859,21 @@ The one hard rule: components must pass YAML image values through `imgSrc()` (or
 
 ### Navigation subItems (flyout menus)
 
-In `content/shared/navigation.yaml`, adding `subItems` to a dropdown child creates a right-side flyout in the desktop header — no JSX changes needed (none are currently defined):
+In `content/shared/navigation.yaml`, adding `subItems` to a dropdown child turns it into a nested group (a third menu level) — no JSX changes needed. The group itself is a button, not a link (a `to` on it is not used); each sub-item is `{ label, to }`. In use since 2026-11-20 for About Us → Our Publications:
 
 ```yaml
-- label: "Feature Name"
-  to: "/section/feature"
-  desc: "Short description"
-  subItems:
-    - label: "Overview"
-      to: "/section/feature"
-    - label: "Sub-page"
-      to: "/section/feature/sub"
+- label: "About Us"
+  children:
+    - label: "Our Publications"
+      desc: "Annual reports, research & events"
+      subItems:
+        - label: "TIDE Publications"
+          to: "/about/publications"
+        - label: "THRIvE Publications"
+          to: "/thrive/publications"
 ```
 
-On mobile, `subItems` render as an indented inline list under the parent item.
+Desktop: a sub-menu opening to the right (`SubGroup` in `Header.jsx`, keyboard in §4). Mobile: a collapsible list under the parent item (its button is highlighted when it holds the current page). A page may appear in two menus (THRIvE Publications is also in the THRIvE Research Centre dropdown); `navActive.js` highlights one top-level entry.
 
 ---
 
@@ -787,6 +920,8 @@ Google Sheet "Contributing to Pramaan; Educators' Resource Bank (Responses)" (pr
     pramaan-library-sync) → scripts/sync-pramaan-library.js
   → rules: scripts/lib/library-snapshot.js (allowlist, email scrub incl. chapters, photo file-name clash)
     + scripts/lib/snapshot-core.js (shared: safe ids, content hash, photo plan, removal/photo-deletion limits)
+  → run plumbing: scripts/lib/sync-runner.js (shared with every sync: env loader, fetch + retry, token
+    redaction, report, outputs, photo download/delete loops); resizing stays in the sync script
   → commits src/data/sheets/pramaan-library.json + src/data/pramaan-library-photos.json
     + public/assets/images/pramaan-library/*.webp in one commit, then starts deploy.yml
 ```
@@ -800,6 +935,38 @@ Not a secret: `content/pages/abl-contribute.yaml` → `formUrl` (the Google Form
 ### URL params (Resource Centre)
 
 `?search=&subject=&type=&grade=GRADE+1,GRADE+3&owner=&sort=subject|type|owner&dir=desc&page=2`. `subject` / `type` / `owner` hold normalised keys (lower-case, single spaces); `type` also accepts the former Resource Centre's names (`Kits`, `Flashcards`). State is read once on mount; changes call `navigate({ search }, { replace: true })`, so there is no history entry per filter change.
+
+### Publications (second Sheet integration)
+
+Not part of Pramaan, but built the same way (snapshot mode, `docs/SHEET-INTEGRATION-PLAYBOOK.md`). **Not live yet (2026-11-20):** `src/data/sheets/publications.json`, `src/data/publications-photos.json` and `public/assets/images/publications/` are committed **empty** (snapshot `resources: []`, manifest `{}`, no images); `content:validate` requires the two JSON files to exist. The first real sync run (after the owner's setup) fills them. A developer may build a local preview from a Sheet export for design work; such files (manifest entries with `fileId: "preview"`, which the sync never writes) must be restored to the empty versions before committing — their ids differ from the sync's, so the first real run would refuse them as a mass removal.
+
+| Route | Page | Data |
+|---|---|---|
+| `/about/publications` | `TidePublications` | snapshot rows with `org: "TIDE"`; text `about-publications.yaml` |
+| `/thrive/publications` | `ThrivePublications` | snapshot rows with `org: "THRIvE"`; text `thrive-publications.yaml` |
+
+Each page has its own layout (§4 "Publications components"). TIDE (`TideCollection`): featured latest report of `featuredType` (by period read from the title), a shelf of the other reports of that type (6, then "Show all"), then everything else with type buttons (`?type=`) and numbered pages above 12; a search box only above 24 TIDE rows; no year chart (`HERO_CHART.TIDE` false). THRIvE (`ResearchArchive`): a per-year chart in the banner (a bar filters by year), search, Type of material / Field of work / Year selects, newest/oldest toggle, year-grouped list, 20 per page with numbered page links; URL `?search=&type=&field=&year=&dir=asc&page=`. No detail page: entries link out to the publication (`link`). Thresholds: `src/config/publications.js`.
+
+```
+Google Sheet "TIDE THRIvE Publications (Responses)" (Google Form responses; "Email address" column is personal)
+  → apps-script/publications/Code.gs v1 — token-gated export/fetchImage only. Publishes a row when "TIDE / THRIvE" is
+    TIDE or THRIvE, it has a title for that choice, and it is not "Yes" in an optional "Hide from website"
+    column. No approval column (owner decision, 2026-11-20) — every Form answer goes live.
+    Never reads the email column; id = "P-" + 10 hex chars of a SHA-256 of the Timestamp — or, for a row typed
+    in by hand without a Timestamp, of org + title + date (counted in stats.idFromContent). A link typed as
+    "www.…" or "doi.org/…" gets https:// added (script and sync). Heartbeat 05:00 UTC.
+  → .github/workflows/sync-publications.yml (every 6 h at :27, on Sheet change, manually; concurrency group
+    publications-sync) → scripts/sync-publications.js (npm run content:sync-publications)
+  → rules: scripts/lib/publications-snapshot.js (allowlist, FIELDS_WITH_COMMAS, email scrub, removal limits per page)
+    + scripts/lib/snapshot-core.js; run plumbing: scripts/lib/sync-runner.js (same as the library sync)
+  → thumbnails: scripts/lib/publications-images.js (sharp) — trim uniform borders; TIDE: whole cover, ≤ 480 px wide;
+    THRIvE: own shape kept between 3:4 and 16:9 (taller → 3:4 "attention" crop, wider → 16:9 centre crop), 480 px wide;
+    full size ≤ 1200 px wide, never cropped. The manifest entry records thumbWidth/thumbHeight/fullWidth/fullHeight.
+  → commits src/data/sheets/publications.json + src/data/publications-photos.json
+    + public/assets/images/publications/*.webp in one commit, then starts deploy.yml
+```
+
+Snapshot: `{ schemaVersion: 1, section: "publications", success, lastUpdated, contentHash, resources, meta: { total, counts: { TIDE, THRIvE } } }`; each row has exactly `id, org, date, title, type, fields, description, citation, link, photoUrl` (`fields` a list; `citation` THRIvE only; `date` `YYYY-MM-DD` or null). Safety rules, checked per page: a page that had rows suddenly has none, more than max(10, 20%) of a page's rows or of the thumbnails would go, or the data exceeds 2 MB → nothing is published unless run with `allow_large_change`. Secrets: `PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN`; Script Properties as for the library (`SYNC_TOKEN`, `GITHUB_PAT` = token `publications-sheet`, `GITHUB_REPO`, `ALERT_EMAIL`; `GITHUB_WORKFLOW` defaults to `sync-publications.yml`). Issue titles: "Publications sync failed — the publications pages are not updating" (`automation-alert`), "Publications Sheet: some rows need attention" (`sheet-needs-attention`). Row problems never block (they are listed in the "some rows need attention" issue), including `possible-duplicate` when a title repeats on one page (published anyway). Photo manifest entry: `{ fileId, modifiedTime, thumbWidth, thumbHeight, fullWidth, fullHeight, thumb, full }` (the page uses the sizes for `width`/`height` and the frame). Owner docs: `docs/PUBLICATIONS-SETUP-GUIDE.md`, `docs/PUBLICATIONS-SHEET-SCHEMA.md` (its "Thumbnails" section explains the image rules). A new Field of Work option containing a comma must be added to `FIELDS_WITH_COMMAS` (with a test).
 
 ---
 
@@ -819,9 +986,9 @@ npm run content:sync
 
 In `content/pages/about-our-team.yaml`, append to `coreTeam.members:` (name, suffix, role, bio, photo, linkedin) or `advisoryBoard.members:` (name, role, photo, linkedin). A non-empty `linkedin` makes the whole tile open that profile in a new tab; leave it `""` for no link. The advisors section also has `moreDetails` (button label + PDF link). Photos are square, ideally 600px+, with the face centred and some headroom. Place the photo in `public/assets/images/about-our-team/` and reference it as `/assets/images/about-our-team/<file>`.
 
-### Add an annual report
+### Add a publication (annual report, research, …)
 
-The live page (`/about/publications`) reads `annualReports.items` in `content/pages/about-publications.yaml` (`year`, `title`, `link`; an empty `link` is currently rendered as "coming soon").
+Publications are no longer in YAML: submit the publications Google Form (or edit the "TIDE THRIvE Publications (Responses)" Sheet). Answer **TIDE** for `/about/publications` or **THRIvE** for `/thrive/publications`; the sync publishes it within minutes once set up (§8 "Publications"). `about-publications.yaml` / `thrive-publications.yaml` hold only the text around the list.
 
 ### Add a new CMS page
 
@@ -916,6 +1083,8 @@ There is **no e2e step** (run Playwright locally). Lint, `content:validate` and 
 
 **`.github/workflows/sync-pramaan-library.yml`** — runs `scripts/sync-pramaan-library.js` every 6 h (`47 */6 * * *`), on `workflow_dispatch` (sent by the Resource Centre Sheet's Apps Script after Sheet changes and by its daily heartbeat; input `allow_large_change` overrides the safety refusal) and manually. Commits the snapshot + WebPs + photo manifest in one commit as `github-actions[bot]`, then starts `deploy.yml` explicitly (a `GITHUB_TOKEN` push starts no workflow). Own concurrency group `pramaan-library-sync`, never cancelled. Opens `automation-alert` / `sheet-needs-attention` Issues; adds an empty commit when the repo has been quiet 45+ days so GitHub keeps scheduled workflows enabled. Needs `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`, variable `ALERT_ASSIGNEE`. `npm ci --ignore-scripts`.
 
+**`.github/workflows/sync-publications.yml`** — the same shape for the Publications Sheet: runs `scripts/sync-publications.js` every 6 h (`27 */6 * * *`), on `workflow_dispatch` from the Publications Apps Script (edits, form submissions, daily heartbeat) and manually (`allow_large_change` input). Thumbnails are rendered by `scripts/lib/publications-images.js` (§8). Commits `src/data/sheets/publications.json`, `src/data/publications-photos.json` and `public/assets/images/publications/` in one commit, then starts `deploy.yml`. Own concurrency group `publications-sync`. Its `check` job skips the run with a notice (no alert) while `PUBLICATIONS_API_URL` / `PUBLICATIONS_SYNC_TOKEN` are missing **and** the committed snapshot is empty (on 2026-11-20 no snapshot is committed at all; see §8). Issue titles: "Publications sync failed — the publications pages are not updating", "Publications Sheet: some rows need attention".
+
 Deployed URL: `https://<user>.github.io/tide-testing/`
 
 ### Base path
@@ -966,7 +1135,7 @@ This is why all colour maps in components use lookup tables. Tailwind's `content
 
 ### Pramaan data is built in, not fetched
 
-The Resource Centre and the `/pramaan` counts import `src/data/sheets/pramaan-library.json` at build time. A Sheet edit reaches the site only through the sync → commit → deploy (minutes, or the next 6-hourly run) — there is no runtime request and no loading state to handle. Don't reintroduce a browser-side Sheet read (the retired `useABLData` pattern; see `docs/SHEET-INTEGRATION-PLAYBOOK.md`).
+The Resource Centre and the `/pramaan` counts import `src/data/sheets/pramaan-library.json` at build time (and the Publications pages import `src/data/sheets/publications.json` the same way). A Sheet edit reaches the site only through the sync → commit → deploy (minutes, or the next 6-hourly run) — there is no runtime request and no loading state to handle. Don't reintroduce a browser-side Sheet read (the retired `useABLData` pattern; see `docs/SHEET-INTEGRATION-PLAYBOOK.md`).
 
 ### A modal's backdrop, scrollbar and caption
 
@@ -1044,7 +1213,6 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 
 - The 16 former stranded routes were removed with no redirects; they now render `NotFound` (§1 Routing). The 97 images only those pages used were deleted too (recover with `git checkout a4126d1 -- public/assets/images/<folder>`); The old one-off downloader `scripts/download-images.mjs` (a hard-coded list of the original WordPress URLs) was deleted on 2026-10-26; recover it with `git checkout a4126d1 -- scripts/download-images.mjs`.
 - `content:validate` doesn't check bare filenames (e.g. `logoGallery.images` in `about-our-partners.yaml`); a missing one shows the placeholder image, so check those by eye. The one nonexistent entry there (`image-33-e1699293507264.png`) was removed.
-- Open: `about-publications.yaml` has an empty `research.items` list and 10 entries with `link: ""`.
 - Deleted 2026-10-25 with the owner's approval: `ui/Badge.jsx`, `WhatsAppIcon`, `TodoPlaceholder`, `getDriveDownloadUrl` (and its tests), `src/App.css`, `src/assets/*`, `public/icons.svg`, `public/favicon.svg`, and 91 unreferenced images under `public/assets/images/` (recover with `git checkout a4126d1 -- <path>`). The Devanagari font families deliberately stay loaded.
 
 ---
@@ -1054,7 +1222,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 17 files, 194 tests (jsdom, src/test/**)
+npm test               # vitest run — 23 files, 281 tests (jsdom, src/test/**)
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```
@@ -1064,6 +1232,7 @@ npm run test:ui        # Vitest UI
 | `components/AnimatedCounter.test.jsx` | 11 | parsing, suffix/commas, classes, 0 before the observer fires |
 | `components/Button.test.jsx` | 16 | variants/sizes, button vs `<a>` vs `<Link>`, external target/rel |
 | `components/ErrorBoundary.test.jsx` | 5 | children pass-through, friendly screen + actions, console logging, message/stack hidden unless DEV |
+| `components/Header.test.jsx` | 5 | nested "Our Publications" group (keyboard), THRIvE dropdown, mobile nested list + current page, `navActive` most-specific match |
 | `hooks/useLightbox.test.js` | 13 | open/close/prev/next wrap |
 | `utils/imgSrc.test.js` | 8 | path forms, passthrough, base prefix |
 | `utils/motionPresets.test.js` | 10 | `makeFadeUp` / `fadeUp` shape |
@@ -1071,15 +1240,20 @@ npm run test:ui        # Vitest UI
 | `utils/reloadOnStaleChunk.test.js` | 4 | reload once when a lazy chunk is missing after a deploy |
 | `pages/pramaanLibrary.test.jsx` | 10 | Resource Centre list + detail: filters, sort, search, tab bar, old `?type=` names, card links |
 | `pages/pramaanSwitch.test.jsx` | 4 | `/pramaan` counts and type cards from the snapshot, Contribute `formUrl`, `/pramaan-library` redirect |
+| `pages/publications.test.jsx` | 39 | TIDE: featured latest annual report + hero stats (no chart), shelf by period with period labels, shelf 6 then "Show all {n}", type buttons + `?type=` (unknown ignored), numbered pages above 12 (clamped), search box only above 24 rows, no-featured-type / one-type case, empty state, "New" badge; THRIvE: year groups (undated last), same-date title order, hero chart filters by year + social proof, date toggle, debounced search + highlight + Clear all, "/" shortcut, Type/Field/Year selects (zero-count disabled), stale URL values as chips, URL state, citation/tags/source, Copy citation, description "Show more" only on overflow, pages of 20 (`?page=`, "continued" heading, focus), page clamp + reset on filter change, empty state; utilities (order + tie-break, `reportPeriod`, `splitShelf`, `groupByYear`, year filter + `yearCounts`, facets, URL params, `paginate`/`pageWindow`, `sourceOf`, social proof/`isNew`/icons/frames, highlight, JSON-LD, dates/links) |
 | `scripts/librarySnapshot.test.js` | 12 | Resource Centre sync rules (allowlist, email scrub, limits) |
-| `scripts/snapshotCore.test.js` | 14 | shared sync rules: hash, photo plan (never deletes on a Drive failure), deletion cap, helpers |
-| `scripts/libraryAppsScript.test.js` | 12 | the Resource Centre Apps Script in a simulated Google environment |
+| `scripts/snapshotCore.test.js` | 18 | shared sync rules: hash, photo plan (never deletes on a Drive failure), deletion cap, helpers (both Drive-link readers, `photoFileBase`, `cleanString` vs `cleanStringCollapseSpaces`, `planListPhotos`) |
+| `scripts/syncRunner.test.js` | 6 | shared sync plumbing (`sync-runner.js`): token redaction, delete guard, `.env.development` loader (prefix only, never overrides), report texts, `readJson` fallback |
+| `scripts/libraryAppsScript.test.js` | 12 | the Resource Centre Apps Script in a simulated Google environment (sandbox + fake Google services: `src/test/scripts/helpers/fakeAppsScript.js`, shared with the Publications test) |
+| `scripts/publicationsSnapshot.test.js` | 13 | Publications sync rules (Field of Work splitting, allowlist, email scrub, org spelling, links/dates, `www.`/`doi.org` completion, `possible-duplicate`, order, per-page limits, photo plan) |
+| `scripts/publicationsImages.test.js` | 6 | thumbnail rendering (`publications-images.js`): trims black bars, TIDE cover kept whole, tall THRIvE image cropped to exactly 3:4, 16:10 slide kept in its shape, wide logo strip cropped to 16:9, an all-border image left unchanged, non-image bytes throw |
+| `scripts/publicationsAppsScript.test.js` | 13 | the Publications Apps Script in a simulated Google environment (no public listing, never outputs email/Timestamp, publish gate + "Hide from website", link completion, ids incl. rows without a Timestamp, triggers, dispatch) |
 | `utils/siteDataPlugin.test.js` | 21 | JSON-LD generated from `site.yaml`, `transformHtml` (title/og:site_name/marker/escaping), `llms.txt` rendering, content-consistency detection (email / lives total) |
 | `utils/imagePlaceholder.test.js` | 4 | global image fallback, opt-out, recursion guard, listener cleanup |
-| `routing/routes.smoke.test.jsx` | 16 | lazy-imports each page in a `MemoryRouter` and checks it renders something (weak: not content) |
+| `routing/routes.smoke.test.jsx` | 17 | lazy-imports each page in a `MemoryRouter` and checks it renders something (weak: not content) |
 | `routing/removedRoutes.test.jsx` | 17 | each removed URL renders `NotFound`; a live route remains live |
 
-`src/test/setup.js` globally mocks `framer-motion` (a fixed list of `motion.*` tags — HTML elements plus `svg/g/path/rect/ellipse/line/circle` — along with `AnimatePresence` and `MotionConfig`; any other export, e.g. `LayoutGroup`, is not mocked; `removedRoutes.test.jsx` renders the whole `<App />` through this mock), and `react-helmet-async` (`Helmet` renders nothing, so `SeoHead` tags can't be asserted). It also stubs `IntersectionObserver`, `ResizeObserver`, `matchMedia`, `scrollTo`, an in-memory `sessionStorage`, and sets `import.meta.env` (`BASE_URL: '/'`). Not covered: `useFocusTrap`, `useModalBehavior`, the lightbox components, Header/Footer/Layout/App, `SeoHead`, and the sync's I/O script (`sync-pramaan-library.js`; its rules are tested).
+`src/test/setup.js` globally mocks `framer-motion` (a fixed list of `motion.*` tags — HTML elements plus `svg/g/path/rect/ellipse/line/circle` — along with `AnimatePresence` and `MotionConfig`; any other export, e.g. `LayoutGroup`, is not mocked; `removedRoutes.test.jsx` renders the whole `<App />` through this mock), and `react-helmet-async` (`Helmet` renders nothing, so `SeoHead` tags can't be asserted). It also stubs `IntersectionObserver`, `ResizeObserver`, `matchMedia`, `scrollTo`, an in-memory `sessionStorage`, and sets `import.meta.env` (`BASE_URL: '/'`). Not covered: `useFocusTrap`, `useModalBehavior`, `useSidebarFits`, the lightbox components, Footer/Layout/App, `SeoHead`, and the syncs' I/O scripts (`sync-pramaan-library.js`, `sync-publications.js`; their rules are tested). Header is covered only for its menus (`Header.test.jsx`).
 
 ### End-to-end (Playwright)
 
@@ -1088,7 +1262,7 @@ npm run test:e2e       # playwright test — chromium only, workers 1
 npm run test:all       # unit + e2e
 ```
 
-`playwright.config.js` starts (or reuses, outside CI) `npm run dev` on `http://localhost:5173`. Specs live in `e2e/` (`home`, `navigation`, `pramaan`): `navigation.spec` loads 11 routes without page errors, `home.spec` and `pramaan.spec` check basic structure and links; there are no lightbox, filter, mobile-viewport or axe flows. The removed routes are covered only by the Vitest suite. `pramaan.spec` also opens a resource at `/pramaan/resource-centre/W1` and checks the `/pramaan-library` redirect. Requires `npx playwright install chromium` once.
+`playwright.config.js` starts (or reuses, outside CI) `npm run dev` on `http://localhost:5173`. Specs live in `e2e/` (`home`, `navigation`, `pramaan`): `navigation.spec` loads 13 routes without page errors (incl. `/about/publications` and `/thrive/publications`), `home.spec` and `pramaan.spec` check basic structure and links; there are no lightbox, filter, mobile-viewport or axe flows. The removed routes are covered only by the Vitest suite. `pramaan.spec` also opens a resource at `/pramaan/resource-centre/W1` and checks the `/pramaan-library` redirect. Requires `npx playwright install chromium` once.
 
 ### Accessibility scan
 
@@ -1097,7 +1271,7 @@ npx vite --port 5175                      # terminal 1: dev server on the port t
 node scripts/a11y-audit.cjs [port]        # terminal 2 (port arg, or A11Y_PORT; default 5175)
 ```
 
-Uses `@playwright/test` (Chromium) + `@axe-core/playwright` (tags wcag2a/aa, 21a/aa, 22aa) over a hard-coded list of 18 URLs (all 17 primary routes, with `/pramaan/resource-centre/W1` standing in for `:id`, plus a made-up path that exercises the 404 page; **not** `/coming-soon` or `/404`). It scrolls each page fully and waits 1.2 s so `whileInView` animations settle before scanning — don't shorten that. The JSON report is written to the OS temp dir as `a11y-report.json` (override with `A11Y_REPORT`). Update `ROUTES` in the script when routes change.
+Uses `@playwright/test` (Chromium) + `@axe-core/playwright` (tags wcag2a/aa, 21a/aa, 22aa) over a hard-coded list of 19 URLs (all 18 primary routes, with `/pramaan/resource-centre/W1` standing in for `:id`, plus a made-up path that exercises the 404 page; **not** `/coming-soon` or `/404`). It scrolls each page fully and waits 1.2 s so `whileInView` animations settle before scanning — don't shorten that. The JSON report is written to the OS temp dir as `a11y-report.json` (override with `A11Y_REPORT`). Update `ROUTES` in the script when routes change.
 
 ### Lint
 
@@ -1105,7 +1279,7 @@ Uses `@playwright/test` (Chromium) + `@axe-core/playwright` (tags wcag2a/aa, 21a
 
 ### CI
 
-Only `deploy.yml` (lint, `content:validate`, unit tests, build, deploy) and `sync-pramaan-library.yml` (the Resource Centre sync) exist. Nothing in CI runs e2e or the a11y script.
+Only `deploy.yml` (lint, `content:validate`, unit tests, build, deploy), `sync-pramaan-library.yml` (the Resource Centre sync) and `sync-publications.yml` (the Publications sync) exist. Nothing in CI runs e2e or the a11y script.
 
 ---
 
@@ -1125,6 +1299,7 @@ Only `deploy.yml` (lint, `content:validate`, unit tests, build, deploy) and `syn
 | `content/shared/site.yaml` | Single source of site-wide facts (name, URL, email, lives-impacted figure, breadcrumb parents) |
 | `scripts/siteDataPlugin.js` | Vite plugin that generates JSON-LD / `<title>` / `og:site_name` and `/llms.txt` from `site.yaml` |
 | `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md` / `PRAMAAN-LIBRARY-SHEET-SCHEMA.md` | Owner setup and column rules for the Resource Centre Sheet |
+| `docs/PUBLICATIONS-SETUP-GUIDE.md` / `PUBLICATIONS-SHEET-SCHEMA.md` | Owner setup and column rules for the Publications Sheet |
 | `docs/MIGRATION-OVERVIEW.md` | Start here when handing the whole project (Google + GitHub) to a new owner |
 | `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` | Moving the Sheet + Apps Script to a new Google account — uses a fresh-copy approach, not Google's "transfer ownership," because Apps Script Web App deployments don't transfer ownership the way you'd expect |
 | `docs/MIGRATION-GITHUB-REPOSITORY.md` | Transferring the GitHub repository to a new owner |

@@ -4,7 +4,16 @@
 
 **When do I need this?** Fine-grained GitHub tokens expire on a date you chose when creating them (commonly 1 year). The Resource Centre Sheet ("Contributing to Pramaan; Educators' Resource Bank (Responses)") uses one, stored in its Apps Script as `GITHUB_PAT` (recommended name `pramaan-library-sheet`), to tell GitHub "the Sheet changed, update the website". When it expires, Sheet edits stop reaching the website quickly — they then wait for the automatic run every 6 hours. Reminders beforehand: GitHub's own email to the token's owner, and — only if GitHub reports the expiry date to the script, which is not documented — an Apps Script email **"[Pramaan Library website] GitHub token expires in N day(s)"**. **The reliable reminder is your own calendar entry** made when you create the token.
 
-> Only one Sheet updates the website since 19 November 2026. The older Pramaan Sheet's script and its token are no longer used by the website (see `docs/PRAMAAN-HARDENING-PLAN.md` §13).
+> **There is one token per Sheet.** Two Sheets can update the website, each with its own token in its own Apps Script:
+>
+> | Sheet | Token name | Emails from its script start with | Its GitHub workflow |
+> |---|---|---|---|
+> | "Contributing to Pramaan; Educators' Resource Bank (Responses)" (Resource Centre) | `pramaan-library-sheet` | `[Pramaan Library website]` | **Sync Pramaan Library** |
+> | "TIDE THRIvE Publications (Responses)" (Publications pages) — not set up yet on 2026-11-20 | `publications-sheet` | `[Publications website]` | **Sync Publications** |
+>
+> The steps below are written for the Resource Centre Sheet. For the Publications Sheet do exactly the same in **its** Apps Script, with its token name and its workflow. Renewing one token never affects the other.
+>
+> The older Pramaan Sheet's script and its token are no longer used by the website (see `docs/PRAMAAN-HARDENING-PLAN.md` §13).
 
 **Time required:** ~10 minutes.
 
@@ -46,7 +55,7 @@
 
 1. Apps Script editor → function dropdown → **`testDispatch`** → **Run**.
 2. The Execution log must say **`SUCCESS (HTTP 204)`** or **`SUCCESS (HTTP 200)`**, and GitHub → **Actions** shows a new **Sync Pramaan Library** run within a minute. (`HTTP 401`: token pasted wrongly; `403`: missing Actions permission; `404`: wrong repository chosen in Step 1.8 or wrong `GITHUB_REPO`.)
-3. Write the new token's expiry date in `docs/OPERATIONS-INVENTORY.md` (the Resource Centre Apps Script row) **and in your calendar** (2 weeks before). `showStatus` shows it too if GitHub reported it.
+3. Write the new token's expiry date in `docs/OPERATIONS-INVENTORY.md` (the matching token row — Resource Centre or Publications) **and in your calendar** (2 weeks before). `showStatus` shows it too if GitHub reported it.
 
 If all three pass, you're done — no redeployment needed. Only the Script Property changed.
 

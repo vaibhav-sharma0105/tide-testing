@@ -7,6 +7,8 @@
 // Safety rules: scripts/lib/library-snapshot.js (and the shared ones in snapshot-core.js). A
 // structural problem publishes NOTHING and fails the run unless ALLOW_LARGE_CHANGE=true. A photo
 // Drive can't read keeps its previous copy; photos are deleted only when their row is gone.
+// The run's plumbing (env loader, fetch + retry, token redaction, report, outputs, photo
+// download/delete loops) is shared with every sync: scripts/lib/sync-runner.js.
 //
 // Run:  npm run content:sync-pramaan-library
 // Env:  PRAMAAN_LIBRARY_API_URL, PRAMAAN_LIBRARY_SYNC_TOKEN (required);
@@ -14,7 +16,6 @@
 // Locally, put the two required values in .env.development (gitignored) — the script reads it.
 
 import fs from 'fs/promises'
-import { readFileSync } from 'fs'
 import path from 'path'
 import os from 'os'
 import sharp from 'sharp'
@@ -22,17 +23,13 @@ import {
   normalizeLibrary, buildLibrarySnapshot, serializeSnapshot, validateLibrary, planLibraryPhotos,
   photoDeletionError, photosFromExport, isSafeId, photoFileBase,
 } from './lib/library-snapshot.js'
+import {
+  loadLocalEnv, createRedactor, createFetchJson, readJson, createReport, fetchExport, notePatExpiry,
+  refuseUnlessAllowed, fetchPhotos, deletePhotos, writeResults, runSync,
+} from './lib/sync-runner.js'
 
 // Local runs: read the two values from .env.development if they aren't in the environment.
-function loadLocalEnv() {
-  try {
-    for (const line of readFileSync('.env.development', 'utf8').split(/\r?\n/)) {
-      const m = line.match(/^\s*(PRAMAAN_LIBRARY_[A-Z_]+)\s*=\s*(.*?)\s*$/)
-      if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '')
-    }
-  } catch { /* no local file: CI passes the values as secrets */ }
-}
-loadLocalEnv()
+loadLocalEnv('PRAMAAN_LIBRARY_')
 
 const API_URL = process.env.PRAMAAN_LIBRARY_API_URL
 const TOKEN = process.env.PRAMAAN_LIBRARY_SYNC_TOKEN
@@ -57,66 +54,17 @@ const REQUEST_TIMEOUT_MS = 60_000
 const MAX_PHOTOS_PER_RUN = Number(process.env.MAX_PHOTOS_PER_RUN) || 100
 const PHOTO_TIME_BUDGET_MS = 20 * 60_000
 
-function isInsideAssetsDir(absPath) {
-  const rel = path.relative(ASSETS_DIR, absPath)
-  return rel && !rel.startsWith('..') && !path.isAbsolute(rel)
-}
-
-// The Actions log of a public repository is public: the token must never reach a log line.
-function redactToken(text) {
-  let out = String(text).replace(/([?&]token=)[^&\s]*/g, '$1<redacted>')
-  if (TOKEN) out = out.split(TOKEN).join('<redacted>')
-  return out
-}
-
-async function fetchJson(url, attempts = 3) {
-  const safeUrl = redactToken(url)
-  for (let attempt = 1; attempt <= attempts; attempt++) {
-    try {
-      const res = await fetch(url, { redirect: 'follow', signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) })
-      if (!res.ok) throw new Error(`HTTP ${res.status} for ${safeUrl}`)
-      return await res.json()
-    } catch (err) {
-      if (attempt === attempts) throw new Error(redactToken(err.message))
-      const delayMs = attempt * 2000
-      console.warn(`  fetch failed (attempt ${attempt}/${attempts}): ${redactToken(err.message)} — retrying in ${delayMs}ms`)
-      await new Promise(resolve => setTimeout(resolve, delayMs))
-    }
-  }
-}
-
-async function readJson(file, fallback) {
-  try { return JSON.parse(await fs.readFile(file, 'utf8')) } catch { return fallback }
-}
+const redactToken = createRedactor(TOKEN)
+const fetchJson = createFetchJson({ redactToken, timeoutMs: REQUEST_TIMEOUT_MS })
+const report = createReport({
+  reportPath: REPORT_PATH,
+  summaryTitle: 'Pramaan Library sync',
+  setupGuide: 'docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md',
+  workflowName: 'Sync Pramaan Library',
+})
 
 function apiUrl(params) {
   return `${API_URL}?${new URLSearchParams({ ...params, token: TOKEN })}`
-}
-
-const report = { errors: [], refused: [], problems: [], notes: [] }
-
-async function writeReport(outcome) {
-  const lines = [`**Outcome:** ${outcome}`, '']
-  if (report.errors.length) {
-    lines.push('### The sync failed', '', ...report.errors.map(m => `- ${m}`), '',
-      'Nothing was published; the page keeps showing the last good version. See docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md → Troubleshooting.', '')
-  }
-  if (report.refused.length) {
-    lines.push('### Not published — the update looked unsafe', '', ...report.refused.map(m => `- ${m}`), '',
-      'The page keeps showing the last good version. Check the Sheet. If the change is intended, go to **Actions → Sync Pramaan Library → Run workflow**, tick **allow_large_change**, and run it.', '')
-  }
-  if (report.problems.length) {
-    lines.push(`### Rows that need attention in the Sheet (${report.problems.length})`, '', ...report.problems.map(p => `- ${p.message}`), '')
-  }
-  if (report.notes.length) lines.push('### Notes', '', ...report.notes.map(n => `- ${n}`), '')
-  const md = lines.join('\n')
-  await fs.writeFile(REPORT_PATH, md, 'utf8')
-  if (process.env.GITHUB_STEP_SUMMARY) await fs.appendFile(process.env.GITHUB_STEP_SUMMARY, `## Pramaan Library sync\n\n${md}\n`)
-}
-
-async function setOutputs(values) {
-  if (!process.env.GITHUB_OUTPUT) return
-  await fs.appendFile(process.env.GITHUB_OUTPUT, Object.entries(values).map(([k, v]) => `${k}=${v}\n`).join(''))
 }
 
 async function processPhoto({ id, fileId, modifiedTime }) {
@@ -142,19 +90,13 @@ async function main() {
   if (!TOKEN) throw new Error('PRAMAAN_LIBRARY_SYNC_TOKEN is not set')
 
   console.log('Fetching the library from the Apps Script…')
-  const started = Date.now()
-  const res = await fetchJson(apiUrl({ action: 'export' }))
-  if (!res || res.success !== true) throw new Error(`Apps Script returned an error: ${res?.error ?? 'no response'}`)
-  if (!(res.scriptVersion >= MIN_SCRIPT_VERSION)) throw new Error(`Apps Script version ${res.scriptVersion} is too old (need ${MIN_SCRIPT_VERSION}+). Paste apps-script/pramaan-library/Code.gs and deploy a new version.`)
-  const ms = Date.now() - started
-  if (ms > SLOW_EXPORT_MS) report.notes.push(`The Apps Script export took ${Math.round(ms / 1000)} s; Google stops scripts at 6 minutes.`)
+  const res = await fetchExport({
+    fetchJson, url: apiUrl({ action: 'export' }), minScriptVersion: MIN_SCRIPT_VERSION,
+    codeGsPath: 'apps-script/pramaan-library/Code.gs', slowExportMs: SLOW_EXPORT_MS, report,
+  })
   const s = res.stats ?? {}
   report.notes.push(`Sheet: ${s.rows ?? '?'} filled rows → ${s.published ?? '?'} published; ${s.notConsented ?? '?'} not published because the three consent answers are not all "Yes"; ${s.generatedIds ?? 0} given an automatic ID (no Internal ID).`)
-  const exp = res.health?.patExpiresAt
-  if (exp) {
-    const days = Math.floor((Date.parse(exp) - Date.now()) / 86_400_000)
-    if (days <= PAT_WARN_DAYS) report.notes.push(`⚠️ The GitHub token used by the Apps Script expires in ${days} day(s) (${exp}). Renew it: docs/MAINTENANCE-GITHUB-PAT-REFRESH.md.`)
-  }
+  notePatExpiry(report, res.health, PAT_WARN_DAYS)
 
   const previous = await readJson(SNAPSHOT_PATH, null)
   const localManifest = await readJson(MANIFEST_PATH, {})
@@ -172,80 +114,19 @@ async function main() {
 
   console.log(`  ${snapshot.meta.total} resources; ${plan.toFetch.length} photos to fetch, ${plan.toDelete.length} to delete; ${report.problems.length} row problem(s)`)
 
-  if (structural.length) {
-    if (!ALLOW_LARGE_CHANGE) {
-      report.refused.push(...structural)
-      await writeReport('❌ Refused — nothing was published')
-      await setOutputs({ changed: false, refused: true, problems: report.problems.length })
-      console.error('Refused to publish:\n  - ' + structural.join('\n  - '))
-      process.exit(1)
-    }
-    report.notes.push(`allow_large_change was set, so these safety checks were overridden: ${structural.join(' ')}`)
-  }
+  await refuseUnlessAllowed({ structural, allowLargeChange: ALLOW_LARGE_CHANGE, report })
 
   await fs.mkdir(ASSETS_DIR, { recursive: true })
-  let manifestChanged = false
+  const fetchedChanged = await fetchPhotos({
+    plan, manifest: localManifest, processPhoto, maxPhotos: MAX_PHOTOS_PER_RUN,
+    timeBudgetMs: PHOTO_TIME_BUDGET_MS, report, redactToken,
+  })
+  const deletedChanged = await deletePhotos({ ids: plan.toDelete, manifest: localManifest, assetsDir: ASSETS_DIR, isSafeId })
 
-  for (const { id, fileId } of plan.toBackfill) {
-    localManifest[id] = { ...localManifest[id], fileId }
-    manifestChanged = true
-  }
-
-  const photoStart = Date.now()
-  let fetched = 0
-  for (const [i, item] of plan.toFetch.entries()) {
-    if (fetched >= MAX_PHOTOS_PER_RUN || Date.now() - photoStart > PHOTO_TIME_BUDGET_MS) {
-      const left = plan.toFetch.length - i
-      report.notes.push(`${left} photo(s) still to download — the next run continues (each run fetches at most ${MAX_PHOTOS_PER_RUN} photos in about 20 minutes). Until then those resources show a placeholder.`)
-      console.log(`  stopping photo downloads for this run; ${left} left for the next run`)
-      break
-    }
-    fetched++
-    try {
-      localManifest[item.id] = await processPhoto(item)
-      manifestChanged = true
-      console.log(`  synced photo ${item.id}`)
-    } catch (err) {
-      report.problems.push({ kind: 'photo-failed', id: item.id, message: `${item.id}: photo download failed (${redactToken(err.message)}) — kept the previous photo, if any` })
-      console.warn(`  failed photo ${item.id}: ${redactToken(err.message)}`)
-    }
-  }
-
-  for (const id of plan.toDelete) {
-    const entry = localManifest[id]
-    delete localManifest[id]
-    manifestChanged = true
-    for (const rel of [entry?.thumb, entry?.full]) {
-      if (!rel) continue
-      const abs = path.resolve('public', rel)
-      if (isSafeId(id) && isInsideAssetsDir(abs)) await fs.rm(abs, { force: true })
-      else console.warn(`  refused to delete ${JSON.stringify(rel)}: outside ${ASSETS_DIR}`)
-    }
-    console.log(`  removed photo ${id}`)
-  }
-
-  const nextText = serializeSnapshot(snapshot)
-  const prevText = await fs.readFile(SNAPSHOT_PATH, 'utf8').catch(() => null)
-  const snapshotChanged = nextText !== prevText
-  if (snapshotChanged) {
-    await fs.mkdir(path.dirname(SNAPSHOT_PATH), { recursive: true })
-    await fs.writeFile(SNAPSHOT_PATH, nextText, 'utf8')
-  }
-  if (manifestChanged) {
-    const sorted = Object.fromEntries(Object.keys(localManifest).sort().map(k => [k, localManifest[k]]))
-    await fs.writeFile(MANIFEST_PATH, JSON.stringify(sorted, null, 2) + '\n', 'utf8')
-  }
-
-  const changed = snapshotChanged || manifestChanged
-  console.log(changed ? `Updated: ${[snapshotChanged && 'data', manifestChanged && 'photos'].filter(Boolean).join(' + ')}` : 'No changes.')
-  await writeReport(changed ? '✅ Published changes' : '✅ No changes')
-  await setOutputs({ changed, refused: false, problems: report.problems.length })
+  await writeResults({
+    snapshotPath: SNAPSHOT_PATH, snapshotText: serializeSnapshot(snapshot), manifestPath: MANIFEST_PATH,
+    manifest: localManifest, manifestChanged: fetchedChanged || deletedChanged, report,
+  })
 }
 
-main().catch(async err => {
-  const msg = redactToken(err?.message ?? err)
-  report.errors.push(msg)
-  try { await writeReport('❌ Failed'); await setOutputs({ changed: false, refused: false, problems: report.problems.length }) } catch { /* best effort */ }
-  console.error(msg)
-  process.exit(1)
-})
+runSync(main, { report, redactToken })

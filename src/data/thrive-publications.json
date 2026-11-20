@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "breadcrumbName": "THRIvE Publications",
+    "badge": "THRIvE Research Centre · Publications",
+    "title": "THRIvE Publications",
+    "subtitle": "Journal articles, books, talks and coverage of our research on holistic education, social emotional learning, teacher agency and inclusive education.",
+    "seoTitle": "THRIvE Publications — TIDE Foundation",
+    "seoDescription": "Research from TIDE Foundation's THRIvE Research Centre: journal articles, books and talks on holistic education, social emotional learning, teacher agency and inclusive education.",
+    "emptyTitle": "No publications published yet",
+    "emptyHint": "Publications appear here as soon as they are added."
+  },
+  "stats": {
+    "publicationSingular": "{n} publication",
+    "publicationPlural": "{n} publications",
+    "typeSingular": "{n} type",
+    "typePlural": "{n} types",
+    "since": "since {year}",
+    "socialProofTemplate": "{n} pieces by others citing or featuring our work",
+    "socialProofSingular": "{n} piece by others citing or featuring our work"
+  },
+  "socialProofTypes": [
+    "Published by others (TIDE acknowledged)",
+    "Mass media coverage"
+  ],
+  "chart": {
+    "title": "Publications per year",
+    "hint": "Select a year to show only its publications.",
+    "barLabelTemplate": "{year}: {n} {publications}",
+    "filterAction": "Show only this year"
+  },
+  "toolbar": {
+    "searchPlaceholder": "Search titles, authors, topics…",
+    "searchLabel": "Search publications",
+    "clearSearchLabel": "Clear search",
+    "searchShortcutKey": "/",
+    "typeLabel": "Type of material",
+    "allTypes": "All types",
+    "fieldLabel": "Field of work",
+    "allFields": "All fields",
+    "yearLabel": "Year",
+    "allYears": "All years",
+    "optionTemplate": "{name} ({n})",
+    "newest": "Newest first",
+    "oldest": "Oldest first",
+    "directionLabelTemplate": "Order by date: {dir}. Click to reverse.",
+    "clearAll": "Clear all",
+    "removeTemplate": "Remove filter: {name}"
+  },
+  "results": {
+    "publicationSingular": "publication",
+    "publicationPlural": "publications",
+    "countTemplate": "{total} {publications}",
+    "rangeTemplate": "Showing {from}–{to} of {total} {publications}",
+    "noResults": "No publications match your search or filters",
+    "noResultsHint": "Try a different word, or clear the filters.",
+    "undatedHeading": "Undated",
+    "continuedLabel": "continued"
+  },
+  "pagination": {
+    "label": "Pages",
+    "previous": "Previous",
+    "next": "Next",
+    "pageLabelTemplate": "Page {n}"
+  },
+  "newBadge": "New",
+  "source": {
+    "label": "Source",
+    "doi": "DOI",
+    "driveFile": "Google Drive",
+    "driveFolder": "Google Drive folder"
+  },
+  "entry": {
+    "read": "Read",
+    "copyCitation": "Copy citation",
+    "copied": "Copied",
+    "copyFailed": "Copy failed — select the citation instead",
+    "copiedAnnouncement": "Citation copied to the clipboard",
+    "showMore": "Show more",
+    "showLess": "Show less"
+  },
+  "a11y": {
+    "newTab": "(opens in a new tab)",
+    "openLabelTemplate": "{action}: {title} (opens in a new tab)",
+    "copyLabelTemplate": "Copy citation for {title}",
+    "citationLabel": "Citation",
+    "fieldsLabel": "Field of work",
+    "typeLabel": "Type of material",
+    "dateLabel": "Date",
+    "newLabelTemplate": "dated within the last {days} days"
+  }
+}

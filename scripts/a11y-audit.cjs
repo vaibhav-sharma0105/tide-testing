@@ -31,6 +31,7 @@ const ROUTES = [
   '/get-involved/volunteer',
   '/get-involved/donate',
   '/thrive',
+  '/thrive/publications',
   '/contact',
   '/this-route-does-not-exist-404-check',
 ]

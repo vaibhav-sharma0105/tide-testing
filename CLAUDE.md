@@ -18,7 +18,7 @@ React static site rebuild of [tideinternational.org](https://tideinternational.o
 ## Deployment & CI
 - `npm run build` → `dist/` → GitHub Pages at `/tide-testing/`. `vite.config.js` sets base `/tide-testing/` when `GITHUB_ACTIONS` is set, else `/` — so dev hides base-path bugs (see `imgSrc` below). The build needs no secrets.
 - `.github/workflows/deploy.yml` (push to `main` / manual): `npm ci` → `npm run lint` → `npm run content:validate` → `npm test` → `npm run build` → deploy. Any failure stops the deploy. **CI does not run the Playwright e2e specs** — run them locally.
-- `.github/workflows/sync-pramaan-library.yml` syncs the Resource Centre (below) and starts `deploy.yml` itself after committing. Both workflows open/close `automation-alert` Issues assigned to repo variable `ALERT_ASSIGNEE`; both pin `ubuntu-24.04` and Node 24 (bump deliberately). Mechanics: AGENTS.md §10.
+- `.github/workflows/sync-pramaan-library.yml` syncs the Resource Centre and `.github/workflows/sync-publications.yml` the Publications pages (both below); each starts `deploy.yml` itself after committing. All three workflows open/close `automation-alert` Issues assigned to repo variable `ALERT_ASSIGNEE`; all pin `ubuntu-24.04` and Node 24 (bump deliberately). Mechanics: AGENTS.md §10.
 
 ## Design System
 - Primary `#1E6BAA` · Background `#FDFCF9` · Text `#0D1F3C` · Accent `#F59E0B` — full token map in `tailwind.config.js` (trust it over any doc).
@@ -31,26 +31,33 @@ React static site rebuild of [tideinternational.org](https://tideinternational.o
 src/
   components/  layout/ (Header, Footer, Layout) · ui/ (Button, PageHero, SeoHead, Lightbox, …)
                abl/ (shared Pramaan pieces: AblNavBar, Pagination, DriveImage, ImageLightbox, VideoLightbox, …)
-               library/ (Resource Centre: LibraryFilters, LibraryDropdown, LibraryCard, LibraryTypeBadge) · ErrorBoundary.jsx
+               library/ (Resource Centre: LibraryFilters, LibraryDropdown, LibraryCard, LibraryTypeBadge)
+               listing/ (SearchField, FilterChips, FilterDrawer, PickerField — all used by the Resource Centre)
+               publications/ (PublicationsHero, TideCollection, ResearchArchive, ResearchEntry, PublicationCover, MediaPanel,
+                 PublicationControls, PublicationsPagination, YearChart, PublicationsJsonLd, PublicationBits, TypeIcon, FadeImage, typeStyles.js) · ErrorBoundary.jsx
   pages/       Home, Contact, THRIvE, EducationForHarmony, SocialChangemakers, ComingSoon, NotFound
                about/ · get-involved/ · resources/ (AblHome, AblContribute) · library/ (PramaanLibrary, PramaanLibraryDetail, LibraryRedirect)
-  hooks/ config/ (abl.js, library.js) utils/ test/   App.jsx (routes) · main.jsx · index.css
+               publications/ (TidePublications, ThrivePublications)
+  hooks/ (incl. usePublicationControls) config/ (abl.js, library.js, publications.js) utils/ test/   App.jsx (routes) · main.jsx · index.css
   data/        AUTO-GENERATED — never edit
-content/pages/ (16 YAMLs) · content/shared/ (9 YAMLs + llms.txt template)
+content/pages/ (17 YAMLs) · content/shared/ (9 YAMLs + llms.txt template)
 scripts/       yaml-to-json, siteDataPlugin, validate-content, contentConsistency, bootstrap-yaml,
-               sync-pramaan-library + lib/ (library-snapshot, snapshot-core), ci/alert-issue.sh, a11y-audit.cjs
+               sync-pramaan-library, sync-publications + lib/ (library-snapshot, publications-snapshot, publications-images, snapshot-core, sync-runner),
+               ci/alert-issue.sh, a11y-audit.cjs
 apps-script/pramaan-library/Code.gs   the Resource Centre Sheet's Apps Script (source of truth; the owner pastes it into Google)
+apps-script/publications/Code.gs      the Publications Sheet's Apps Script (same pattern)
 e2e/ (Playwright, 3 specs) · docs/ (guides, playbook, architecture diagrams, specs/)
 ```
 Full annotated tree: AGENTS.md §2.
 
 ## Pages
-`src/App.jsx` registers 22 `<Route>`s (20 lazy-loaded page components): 17 primary, 2 redirects, 3 system.
+`src/App.jsx` registers 23 `<Route>`s (21 lazy-loaded page components): 18 primary, 2 redirects, 3 system.
 
 | Route | Component | Data |
 |-------|-----------|------|
 | `/` | Home | `home.json` |
-| `/about/why-tide` · `/past-programs` · `/our-team` · `/our-partners` · `/publications` | WhyTide · PastPrograms · OurTeam · OurPartners · PublicationsCombined | `about-*.json` |
+| `/about/why-tide` · `/past-programs` · `/our-team` · `/our-partners` | WhyTide · PastPrograms · OurTeam · OurPartners | `about-*.json` |
+| `/about/publications` | TidePublications | `about-publications.json` + snapshot `sheets/publications.json` (TIDE rows) |
 | `/education-for-harmony` | EducationForHarmony | `education-for-harmony.json` |
 | `/education-for-harmony/mccx` | OrganizeMCCx | `get-involved-mccx.json` |
 | `/education-for-harmony/social-changemakers` | SocialChangemakers | `social-changemakers.json` (placeholder grid) |
@@ -60,10 +67,12 @@ Full annotated tree: AGENTS.md §2.
 | `/pramaan-library` (+ `/:id`) | LibraryRedirect | → `/pramaan/resource-centre(/:id)`, keeps the query string |
 | `/get-involved/volunteer` · `/get-involved/donate` | Volunteer · Donate | `get-involved-*.json` |
 | `/thrive` · `/contact` | THRIvE · Contact | `thrive.json` · `contact.json` |
+| `/thrive/publications` | ThrivePublications | `thrive-publications.json` + snapshot `sheets/publications.json` (THRIvE rows) |
 | `/coming-soon` · `/404` and `*` | ComingSoon · NotFound | `coming-soon.json` · `not-found.json` |
 
 - The 16 pre-restructure routes (`/projects/*`, `/about/our-results`, `/get-involved/{work-with-us,mccx}`, `/resources/*`) were **removed with no redirects** (owner decision); they render NotFound (`src/test/routing/removedRoutes.test.jsx`). Don't re-add them.
 - `/education-for-harmony/social-changemakers` is deliberately **not** in the header/footer menus or `sitemap.xml` (linked only from `/education-for-harmony`) while it is a placeholder.
+- Header menu has a third level: About Us → **Our Publications** is a nested group (`subItems` in `content/shared/navigation.yaml`: TIDE Publications, THRIvE Publications), and **THRIvE Research Centre** is a dropdown (About THRIvE, THRIvE Publications). Active state: `src/utils/navActive.js`.
 - Footer has **no link columns** (owner decision): one compact row with Donate as the only coloured element. Details: AGENTS.md §4.
 
 ## CMS Pipeline
@@ -71,8 +80,8 @@ Full annotated tree: AGENTS.md §2.
 content/pages/*.yaml + content/shared/*.yaml  →  scripts/yaml-to-json.js (predev/prebuild)  →  src/data/*.json  →  React imports
 content/shared/site.yaml + llms.txt           →  scripts/siteDataPlugin.js (Vite)  →  index.html JSON-LD/<title>/og:site_name, /llms.txt
 ```
-- **Never edit `src/data/`** — it is regenerated (flat: one JSON per YAML basename, so never reuse a basename across `pages/` and `shared/`; stale JSON is never deleted). The Resource Centre files there (`sheets/pramaan-library.json`, `pramaan-library-photos.json`) are written by the sync bot — never hand-edit those either.
-- Commands: `npm run content:sync` · `content:validate` (YAML syntax, leading-slash image paths, Resource Centre snapshot, `formUrl`, email/lives-impacted consistency) · `dev` (localhost:5173) · `build` · `lint` · `test` (Vitest, 17 files / 194 tests) · `test:e2e`.
+- **Never edit `src/data/`** — it is regenerated (flat: one JSON per YAML basename, so never reuse a basename across `pages/` and `shared/`; stale JSON is never deleted). The Sheet files there (`sheets/pramaan-library.json`, `pramaan-library-photos.json`, `sheets/publications.json`, `publications-photos.json`) are written by the sync bots — never hand-edit those either.
+- Commands: `npm run content:sync` · `content:validate` (YAML syntax, leading-slash image paths, Resource Centre and Publications snapshots, `formUrl`, email/lives-impacted consistency) · `dev` (localhost:5173) · `build` · `lint` · `test` (Vitest, 23 files / 281 tests) · `test:e2e`.
 - **No hardcoded visible text:** every visible string comes from YAML (`data.*`, `common.*`, `ui.*`), never typed into JSX. `react/jsx-no-literals` is an **error** in `src/pages/**` and `src/components/**`, but it does not see string props (`aria-label`, `alt`, `title`) — follow the convention anyway (`cms-integrity` skill). Variable text uses `{token}` placeholders filled in code.
 - **Site-wide facts** (name, url, email, `livesImpacted`, `gradeRange`, `placeholderImage`, `breadcrumbs.*`, …) live only in `content/shared/site.yaml`. A page's last breadcrumb is `meta.breadcrumbName` in its own YAML.
 - Icons and Tailwind classes can't live in JSON: store a key in YAML (`iconKey`, `colorKey`) and map it in the component; never build Tailwind class names dynamically.
@@ -88,9 +97,26 @@ Google Sheet (private, has personal data)
 ```
 - Safety rules: the sync refuses mass removals (> max(10, 20%) of rows) unless run with `allow_large_change` — never loosen the thresholds; it never deletes a photo because Drive failed; problems become GitHub Issues. Secrets: `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`.
 - **Never read a Sheet live in the browser.** The former live-read Resource Centre (`useABLData`, `apps-script/abl/`, its sync, pages and docs) was retired 2026-11-19 and is only in the local tag `archive/pramaan-live-read`. Details of what was kept/left: AGENTS.md §8.
-- **New Sheet integrations** copy this one: `docs/SHEET-INTEGRATION-PLAYBOOK.md` + the `sheet-integration` skill.
+- **New Sheet integrations** copy this one: `docs/SHEET-INTEGRATION-PLAYBOOK.md` + the `sheet-integration` skill. Sync scripts share their I/O through `scripts/lib/sync-runner.js` and pure rules through `scripts/lib/snapshot-core.js` — reuse them, don't copy.
 - Contribute form link = `content/pages/abl-contribute.yaml` → `formUrl` (not a secret; must be a Google Forms link or empty). Resource-type colours: `src/config/abl.js`; labels: `abl-home.yaml` → `resourceTypes.labels` (adding a type needs both).
 - Docs: `docs/PRAMAAN-HARDENING-PLAN.md` §12–13 (status), `PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `PRAMAAN-LIBRARY-SHEET-SCHEMA.md`, `OPERATIONS-RUNBOOK.md`, `PLATFORM-LIMITS.md`, `MIGRATION-OVERVIEW.md` (handover), `ARCHITECTURE*.html` (keep both diagrams in sync).
+
+## Publications (second Sheet integration)
+`/about/publications` (TIDE rows) and `/thrive/publications` (THRIvE rows) are built from one snapshot, same pattern as the Resource Centre:
+```
+Google Sheet "TIDE THRIvE Publications (Responses)" (Form responses; private, has an "Email address" column)
+  → apps-script/publications/Code.gs   token-gated; never reads the email column; Timestamp → anonymous id
+                                       (hand-typed rows without one: id from org + title + date)
+  → sync-publications.yml (every 6 h at :27, on Sheet change, manually) → scripts/sync-publications.js
+                                       (thumbnails: scripts/lib/publications-images.js; sizes recorded in the manifest)
+  → commits src/data/sheets/publications.json + src/data/publications-photos.json + public/assets/images/publications/ → deploy
+```
+- **No approval column** (owner decision, 2026-11-20): every Form answer with TIDE/THRIvE + a title goes live; a `Hide from website` column = `Yes` takes a row down. Same safety rules (checked per page). Secrets: `PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN`.
+- **Not live yet** (2026-11-20): snapshot and manifest are committed **empty** (`content:validate` needs both files); the first real sync fills them. A local design preview (manifest `fileId: "preview"`) must be restored to the empty files before committing — its ids differ from the sync's, so the first real run would refuse it. Secrets go in **before** any push with a non-empty snapshot.
+- UI: both pages show `PublicationsHero` (figures line; THRIvE adds a social-proof count from YAML `socialProofTypes` and a per-year `YearChart` whose bars filter by year). **TIDE** = `TideCollection`: the latest report of `featuredType` (YAML, default "Annual report"; latest by the period read from the title) featured, a shelf of the other reports of that type (6, then "Show all"), then everything else with one button per type (`?type=`) and numbered pages above 12; a search box only above 24 TIDE rows. **THRIvE** = `ResearchArchive` + `ResearchEntry`: search + Type/Field/Year selects, chips, newest/oldest toggle, list grouped by year, 20 per page with numbered page links (`?page=`), "Copy citation". Thresholds are code (`src/config/publications.js`: `THRIVE_PAGE_SIZE`, `TIDE_SHELF_VISIBLE`, `TIDE_OTHERS_PAGE_SIZE`, `TIDE_SEARCH_MIN_ITEMS`, `NEW_BADGE_DAYS`, `HERO_CHART`, `TYPE_ICON_RULES`), not YAML. Helpers in `src/utils/publicationFilters.js`. Page text: `about-publications.yaml`, `thrive-publications.yaml`; the publications themselves are edited in the Sheet/Form.
+- Thumbnails (`scripts/lib/publications-images.js`): borders trimmed; TIDE covers kept whole; THRIvE keeps its own shape between 3:4 and 16:9 (taller → 3:4 attention crop, wider → 16:9 centre crop); full size ≤ 1200 px, never cropped. Rules for editors: `docs/PUBLICATIONS-SHEET-SCHEMA.md` "Thumbnails".
+- Pipeline details: links typed as `www.…` / `doi.org/…` get `https://` added; a title repeated on one page is published but reported (`possible-duplicate`).
+- Docs: `docs/PUBLICATIONS-SETUP-GUIDE.md`, `docs/PUBLICATIONS-SHEET-SCHEMA.md`.
 
 ## Known Gotchas and Open Decisions
 - **`imgSrc()` is not idempotent** under `/tide-testing/`: applying it twice breaks the URL on GitHub Pages (invisible in dev). `Lightbox` applies it itself — pass raw YAML paths. Verify with a `GITHUB_ACTIONS=true` build + preview.
@@ -98,7 +124,7 @@ Google Sheet (private, has personal data)
 - **Owner-decided facts:** email `tidefoundation@gmail.com`, lives impacted `52,500+`, everywhere; `content:validate` errors on any other value in `content/`.
 - **Failed images** are swapped site-wide for `site.placeholderImage` (`src/utils/imagePlaceholder.js`), which hides typos — check filenames. Opt out with `data-no-placeholder` (`DriveImage` does). `content:validate` doesn't check bare filenames (e.g. `logoGallery.images` in `about-our-partners.yaml`).
 - **Deleted files are recoverable:** removed pages/images/components from 2026-10-25 via `git checkout a4126d1 -- <path>` (list in AGENTS.md §11).
-- **Open (not decided):** (1) `site.yaml` `gradeRange` ("1–5") must agree with `LIBRARY_GRADES` in `src/utils/libraryFilters.js` (a unit test checks it); Foundational has no resources yet; (2) `about-publications.yaml` has an empty `research.items` and 10 entries with `link: ""` (needs owner content).
+- **Open (not decided):** `site.yaml` `gradeRange` ("1–5") must agree with `LIBRARY_GRADES` in `src/utils/libraryFilters.js` (a unit test checks it); Foundational has no resources yet.
 
 ## Resuming Work
 1. Read this file, then `AGENTS.md` (esp. §11 Gotchas). Before touching the Sheet / Apps Script / sync / deploy pipeline, read `docs/PRAMAAN-HARDENING-PLAN.md` §12–13 and `docs/PLATFORM-LIMITS.md`.

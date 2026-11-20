@@ -31,9 +31,14 @@ items:
       - label: "Get Involved"
         to: "/get-involved/volunteer"
         desc: "Volunteer, intern, or join the team"
+      # A nested group (third menu level): it opens a small sub-menu instead of linking itself.
       - label: "Our Publications"
-        to: "/about/publications"
         desc: "Annual reports, research & events"
+        subItems:
+          - label: "TIDE Publications"
+            to: "/about/publications"
+          - label: "THRIvE Publications"
+            to: "/thrive/publications"
 
   - label: "Education for Harmony"
     children:
@@ -57,7 +62,12 @@ items:
         desc: "Share your teaching resources"
 
   - label: "THRIvE Research Centre"
-    to: "/thrive"
+    children:
+      - label: "About THRIvE"
+        to: "/thrive"
+        desc: "Where rigorous inquiry meets real-world impact."
+      - label: "THRIvE Publications"
+        to: "/thrive/publications"
 
   - label: "Contact Us"
     to: "/contact"

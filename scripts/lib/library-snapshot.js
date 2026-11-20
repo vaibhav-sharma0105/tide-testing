@@ -2,15 +2,21 @@
 // No network or filesystem access here — scripts/sync-pramaan-library.js does the I/O, and
 // src/test/scripts/librarySnapshot.test.js exercises every rule.
 //
-// Shared building blocks (safe ids, hashing, photo plan, deletion limits) come from
-// snapshot-core.js, so every Sheet integration follows the same safety rules. Column rules for this Sheet:
-// docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md.
+// Shared building blocks (safe ids, hashing, photo plan, deletion limits, Drive-link reading, photo
+// file names, cell cleaning) come from snapshot-core.js, so every Sheet integration follows the same
+// safety rules. Column rules for this Sheet: docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md.
 
 import {
-  THRESHOLDS, isSafeId, isHttpUrl, contentHash, serializeSnapshot, planPhotos as planPhotosForTabs,
+  THRESHOLDS, isSafeId, isHttpUrl, contentHash, serializeSnapshot, photoFileBase, cleanString,
+  asSingleTab, planListPhotos,
 } from './snapshot-core.js'
 
-export { isSafeId, serializeSnapshot, photoDeletionError, photosFromExport } from './snapshot-core.js'
+// Re-exported so the sync script and tests import everything for this Sheet from one file.
+// extractDriveFileId here is the form-link-aware reader (snapshot-core's extractDriveFileIdAnyLink).
+export {
+  isSafeId, serializeSnapshot, photoDeletionError, photosFromExport, photoFileBase,
+  extractDriveFileIdAnyLink as extractDriveFileId,
+} from './snapshot-core.js'
 
 export const SCHEMA_VERSION = 1
 export const SECTION = 'pramaan-library'
@@ -31,26 +37,6 @@ export const GRADE_KEYS = ['FOUNDATIONAL', 'GRADE 1', 'GRADE 2', 'GRADE 3', 'GRA
 // published field (e.g. typed into a description), the row is still published with that field
 // removed and the row is reported.
 const EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/
-
-/**
- * The photo file name for an ID. IDs may contain spaces and brackets (isSafeId), file names use a
- * URL-safe form, so two different IDs can map to one name ("K 31" and "K_31"); normalizeLibrary
- * reports that instead of letting one photo overwrite the other.
- */
-export const photoFileBase = (id) => id.replace(/[^A-Za-z0-9_-]/g, '_')
-
-/** Drive file id from either link style: …/file/d/<id>/… or …?id=<id> (Google Form uploads). */
-export function extractDriveFileId(url) {
-  if (typeof url !== 'string') return null
-  const m = url.match(/\/d\/([a-zA-Z0-9_-]{10,})/) || url.match(/[?&]id=([a-zA-Z0-9_-]{10,})/)
-  return m ? m[1] : null
-}
-
-function cleanString(value) {
-  if (value === null || value === undefined) return null
-  const s = String(value).trim()
-  return s === '' ? null : s
-}
 
 function cleanList(value) {
   return Array.isArray(value) ? value.map(cleanString).filter(Boolean) : []
@@ -120,7 +106,7 @@ export function normalizeLibrary(payload) {
 }
 
 // The shared helpers work on the tabbed shape; this Sheet has one list.
-const asTabs = resources => ({ tabs: ['library'], resources: { library: resources } })
+const asTabs = resources => asSingleTab('library', resources)
 
 export function buildLibrarySnapshot(resources, previous, nowIso) {
   const hash = contentHash(asTabs(resources))
@@ -162,11 +148,6 @@ export function validateLibrary(next, previous, t = THRESHOLDS) {
 
 /** Same photo plan as the old Sheet (keep on Drive errors, delete only when the row/link is gone). */
 export function planLibraryPhotos(snapshot, photos, localManifest) {
-  // planPhotosForTabs reads the Drive id with the /d/ pattern only; give it a normalised link so
-  // form-upload links (open?id=…) are handled too.
-  const rows = snapshot.resources.map(r => {
-    const fileId = extractDriveFileId(r.photoUrl)
-    return { ...r, photoUrl: fileId ? `https://drive.google.com/file/d/${fileId}/view` : null }
-  })
-  return planPhotosForTabs(asTabs(rows), photos, localManifest)
+  // Form-upload links (open?id=…) are normalised to /d/ links first (snapshot-core planListPhotos).
+  return planListPhotos('library', snapshot.resources, photos, localManifest)
 }

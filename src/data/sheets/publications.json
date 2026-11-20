@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "section": "publications",
+  "success": true,
+  "lastUpdated": null,
+  "contentHash": "sha256:ab0296378abe616fdfcf903a43917af00c9455d7a37964781264876ec30ca750",
+  "resources": [],
+  "meta": {
+    "total": 0,
+    "counts": {
+      "TIDE": 0,
+      "THRIvE": 0
+    }
+  }
+}

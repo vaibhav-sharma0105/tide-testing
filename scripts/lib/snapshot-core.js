@@ -1,5 +1,6 @@
 // Shared, pure building blocks for every Sheet snapshot sync (today: the Pramaan Library,
-// scripts/lib/library-snapshot.js). No network or filesystem access. Moved unchanged from the former
+// scripts/lib/library-snapshot.js, and Publications, scripts/lib/publications-snapshot.js). No
+// network or filesystem access (the shared I/O is scripts/lib/sync-runner.js). Moved unchanged from the former
 // Pramaan sync's rules file (scripts/lib/abl-snapshot.js, archived in git tag archive/pramaan-live-read)
 // so hashes, photo plans and limits stay byte-for-byte the same.
 //
@@ -24,10 +25,44 @@ export function isSafeId(id) {
   return typeof id === 'string' && id.length > 0 && id.length <= 100 && SAFE_ID.test(id)
 }
 
+// Two Drive-link readers — keep them apart:
+//  - extractDriveFileId: `…/d/<id>/…` links only, any id length. planPhotos reads the (normalised)
+//    photoUrl with it; changing it changes every photo plan.
+//  - extractDriveFileIdAnyLink: also Google Form upload links (`…?id=<id>`), ids of 10+ characters.
+//    Use it on links typed into a Sheet. Each Sheet's rules file re-exports it under the name
+//    `extractDriveFileId` (library-snapshot.js, publications-snapshot.js).
 export function extractDriveFileId(url) {
   if (typeof url !== 'string') return null
   const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/)
   return match ? match[1] : null
+}
+
+/** Drive file id from either link style: …/file/d/<id>/… or …?id=<id> (Google Form uploads). */
+export function extractDriveFileIdAnyLink(url) {
+  if (typeof url !== 'string') return null
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]{10,})/) || url.match(/[?&]id=([a-zA-Z0-9_-]{10,})/)
+  return m ? m[1] : null
+}
+
+/**
+ * The photo file name for an ID. IDs may contain spaces and brackets (isSafeId), file names use a
+ * URL-safe form, so two different IDs can map to one name ("K 31" and "K_31"); each Sheet's
+ * normalize step reports that instead of letting one photo overwrite the other.
+ */
+export const photoFileBase = (id) => id.replace(/[^A-Za-z0-9_-]/g, '_')
+
+/** Cell value → trimmed string, or null when empty. Inner whitespace is kept as typed. */
+export function cleanString(value) {
+  if (value === null || value === undefined) return null
+  const s = String(value).trim()
+  return s === '' ? null : s
+}
+
+/** Like cleanString, but every run of whitespace (incl. line breaks) becomes one space. */
+export function cleanStringCollapseSpaces(value) {
+  if (value === null || value === undefined) return null
+  const s = String(value).replace(/\s+/g, ' ').trim()
+  return s === '' ? null : s
 }
 
 export function isHttpUrl(value) {
@@ -102,6 +137,21 @@ export function planPhotos(snapshot, photos, localManifest) {
     return !row || !extractDriveFileId(row.photoUrl)
   })
   return { toFetch, toBackfill, toDelete, problems }
+}
+
+/** A one-list Sheet in the tabbed shape contentHash/planPhotos work on. */
+export const asSingleTab = (tab, resources) => ({ tabs: [tab], resources: { [tab]: resources } })
+
+/**
+ * planPhotos for a one-list Sheet whose photoUrl may be a Form upload link (open?id=…):
+ * planPhotos reads the Drive id with the /d/ pattern only, so it gets a normalised link.
+ */
+export function planListPhotos(tab, resources, photos, localManifest) {
+  const rows = resources.map(r => {
+    const fileId = extractDriveFileIdAnyLink(r.photoUrl)
+    return { ...r, photoUrl: fileId ? `https://drive.google.com/file/d/${fileId}/view` : null }
+  })
+  return planPhotos(asSingleTab(tab, rows), photos, localManifest)
 }
 
 export function photoDeletionError(deleteCount, localCount, t = THRESHOLDS) {

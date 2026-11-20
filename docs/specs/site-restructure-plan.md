@@ -3,6 +3,8 @@
 > ## Status as of 2026-10-25 (re-checked against `src/App.jsx`, `content/`, `index.html`)
 > The body below is the original 2026-06 plan and is kept as history; the "DRAFT" line under it is out of date. Most of the restructure has been built. **Q2 (what to do with the orphaned/"stranded" pages) was resolved on 2026-10-25 as: removed entirely, no redirects.** All 16 stranded routes, their page components, YAML and generated JSON were deleted; those URLs now render the NotFound page (`src/test/routing/removedRoutes.test.jsx`). The Orphaned Pages Tracker, C3, Q2-Q5 and Q10 below describe the pre-removal state and are history. The deleted files can be recovered with `git checkout a4126d1 -- <path>`. What the code shows today:
 >
+> **Update 2026-11-20:** `/about/publications` is now `TidePublications` and a new `/thrive/publications` (`ThrivePublications`) exists; both list rows from the "TIDE THRIvE Publications (Responses)" Sheet (snapshot mode, `docs/PUBLICATIONS-SETUP-GUIDE.md`). `PublicationsCombined` was removed, and About Us → Our Publications is now a nested sub-menu (TIDE / THRIvE Publications). Statements below about `PublicationsCombined` and static publications YAML are history.
+>
 > **Implemented**
 > - **Navigation (A3):** `content/shared/navigation.yaml` has About Us (Why TIDE?, Past Programs, Our Team, Our Partners, Get Involved -> `/get-involved/volunteer`, Our Publications -> `/about/publications`), Education for Harmony, Pramaan, THRIvE Research Centre, Contact Us, plus the Donate button.
 > - **New routes:** `/about/past-programs`, `/about/publications` (component `PublicationsCombined`, content from `about-publications.yaml`), `/education-for-harmony`, `/education-for-harmony/mccx`.

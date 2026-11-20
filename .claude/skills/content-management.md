@@ -62,22 +62,22 @@ breadcrumbs={[
   { name: data.meta.breadcrumbName, path: '/about/our-partners' },
 ]}
 ```
-Fifteen of the 16 page YAMLs carry `meta.breadcrumbName` (every page except `home`); `Home.jsx` uses only `site.breadcrumbs.home`, and the Resource Centre's detail page (`library/PramaanLibraryDetail.jsx`) builds its last step from the resource name.
+Sixteen of the 17 page YAMLs carry `meta.breadcrumbName` (every page except `home`); `Home.jsx` uses only `site.breadcrumbs.home`, and the Resource Centre's detail page (`library/PramaanLibraryDetail.jsx`) builds its last step from the resource name.
 
 **Consistency guard.** The contact email and the lives-impacted total must be identical everywhere. `npm run content:validate` (`scripts/validate-content.js` + `scripts/contentConsistency.js`) **errors** (exit 1) if any e-mail address in `content/` (YAML values and the `llms.txt` template) differs from `site.yaml` `email`, or if a 5-digit total such as `40,000+` that sits in a sentence with the words lives/people/impacted/changed differs from `livesImpacted`. Owner decisions: e-mail `tidefoundation@gmail.com`, lives impacted `52,500+`, everywhere. To change either, edit `site.yaml` **and** every page that states it — the validator prints which files and fields.
 
 ### Pipeline C — Google Sheets
 ```
-Snapshot mode (the only Sheet pattern; Pramaan Resource Centre, /pramaan/resource-centre):
+Snapshot mode (the only Sheet pattern; Pramaan Resource Centre, /pramaan/resource-centre; Publications, /about/publications + /thrive/publications):
 Google Sheet → token-gated Apps Script → GitHub Actions sync → src/data/sheets/<slug>.json (+ photos) → page (build time)
 ```
 New Sheet integrations follow `docs/SHEET-INTEGRATION-PLAYBOOK.md` (skill: `.claude/skills/sheet-integration/SKILL.md`). No page reads a Sheet in the browser (the former `useABLData` live read was retired on 2026-11-19; archived in git tag `archive/pramaan-live-read`).
-The **resource data** (title, description, grades…) comes from the Sheet snapshot (`src/data/sheets/pramaan-library.json`), not YAML. The **Pramaan UI chrome** (labels, headings, filter text, SEO titles) is YAML-backed in `abl-home`, `pramaan-library` and `abl-contribute` (+ `ui.yaml` `mediaLightbox.*`). Photos are a separate one-way sync into `public/assets/images/pramaan-library/`. Google Fonts still loads the Devanagari and Gujarati families because Pramaan resource titles from the Sheet can contain Gujarati.
+The **resource data** (title, description, grades…) comes from the Sheet snapshot (`src/data/sheets/pramaan-library.json`), not YAML. The **Pramaan UI chrome** (labels, headings, filter text, SEO titles) is YAML-backed in `abl-home`, `pramaan-library` and `abl-contribute` (+ `ui.yaml` `mediaLightbox.*`). Photos are a separate one-way sync into `public/assets/images/pramaan-library/`. Likewise the **publications rows** come from `src/data/sheets/publications.json` (Sheet "TIDE THRIvE Publications (Responses)"), while their chrome is YAML in `about-publications` and `thrive-publications`. Google Fonts still loads the Devanagari and Gujarati families because Pramaan resource titles from the Sheet can contain Gujarati.
 
 ## File Naming Convention
 
 ### Page YAML → JSON
-16 files in `content/pages/` (one per page or screen; `src/App.jsx` registers 22 `<Route>`s: 17 primary routes — the Resource Centre list and detail share `pramaan-library.yaml` — plus 2 redirects (`/pramaan-library`, `/pramaan-library/:id`) and the 3 system routes `/coming-soon`, `/404` and `*`):
+17 files in `content/pages/` (one per page or screen; `src/App.jsx` registers 23 `<Route>`s: 18 primary routes — the Resource Centre list and detail share `pramaan-library.yaml` — plus 2 redirects (`/pramaan-library`, `/pramaan-library/:id`) and the 3 system routes `/coming-soon`, `/404` and `*`):
 
 | Content file | Generated JSON (in `src/data/`) | Component |
 |---|---|---|
@@ -86,7 +86,8 @@ The **resource data** (title, description, grades…) comes from the Sheet snaps
 | `about-past-programs.yaml` | `about-past-programs.json` | `about/PastPrograms.jsx` |
 | `about-our-team.yaml` | `about-our-team.json` | `about/OurTeam.jsx` |
 | `about-our-partners.yaml` | `about-our-partners.json` | `about/OurPartners.jsx` |
-| `about-publications.yaml` | `about-publications.json` | `about/PublicationsCombined.jsx` |
+| `about-publications.yaml` | `about-publications.json` | `publications/TidePublications.jsx` + `components/publications/*` |
+| `thrive-publications.yaml` | `thrive-publications.json` | `publications/ThrivePublications.jsx` + `components/publications/*` |
 | `education-for-harmony.yaml` | `education-for-harmony.json` | `src/pages/EducationForHarmony.jsx` |
 | `get-involved-mccx.yaml` | `get-involved-mccx.json` | `get-involved/OrganizeMCCx.jsx` |
 | `get-involved-volunteer.yaml` | `get-involved-volunteer.json` | `get-involved/Volunteer.jsx` |
@@ -118,7 +119,7 @@ The former "stranded" pages (Our Results, the six `projects-*` pages, Work With 
 | `site.yaml` | `site.json` | `ui/SeoHead.jsx`, the 17 page files that build breadcrumbs (`site.breadcrumbs.*`) and `src/utils/imagePlaceholder.js` (`placeholderImage`); also read directly by `scripts/siteDataPlugin.js` |
 | `llms.txt` | — (not synced) | Template rendered by `siteDataPlugin.js` into `/llms.txt` |
 
-`src/data/` also holds `pramaan-library-photos.json` and `sheets/pramaan-library.json`, which are **not** produced by this pipeline (they come from the Resource Centre sync, `sync-pramaan-library`): 25 generated JSON files (16 + 9) plus that manifest = 26 files at the top level, and the snapshot under `sheets/`.
+`src/data/` also holds `pramaan-library-photos.json`, `publications-photos.json`, `sheets/pramaan-library.json` and `sheets/publications.json`, which are **not** produced by this pipeline (they come from the Resource Centre and Publications syncs, `sync-pramaan-library` and `sync-publications`): 26 generated JSON files (17 + 9) plus those two manifests = 28 files at the top level, and the two snapshots under `sheets/`.
 
 ## React Component Import Pattern
 
@@ -235,7 +236,7 @@ npm run content:validate
 # Visible-text guard (react/jsx-no-literals) + other lint rules — also run in CI
 npm run lint
 
-# Unit tests (17 files / 194 tests as of 2026-11-20) and Playwright e2e (3 specs; not run in CI)
+# Unit tests (23 files / 281 tests as of 2026-11-20) and Playwright e2e (3 specs; not run in CI)
 npm test
 npm run test:e2e
 

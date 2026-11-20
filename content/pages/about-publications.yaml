@@ -1,61 +1,102 @@
+# TIDE Publications — /about/publications
+# The publications themselves come from the "TIDE THRIvE Publications" Sheet (rows answered
+# "TIDE"), via the sync into src/data/sheets/publications.json. Only the text around them lives
+# here. The THRIvE page (/thrive/publications) is in thrive-publications.yaml.
+# Text in {curly braces} is filled in by the site — keep the {word} exactly as it is.
+#
+# Page layout:
+#   1. the latest annual report, shown large;
+#   2. a shelf with the other annual reports (newest period first; the first 6, then a
+#      "Show all" button);
+#   3. everything else, with buttons to show one type at a time (only when there are 2+ types)
+#      and numbered pages once there are more than 12.
+# Sections 1 and 2 only appear when there is at least one row of the type in `featuredType`.
+# A search box appears on its own once there are more than 24 TIDE publications.
+# (The numbers are in src/config/publications.js.)
+
 meta:
-  breadcrumbName: "Publications"
+  # Last crumb in the SEO breadcrumb trail (Home > About Us > this page)
+  breadcrumbName: "TIDE Publications"
   badge: "About Us · Publications"
-  title: "Our Publications"
-  tagline: "Annual reports, public event recordings, and research from a decade of work."
+  title: "TIDE Publications"
+  subtitle: "Annual reports, project reports and talks — an open record of TIDE Foundation's work in education."
   seoTitle: "Publications — TIDE Foundation"
-  seoDescription: "Access TIDE Foundation's annual reports, public event recordings, and research publications."
+  seoDescription: "Read TIDE Foundation's annual reports, project reports, presentations and public talks."
+  # Shown while no TIDE publication has been published yet
+  emptyTitle: "No publications published yet"
+  emptyHint: "Publications appear here as soon as they are added."
 
-tabs:
-  annualReports: "Annual Reports"
-  events: "Public Events"
-  research: "Research & Writing"
+# Short line of figures under the title, counted from the Sheet.
+stats:
+  publicationSingular: "{n} publication"
+  publicationPlural: "{n} publications"
+  typeSingular: "{n} type"
+  typePlural: "{n} types"
+  since: "since {year}"
 
-labels:
-  download: "Download"
-  view: "View"
-  comingSoon: "Coming soon"
+# Which "Type of material" (exactly as written in the Sheet; case does not matter) gets the
+# large "latest" card and the shelf.
+featuredType: "Annual report"
 
-annualReports:
-  description: "Our annual reports document TIDE's journey, programs, and impact each year."
-  placeholder: "Annual reports will be listed here. Coming soon."
-  items:
-    - year: "2023–24"
-      title: "TIDE Foundation Annual Report 2023–24"
-      link: ""
-    - year: "2022–23"
-      title: "TIDE Foundation Annual Report 2022–23"
-      link: ""
-    - year: "2021–22"
-      title: "TIDE Foundation Annual Report 2021–22"
-      link: ""
+featured:
+  eyebrow: "Latest annual report"
+  read: "Read report"
 
-events:
-  description: "Glimpses from our public events — Model City Councils, Miracle of Ideas, and more."
-  items:
-    - title: "MOI 2024 — Talk 1"
-      type: "video"
-      link: ""
-    - title: "MOI 2024 — Talk 2"
-      type: "video"
-      link: ""
-    - title: "MCC 2024"
-      type: "photo"
-      link: ""
-    - title: "MOI 2023 — Happiness in Education Exhibition Walkthrough"
-      type: "video"
-      link: ""
-    - title: "Parivartan Mela"
-      type: "photo"
-      link: ""
-    - title: "GGIS MCC"
-      type: "photo"
-      link: ""
-    - title: "AGS MCC"
-      type: "photo"
-      link: ""
+shelf:
+  heading: "Annual reports"
+  # {n} = number of annual reports on the shelf
+  showAllTemplate: "Show all {n} annual reports"
+  showFewer: "Show fewer"
 
-research:
-  description: "Papers, articles, and writings from TIDE's research and practice."
-  placeholder: "Research publications will be listed here. Coming soon."
-  items: []
+others:
+  heading: "Reports, talks & more"
+  # Label of the type buttons' group (screen readers) and the first button
+  filterLabel: "Show one type of material"
+  allTypes: "All"
+  open: "Open"
+
+# Search box (only shown when there are more than 24 TIDE publications)
+search:
+  label: "Search TIDE publications"
+  placeholder: "Titles, descriptions, types…"
+  clearLabel: "Clear search"
+  # The key that jumps to the search box
+  shortcutKey: "/"
+  resultsHeading: "Search results"
+  # {total} = number found, {publications} = the word below
+  countTemplate: "{total} {publications} found"
+  publicationSingular: "publication"
+  publicationPlural: "publications"
+  noResults: "No publications match your search"
+  noResultsHint: "Try a different word, or clear the search."
+
+# Shown next to rows dated in the last few weeks (src/config/publications.js NEW_BADGE_DAYS)
+newBadge: "New"
+
+# Where a link leads, read from its web address
+source:
+  label: "Source"
+  doi: "DOI"
+  driveFile: "Google Drive"
+  driveFolder: "Google Drive folder"
+
+# Numbered pages (only shown when a list has more than one page)
+pagination:
+  label: "Pages"
+  previous: "Previous"
+  next: "Next"
+  # {from}–{to} of {total}
+  rangeTemplate: "Showing {from}–{to} of {total}"
+  pageLabelTemplate: "Page {n}"
+
+# Screen-reader text
+a11y:
+  # Added to a link that opens the publication in a new tab
+  newTab: "(opens in a new tab)"
+  openLabelTemplate: "{action}: {title} (opens in a new tab)"
+  dateLabel: "Date"
+  typeLabel: "Type of material"
+  # Read after the "New" badge; {days} = NEW_BADGE_DAYS
+  newLabelTemplate: "dated within the last {days} days"
+  # Period of an annual report, e.g. "Period: 2024–25"
+  periodLabel: "Period"

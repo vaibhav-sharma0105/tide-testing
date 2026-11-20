@@ -9,7 +9,9 @@ function pageRange(current, total) {
   return [1, '...', current - 1, current, current + 1, '...', total]
 }
 
-export default function Pagination({ total, page, perPage = LIBRARY_PAGE_SIZE, onChange }) {
+// `labels` (optional) replaces the Resource Centre's pagination text (pramaan-library.yaml
+// `pagination`) with another page's YAML block of the same shape.
+export default function Pagination({ total, page, perPage = LIBRARY_PAGE_SIZE, onChange, labels = data.pagination }) {
   const totalPages = Math.ceil(total / perPage)
   if (totalPages <= 1) return null
 
@@ -18,20 +20,20 @@ export default function Pagination({ total, page, perPage = LIBRARY_PAGE_SIZE, o
   const pages     = pageRange(page, totalPages)
 
   return (
-    <nav className="mt-10 flex flex-col items-center gap-4" aria-label={data.pagination.ariaLabel}>
+    <nav className="mt-10 flex flex-col items-center gap-4" aria-label={labels.ariaLabel}>
       <p className="text-sm font-body text-tide-muted">
-        {data.pagination.showing} {startItem}–{endItem} {data.pagination.of} {total} {data.pagination.resources}
+        {labels.showing} {startItem}–{endItem} {labels.of} {total} {labels.resources}
       </p>
       <div className="flex flex-wrap items-center justify-center gap-0.5 sm:gap-1">
         <button
           onClick={() => page > 1 && onChange(page - 1)}
           aria-disabled={page === 1}
-          aria-label={data.pagination.previousLabel}
+          aria-label={labels.previousLabel}
           className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-full text-sm font-body font-medium transition-colors ${
             page === 1 ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-white hover:text-primary hover:shadow-sm'
           }`}
         >
-          <ChevronLeft className="w-4 h-4" aria-hidden="true" /> <span className="hidden sm:inline">{data.pagination.previousShort}</span>
+          <ChevronLeft className="w-4 h-4" aria-hidden="true" /> <span className="hidden sm:inline">{labels.previousShort}</span>
         </button>
 
         {pages.map((p, i) =>
@@ -56,12 +58,12 @@ export default function Pagination({ total, page, perPage = LIBRARY_PAGE_SIZE, o
         <button
           onClick={() => page < totalPages && onChange(page + 1)}
           aria-disabled={page === totalPages}
-          aria-label={data.pagination.next}
+          aria-label={labels.next}
           className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-full text-sm font-body font-medium transition-colors ${
             page === totalPages ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-white hover:text-primary hover:shadow-sm'
           }`}
         >
-          <span className="hidden sm:inline">{data.pagination.next}</span> <ChevronRight className="w-4 h-4" aria-hidden="true" />
+          <span className="hidden sm:inline">{labels.next}</span> <ChevronRight className="w-4 h-4" aria-hidden="true" />
         </button>
       </div>
     </nav>

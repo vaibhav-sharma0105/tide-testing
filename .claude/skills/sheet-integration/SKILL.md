@@ -30,12 +30,25 @@ those lessons instead of rediscovering them.
 **Reference implementation:** the Pramaan Library, served as the Pramaan Resource Centre at
 `/pramaan/resource-centre` — `apps-script/pramaan-library/Code.gs`,
 `scripts/sync-pramaan-library.js`, `scripts/lib/library-snapshot.js` (+ the shared
-`scripts/lib/snapshot-core.js`),
+`scripts/lib/snapshot-core.js` for pure rules and `scripts/lib/sync-runner.js` for the sync's I/O),
 `.github/workflows/sync-pramaan-library.yml`, `checkLibrarySnapshot()` in
 `scripts/validate-content.js`, `src/pages/library/`, `src/components/library/`,
 `src/utils/libraryFilters.js`, `content/pages/pramaan-library.yaml`,
 `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`.
 Read the current files before copying — never pattern-match from memory.
+
+**Second implementation (2026-11-20):** Publications — `apps-script/publications/Code.gs`,
+`scripts/sync-publications.js`, `scripts/lib/publications-snapshot.js`, `scripts/lib/publications-images.js`,
+`.github/workflows/sync-publications.yml`, `checkPublicationsSnapshot()`, `src/pages/publications/`,
+`src/components/publications/`, `src/config/publications.js`. It shows one Sheet feeding two pages (split by a
+column, limits checked per page). Its pages have their own layouts fitted to their content (TIDE: featured
+report + shelf + type buttons, pages above 12, search only above 24 rows; THRIvE: per-year chart, year-grouped
+list with search, type/field/year selects and numbered pages of 20 in `?page=`), with every threshold a named
+constant in `src/config/publications.js`. They have their own controls (`PublicationControls`,
+`src/hooks/usePublicationControls.js`) and share only `src/utils/listingFilters.js` and `focusRing`/`FOCUS_PILL`;
+`src/components/listing/`, `src/hooks/useSidebarFits.js` and `Pagination` are used by the Resource Centre —
+reuse what fits (playbook §5 "Reuse"). For uploads that are screenshots of mixed shapes, copy the image step in
+`scripts/lib/publications-images.js` (trim borders, ratio range, sizes recorded in the manifest; playbook §5).
 
 **Retired, do not reintroduce:** a browser-side Sheet read (the former `useABLData` hook, a public
 `doGet` listing, a `VITE_*` Sheet URL in the bundle). It was deleted on 2026-11-19
@@ -62,9 +75,13 @@ Follow the playbook's §4 build order; the checkpoints below are where integrati
    minute and heartbeat hour, unique issue titles, a photo-manifest name that is not a YAML basename.
 2. **Write `docs/<SLUG>-SHEET-SCHEMA.md` first**, then the Apps Script from the library's
    `Code.gs`. Keep every principle P1–P13 (playbook §2). Test it with the simulated Google
-   environment and the **real header row** (`src/test/scripts/libraryAppsScript.test.js`).
+   environment and the **real header row** (`src/test/scripts/libraryAppsScript.test.js`; build the
+   sandbox with `makeAppsScriptEnv()` from `src/test/scripts/helpers/fakeAppsScript.js`, don't copy it).
 3. **Rules lib + sync script + workflow + `content:validate` backstop**, copied from the
-   reference and renamed per the naming table. Prove them against a **fake Apps Script server**
+   reference and renamed per the naming table. The sync script **imports** its plumbing from
+   `scripts/lib/sync-runner.js` (env loader, redaction, fetch + retry, report, outputs, refusal,
+   photo loops) and the shared pure helpers from `snapshot-core.js` — only paths, names, messages,
+   the stats line and `processPhoto` are written per integration (playbook §4.4–4.5, §9). Prove them against a **fake Apps Script server**
    with made-up rows: publish, no-change run, refusal on mass removal, token never printed, and
    the photo cap continuing on the next run.
 4. **Page** per playbook §5: toolbar (search + sort) above the cards; filter card/drawer;

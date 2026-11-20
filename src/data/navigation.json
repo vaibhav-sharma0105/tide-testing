@@ -39,8 +39,17 @@
         },
         {
           "label": "Our Publications",
-          "to": "/about/publications",
-          "desc": "Annual reports, research & events"
+          "desc": "Annual reports, research & events",
+          "subItems": [
+            {
+              "label": "TIDE Publications",
+              "to": "/about/publications"
+            },
+            {
+              "label": "THRIvE Publications",
+              "to": "/thrive/publications"
+            }
+          ]
         }
       ]
     },
@@ -81,7 +90,17 @@
     },
     {
       "label": "THRIvE Research Centre",
-      "to": "/thrive"
+      "children": [
+        {
+          "label": "About THRIvE",
+          "to": "/thrive",
+          "desc": "Where rigorous inquiry meets real-world impact."
+        },
+        {
+          "label": "THRIvE Publications",
+          "to": "/thrive/publications"
+        }
+      ]
     },
     {
       "label": "Contact Us",

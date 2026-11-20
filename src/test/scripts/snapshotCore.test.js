@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import {
   serializeSnapshot, planPhotos, photoDeletionError, photosFromExport, contentHash, isHttpUrl,
-  extractDriveFileId, isSafeId,
+  extractDriveFileId, isSafeId, extractDriveFileIdAnyLink, photoFileBase, cleanString, cleanStringCollapseSpaces,
+  planListPhotos,
 } from '../../../scripts/lib/snapshot-core.js'
 
 // Shared snapshot rules (scripts/lib/snapshot-core.js). Ported from the former Pramaan sync's tests
@@ -102,5 +103,36 @@ describe('helpers', () => {
     expect(isSafeId('K32 (26 in Gujarati)')).toBe(true)
     expect(isSafeId('../etc')).toBe(false)
     expect(isSafeId('')).toBe(false)
+  })
+})
+
+describe('helpers shared by the one-list Sheets (library, publications)', () => {
+  it('extractDriveFileIdAnyLink reads /d/ and ?id= links (10+ chars); extractDriveFileId reads /d/ only', () => {
+    expect(extractDriveFileIdAnyLink('https://drive.google.com/open?id=photoFile0001')).toBe('photoFile0001')
+    expect(extractDriveFileIdAnyLink(drive('photoFile0002'))).toBe('photoFile0002')
+    expect(extractDriveFileIdAnyLink(drive('short'))).toBeNull()
+    expect(extractDriveFileIdAnyLink(null)).toBeNull()
+    expect(extractDriveFileId('https://drive.google.com/open?id=photoFile0001')).toBeNull()
+    expect(extractDriveFileId(drive('short'))).toBe('short')
+  })
+  it('photoFileBase makes a URL-safe file name', () => {
+    expect(photoFileBase('K32 (26 in Gujarati)')).toBe('K32__26_in_Gujarati_')
+  })
+  it('cleanString trims; cleanStringCollapseSpaces also squeezes inner whitespace', () => {
+    expect(cleanString('  a \n b  ')).toBe('a \n b')
+    expect(cleanStringCollapseSpaces('  a \n b  ')).toBe('a b')
+    for (const f of [cleanString, cleanStringCollapseSpaces]) {
+      expect(f('   ')).toBeNull()
+      expect(f(null)).toBeNull()
+      expect(f(undefined)).toBeNull()
+      expect(f(5)).toBe('5')
+    }
+  })
+  it('planListPhotos plans form-upload links like /d/ links', () => {
+    const resources = [{ id: 'A1', photoUrl: 'https://drive.google.com/open?id=photoFile0001' }, { id: 'A2', photoUrl: null }]
+    const photos = { A1: { fileId: 'photoFile0001', modifiedTime: 't1' } }
+    const plan = planListPhotos('T', resources, photos, { A2: { fileId: 'old', modifiedTime: 't0' } })
+    expect(plan.toFetch).toEqual([{ id: 'A1', fileId: 'photoFile0001', modifiedTime: 't1' }])
+    expect(plan.toDelete).toEqual(['A2'])
   })
 })

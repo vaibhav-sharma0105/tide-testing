@@ -41,7 +41,7 @@ Both paths end the same way: a commit lands on the `main` branch, and GitHub Act
 
 Find the YAML file for the page you want to edit. Naming follows the URL (`/about/our-team` → `about-our-team.yaml`).
 
-**Pages** (the site has exactly these 16 pages; each has one file in `content/pages/`)
+**Pages** (the site has exactly these 17 pages; each has one file in `content/pages/`)
 
 | Page | File |
 |------|------|
@@ -50,7 +50,7 @@ Find the YAML file for the page you want to edit. Naming follows the URL (`/abou
 | About → Past Programs | `content/pages/about-past-programs.yaml` |
 | About → Our Team | `content/pages/about-our-team.yaml` |
 | About → Our Partners | `content/pages/about-our-partners.yaml` |
-| About → Our Publications | `content/pages/about-publications.yaml` |
+| About → Our Publications → TIDE Publications (`/about/publications`; the text around the list — the publications themselves come from the Sheet, see below) | `content/pages/about-publications.yaml` |
 | Education for Harmony | `content/pages/education-for-harmony.yaml` |
 | Education for Harmony → Organise your MCCx | `content/pages/get-involved-mccx.yaml` |
 | Education for Harmony → Past SCF (Social Changemakers; reached only from the Education for Harmony page, still placeholder content) | `content/pages/social-changemakers.yaml` |
@@ -58,6 +58,7 @@ Find the YAML file for the page you want to edit. Naming follows the URL (`/abou
 | Pramaan → Resource Centre (the list, filters, and each resource's page) | `content/pages/pramaan-library.yaml` |
 | Pramaan → Contribute (incl. the form link `formUrl`) | `content/pages/abl-contribute.yaml` |
 | THRIvE Research Centre (leaders, research associates with `role` + optional `suffix`, the four research areas) | `content/pages/thrive.yaml` |
+| THRIvE Research Centre → THRIvE Publications (`/thrive/publications`; the text around the list) | `content/pages/thrive-publications.yaml` |
 | Contact Us | `content/pages/contact.yaml` |
 | Volunteer (the "Get Involved" item in the About menu) | `content/pages/get-involved-volunteer.yaml` |
 | Donate (the Donate button) | `content/pages/get-involved-donate.yaml` |
@@ -87,6 +88,59 @@ The Pramaan screens are fully editable from YAML. The **resources themselves** (
 - `pramaan-library.yaml` — the Resource Centre: page title and search-result title (`meta:`), the Filters button and result counts (`page:`), every filter and sort label (`filters:`, `sort:`), the "no results" message (`grid:`), the wording on each resource card (`card:`), a single resource's page (`detail:` — browser-tab title, "Back to Resource Center", "Resource Not Found", section labels) and the page-number bar (`pagination:`). Rules for the Sheet itself: `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`.
 - `abl-contribute.yaml` — the Contribute page text, its three steps, the heading above the form button, and the **form's web address** (`formUrl:`). Step by step: `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md`.
 - The labels of the full-screen photo and video viewers ("Close preview", "Close video"…) are in `content/shared/ui.yaml` (`mediaLightbox:`).
+
+### What a Publications editor can change
+
+Two pages list publications: **TIDE Publications** (`/about/publications`) and **THRIvE Publications**
+(`/thrive/publications`). The **publications themselves** (title, date, type, description, link, thumbnail,
+and for THRIvE the APA reference and field of work) do **not** come from YAML — they come from the Google
+Sheet "TIDE THRIvE Publications (Responses)", which the publications Google Form fills. Add a publication by
+submitting the Form (answer **TIDE** or **THRIvE** to choose the page); correct one by editing its row in the
+Sheet. Changes are copied into the website automatically within minutes — once the connection is set up
+(`docs/PUBLICATIONS-SETUP-GUIDE.md`; not live yet on 2026-11-20). A page with no publications shows the
+"No publications published yet" message.
+
+> **Every Form answer goes live** — there is no approval step. To take a publication off the website without
+> deleting it, add a column headed `Hide from website` to the Sheet and type `Yes` in that row.
+
+Everything *around* the publications is in YAML. The two pages look different, so their files have
+different sections:
+
+- Both files: page title, badge and subtitle (`meta:`, including the "No publications published yet" message
+  and the breadcrumb name), the line of figures under the title (`stats:` — "{n} publications",
+  "{n} types", "since {year}"; the numbers are counted from the Sheet), the "New" badge text (`newBadge:`),
+  the numbered-page buttons (`pagination:` — "Previous", "Next", "Page {n}") and `source:` — the words
+  shown after "Source:" under a link (`doi`, `driveFile` = "Google Drive", `driveFolder` = "Google Drive
+  folder"; any other link shows its web address, e.g. "tandfonline.com").
+- `about-publications.yaml` (TIDE) — the page shows the latest report large, a shelf with the other reports
+  of the same type, then everything else:
+  - `featuredType:` — which "Type of material" gets the large card and the shelf. Write it exactly as in the
+    Sheet (capital letters don't matter); today `"Annual report"`. If no publication has that type, the large
+    card and the shelf are simply not shown. The "latest" report is the one whose title names the latest
+    period (e.g. "2024-25"); without a period in the title, its date counts.
+  - `featured:` (the small heading above the large card and its button text), `shelf:` (the shelf heading and
+    the "Show all {n} annual reports" / "Show fewer" button), `others:` (the heading of the "everything else"
+    section, the "All" button and the "Open" link text), `search:` (the search box and its results wording —
+    the box only appears once there are many TIDE publications, see below).
+- `thrive-publications.yaml` (THRIvE) — a "publications per year" chart in the banner, then a list grouped by
+  year, 20 per page, with search and filters:
+  - `socialProofTypes:` — a list of "Type of material" names (exactly as in the Sheet; capital letters don't
+    matter) counted in the extra figure under the title, `stats.socialProofTemplate` ("{n} pieces by others
+    citing or featuring our work"). That figure is hidden when no publication has one of these types. Today:
+    "Published by others (TIDE acknowledged)" and "Mass media coverage".
+  - `chart:` (the chart's title, hint and the label read for each bar), `toolbar:` (search box, "Type of
+    material", "Field of work" and "Year" lists, newest/oldest button, "Clear all"), `results:` (the count
+    line, "Showing {from}–{to} of {total} …" when there are several pages, the "no results" message, the
+    heading for undated publications and the "continued" label when a year carries on from the previous
+    page), `entry:` (the "Read", "Copy citation" and "Show more/less" wording on each publication).
+- **Not in YAML:** how many items show before a page or a button appears (THRIvE 20 per page; TIDE shelf 6
+  before "Show all", 12 cards per page, search box only above 24 TIDE publications), how long "New" lasts
+  (120 days), whether a page has the year chart, and which icon each type gets. These are set in code
+  (`src/config/publications.js`) — ask a developer to change them.
+- Both files also have `a11y:` — text read out by screen readers only (not visible on the page).
+- Rules for the Sheet itself: `docs/PUBLICATIONS-SHEET-SCHEMA.md`.
+- The menu entries (About Us → Our Publications → TIDE / THRIvE Publications, and THRIvE Research Centre →
+  THRIvE Publications) are in `content/shared/navigation.yaml` (see "Update navigation labels").
 
 > **Placeholders in `{curly braces}`.** Some Pramaan and shared phrases contain a word in curly braces, for example `"Grade {n}"`, `"View {name}"`, `"{name} — TIDE Pramaan"` or `"Visit TIDE on {platform}"`. The website fills these in automatically (the grade number, the resource name, …). You can reword the text around them, but **keep the `{word}` exactly as written** — if you delete or misspell it, the site will show the raw `{word}` or leave a gap.
 
@@ -201,9 +255,9 @@ In the YAML file, find the `meta:` section at the top:
 meta:
   badge: About Us · Publications
   title: Our Publications
-  tagline: Annual reports, public event recordings, and research.
+  subtitle: Annual reports, public event recordings, and research from a decade of work.
   seoTitle: Publications — TIDE Foundation
-  seoDescription: Access TIDE Foundation's annual reports and research publications.
+  seoDescription: Access TIDE Foundation's annual reports, public event recordings, and research publications.
 ```
 
 Edit the values after the colon. The subtitle line is called `tagline` on some pages and `subtitle` on others. `seoTitle` and `seoDescription` are what Google and the browser tab show, not the on-page heading.
@@ -253,19 +307,11 @@ Advisors use `name`, `role`, `photo` and `linkedin` only (no `suffix` or `bio`).
 
 > **Important:** Keep the same indentation (spaces before the dash `- `). Copy the format of an existing entry exactly.
 
-### Add an annual report
+### Add an annual report (or any publication)
 
-The live site lists annual reports on the **Our Publications** page, in `content/pages/about-publications.yaml`, under `annualReports:` → `items:`:
-
-```yaml
-annualReports:
-  items:
-    - year: "2024–25"
-      title: "TIDE Foundation Annual Report 2024–25"
-      link: https://link-to-your-pdf.com
-```
-
-(Leave `link: ""` for a report whose PDF is not ready yet.)
+Annual reports, research and other publications are no longer typed into YAML. Submit the publications
+Google Form (answer **TIDE** for the TIDE Publications page, **THRIvE** for THRIvE Publications), or edit the
+Sheet "TIDE THRIvE Publications (Responses)". See "What a Publications editor can change" above.
 
 ### Update contact information
 
@@ -360,6 +406,19 @@ items:
       - label: Why TIDE?
         to: /about/why-tide
         desc: Our story, vision & values
+```
+
+Some menu entries open a small sub-menu instead of a page. They have a `subItems:` list instead of a `to:`
+line — for example About Us → Our Publications:
+
+```yaml
+      - label: "Our Publications"
+        desc: "Annual reports, research & events"
+        subItems:
+          - label: "TIDE Publications"
+            to: "/about/publications"
+          - label: "THRIvE Publications"
+            to: "/thrive/publications"
 ```
 
 Change only the `label` and `desc` values. **Never change the `to:` paths** — those are URL routes that must match the app code. (The same applies to `donateHref` in `footer.yaml` and the `ctaHref` / `secondaryHref` lines in `not-found.yaml` and `ctaHref` in `coming-soon.yaml`.)
@@ -468,5 +527,6 @@ You only need this if you're using Path B (terminal with local preview). Path A 
 - Files in `src/pages/` or `src/components/` — these are the React components (code)
 - Files in `dist/` — auto-generated build output
 - The `public/assets/images/pramaan-library/` folder — filled in automatically from the Resource Centre's Google Sheet
+- The `public/assets/images/publications/` folder — filled in automatically from the Publications Sheet
 
 If you need to change layout, colours, or add new pages, that requires a developer. Everything else a visitor or search engine reads — including the search-engine "structured data" and page breadcrumbs — comes from YAML (`site.yaml` and each page's `breadcrumbName`).

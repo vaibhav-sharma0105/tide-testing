@@ -1,7 +1,7 @@
-import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
+import { useState, useCallback, useMemo, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import { SlidersHorizontal, X, BookOpen, ArrowUpDown, ArrowDownAZ, ArrowUpZA, Search } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { SlidersHorizontal, BookOpen, ArrowUpDown, ArrowDownAZ, ArrowUpZA } from 'lucide-react'
 import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
@@ -9,9 +9,11 @@ import LibraryFilters from '../../components/library/LibraryFilters'
 import LibraryCard from '../../components/library/LibraryCard'
 import LibraryDropdown, { FOCUS_PILL } from '../../components/library/LibraryDropdown'
 import Pagination from '../../components/abl/Pagination'
+import SearchField from '../../components/listing/SearchField'
+import FilterChips from '../../components/listing/FilterChips'
+import FilterDrawer from '../../components/listing/FilterDrawer'
 import { LIBRARY_PAGE_SIZE } from '../../config/library'
-import { useFocusTrap } from '../../hooks/useFocusTrap'
-import { useModalBehavior } from '../../hooks/useModalBehavior'
+import { useSidebarFits } from '../../hooks/useSidebarFits'
 import { applyLibraryFilters, facetOptions, gradeLabel, typeParamKey, LIBRARY_SORTS, DEFAULT_SORT } from '../../utils/libraryFilters'
 import snapshot from '../../data/sheets/pramaan-library.json'
 import data from '../../data/pramaan-library.json'
@@ -52,24 +54,6 @@ function filtersToSearch(f, page) {
 
 const STICKY_TOP = 130 // px, matches top-[130px] (below the fixed header and the Pramaan tab bar)
 
-// Pin the sidebar only while it fits in the window; a taller sidebar (e.g. a picker list open on
-// a short laptop screen) scrolls with the page instead of getting a second scrollbar.
-function useSidebarFits() {
-  const ref = useRef(null)
-  const [sticky, setSticky] = useState(true)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return undefined
-    const check = () => setSticky(el.offsetHeight + STICKY_TOP + 16 <= window.innerHeight)
-    check()
-    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(check) : null
-    ro?.observe(el)
-    window.addEventListener('resize', check)
-    return () => { ro?.disconnect(); window.removeEventListener('resize', check) }
-  }, [])
-  return [ref, sticky]
-}
-
 export default function PramaanLibrary() {
   const location = useLocation()
   const navigate = useNavigate()
@@ -79,12 +63,10 @@ export default function PramaanLibrary() {
   const [page, setPage] = useState(() => parseInt(params.get('page') ?? '1', 10) || 1)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const closeDrawer = useCallback(() => setDrawerOpen(false), [])
-  const drawerRef = useFocusTrap(drawerOpen)
-  useModalBehavior({ active: drawerOpen, onClose: closeDrawer })
 
   // Counts follow the other active filters (see facetOptions).
   const options = useMemo(() => facetOptions(resources, filters), [filters])
-  const [sidebarRef, sidebarSticky] = useSidebarFits()
+  const [sidebarRef, sidebarSticky] = useSidebarFits(STICKY_TOP)
 
   const change = useCallback((next) => {
     setFilters(next)
@@ -162,27 +144,14 @@ export default function PramaanLibrary() {
                         <span className="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center">{activeCount}</span>
                       )}
                     </button>
-                    <div className="relative order-1 min-w-0 basis-full sm:order-2 sm:basis-0 sm:flex-1 lg:basis-full xl:basis-0">
-                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-tide-muted pointer-events-none" aria-hidden="true" />
-                      <input
-                        type="search"
-                        value={filters.search}
-                        onChange={e => change({ ...filters, search: e.target.value })}
-                        placeholder={data.filters.searchPlaceholder}
-                        aria-label={data.filters.searchLabel}
-                        className="w-full rounded-full border border-tide-border bg-white py-2.5 pl-11 pr-10 text-sm font-body text-tide-text shadow-sm placeholder:text-tide-muted transition-colors hover:border-primary/40 focus:border-primary focus:outline-none focus-visible:outline-none focus-visible:rounded-full focus:ring-2 focus:ring-primary/25 [&::-webkit-search-cancel-button]:appearance-none"
-                      />
-                      {filters.search && (
-                        <button
-                          type="button"
-                          onClick={() => change({ ...filters, search: '' })}
-                          aria-label={data.filters.clearSearchLabel}
-                          className={`absolute right-2 top-1/2 -translate-y-1/2 flex h-7 w-7 items-center justify-center rounded-full text-tide-muted hover:bg-tide-subtle hover:text-tide-text transition-colors ${FOCUS_PILL}`}
-                        >
-                          <X className="h-4 w-4" aria-hidden="true" />
-                        </button>
-                      )}
-                    </div>
+                    <SearchField
+                      value={filters.search}
+                      onChange={search => change({ ...filters, search })}
+                      placeholder={data.filters.searchPlaceholder}
+                      label={data.filters.searchLabel}
+                      clearLabel={data.filters.clearSearchLabel}
+                      className="order-1 basis-full sm:order-2 sm:basis-0 sm:flex-1 lg:basis-full xl:basis-0"
+                    />
                   <div className="order-3 ml-auto flex flex-shrink-0 items-center rounded-full border border-tide-border bg-white p-1 shadow-sm">
                     <LibraryDropdown
                       value={filters.sort}
@@ -214,25 +183,7 @@ export default function PramaanLibrary() {
                   )}
                 </div>
 
-                {chips.length > 0 && (
-                  <ul className="mb-5 flex flex-wrap items-center gap-2">
-                    {chips.map(c => (
-                      <li key={c.key}>
-                        <button
-                          type="button"
-                          onClick={() => change(c.next)}
-                          aria-label={data.filters.removeTemplate.replace('{name}', () => c.label)}
-                          className="group inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary-light py-1 pl-3 pr-2 font-body text-xs font-semibold text-primary-dark transition-all duration-200 hover:shadow-sm"
-                        >
-                          {c.label}
-                          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-black/5 group-hover:bg-black/15" aria-hidden="true">
-                            <X className="h-3 w-3" />
-                          </span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                <FilterChips chips={chips.map(c => ({ key: c.key, label: c.label, onRemove: () => change(c.next) }))} removeTemplate={data.filters.removeTemplate} />
 
                 <div ref={gridRef}>
                   {pageItems.length === 0 ? (
@@ -265,63 +216,19 @@ export default function PramaanLibrary() {
         </div>
       </section>
 
-      <AnimatePresence>
-        {drawerOpen && (
-          <>
-            <motion.div
-              key="library-backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-black/40 z-40 lg:hidden"
-              onClick={closeDrawer}
-            />
-            <motion.div
-              key="library-drawer"
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-              ref={drawerRef}
-              role="dialog"
-              aria-modal="true"
-              aria-label={data.page.filtersButton}
-              className="fixed left-0 top-0 bottom-0 z-50 flex w-[22rem] max-w-[90vw] flex-col bg-white shadow-2xl lg:hidden"
-            >
-              {/* One header (title, Clear, close), the filters, and a sticky button that shows the result. */}
-              <div className="flex items-center gap-2 border-b border-tide-border px-5 py-3.5">
-                <span className="flex-1 font-display text-lg font-semibold text-tide-text">{data.page.filtersButton}</span>
-                {activeCount > 0 && (
-                  <button type="button" onClick={clear} className={`rounded-full px-3 py-1.5 text-xs font-body font-semibold text-primary hover:bg-primary-faint transition-colors ${FOCUS_PILL}`}>
-                    {data.filters.clear} ({activeCount})
-                  </button>
-                )}
-                <button
-                  type="button"
-                  onClick={closeDrawer}
-                  aria-label={data.page.closeFiltersLabel}
-                  className={`flex h-9 w-9 items-center justify-center rounded-full text-tide-muted hover:bg-tide-subtle hover:text-tide-text transition-colors ${FOCUS_PILL}`}
-                >
-                  <X className="h-4 w-4" aria-hidden="true" />
-                </button>
-              </div>
-              <div className="flex-1 overflow-y-auto overscroll-contain">
-                <LibraryFilters {...filterProps} variant="drawer" />
-              </div>
-              <div className="border-t border-tide-border bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-                <button
-                  type="button"
-                  onClick={closeDrawer}
-                  className={`w-full rounded-full bg-primary px-5 py-3 text-sm font-body font-semibold text-white shadow-lg shadow-primary/25 hover:bg-primary-dark transition-colors ${FOCUS_PILL}`}
-                >
-                  {data.page.showResultsTemplate.replace('{n}', String(filtered.length)).replace('{resources}', () => (filtered.length === 1 ? data.page.resourceSingular : data.page.resourcePlural))}
-                </button>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      <FilterDrawer
+        open={drawerOpen}
+        onClose={closeDrawer}
+        title={data.page.filtersButton}
+        closeLabel={data.page.closeFiltersLabel}
+        clearLabel={data.filters.clear}
+        activeCount={activeCount}
+        onClear={clear}
+        showResultsLabel={data.page.showResultsTemplate.replace('{n}', String(filtered.length)).replace('{resources}', () => (filtered.length === 1 ? data.page.resourceSingular : data.page.resourcePlural))}
+        idPrefix="library"
+      >
+        <LibraryFilters {...filterProps} variant="drawer" />
+      </FilterDrawer>
     </>
   )
 }

@@ -1,18 +1,119 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useId } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown, ChevronRight, Heart } from 'lucide-react'
 
 import navData from '../../data/navigation.json'
+import { activeTopIndex, activeLeaf } from '../../utils/navActive'
+
+/* ── Nested group inside a dropdown (third menu level) ─────────────────── */
+// A button that opens a small sub-menu to the right. Mouse: hover opens. Keyboard: Enter, Space
+// or → opens it and focuses the first link; ↑ ↓ Home End move; ← or Esc closes it and returns
+// focus to the button (Esc does not also close the outer dropdown); leaving it closes it.
+function SubGroup({ item, onClose }) {
+  const [open, setOpen] = useState(false)
+  const timer = useRef(null)
+  const buttonRef = useRef(null)
+  const listRef = useRef(null)
+  const pendingFocus = useRef(null)
+  const id = useId()
+
+  useEffect(() => () => clearTimeout(timer.current), [])
+  useEffect(() => {
+    if (!open || pendingFocus.current === null) return
+    listRef.current?.querySelectorAll('a')[pendingFocus.current]?.focus()
+    pendingFocus.current = null
+  }, [open])
+
+  const close = (refocus) => { setOpen(false); if (refocus) buttonRef.current?.focus() }
+
+  const onButtonKeyDown = (e) => {
+    if (['Enter', ' ', 'ArrowRight'].includes(e.key)) {
+      e.preventDefault()
+      if (open && e.key !== 'ArrowRight') close(false)
+      else if (open) listRef.current?.querySelector('a')?.focus()
+      else { pendingFocus.current = 0; setOpen(true) }
+    } else if (e.key === 'Escape' && open) {
+      e.preventDefault(); e.stopPropagation(); close(true)
+    }
+  }
+  const onListKeyDown = (e) => {
+    const links = [...(listRef.current?.querySelectorAll('a') ?? [])]
+    const i = links.indexOf(document.activeElement)
+    if (e.key === 'ArrowDown') { e.preventDefault(); links[(i + 1) % links.length]?.focus() }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); links[(i - 1 + links.length) % links.length]?.focus() }
+    else if (e.key === 'Home') { e.preventDefault(); links[0]?.focus() }
+    else if (e.key === 'End') { e.preventDefault(); links[links.length - 1]?.focus() }
+    else if (e.key === 'ArrowLeft' || e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close(true) }
+  }
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => { clearTimeout(timer.current); setOpen(true) }}
+      onMouseLeave={() => { timer.current = setTimeout(() => setOpen(false), 100) }}
+      onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setOpen(false) }}
+    >
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-controls={id}
+        onClick={() => setOpen(o => !o)}
+        onKeyDown={onButtonKeyDown}
+        className="group flex w-[calc(100%-1rem)] items-start gap-3 px-4 py-3 mx-2 rounded-xl text-left hover:bg-primary-faint transition-colors duration-150"
+      >
+        <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
+            {item.label}
+          </div>
+          {item.desc && (
+            <div className="text-xs font-body text-tide-muted mt-0.5 leading-snug">{item.desc}</div>
+          )}
+        </div>
+        <ChevronRight className="w-3.5 h-3.5 text-tide-muted mt-1.5 flex-shrink-0" aria-hidden="true" />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            ref={listRef}
+            id={id}
+            initial={{ opacity: 0, x: -8, scale: 0.97 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -8, scale: 0.97 }}
+            transition={{ duration: 0.15, ease: [0.4, 0, 0.2, 1] }}
+            role="menu"
+            aria-label={item.label}
+            onKeyDown={onListKeyDown}
+            className="absolute left-full top-0 ml-2 w-56 bg-white rounded-2xl shadow-float border border-tide-border/60 py-2 z-50 overflow-hidden"
+          >
+            <div className="absolute top-0 left-4 right-4 h-[3px] rounded-full gradient-primary-soft pointer-events-none" />
+            {item.subItems.map(sub => (
+              <Link
+                key={sub.to}
+                to={sub.to}
+                onClick={onClose}
+                role="menuitem"
+                className="group flex items-center gap-3 px-4 py-3 mx-2 rounded-xl hover:bg-primary-faint transition-colors duration-150"
+              >
+                <div className="w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
+                <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
+                  {sub.label}
+                </div>
+              </Link>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
 
 /* ── Dropdown ──────────────────────────────────────────────────────────── */
 function Dropdown({ id, items, onClose }) {
-  const [openSub, setOpenSub] = useState(null)
-  const subTimer = useRef(null)
-
-  const handleSubEnter = (to) => { clearTimeout(subTimer.current); setOpenSub(to) }
-  const handleSubLeave = () => { subTimer.current = setTimeout(() => setOpenSub(null), 100) }
-
   return (
     <motion.div
       id={id}
@@ -28,60 +129,7 @@ function Dropdown({ id, items, onClose }) {
 
       {items.map((item) =>
         item.subItems ? (
-          <div
-            key={item.to}
-            className="relative"
-            onMouseEnter={() => handleSubEnter(item.to)}
-            onMouseLeave={handleSubLeave}
-            onFocus={() => handleSubEnter(item.to)}
-            onBlur={handleSubLeave}
-          >
-            <Link
-              to={item.to}
-              onClick={onClose}
-              className="group flex items-start gap-3 px-4 py-3 mx-2 rounded-xl hover:bg-primary-faint transition-colors duration-150"
-            >
-              <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
-              <div className="flex-1 min-w-0">
-                <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
-                  {item.label}
-                </div>
-                {item.desc && (
-                  <div className="text-xs font-body text-tide-muted mt-0.5 leading-snug">{item.desc}</div>
-                )}
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 text-tide-muted mt-1.5 flex-shrink-0" />
-            </Link>
-
-            <AnimatePresence>
-              {openSub === item.to && (
-                <motion.div
-                  initial={{ opacity: 0, x: -8, scale: 0.97 }}
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
-                  exit={{ opacity: 0, x: -8, scale: 0.97 }}
-                  transition={{ duration: 0.15, ease: [0.4, 0, 0.2, 1] }}
-                  role="menu"
-                  className="absolute left-full top-0 ml-2 w-52 bg-white rounded-2xl shadow-float border border-tide-border/60 py-2 z-50 overflow-hidden"
-                >
-                  <div className="absolute top-0 left-4 right-4 h-[3px] rounded-full gradient-primary-soft pointer-events-none" />
-                  {item.subItems.map(sub => (
-                    <Link
-                      key={sub.to}
-                      to={sub.to}
-                      onClick={onClose}
-                      role="menuitem"
-                      className="group flex items-center gap-3 px-4 py-3 mx-2 rounded-xl hover:bg-primary-faint transition-colors duration-150"
-                    >
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
-                      <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
-                        {sub.label}
-                      </div>
-                    </Link>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          <SubGroup key={item.label} item={item} onClose={onClose} />
         ) : (
           <Link
             key={item.to}
@@ -112,6 +160,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen]   = useState(false)
   const [openDropdown, setOpenDropdown] = useState(null)
   const [mobileExpanded, setMobileExpanded] = useState(null)
+  const [mobileSubExpanded, setMobileSubExpanded] = useState(null)
   const [prevLocation, setPrevLocation] = useState(location)
   const leaveTimer = useRef(null)
   const hamburgerRef = useRef(null)
@@ -122,6 +171,7 @@ export default function Header() {
     setMobileOpen(false)
     setOpenDropdown(null)
     setMobileExpanded(null)
+    setMobileSubExpanded(null)
   }
 
   /* scroll detection */
@@ -156,11 +206,10 @@ export default function Header() {
     }
   }
 
-  /* is any item active? */
-  const isActive = (item) => {
-    if (item.to) return location.pathname === item.to
-    return item.children?.some(c => location.pathname.startsWith(c.to))
-  }
+  /* which entry is active? (most specific match only — see activeTopIndex / activeLeaf) */
+  const activeIdx = activeTopIndex(nav, location.pathname)
+  const currentLeaf = activeLeaf(nav, location.pathname)
+  const isActive = (item) => nav.indexOf(item) === activeIdx
 
   return (
     <header
@@ -312,7 +361,7 @@ export default function Header() {
                     <Link
                       to={item.to}
                       className={`flex items-center px-4 py-3 rounded-xl text-sm font-body font-medium transition-colors ${
-                        location.pathname === item.to
+                        isActive(item)
                           ? 'bg-primary-faint text-primary font-semibold'
                           : 'text-tide-text hover:bg-tide-subtle'
                       }`}
@@ -340,35 +389,67 @@ export default function Header() {
                           >
                             <div className="pl-4 pb-1 space-y-0.5">
                               {item.children.map((child) => (
-                                <div key={child.to}>
-                                  <Link
-                                    to={child.to}
-                                    className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-body transition-colors ${
-                                      location.pathname.startsWith(child.to)
-                                        ? 'text-primary font-semibold bg-primary-faint'
-                                        : 'text-tide-muted hover:text-tide-text hover:bg-tide-subtle'
-                                    }`}
-                                  >
-                                    <span className="w-1 h-1 rounded-full bg-current opacity-50 flex-shrink-0" />
-                                    {child.label}
-                                  </Link>
-                                  {child.subItems && (
-                                    <div className="pl-6 space-y-0.5">
-                                      {child.subItems.map(sub => (
-                                        <Link
-                                          key={sub.to}
-                                          to={sub.to}
-                                          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-body transition-colors ${
-                                            location.pathname === sub.to
-                                              ? 'text-primary font-semibold bg-primary-faint'
-                                              : 'text-tide-muted hover:text-tide-text hover:bg-tide-subtle'
-                                          }`}
-                                        >
-                                          <span className="w-0.5 h-0.5 rounded-full bg-current opacity-40 flex-shrink-0" />
-                                          {sub.label}
-                                        </Link>
-                                      ))}
-                                    </div>
+                                <div key={child.to ?? child.label}>
+                                  {child.subItems ? (
+                                    /* Nested group: a button that shows its links underneath */
+                                    <>
+                                      <button
+                                        type="button"
+                                        onClick={() => setMobileSubExpanded(mobileSubExpanded === child.label ? null : child.label)}
+                                        aria-expanded={mobileSubExpanded === child.label}
+                                        className={`w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-body text-left transition-colors ${
+                                          child.subItems.some(sub => sub.to === currentLeaf)
+                                            ? 'text-primary font-semibold'
+                                            : 'text-tide-muted hover:text-tide-text hover:bg-tide-subtle'
+                                        }`}
+                                      >
+                                        <span className="w-1 h-1 rounded-full bg-current opacity-50 flex-shrink-0" />
+                                        <span className="flex-1">{child.label}</span>
+                                        <ChevronDown className={`w-4 h-4 text-tide-muted transition-transform duration-200 ${mobileSubExpanded === child.label ? 'rotate-180' : ''}`} aria-hidden="true" />
+                                      </button>
+                                      <AnimatePresence>
+                                        {mobileSubExpanded === child.label && (
+                                          <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="overflow-hidden"
+                                          >
+                                            <div className="pl-6 pb-1 space-y-0.5">
+                                              {child.subItems.map(sub => (
+                                                <Link
+                                                  key={sub.to}
+                                                  to={sub.to}
+                                                  aria-current={sub.to === currentLeaf ? 'page' : undefined}
+                                                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-body transition-colors ${
+                                                    sub.to === currentLeaf
+                                                      ? 'text-primary font-semibold bg-primary-faint'
+                                                      : 'text-tide-muted hover:text-tide-text hover:bg-tide-subtle'
+                                                  }`}
+                                                >
+                                                  <span className="w-0.5 h-0.5 rounded-full bg-current opacity-40 flex-shrink-0" />
+                                                  {sub.label}
+                                                </Link>
+                                              ))}
+                                            </div>
+                                          </motion.div>
+                                        )}
+                                      </AnimatePresence>
+                                    </>
+                                  ) : (
+                                    <Link
+                                      to={child.to}
+                                      aria-current={child.to === currentLeaf ? 'page' : undefined}
+                                      className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-body transition-colors ${
+                                        child.to === currentLeaf
+                                          ? 'text-primary font-semibold bg-primary-faint'
+                                          : 'text-tide-muted hover:text-tide-text hover:bg-tide-subtle'
+                                      }`}
+                                    >
+                                      <span className="w-1 h-1 rounded-full bg-current opacity-50 flex-shrink-0" />
+                                      {child.label}
+                                    </Link>
                                   )}
                                 </div>
                               ))}

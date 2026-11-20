@@ -93,9 +93,9 @@ describe('Route smoke tests', () => {
     expect(container.firstChild).not.toBeNull()
   })
 
-  it('/about/publications — PublicationsCombined renders without crashing', async () => {
+  it('/about/publications — TidePublications renders without crashing', async () => {
     const container = await renderRoute(
-      () => import('../../pages/about/PublicationsCombined'),
+      () => import('../../pages/publications/TidePublications'),
       '/about/publications',
       '/about/publications'
     )
@@ -116,6 +116,15 @@ describe('Route smoke tests', () => {
       () => import('../../pages/THRIvE'),
       '/thrive',
       '/thrive'
+    )
+    expect(container.firstChild).not.toBeNull()
+  })
+
+  it('/thrive/publications — ThrivePublications renders without crashing', async () => {
+    const container = await renderRoute(
+      () => import('../../pages/publications/ThrivePublications'),
+      '/thrive/publications',
+      '/thrive/publications'
     )
     expect(container.firstChild).not.toBeNull()
   })

@@ -5,6 +5,11 @@
  */
 
 import data from '../data/pramaan-library.json'
+import { normKey, cleanLabel, optionsFor } from './listingFilters'
+
+// Generic helpers live in listingFilters.js (shared with the Publications pages); re-exported so
+// existing imports keep working.
+export { normKey, optionsFor, orderFilterOptions } from './listingFilters'
 
 // Alphabetical order ("Foundational" before "Grade 1"), used everywhere a list of grades is shown.
 export const LIBRARY_GRADES = ['FOUNDATIONAL', 'GRADE 1', 'GRADE 2', 'GRADE 3', 'GRADE 4', 'GRADE 5']
@@ -14,8 +19,6 @@ export const sortGrades = (grades) => LIBRARY_GRADES.filter(g => (grades ?? []).
 
 /** 'GRADE 3' → 'Grade 3', 'FOUNDATIONAL' → 'Foundational' (labels from pramaan-library.yaml). */
 export const gradeLabel = (g) => g === 'FOUNDATIONAL' ? data.filters.foundational : data.filters.gradeTemplate.replace('{n}', g.replace('GRADE ', ''))
-
-export const normKey = (v) => (typeof v === 'string' ? v.trim().replace(/\s+/g, ' ').toLowerCase() : '')
 
 /**
  * The ?type= value as a filter key. Accepts the normalised key ("kit") and, so links made for the
@@ -29,19 +32,6 @@ export function typeParamKey(value, resources) {
   if (types.has(key)) return key
   const one = (s) => s.replace(/s$/, '')
   return [...types].find(t => one(t) === one(key)) ?? key
-}
-
-/** [{ value, label, count }] for one field, sorted by label; value is the normalised key. */
-export function optionsFor(resources, field) {
-  const map = new Map()
-  for (const r of resources) {
-    const key = normKey(r[field])
-    if (!key) continue
-    const entry = map.get(key) ?? { value: key, label: r[field].trim().replace(/\s+/g, ' '), count: 0 }
-    entry.count++
-    map.set(key, entry)
-  }
-  return [...map.values()].sort((a, b) => a.label.localeCompare(b.label))
 }
 
 const byText = (a, b) => (a ?? '').localeCompare(b ?? '')
@@ -91,19 +81,6 @@ export function linkParts(text) {
 export const OWNER_PINNED = ['tide foundation']
 
 /**
- * Order for the Subject and Ownership pickers (owner's rule): pinned values in the given order,
- * then A→Z ignoring case, and "Other" always last. The UI adds the "All …" choice on top.
- */
-export function orderFilterOptions(options, pinned = []) {
-  const rank = (o) => (o.value === 'other' ? 2 : pinned.includes(o.value) ? 0 : 1)
-  return [...options].sort((a, b) =>
-    rank(a) - rank(b)
-    || (rank(a) === 0 ? pinned.indexOf(a.value) - pinned.indexOf(b.value) : 0)
-    || a.label.localeCompare(b.label, 'en', { sensitivity: 'base' })
-    || a.value.localeCompare(b.value))
-}
-
-/**
  * Filter options whose counts follow the other active filters (faceted counts): each filter
  * counts the resources that match every *other* filter, so the numbers always match what
  * choosing that value would show. Values with no match are left out, except the one currently
@@ -116,7 +93,7 @@ export function facetOptions(resources, filters) {
     const chosen = filters[key]
     if (chosen && !opts.some(o => o.value === chosen)) {
       const sample = resources.find(r => normKey(r[field]) === chosen)
-      opts.push({ value: chosen, label: sample ? sample[field].trim().replace(/\s+/g, ' ') : chosen, count: 0 })
+      opts.push({ value: chosen, label: sample ? cleanLabel(sample[field]) : chosen, count: 0 })
     }
     return { opts, total: pool.length }
   }

@@ -53,7 +53,7 @@ git commit, and a bad edit is refused before it reaches the site.
 | P8 | **Nothing fails silently.** Job failure → `automation-alert` issue; row problems → `sheet-needs-attention` issue; both assigned to `ALERT_ASSIGNEE` and closed automatically on the next success. Apps Script failures email `ALERT_EMAIL`. **Each integration uses its own issue titles.** | `scripts/ci/alert-issue.sh` (matches label **and** exact title) |
 | P9 | **Isolation.** Own Sheet, own Apps Script, own fine-grained GitHub token, own secrets, own workflow file, own concurrency group, own cron minute, own data/photo paths. | see §3 |
 | P10 | **Data and photos publish together** in one commit; a photo Drive can't read keeps its previous copy; photos are deleted only when their row is gone. | `planLibraryPhotos` |
-| P11 | **Secrets never printed.** `redactToken()` on every log/error line; ids allowlist-validated before any path use; deletions checked to stay inside the photo folder. | `sync-pramaan-library.js` |
+| P11 | **Secrets never printed.** `redactToken()` on every log/error line; ids allowlist-validated before any path use; deletions checked to stay inside the photo folder. | `scripts/lib/sync-runner.js` (`createRedactor`, `isInsideAssetsDir`, `deletePhotos`) |
 | P12 | **UI text is YAML**, data is the snapshot. No string typed in JSX (`react/jsx-no-literals`). | `content/pages/pramaan-library.yaml` |
 | P13 | **Transferable.** A new owner can move Sheet → script → token → secrets with a click-by-click guide. | `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `docs/MIGRATION-*.md` |
 
@@ -67,8 +67,8 @@ Pick a short kebab-case slug (e.g. `pramaan-library`, `social-changemakers`) and
 | Apps Script source | `apps-script/<slug>/Code.gs` | `apps-script/pramaan-library/Code.gs` |
 | Workflow (keep the file name — the script calls it by name) | `.github/workflows/sync-<slug>.yml` | `sync-pramaan-library.yml` |
 | Concurrency group | `<slug>-sync` | `pramaan-library-sync` |
-| Cron | every 6 h at a **minute not used by another sync** (taken: `:47` Resource Centre / library; `:17` was the retired ABL sync — free again) | `47 */6 * * *` |
-| Sync script + rules | `scripts/sync-<slug>.js`, `scripts/lib/<slug>-snapshot.js` | `sync-pramaan-library.js`, `library-snapshot.js` |
+| Cron | every 6 h at a **minute not used by another sync** (taken: `:47` Resource Centre / library, `:27` Publications; `:17` was the retired ABL sync — free again) | `47 */6 * * *` |
+| Sync script + rules | `scripts/sync-<slug>.js` (built on the shared `scripts/lib/sync-runner.js` — never copy its plumbing), `scripts/lib/<slug>-snapshot.js` | `sync-pramaan-library.js`, `library-snapshot.js` |
 | npm script | `content:sync-<slug>` | `content:sync-pramaan-library` |
 | GitHub secrets | `<PREFIX>_API_URL`, `<PREFIX>_SYNC_TOKEN` | `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN` |
 | GitHub token (in Script Properties) | fine-grained, this repo only, **Actions: Read and write**, named `<slug>-sheet` | `pramaan-library-sheet` |
@@ -76,7 +76,7 @@ Pick a short kebab-case slug (e.g. `pramaan-library`, `social-changemakers`) and
 | Photo manifest | `src/data/<slug>-photos.json` — must not collide with a YAML basename | `pramaan-library-photos.json` |
 | Photos | `public/assets/images/<slug>/` | `public/assets/images/pramaan-library/` |
 | Alert issue titles | "`<Name>` sync failed — the page is not updating", "`<Name>` Sheet: some rows need attention" | "Pramaan Library sync failed — …" |
-| Heartbeat hour (UTC) | different from the other scripts | 04:00 |
+| Heartbeat hour (UTC) | different from the other scripts (taken: 04:00 Resource Centre, 05:00 Publications) | 04:00 |
 | Page YAML | `content/pages/<slug>.yaml` | `pramaan-library.yaml` |
 | Pages / components / config / utils | `src/pages/<area>/`, `src/components/<area>/`, `src/config/<area>.js`, `src/utils/<area>Filters.js` | `library/`, `config/library.js`, `libraryFilters.js` |
 | Owner docs | `docs/<SLUG>-SETUP-GUIDE.md`, `docs/<SLUG>-SHEET-SCHEMA.md` | `PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `PRAMAAN-LIBRARY-SHEET-SCHEMA.md` |
@@ -99,12 +99,25 @@ Do these in order; each step has a reference file to copy from.
    through publishable rows, debounce + max-wait + auth-failure backoff, `setup()`, `makeSyncToken()`,
    `testDispatch()`, `showStatus()` (counts only, never values).
    Test it in the simulated Google environment like `src/test/scripts/libraryAppsScript.test.js`,
-   **using the real header row**.
-4. **Rules library** — copy `scripts/lib/library-snapshot.js`: field allowlist, normalisation, email
-   scrub, id rules (`isSafeId`, `photoFileBase`, clash detection), `validate…` thresholds (reuses
-   `THRESHOLDS` from `snapshot-core.js`), photo plan. Pure functions only; unit-test every rule.
-5. **Sync script** — copy `scripts/sync-pramaan-library.js`: env names, `.env.development` loader
-   limited to this prefix, `REQUEST_TIMEOUT_MS`, `MAX_PHOTOS_PER_RUN`, photo time budget, report file.
+   **using the real header row** — build the sandbox with `makeAppsScriptEnv()` from the shared
+   `src/test/scripts/helpers/fakeAppsScript.js` (pass this Sheet's tabs, spreadsheet name and, if
+   `Code.gs` formats dates, `timeZone`); don't copy the fake Google services into the new test.
+4. **Rules library** — start from `scripts/lib/library-snapshot.js`: field allowlist, normalisation, email
+   scrub, id rules, clash detection, `validate…` thresholds, photo plan. Import the shared pieces from
+   `snapshot-core.js` instead of re-writing them (`THRESHOLDS`, `isSafeId`, `photoFileBase`,
+   `cleanString` / `cleanStringCollapseSpaces`, `extractDriveFileIdAnyLink` for links typed into the
+   Sheet, `asSingleTab`, `planListPhotos`), and re-export what the sync script needs. Pure functions
+   only; unit-test every rule.
+5. **Sync script** — start from `scripts/sync-pramaan-library.js`, which is ~120 lines because the run
+   plumbing lives in `scripts/lib/sync-runner.js` (`.env.development` loader for one prefix, token
+   redaction, fetch + retry + timeout, report, `GITHUB_OUTPUT`, refusal/override, capped photo
+   downloads, guarded deletes, writing the files, failure exit). Change only what is per integration:
+   env names + `loadLocalEnv('<PREFIX>_')`, paths, `createReport({ summaryTitle, setupGuide,
+   workflowName })`, the `Code.gs` path, the stats line, the console summary line, and
+   `processPhoto` (plain resize like the library, or a custom renderer like
+   `publications-images.js`). Keep `REQUEST_TIMEOUT_MS`, `MAX_PHOTOS_PER_RUN` and the photo time
+   budget. If the new sync needs a behaviour the runner lacks, add it to `sync-runner.js` with a
+   parameter (and a test in `src/test/scripts/syncRunner.test.js`) rather than forking a copy.
    Run it against a **fake Apps Script server** (no real data) to prove: publish, no-change run,
    refusal on mass removal, token never printed, photo cap continues next run.
 6. **Workflow** — copy `.github/workflows/sync-pramaan-library.yml`; rename paths, secrets, group, cron,
@@ -162,10 +175,43 @@ the consent wording covers a public, search-indexed listing. If the page replace
 the old address and redirect the new one (as `/pramaan-library` → `/pramaan/resource-centre`, which keeps
 ids and `?type=` links working).
 
-**Reuse:** the library components are still named `Library*`. When the **next** snapshot integration
-needs the same listing UI, extract the generic parts (facet/sort utilities, `LibraryDropdown`, the picker,
-`useSidebarFits`, the drawer) into shared modules **instead of copying them a third time** — with tests.
-Not done yet (2026-11-16).
+**Reuse.** The generic listing parts of the Resource Centre live in shared modules (extracted 2026-11-20) —
+use them instead of copying the library's code:
+- `src/components/listing/` — `SearchField` (search box + clear), `FilterChips` (active filters as
+  removable chips), `FilterDrawer` (the phone filter dialog: focus trap, Esc, scroll lock, "Show {n}"
+  button) and `PickerField` (the compact inline-listbox picker with type-ahead and clear ×).
+- `src/utils/listingFilters.js` — `normKey`, `cleanLabel`, `optionsFor`, `optionsForMany` (list-valued
+  fields) and `orderFilterOptions` (`libraryFilters.js` re-exports the ones it used to define).
+- `src/hooks/useSidebarFits.js` — sticky sidebar only while it fits.
+- `src/utils/focusRing.js` — `focusRing(radius)`; `src/components/abl/Pagination.jsx` takes a `labels`
+  prop for another page's YAML.
+
+A listing does not have to use them all. The Publications pages first reused the library's listing UI
+(sidebar filters, drawer, pagination), then got their own layouts in `src/components/publications/`, fitted
+to each page's content: the TIDE page (16 rows in the Sheet on 2026-11-20) has a featured latest report,
+a shelf (6, then "Show all"), type buttons and numbered pages above 12, and a search box only above 24 rows
+(`TideCollection`); the THRIvE page (49 text-heavy rows) is a single year-grouped reading column with native
+selects (type, field, year), a per-year chart in the banner and numbered pages of 20 kept in `?page=`
+(`ResearchArchive`, `PublicationsPagination`). Every such threshold is a named constant in
+`src/config/publications.js`, so a control appears only when the row count makes it useful. They have their
+own controls (`PublicationControls`, `usePublicationControls`) and use none of `src/components/listing/`,
+`useSidebarFits` or `abl/Pagination`; of the shared parts they use `listingFilters.js`, `focusRing` and
+`FOCUS_PILL`. Choose the layout from the data (row count, text length), not from the previous integration.
+
+**Uploaded images that are screenshots.** When people upload "thumbnails" of very different shapes
+(covers, slides with black bars, logos on wide margins, tall phone screenshots), a plain resize gives bars
+and squeezed boxes. `scripts/lib/publications-images.js` (used by `scripts/sync-publications.js`, tested in
+`src/test/scripts/publicationsImages.test.js`) is the pattern to copy: trim uniform borders with sharp
+(never failing the photo if trimming can't), keep document covers whole, keep other images in their own
+shape within a ratio range (THRIvE: 3:4…16:9; taller → `attention` crop to 3:4, wider → centre crop to
+16:9), never crop the full-size file, and record the pixel sizes (`thumbWidth`/`thumbHeight`/
+`fullWidth`/`fullHeight`) in the photo manifest so the page can set `width`/`height` and frame each image at
+its own ratio (`getPublicationThumb`, `MediaPanel`). The Resource Centre sync does not do this (plain resize).
+
+Still library-only: `LibraryDropdown` (the sort menu; it also exports `FOCUS_PILL`, which the shared pieces
+and the Publications components import), the type tiles and grade pills, and the per-integration
+filter/sort rules (`libraryFilters.js`, `publicationFilters.js`). Tests for the shared pieces run through
+`src/test/pages/pramaanLibrary.test.jsx`; there are no separate unit tests for `src/components/listing/`.
 
 ## 6. Security checklist (every line, before calling it done)
 
@@ -174,8 +220,8 @@ Not done yet (2026-11-16).
       never a raw Drive id from the request.
 - [ ] Personal columns are not in `COLUMNS` output, not in the snapshot, and `content:validate` would
       fail if an email address appeared.
-- [ ] The token never reaches a thrown `Error`, `console.*` or `Logger.log` line (`redactToken()`), on
-      both the Apps Script and the Node side.
+- [ ] The token never reaches a thrown `Error`, `console.*` or `Logger.log` line (`redactToken()` —
+      on the Node side from `sync-runner.js` `createRedactor`), on both the Apps Script and the Node side.
 - [ ] Every Sheet string that reaches a file path is allowlist-validated; deletions are checked to stay
       inside the photo folder (`path.relative`).
 - [ ] Image bytes are decoded by `sharp` with a size cap; its pixel limits are left on.
@@ -221,4 +267,4 @@ secrets table), `CONTENT-GUIDE.md` (the new YAML), and the cron/heartbeat "taken
 
 | Shared (change with care — affects every integration) | Per integration |
 |---|---|
-| `scripts/ci/alert-issue.sh`, `deploy.yml`, `scripts/lib/snapshot-core.js` (`THRESHOLDS`, `isSafeId`, `serializeSnapshot`, `photoDeletionError`, `photosFromExport`, `contentHash`, `planPhotos`; tests `src/test/scripts/snapshotCore.test.js`), `scripts/validate-content.js`, `src/components/abl/Pagination.jsx`, `DriveImage`/`ImageLightbox` (take a `src`), `VideoLightbox`, their labels in `ui.yaml` `mediaLightbox.*`, `SeoHead`, `index.html` CSP, the repo variable `ALERT_ASSIGNEE` | Sheet, `Code.gs`, token, secrets, workflow + queue + cron, sync script + rules, snapshot + photos paths, page YAML, pages/components, setup guide + schema doc, issue titles |
+| `scripts/ci/alert-issue.sh`, `deploy.yml`, `scripts/lib/snapshot-core.js` (`THRESHOLDS`, `isSafeId`, `serializeSnapshot`, `photoDeletionError`, `photosFromExport`, `contentHash`, `planPhotos`, `planListPhotos`, `asSingleTab`, `photoFileBase`, `cleanString`, `cleanStringCollapseSpaces`, `extractDriveFileId` (`/d/` only) and `extractDriveFileIdAnyLink` (also `?id=`); tests `src/test/scripts/snapshotCore.test.js`), `scripts/lib/sync-runner.js` (the sync scripts' I/O: env loader, redaction, fetch + retry, report, outputs, refusal, photo loops, file writes, failure exit — its wording appears in every sync's log and report; tests `src/test/scripts/syncRunner.test.js`), `src/test/scripts/helpers/fakeAppsScript.js` (the Apps Script tests' sandbox + fake Google services), `scripts/validate-content.js`, `src/components/abl/Pagination.jsx`, `src/components/listing/`, `src/utils/listingFilters.js`, `src/hooks/useSidebarFits.js`, `src/utils/focusRing.js`, `DriveImage`/`ImageLightbox` (take a `src`), `VideoLightbox`, their labels in `ui.yaml` `mediaLightbox.*`, `SeoHead`, `index.html` CSP, the repo variable `ALERT_ASSIGNEE` | Sheet, `Code.gs`, token, secrets, workflow + queue + cron, sync script (env prefix, paths, report title/guide/workflow name, stats line, `processPhoto`) + rules, snapshot + photos paths, page YAML, pages/components, setup guide + schema doc, issue titles |

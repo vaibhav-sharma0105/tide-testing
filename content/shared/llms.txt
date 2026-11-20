@@ -33,6 +33,7 @@ To bring about contextualized, systemic, sustainable changes in India's educatio
 - [Resource Centre]({{url}}/pramaan/resource-centre) — Browse ABL materials by subject, type, grade and owner
 - [Contribute to Pramaan]({{url}}/pramaan/contribute) — Share teaching resources
 - [THRIvE]({{url}}/thrive) — Research centre and Happiness Curriculum
+- [THRIvE Publications]({{url}}/thrive/publications) — Publications from the THRIvE Research Centre
 - [Volunteer / Get Involved]({{url}}/get-involved/volunteer) — How to volunteer, intern, or work with TIDE
 - [Donate]({{url}}/get-involved/donate) — Support TIDE (80G tax exemption, CSR partnerships)
 - [Contact]({{url}}/contact) — Contact information, Ahmedabad office

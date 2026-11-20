@@ -119,6 +119,51 @@ function checkLibrarySnapshot() {
 }
 checkLibrarySnapshot()
 
+// Publications snapshot ("TIDE THRIvE Publications (Responses)" Sheet, scripts/sync-publications.js).
+// Same backstop as the library: allowlisted fields only, no email address, valid org/date/links,
+// counts that match, and every thumbnail entry has its files inside its own folder.
+function checkPublicationsSnapshot() {
+  const snapFile = path.join('src', 'data', 'sheets', 'publications.json')
+  const manFile = path.join('src', 'data', 'publications-photos.json')
+  const allowed = new Set(['id', 'org', 'date', 'title', 'type', 'fields', 'description', 'citation', 'link', 'photoUrl'])
+  const orgs = ['TIDE', 'THRIvE']
+  let snap, manifest
+  try { snap = JSON.parse(fs.readFileSync(snapFile, 'utf8')) } catch (e) { error(snapFile, `missing or not valid JSON: ${e.message}`); return }
+  try { manifest = JSON.parse(fs.readFileSync(manFile, 'utf8')) } catch (e) { error(manFile, `missing or not valid JSON: ${e.message}`); return }
+  if (snap.schemaVersion !== 1 || snap.success !== true || snap.section !== 'publications' || !Array.isArray(snap.resources)) {
+    error(snapFile, 'unexpected shape (needs schemaVersion 1, success, section "publications", resources[])')
+    return
+  }
+  const ids = new Set()
+  for (const r of snap.resources) {
+    if (!r || typeof r.id !== 'string' || !r.id || typeof r.title !== 'string' || !r.title) { error(snapFile, 'a row has no id or title'); continue }
+    if (ids.has(r.id)) error(snapFile, `duplicate id ${r.id}`)
+    ids.add(r.id)
+    const extra = Object.keys(r).filter(k => !allowed.has(k))
+    if (extra.length) error(snapFile, `${r.id}: field(s) not allowed in the public snapshot: ${extra.join(', ')}`)
+    if (!orgs.includes(r.org)) error(snapFile, `${r.id}: org must be TIDE or THRIvE, got ${JSON.stringify(r.org)}`)
+    if (r.date !== null && !/^\d{4}-\d{2}-\d{2}$/.test(String(r.date))) error(snapFile, `${r.id}: date must be YYYY-MM-DD or null`)
+    if (!Array.isArray(r.fields)) error(snapFile, `${r.id}: fields must be a list`)
+    for (const k of ['link', 'photoUrl']) {
+      if (r[k] !== null && !/^https?:\/\//.test(String(r[k]))) error(snapFile, `${r.id}: ${k} must be an http(s) link or null`)
+    }
+    if (/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(JSON.stringify(r))) error(snapFile, `${r.id}: contains an email address`)
+  }
+  if (snap.meta?.total !== snap.resources.length) error(snapFile, `meta.total is ${snap.meta?.total} but there are ${snap.resources.length} rows`)
+  for (const org of orgs) {
+    const n = snap.resources.filter(r => r.org === org).length
+    if (snap.meta?.counts?.[org] !== n) error(snapFile, `meta.counts.${org} is ${snap.meta?.counts?.[org]} but there are ${n} rows`)
+  }
+  for (const [id, entry] of Object.entries(manifest)) {
+    if (!ids.has(id)) error(manFile, `photo entry ${id} has no matching publication in the snapshot`)
+    for (const rel of [entry?.thumb, entry?.full]) {
+      if (typeof rel !== 'string' || !rel.startsWith('assets/images/publications/') || rel.includes('..')) { error(manFile, `${id}: bad photo path ${JSON.stringify(rel)}`); continue }
+      if (!fs.existsSync(path.join(PUBLIC_DIR, rel))) error(manFile, `${id}: missing file public/${rel}`)
+    }
+  }
+}
+checkPublicationsSnapshot()
+
 // The Contribute button's link (abl-contribute.yaml → formUrl): empty, or a Google Forms link.
 function checkContributeForm() {
   const file = path.join('content', 'pages', 'abl-contribute.yaml')

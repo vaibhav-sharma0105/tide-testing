@@ -1,0 +1,181 @@
+name: Sync Publications
+
+# Publications sync (the "TIDE THRIvE Publications (Responses)" Sheet): copies publishable rows AND thumbnails into the repo
+# in ONE commit, then redeploys the site. Setup: docs/PUBLICATIONS-SETUP-GUIDE.md.
+# Keep this FILE NAME: the publications Apps Script calls it by name (Script Property GITHUB_WORKFLOW).
+#
+# Triggers:
+#   - workflow_dispatch: sent by the publications Apps Script after Sheet edits / form submissions, by
+#     its daily heartbeat, or by a person (Actions → Sync Publications → Run workflow).
+#   - schedule: every 6 hours at :27 (the Pramaan Library sync uses :47).
+# Until the secrets PUBLICATIONS_API_URL and PUBLICATIONS_SYNC_TOKEN exist, the run stops
+# early with a notice and no alert (the publications sync is not set up yet).
+# No pull_request trigger: this workflow uses secrets and must never run fork code.
+
+on:
+  workflow_dispatch:
+    inputs:
+      allow_large_change:
+        description: 'Publish even if the safety checks refuse (only after checking the Sheet)'
+        type: boolean
+        default: false
+  schedule:
+    - cron: '27 */6 * * *'
+
+permissions: {}
+
+# One group for this sync: a run is never cancelled mid-commit, and while one runs, the
+# newest request waits as the single pending run (it reads fresh data when it starts).
+# Keep it this workflow's own queue: a group shared with another workflow would let a queued run
+# of one silently replace the other's (GitHub keeps one pending run per group). The push step
+# rebases and retries, so running side by side with other workflows is safe.
+concurrency:
+  group: publications-sync
+  cancel-in-progress: false
+
+jobs:
+  # Before the publications sync is set up (secrets missing AND the page shows no resources) the sync job is
+  # skipped with a notice — no failure, no alert. If the page HAS been published before and a
+  # secret goes missing, the sync job runs anyway and fails loudly (alert issue), so a deleted
+  # secret can never stop updates silently.
+  check:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    outputs:
+      ok: ${{ steps.configured.outputs.ok }}
+    steps:
+      - name: Read the published snapshot
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          sparse-checkout: src/data/sheets/publications.json
+          sparse-checkout-cone-mode: false
+
+      - name: Check the publications sync is set up
+        id: configured
+        env:
+          HAS_URL: ${{ secrets.PUBLICATIONS_API_URL != '' }}
+          HAS_TOKEN: ${{ secrets.PUBLICATIONS_SYNC_TOKEN != '' }}
+        run: |
+          published=false
+          # "Published" = the page shows at least one resource (an empty sync doesn't count).
+          if node -e "process.exit(require('./src/data/sheets/publications.json').resources.length > 0 ? 0 : 1)" 2>/dev/null; then published=true; fi
+          if [ "$HAS_URL" = true ] && [ "$HAS_TOKEN" = true ]; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          elif [ "$published" = true ]; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+            echo "::error::A Publications secret is missing but the page was published before — the sync will fail and alert."
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Publications sync is not set up yet (secrets missing). See docs/PUBLICATIONS-SETUP-GUIDE.md"
+          fi
+
+  sync:
+    needs: check
+    if: needs.check.outputs.ok == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write   # commit data + photos
+      actions: write    # start the deploy workflow
+      issues: write     # alert / needs-attention issues
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ALERT_ASSIGNEE: ${{ vars.ALERT_ASSIGNEE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      # --ignore-scripts: no dependency install script runs while a write token is on the runner.
+      # sharp ships prebuilt binaries as optional packages, so it needs no install script.
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run sync
+        id: sync
+        run: npm run content:sync-publications
+        env:
+          PUBLICATIONS_API_URL: ${{ secrets.PUBLICATIONS_API_URL }}
+          PUBLICATIONS_SYNC_TOKEN: ${{ secrets.PUBLICATIONS_SYNC_TOKEN }}
+          ALLOW_LARGE_CHANGE: ${{ inputs.allow_large_change && 'true' || 'false' }}
+          SYNC_REPORT_PATH: ${{ runner.temp }}/publications-sync-report.md
+
+      # Only the bot-owned paths are committed. Retries if someone pushed meanwhile; the paths
+      # don't overlap with human edits, so the rebase is conflict-free.
+      - name: Commit and push
+        id: push
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/sheets/publications.json src/data/publications-photos.json public/assets/images/publications
+          if git diff --cached --quiet; then echo "pushed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          git commit -m "chore(publications-sync): update Publications data and thumbnails"
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then echo "pushed=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+            echo "Push rejected (attempt $attempt); rebasing on the latest main…"
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort; echo "Rebase conflict — a person edited a bot-owned file."; exit 1; }
+            sleep $((attempt * 3))
+          done
+          # The last rebase above still needs its push.
+          if git push origin HEAD:main; then echo "pushed=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          exit 1
+
+      # A push made with GITHUB_TOKEN starts no other workflow, so start the deploy explicitly.
+      - name: Deploy the update
+        if: steps.push.outputs.pushed == 'true'
+        run: gh workflow run deploy.yml --ref main
+
+      - name: Repository size check
+        if: always()
+        run: |
+          size_kb=$(git count-objects -v | awk '/size-pack/ {print $2}')
+          echo "Repository history size: $((size_kb / 1024)) MB (GitHub recommends < 1 GB; we act at 700 MB)" >> "$GITHUB_STEP_SUMMARY"
+          if [ "$size_kb" -gt $((700 * 1024)) ]; then
+            printf '\n- ⚠️ The repository history is %s MB (limit we act at: 700 MB). See "Separate assets repository" in docs/PRAMAAN-HARDENING-PLAN.md section 8.\n' "$((size_kb / 1024))" >> "${{ runner.temp }}/publications-sync-report.md"
+          fi
+
+      - name: Report rows that need attention
+        if: success() && steps.sync.outputs.problems != '0'
+        run: |
+          bash scripts/ci/alert-issue.sh update sheet-needs-attention "Publications Sheet: some rows need attention" "${{ runner.temp }}/publications-sync-report.md"
+
+      - name: Close the needs-attention issue
+        if: success() && steps.sync.outputs.problems == '0'
+        run: |
+          bash scripts/ci/alert-issue.sh close sheet-needs-attention "Publications Sheet: some rows need attention"
+
+      - name: Alert the owner
+        if: failure()
+        run: |
+          bash scripts/ci/alert-issue.sh open automation-alert "Publications sync failed — the publications pages are not updating" "${{ runner.temp }}/publications-sync-report.md"
+
+      - name: Close the alert
+        if: success()
+        run: |
+          bash scripts/ci/alert-issue.sh close automation-alert "Publications sync failed — the publications pages are not updating"
+
+      # GitHub disables scheduled workflows in a public repo after 60 days without activity. If the
+      # newest commit is 45+ days old, add an empty commit (starts no workflow, changes no file).
+      # The Apps Script daily heartbeat is a second, independent safety net.
+      - name: Keep the schedule alive
+        if: success() && github.event_name == 'schedule' && steps.push.outputs.pushed != 'true'
+        run: |
+          age_days=$(( ( $(date +%s) - $(git log -1 --format=%ct) ) / 86400 ))
+          if [ "$age_days" -ge 45 ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit --allow-empty -m "chore: keep scheduled workflows active (no commits for ${age_days} days)"
+            git push origin HEAD:main || echo "keep-alive push failed (will retry next run)"
+          fi

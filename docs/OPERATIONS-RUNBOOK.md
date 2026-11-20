@@ -7,6 +7,11 @@
 > Sheet: "Contributing to Pramaan; Educators' Resource Bank (Responses)". Its GitHub workflow is
 > **Sync Pramaan Library**. (The older Pramaan Sheet and its **Sync ABL Thumbnails** workflow were retired on
 > 2026-11-19 — see `docs/PRAMAAN-HARDENING-PLAN.md` §13.)
+>
+> The **Publications** pages (`/about/publications` for TIDE, `/thrive/publications` for THRIvE) come from a
+> second, separate Sheet: "TIDE THRIvE Publications (Responses)". Its GitHub workflow is **Sync Publications**.
+> Not set up yet (2026-11-20) — `docs/PUBLICATIONS-SETUP-GUIDE.md`. The steps below work the same for it: use
+> its workflow, its issue titles and its Sheet's Apps Script.
 
 ## How you'll find out something is wrong
 
@@ -15,7 +20,9 @@
 | GitHub email: issue **"Pramaan Library sync failed — the page is not updating"** (label **`automation-alert`**) assigned to you | The sync is **broken**. The site keeps showing the last good version. The issue closes itself after the next successful run. |
 | GitHub email: issue **"Website deploy failed"** (label `automation-alert`) | The website build failed; the site keeps the last good version. |
 | GitHub email: issue **"Pramaan Library Sheet: some rows need attention"** (label **`sheet-needs-attention`**) | The site updated, but some **Sheet rows** have problems (missing name, duplicate ID, bad link, unreadable photo). The issue lists them and closes itself when they're fixed. |
-| Email **"[Pramaan Library website] …"** from Google | The Sheet couldn't reach GitHub, or the GitHub token expires soon. |
+| GitHub email: issue **"Publications sync failed — the publications pages are not updating"** (`automation-alert`) | The Publications sync is broken; both publications pages keep the last good version. Closes itself after the next good run. |
+| GitHub email: issue **"Publications Sheet: some rows need attention"** (`sheet-needs-attention`) | The publications pages updated, but some rows have problems (no title, no TIDE/THRIvE answer, bad link, unreadable date or thumbnail, the same title twice on one page — that one is still published). |
+| Email **"[Pramaan Library website] …"** or **"[Publications website] …"** from Google | That Sheet couldn't reach GitHub, or its GitHub token expires soon. |
 | Email from Google "Apps Script failure" | A script trigger crashed (set to "notify immediately" during setup). |
 | The Resource Centre's "Last updated …" date is old | No content change has been published since then — fine if nobody edited the Sheet. |
 
@@ -31,8 +38,10 @@
 | Run summary says **"N photo(s) still to download — the next run continues"** | Normal after many new photos: each run downloads at most 100 (about 20 minutes). Wait for the next run, or start one: Actions → **Sync Pramaan Library** → Run workflow. |
 | A video shows "Sorry, the file you have requested does not exist" or "You need access" | The Drive video isn't shared publicly. Open it as its owner → **Share → General access → Anyone with the link (Viewer)**. No sync needed. |
 | Contribute button opens the wrong form, or says "Form link coming soon" | Change `formUrl`: `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md`. |
+| An unwanted publication appeared (every Form answer goes live) | In the Publications Sheet add a column headed `Hide from website` (once) and type `Yes` in that row — it disappears at the next update. Or delete the row. |
+| A publication is missing or on the wrong page | Its "TIDE / THRIvE" answer decides the page; it needs a title for that choice. The "Publications Sheet: some rows need attention" issue gives the reason. More: `docs/PUBLICATIONS-SETUP-GUIDE.md` → Troubleshooting. |
 | Banner in GitHub Actions: "This scheduled workflow is disabled" | Click **Enable workflow**, then **Run workflow**. (GitHub disables schedules after 60 days without activity; the workflow's keep-alive step and the Apps Script heartbeat normally prevent this.) |
-| Want to republish now | Actions → **Sync Pramaan Library** (data/photos) or **Deploy to GitHub Pages** (site code) → **Run workflow**. **Never use "Re-run" on an old run** — use Run workflow. |
+| Want to republish now | Actions → **Sync Pramaan Library** or **Sync Publications** (data/photos) or **Deploy to GitHub Pages** (site code) → **Run workflow**. **Never use "Re-run" on an old run** — use Run workflow. |
 | More library problems | Full table: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md` → "How you hear about problems" and "Troubleshooting". |
 | Something looks badly wrong after a change and you need the old version back | Ask the developer to `git revert` the change; every published version is in the repository history. |
 
@@ -40,12 +49,12 @@
 
 **Monthly (5 minutes)**
 - [ ] No open issues labelled `automation-alert` on GitHub.
-- [ ] GitHub → Actions → **Sync Pramaan Library** shows green runs in the last day.
+- [ ] GitHub → Actions → **Sync Pramaan Library** (and, once set up, **Sync Publications**) shows green runs in the last day.
 - [ ] The Resource Centre's "Last updated" date matches the last time the Sheet was edited.
 
 **Yearly (30 minutes)**
-- [ ] Renew the GitHub token **before** its expiry date (`MAINTENANCE-GITHUB-PAT-REFRESH.md`).
-- [ ] Sign in to the Google account that owns the Sheet (Google may delete accounts unused for 2 years).
+- [ ] Renew each GitHub token **before** its expiry date (`pramaan-library-sheet`, `publications-sheet`; `MAINTENANCE-GITHUB-PAT-REFRESH.md`).
+- [ ] Sign in to the Google account(s) that own the Sheets (Google may delete accounts unused for 2 years).
 - [ ] Walk `docs/OPERATIONS-INVENTORY.md`; update anything that changed and the "Last verified" dates.
 - [ ] Re-check `docs/PLATFORM-LIMITS.md` against the official pages (limits can change).
 - [ ] Check the "Dates to put in a calendar" table in the inventory (Node.js / runner retirements).
@@ -54,6 +63,6 @@
 **At a handover (owner changes)**
 - [ ] Follow `docs/MIGRATION-OVERVIEW.md` (Google side first, then GitHub).
 - [ ] Update GitHub variable `ALERT_ASSIGNEE` and Script Property `ALERT_EMAIL` to the new owner.
-- [ ] New owner creates their **own** GitHub token and puts it in `GITHUB_PAT` in the Resource Centre Sheet's script.
-- [ ] New owner changes the `cron:` schedule in `.github/workflows/sync-pramaan-library.yml` once — e.g. the minute `47` → `53` — so GitHub's schedule emails go to them (GitHub notifies whoever last changed the cron syntax; a comment edit may not count).
+- [ ] New owner creates their **own** GitHub tokens (one per Sheet) and puts each in `GITHUB_PAT` in that Sheet's script (Resource Centre, Publications).
+- [ ] New owner changes the `cron:` schedule once in `.github/workflows/sync-pramaan-library.yml` (e.g. the minute `47` → `53`) and in `.github/workflows/sync-publications.yml` (e.g. `27` → `33`) — so GitHub's schedule emails go to them (GitHub notifies whoever last changed the cron syntax; a comment edit may not count).
 - [ ] Walk `docs/OPERATIONS-INVENTORY.md` together and fill every ⚠️ row.

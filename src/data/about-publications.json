@@ -1,86 +1,69 @@
 {
   "meta": {
-    "breadcrumbName": "Publications",
+    "breadcrumbName": "TIDE Publications",
     "badge": "About Us · Publications",
-    "title": "Our Publications",
-    "tagline": "Annual reports, public event recordings, and research from a decade of work.",
+    "title": "TIDE Publications",
+    "subtitle": "Annual reports, project reports and talks — an open record of TIDE Foundation's work in education.",
     "seoTitle": "Publications — TIDE Foundation",
-    "seoDescription": "Access TIDE Foundation's annual reports, public event recordings, and research publications."
+    "seoDescription": "Read TIDE Foundation's annual reports, project reports, presentations and public talks.",
+    "emptyTitle": "No publications published yet",
+    "emptyHint": "Publications appear here as soon as they are added."
   },
-  "tabs": {
-    "annualReports": "Annual Reports",
-    "events": "Public Events",
-    "research": "Research & Writing"
+  "stats": {
+    "publicationSingular": "{n} publication",
+    "publicationPlural": "{n} publications",
+    "typeSingular": "{n} type",
+    "typePlural": "{n} types",
+    "since": "since {year}"
   },
-  "labels": {
-    "download": "Download",
-    "view": "View",
-    "comingSoon": "Coming soon"
+  "featuredType": "Annual report",
+  "featured": {
+    "eyebrow": "Latest annual report",
+    "read": "Read report"
   },
-  "annualReports": {
-    "description": "Our annual reports document TIDE's journey, programs, and impact each year.",
-    "placeholder": "Annual reports will be listed here. Coming soon.",
-    "items": [
-      {
-        "year": "2023–24",
-        "title": "TIDE Foundation Annual Report 2023–24",
-        "link": ""
-      },
-      {
-        "year": "2022–23",
-        "title": "TIDE Foundation Annual Report 2022–23",
-        "link": ""
-      },
-      {
-        "year": "2021–22",
-        "title": "TIDE Foundation Annual Report 2021–22",
-        "link": ""
-      }
-    ]
+  "shelf": {
+    "heading": "Annual reports",
+    "showAllTemplate": "Show all {n} annual reports",
+    "showFewer": "Show fewer"
   },
-  "events": {
-    "description": "Glimpses from our public events — Model City Councils, Miracle of Ideas, and more.",
-    "items": [
-      {
-        "title": "MOI 2024 — Talk 1",
-        "type": "video",
-        "link": ""
-      },
-      {
-        "title": "MOI 2024 — Talk 2",
-        "type": "video",
-        "link": ""
-      },
-      {
-        "title": "MCC 2024",
-        "type": "photo",
-        "link": ""
-      },
-      {
-        "title": "MOI 2023 — Happiness in Education Exhibition Walkthrough",
-        "type": "video",
-        "link": ""
-      },
-      {
-        "title": "Parivartan Mela",
-        "type": "photo",
-        "link": ""
-      },
-      {
-        "title": "GGIS MCC",
-        "type": "photo",
-        "link": ""
-      },
-      {
-        "title": "AGS MCC",
-        "type": "photo",
-        "link": ""
-      }
-    ]
+  "others": {
+    "heading": "Reports, talks & more",
+    "filterLabel": "Show one type of material",
+    "allTypes": "All",
+    "open": "Open"
   },
-  "research": {
-    "description": "Papers, articles, and writings from TIDE's research and practice.",
-    "placeholder": "Research publications will be listed here. Coming soon.",
-    "items": []
+  "search": {
+    "label": "Search TIDE publications",
+    "placeholder": "Titles, descriptions, types…",
+    "clearLabel": "Clear search",
+    "shortcutKey": "/",
+    "resultsHeading": "Search results",
+    "countTemplate": "{total} {publications} found",
+    "publicationSingular": "publication",
+    "publicationPlural": "publications",
+    "noResults": "No publications match your search",
+    "noResultsHint": "Try a different word, or clear the search."
+  },
+  "newBadge": "New",
+  "source": {
+    "label": "Source",
+    "doi": "DOI",
+    "driveFile": "Google Drive",
+    "driveFolder": "Google Drive folder"
+  },
+  "pagination": {
+    "label": "Pages",
+    "previous": "Previous",
+    "next": "Next",
+    "rangeTemplate": "Showing {from}–{to} of {total}",
+    "pageLabelTemplate": "Page {n}"
+  },
+  "a11y": {
+    "newTab": "(opens in a new tab)",
+    "openLabelTemplate": "{action}: {title} (opens in a new tab)",
+    "dateLabel": "Date",
+    "typeLabel": "Type of material",
+    "newLabelTemplate": "dated within the last {days} days",
+    "periodLabel": "Period"
   }
 }

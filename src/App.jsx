@@ -25,7 +25,8 @@ const WhyTide             = lazy(() => import('./pages/about/WhyTide'))
 const OurTeam             = lazy(() => import('./pages/about/OurTeam'))
 const OurPartners         = lazy(() => import('./pages/about/OurPartners'))
 const PastPrograms        = lazy(() => import('./pages/about/PastPrograms'))
-const PublicationsCombined = lazy(() => import('./pages/about/PublicationsCombined'))
+const TidePublications    = lazy(() => import('./pages/publications/TidePublications'))
+const ThrivePublications  = lazy(() => import('./pages/publications/ThrivePublications'))
 const EducationForHarmony = lazy(() => import('./pages/EducationForHarmony'))
 const Volunteer           = lazy(() => import('./pages/get-involved/Volunteer'))
 const Donate              = lazy(() => import('./pages/get-involved/Donate'))
@@ -63,7 +64,8 @@ export default function App() {
               <Route path="/about/past-programs" element={<PastPrograms />} />
               <Route path="/about/our-team" element={<OurTeam />} />
               <Route path="/about/our-partners" element={<OurPartners />} />
-              <Route path="/about/publications" element={<PublicationsCombined />} />
+              {/* TIDE and THRIvE publications: one Sheet snapshot, one shared listing (components/publications) */}
+              <Route path="/about/publications" element={<TidePublications />} />
 
               {/* Education for Harmony */}
               <Route path="/education-for-harmony" element={<EducationForHarmony />} />
@@ -86,6 +88,7 @@ export default function App() {
 
               {/* Other */}
               <Route path="/thrive" element={<THRIvE />} />
+              <Route path="/thrive/publications" element={<ThrivePublications />} />
               <Route path="/contact" element={<Contact />} />
 
               {/* ── Functional / system pages ────────────────────────────── */}

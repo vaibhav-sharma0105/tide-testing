@@ -2,12 +2,9 @@
 // services (it can't run on Google from CI). Checks the rules that protect contributors: consent
 // filter, personal columns never output, no public listing, and the Sheet → resource mapping.
 import { describe, it, expect, beforeEach } from 'vitest'
-import fs from 'node:fs'
-import path from 'node:path'
-import vm from 'node:vm'
-import { createHash } from 'node:crypto'
+import { readCodeGs, makeAppsScriptEnv, exportWith } from './helpers/fakeAppsScript.js'
 
-const CODE = fs.readFileSync(path.resolve('apps-script/pramaan-library/Code.gs'), 'utf8')
+const CODE = readCodeGs('apps-script/pramaan-library/Code.gs')
 const T0 = Date.parse('2026-11-16T10:00:00.000Z')
 const MIN = 60_000
 
@@ -36,67 +33,14 @@ function row(o) {
 }
 
 function makeEnv(rows) {
-  const clock = { t: T0 }
-  const RealDate = Date
-  class FakeDate extends RealDate {
-    constructor(...a) { if (a.length === 0) super(clock.t); else super(...a) }
-    static now() { return clock.t }
-  }
-  const props = new Map()
-  const cache = new Map()
-  const fetches = []
-  const triggers = []
-  const sheets = {
-    'Form responses 1': [HEADER, ...rows],
-    'Next steps required in cleaning the ABL RC': [['Next steps required'], ['Chapter alignment']],
-  }
-  const sheetObj = name => ({ getName: () => name, getDataRange: () => ({ getValues: () => sheets[name] }) })
-  const spreadsheet = { getName: () => 'Responses', getSheets: () => Object.keys(sheets).map(sheetObj) }
-  const ctx = {
-    Date: FakeDate, JSON, Math, String, Object, Array, parseInt, isNaN, encodeURIComponent,
-    PropertiesService: { getScriptProperties: () => ({
-      getProperty: k => (props.has(k) ? props.get(k) : null),
-      setProperty: (k, v) => { props.set(k, String(v)) },
-      deleteProperty: k => { props.delete(k) },
-    }) },
-    LockService: { getScriptLock: () => ({ tryLock: () => true, releaseLock: () => {} }) },
-    CacheService: { getScriptCache: () => ({ get: k => cache.get(k) ?? null, put: (k, v) => { cache.set(k, v) } }) },
-    SpreadsheetApp: { getActiveSpreadsheet: () => spreadsheet, openById: () => spreadsheet },
-    DriveApp: { getFileById: id => {
-      if (id === 'missingFile0001') throw new Error('No item with the given ID could be found')
-      return { getLastUpdated: () => new RealDate('2026-01-01T00:00:00Z') }
-    } },
-    Utilities: {
-      DigestAlgorithm: { SHA_256: 'sha256' },
-      computeDigest: (_alg, text) => [...createHash('sha256').update(text).digest()].map(b => (b > 127 ? b - 256 : b)),
+  return makeAppsScriptEnv({
+    code: CODE, now: T0, spreadsheetName: 'Responses',
+    sheets: {
+      'Form responses 1': [HEADER, ...rows],
+      'Next steps required in cleaning the ABL RC': [['Next steps required'], ['Chapter alignment']],
     },
-    UrlFetchApp: { fetch: (url, opts) => { fetches.push({ url, opts }); return { getResponseCode: () => 204, getHeaders: () => ({}), getContentText: () => '' } } },
-    MailApp: { sendEmail: () => {} },
-    Session: { getEffectiveUser: () => ({ getEmail: () => 'owner@example.com' }) },
-    ContentService: { MimeType: { JSON: 'json' }, createTextOutput: s => ({ setMimeType: () => JSON.parse(s) }) },
-    Logger: { log: () => {} },
-    ScriptApp: {
-      getProjectTriggers: () => triggers.slice(),
-      deleteTrigger: t => triggers.splice(triggers.indexOf(t), 1),
-      newTrigger: handler => {
-        let kind = ''
-        const b = { forSpreadsheet: () => b, onChange: () => { kind = 'change'; return b }, onFormSubmit: () => { kind = 'form'; return b },
-          timeBased: () => { kind = 'time'; return b }, everyMinutes: () => b,
-          create: () => { triggers.push({ getHandlerFunction: () => handler, getEventType: () => kind }) } }
-        return b
-      },
-      getOAuthToken: () => 'oauth',
-    },
-  }
-  vm.createContext(ctx)
-  vm.runInContext(CODE, ctx)
-  props.set('SYNC_TOKEN', 'secret-token')
-  props.set('GITHUB_PAT', 'pat')
-  props.set('GITHUB_REPO', 'owner/repo')
-  return { ctx, clock, props, cache, fetches, triggers, sheets }
+  })
 }
-
-const exportWith = env => env.ctx.doGet({ parameter: { action: 'export', token: 'secret-token' } })
 
 describe('Pramaan Library Apps Script — privacy and consent', () => {
   it('has no public listing: every action needs the token', () => {
