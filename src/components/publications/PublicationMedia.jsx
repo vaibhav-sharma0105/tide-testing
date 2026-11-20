@@ -53,7 +53,9 @@ export default function PublicationMedia({ thumb, type, shape = 'landscape', src
       {showImage ? (
         <>
           <img
-            src={thumb.src}
+            src={url}
+            srcSet={srcSet}
+            sizes={srcSet ? sizes : undefined}
             alt=""
             loading={priority ? 'eager' : 'lazy'}
             decoding="async"
@@ -92,7 +94,7 @@ export default function PublicationMedia({ thumb, type, shape = 'landscape', src
       <span className="group/badge absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow-[0_4px_12px_-4px_rgba(13,31,60,0.35)] ring-1 ring-black/5 backdrop-blur-sm">
         <TypeIcon type={type} className={`h-[18px] w-[18px] ${style.icon}`} />
         {type && (
-          <span className="pointer-events-none absolute right-full top-1/2 mr-2 w-max max-w-[13rem] -translate-y-1/2 translate-x-1 rounded-lg bg-tide-text/90 px-2.5 py-1.5 font-body text-xs font-medium leading-snug text-white opacity-0 shadow-lg transition duration-200 ease-out group-hover/badge:translate-x-0 group-hover/badge:opacity-100 motion-reduce:transition-none before:content-[attr(data-tip)]" data-tip={type} />
+          <span className="invisible absolute right-full top-1/2 mr-2 w-max max-w-[13rem] -translate-y-1/2 translate-x-1 rounded-lg bg-tide-text/90 px-2.5 py-1.5 font-body text-xs font-medium leading-snug text-white opacity-0 shadow-lg transition-[opacity,transform,visibility] duration-200 ease-out group-hover/badge:visible group-hover/badge:translate-x-0 group-hover/badge:opacity-100 motion-reduce:transition-none before:content-[attr(data-tip)]" data-tip={type} />
         )}
       </span>
     </span>

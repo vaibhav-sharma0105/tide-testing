@@ -14,9 +14,10 @@ const SEARCH_DEBOUNCE_MS = 150
  * `set` (patch it and go back to page 1), `clearAll`, the debounced search box state + its "/"
  * shortcut, the faceted filter options, the filtered rows, search terms, the active-filter chips,
  * and `resultsRef`, which receives focus after a page change (router state focusResults).
- *   rows: the page's rows · shortcutKey: e.g. "/" · undatedHeading: label of the no-date year value
+ *   rows: the page's rows · shortcutKey: e.g. "/" · undatedHeading: label of the no-date year value ·
+ *   searchChipTemplate: the search chip's text, e.g. "“{q}”" (YAML toolbar.searchChipTemplate)
  */
-export function usePublicationQuery({ rows, shortcutKey, undatedHeading }) {
+export function usePublicationQuery({ rows, shortcutKey, undatedHeading, searchChipTemplate = '{q}' }) {
   const location = useLocation()
   const navigate = useNavigate()
   const params = useMemo(() => parsePublicationParams(location.search), [location.search])
@@ -51,7 +52,7 @@ export function usePublicationQuery({ rows, shortcutKey, undatedHeading }) {
 
   const labelOf = (list, value) => list.find(o => o.value === value)?.label ?? value
   const chips = [
-    params.search && { key: 'search', label: `“${params.search}”`, onRemove: () => set({ search: '' }) },
+    params.search && { key: 'search', label: searchChipTemplate.replace('{q}', () => params.search), onRemove: () => set({ search: '' }) },
     params.type && { key: 'type', label: labelOf(options.types, params.type), onRemove: () => set({ type: '' }) },
     params.field && { key: 'field', label: labelOf(options.fields, params.field), onRemove: () => set({ field: '' }) },
     params.year && { key: 'year', label: labelOf(options.years, params.year), onRemove: () => set({ year: '' }) },
@@ -69,13 +70,17 @@ export function usePublicationQuery({ rows, shortcutKey, undatedHeading }) {
 export function useDebouncedSearch(urlValue, commit, delay = SEARCH_DEBOUNCE_MS) {
   const [input, setInput] = useState(urlValue)
   const [seenUrl, setSeenUrl] = useState(urlValue)
+  // The value this box last sent to the URL. When the URL then catches up to it, the box is NOT
+  // overwritten: the router applies URL changes in a transition, so the user may already have
+  // typed more ("ab" committed, "abc" typed) — copying "ab" back would drop the "c".
+  const [lastCommitted, setLastCommitted] = useState(urlValue)
   if (urlValue !== seenUrl) {
     setSeenUrl(urlValue)
-    setInput(urlValue)
+    if (urlValue !== lastCommitted) setInput(urlValue)
   }
   useEffect(() => {
     if (input === urlValue) return undefined
-    const id = setTimeout(() => commit(input), delay)
+    const id = setTimeout(() => { setLastCommitted(input); commit(input) }, delay)
     return () => clearTimeout(id)
   }, [input, urlValue, commit, delay])
   return [input, setInput]

@@ -6,11 +6,15 @@ import {
   applyPublicationFilters, facetPublicationOptions, formatPublicationDate, safeLink,
   groupByYear, publicationStats, latestOfType, yearOf, comparePublications, reportPeriod, formatPeriod,
   paginate, pageWindow, parsePublicationParams, publicationParamsToSearch, yearCounts, sourceOf, sourceName,
-  countOfTypes, isNew, typeIconKey, frameForSize, highlightParts, searchTerms, publicationsJsonLd,
+  countOfTypes, isNew, typeIconKey, highlightParts, searchTerms, publicationsJsonLd,
 } from '../../utils/publicationFilters'
 import {
   THRIVE_PAGE_SIZE, TIDE_PAGE_SIZE, NEW_BADGE_DAYS,
 } from '../../config/publications'
+
+// Each page test resets modules and imports both pages fresh (to mock the snapshot); a cold import
+// can pass Vitest's 5s default on a busy machine (seen 2026-11-21), so this file allows 15s.
+vi.setConfig({ testTimeout: 15000 })
 
 // Test rows only (made up, not real Sheet data). The real snapshot is never written by tests.
 const TEACHER_FIELD = 'Teacher agency, wellbeing, motivation, and professional development'
@@ -458,6 +462,10 @@ describe('publication utilities', () => {
     expect(p('Annual Report 1999-2001')).toBe('1999–2001')
     expect(p('Annual report', '2023-09-29')).toBe('2023')
     expect(p('Report 2025-2019')).toBe('2020')
+    // Page and day ranges are not years; a 4-digit start must be 19xx/20xx.
+    expect(p('Annual report 2023 (pages 10-15)', '2023-09-29')).toBe('2023')
+    expect(p('Workshop held 10-12 March', '2024-03-12')).toBe('2024')
+    expect(p('Report 1850-1852')).toBe('2020')
     expect(reportPeriod({ title: 'No period', date: null })).toBeNull()
     expect(formatPeriod(null)).toBeNull()
   })
@@ -556,7 +564,7 @@ describe('publication utilities', () => {
     expect(sourceName('osf.io', undefined)).toBe('osf.io')
   })
 
-  it('social-proof count, New window, icon families, frames', () => {
+  it('social-proof count, New window, icon families', () => {
     const list = [{ type: 'Published by others (TIDE acknowledged)' }, { type: ' mass media  coverage' }, { type: 'Book' }]
     expect(countOfTypes(list, ['Published by others (TIDE acknowledged)', 'Mass media coverage'])).toBe(2)
     expect(countOfTypes(list, [])).toBe(0)
@@ -569,10 +577,6 @@ describe('publication utilities', () => {
     expect(['Journal article', 'Book', 'Textbook chapter', 'Talk / Conference slides', 'Poster presentation', 'Series of public talks',
       'Blog', 'Teacher magazine', 'Published by others (TIDE acknowledged)', 'Mass media coverage', 'Annual report', 'Something new'].map(t => typeIconKey(t)))
       .toEqual(['article', 'book', 'book', 'presentation', 'presentation', 'presentation', 'newspaper', 'newspaper', 'quote', 'megaphone', 'report', 'file'])
-    expect(frameForSize(480, 210)).toBe('landscape')
-    expect(frameForSize(321, 527)).toBe('portrait')
-    expect(frameForSize(480, 400)).toBe('portrait')
-    expect(frameForSize(undefined, undefined)).toBe('portrait')
   })
 
   it('search terms and highlight parts', () => {
@@ -601,5 +605,77 @@ describe('publication utilities', () => {
     expect(formatPublicationDate(null)).toBeNull()
     expect(safeLink('javascript:alert(1)')).toBeNull()
     expect(safeLink('https://example.org')).toBe('https://example.org')
+  })
+})
+
+describe('publication controls and media (components)', () => {
+  it('debounced search keeps characters typed while the URL catches up (no race)', async () => {
+    vi.useFakeTimers()
+    const { renderHook } = await import('@testing-library/react')
+    const { useDebouncedSearch } = await import('../../hooks/usePublicationControls')
+    const commit = vi.fn()
+    const { result, rerender } = renderHook(({ url }) => useDebouncedSearch(url, commit, 150), { initialProps: { url: '' } })
+    act(() => result.current[1]('ab'))
+    act(() => { vi.advanceTimersByTime(150) })
+    expect(commit).toHaveBeenLastCalledWith('ab')
+    // The user types "c" before the URL shows "ab"; when it does, "abc" must survive.
+    act(() => result.current[1]('abc'))
+    rerender({ url: 'ab' })
+    expect(result.current[0]).toBe('abc')
+    act(() => { vi.advanceTimersByTime(150) })
+    expect(commit).toHaveBeenLastCalledWith('abc')
+    // A change from elsewhere (Clear all, a chip, Back) still updates the box.
+    rerender({ url: '' })
+    expect(result.current[0]).toBe('')
+  })
+
+  it('FilterMenu: keyboard opens it, arrows skip disabled options, Home/End, Escape returns focus, focus leaving closes it', async () => {
+    const { FilterMenu } = await import('../../components/publications/PublicationControls')
+    const onChange = vi.fn()
+    render(
+      <>
+        <FilterMenu label="Type" value="" onChange={onChange} allLabel="All" total={3}
+          options={[{ value: 'a', label: 'A', count: 2 }, { value: 'b', label: 'B', count: 0 }, { value: 'c', label: 'C', count: 1 }]} />
+        <button type="button">Elsewhere</button>
+      </>,
+    )
+    const button = screen.getByRole('button', { name: /^Type/ })
+    fireEvent.keyDown(button, { key: 'ArrowDown' })
+    const list = screen.getByRole('listbox', { name: 'Type' })
+    expect(document.activeElement).toBe(list)
+    const active = () => document.getElementById(list.getAttribute('aria-activedescendant')).textContent
+    fireEvent.keyDown(list, { key: 'ArrowDown' })
+    expect(active()).toMatch(/^A/)
+    fireEvent.keyDown(list, { key: 'ArrowDown' }) // B has no matches: skipped
+    expect(active()).toMatch(/^C/)
+    fireEvent.keyDown(list, { key: 'Home' })
+    expect(active()).toMatch(/^All/)
+    fireEvent.keyDown(list, { key: 'End' })
+    expect(active()).toMatch(/^C/)
+    fireEvent.keyDown(list, { key: 'Enter' })
+    expect(onChange).toHaveBeenCalledWith('c')
+    expect(document.activeElement).toBe(button)
+    fireEvent.click(button)
+    fireEvent.keyDown(screen.getByRole('listbox'), { key: 'Escape' })
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    expect(document.activeElement).toBe(button)
+    fireEvent.click(button)
+    fireEvent.blur(screen.getByRole('listbox'), { relatedTarget: screen.getByRole('button', { name: 'Elsewhere' }) })
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+  })
+
+  it('PublicationMedia: full-size srcset only when both files have the same shape; a failed image falls back', async () => {
+    const { default: PublicationMedia } = await import('../../components/publications/PublicationMedia')
+    const same = { src: 't.webp', width: 480, height: 360, full: 'f.webp', fullWidth: 1200, fullHeight: 900 }
+    const cropped = { ...same, fullHeight: 1600 }
+    const { container, rerender } = render(<PublicationMedia thumb={same} type="Book" sizes="22rem" />)
+    const front = () => container.querySelector('img[width]')
+    expect(front().getAttribute('srcset')).toBe('t.webp 480w, f.webp 1200w')
+    rerender(<PublicationMedia thumb={cropped} type="Book" sizes="22rem" />)
+    expect(front().getAttribute('srcset')).toBeNull()
+    rerender(<PublicationMedia thumb={same} type="Book" standin={<span data-testid="standin" />} />)
+    fireEvent.error(front())
+    expect(screen.getByTestId('standin')).toBeInTheDocument()
+    expect(container.querySelector('img')).toBeNull()
   })
 })

@@ -15,8 +15,8 @@ import site from '../../data/site.json'
 
 // /thrive/publications — the THRIvE Research Centre's publications (Sheet rows answered
 // "THRIvE"), laid out as a research archive (see components/publications/ResearchArchive).
-// The banner's "publications per year" chart filters the archive by year (?year=), then the
-// archive scrolls to and focuses its results line.
+// The banner's "publications per year" chart (off: config HERO_CHART.THRIvE) would filter the
+// archive by year (?year=) and move focus to its results line.
 export default function ThrivePublications() {
   const rows = useMemo(() => rowsForOrg(snapshot.resources, 'THRIvE'), [])
   const ordered = useMemo(() => applyPublicationFilters(rows, {}), [rows])

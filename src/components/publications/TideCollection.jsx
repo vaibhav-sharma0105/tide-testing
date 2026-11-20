@@ -29,7 +29,7 @@ import { normKey } from '../../utils/listingFilters'
 // Nothing here names a type: every heading, filter and count comes from the rows + YAML templates.
 // No "Source" line on this page (owner decision 2026-11-20; every TIDE link was a Google Drive link).
 // search / type / year / dir / page live in the URL (unknown values show as removable chips; the
-// page is clamped). Rows from the snapshot; labels from about-publications.yaml (data).
+// page is clamped). Rows from the snapshot; labels from tide-publications.yaml (data).
 
 const openLabel = (data, action, title) =>
   data.a11y.openLabelTemplate.replace('{action}', () => action).replace('{title}', () => title ?? '')
@@ -199,7 +199,7 @@ function Library({ q, rows, data }) {
 
 export default function TideCollection({ rows, data }) {
   const featured = useMemo(() => latestOfType(rows, data.featuredType), [rows, data.featuredType])
-  const q = usePublicationQuery({ rows, shortcutKey: data.toolbar.searchShortcutKey, undatedHeading: data.results.undatedHeading })
+  const q = usePublicationQuery({ rows, shortcutKey: data.toolbar.searchShortcutKey, undatedHeading: data.results.undatedHeading, searchChipTemplate: data.toolbar.searchChipTemplate })
   const featuredKey = normKey(featured?.type)
   const sameType = featured ? rows.filter(r => normKey(r.type) === featuredKey).length : 0
   // "See all editions": the library shows only that type (other filters cleared), focus moves there.

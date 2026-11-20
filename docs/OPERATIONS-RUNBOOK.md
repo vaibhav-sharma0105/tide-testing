@@ -10,7 +10,7 @@
 >
 > The **Publications** pages (`/tide/publications` for TIDE, `/thrive/publications` for THRIvE) come from a
 > second, separate Sheet: "TIDE THRIvE Publications (Responses)". Its GitHub workflow is **Sync Publications**.
-> Not set up yet (2026-11-20) — `docs/PUBLICATIONS-SETUP-GUIDE.md`. The steps below work the same for it: use
+> Live since 2026-11-20 (setup: `docs/PUBLICATIONS-SETUP-GUIDE.md`). The steps below work the same for it: use
 > its workflow, its issue titles and its Sheet's Apps Script.
 
 ## How you'll find out something is wrong
@@ -49,7 +49,7 @@
 
 **Monthly (5 minutes)**
 - [ ] No open issues labelled `automation-alert` on GitHub.
-- [ ] GitHub → Actions → **Sync Pramaan Library** (and, once set up, **Sync Publications**) shows green runs in the last day.
+- [ ] GitHub → Actions → **Sync Pramaan Library** and **Sync Publications** show green runs in the last day.
 - [ ] The Resource Centre's "Last updated" date matches the last time the Sheet was edited.
 
 **Yearly (30 minutes)**

@@ -12,7 +12,7 @@
 
 Before writing steps a non-technical reader will follow literally, this was checked against GitHub's own documentation rather than guessed:
 
-- ✅ **Secrets survive.** All repository secrets (`PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`, and once set up `PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN`) remain attached to the repo after transfer — you do not need to re-enter them. ([Source](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository))
+- ✅ **Secrets survive.** All repository secrets (`PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`, `PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN`) remain attached to the repo after transfer — you do not need to re-enter them. ([Source](https://docs.github.com/en/repositories/creating-and-managing-repositories/transferring-a-repository))
 - ✅ **Workflow files survive.** Everything in `.github/workflows/` moves with the repo's content, untouched.
 - ✅ **The original owner is automatically added as a collaborator.** For a transfer between two personal GitHub accounts (not organizations), GitHub automatically adds the previous owner and existing collaborators to the new repository. The developer does not get locked out.
 - ⚠️ **GitHub Pages settings: verify, don't assume.** These should carry over with the repo, but confirm in Step 4 rather than assuming.
@@ -57,7 +57,7 @@ Before writing steps a non-technical reader will follow literally, this was chec
 
 ## Step 4 — Verify Settings Survived
 
-1. **Settings → Secrets and variables → Actions** — confirm the secrets listed in `docs/OPERATIONS-INVENTORY.md` are still there, and on the **Variables** tab that `ALERT_ASSIGNEE` exists. (The site needs `PRAMAAN_LIBRARY_API_URL` and `PRAMAAN_LIBRARY_SYNC_TOKEN`, plus `PUBLICATIONS_API_URL` and `PUBLICATIONS_SYNC_TOKEN` once the Publications Sheet is set up; any `VITE_ABL_*` / `ABL_SYNC_TOKEN` secrets are left over from the retired setup and unused — see the inventory's "Retired" table.) Confirm the secrets are still listed (you won't be able to see their values, just confirm they exist with a prior "Updated" date — that's normal and expected, secrets are never shown again after creation).
+1. **Settings → Secrets and variables → Actions** — confirm the secrets listed in `docs/OPERATIONS-INVENTORY.md` are still there, and on the **Variables** tab that `ALERT_ASSIGNEE` exists. (The site needs `PRAMAAN_LIBRARY_API_URL` and `PRAMAAN_LIBRARY_SYNC_TOKEN`, plus `PUBLICATIONS_API_URL` and `PUBLICATIONS_SYNC_TOKEN`; any `VITE_ABL_*` / `ABL_SYNC_TOKEN` secrets are left over from the retired setup and unused — see the inventory's "Retired" table.) Confirm the secrets are still listed (you won't be able to see their values, just confirm they exist with a prior "Updated" date — that's normal and expected, secrets are never shown again after creation).
 2. **Settings → Pages** — confirm it's still configured to deploy from GitHub Actions (not "branch"), matching how it was set up before.
 3. **Actions** tab — confirm the workflows (`Deploy to GitHub Pages`, `Sync Pramaan Library`) are listed.
 

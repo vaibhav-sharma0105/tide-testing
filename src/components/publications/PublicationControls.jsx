@@ -132,7 +132,13 @@ export function FilterMenu({ label, value, onChange, allLabel, total, options, a
   }
 
   return (
-    <div ref={rootRef} className={`relative min-w-0 ${className}`}>
+    <div
+      ref={rootRef}
+      // Close when focus leaves the menu by any route (Tab, the "/" search shortcut, a script…),
+      // not only by Tab or a click outside.
+      onBlur={(e) => { if (open && !rootRef.current?.contains(e.relatedTarget)) setOpen(false) }}
+      className={`relative min-w-0 ${className}`}
+    >
       <span id={`${id}-label`} className={FIELD_LABEL}>{label}</span>
       <button
         ref={buttonRef}
@@ -169,7 +175,7 @@ export function FilterMenu({ label, value, onChange, allLabel, total, options, a
               aria-labelledby={`${id}-label`}
               aria-activedescendant={`${id}-opt-${active}`}
               onKeyDown={onListKeyDown}
-              className="max-h-[min(24rem,60vh)] overflow-y-auto overscroll-contain p-1.5 outline-none"
+              className="max-h-[min(32rem,70vh)] overflow-y-auto overscroll-contain p-1.5 outline-none"
             >
               {option(rows[0], 0)}
               <li role="presentation" aria-hidden="true" className="mx-3 mb-1 mt-1.5 border-t border-tide-border pt-3 font-body text-[11px] font-semibold uppercase tracking-[0.12em] text-tide-muted">

@@ -9,7 +9,7 @@
 > | Sheet | Token name | Emails from its script start with | Its GitHub workflow |
 > |---|---|---|---|
 > | "Contributing to Pramaan; Educators' Resource Bank (Responses)" (Resource Centre) | `pramaan-library-sheet` | `[Pramaan Library website]` | **Sync Pramaan Library** |
-> | "TIDE THRIvE Publications (Responses)" (Publications pages) — not set up yet on 2026-11-20 | `publications-sheet` | `[Publications website]` | **Sync Publications** |
+> | "TIDE THRIvE Publications (Responses)" (Publications pages) — set up 2026-11-20; the owner said (2026-11-21) its token has Actions read/write and a calendar reminder one year out | `publications-sheet` (recommended name; the name actually used was not recorded) | `[Publications website]` | **Sync Publications** |
 >
 > The steps below are written for the Resource Centre Sheet. For the Publications Sheet do exactly the same in **its** Apps Script, with its token name and its workflow. Renewing one token never affects the other.
 >

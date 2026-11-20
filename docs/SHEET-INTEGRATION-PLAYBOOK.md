@@ -205,8 +205,8 @@ and squeezed boxes. `scripts/lib/publications-images.js` (used by `scripts/sync-
 (never failing the photo if trimming can't), keep document covers whole, keep other images in their own
 shape within a ratio range (THRIvE: 3:4…16:9; taller → `attention` crop to 3:4, wider → centre crop to
 16:9), never crop the full-size file, and record the pixel sizes (`thumbWidth`/`thumbHeight`/
-`fullWidth`/`fullHeight`) in the photo manifest so the page can set `width`/`height` and frame each image at
-its own ratio (`getPublicationThumb`, `PublicationMedia`). The Resource Centre sync does not do this (plain resize).
+`fullWidth`/`fullHeight`) in the photo manifest so the page can set `width`/`height` and show each image whole
+at its own ratio inside the component's fixed frame (`getPublicationThumb`, `PublicationMedia`). The Resource Centre sync does not do this (plain resize).
 
 Still library-only: `LibraryDropdown` (the sort menu; it also exports `FOCUS_PILL`, which the shared pieces
 and the Publications components import), the type tiles and grade pills, and the per-integration

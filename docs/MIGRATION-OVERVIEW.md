@@ -53,12 +53,12 @@ Because of this, the Google-side guide transfers the *files* (the Sheet with its
 
 The Pramaan Resource Centre (`/pramaan/resource-centre`, and the counts on `/pramaan`) is fed by **one** Sheet, "Contributing to Pramaan; Educators' Resource Bank (Responses)", filled by a Google Form, with its own Apps Script, token, GitHub secrets (`PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`) and workflow (`sync-pramaan-library.yml`). The Google guide covers all of it. That Sheet holds contributors' personal data (columns L–P) — share it only with the new owner. (The older Pramaan Sheet was retired on 2026-11-19 and does not need moving.)
 
-The Publications pages (`/tide/publications` for TIDE rows, `/thrive/publications` for THRIvE rows) are fed by a **second**, separate Sheet, "TIDE THRIvE Publications (Responses)", also filled by a Google Form, with its own Apps Script (`apps-script/publications/Code.gs`), token (`publications-sheet`), GitHub secrets (`PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN`) and workflow (`sync-publications.yml`). Move it the same way as the first: transfer the Sheet and its Form, then the new owner repeats Steps 2–8 of `docs/PUBLICATIONS-SETUP-GUIDE.md`. It holds each submitter's email address — share it only with the new owner. (Not set up yet on 2026-11-20; if it still isn't at the handover, the new owner simply does the setup guide.)
+The Publications pages (`/tide/publications` for TIDE rows, `/thrive/publications` for THRIvE rows) are fed by a **second**, separate Sheet, "TIDE THRIvE Publications (Responses)", also filled by a Google Form, with its own Apps Script (`apps-script/publications/Code.gs`), token (`publications-sheet`), GitHub secrets (`PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN`) and workflow (`sync-publications.yml`). Move it the same way as the first: transfer the Sheet and its Form, then the new owner repeats Steps 2–8 of `docs/PUBLICATIONS-SETUP-GUIDE.md`. It holds each submitter's email address — share it only with the new owner. (Live since 2026-11-20.)
 
 ## After both migrations are complete
 
 - [ ] New owner owns the Google Sheet and its Google Form.
-- [ ] New owner owns the Publications Sheet and its Google Form (once that integration is set up).
+- [ ] New owner owns the Publications Sheet and its Google Form.
 - [ ] New owner can open each Apps Script project and sees their own deployment and three triggers in each.
 - [ ] New owner owns the GitHub repository, and the original developer still has collaborator access (this happens automatically for personal-to-personal transfers — see the GitHub guide).
 - [ ] Live site loads correctly at its new URL and shows current data.

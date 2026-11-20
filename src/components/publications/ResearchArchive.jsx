@@ -21,7 +21,7 @@ import { groupByYear, paginate, publicationParamsToSearch } from '../../utils/pu
 export default function ResearchArchive({ rows, data }) {
   const t = data.toolbar
   const r = data.results
-  const q = usePublicationQuery({ rows, shortcutKey: t.searchShortcutKey, undatedHeading: r.undatedHeading })
+  const q = usePublicationQuery({ rows, shortcutKey: t.searchShortcutKey, undatedHeading: r.undatedHeading, searchChipTemplate: t.searchChipTemplate })
   const { params, filtered, terms } = q
   const pg = paginate(filtered, params.page, THRIVE_PAGE_SIZE)
   const groups = groupByYear(pg.items, filtered[pg.start - 1] ?? null)
@@ -41,7 +41,7 @@ export default function ResearchArchive({ rows, data }) {
                   <h2 id={headingId} className="font-display text-2xl font-semibold text-primary-dark tabular-nums lg:sticky lg:top-28 lg:pt-7 lg:text-4xl">
                     {g.year ?? r.undatedHeading}
                     {g.continued && (
-                      <span className="ml-2 font-body text-sm font-medium text-tide-muted lg:ml-0 lg:mt-1 lg:block">{`(${r.continuedLabel})`}</span>
+                      <span className="ml-2 font-body text-sm font-medium text-tide-muted lg:ml-0 lg:mt-1 lg:block">{r.continuedLabel}</span>
                     )}
                   </h2>
                 </div>

@@ -1,4 +1,4 @@
-import { useState, useRef, useLayoutEffect, useEffect, useId, forwardRef } from 'react'
+import { useState, useRef, useLayoutEffect, useEffect, useId } from 'react'
 import { ExternalLink, Copy, Check } from 'lucide-react'
 import TypeIcon from './TypeIcon'
 import PublicationMedia from './PublicationMedia'
@@ -125,7 +125,7 @@ function Citation({ row, data, terms }) {
   )
 }
 
-const ResearchEntry = forwardRef(function ResearchEntry({ row, data, terms }, ref) {
+export default function ResearchEntry({ row, data, terms }) {
   const link = safeLink(row.link)
   const date = formatPublicationDate(row.date)
   const fields = Array.isArray(row.fields) ? row.fields.filter(Boolean) : []
@@ -135,8 +135,6 @@ const ResearchEntry = forwardRef(function ResearchEntry({ row, data, terms }, re
 
   return (
     <article
-      ref={ref}
-      tabIndex={-1}
       className="group/media grid gap-x-8 gap-y-4 py-8 outline-none sm:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-x-10"
     >
       <div className="max-w-sm sm:sticky sm:top-28 sm:max-w-none sm:self-start">
@@ -197,6 +195,5 @@ const ResearchEntry = forwardRef(function ResearchEntry({ row, data, terms }, re
       </div>
     </article>
   )
-})
+}
 
-export default ResearchEntry

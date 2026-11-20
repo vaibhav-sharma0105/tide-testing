@@ -60,8 +60,8 @@ From `docs/SHEET-INTEGRATION-PLAYBOOK.md` §7:
    edit test.** The steps below follow this order.
 2. **The two GitHub secrets (Step 6) must exist before anything is pushed that has a non-empty
    publications data file** (`src/data/sheets/publications.json` with at least one row). Before that, the
-   workflow skips quietly; after it, a missing secret makes every run fail and alert. The data file is
-   committed **empty**, so pushing the code is safe — but the first real run will fill it. (A developer's
+   workflow skips quietly; after it, a missing secret makes every run fail and alert. The data file was
+   committed **empty** until the first real run filled it (2026-11-20, commit `f524770`). (A developer's
    computer may hold a preview data file made for design work — see point 3; it must never be committed.)
 3. **Never commit publications data made on a developer's computer from test rows.** The repository is
    public and git keeps every version. Let the GitHub run publish the real data.
@@ -207,7 +207,7 @@ run starts by itself. When it and the deploy are green, the page shows the new t
 | A publication is missing from the page | Does the row say TIDE or THRIvE? Does it have a title in **that** choice's title column? Is it marked `Yes` under "Hide from website"? Does another row have the same Timestamp (or, for rows typed in by hand, the same title and date)? The "needs attention" issue lists the reason |
 | A publication is on the wrong page | The row's TIDE / THRIvE answer decides the page. Change the answer in the Sheet |
 | A row you hid is still showing | The column header must start with `Hide from website`, and the cell must start with `Yes`. Wait for the next update |
-| A thumbnail is missing | Does the thumbnail link open for the **owner** account (the account that owns the script)? The "needs attention" issue names the row if Drive refused. Until a thumbnail is synced, the page shows a plain stand-in (annual reports on the TIDE page: a dark cover with the period and title printed on it; other entries: a white page with the type's icon) |
+| A thumbnail is missing | Does the thumbnail link open for the **owner** account (the account that owns the script)? The "needs attention" issue names the row if Drive refused. Until a thumbnail is synced, the page shows a plain stand-in (the latest annual report at the top of the TIDE page: a dark cover with the period and title printed on it; every other entry: the type's icon on a light tinted, dotted frame) |
 | A thumbnail looks cropped, or its border is gone | Expected: plain borders are trimmed, and a THRIvE image taller than 3:4 or wider than 16:9 is cropped to that shape (TIDE covers are never cropped). See "Thumbnails" in `docs/PUBLICATIONS-SHEET-SCHEMA.md`. Upload the cover or first slide itself rather than a screenshot of a browser |
 | No "Read" / "Read report" / "Open" button on a publication | The link cell has no web link. A link typed as `www.…` or `doi.org/…` is completed with `https://` automatically; anything else must start with `http://` or `https://`. Put the publication's web address there. Avoid signed/temporary links (for example a `pdf.sciencedirectassets.com` link with `X-Amz-Security-…` in it) — they stop working; use the publisher's permanent page or DOI |
 | A publication shows no date and is listed last | The date of publication is empty or not readable. Use a date cell, or type `dd/mm/yyyy` |

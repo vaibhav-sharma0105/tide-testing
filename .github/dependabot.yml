@@ -1,0 +1,13 @@
+# Keeps the GitHub Actions used by the workflows up to date. The workflows pin each action to an
+# exact commit (e.g. actions/checkout@<sha> # v6.1.0) so a moved or hijacked tag cannot change what
+# runs; Dependabot opens a pull request when a newer version is released. Review and merge it like
+# any change (a major version, e.g. v6 → v7, may need a look at the action's release notes).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]

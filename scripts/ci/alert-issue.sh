@@ -22,7 +22,20 @@ number=$(gh issue list --label "$label" --state open --limit 50 --json number,ti
   --jq ".[] | select(.title == \"$title\") | .number" | head -n 1)
 
 body=""
-if [ -n "$body_file" ] && [ -f "$body_file" ]; then body=$(cat "$body_file"); fi
+if [ -n "$body_file" ] && [ -f "$body_file" ]; then
+  # GitHub refuses an issue body over 65,536 characters (then the alert would be lost), so a long
+  # report is cut and points to the run's summary, which always has the full list.
+  max=60000
+  if [ "$(wc -c < "$body_file")" -gt "$max" ]; then
+    body="$(head -c "$max" "$body_file")"$'\n\n'"… (cut: the report is too long for an issue — the full list is in the workflow run's summary)"
+  else
+    body=$(cat "$body_file")
+  fi
+  # Report text includes Sheet content (titles typed into a public Form). "@name" there would
+  # notify that GitHub user, so a zero-width space is put after every "@".
+  zwsp=$(printf '\342\200\213')  # U+200B as UTF-8 bytes (works whatever the locale)
+  body=${body//@/@$zwsp}
+fi
 message=$(printf '%s\n\n---\nWorkflow run: %s\n\nThis issue was opened automatically and closes itself once the problem is gone. What to do: docs/OPERATIONS-RUNBOOK.md\n' "$body" "$run_url")
 
 create() {

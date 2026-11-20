@@ -43,6 +43,7 @@
     "oldest": "Oldest first",
     "directionLabelTemplate": "Order by date: {dir}. Click to reverse.",
     "clearAll": "Clear all",
+    "searchChipTemplate": "“{q}”",
     "removeTemplate": "Remove filter: {name}"
   },
   "results": {
@@ -53,7 +54,7 @@
     "noResults": "No publications match your search or filters",
     "noResultsHint": "Try a different word, or clear the filters.",
     "undatedHeading": "Undated",
-    "continuedLabel": "continued"
+    "continuedLabel": "(continued)"
   },
   "pagination": {
     "label": "Pages",
@@ -111,7 +112,6 @@
     "citationLabel": "Citation",
     "fieldsLabel": "Field of work",
     "typeLabel": "Type of material",
-    "dateLabel": "Date",
     "newLabelTemplate": "dated within the last {days} days"
   }
 }

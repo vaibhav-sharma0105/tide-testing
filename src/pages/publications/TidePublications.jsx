@@ -6,7 +6,7 @@ import PublicationsJsonLd from '../../components/publications/PublicationsJsonLd
 import { PUBLICATION_PAGES } from '../../config/publications'
 import { applyPublicationFilters, rowsForOrg } from '../../utils/publicationFilters'
 import snapshot from '../../data/sheets/publications.json'
-import data from '../../data/about-publications.json'
+import data from '../../data/tide-publications.json'
 import site from '../../data/site.json'
 
 // /tide/publications — TIDE's publications (Sheet rows answered "TIDE"): the latest annual report

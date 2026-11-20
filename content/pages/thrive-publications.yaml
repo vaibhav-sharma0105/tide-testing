@@ -1,7 +1,7 @@
 # THRIvE Publications — /thrive/publications
 # The publications themselves come from the "TIDE THRIvE Publications" Sheet (rows answered
 # "THRIvE"), via the sync into src/data/sheets/publications.json. Only the text around them lives
-# here. The TIDE page (/tide/publications) is in about-publications.yaml.
+# here. The TIDE page (/tide/publications) is in tide-publications.yaml.
 # Text in {curly braces} is filled in by the site — keep the {word} exactly as it is.
 #
 # Page layout: one reading column grouped by year (newest first), 12 per page, with search,
@@ -61,6 +61,8 @@ toolbar:
   oldest: "Oldest first"
   directionLabelTemplate: "Order by date: {dir}. Click to reverse."
   clearAll: "Clear all"
+  # The removable chip for the words searched; {q} = those words
+  searchChipTemplate: "“{q}”"
   removeTemplate: "Remove filter: {name}"
 
 results:
@@ -74,7 +76,7 @@ results:
   # Heading for rows without a date (listed last)
   undatedHeading: "Undated"
   # After a year heading when that year started on the previous page
-  continuedLabel: "continued"
+  continuedLabel: "(continued)"
 
 # Numbered pages (only shown when the results take more than one page)
 pagination:
@@ -83,7 +85,7 @@ pagination:
   next: "Next"
   pageLabelTemplate: "Page {n}"
 
-# Shown next to rows dated in the last few weeks (src/config/publications.js NEW_BADGE_DAYS)
+# Shown next to rows dated within the last 120 days (src/config/publications.js NEW_BADGE_DAYS)
 newBadge: "New"
 
 # Where a link leads, read from its web address
@@ -144,5 +146,4 @@ a11y:
   citationLabel: "Citation"
   fieldsLabel: "Field of work"
   typeLabel: "Type of material"
-  dateLabel: "Date"
   newLabelTemplate: "dated within the last {days} days"

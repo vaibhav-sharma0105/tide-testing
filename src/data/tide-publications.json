@@ -40,6 +40,7 @@
     "oldest": "Oldest first",
     "directionLabelTemplate": "Order by date: {dir}. Click to reverse.",
     "clearAll": "Clear all",
+    "searchChipTemplate": "“{q}”",
     "removeTemplate": "Remove filter: {name}"
   },
   "results": {
@@ -56,11 +57,9 @@
     "label": "Pages",
     "previous": "Previous",
     "next": "Next",
-    "rangeTemplate": "Showing {from}–{to} of {total}",
     "pageLabelTemplate": "Page {n}"
   },
   "a11y": {
-    "newTab": "(opens in a new tab)",
     "openLabelTemplate": "{action}: {title} (opens in a new tab)",
     "dateLabel": "Date",
     "typeLabel": "Type of material",

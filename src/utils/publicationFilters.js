@@ -6,7 +6,7 @@
  */
 
 import { normKey, cleanLabel, optionsFor, optionsForMany } from './listingFilters'
-import { TYPE_ICON_RULES, SCHEMA_TYPE_BY_ICON, LANDSCAPE_RATIO } from '../config/publications'
+import { TYPE_ICON_RULES, SCHEMA_TYPE_BY_ICON } from '../config/publications'
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const hasDate = (r) => typeof r?.date === 'string' && ISO_DATE.test(r.date)
@@ -233,14 +233,17 @@ const fullYear = (s, ref) => {
  * "2025 - 2026", "2024–25", "24-25", "2014-2019" — otherwise the year of its date.
  * → { start, end } or null (no period in the title and no date). Two-digit years are read in the
  * 2000s (or the century of the 4-digit year beside them). A pair that is not a forward span of at
- * most 10 years (e.g. "2025-2019") is not treated as a period.
+ * most 10 years (e.g. "2025-2019") is not treated as a period. A 4-digit start must be 19xx/20xx;
+ * two 2-digit numbers count only as consecutive years ("24-25"), so page or day ranges in a title
+ * ("pages 10-15", "10-12 March") are not mistaken for years.
  */
 export function reportPeriod(row) {
   const m = typeof row?.title === 'string' && row.title.match(/(?<!\d)(\d{4}|\d{2})\s*[-–—/]\s*(\d{4}|\d{2})(?!\d)/)
   if (m) {
     const start = fullYear(m[1], null)
     const end = fullYear(m[2], start)
-    if (end > start && end - start <= 10) return { start, end }
+    const plausible = m[1].length === 4 ? /^(19|20)/.test(m[1]) : m[2].length === 2 && end === start + 1
+    if (plausible && end > start && end - start <= 10) return { start, end }
   }
   const y = yearOf(row?.date)
   return y === null ? null : { start: y, end: y }
@@ -330,11 +333,6 @@ export function typeIconKey(type, rules = TYPE_ICON_RULES) {
   const t = normKey(type)
   if (!t) return 'file'
   return rules.find(rule => rule.keywords.some(k => t.includes(k)))?.iconKey ?? 'file'
-}
-
-/** 'portrait' or 'landscape' frame for a thumbnail of width × height (portrait when unknown). */
-export function frameForSize(width, height) {
-  return width > 0 && height > 0 && width / height > LANDSCAPE_RATIO ? 'landscape' : 'portrait'
 }
 
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')

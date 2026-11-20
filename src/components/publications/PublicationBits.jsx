@@ -34,7 +34,7 @@ export function SourceLine({ url, data, compact = false, className = '' }) {
   if (compact) {
     // Tooltip text is drawn by CSS (::before from data-tip), so it is never copied with the line.
     const tip = (
-      <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 w-max -translate-x-1/2 translate-y-1 rounded-lg bg-tide-text/90 px-2 py-1 font-body text-[11px] font-medium leading-none text-white opacity-0 shadow-lg transition duration-200 ease-out group-hover/src:translate-y-0 group-hover/src:opacity-100 motion-reduce:transition-none before:content-[attr(data-tip)]" data-tip={data.source.label} aria-hidden="true" />
+      <span className="invisible absolute bottom-full left-1/2 z-10 mb-2 w-max -translate-x-1/2 translate-y-1 rounded-lg bg-tide-text/90 px-2 py-1 font-body text-[11px] font-medium leading-none text-white opacity-0 shadow-lg transition-[opacity,transform,visibility] duration-200 ease-out group-hover/src:visible group-hover/src:translate-y-0 group-hover/src:opacity-100 motion-reduce:transition-none before:content-[attr(data-tip)]" data-tip={data.source.label} aria-hidden="true" />
     )
     return (
       <span className={`inline-flex min-w-0 items-center gap-1 font-body text-tide-muted ${className}`}>

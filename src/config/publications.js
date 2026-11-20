@@ -1,6 +1,6 @@
-// Publications pages: one Sheet, two pages (components/publications). The numbers below decide
-// when each page adds a control. The data grows and shrinks with the Sheet, so every control
-// appears only when the number of rows makes it useful, and goes away again when it doesn't.
+// Publications pages: one Sheet, two pages (components/publications). The numbers below are code,
+// not YAML: page sizes, how long "New" lasts, whether the banner shows a year chart, and which
+// icon each type gets. Every list, filter and count is built from the Sheet rows.
 
 // THRIvE archive: entries per numbered page (?page= in the address, so a position can be
 // shared or bookmarked). Pagination appears only when the results don't fit on one page.
@@ -14,9 +14,6 @@ export const TIDE_PAGE_SIZE = 12
 // so the badge disappears on its own; no date is ever shown as new).
 export const NEW_BADGE_DAYS = 120
 
-// A thumbnail wider than this ratio (width / height) gets a landscape frame (16:10) instead of
-// the portrait page frame (3:4), so wide images are never squeezed into a tall box.
-export const LANDSCAPE_RATIO = 1.2
 
 // "Publications per year" chart in the hero, per page. Off on both (owner review, 2026-11-20):
 // output is uneven (THRIvE: 1 in 2020, 14 in 2023) and the current year is always part-done, so

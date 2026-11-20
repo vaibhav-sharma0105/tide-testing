@@ -26,7 +26,7 @@
 | Executions per script at the same moment | 1,000 | 1,000 | Not reached; the per-user limit above bites first. |
 | Web app requests per day | not published | not published | Google publishes no daily cap. |
 | Time per execution | 6 min | 6 min | The sync's export must finish well inside this (alert above 120 s). |
-| Trigger run time, total per day | 90 min | 6 hours | Edit/tick triggers use < 5 min on a heavy day (Resource Centre script; the Publications script has the same design — not measured, it isn't installed yet). If both scripts run under one Google account they share this daily total. |
+| Trigger run time, total per day | 90 min | 6 hours | Edit/tick triggers use < 5 min on a heavy day (Resource Centre script; the Publications script has the same design — not measured yet). If both scripts run under one Google account they share this daily total. |
 | Installable triggers | 20 per user per script | 20 per user per script | Resource Centre (Pramaan Library) Sheet: 3 (On change, On form submit, 5-minute tick). Publications Sheet: the same 3 (separate script). |
 | URL Fetch calls per day | 20,000 | 100,000 | Dispatches to GitHub; < 350 on a heavy day. |
 | URL Fetch response size | 50 MB per call | 50 MB per call | Not relevant. |

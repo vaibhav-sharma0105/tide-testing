@@ -32,8 +32,6 @@ export const DOT_PATTERN = 'bg-[radial-gradient(theme(colors.primary.DEFAULT/14%
 // Fine diagonal lines for the dark typeset stand-in covers.
 export const LINE_PATTERN = 'bg-[repeating-linear-gradient(135deg,theme(colors.white/5%)_0_1px,transparent_1px_9px)]'
 
-// Dark stand-in cover tones (light text and the amber rule are safe on all of them).
-export const COVER_TONES = ['bg-navy', 'bg-primary-dark', 'bg-navy-light', 'bg-primary']
 
 // Organic motion: a long ease-out (fast start, very soft landing), transforms only, so nothing
 // around the image moves. The image drifts a little; the blurred wash behind it drifts more

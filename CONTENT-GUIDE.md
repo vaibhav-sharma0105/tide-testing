@@ -50,7 +50,7 @@ Find the YAML file for the page you want to edit. Naming follows the URL (`/abou
 | About → Past Programs | `content/pages/about-past-programs.yaml` |
 | About → Our Team | `content/pages/about-our-team.yaml` |
 | About → Our Partners | `content/pages/about-our-partners.yaml` |
-| About → Our Publications → TIDE Publications (`/tide/publications`; the text around the list — the publications themselves come from the Sheet, see below) | `content/pages/about-publications.yaml` |
+| About → Our Publications → TIDE Publications (`/tide/publications`; the text around the list — the publications themselves come from the Sheet, see below) | `content/pages/tide-publications.yaml` |
 | Education for Harmony | `content/pages/education-for-harmony.yaml` |
 | Education for Harmony → Organise your MCCx | `content/pages/get-involved-mccx.yaml` |
 | Education for Harmony → Past SCF (Social Changemakers; reached only from the Education for Harmony page, still placeholder content) | `content/pages/social-changemakers.yaml` |
@@ -71,7 +71,7 @@ A web address that is not one of the pages above shows the "page not found" scre
 |------|------|
 | Header menu labels, Donate button, "Skip to main content" link, logo text | `content/shared/navigation.yaml` |
 | Footer: tagline (byline under the logo), copyright line, Donate button label, social links | `content/shared/footer.yaml` |
-| Short phrases reused on several pages ("Click any image to view full screen.", "Hover over a photo to see the role.", "Hover over a photo to read about each person.", the word "Step") | `content/shared/common.yaml` |
+| Short phrases reused on several pages (the word "Step" and the "View {name} on LinkedIn (opens in a new tab)" label) | `content/shared/common.yaml` |
 | Labels of the full-screen photo viewer (Close / Previous / Next buttons, "Image viewer", "Go to image {n}") and the Pramaan photo/video viewers (`mediaLightbox:`) | `content/shared/ui.yaml` |
 | Messages shown while a page is loading | `content/shared/loader.yaml` |
 | The "page not found" page | `content/shared/not-found.yaml` |
@@ -96,8 +96,8 @@ Two pages list publications: **TIDE Publications** (`/tide/publications`) and **
 and for THRIvE the APA reference and field of work) do **not** come from YAML — they come from the Google
 Sheet "TIDE THRIvE Publications (Responses)", which the publications Google Form fills. Add a publication by
 submitting the Form (answer **TIDE** or **THRIvE** to choose the page); correct one by editing its row in the
-Sheet. Changes are copied into the website automatically within minutes — once the connection is set up
-(`docs/PUBLICATIONS-SETUP-GUIDE.md`; not live yet on 2026-11-20). A page with no publications shows the
+Sheet. Changes are copied into the website automatically within minutes (live since 2026-11-20; setup:
+`docs/PUBLICATIONS-SETUP-GUIDE.md`). A page with no publications shows the
 "No publications published yet" message.
 
 > **Every Form answer goes live** — there is no approval step. To take a publication off the website without
@@ -109,10 +109,8 @@ different sections:
 - Both files: page title, badge and subtitle (`meta:`, including the "No publications published yet" message
   and the breadcrumb name), the line of figures under the title (`stats:` — "{n} publications",
   "{n} types", "since {year}"; the numbers are counted from the Sheet), the "New" badge text (`newBadge:`),
-  the numbered-page buttons (`pagination:` — "Previous", "Next", "Page {n}") and `source:` — the words
-  shown after "Source:" under a link (`doi`, `driveFile` = "Google Drive", `driveFolder` = "Google Drive
-  folder"; any other link shows its web address, e.g. "tandfonline.com").
-- `about-publications.yaml` (TIDE) — the page shows the latest annual report large, then one list of every
+  and the numbered-page buttons (`pagination:` — "Previous", "Next", "Page {n}").
+- `tide-publications.yaml` (TIDE) — the page shows the latest annual report large, then one list of every
   TIDE publication (annual reports included) with a search box and Type / Year filters:
   - `featuredType:` — which "Type of material" gets the large card. Write it exactly as in the
     Sheet (capital letters don't matter); today `"Annual report"`. If no publication has that type, the large
@@ -125,6 +123,9 @@ different sections:
     (the count line above the list and the "no results" message).
 - `thrive-publications.yaml` (THRIvE) — a list grouped by year, 12 per page, with search and
   filters; each publication shows its image, its APA reference and a short summary:
+  - `source:` (THRIvE only) — `label` (the "Source" tooltip), the words shown for DOI and Google Drive links
+    (`doi`, `driveFile`, `driveFolder`), and `names`: a list of web addresses with the name to show instead
+    (e.g. `tandfonline.com: "Taylor & Francis Online"`); an address not listed shows as it is.
   - `socialProofTypes:` — a list of "Type of material" names (exactly as in the Sheet; capital letters don't
     matter) counted in the extra figure under the title, `stats.socialProofTemplate` ("{n} pieces by others
     citing or featuring our work"). That figure is hidden when no publication has one of these types. Today:

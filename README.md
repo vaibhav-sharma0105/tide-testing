@@ -23,7 +23,7 @@ npm run dev            # syncs content, then starts Vite on http://localhost:517
 
 ### Environment variables
 
-None are needed to run or build the site: every page, including the Pramaan Resource Centre, reads committed data. `.env.development` is gitignored; `.env.example` lists the only variables, which are used just to run the Resource Centre sync locally:
+None are needed to run or build the site: every page, including the Pramaan Resource Centre, reads committed data. `.env.development` is gitignored; `.env.example` lists the only variables, which are used just to run the two Sheet syncs locally (`npm run content:sync-pramaan-library`, `npm run content:sync-publications`):
 
 | Variable | Purpose |
 |---|---|
@@ -44,9 +44,10 @@ The Contribute page's Google Form link is not a variable: it is `formUrl` in `co
 | `npm run test:e2e` | Playwright specs in `e2e/` (starts the dev server on port 5173 if none is running) |
 | `npm run test:all` | Unit tests, then e2e |
 | `npm run content:sync` | Convert `content/**/*.yaml` into `src/data/*.json` |
-| `npm run content:validate` | Check YAML syntax and that referenced image files exist (a missing image is a warning); fails if any email or lives-impacted total in `content/` differs from `content/shared/site.yaml`, if the Resource Centre snapshot or its photo list is malformed, or if the Contribute `formUrl` is not a Google Forms link |
+| `npm run content:validate` | Check YAML syntax and that referenced image files exist (a missing image is a warning); fails if any email or lives-impacted total in `content/` differs from `content/shared/site.yaml`, if the Resource Centre or Publications snapshot or its photo list is malformed, or if the Contribute `formUrl` is not a Google Forms link |
 | `npm run content:bootstrap` | Write starter navigation/footer YAML if absent (safe to re-run) |
 | `npm run content:sync-pramaan-library` | Refresh the Resource Centre snapshot and photos from its Sheet (normally run by CI; needs the two variables above) |
+| `npm run content:sync-publications` | Refresh the Publications snapshot and thumbnails from its Sheet (normally run by CI; needs `PUBLICATIONS_API_URL` and `PUBLICATIONS_SYNC_TOKEN` in `.env.development`) |
 | `node scripts/a11y-audit.cjs [port]` | axe accessibility scan of every route; needs a dev server already running on that port (default 5175, e.g. `npx vite --port 5175`); the report is written to the OS temp folder as `a11y-report.json` |
 
 ## Where content lives
@@ -82,12 +83,12 @@ Repository secrets used by the workflows:
 |---|---|
 | `PRAMAAN_LIBRARY_API_URL` | `sync-pramaan-library.yml` |
 | `PRAMAAN_LIBRARY_SYNC_TOKEN` | `sync-pramaan-library.yml` |
-| `PUBLICATIONS_API_URL` | `sync-publications.yml` (not set yet, 2026-11-20) |
-| `PUBLICATIONS_SYNC_TOKEN` | `sync-publications.yml` (not set yet, 2026-11-20) |
+| `PUBLICATIONS_API_URL` | `sync-publications.yml` |
+| `PUBLICATIONS_SYNC_TOKEN` | `sync-publications.yml` |
 
 Deep links and reloads on GitHub Pages work through `public/404.html` plus a restore script at the top of `index.html`. `404.html` assumes the site is served under a single path segment (the project-site URL `/<repo>/`); serving from a domain root would need that script changed.
 
-A second workflow, `.github/workflows/sync-pramaan-library.yml`, feeds the Pramaan Resource Centre (`/pramaan/resource-centre`): every 6 hours, when its Sheet changes (the Sheet's Apps Script asks GitHub to run it), or manually, it copies the consented rows and their photos into `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json` and `public/assets/images/pramaan-library/`, then starts the deploy. A third workflow, `.github/workflows/sync-publications.yml`, does the same for the Publications pages (`/tide/publications` for TIDE rows, `/thrive/publications` for THRIvE rows) from the "TIDE THRIvE Publications (Responses)" Sheet, every 6 hours at :27 and on Sheet change; it is not set up yet (2026-11-20: no publications snapshot committed; `docs/PUBLICATIONS-SETUP-GUIDE.md`). Its thumbnails are trimmed and shaped by `scripts/lib/publications-images.js`. No page calls Google at runtime.
+A second workflow, `.github/workflows/sync-pramaan-library.yml`, feeds the Pramaan Resource Centre (`/pramaan/resource-centre`): every 6 hours, when its Sheet changes (the Sheet's Apps Script asks GitHub to run it), or manually, it copies the consented rows and their photos into `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json` and `public/assets/images/pramaan-library/`, then starts the deploy. A third workflow, `.github/workflows/sync-publications.yml`, does the same for the Publications pages (`/tide/publications` for TIDE rows, `/thrive/publications` for THRIvE rows) from the "TIDE THRIvE Publications (Responses)" Sheet, every 6 hours at :27 and on Sheet change; live since 2026-11-20 (setup: `docs/PUBLICATIONS-SETUP-GUIDE.md`). Its thumbnails are trimmed and shaped by `scripts/lib/publications-images.js`. No page calls Google at runtime.
 
 ## Documentation map
 

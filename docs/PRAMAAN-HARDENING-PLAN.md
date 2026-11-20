@@ -418,7 +418,7 @@ Foundational yet. The old language filter was not carried over (earlier stakehol
 
 **Left as they are (owner decision — code clean-up only):** the old Pramaan Sheet, its Apps Script
 project, triggers and web-app deployment, its GitHub token, and the GitHub secrets `VITE_ABL_API_URL`,
-`ABL_SYNC_TOKEN`, `VITE_ABL_CONTRIBUTE_FORM_URL`. Nothing in the repository reads them now. What the
+`ABL_SYNC_TOKEN`, `VITE_ABL_CONTRIBUTE_FORM_URL` (the last one is already deleted — `gh secret list`, 2026-11-21). Nothing in the repository reads them now. What the
 old script does now depends on its version, which is **not verified**: Phase 2 (installing v3) was never
 ticked, so it is most likely the older script, whose `repository_dispatch` request GitHub accepts even
 with no workflow listening — nothing runs, no email. If v3 *was* installed, each old-Sheet edit and its

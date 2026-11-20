@@ -65,6 +65,8 @@ toolbar:
   oldest: "Oldest first"
   directionLabelTemplate: "Order by date: {dir}. Click to reverse."
   clearAll: "Clear all"
+  # The removable chip for the words searched; {q} = those words
+  searchChipTemplate: "“{q}”"
   removeTemplate: "Remove filter: {name}"
 
 # The count line above the library, and what it says when nothing matches
@@ -79,7 +81,7 @@ results:
   # Year-filter label for rows without a date
   undatedHeading: "Undated"
 
-# Shown next to rows dated in the last few weeks (src/config/publications.js NEW_BADGE_DAYS)
+# Shown next to rows dated within the last 120 days (src/config/publications.js NEW_BADGE_DAYS)
 newBadge: "New"
 
 # Numbered pages (only shown when a list has more than one page)
@@ -87,14 +89,10 @@ pagination:
   label: "Pages"
   previous: "Previous"
   next: "Next"
-  # {from}–{to} of {total}
-  rangeTemplate: "Showing {from}–{to} of {total}"
   pageLabelTemplate: "Page {n}"
 
 # Screen-reader text
 a11y:
-  # Added to a link that opens the publication in a new tab
-  newTab: "(opens in a new tab)"
   openLabelTemplate: "{action}: {title} (opens in a new tab)"
   dateLabel: "Date"
   typeLabel: "Type of material"
