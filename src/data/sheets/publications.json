@@ -2,14 +2,899 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": null,
-  "contentHash": "sha256:ab0296378abe616fdfcf903a43917af00c9455d7a37964781264876ec30ca750",
-  "resources": [],
+  "lastUpdated": "2026-11-20T05:41:28.378Z",
+  "contentHash": "sha256:1ac93e55d762c1736fb7757fd8ef219eca78709f03cbd345c8cb9b082c35df9e",
+  "resources": [
+    {
+      "id": "P-6bdd242cfb",
+      "org": "TIDE",
+      "date": "2026-09-27",
+      "title": "Annual Report 2025-2026",
+      "type": "Annual report",
+      "fields": [],
+      "description": "TIDE Foundation's Annual Report for 2025-26",
+      "citation": null,
+      "link": "https://drive.google.com/file/d/1tNF7EQSAhd5lWpk3DAnRcBFW94XaZgCI/view?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1r42HsX_c2SU-rd_-kuhl4xx2QL2AxHp3"
+    },
+    {
+      "id": "P-ff8c8392f7",
+      "org": "TIDE",
+      "date": "2026-03-31",
+      "title": "DISHA Life Skills & Citizenship Education through Experiential Learning Transforming self, school and community.",
+      "type": "Project report",
+      "fields": [],
+      "description": "This report presents the DISHA program as an experiential, project-based model that develops students' life skills, citizenship, and social responsibility by empowering them to design and lead real-world community action projects.",
+      "citation": null,
+      "link": "https://drive.google.com/drive/folders/1p-YgdobKy7M-D4EF-AUOo5EXwOpj6q_59yhTlSL71nztjw7PYJfT8IkJklyPFlZ3bkamc58y?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1jvnqmdtf2NFbn8YrJPyZiIuoYgywrgWu"
+    },
+    {
+      "id": "P-1fa0424cb7",
+      "org": "THRIvE",
+      "date": "2026-03-26",
+      "title": "Teaching against the odds: Teachers with disabilities in Indian mainstream schools",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "People with disability"
+      ],
+      "description": "This work examines the experiences of teachers with disabilities in Indian mainstream schools, highlighting the barriers they face in teacher training, recruitment, and everyday school life.",
+      "citation": "Wijesinghe, T., & Singal, N. (2026, March 23). Teaching against the odds: Teachers with disabilities in Indian mainstream schools. The Education and Development Forum (UKFIET). https://www.ukfiet.org/2026/teaching-against-the-odds-teachers-with-disabilities-in-indian-mainstream-schools/",
+      "link": "https://www.ukfiet.org/2026/teaching-against-the-odds-teachers-with-disabilities-in-indian-mainstream-schools/",
+      "photoUrl": "https://drive.google.com/open?id=1MgkhW0kcwaIdxexUSucIOD2KdoZmw_r6"
+    },
+    {
+      "id": "P-7d395d573f",
+      "org": "THRIvE",
+      "date": "2026-03-23",
+      "title": "The sound of equity: Teachers' school journeys captured through soundscapes",
+      "type": "Blog",
+      "fields": [
+        "People with disability"
+      ],
+      "description": "The THRIvE research centre conducted research on the expirences of teachers with visual impairments using sound based research.",
+      "citation": "Singal, N., Khanna, M., & Diksha, M. (2026, May 5). The sound of equity: Teachers’ school journeys captured through soundscapes. The Education and Development Forum (UKFIET). https://www.ukfiet.org/2026/the-sound-of-equity-teachers-school-journeys-captured-through-soundscapes/",
+      "link": "https://www.ukfiet.org/2026/the-sound-of-equity-teachers-school-journeys-captured-through-soundscapes/",
+      "photoUrl": "https://drive.google.com/open?id=1WeANNfjgkSGghBn7tVtfJn0YddC5WWdB"
+    },
+    {
+      "id": "P-71a598e3e5",
+      "org": "THRIvE",
+      "date": "2026-03-23",
+      "title": "Teaching against the odds: Teachers with disabilities in Indian mainstream schools",
+      "type": "Blog",
+      "fields": [
+        "People with disability"
+      ],
+      "description": "A pan-India study of 25 teachers with disabilities reveals the barriers they face in training, hiring, and daily practice, and calls for greater accessibility, rights, and recognition in Indian schools.",
+      "citation": "Wijesinghe, T., & Singal, N. (2026, March 23). Teaching against the odds: Teachers with disabilities in Indian mainstream schools. The Education and Development Forum (UKFIET). https://www.ukfiet.org/2026/teaching-against-the-odds-teachers-with-disabilities-in-indian-mainstream-schools/",
+      "link": "https://www.ukfiet.org/2026/teaching-against-the-odds-teachers-with-disabilities-in-indian-mainstream-schools/",
+      "photoUrl": "https://drive.google.com/open?id=1YHrxdZVhK9KwqYzeNfFRrPXxQul-Hpj3"
+    },
+    {
+      "id": "P-8b02415b80",
+      "org": "THRIvE",
+      "date": "2026-03-01",
+      "title": "Nurturing minds and hearts: Delhi’s Happiness Curriculum in action",
+      "type": "Teacher magazine",
+      "fields": [
+        "Social emotional learning"
+      ],
+      "description": "Highlights the implementation of Delhi’s Happiness Curriculum and shows how daily practices such as mindfulness, storytelling, reflection, and open discussion help students develop self-awareness, empathy, emotional regulation, and stronger relationships.",
+      "citation": "Nanda, M., Jha, M., Patel, J. & Nath, S. (2026). Nurturing Minds and Hearts: Delhi’s Happiness Curriculum in Action. Teacher Plus. www.teacherplus.org/2026/interventions/nurturing-minds-and-hearts-delhis-happiness-curriculum-in-action/",
+      "link": "https://teacherplus.org/2026/interventions/nurturing-minds-and-hearts-delhis-happiness-curriculum-in-action/",
+      "photoUrl": "https://drive.google.com/open?id=1Dafqd0evVavkVwMmAj0mZzzPbt5Z3iXy"
+    },
+    {
+      "id": "P-9c9ef62329",
+      "org": "THRIvE",
+      "date": "2025-12-07",
+      "title": "SEL in India: A Landscaping Study to Understand its Meaning, Process, and Scope",
+      "type": "Talk / Conference slides",
+      "fields": [
+        "Social emotional learning"
+      ],
+      "description": "At the 15th Annual CESI Conference, we presented a landscaping study, “SEL in India: Understanding its Meaning, Process, and Scope,” based on in-depth conversations with leaders and practitioners across the country.",
+      "citation": "Nanda, M., Jha, M., Patel, J., & Nath, S. (under review). Social and Emotional Learning in India: A Landscaping Study of Meaning, Implementation, and Sustainability",
+      "link": "https://osf.io/ftw4q/files/osfstorage/69339899e029b7caed90e9e9",
+      "photoUrl": "https://drive.google.com/open?id=1buE8ju9Lehe7IGoG_It5sj1RkPoD7Vv4"
+    },
+    {
+      "id": "P-8f4afeda3d",
+      "org": "THRIvE",
+      "date": "2025-12-06",
+      "title": "Beyond bureaucratic cogs: Reimagining teacher agency in the Indian education system",
+      "type": "Conference slides",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "At the 15th Annual International Conference organised by the Comparative Education Society of India, Muskan Khanna, of the THRIvE Research Centre, delivered a presentation that drew on the ongoing study on understanding teacher agency and the factors that influence it.",
+      "citation": "Khanna, M., Diksha, M., Patel, J., Nanda, M., Nath, S., Jha, M., & Alcott, B. (2025). Beyond bureaucratic cogs: Reimagining teacher agency in the Indian education system [Conference presentation]. Comparative Education Society of India, 15th Annual Conference. https://lnkd.in/dbnjZ8zh",
+      "link": "https://lnkd.in/dbnjZ8zh",
+      "photoUrl": "https://drive.google.com/open?id=179dOErMS_U2zTAOEb5TbapGK_wuls3Ai"
+    },
+    {
+      "id": "P-55f87debde",
+      "org": "THRIvE",
+      "date": "2025-12-03",
+      "title": "A missing link for inclusive education: The importance of supporting teachers with disabilities to ensure learning for all by Nidhi Singal and Katie Godwin",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "People with disability"
+      ],
+      "description": "Synthesis highlights inclusion of teachers with disabilities for education systems.",
+      "citation": "Singal, N., & Godwin, K. 2025. A missing link for inclusive education: The importance of supporting teachers with disabilities to ensure learning for all. The Learning Generation Initiative, Education Development Center",
+      "link": "https://learninggeneration.org/wp-content/uploads/2025/06/A-missing-link-for-inclusive-education-1-compressed.pdf",
+      "photoUrl": "https://drive.google.com/open?id=1PPkExQv5mPvPK3jxJ5kFW6Wa4o7c7UGq"
+    },
+    {
+      "id": "P-024160b3ea",
+      "org": "THRIvE",
+      "date": "2025-11-10",
+      "title": "Global Citizenship Education for Harmony and Social Justice",
+      "type": "Book",
+      "fields": [
+        "Holistic Education",
+        "Social emotional learning"
+      ],
+      "description": "Jwalin Patel argues that global citizenship education should move beyond awareness of global issues to actively cultivate harmony, empathy, dialogue, and social justice.",
+      "citation": "Patel, J. (2025). Global Citizenship Education for Harmony and Social Justice. In Bosio, E.(Ed.), Conversations on Global Citizenship Education: Perspectives on Research, Teaching, and Learning in Higher Education. Routledge. https://doi.org/10.4324/9781003496144",
+      "link": "https://www.taylorfrancis.com/books/edit/10.4324/9781003496144/new-conversations-global-citizenship-education-emiliano-bosio?refId=6ae1d3f8-dcc3-458c-8f79-af2b8c39b340&context=ubx",
+      "photoUrl": "https://drive.google.com/open?id=12zQi9n2OkXcxpan9XDeivZpWMk-02Y7F"
+    },
+    {
+      "id": "P-1d9e403032",
+      "org": "TIDE",
+      "date": "2025-09-29",
+      "title": "Annual Report 2024-2025",
+      "type": "Annual report",
+      "fields": [],
+      "description": "Annual report for years 2024-2025",
+      "citation": null,
+      "link": "https://drive.google.com/file/d/19EmJIj099VM2p33rvdWNZkYLl_hXjnuH/view?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1KJoEpEKY0T3bLqr8bcZ0nuNf-2KnUdLG"
+    },
+    {
+      "id": "P-c1c25f7b80",
+      "org": "THRIvE",
+      "date": "2025-09-27",
+      "title": "On The Move: Reflections on Using Mobile Methods in Rural Areas of China and India",
+      "type": "Journal article",
+      "fields": [
+        "Research methods"
+      ],
+      "description": "This article demonstrates how mobile methods, such as walking and transit interviews, provide richer, more contextual insights into rural communities in China and India by capturing the spatial, social, and intergenerational dimensions of participants' everyday lives.",
+      "citation": "Xie, Y., Khanapurkar, R.& Patel, J. (2025). On the move: the use of mobile methods researching rural contexts in China and India. International Journal of Qualitative Methods. https://doi.org/10.1177/16094069251357771.",
+      "link": "https://doi.org/10.1177/16094069251357771",
+      "photoUrl": "https://drive.google.com/open?id=1AfmuWk2t97bB91XxzX1yXMXbkeK9KVr3"
+    },
+    {
+      "id": "P-8a9379dbc2",
+      "org": "THRIvE",
+      "date": "2025-07-25",
+      "title": "Rewilding education",
+      "type": "Book",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "Hilary Cremin argues that education should move away from rigid, standardized, test-driven systems toward more flexible, community- and nature-connected approaches that foster creativity, well-being, social relationships, and ecological responsibility. The book presents \"rewilding\" as a vision for transforming schools into environments that better prepare young people for the challenges of the 21st century while supporting both human and environmental flourishing.",
+      "citation": "Cremin, H. (2025), Rewilding education. https://doi.org/10.4324/9781003627807",
+      "link": "https://doi.org/10.4324/9781003627807",
+      "photoUrl": "https://drive.google.com/open?id=1xnze5_Dv0PK3q0vmsnct10PJfCqZYc4_"
+    },
+    {
+      "id": "P-c3d0b37b0a",
+      "org": "THRIvE",
+      "date": "2025-07-25",
+      "title": "Nature as teacher. In Rewilding education: Rethinking the place of schools now and in the future",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "In this chapter, Cremin argues that nature should be viewed as an active teacher, offering opportunities for learning through direct engagement with the natural world rather than relying solely on classroom instruction.",
+      "citation": "Cremin, H. (2025). Nature as teacher. In Rewilding education: Rethinking the place of schools now and in the future. Routledge 107-22. https://doi.org/10.4324/9781003627807",
+      "link": "https://doi.org/10.4324/9781003627807",
+      "photoUrl": "https://drive.google.com/open?id=1kHHQGEiifN_b-BUxR17OuKVa29AJpMSV"
+    },
+    {
+      "id": "P-da5631196c",
+      "org": "THRIvE",
+      "date": "2025-07-25",
+      "title": "Valuing wisdom",
+      "type": "Book",
+      "fields": [
+        "Holistic Education",
+        "Social emotional learning"
+      ],
+      "description": "Book that argues that education should move beyond the narrow pursuit of academic achievement and instead cultivate wisdom through the integrated development of physical wellbeing (body), emotional and relational growth (heart), critical thinking and understanding (mind), and deeper meaning, purpose, and interconnectedness (soul).",
+      "citation": "Patel, J. & Cremin, H. (2025). Valuing Wisdom. In Cremin, H. (Ed.), Rewilding education. Routledge. https://doi.org/10.4324/9781003627807",
+      "link": "https://doi.org/10.4324/9781003627807",
+      "photoUrl": "https://drive.google.com/open?id=1_k-bbAmgAc8LQEtulHKzHFF2CSQfdlzN"
+    },
+    {
+      "id": "P-2b748cd3e6",
+      "org": "THRIvE",
+      "date": "2025-07-15",
+      "title": "Exploring the Crossroads of Ecological Civilization and Peace Education: Interdisciplinary Dialogues on Sustainable Development",
+      "type": "Book",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "This chapter is a global dialogue that connects ecological civilization, peace education, and sustainable development into one shared framework for rethinking education. The authors argue that today’s crises (climate, inequality, conflict) are interconnected and cannot be solved through fragmented policy or narrow schooling reforms.",
+      "citation": "Joo, C., Brantmeier, B., Dong, K., Ehrenzeller, C., Kester, K., Kim, S., Park, B., Patel, J. (2025). Exploring the Crossroads of Ecological Civilization, Peace Education, and Sustainable Development: A Global Dialogue. In Misiaszek,G., Peters, M.A., Green, B., and Xudong, Z. (Eds), Handbook of Ecological Civilization: Concept, Philosophy, Policy, and Pedagogy. https://doi.org/10.1007/978-981-97-8101-0_53-1",
+      "link": "https://link.springer.com/rwe/10.1007/978-981-97-8101-0_53-1",
+      "photoUrl": "https://drive.google.com/open?id=1Vc_WIYMJHgEs5XGhMO3pUpXgZQIBYxot"
+    },
+    {
+      "id": "P-4dacbae1ef",
+      "org": "TIDE",
+      "date": "2025-05-31",
+      "title": "BETI year 24-25 report",
+      "type": "Annual report",
+      "fields": [],
+      "description": "This report outlines the BETI program's holistic approach to improving government schools through foundational learning, activity-based education, life skills, and teacher professional development, demonstrating positive impacts on student learning and teacher empowerment.",
+      "citation": null,
+      "link": "https://drive.google.com/drive/folders/1p-YgdobKy7M-D4EF-AUOo5EXwOpj6q_59yhTlSL71nztjw7PYJfT8IkJklyPFlZ3bkamc58y?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1lMQ3AdMIiT_XRXn7w5WBpfd4557N7LyC"
+    },
+    {
+      "id": "P-88fc05ebde",
+      "org": "THRIvE",
+      "date": "2025-03-22",
+      "title": "Happiness in education from the lens of children: Photovoice of students in government run schools in India",
+      "type": "Journal article",
+      "fields": [
+        "Social emotional learning"
+      ],
+      "description": "This study uses photovoice to explore how children in Indian government schools experience happiness, emphasizing relationships, self-awareness, and holistic well-being.",
+      "citation": "Nanda, M., Patel, J., Nath, S., & Ravindranath, S. (2025). Happiness in education from the lens of children: Photovoice of students in government-run schools in India. Social Sciences & Humanities Open, 11, Article 101244. https://doi.org/10.1016/j.ssaho.2025.101244",
+      "link": "https://pdf.sciencedirectassets.com/782145/1-s2.0-S2773233924X00030/1-s2.0-S2773233925000270/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCIQD6sMux5V208JbKfeKt%2FOH5%2BHgPE69hDGCN7jhCwS6KlgIgb9xNzUYr5N4X9L77d56dHAsL2cDstXCwW4rH%2FKCScm4qvAUIu%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAFGgwwNTkwMDM1NDY4NjUiDJYdsW3jUY3IFC6dYSqQBWceJl6WoxWGI12bMtBMvVSzvtuEijrDrVFNzTlE%2FIEORjQfHOlRLA5gwhS9QLgsaTTn3bHFxKsa%2BOjuIdtDZ8INzygbfnUVBBUYpC3FW6n8pc7%2BbSraw5%2BB%2B51mJCIroLKAH7DpA%2BXODpJjoomI6kQDQt%2BeB3S%2FYKoy0LDMoCtM8LD%2FJqVpplv9UeeZDE24Q2zQsuFoN%2FdECvDyGcVWn1uysc4gjuTQSWD2scC3bQG42BdIUcheR6WS8JrohuWTWGBAzN8%2FvWXKpy%2FalZ6ywOStEKndoLYVxk14RTVFWzNlPudlvlsAP88WSAsKdEuuvSjL1OhlmsooRmPgr%2BWsoHLlFfAa6zSBgCBt0r6ittBj4t2oJbW5dMcV9jMgjqvcCC01eR8sBiEKPg8SivFl2V5bz1JzqZqZZnd3cYNLpN8MWt7z5gkBAbOd1D7NOBrHtc68cxI0bN5Gxdh9tOwlBYfenIgwEm5UNc%2FyfUXNu7IcOPhh%2BW8nwTifv3Bd0TzqnMhnLgW5F%2F8CN5UaFdX9VPEEmuxysrHyfraB8KqpZpHyBPVnb7KHrY%2BA4%2FKeJfY8lbndgO8Qp61AC0IjqwlxR8lFNz4gCNT%2FN%2BOLy4TcN9tWorKsgT9574z8aM6EsTFfAaF37PUSEk8Lw5SbN0pRhGJmvEI1IYPxp9ZJhowintR763qVQD1eb3Pf6xOQhQ1km%2FhIhWDU5XGWcC91v9qWhO0%2BxMCTI%2B0ws0M41ZE8QwVZ8lyPU27%2FkB5syJ3kzVUtiDGL%2Bkklun7uDiLfao2A4S56T%2FbG%2F0DHrya2BZVvadumPYZQOSMCTkdsgOL8ZoosiLz3A0sLMU%2BLIuR4VwqIjv0d0Xxxy6Ama9ENdHmBP2RgMIau1NEGOrEB8yKqTjWykmyWaRFdJnhi%2BjtfsX2ZUBC9h97hvN2AA%2BoALoIm9qq0XTv1UDBQYya2aAj9AsY18QCmMNUM65INZxQS9fbAoGasy6rX%2Fj7oKtf95nPBSvKyvvC2srAEmuTv9jpg2lnjsA6AeNtrBOH6BCeyMDtWz9owHOR9ekuYZIB%2ByrM%2FqWohnQGlOZcHptOUlEIRY3DxIGr%2FAoXiNLStHDJRby8QWsRD1zENO%2FSXXDYl&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20260619T113207Z&X-Amz-SignedHeaders=host&X-Amz-Expires=299&X-Amz-Credential=ASIAQ3PHCVTY6TOZUF7W%2F20260619%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=3a5661c4e5f585125cbc85bb76bfe7583340bf114217e9d49dab2b6c6a14394d&hash=bce4d70767dab680f329a30e73c5266b850f4b0e0a91d6deec203d6f299d7d46&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S2773233925000270&tid=spdf-ecd050db-1a93-4a49-a9cd-2a98014a5f47&sid=ebe3ae991dcb164661484b714cb973ec76dcgxrqa&type=client&tsoh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&rh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&ua=0f09075f03505359545b&rr=a0e236187971a784&cc=in",
+      "photoUrl": "https://drive.google.com/open?id=1ND9POGQKVeoVImRExTkjOHQNQak_2Xhr"
+    },
+    {
+      "id": "P-3e369ed52c",
+      "org": "THRIvE",
+      "date": "2025-02-01",
+      "title": "Holistic and Decolonial Approaches to Mass Education Holistic and Decolonial Approaches to Mass Education",
+      "type": "Journal article",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "This article discusses the opportunities and limitations of mass education systems, which are influenced by materialism, modernism, reductionism, and anthropocentrism.",
+      "citation": "Srikantaiah, Deepa and Patel, Jwalin (2025) \"Holistic and Decolonial Approaches to Mass Education,\" Journal of Contemplative and Holistic Education: Vol. 2: Iss. 2, Article 5. DOI: https://doi.org/10.25035/jche.02.02.05",
+      "link": "http://scholarworks.bgsu.edu/cgi/viewcontent.cgi?article=1055&context=jche",
+      "photoUrl": "https://drive.google.com/open?id=1zPnMT_My9ErBFkIWjR8pFvwAOmqUgh4J"
+    },
+    {
+      "id": "P-9d1875858f",
+      "org": "THRIvE",
+      "date": "2024-12-27",
+      "title": "Fostering Flourishing Through Happiness Curriculum: Perspectives of stakeholders from Delhi Government Schools",
+      "type": "Talk / Conference slides",
+      "fields": [
+        "Social emotional learning"
+      ],
+      "description": "The poster presented at Templeton Foundation’s Global Flourishing Conference showcases findings from the research project on the Happiness Curriculum in Delhi government schools, emphasizing children’s perceptions of happiness.",
+      "citation": "Patel, J. N., Nath, S., & Nanda, M. (2024, December 27). “Gussa Kamm Aata Hai” (I feel less angry): Exploring how happiness education can be a catalyst for change. Retrieved from osf.io/7cdfk",
+      "link": "https://osf.io/d5ncr",
+      "photoUrl": "https://drive.google.com/open?id=1gQyoAxYEtiHUX_VT65qEDkDR5rirIqsJ"
+    },
+    {
+      "id": "P-854ae846f0",
+      "org": "THRIvE",
+      "date": "2024-12-27",
+      "title": "Capturing Children’s Voices: Exploring Perceptions of Happiness through Photovoicein Delhi Government Schools, India.",
+      "type": "Poster presentation",
+      "fields": [
+        "Social emotional learning"
+      ],
+      "description": "This study uses photovoice to explore how students in Delhi government schools understand happiness through the Happiness Curriculum.",
+      "citation": "Patel, J. N., Nanda, M., & Nath, S. (2024, December 27). Capturing Children’s Voices: Exploring Perceptions of Happiness through Photovoicein Delhi Government Schools, India. Retrieved from osf.io/ap72d",
+      "link": "https://osf.io/ap72d/overview",
+      "photoUrl": "https://drive.google.com/open?id=1YttqxzTcYI2JMZWSJvz2upIaXVVX8sad"
+    },
+    {
+      "id": "P-9a5466ddc6",
+      "org": "THRIvE",
+      "date": "2024-12-14",
+      "title": "Learning to live together harmoniously: spiritual perspectives from Indian classrooms",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "discusses LTLTH's contributions to education, spirituality, and peace education rather than presenting new empirical findings.",
+      "citation": "Timalsina, R. (2025). Learning to live together harmoniously: spiritual perspectives from Indian classrooms: by Jwalin Patel, Switzerland, Palgrave Macmilan, 2023, 249 pp., £71.60 (eBook), ISBN: 978-3-031-23539-9. Compare: A Journal of Comparative and International Education, 55(5), 928–930. https://doi.org/10.1080/03057925.2024.2442853",
+      "link": "https://www.tandfonline.com/doi/full/10.1080/03057925.2024.2442853",
+      "photoUrl": "https://drive.google.com/open?id=1iym_7yhjlN2WH1JRxq4V1fGqWky43OLu"
+    },
+    {
+      "id": "P-142ef6e2e7",
+      "org": "TIDE",
+      "date": "2024-10-24",
+      "title": "2023-2024 SCF detailed report",
+      "type": "Project report",
+      "fields": [],
+      "description": "Overview of the 2023-2024 social change makers fellowship.",
+      "citation": null,
+      "link": "https://drive.google.com/drive/folders/1p-YgdobKy7M-D4EF-AUOo5EXwOpj6q_59yhTlSL71nztjw7PYJfT8IkJklyPFlZ3bkamc58y?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=17ocWLbFymcEJMIfr3HGYnNOUW0QtD-j9"
+    },
+    {
+      "id": "P-8bacebe97c",
+      "org": "TIDE",
+      "date": "2024-09-29",
+      "title": "Annual Report 2023-2024",
+      "type": "Annual report",
+      "fields": [],
+      "description": "Annual report for years 2023-2024",
+      "citation": null,
+      "link": "https://drive.google.com/file/d/1Jg6etanlsB5zatRUkQrlP8UGu3e7Zik2/view?usp=drive_link",
+      "photoUrl": "https://drive.google.com/open?id=1YNkWJUWrd8XZ0Tge4728Avb3KE-AcG6W"
+    },
+    {
+      "id": "P-0eb8f9e2dd",
+      "org": "THRIvE",
+      "date": "2024-09-05",
+      "title": "Episode 10 :Eco peace and Reimagining Interconnected Peace Education",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "This podcast explores eco-peace education, arguing that peace education should move beyond human-centered perspectives to recognize the interconnectedness of humans, non-human life, and the environment.",
+      "citation": "PeaceEd Podcast (2024). Episode 10: Eco-peace and Reimagining Interconnected Peace Education. https://podcasters.spotify.com/pod/show/peace-ed-chat/episodes/Episode-10-Eco-peace-and-Reimagining-Interconnected-Peace-Education-e2o1cat",
+      "link": "https://creators.spotify.com/pod/profile/peace-ed-chat/episodes/Episode-10-Eco-peace-and-Reimagining-Interconnected-Peace-Education-e2o1cat/a-abh3lqc",
+      "photoUrl": "https://drive.google.com/open?id=1cxcLVdvlbjnLjZ8IgHU9rOnDbdBRPvXI"
+    },
+    {
+      "id": "P-1371353be7",
+      "org": "THRIvE",
+      "date": "2024-06-25",
+      "title": "Schools2030 announces six new Global Research Projects focused on Teacher Agency and Quality Learning Environments",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "Announcement of a research grant",
+      "citation": "Aga Khan Foundation (2024). Schools2030 announces six new Global Research Projects focused on Teacher Agency and Quality Learning Environments. https://schools2030.org/evidence/schools2030-announces-six-new-global-research-projects-focused-on-teacher-agency-and-quality-learning-environments/?mc_cid=33b1b8a698&mc_eid=4b19d31560.",
+      "link": "https://schools2030.org/evidence/schools2030-announces-six-new-global-research-projects-focused-on-teacher-agency-and-quality-learning-environments/?mc_cid=33b1b8a698&mc_eid=4b19d31560",
+      "photoUrl": "https://drive.google.com/open?id=1LKMb75zaLa46PZBhYueo-85ghaU2plaT"
+    },
+    {
+      "id": "P-2b57aaceb3",
+      "org": "THRIvE",
+      "date": "2024-05-29",
+      "title": "Holistic Visions of Education stemming from Alternative Schools in India",
+      "type": "Journal article",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "This article examines how teachers in five alternative schools in India understand and practice holistic education and finds that these schools view education not primarily as academic achievement, but as fostering harmony, self-development, ethical values, relationships, creativity, and wellbeing.",
+      "citation": "Patel, J. (2024). Holistic Visions of Education stemming from Alternative Schools in India. Holistic Education Review 4(1). https://her.journals.publicknowledgeproject.org/index.php/her/article/view/2922.",
+      "link": "https://her.journals.publicknowledgeproject.org/index.php/her/article/view/2922",
+      "photoUrl": "https://drive.google.com/open?id=1Q6mrZNgJwZwIjCF60r3LTzgW-evD6Xjf"
+    },
+    {
+      "id": "P-07274d6d56",
+      "org": "THRIvE",
+      "date": "2024-05-06",
+      "title": "Calling for eco-peace: reimagining interconnected peace education",
+      "type": "Journal article",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "This article argues that education should move beyond traditional, human-centered approaches and adopt eco-peace education, which emphasizes interconnectedness between people, communities, and nature.",
+      "citation": "Ehrenzeller, C. & Patel, J. (2024). Eco-Peace: Sustainable peace education beyond anthropocentric schooling. Journal of Peace Education. www.doi.org/10.1080/17400201.2024.2350458",
+      "link": "https://doi.org/10.1080/17400201.2024.2350458",
+      "photoUrl": "https://drive.google.com/open?id=1qDr95jRDbm31qbWpZ0auw9UH92nq3l-P"
+    },
+    {
+      "id": "P-e6caf1e323",
+      "org": "THRIvE",
+      "date": "2024-03-27",
+      "title": "Learning to Live Together Harmoniously: Spiritual Perspectives from Indian Classrooms",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "Review of LTLTH's argument that spirituality can cultivate empathy, interconnectedness, and harmonious relationships in Indian classrooms. The review commends the book's integration of theory and classroom practice while emphasizing its contribution to peace education and holistic educational reform.",
+      "citation": "Jha, N. (2024). Learning to Live Together Harmoniously: Spiritual Perspectives from Indian Classrooms: By Jwalin Patel. Pp 239 + xxiii. Cham: Palgrave Macmillan. 2023. £109.99 (hbk), £87.50 (ebk). ISBN 978-3-031-23538-2 (hbk), ISBN 978-3-031-23539-9 (ebk). British Journal of Educational Studies, 72(3), 383–385. https://doi.org/10.1080/00071005.2024.2331884",
+      "link": "https://www.tandfonline.com/doi/full/10.1080/00071005.2024.2331884",
+      "photoUrl": "https://drive.google.com/open?id=1rZmGS-Rsr9c6TSb68tPlsciI7LOCDO3E"
+    },
+    {
+      "id": "P-4295cc70ac",
+      "org": "THRIvE",
+      "date": "2024-01-01",
+      "title": "Learning to Be Whole Again — Holistic Approaches to Foundational Learning",
+      "type": "Journal article",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "This article argues that foundational learning should go beyond basic literacy and numeracy to support the holistic development of children by drawing on examples from alternative schools in India.",
+      "citation": "Patel, J. & Shakti, M. (2024). Holistic Approaches to Foundational Learning. NORRAG Special Issue 09, Foundational Learning: Debates and Praxes. NORRAG. https://resources.norrag.org/resource/832/foundational-learning-current-debates-and-praxes",
+      "link": "https://resources.norrag.org/resource/832/foundational-learning-current-debates-and-praxes",
+      "photoUrl": "https://drive.google.com/open?id=1Skpvhu4TU6-L97WMoG8lAtp3iBuuTkAu"
+    },
+    {
+      "id": "P-6ab6c19214",
+      "org": "THRIvE",
+      "date": "2023-11-29",
+      "title": "Life as/of a holistic educator",
+      "type": "Journal article",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "The article explores what it means to live and work as a holistic educator. Through a reflective dialogue, they argue that holistic teaching begins with educators' own self-transformation, lifelong learning, and embodiment of values such as empathy, compassion, and interconnectedness.",
+      "citation": "Patel, J. & Shakti, M. (2023). Life as/of Holistic Educators. Holistic Education Review 3(2). https://her.journals.publicknowledgeproject.org/index.php/her/article/view/2942",
+      "link": "https://her.journals.publicknowledgeproject.org/index.php/her/article/view/2942",
+      "photoUrl": "https://drive.google.com/open?id=1l55wevnfa_lAGO-Fd1_zjnbLKKFqekwr"
+    },
+    {
+      "id": "P-96b55ecf67",
+      "org": "THRIvE",
+      "date": "2023-10-16",
+      "title": "Nature as a peace educator; Towards social justice and inner peace through learning and being in natural environments.",
+      "type": "Journal article",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "This article explores how learning in and with nature can foster inner peace, social justice, and harmonious relationships with others and the environment.",
+      "citation": "Patel, J. & Ehrenzeller, C. (2023). Nature as a peace educator; Towards social justice and inner peace through learning and being in natural environments. Journal of Environmental Education (online first). www.doi.org/10.1080/00958964.2023.2261389",
+      "link": "https://www.doi.org/10.1080/00958964.2023.2261389",
+      "photoUrl": "https://drive.google.com/open?id=13L0njYIGI15BZ0ahYvZsitC0SujN1Fq_"
+    },
+    {
+      "id": "P-3512bd729c",
+      "org": "THRIvE",
+      "date": "2023-10-16",
+      "title": "Nature as a peace educator: Toward inner peace through learning and being in natural environments",
+      "type": "Journal article",
+      "fields": [
+        "Holistic Education",
+        "Social emotional learning"
+      ],
+      "description": "This article shows how nature can act as a powerful peace educator by fostering inner peace, wellbeing, empathy, and a sense of connection with others and the environment.",
+      "citation": "Patel, J. & Ehrenzeller, C. (2023). Nature as a peace educator; Towards social justice and inner peace through learning and being in natural environments. Journal of Environmental Education 54(5), 294–305. www.doi.org/10.1080/00958964.2023.2261389",
+      "link": "https://www.tandfonline.com/doi/full/10.1080/00958964.2023.2261389",
+      "photoUrl": "https://drive.google.com/open?id=1fmAIaarCp7szqGFlXKH-qxhUijj4RnNa"
+    },
+    {
+      "id": "P-ffed7fca3e",
+      "org": "TIDE",
+      "date": "2023-09-29",
+      "title": "Annual Report 2022-2023",
+      "type": "Annual report",
+      "fields": [],
+      "description": "Annual report for years 2022-23",
+      "citation": null,
+      "link": "https://drive.google.com/file/d/1iZuRRaaJWkwOVt222uKbzdyE7Wq8pBbY/view?usp=drive_link",
+      "photoUrl": "https://drive.google.com/open?id=1gCMY5TREy_yIOqVTs1tUtfY2xPoC0ME6"
+    },
+    {
+      "id": "P-5b25da68c9",
+      "org": "THRIvE",
+      "date": "2023-08-17",
+      "title": "Learning to live together harmoniously (book review)",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "Learning to Live Together Harmoniously review that commends the book for demonstrating how spirituality can foster peace, empathy, and harmonious coexistence in Indian classrooms.",
+      "citation": "Sheshadri, S. (2024). Learning to live together harmoniously: by Jwalin Patel, Switzerland AG, 2023, 239 pp., US$39.99 EU (paperback), US$139.99 EU (hardback) ISBN (Hardcover) 978-3-031-23538-2, ISBN (eBook) 978-3-031-23539-9. Journal of Peace Education, 21(2), 258–259. https://doi.org/10.1080/17400201.2023.2247890",
+      "link": "https://www.tandfonline.com/doi/full/10.1080/17400201.2023.2247890",
+      "photoUrl": "https://drive.google.com/open?id=15-HNmTATZFAyb7LlvME4aXMwaLLwnFli"
+    },
+    {
+      "id": "P-b842cf7791",
+      "org": "THRIvE",
+      "date": "2023-05-09",
+      "title": "Contemplative and Holistic Education as Inside-Out Work for Healing, Peace, Justice, and Equity",
+      "type": "Journal article",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "This work introduces a special issue on contemplative and holistic education, arguing that meaningful social change begins with inner transformation.",
+      "citation": "Bai, Heesoon; Scott, Charles; Campbell, Cary L.; and Patel, Jwalin (2023) \"EDITORIAL INTRODUCTION: Contemplative and Holistic Education as Inside-Out Work for Healing, Peace, Justice, and Equity,\" Journal of Contemplative and Holistic Education: Vol. 1: Iss. 2, Article 11. DOI: https://doi.org/10.25035/jche.01.02.11",
+      "link": "https://scholarworks.bgsu.edu/jche/vol1/iss2/11/",
+      "photoUrl": "https://drive.google.com/open?id=1ln48Tq6e9yDUwClDP5pAXywxYYSJNydp"
+    },
+    {
+      "id": "P-3f896e4d09",
+      "org": "THRIvE",
+      "date": "2023-05-01",
+      "title": "EDITORIAL INTRODUCTION: Contemplative and Holistic Education as Inside-Out Work for Healing, Peace, Justice, and Education as Inside-Out Work for Healing, Peace, Justice, and Equity",
+      "type": "Journal article",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "Introduction to a journal special issue",
+      "citation": "Bai, H., Campbell, C., Scott, C. & Patel, J. (2023). Inaugural Special Issue on Contemplative and Holistic Education. Journal of Contemplative and Holistic Education 1(2). https://scholarworks.bgsu.edu/jche/vol1/iss2/",
+      "link": "https://scholarworks.bgsu.edu/jche/vol1/iss2/",
+      "photoUrl": "https://drive.google.com/open?id=1__KDF3-PuJLbOSb1C38SD1OEMDbvx74Q"
+    },
+    {
+      "id": "P-944254c031",
+      "org": "THRIvE",
+      "date": "2023-05-01",
+      "title": "Meeting the JCHE Team: A Reconstructed Interview",
+      "type": "Journal article",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "The interview explores the contributors’ personal and professional journeys into contemplative and holistic education, highlighting themes of mindfulness, interconnectedness, self-awareness, compassion, and transformative learning.",
+      "citation": "Bai H., Scott C., Campbell C., Patel J., Sun Y., Lin J. , Bang H., Edwards S., Srikantaiah D., Koo Y., & McHugh, D.L. (2023). Meeting the JCHE Team: A Reconstructed Interview. Journal of Contemplative and Holistic Education 1(2). www.scholarworks.bgsu.edu/jche/vol1/iss2/",
+      "link": "https://scholarworks.bgsu.edu/jche/vol1/iss2/10",
+      "photoUrl": "https://drive.google.com/open?id=1ttfa9VEYxhpgZknO4g3QYI9WH9FzRCsO"
+    },
+    {
+      "id": "P-80c7e8ff62",
+      "org": "THRIvE",
+      "date": "2023-04-23",
+      "title": "India’s alternative schools prepare kids for climate change, global issues. West can learn",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "The article explains how India’s alternative schools use experiential, nature-based, and community-focused learning to prepare students to engage with major global challenges like climate change and inequality.",
+      "citation": "The Print (2023). India’s alternative schools prepare kids for climate change, global issues. West can learn. www.theprint.in/opinion/indias-alternative-schools-prepare-kids-for-climate-change-global-issues-west-can-learn/1533321/",
+      "link": "https://theprint.in/opinion/indias-alternative-schools-prepare-kids-for-climate-change-global-issues-west-can-learn/1533321/",
+      "photoUrl": "https://drive.google.com/open?id=1HEJfeulvs3jjb5Hs7gzeT3X61-ToQVS_"
+    },
+    {
+      "id": "P-b104efe293",
+      "org": "THRIvE",
+      "date": "2023-04-15",
+      "title": "Learning to Live Together Harmoniously Spiritual Perspectives from Indian Classrooms",
+      "type": "Book",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "Book written by Dr Jwalin Patel that calls for an expanded vision of holistic education that emphasizes togetherness and harmony through the discovery of oneself, others, and the larger society.",
+      "citation": "Patel, J. (2023). Learning to Live Together Harmoniously; Spiritual Perspectives from Indian Classrooms. Palgrave-Springer. https://doi.org/10.1007/978-3-031-23539-9. ISBN 978-3-031-23538-2",
+      "link": "https://doi.org/10.1007/978-3-031-23539-9",
+      "photoUrl": "https://drive.google.com/open?id=1sCSBr1PEURtZEwe78voETDYXMnLKfMg3"
+    },
+    {
+      "id": "P-43d9a5039d",
+      "org": "THRIvE",
+      "date": "2023-02-08",
+      "title": "Happiness Education in India: Two Researchers Set out to Ask What Students and Teachers Think",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "Social emotional learning"
+      ],
+      "description": "A blog written for MIND & LIFE Institute, celebrating Dr. Seema Nath and Dr. Jwalin Patel, recipients of the Mind & Life PEACE Grant 2021, to explore how the Happiness Curriculum fosters social-emotional well-being in students.",
+      "citation": "Kinkade, S. (2023, February 8). Happiness education in India: Two researchers set out to ask what students and teachers think. Mind & Life Institute. https://www.mindandlife.org/media/happiness-education-in-india/",
+      "link": null,
+      "photoUrl": "https://drive.google.com/open?id=1eNqfCfqRMB6JJBvI0xihPOYW0tXgD7yU"
+    },
+    {
+      "id": "P-ffa05bbb22",
+      "org": "THRIvE",
+      "date": "2023-02-08",
+      "title": "Happiness Education in India: Two Researchers Set out to Ask What Students and Teachers Think",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "The article highlights research by Jwalin Patel and Seema Nath examining how India’s Happiness Curriculum uses nterviews, surveys, and photovoice methods to understand how contemplative practices and reflective pedagogy foster empathy, compassion, and positive relationships in schools.",
+      "citation": "Mind and Life Institute (2023). Happiness Education in India: Two Researchers Set out to Ask What Students and Teachers Think. www.mindandlife.org/online-learning/blog-archive/",
+      "link": "https://www.mindandlife.org/media/happiness-education-in-india/",
+      "photoUrl": "https://drive.google.com/open?id=1vg2FvboOQZCrJ8eaGF0kVJYyUXTC4T73"
+    },
+    {
+      "id": "P-772c7d8867",
+      "org": "THRIvE",
+      "date": "2023-01-31",
+      "title": "RSA Catalyst Awards 2022: Round Two Winners Announced",
+      "type": "Mass media coverage",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "Jwalin Patel received a 2023 RSA Catalyst Seed Award for EmpowerEd, an immersive teacher training initiative that promotes inclusive, equitable classroom practices through experiential learning.",
+      "citation": "The Royal Society of Arts (2023). RSA Catalyst Awards 2022: Round Two Winners Announced. www.thersa.org/blog/. The Royal Society of Arts.",
+      "link": "https://www.thersa.org/articles/press-release/the-rsa-announces-the-eight-latest-catalyst-award-winners/?utm_source=chatgpt.com",
+      "photoUrl": "https://drive.google.com/open?id=16z_FynZ1gwwz6tlf18TPsoJfLz8XSX0i"
+    },
+    {
+      "id": "P-17e85bb664",
+      "org": "THRIvE",
+      "date": "2023-01-01",
+      "title": "Educating for Harmony Can India’s alternative schools help us learn to live together?",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "The article discusses how alternative and progressive schools in India promote “education for harmony” by emphasizing empathy, cooperation, and interconnectedness among students rather than competition.",
+      "citation": "Faculty of Education- University of Cambridge (2023). Educating for harmony. www.news.educ.cam.ac.uk/2304-educating-for-harmony",
+      "link": "https://news.educ.cam.ac.uk/2304-educating-for-harmony",
+      "photoUrl": "https://drive.google.com/open?id=1CHWbo4ceU9tGU59lClDa7hLnuc2c-T4G"
+    },
+    {
+      "id": "P-543e354f83",
+      "org": "THRIvE",
+      "date": "2023-01-01",
+      "title": "Refective Research in Peace Education Theory and Practice",
+      "type": "Book",
+      "fields": [
+        "Research methods"
+      ],
+      "description": "Peace education research should move beyond individual reflection toward second-order reflexivity, where researchers critically examine power relations, assumptions, and their own role in shaping knowledge.",
+      "citation": "Patel, J., & Kester, K. (2022). Reflective research in peace education: Theory and practice. In H. Cremin & K. Kester (Eds.), Research methods in peace education (pp. 65–81). Routledge. https://doi.org/10.4324/9781003263111-7",
+      "link": "https://www.taylorfrancis.com/reader/download/88cff2bd-497f-460f-bd9d-d87717f09e6a/chapter/pdf?context=ubx",
+      "photoUrl": "https://drive.google.com/open?id=15RTplY70Zceu5a4Fhrzi8Qj83B1_PIUs"
+    },
+    {
+      "id": "P-edf660996b",
+      "org": "TIDE",
+      "date": "2023-01-01",
+      "title": "A sample chapter on integrating social emotional learning into everyday textbooks",
+      "type": "Textbook chapter",
+      "fields": [],
+      "description": "This sample textbook introduces educational approaches that promote holistic learning, social-emotional development, and values-based education for students.",
+      "citation": null,
+      "link": "https://drive.google.com/drive/folders/1p-YgdobKy7M-D4EF-AUOo5EXwOpj6q_59yhTlSL71nztjw7PYJfT8IkJklyPFlZ3bkamc58y?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1pFU0_NgPgWjgAtJHK1WwjArlt19lVQh1"
+    },
+    {
+      "id": "P-a278cde202",
+      "org": "TIDE",
+      "date": "2022-09-29",
+      "title": "Annual Report 2021-2022",
+      "type": "Annual report",
+      "fields": [],
+      "description": "Annual report for years 2022-23",
+      "citation": null,
+      "link": "https://drive.google.com/file/d/1TYFfVpK1D-8w_sdSe3MWa0qodFxxq-fW/view?usp=drive_link",
+      "photoUrl": "https://drive.google.com/file/d/1T3x6tjX_n78jzHrESxoHlrefdIv1Nlrp/view?usp=sharing"
+    },
+    {
+      "id": "P-5559729a89",
+      "org": "THRIvE",
+      "date": "2022-09-20",
+      "title": "“Gussa Kamm Aata Hai” (I feel less angry): Exploring how happiness education can be a catalyst for change.",
+      "type": "Talk / Conference slides",
+      "fields": [
+        "Social emotional learning"
+      ],
+      "description": "Presentation that explains a mixed-methods study, using photovoice and focus groups with government school students in Delhi, finds that the happiness curriculum reduces children's anger and supports their holistic social-emotional well-being.",
+      "citation": "Patel, J. N., Nath, S., & Nanda, M. (2024, December 27). “Gussa Kamm Aata Hai” (I feel less angry): Exploring how happiness education can be a catalyst for change. Retrieved from osf.io/7cdfk",
+      "link": "https://osf.io/jvrbh",
+      "photoUrl": "https://drive.google.com/open?id=1zdaNkrL0JxEggc2kpKYc-vheFhalBt2e"
+    },
+    {
+      "id": "P-d2bfda3c4c",
+      "org": "THRIvE",
+      "date": "2022-06-07",
+      "title": "Putting our ideas into action A sample for a new science textbook",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "This resource presents a sample science textbook lesson that uses COVID-19 to teach both scientific concepts and social-emotional learning by emphasizing accurate information, public health, collaboration, and responsible decision-making. It demonstrates how science education can connect real-world issues with students' development of empathy, critical thinking, and civic responsibility.",
+      "citation": "NISSEM (2022). Controlling Covid-19 through information and public health. www.nissem.org/blog/putting-our-ideas-into-action/2196/",
+      "link": "https://www.nissem.org/blog/putting-our-ideas-into-action/2196/",
+      "photoUrl": "https://drive.google.com/open?id=1cOM_0TXeH2n1YWHDKLS5A23b2gH0stbj"
+    },
+    {
+      "id": "P-9e7dd3ee06",
+      "org": "THRIvE",
+      "date": "2022-05-24",
+      "title": "Guidance Note on teacher wellbeing in emergency settings.",
+      "type": "Book",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "This guidance note provides insight on how to promote teachers mental health, build enabling environments, and elevate teachers voices in times of crisis.",
+      "citation": "D’ Angelo, S., Sule, R., Mansour, S., & Patel, J. (2022). Guidance Note on teacher wellbeing in emergency settings. Interagency Network for Education in Emergencies (INEE). www.inee.org/resources/guidance-note-teacher-wellbeing-emergency-settings",
+      "link": "https://www.inee.org/resources/guidance-note-teacher-wellbeing-emergency-settings",
+      "photoUrl": "https://drive.google.com/open?id=10N5upuBXXRLnjJYYBjVXcsk1g2y_cwyq"
+    },
+    {
+      "id": "P-216cfd2d12",
+      "org": "THRIvE",
+      "date": "2022-05-24",
+      "title": "GUIDANCE NOTE Teacher Wellbeing in Emergency Settings",
+      "type": "Book",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "This Guidance Note gives you advice on how to support teacher wellbeing in the five domains of INEE’s (2010) Minimum Standards. It explains how to: promote mental health and psychosocial support (MHPSS) for teachers; create more enabling work environments for teachers; and enhance teacher voice, agency, and leadership in crises. ​We also offer you resources and tools and examples of these standards in action.",
+      "citation": "D’ Angelo, S., Sule, R., Mansour, S., & Patel, J. (2022). Guidance Note on teacher wellbeing in emergency settings. Interagency Network for Education in Emergencies (INEE). www.inee.org/resources/guidance-note-teacher-wellbeing-emergency-settings",
+      "link": "https://www.inee.org/resources/guidance-note-teacher-wellbeing-emergency-settings",
+      "photoUrl": "https://drive.google.com/open?id=1XkjRnPquCH3wNjLI9kbffIFGaroQqZdc"
+    },
+    {
+      "id": "P-6862cdfb09",
+      "org": "TIDE",
+      "date": "2022-01-07",
+      "title": "Education for harmony; insights from Indian thinkers and practitioners",
+      "type": "Presentation",
+      "fields": [],
+      "description": "Presentation by Dr Jwalin Patel at the IIMA lecture where he explores education for harmony.",
+      "citation": null,
+      "link": "https://drive.google.com/drive/folders/1p-YgdobKy7M-D4EF-AUOo5EXwOpj6q_59yhTlSL71nztjw7PYJfT8IkJklyPFlZ3bkamc58y?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1gMYN6XlB4gJDbLaeszIKkE36RNs50tfD"
+    },
+    {
+      "id": "P-1a92fe4c1e",
+      "org": "THRIvE",
+      "date": "2021-11-23",
+      "title": "The role of dissent, conflict, and open dialogue in learning to live together harmoniously",
+      "type": "Journal article",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development",
+        "Holistic Education"
+      ],
+      "description": "Conflict, disagreement, and dissent are not obstacles to harmony but essential parts of learning to live together in diverse societies. The article emphasizes the importance of open dialogue, critical reflection, and respectful engagement with differing perspectives, suggesting that education should help students navigate conflict constructively rather than avoid it.",
+      "citation": "Patel, J. (2021). Dissent, conflict and open dialogue in learning to live together harmoniously. Educational Philosophy and Theory 55(6), 707-718. www.doi.org/10.1080/00131857.2021.2006057",
+      "link": "https://doi.org/10.1080/00131857.2021.2006057",
+      "photoUrl": "https://drive.google.com/open?id=1hkx0vlou_8g9BMbi7KY0OTNF07JfivQ3"
+    },
+    {
+      "id": "P-196b8a5c6f",
+      "org": "THRIvE",
+      "date": "2021-11-23",
+      "title": "Citizens in the making; Inside the schools that prioritize 'harmonious living'.",
+      "type": "Journal article",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "This article explores schools in India that prioritize harmonious living by fostering compassion, dialogue, community, and holistic approaches to developing responsible citizens.",
+      "citation": "⁠Faculty of Education, University of Cambridge. (2021). Citizens in the making: Insights into schools that prioritise ‘harmonious living’. University of Cambridge.https://news.educ.cam.ac.uk/citizens-in-the-making-harmonious-living",
+      "link": "https://news.educ.cam.ac.uk/citizens-in-the-making-harmonious-living",
+      "photoUrl": "https://drive.google.com/open?id=1ZwHDAWCrNOEjfPU2rfvTwEUDwFJN3d_l"
+    },
+    {
+      "id": "P-2e78584f8b",
+      "org": "THRIvE",
+      "date": "2021-11-10",
+      "title": "Learning to Live Together Harmoniously: a conceptual framework",
+      "type": "Journal article",
+      "fields": [
+        "Holistic Education",
+        "Social emotional learning"
+      ],
+      "description": "This article develops a conceptual framework for learning to live together harmoniously, arguing that education should help individuals cultivate peaceful relationships with themselves, others, and the wider world.",
+      "citation": "Patel, J. (2021). Learning to live together harmoniously; a conceptual framework. Cambridge Journal of Education 52(3), 327–347. www.doi.org/10.1080/0305764X.2021.1993791",
+      "link": "https://www.tandfonline.com/doi/full/10.1080/0305764X.2021.1993791",
+      "photoUrl": "https://drive.google.com/open?id=1BXdGKscVZL0vBk_1qpY_I7noLj4CBjjZ"
+    },
+    {
+      "id": "P-8628ea87e4",
+      "org": "TIDE",
+      "date": "2021-09-29",
+      "title": "Annual Report 2020-2021",
+      "type": "Annual report",
+      "fields": [],
+      "description": "Annual report for years 2022-23",
+      "citation": null,
+      "link": "https://drive.google.com/file/d/1zZugsaRYkvfZUTWKqFr1euDzyDkCDUtp/view?usp=drive_link",
+      "photoUrl": "https://drive.google.com/file/d/1FIfaxAbzLJWGBdjd7LaRUkLr5UGGCRTx/view?usp=sharing"
+    },
+    {
+      "id": "P-28d8a4e591",
+      "org": "THRIvE",
+      "date": "2021-06-28",
+      "title": "A vision for Indian Education System.",
+      "type": "Teacher magazine",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "**Short summary:** This article presents a vision for an Indian education system that prioritizes holistic learning, equity, and the development of socially responsible citizens.",
+      "citation": "Patel, J. (2017). A vision for Indian Education System. Kedavani Vimarsh, 1(1), 27-28. www.osf.io/yfgpw/",
+      "link": "https://osf.io/yfgpw/files/8ftdh",
+      "photoUrl": "https://drive.google.com/open?id=1EwX2jeK6Kb4cPw5-AEdWYwVpB_MDa5L0"
+    },
+    {
+      "id": "P-bb217f72be",
+      "org": "THRIvE",
+      "date": "2021-01-18",
+      "title": "Learning to Live Together Harmoniously;Spiritual Perspectives from Indian Classrooms",
+      "type": "Book",
+      "fields": [
+        "Holistic Education",
+        "Social emotional learning"
+      ],
+      "description": "This book develops the idea of “Learning to Live Together Harmoniously (LTLTH)”, arguing that education should move beyond knowledge and skills to focus on inner transformation and harmonious living.",
+      "citation": "Patel, J. (2023). Education for togetherness and harmony: Spiritual perspectives from Indian classrooms. Palgrave Macmillan. https://doi.org/10.1007/978-3-031-23539-9",
+      "link": "https://osf.io/9bwdh/overview",
+      "photoUrl": "https://drive.google.com/open?id=1ln-izxhIs6RDEl-EwJrknYOa0zWCjXDw"
+    },
+    {
+      "id": "P-1667140d56",
+      "org": "THRIvE",
+      "date": "2021-01-01",
+      "title": "Projects funded through the Public Engagement Starter Fund",
+      "type": "Published by others (TIDE acknowledged)",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "Source of funding for Jwalin Patel's research dissemination and work towards change in education.",
+      "citation": "Public engagement- University of Cambridge (2022). Projects funded through the Public Engagement Starter Fund. www.cam.ac.uk/public-engagement/information-for-staff-and-students/public-engagement-starter-fund/projects-funded-through-the-public-engagement-starter-fund",
+      "link": "https://www.cam.ac.uk/public-engagement/information-for-staff-and-students/public-engagement-starter-fund/projects-funded-through-the-public-engagement-starter-fund",
+      "photoUrl": "https://drive.google.com/open?id=1yCfsltAKRkZDi5oB8bPsRLsoPJJnuoad"
+    },
+    {
+      "id": "P-bdaa6c8501",
+      "org": "TIDE",
+      "date": "2020-09-29",
+      "title": "Annual Report 2019-2020",
+      "type": "Annual report",
+      "fields": [],
+      "description": "Annual report for years 2022-23",
+      "citation": null,
+      "link": "https://drive.google.com/file/d/1-5z8jhA6NUAQII33lMSpVcIat8aDWSYT/view?usp=drive_link",
+      "photoUrl": "https://drive.google.com/file/d/1FIfaxAbzLJWGBdjd7LaRUkLr5UGGCRTx/view?usp=sharing"
+    },
+    {
+      "id": "P-c075f4e7fb",
+      "org": "THRIvE",
+      "date": "2020-06-29",
+      "title": "Education in the time of COVID-19.",
+      "type": "Teacher magazine",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "This article reflects on how the COVID-19 pandemic exposed educational inequalities while creating an opportunity to reimagine education with greater compassion, equity, and community-centered learning.",
+      "citation": "Bhatt, Z. & Patel, J. (2020). Education in the time of COVID-19. OmPrakash. www.omprakash.org",
+      "link": "https://www.omprakash.org/dialogue/210/education-in-the-time-of-covid-1",
+      "photoUrl": "https://drive.google.com/open?id=1gtKj7pFgBW9B39HdwPoCroO_7Vmwv5lX"
+    },
+    {
+      "id": "P-391a048631",
+      "org": "TIDE",
+      "date": "2019-09-29",
+      "title": "Annual Report 2014-2019",
+      "type": "Annual report",
+      "fields": [],
+      "description": "Annual report for years 2014-19",
+      "citation": null,
+      "link": "https://drive.google.com/file/d/1JScsXdzhx4zIZz_2SIXSTC1EuM21SdQg/view?usp=drive_link",
+      "photoUrl": "https://drive.google.com/file/d/1ncuf4gLmtVoBWv1LL-TbMWSJ78jy770C/view?usp=drive_link"
+    },
+    {
+      "id": "P-301703fdf8",
+      "org": "TIDE",
+      "date": "2019-08-01",
+      "title": "2019 SKP Pre-pilot report",
+      "type": "Project report",
+      "fields": [],
+      "description": "This report evaluates the Saral Kadam Program pre-pilot, demonstrating that targeted, activity-based remedial learning improved foundational literacy, numeracy, student engagement, and self-confidence among children in government schools.",
+      "citation": null,
+      "link": "https://drive.google.com/drive/folders/1p-YgdobKy7M-D4EF-AUOo5EXwOpj6q_59yhTlSL71nztjw7PYJfT8IkJklyPFlZ3bkamc58y?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1FDSR-GHokfCAP_NFaAoiEHdBAQYZRMXv"
+    },
+    {
+      "id": "P-e988cc6651",
+      "org": "TIDE",
+      "date": "2019-01-24",
+      "title": "Why I do, what I do?",
+      "type": "Presentation",
+      "fields": [],
+      "description": "Talk at Ummeed Childhood Development Centre",
+      "citation": null,
+      "link": "https://drive.google.com/drive/folders/1p-YgdobKy7M-D4EF-AUOo5EXwOpj6q_59yhTlSL71nztjw7PYJfT8IkJklyPFlZ3bkamc58y?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1Ba9IB3l6pg-rDLl2MboI_uglNsZ5EQAH"
+    },
+    {
+      "id": "P-d1fa62a399",
+      "org": "TIDE",
+      "date": "2017-09-26",
+      "title": "Miracle of Ideas",
+      "type": "Series of public talks",
+      "fields": [],
+      "description": "Compilation of different talks about a variety of fields.",
+      "citation": null,
+      "link": "https://drive.google.com/drive/folders/1p-YgdobKy7M-D4EF-AUOo5EXwOpj6q_59yhTlSL71nztjw7PYJfT8IkJklyPFlZ3bkamc58y?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1vC1fbASiCMRlt0ZRFaY8KAYpLvJZSvM8"
+    }
+  ],
   "meta": {
-    "total": 0,
+    "total": 65,
     "counts": {
-      "TIDE": 0,
-      "THRIvE": 0
+      "TIDE": 16,
+      "THRIvE": 49
     }
   }
 }

@@ -1,1 +1,652 @@
-{}
+{
+  "P-024160b3ea": {
+    "fileId": "12zQi9n2OkXcxpan9XDeivZpWMk-02Y7F",
+    "modifiedTime": "2026-06-23T07:45:01.491Z",
+    "thumbWidth": 480,
+    "thumbHeight": 640,
+    "fullWidth": 720,
+    "fullHeight": 1080,
+    "thumb": "assets/images/publications/P-024160b3ea-thumb.webp",
+    "full": "assets/images/publications/P-024160b3ea-full.webp"
+  },
+  "P-07274d6d56": {
+    "fileId": "1qDr95jRDbm31qbWpZ0auw9UH92nq3l-P",
+    "modifiedTime": "2026-06-22T07:17:18.740Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1165,
+    "fullHeight": 105,
+    "thumb": "assets/images/publications/P-07274d6d56-thumb.webp",
+    "full": "assets/images/publications/P-07274d6d56-full.webp"
+  },
+  "P-0eb8f9e2dd": {
+    "fileId": "1cxcLVdvlbjnLjZ8IgHU9rOnDbdBRPvXI",
+    "modifiedTime": "2026-06-27T09:01:45.280Z",
+    "thumbWidth": 480,
+    "thumbHeight": 481,
+    "fullWidth": 958,
+    "fullHeight": 960,
+    "thumb": "assets/images/publications/P-0eb8f9e2dd-thumb.webp",
+    "full": "assets/images/publications/P-0eb8f9e2dd-full.webp"
+  },
+  "P-1371353be7": {
+    "fileId": "1LKMb75zaLa46PZBhYueo-85ghaU2plaT",
+    "modifiedTime": "2026-06-27T09:19:45.341Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1200,
+    "fullHeight": 557,
+    "thumb": "assets/images/publications/P-1371353be7-thumb.webp",
+    "full": "assets/images/publications/P-1371353be7-full.webp"
+  },
+  "P-142ef6e2e7": {
+    "fileId": "17ocWLbFymcEJMIfr3HGYnNOUW0QtD-j9",
+    "modifiedTime": "2026-07-24T12:07:07.089Z",
+    "thumbWidth": 480,
+    "thumbHeight": 356,
+    "fullWidth": 1042,
+    "fullHeight": 773,
+    "thumb": "assets/images/publications/P-142ef6e2e7-thumb.webp",
+    "full": "assets/images/publications/P-142ef6e2e7-full.webp"
+  },
+  "P-1667140d56": {
+    "fileId": "1yCfsltAKRkZDi5oB8bPsRLsoPJJnuoad",
+    "modifiedTime": "2026-07-24T08:36:11.633Z",
+    "thumbWidth": 480,
+    "thumbHeight": 280,
+    "fullWidth": 1200,
+    "fullHeight": 701,
+    "thumb": "assets/images/publications/P-1667140d56-thumb.webp",
+    "full": "assets/images/publications/P-1667140d56-full.webp"
+  },
+  "P-17e85bb664": {
+    "fileId": "1CHWbo4ceU9tGU59lClDa7hLnuc2c-T4G",
+    "modifiedTime": "2026-06-27T09:45:27.319Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1200,
+    "fullHeight": 547,
+    "thumb": "assets/images/publications/P-17e85bb664-thumb.webp",
+    "full": "assets/images/publications/P-17e85bb664-full.webp"
+  },
+  "P-196b8a5c6f": {
+    "fileId": "1ZwHDAWCrNOEjfPU2rfvTwEUDwFJN3d_l",
+    "modifiedTime": "2026-07-24T08:44:45.982Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1200,
+    "fullHeight": 492,
+    "thumb": "assets/images/publications/P-196b8a5c6f-thumb.webp",
+    "full": "assets/images/publications/P-196b8a5c6f-full.webp"
+  },
+  "P-1a92fe4c1e": {
+    "fileId": "1hkx0vlou_8g9BMbi7KY0OTNF07JfivQ3",
+    "modifiedTime": "2026-06-23T06:02:36.782Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1165,
+    "fullHeight": 105,
+    "thumb": "assets/images/publications/P-1a92fe4c1e-thumb.webp",
+    "full": "assets/images/publications/P-1a92fe4c1e-full.webp"
+  },
+  "P-1d9e403032": {
+    "fileId": "1KJoEpEKY0T3bLqr8bcZ0nuNf-2KnUdLG",
+    "modifiedTime": "2026-09-29T05:47:36.002Z",
+    "thumbWidth": 321,
+    "thumbHeight": 527,
+    "fullWidth": 321,
+    "fullHeight": 527,
+    "thumb": "assets/images/publications/P-1d9e403032-thumb.webp",
+    "full": "assets/images/publications/P-1d9e403032-full.webp"
+  },
+  "P-1fa0424cb7": {
+    "fileId": "1MgkhW0kcwaIdxexUSucIOD2KdoZmw_r6",
+    "modifiedTime": "2026-06-24T07:51:28.882Z",
+    "thumbWidth": 480,
+    "thumbHeight": 327,
+    "fullWidth": 1200,
+    "fullHeight": 818,
+    "thumb": "assets/images/publications/P-1fa0424cb7-thumb.webp",
+    "full": "assets/images/publications/P-1fa0424cb7-full.webp"
+  },
+  "P-216cfd2d12": {
+    "fileId": "1XkjRnPquCH3wNjLI9kbffIFGaroQqZdc",
+    "modifiedTime": "2026-06-20T04:34:14.406Z",
+    "thumbWidth": 480,
+    "thumbHeight": 640,
+    "fullWidth": 971,
+    "fullHeight": 1372,
+    "thumb": "assets/images/publications/P-216cfd2d12-thumb.webp",
+    "full": "assets/images/publications/P-216cfd2d12-full.webp"
+  },
+  "P-28d8a4e591": {
+    "fileId": "1EwX2jeK6Kb4cPw5-AEdWYwVpB_MDa5L0",
+    "modifiedTime": "2026-07-24T07:35:09.208Z",
+    "thumbWidth": 480,
+    "thumbHeight": 406,
+    "fullWidth": 1200,
+    "fullHeight": 1015,
+    "thumb": "assets/images/publications/P-28d8a4e591-thumb.webp",
+    "full": "assets/images/publications/P-28d8a4e591-full.webp"
+  },
+  "P-2b57aaceb3": {
+    "fileId": "1Q6mrZNgJwZwIjCF60r3LTzgW-evD6Xjf",
+    "modifiedTime": "2026-06-22T07:32:09.102Z",
+    "thumbWidth": 480,
+    "thumbHeight": 390,
+    "fullWidth": 631,
+    "fullHeight": 513,
+    "thumb": "assets/images/publications/P-2b57aaceb3-thumb.webp",
+    "full": "assets/images/publications/P-2b57aaceb3-full.webp"
+  },
+  "P-2b748cd3e6": {
+    "fileId": "1Vc_WIYMJHgEs5XGhMO3pUpXgZQIBYxot",
+    "modifiedTime": "2026-06-23T08:22:18.253Z",
+    "thumbWidth": 480,
+    "thumbHeight": 640,
+    "fullWidth": 827,
+    "fullHeight": 1151,
+    "thumb": "assets/images/publications/P-2b748cd3e6-thumb.webp",
+    "full": "assets/images/publications/P-2b748cd3e6-full.webp"
+  },
+  "P-2e78584f8b": {
+    "fileId": "1BXdGKscVZL0vBk_1qpY_I7noLj4CBjjZ",
+    "modifiedTime": "2026-06-23T07:17:55.293Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1165,
+    "fullHeight": 105,
+    "thumb": "assets/images/publications/P-2e78584f8b-thumb.webp",
+    "full": "assets/images/publications/P-2e78584f8b-full.webp"
+  },
+  "P-301703fdf8": {
+    "fileId": "1FDSR-GHokfCAP_NFaAoiEHdBAQYZRMXv",
+    "modifiedTime": "2026-07-24T11:59:11.524Z",
+    "thumbWidth": 480,
+    "thumbHeight": 619,
+    "fullWidth": 864,
+    "fullHeight": 1114,
+    "thumb": "assets/images/publications/P-301703fdf8-thumb.webp",
+    "full": "assets/images/publications/P-301703fdf8-full.webp"
+  },
+  "P-3512bd729c": {
+    "fileId": "1fmAIaarCp7szqGFlXKH-qxhUijj4RnNa",
+    "modifiedTime": "2026-06-23T05:42:18.906Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1165,
+    "fullHeight": 105,
+    "thumb": "assets/images/publications/P-3512bd729c-thumb.webp",
+    "full": "assets/images/publications/P-3512bd729c-full.webp"
+  },
+  "P-391a048631": {
+    "fileId": "1ncuf4gLmtVoBWv1LL-TbMWSJ78jy770C",
+    "modifiedTime": "2026-09-29T05:55:26.635Z",
+    "thumbWidth": 480,
+    "thumbHeight": 586,
+    "fullWidth": 510,
+    "fullHeight": 623,
+    "thumb": "assets/images/publications/P-391a048631-thumb.webp",
+    "full": "assets/images/publications/P-391a048631-full.webp"
+  },
+  "P-3e369ed52c": {
+    "fileId": "1zPnMT_My9ErBFkIWjR8pFvwAOmqUgh4J",
+    "modifiedTime": "2026-06-22T06:27:53.104Z",
+    "thumbWidth": 480,
+    "thumbHeight": 366,
+    "fullWidth": 1200,
+    "fullHeight": 915,
+    "thumb": "assets/images/publications/P-3e369ed52c-thumb.webp",
+    "full": "assets/images/publications/P-3e369ed52c-full.webp"
+  },
+  "P-3f896e4d09": {
+    "fileId": "1__KDF3-PuJLbOSb1C38SD1OEMDbvx74Q",
+    "modifiedTime": "2026-06-20T04:26:55.858Z",
+    "thumbWidth": 480,
+    "thumbHeight": 439,
+    "fullWidth": 1200,
+    "fullHeight": 1097,
+    "thumb": "assets/images/publications/P-3f896e4d09-thumb.webp",
+    "full": "assets/images/publications/P-3f896e4d09-full.webp"
+  },
+  "P-4295cc70ac": {
+    "fileId": "1Skpvhu4TU6-L97WMoG8lAtp3iBuuTkAu",
+    "modifiedTime": "2026-06-22T09:37:10.122Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 785,
+    "fullHeight": 412,
+    "thumb": "assets/images/publications/P-4295cc70ac-thumb.webp",
+    "full": "assets/images/publications/P-4295cc70ac-full.webp"
+  },
+  "P-43d9a5039d": {
+    "fileId": "1eNqfCfqRMB6JJBvI0xihPOYW0tXgD7yU",
+    "modifiedTime": "2026-06-19T11:46:59.842Z",
+    "thumbWidth": 480,
+    "thumbHeight": 640,
+    "fullWidth": 1134,
+    "fullHeight": 1592,
+    "thumb": "assets/images/publications/P-43d9a5039d-thumb.webp",
+    "full": "assets/images/publications/P-43d9a5039d-full.webp"
+  },
+  "P-4dacbae1ef": {
+    "fileId": "1lMQ3AdMIiT_XRXn7w5WBpfd4557N7LyC",
+    "modifiedTime": "2026-07-24T12:13:08.040Z",
+    "thumbWidth": 480,
+    "thumbHeight": 742,
+    "fullWidth": 871,
+    "fullHeight": 1346,
+    "thumb": "assets/images/publications/P-4dacbae1ef-thumb.webp",
+    "full": "assets/images/publications/P-4dacbae1ef-full.webp"
+  },
+  "P-543e354f83": {
+    "fileId": "15RTplY70Zceu5a4Fhrzi8Qj83B1_PIUs",
+    "modifiedTime": "2026-06-27T08:47:00.596Z",
+    "thumbWidth": 480,
+    "thumbHeight": 640,
+    "fullWidth": 696,
+    "fullHeight": 1054,
+    "thumb": "assets/images/publications/P-543e354f83-thumb.webp",
+    "full": "assets/images/publications/P-543e354f83-full.webp"
+  },
+  "P-5559729a89": {
+    "fileId": "1zdaNkrL0JxEggc2kpKYc-vheFhalBt2e",
+    "modifiedTime": "2026-06-19T11:53:04.931Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1200,
+    "fullHeight": 663,
+    "thumb": "assets/images/publications/P-5559729a89-thumb.webp",
+    "full": "assets/images/publications/P-5559729a89-full.webp"
+  },
+  "P-55f87debde": {
+    "fileId": "1PPkExQv5mPvPK3jxJ5kFW6Wa4o7c7UGq",
+    "modifiedTime": "2026-06-19T11:23:16.829Z",
+    "thumbWidth": 480,
+    "thumbHeight": 640,
+    "fullWidth": 1135,
+    "fullHeight": 1593,
+    "thumb": "assets/images/publications/P-55f87debde-thumb.webp",
+    "full": "assets/images/publications/P-55f87debde-full.webp"
+  },
+  "P-5b25da68c9": {
+    "fileId": "15-HNmTATZFAyb7LlvME4aXMwaLLwnFli",
+    "modifiedTime": "2026-06-27T09:27:29.181Z",
+    "thumbWidth": 480,
+    "thumbHeight": 385,
+    "fullWidth": 1200,
+    "fullHeight": 963,
+    "thumb": "assets/images/publications/P-5b25da68c9-thumb.webp",
+    "full": "assets/images/publications/P-5b25da68c9-full.webp"
+  },
+  "P-6862cdfb09": {
+    "fileId": "1gMYN6XlB4gJDbLaeszIKkE36RNs50tfD",
+    "modifiedTime": "2026-07-24T11:32:40.723Z",
+    "thumbWidth": 480,
+    "thumbHeight": 308,
+    "fullWidth": 1200,
+    "fullHeight": 771,
+    "thumb": "assets/images/publications/P-6862cdfb09-thumb.webp",
+    "full": "assets/images/publications/P-6862cdfb09-full.webp"
+  },
+  "P-6ab6c19214": {
+    "fileId": "1l55wevnfa_lAGO-Fd1_zjnbLKKFqekwr",
+    "modifiedTime": "2026-06-23T05:18:58.841Z",
+    "thumbWidth": 480,
+    "thumbHeight": 390,
+    "fullWidth": 631,
+    "fullHeight": 513,
+    "thumb": "assets/images/publications/P-6ab6c19214-thumb.webp",
+    "full": "assets/images/publications/P-6ab6c19214-full.webp"
+  },
+  "P-6bdd242cfb": {
+    "fileId": "1r42HsX_c2SU-rd_-kuhl4xx2QL2AxHp3",
+    "modifiedTime": "2026-09-29T05:45:34.223Z",
+    "thumbWidth": 321,
+    "thumbHeight": 527,
+    "fullWidth": 321,
+    "fullHeight": 527,
+    "thumb": "assets/images/publications/P-6bdd242cfb-thumb.webp",
+    "full": "assets/images/publications/P-6bdd242cfb-full.webp"
+  },
+  "P-71a598e3e5": {
+    "fileId": "1YHrxdZVhK9KwqYzeNfFRrPXxQul-Hpj3",
+    "modifiedTime": "2026-06-19T10:22:58.111Z",
+    "thumbWidth": 480,
+    "thumbHeight": 640,
+    "fullWidth": 1134,
+    "fullHeight": 1590,
+    "thumb": "assets/images/publications/P-71a598e3e5-thumb.webp",
+    "full": "assets/images/publications/P-71a598e3e5-full.webp"
+  },
+  "P-772c7d8867": {
+    "fileId": "16z_FynZ1gwwz6tlf18TPsoJfLz8XSX0i",
+    "modifiedTime": "2026-07-24T08:09:19.417Z",
+    "thumbWidth": 480,
+    "thumbHeight": 341,
+    "fullWidth": 1200,
+    "fullHeight": 853,
+    "thumb": "assets/images/publications/P-772c7d8867-thumb.webp",
+    "full": "assets/images/publications/P-772c7d8867-full.webp"
+  },
+  "P-7d395d573f": {
+    "fileId": "1WeANNfjgkSGghBn7tVtfJn0YddC5WWdB",
+    "modifiedTime": "2026-06-19T09:34:17.236Z",
+    "thumbWidth": 480,
+    "thumbHeight": 640,
+    "fullWidth": 1143,
+    "fullHeight": 1600,
+    "thumb": "assets/images/publications/P-7d395d573f-thumb.webp",
+    "full": "assets/images/publications/P-7d395d573f-full.webp"
+  },
+  "P-80c7e8ff62": {
+    "fileId": "1HEJfeulvs3jjb5Hs7gzeT3X61-ToQVS_",
+    "modifiedTime": "2026-06-27T10:24:59.622Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1200,
+    "fullHeight": 676,
+    "thumb": "assets/images/publications/P-80c7e8ff62-thumb.webp",
+    "full": "assets/images/publications/P-80c7e8ff62-full.webp"
+  },
+  "P-854ae846f0": {
+    "fileId": "1YttqxzTcYI2JMZWSJvz2upIaXVVX8sad",
+    "modifiedTime": "2026-06-24T07:39:43.734Z",
+    "thumbWidth": 480,
+    "thumbHeight": 475,
+    "fullWidth": 1009,
+    "fullHeight": 998,
+    "thumb": "assets/images/publications/P-854ae846f0-thumb.webp",
+    "full": "assets/images/publications/P-854ae846f0-full.webp"
+  },
+  "P-8628ea87e4": {
+    "fileId": "1FIfaxAbzLJWGBdjd7LaRUkLr5UGGCRTx",
+    "modifiedTime": "2026-09-29T05:52:57.278Z",
+    "thumbWidth": 480,
+    "thumbHeight": 575,
+    "fullWidth": 490,
+    "fullHeight": 587,
+    "thumb": "assets/images/publications/P-8628ea87e4-thumb.webp",
+    "full": "assets/images/publications/P-8628ea87e4-full.webp"
+  },
+  "P-88fc05ebde": {
+    "fileId": "1ND9POGQKVeoVImRExTkjOHQNQak_2Xhr",
+    "modifiedTime": "2026-06-19T11:38:28.486Z",
+    "thumbWidth": 480,
+    "thumbHeight": 509,
+    "fullWidth": 1200,
+    "fullHeight": 1272,
+    "thumb": "assets/images/publications/P-88fc05ebde-thumb.webp",
+    "full": "assets/images/publications/P-88fc05ebde-full.webp"
+  },
+  "P-8a9379dbc2": {
+    "fileId": "1xnze5_Dv0PK3q0vmsnct10PJfCqZYc4_",
+    "modifiedTime": "2026-06-29T11:23:40.693Z",
+    "thumbWidth": 480,
+    "thumbHeight": 640,
+    "fullWidth": 722,
+    "fullHeight": 1072,
+    "thumb": "assets/images/publications/P-8a9379dbc2-thumb.webp",
+    "full": "assets/images/publications/P-8a9379dbc2-full.webp"
+  },
+  "P-8b02415b80": {
+    "fileId": "1Dafqd0evVavkVwMmAj0mZzzPbt5Z3iXy",
+    "modifiedTime": "2026-06-24T06:18:07.482Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1012,
+    "fullHeight": 346,
+    "thumb": "assets/images/publications/P-8b02415b80-thumb.webp",
+    "full": "assets/images/publications/P-8b02415b80-full.webp"
+  },
+  "P-8bacebe97c": {
+    "fileId": "1YNkWJUWrd8XZ0Tge4728Avb3KE-AcG6W",
+    "modifiedTime": "2026-09-29T05:49:16.904Z",
+    "thumbWidth": 321,
+    "thumbHeight": 525,
+    "fullWidth": 321,
+    "fullHeight": 525,
+    "thumb": "assets/images/publications/P-8bacebe97c-thumb.webp",
+    "full": "assets/images/publications/P-8bacebe97c-full.webp"
+  },
+  "P-8f4afeda3d": {
+    "fileId": "179dOErMS_U2zTAOEb5TbapGK_wuls3Ai",
+    "modifiedTime": "2026-06-19T10:35:24.221Z",
+    "thumbWidth": 480,
+    "thumbHeight": 284,
+    "fullWidth": 1200,
+    "fullHeight": 709,
+    "thumb": "assets/images/publications/P-8f4afeda3d-thumb.webp",
+    "full": "assets/images/publications/P-8f4afeda3d-full.webp"
+  },
+  "P-944254c031": {
+    "fileId": "1ttfa9VEYxhpgZknO4g3QYI9WH9FzRCsO",
+    "modifiedTime": "2026-06-23T05:57:26.869Z",
+    "thumbWidth": 480,
+    "thumbHeight": 456,
+    "fullWidth": 714,
+    "fullHeight": 679,
+    "thumb": "assets/images/publications/P-944254c031-thumb.webp",
+    "full": "assets/images/publications/P-944254c031-full.webp"
+  },
+  "P-96b55ecf67": {
+    "fileId": "13L0njYIGI15BZ0ahYvZsitC0SujN1Fq_",
+    "modifiedTime": "2026-07-24T07:04:01.517Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1200,
+    "fullHeight": 647,
+    "thumb": "assets/images/publications/P-96b55ecf67-thumb.webp",
+    "full": "assets/images/publications/P-96b55ecf67-full.webp"
+  },
+  "P-9a5466ddc6": {
+    "fileId": "1iym_7yhjlN2WH1JRxq4V1fGqWky43OLu",
+    "modifiedTime": "2026-06-27T08:55:23.826Z",
+    "thumbWidth": 480,
+    "thumbHeight": 351,
+    "fullWidth": 1200,
+    "fullHeight": 877,
+    "thumb": "assets/images/publications/P-9a5466ddc6-thumb.webp",
+    "full": "assets/images/publications/P-9a5466ddc6-full.webp"
+  },
+  "P-9c9ef62329": {
+    "fileId": "1buE8ju9Lehe7IGoG_It5sj1RkPoD7Vv4",
+    "modifiedTime": "2026-06-20T03:38:55.253Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1200,
+    "fullHeight": 639,
+    "thumb": "assets/images/publications/P-9c9ef62329-thumb.webp",
+    "full": "assets/images/publications/P-9c9ef62329-full.webp"
+  },
+  "P-9d1875858f": {
+    "fileId": "1gQyoAxYEtiHUX_VT65qEDkDR5rirIqsJ",
+    "modifiedTime": "2026-06-20T03:27:51.734Z",
+    "thumbWidth": 480,
+    "thumbHeight": 299,
+    "fullWidth": 1200,
+    "fullHeight": 749,
+    "thumb": "assets/images/publications/P-9d1875858f-thumb.webp",
+    "full": "assets/images/publications/P-9d1875858f-full.webp"
+  },
+  "P-9e7dd3ee06": {
+    "fileId": "10N5upuBXXRLnjJYYBjVXcsk1g2y_cwyq",
+    "modifiedTime": "2026-07-24T05:39:40.290Z",
+    "thumbWidth": 480,
+    "thumbHeight": 502,
+    "fullWidth": 777,
+    "fullHeight": 813,
+    "thumb": "assets/images/publications/P-9e7dd3ee06-thumb.webp",
+    "full": "assets/images/publications/P-9e7dd3ee06-full.webp"
+  },
+  "P-a278cde202": {
+    "fileId": "1T3x6tjX_n78jzHrESxoHlrefdIv1Nlrp",
+    "modifiedTime": "2026-09-29T05:53:18.459Z",
+    "thumbWidth": 480,
+    "thumbHeight": 574,
+    "fullWidth": 535,
+    "fullHeight": 640,
+    "thumb": "assets/images/publications/P-a278cde202-thumb.webp",
+    "full": "assets/images/publications/P-a278cde202-full.webp"
+  },
+  "P-b104efe293": {
+    "fileId": "1sCSBr1PEURtZEwe78voETDYXMnLKfMg3",
+    "modifiedTime": "2026-06-20T04:19:57.068Z",
+    "thumbWidth": 480,
+    "thumbHeight": 640,
+    "fullWidth": 1086,
+    "fullHeight": 1600,
+    "thumb": "assets/images/publications/P-b104efe293-thumb.webp",
+    "full": "assets/images/publications/P-b104efe293-full.webp"
+  },
+  "P-b842cf7791": {
+    "fileId": "1ln48Tq6e9yDUwClDP5pAXywxYYSJNydp",
+    "modifiedTime": "2026-06-23T05:51:03.477Z",
+    "thumbWidth": 480,
+    "thumbHeight": 456,
+    "fullWidth": 714,
+    "fullHeight": 679,
+    "thumb": "assets/images/publications/P-b842cf7791-thumb.webp",
+    "full": "assets/images/publications/P-b842cf7791-full.webp"
+  },
+  "P-bb217f72be": {
+    "fileId": "1ln-izxhIs6RDEl-EwJrknYOa0zWCjXDw",
+    "modifiedTime": "2026-06-23T09:11:53.401Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 725,
+    "fullHeight": 128,
+    "thumb": "assets/images/publications/P-bb217f72be-thumb.webp",
+    "full": "assets/images/publications/P-bb217f72be-full.webp"
+  },
+  "P-bdaa6c8501": {
+    "fileId": "1FIfaxAbzLJWGBdjd7LaRUkLr5UGGCRTx",
+    "modifiedTime": "2026-09-29T05:52:57.278Z",
+    "thumbWidth": 480,
+    "thumbHeight": 575,
+    "fullWidth": 490,
+    "fullHeight": 587,
+    "thumb": "assets/images/publications/P-bdaa6c8501-thumb.webp",
+    "full": "assets/images/publications/P-bdaa6c8501-full.webp"
+  },
+  "P-c075f4e7fb": {
+    "fileId": "1gtKj7pFgBW9B39HdwPoCroO_7Vmwv5lX",
+    "modifiedTime": "2026-07-24T07:22:49.250Z",
+    "thumbWidth": 480,
+    "thumbHeight": 270,
+    "fullWidth": 1200,
+    "fullHeight": 569,
+    "thumb": "assets/images/publications/P-c075f4e7fb-thumb.webp",
+    "full": "assets/images/publications/P-c075f4e7fb-full.webp"
+  },
+  "P-c1c25f7b80": {
+    "fileId": "1AfmuWk2t97bB91XxzX1yXMXbkeK9KVr3",
+    "modifiedTime": "2026-06-22T06:22:41.206Z",
+    "thumbWidth": 480,
+    "thumbHeight": 523,
+    "fullWidth": 1200,
+    "fullHeight": 1309,
+    "thumb": "assets/images/publications/P-c1c25f7b80-thumb.webp",
+    "full": "assets/images/publications/P-c1c25f7b80-full.webp"
+  },
+  "P-c3d0b37b0a": {
+    "fileId": "1kHHQGEiifN_b-BUxR17OuKVa29AJpMSV",
+    "modifiedTime": "2026-06-29T11:31:36.157Z",
+    "thumbWidth": 480,
+    "thumbHeight": 640,
+    "fullWidth": 722,
+    "fullHeight": 1072,
+    "thumb": "assets/images/publications/P-c3d0b37b0a-thumb.webp",
+    "full": "assets/images/publications/P-c3d0b37b0a-full.webp"
+  },
+  "P-d1fa62a399": {
+    "fileId": "1vC1fbASiCMRlt0ZRFaY8KAYpLvJZSvM8",
+    "modifiedTime": "2026-07-24T10:01:25.229Z",
+    "thumbWidth": 480,
+    "thumbHeight": 210,
+    "fullWidth": 765,
+    "fullHeight": 334,
+    "thumb": "assets/images/publications/P-d1fa62a399-thumb.webp",
+    "full": "assets/images/publications/P-d1fa62a399-full.webp"
+  },
+  "P-d2bfda3c4c": {
+    "fileId": "1cOM_0TXeH2n1YWHDKLS5A23b2gH0stbj",
+    "modifiedTime": "2026-06-29T11:34:01.793Z",
+    "thumbWidth": 480,
+    "thumbHeight": 342,
+    "fullWidth": 1200,
+    "fullHeight": 854,
+    "thumb": "assets/images/publications/P-d2bfda3c4c-thumb.webp",
+    "full": "assets/images/publications/P-d2bfda3c4c-full.webp"
+  },
+  "P-da5631196c": {
+    "fileId": "1_k-bbAmgAc8LQEtulHKzHFF2CSQfdlzN",
+    "modifiedTime": "2026-06-23T07:52:47.308Z",
+    "thumbWidth": 480,
+    "thumbHeight": 640,
+    "fullWidth": 641,
+    "fullHeight": 964,
+    "thumb": "assets/images/publications/P-da5631196c-thumb.webp",
+    "full": "assets/images/publications/P-da5631196c-full.webp"
+  },
+  "P-e6caf1e323": {
+    "fileId": "1rZmGS-Rsr9c6TSb68tPlsciI7LOCDO3E",
+    "modifiedTime": "2026-06-27T09:23:22.366Z",
+    "thumbWidth": 480,
+    "thumbHeight": 399,
+    "fullWidth": 1200,
+    "fullHeight": 997,
+    "thumb": "assets/images/publications/P-e6caf1e323-thumb.webp",
+    "full": "assets/images/publications/P-e6caf1e323-full.webp"
+  },
+  "P-e988cc6651": {
+    "fileId": "1Ba9IB3l6pg-rDLl2MboI_uglNsZ5EQAH",
+    "modifiedTime": "2026-07-24T11:45:04.641Z",
+    "thumbWidth": 480,
+    "thumbHeight": 266,
+    "fullWidth": 1200,
+    "fullHeight": 664,
+    "thumb": "assets/images/publications/P-e988cc6651-thumb.webp",
+    "full": "assets/images/publications/P-e988cc6651-full.webp"
+  },
+  "P-edf660996b": {
+    "fileId": "1pFU0_NgPgWjgAtJHK1WwjArlt19lVQh1",
+    "modifiedTime": "2026-07-24T10:15:07.338Z",
+    "thumbWidth": 480,
+    "thumbHeight": 323,
+    "fullWidth": 1200,
+    "fullHeight": 807,
+    "thumb": "assets/images/publications/P-edf660996b-thumb.webp",
+    "full": "assets/images/publications/P-edf660996b-full.webp"
+  },
+  "P-ff8c8392f7": {
+    "fileId": "1jvnqmdtf2NFbn8YrJPyZiIuoYgywrgWu",
+    "modifiedTime": "2026-07-24T12:15:16.651Z",
+    "thumbWidth": 480,
+    "thumbHeight": 620,
+    "fullWidth": 1098,
+    "fullHeight": 1418,
+    "thumb": "assets/images/publications/P-ff8c8392f7-thumb.webp",
+    "full": "assets/images/publications/P-ff8c8392f7-full.webp"
+  },
+  "P-ffa05bbb22": {
+    "fileId": "1vg2FvboOQZCrJ8eaGF0kVJYyUXTC4T73",
+    "modifiedTime": "2026-06-29T11:20:10.606Z",
+    "thumbWidth": 480,
+    "thumbHeight": 289,
+    "fullWidth": 1200,
+    "fullHeight": 722,
+    "thumb": "assets/images/publications/P-ffa05bbb22-thumb.webp",
+    "full": "assets/images/publications/P-ffa05bbb22-full.webp"
+  },
+  "P-ffed7fca3e": {
+    "fileId": "1gCMY5TREy_yIOqVTs1tUtfY2xPoC0ME6",
+    "modifiedTime": "2026-09-29T05:50:20.952Z",
+    "thumbWidth": 321,
+    "thumbHeight": 523,
+    "fullWidth": 321,
+    "fullHeight": 523,
+    "thumb": "assets/images/publications/P-ffed7fca3e-thumb.webp",
+    "full": "assets/images/publications/P-ffed7fca3e-full.webp"
+  }
+}
