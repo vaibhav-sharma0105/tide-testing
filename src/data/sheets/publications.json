@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-20T06:44:02.282Z",
-  "contentHash": "sha256:1ac93e55d762c1736fb7757fd8ef219eca78709f03cbd345c8cb9b082c35df9e",
+  "lastUpdated": "2026-11-21T10:31:10.753Z",
+  "contentHash": "sha256:619bc8e6a608024ce4c3baa621572ffb8f5992e31be1ccee599a08c4f0577e06",
   "resources": [
     {
       "id": "P-6bdd242cfb",
@@ -12,7 +12,7 @@
       "title": "Annual Report 2025-2026",
       "type": "Annual report",
       "fields": [],
-      "description": "TIDE Foundation's Annual Report for 2025-26",
+      "description": "Annual report for years 2025 - 2026",
       "citation": null,
       "link": "https://drive.google.com/file/d/1tNF7EQSAhd5lWpk3DAnRcBFW94XaZgCI/view?usp=sharing",
       "photoUrl": "https://drive.google.com/open?id=1r42HsX_c2SU-rd_-kuhl4xx2QL2AxHp3"
