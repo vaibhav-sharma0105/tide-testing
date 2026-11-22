@@ -236,7 +236,7 @@ npm run content:validate
 # Visible-text guard (react/jsx-no-literals) + other lint rules — also run in CI
 npm run lint
 
-# Unit tests (23 files / 287 tests as of 2026-11-21) and Playwright e2e (3 specs; not run in CI)
+# Unit tests (23 files / 288 tests as of 2026-11-21) and Playwright e2e (3 specs; not run in CI)
 npm test
 npm run test:e2e
 

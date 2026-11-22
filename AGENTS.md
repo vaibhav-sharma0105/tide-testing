@@ -23,7 +23,7 @@ npm run dev          # auto-syncs content, then starts dev server at localhost:5
 npm run build        # auto-syncs content, then builds to dist/
 npm run content:validate   # YAML syntax, image paths, Resource Centre + Publications snapshots, formUrl, email / lives-impacted consistency
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — run in CI (deploy.yml)
-npm test             # Vitest unit/component tests (23 files, 287 tests) — run in CI (deploy.yml)
+npm test             # Vitest unit/component tests (23 files, 288 tests) — run in CI (deploy.yml)
 ```
 
 **Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
@@ -114,7 +114,7 @@ Live since 2026-11-20 (first sync commit `f524770`); the snapshot and photo mani
 
 ### Routing
 
-`src/App.jsx` registers 24 `<Route>`s (22 lazy-loaded page components). `BrowserRouter` (`basename={import.meta.env.BASE_URL}`) wraps everything — clean URLs, no `#`. `Layout` (skip link + Header + Footer) wraps every route; each page chunk is `lazy()`-loaded behind a `Suspense` fallback that shows `CreativeLoader` only after 200 ms (`useDelayedVisible`). `src/components/ErrorBoundary.jsx` wraps the whole app (outside the Router and `HelmetProvider`): on a render crash it shows a friendly screen (heading/body/button labels from `content/shared/error.yaml`, a reload button and a plain `<a>` home link) and logs the error to the console; the error message and stack are rendered only when `import.meta.env.DEV`. `MotionConfig reducedMotion="user"` makes all Framer animations respect the OS setting.
+`src/App.jsx` registers 24 `<Route>`s (22 lazy-loaded page components). `BrowserRouter` (`basename={import.meta.env.BASE_URL}`) wraps everything — clean URLs, no `#`. `Layout` (skip link + Header + Footer) wraps every route; each page chunk is loaded with `lazyPage()` (`src/utils/reloadOnStaleChunk.js`: React.lazy that, when a page's file is gone after a deploy, reloads once and keeps the loader up instead of showing the crash screen; a second failure within 10 s is re-thrown) behind a `Suspense` fallback that shows `CreativeLoader` only after 200 ms (`useDelayedVisible`). `src/components/ErrorBoundary.jsx` wraps the whole app (outside the Router and `HelmetProvider`): on a render crash it shows a friendly screen (heading/body/button labels from `content/shared/error.yaml`, a reload button and a plain `<a>` home link) and logs the error to the console; the error message and stack are rendered only when `import.meta.env.DEV`. `MotionConfig reducedMotion="user"` makes all Framer animations respect the OS setting.
 
 | Group | Count | Routes |
 |---|---|---|
@@ -162,7 +162,7 @@ tide-new/
 │       └── llms.txt         ← template (NOT YAML — the sync ignores it) rendered to /llms.txt by siteDataPlugin
 │
 ├── src/
-│   ├── App.jsx            ← BrowserRouter + 24 routes + ErrorBoundary + lazy() pages
+│   ├── App.jsx            ← BrowserRouter + 24 routes + ErrorBoundary + lazyPage() pages (reload once on a stale chunk)
 │   ├── main.jsx           ← React root; imports index.css; calls installImagePlaceholder() before rendering
 │   ├── index.css          ← Tailwind directives + global styles + section-padding
 │   │
@@ -1229,7 +1229,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 23 files, 287 tests (jsdom, src/test/**)
+npm test               # vitest run — 23 files, 288 tests (jsdom, src/test/**)
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```
@@ -1244,7 +1244,7 @@ npm run test:ui        # Vitest UI
 | `utils/imgSrc.test.js` | 8 | path forms, passthrough, base prefix |
 | `utils/motionPresets.test.js` | 10 | `makeFadeUp` / `fadeUp` shape |
 | `utils/libraryFilters.test.js` | 17 | Resource Centre filters, sort, faceted counts, picker order |
-| `utils/reloadOnStaleChunk.test.js` | 4 | reload once when a lazy chunk is missing after a deploy |
+| `utils/reloadOnStaleChunk.test.js` | 5 | `importWithReload`: success passes through; a failed page import reloads once and never settles (loader, no crash screen); a second failure within the window is re-thrown; reload allowed again after the window; no reload when storage is blocked |
 | `pages/pramaanLibrary.test.jsx` | 10 | Resource Centre list + detail: filters, sort, search, tab bar, old `?type=` names, card links |
 | `pages/pramaanSwitch.test.jsx` | 4 | `/pramaan` counts and type cards from the snapshot, Contribute `formUrl`, `/pramaan-library` redirect |
 | `pages/publications.test.jsx` | 45 | TIDE (`/tide/publications`): spotlight of the latest annual report + hero stats (no chart, no source line), one library of every row (search + Type/Year menus, counts, chips, Clear all, URL state), "See all {n} editions" (filters + focus), unknown type as a chip, pages of 12 (clamped), search highlight, no-spotlight and single-edition cases, `/about/publications` redirect, empty state, "New" badge; THRIvE: year groups (undated last), same-date title order, no hero chart + social proof, date toggle, debounced search + highlight + Clear all, "/" shortcut, Type/Field/Year menus (counts, zero-count disabled), stale URL values as chips, URL state, citation + summary blocks, tags, compact source, Copy citation, summary "Show more" only on overflow, pages of 12 (`?page=`, "continued" heading, focus), page clamp + reset on filter change, empty state; utilities (order + tie-break, `reportPeriod`, `latestOfType`, `groupByYear`, year filter + `yearCounts`, facets, URL params, `paginate`/`pageWindow`, `sourceOf`, `sourceName`, social proof/`isNew`/icons/frames, highlight, JSON-LD, dates/links); components: debounced search keeps characters typed while the URL catches up, FilterMenu keyboard (arrows skip disabled, Home/End, Escape, focus leaving closes), PublicationMedia same-shape srcset + error fallback |

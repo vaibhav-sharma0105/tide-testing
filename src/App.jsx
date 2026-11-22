@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { MotionConfig } from 'framer-motion'
-import { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
 import Layout from './components/layout/Layout'
 import ErrorBoundary from './components/ErrorBoundary'
 import CreativeLoader from './components/ui/CreativeLoader'
 import { useDelayedVisible } from './hooks/useDelayedVisible'
+// lazyPage = React.lazy that reloads once (with the loader up) if a page's file is gone after a deploy.
+import { lazyPage } from './utils/reloadOnStaleChunk'
 
 /* Suspense renders this the instant a lazy route suspends, and unmounts it
    the instant the import resolves — useDelayedVisible(true, ...) means it
@@ -20,28 +22,28 @@ function RouteLoadingFallback() {
   )
 }
 
-const Home                = lazy(() => import('./pages/Home'))
-const WhyTide             = lazy(() => import('./pages/about/WhyTide'))
-const OurTeam             = lazy(() => import('./pages/about/OurTeam'))
-const OurPartners         = lazy(() => import('./pages/about/OurPartners'))
-const PastPrograms        = lazy(() => import('./pages/about/PastPrograms'))
-const TidePublications    = lazy(() => import('./pages/publications/TidePublications'))
-const ThrivePublications  = lazy(() => import('./pages/publications/ThrivePublications'))
-const TidePublicationsRedirect = lazy(() => import('./pages/publications/TidePublicationsRedirect'))
-const EducationForHarmony = lazy(() => import('./pages/EducationForHarmony'))
-const Volunteer           = lazy(() => import('./pages/get-involved/Volunteer'))
-const Donate              = lazy(() => import('./pages/get-involved/Donate'))
-const OrganizeMCCx        = lazy(() => import('./pages/get-involved/OrganizeMCCx'))
-const SocialChangemakers  = lazy(() => import('./pages/SocialChangemakers'))
-const THRIvE              = lazy(() => import('./pages/THRIvE'))
-const Contact             = lazy(() => import('./pages/Contact'))
-const AblHome             = lazy(() => import('./pages/resources/AblHome'))
-const AblContribute       = lazy(() => import('./pages/resources/AblContribute'))
-const PramaanLibrary      = lazy(() => import('./pages/library/PramaanLibrary'))
-const PramaanLibraryDetail = lazy(() => import('./pages/library/PramaanLibraryDetail'))
-const LibraryRedirect     = lazy(() => import('./pages/library/LibraryRedirect'))
-const NotFound            = lazy(() => import('./pages/NotFound'))
-const ComingSoon          = lazy(() => import('./pages/ComingSoon'))
+const Home                = lazyPage(() => import('./pages/Home'))
+const WhyTide             = lazyPage(() => import('./pages/about/WhyTide'))
+const OurTeam             = lazyPage(() => import('./pages/about/OurTeam'))
+const OurPartners         = lazyPage(() => import('./pages/about/OurPartners'))
+const PastPrograms        = lazyPage(() => import('./pages/about/PastPrograms'))
+const TidePublications    = lazyPage(() => import('./pages/publications/TidePublications'))
+const ThrivePublications  = lazyPage(() => import('./pages/publications/ThrivePublications'))
+const TidePublicationsRedirect = lazyPage(() => import('./pages/publications/TidePublicationsRedirect'))
+const EducationForHarmony = lazyPage(() => import('./pages/EducationForHarmony'))
+const Volunteer           = lazyPage(() => import('./pages/get-involved/Volunteer'))
+const Donate              = lazyPage(() => import('./pages/get-involved/Donate'))
+const OrganizeMCCx        = lazyPage(() => import('./pages/get-involved/OrganizeMCCx'))
+const SocialChangemakers  = lazyPage(() => import('./pages/SocialChangemakers'))
+const THRIvE              = lazyPage(() => import('./pages/THRIvE'))
+const Contact             = lazyPage(() => import('./pages/Contact'))
+const AblHome             = lazyPage(() => import('./pages/resources/AblHome'))
+const AblContribute       = lazyPage(() => import('./pages/resources/AblContribute'))
+const PramaanLibrary      = lazyPage(() => import('./pages/library/PramaanLibrary'))
+const PramaanLibraryDetail = lazyPage(() => import('./pages/library/PramaanLibraryDetail'))
+const LibraryRedirect     = lazyPage(() => import('./pages/library/LibraryRedirect'))
+const NotFound            = lazyPage(() => import('./pages/NotFound'))
+const ComingSoon          = lazyPage(() => import('./pages/ComingSoon'))
 
 export default function App() {
   return (
