@@ -6,6 +6,17 @@
 
 ### Decisions waiting on the site owner
 
+0. **Partners auto-sync — do this as soon as the owner has edit access to the Sheet** (requested 2026-11-21).
+   Since 2026-11-23 the Partners page and the homepage "In good company" block show a **static preview**
+   (113 partners from the Sheet's public export, manifest `fileId: "preview"`; owner decision). All sync
+   code is already on `main`; only the owner setup is missing. Steps, one at a time, the owner entering every
+   credential: `docs/PARTNERS-SETUP-GUIDE.md` Steps 1–9 — Apps Script + Drive service → `SYNC_TOKEN` and the
+   other Script Properties (GitHub token `partners-sheet`) → web app → GitHub secrets `PARTNERS_API_URL`,
+   `PARTNERS_SYNC_TOKEN` (+ check `ALERT_ASSIGNEE`) → `setup` triggers → **first sync once with
+   `allow_large_change`** (Actions → Sync Partners → Run workflow; the preview's ids differ from the script's,
+   so a normal first run refuses) → edit test. Then update CLAUDE.md, AGENTS.md and
+   `docs/STAKEHOLDER-REVIEW-2026-11-28.md` §7.5: sync live, preview gone, "never commit locally made partners
+   data" applies again without exception. Until then the sync workflow skips quietly (no alerts).
 0. **Unused image (2026-11-23):** `public/assets/images/home/why-tide.jpg` is no longer used (the homepage mission photo is now `projects-mcc/mccx-2025-au.jpg`). Delete it only with the owner's OK.
 1. ~~Images left unused by the removed pages~~ — **done 2026-10-25:** the 97 unused files (about 21 MB) were deleted with the owner's approval; recover with `git checkout a4126d1 -- <path>`. The unused legacy downloader `scripts/download-images.mjs` was deleted on 2026-10-26 (recover with `git checkout a4126d1 -- scripts/download-images.mjs`).
 2. **`intro.ctaHref` in `content/pages/get-involved-volunteer.yaml`** is the placeholder `https://docs.google.com/forms`, not a real application form. Owner said keep as is for now. The page is reachable from the About menu.
