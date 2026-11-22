@@ -70,7 +70,7 @@ Pick a short kebab-case slug (e.g. `pramaan-library`, `social-changemakers`) and
 | Apps Script source | `apps-script/<slug>/Code.gs` | `apps-script/pramaan-library/Code.gs` |
 | Workflow (keep the file name — the script calls it by name) | `.github/workflows/sync-<slug>.yml` | `sync-pramaan-library.yml` |
 | Concurrency group | `<slug>-sync` | `pramaan-library-sync` |
-| Cron | every 6 h at a **minute not used by another sync** (taken: `:47` Resource Centre / library, `:27` Publications; `:17` was the retired ABL sync — free again) | `47 */6 * * *` |
+| Cron | every 6 h at a **minute not used by another sync** (taken: `:47` Resource Centre / library, `:27` Publications, `:07` Partners; `:17` was the retired ABL sync — free again) | `47 */6 * * *` |
 | Sync script + rules | `scripts/sync-<slug>.js` (built on the shared `scripts/lib/sync-runner.js` — never copy its plumbing), `scripts/lib/<slug>-snapshot.js` | `sync-pramaan-library.js`, `library-snapshot.js` |
 | npm script | `content:sync-<slug>` | `content:sync-pramaan-library` |
 | GitHub secrets | `<PREFIX>_API_URL`, `<PREFIX>_SYNC_TOKEN` | `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN` |
@@ -79,7 +79,7 @@ Pick a short kebab-case slug (e.g. `pramaan-library`, `social-changemakers`) and
 | Photo manifest | `src/data/<slug>-photos.json` — must not collide with a YAML basename | `pramaan-library-photos.json` |
 | Photos | `public/assets/images/<slug>/` | `public/assets/images/pramaan-library/` |
 | Alert issue titles | "`<Name>` sync failed — the page is not updating", "`<Name>` Sheet: some rows need attention" | "Pramaan Library sync failed — …" |
-| Heartbeat hour (UTC) | different from the other scripts (taken: 04:00 Resource Centre, 05:00 Publications) | 04:00 |
+| Heartbeat hour (UTC) | different from the other scripts (taken: 04:00 Resource Centre, 05:00 Publications, 06:00 Partners) | 04:00 |
 | Page YAML | `content/pages/<slug>.yaml` | `pramaan-library.yaml` |
 | Pages / components / config / utils | `src/pages/<area>/`, `src/components/<area>/`, `src/config/<area>.js`, `src/utils/<area>Filters.js` | `library/`, `config/library.js`, `libraryFilters.js` |
 | Owner docs | `docs/<SLUG>-SETUP-GUIDE.md`, `docs/<SLUG>-SHEET-SCHEMA.md` | `PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `PRAMAAN-LIBRARY-SHEET-SCHEMA.md` |
@@ -199,7 +199,7 @@ both share one search + filter bar (`PublicationToolbar`, `usePublicationQuery`;
 `src/config/publications.js`, so a control appears only when the row count makes it useful. They have their
 own controls (`PublicationControls`, `usePublicationControls`) and use none of `src/components/listing/`,
 `useSidebarFits` or `abl/Pagination`; of the shared parts they use `listingFilters.js`, `focusRing` and
-`FOCUS_PILL`. Choose the layout from the data (row count, text length), not from the previous integration.
+`FOCUS_PILL`. Choose the layout from the data (row count, text length), not from the previous integration. The Partners page (third integration, 2026-11-21; 113 partners in 5 types) is one auto-advancing slider per type with previous / pause / next (WCAG 2.2.2) and a name search only — `src/components/partners/`, rules in `src/config/partners.js`. Two lessons from it: an absolutely positioned element (e.g. `sr-only` text) inside a horizontal scroller escapes the scroller unless an ancestor inside it is `position: relative` — the page got an 8000 px horizontal scrollbar; and when a Sheet is link-viewable, keep its id out of the public repository's docs.
 
 **Uploaded images that are screenshots.** When people upload "thumbnails" of very different shapes
 (covers, slides with black bars, logos on wide margins, tall phone screenshots), a plain resize gives bars

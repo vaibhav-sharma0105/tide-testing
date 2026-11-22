@@ -2,12 +2,14 @@ import { Search, X } from 'lucide-react'
 import { FOCUS_PILL } from '../library/LibraryDropdown'
 
 // Rounded search box for a listing toolbar, with a clear (×) button once something is typed.
-// placeholder / label / clearLabel come from the caller's YAML; className positions the wrapper.
-export default function SearchField({ value, onChange, placeholder, label, clearLabel, className = '' }) {
+// placeholder / label / clearLabel come from the caller's YAML; className positions the wrapper;
+// inputRef (optional) lets the caller focus the box.
+export default function SearchField({ value, onChange, placeholder, label, clearLabel, className = '', inputRef }) {
   return (
     <div className={`relative min-w-0 ${className}`}>
       <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-tide-muted pointer-events-none" aria-hidden="true" />
       <input
+        ref={inputRef}
         type="search"
         value={value}
         onChange={e => onChange(e.target.value)}

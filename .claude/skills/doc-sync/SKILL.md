@@ -55,7 +55,8 @@ followup task that may or may not happen.
   controls, workflow commands, the validator).
 - Human guides and diagrams in `docs/`: `PRAMAAN-LIBRARY-SETUP-GUIDE.md`,
   `PRAMAAN-LIBRARY-SHEET-SCHEMA.md`, `PRAMAAN-HARDENING-PLAN.md`, `SHEET-INTEGRATION-PLAYBOOK.md`,
-  `PUBLICATIONS-SETUP-GUIDE.md`, `PUBLICATIONS-SHEET-SCHEMA.md`, `STAKEHOLDER-REVIEW-2026-11-28.md`,
+  `PUBLICATIONS-SETUP-GUIDE.md`, `PUBLICATIONS-SHEET-SCHEMA.md`, `PARTNERS-SETUP-GUIDE.md`,
+  `PARTNERS-SHEET-SCHEMA.md`, `STAKEHOLDER-REVIEW-2026-11-28.md`,
   `NEW-SHEET-INTEGRATION-REQUEST.md` (keep its message in step with the playbook),
   `OPERATIONS-INVENTORY.md`, `OPERATIONS-RUNBOOK.md`, `PLATFORM-LIMITS.md`,
   `MAINTENANCE-CONTRIBUTE-FORM-LINK.md`,
@@ -124,7 +125,7 @@ repo docs.
    | `content/shared/error.yaml`, `src/components/ErrorBoundary.jsx` | `CONTENT-GUIDE.md` (shared-text table + error-screen section), `AGENTS.md`, `content-management.md` |
    | `content/shared/footer.yaml` / `navigation.yaml` structure, `Footer.jsx` / `Header.jsx` | `CONTENT-GUIDE.md` (navigation and footer sections), `content-management.md`, `docs/specs/site-restructure-plan.md` |
    | A new or renamed `content/pages/*.yaml`, or any page `meta` key (e.g. `breadcrumbName`) | `CONTENT-GUIDE.md` file tables, `content-management.md` file table, `CLAUDE.md` / `AGENTS.md` page tables, `public/sitemap.xml`, the llms template |
-   | Routes in `src/App.jsx` (a route added or removed; 24 today: 18 primary, 3 redirects, 3 system), the removed-route test `src/test/routing/removedRoutes.test.jsx`, the footer link columns | `CLAUDE.md`, `AGENTS.md`, `README.md`, `CONTENT-GUIDE.md` (page file table), `content-management.md` (page YAML table and the 17 / 9 / 28 counts), `docs/specs/site-restructure-plan.md`, `docs/specs/stranded-pages-review.md` (a historical review of the pages since removed), `public/sitemap.xml`, the llms template, `WHATS-NEXT.md` |
+   | Routes in `src/App.jsx` (a route added or removed; 24 today: 18 primary, 3 redirects, 3 system), the removed-route test `src/test/routing/removedRoutes.test.jsx`, the footer link columns | `CLAUDE.md`, `AGENTS.md`, `README.md`, `CONTENT-GUIDE.md` (page file table), `content-management.md` (page YAML table and the 17 / 9 / 29 counts), `docs/specs/site-restructure-plan.md`, `docs/specs/stranded-pages-review.md` (a historical review of the pages since removed), `public/sitemap.xml`, the llms template, `WHATS-NEXT.md` |
    | A page deleted (component + YAML + generated JSON + its images) | All of the row above, plus `WHATS-NEXT.md` (images left unused by the removal), `cms-integrity/SKILL.md` examples, and a check that `src/data/` has no stale JSON (the sync never deletes it) |
    | `src/utils/imagePlaceholder.js` (installed in `src/main.jsx`), `placeholderImage` in `site.yaml`, the `data-no-placeholder` opt-out | `CONTENT-GUIDE.md` ("If an image is missing" and the validator note), `content-management.md` (Image Paths), `cms-integrity/SKILL.md` (checklist item 3), `AGENTS.md` |
    | `eslint.config.js` (`react/jsx-no-literals`), `deploy.yml` / other workflows | `CLAUDE.md`, `AGENTS.md`, `cms-integrity/SKILL.md`, `WHATS-NEXT.md` (what CI runs: lint, validate, unit tests — not e2e) |

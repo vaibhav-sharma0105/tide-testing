@@ -56,6 +56,14 @@ constant in `src/config/publications.js`. They have their own controls (`Publica
 reuse what fits (playbook §5 "Reuse"). For uploads that are screenshots of mixed shapes, copy the image step in
 `scripts/lib/publications-images.js` (trim borders, ratio range, sizes recorded in the manifest; playbook §5).
 
+**Third implementation (2026-11-21, not live until the owner's setup):** Partners — an existing page
+(`/about/our-partners`, YAML kept) fed by `apps-script/partners/Code.gs`, `scripts/sync-partners.js`,
+`scripts/lib/partners-snapshot.js`, `scripts/lib/partners-images.js` (logos: trim, never crop, keep
+transparency; small raster files sent as the original by `fetchImage`), `.github/workflows/sync-partners.yml`,
+`checkPartnersSnapshot()`, `src/components/partners/`, `src/config/partners.js` (also imported by the rules lib,
+so the page order and the sync's "unknown priority" report agree). Reused `SearchField` + `useDebouncedSearch`.
+Its stakeholder notes named columns by letter wrongly — always map by the real header row.
+
 **Retired, do not reintroduce:** a browser-side Sheet read (the former `useABLData` hook, a public
 `doGet` listing, a `VITE_*` Sheet URL in the bundle). It was deleted on 2026-11-19
 (`docs/PRAMAAN-HARDENING-PLAN.md` §13); the code is only in the local git tag

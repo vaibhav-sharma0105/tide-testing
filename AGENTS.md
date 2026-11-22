@@ -23,7 +23,7 @@ npm run dev          # auto-syncs content, then starts dev server at localhost:5
 npm run build        # auto-syncs content, then builds to dist/
 npm run content:validate   # YAML syntax, image paths, Resource Centre + Publications snapshots, formUrl, email / lives-impacted consistency
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — run in CI (deploy.yml)
-npm test             # Vitest unit/component tests (23 files, 288 tests) — run in CI (deploy.yml)
+npm test             # Vitest unit/component tests (28 files, 334 tests) — run in CI (deploy.yml)
 ```
 
 **Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
@@ -112,6 +112,18 @@ TidePublications (/tide/publications, TIDE rows) and ThrivePublications (/thrive
 ```
 Live since 2026-11-20 (first sync commit `f524770`); the snapshot and photo manifest are written only by the sync bot (`content:validate` requires both files to exist). See §8 "Publications".
 
+**5 — Partners pipeline (third Sheet integration, same pattern)**
+```
+Google Sheet "TIDE/THRIvE Partners (Responses)" (Google Form responses; columns "Column 2" / "Notes for …" are internal)
+    ↓  apps-script/partners/Code.gs — token-gated export/fetchImage only; rows with a Type of partner and a Name;
+    ↓  reads only Type, Priority, Name, Website, Logo (+ Timestamp → anonymous id PA-<10 hex>); optional "Hide from website"
+.github/workflows/sync-partners.yml → scripts/sync-partners.js (+ scripts/lib/partners-snapshot.js, snapshot-core.js, sync-runner.js)
+    ↓  logos: scripts/lib/partners-images.js (trim margins, transparency kept, never cropped, ≤ 400×400 WebP + pixel size in the manifest)
+    ↓  commits src/data/sheets/partners.json + src/data/partners-photos.json + public/assets/images/partners/
+OurPartners (/about/our-partners) — imports the snapshot at build time
+```
+Not live yet (2026-11-21): the committed snapshot is empty until the owner's setup. See §8 "Partners".
+
 ### Routing
 
 `src/App.jsx` registers 24 `<Route>`s (22 lazy-loaded page components). `BrowserRouter` (`basename={import.meta.env.BASE_URL}`) wraps everything — clean URLs, no `#`. `Layout` (skip link + Header + Footer) wraps every route; each page chunk is loaded with `lazyPage()` (`src/utils/reloadOnStaleChunk.js`: React.lazy that, when a page's file is gone after a deploy, reloads once and keeps the loader up instead of showing the crash screen; a second failure within 10 s is re-thrown) behind a `Suspense` fallback that shows `CreativeLoader` only after 200 ms (`useDelayedVisible`). `src/components/ErrorBoundary.jsx` wraps the whole app (outside the Router and `HelmetProvider`): on a render crash it shows a friendly screen (heading/body/button labels from `content/shared/error.yaml`, a reload button and a plain `<a>` home link) and logs the error to the console; the error message and stack are rendered only when `import.meta.env.DEV`. `MotionConfig reducedMotion="user"` makes all Framer animations respect the OS setting.
@@ -177,6 +189,8 @@ tide-new/
 │   │   │   ├── Button.jsx           ← polymorphic (Link/a/button), 5 variants
 │   │   │   ├── SectionHeader.jsx    ← badge + h2 + subtitle block
 │   │   │   ├── PageHero.jsx         ← dark banner + h1 for inner pages (optional `aside` slot and `badgeClassName`)
+│   │   │   ├── HeroStats.jsx        ← figures line under a PageHero title (Publications + Partners); withValue.jsx sets the {n} in white
+│   │   │   ├── CountUp.jsx          ← a number counting up once in view (final value for screen readers / reduced motion)
 │   │   │   ├── Highlight.jsx        ← amber highlighter underline over listed words in a sentence
 │   │   │   ├── SeoHead.jsx          ← title/description/canonical/OG/Twitter + BreadcrumbList JSON-LD
 │   │   │   ├── AnimatedCounter.jsx  ← scroll-triggered number animation
@@ -202,11 +216,17 @@ tide-new/
 │   │   │   ├── LibraryDropdown.jsx  ← rounded listbox replacing <select> (sort menu); exports FOCUS_PILL (see §11 focus note)
 │   │   │   ├── LibraryCard.jsx      ← resource card (photo, type badge, subject, name, description, grades, owner)
 │   │   │   └── LibraryTypeBadge.jsx ← colour pill for a library resource type
-│   │   ├── listing/                ← generic listing pieces (§4), used by the Resource Centre only (the Publications pages have their own controls)
+│   │   ├── listing/                ← generic listing pieces (§4), used by the Resource Centre (SearchField also by Our Partners; the Publications pages have their own controls)
 │   │   │   ├── SearchField.jsx      ← rounded search box with a clear (×) button
 │   │   │   ├── FilterChips.jsx      ← active filters as removable chips
 │   │   │   ├── FilterDrawer.jsx     ← phone/tablet filter dialog (focus trap, Esc, scroll lock, "show results" button)
 │   │   │   └── PickerField.jsx      ← compact filter picker (inline listbox, type-ahead, clear ×)
+│   │   ├── partners/               ← Partners page (/about/our-partners) (§4)
+│   │   │   ├── PartnerConstellation.jsx ← banner graphic: top-priority logos as floating discs joined by lines
+│   │   │   ├── PartnerIndexBar.jsx  ← sticky bar: section tabs (scroll-spy underline) + name search
+│   │   │   ├── PartnerSlider.jsx    ← one numbered section: heading, control pill, row of cards, custom track, edge fades
+│   │   │   ├── sliderConductor.js   ← one page clock: moves only the on-screen row nearest the middle
+│   │   │   └── PartnerCard.jsx      ← whole logo (or initials) in a fixed 3:2 frame + name; whole card links to the website
 │   │   └── publications/           ← Publications pages (/tide/publications, /thrive/publications), one layout per page (§4)
 │   │       ├── PublicationsHero.jsx    ← PublicationsHero (PageHero + figures line: count, types, "since" year, social proof; optional chart) and PublicationsEmpty
 │   │       ├── TideCollection.jsx      ← TIDE body: spotlight of the latest annual report ("See all {n} editions" filters the library), then one library of every TIDE row as 5:6 cards with search + Type/Year (PublicationToolbar) and pages of 12
@@ -234,7 +254,7 @@ tide-new/
 │   │   │   ├── WhyTide.jsx   ← who we are, vision, goals
 │   │   │   ├── PastPrograms.jsx
 │   │   │   ├── OurTeam.jsx   ← team + advisor portrait cards (LinkedIn tiles)
-│   │   │   └── OurPartners.jsx ← logo gallery
+│   │   │   └── OurPartners.jsx ← one slider per partner type, from the Partners snapshot; name search in ?search=
 │   │   ├── get-involved/
 │   │   │   ├── Volunteer.jsx
 │   │   │   ├── Donate.jsx             ← intro + large impact figure + bank-transfer card (icon-only copy buttons) + blue banner (WaveDivider) with Email/WhatsApp buttons
@@ -264,7 +284,8 @@ tide-new/
 │   ├── config/
 │   │   ├── abl.js                ← resource types: TAB_STYLE_MAP, getTabStyle, TYPE_COLORS, getTypeColors
 │   │   ├── library.js            ← LIBRARY_PAGE_SIZE (9), libraryTypeKey, libraryTypeColors
-│   │   └── publications.js       ← Publications thresholds (THRIVE_PAGE_SIZE 12, TIDE_PAGE_SIZE 12, NEW_BADGE_DAYS 120, LANDSCAPE_RATIO 1.2), HERO_CHART (both off), TYPE_ICON_RULES, SCHEMA_TYPE_BY_ICON, PUBLICATION_PAGES
+│   │   ├── publications.js       ← Publications thresholds (THRIVE_PAGE_SIZE 12, TIDE_PAGE_SIZE 12, NEW_BADGE_DAYS 120, LANDSCAPE_RATIO 1.2), HERO_CHART (both off), TYPE_ICON_RULES, SCHEMA_TYPE_BY_ICON, PUBLICATION_PAGES
+│   │   └── partners.js           ← Partners rules: PRIORITY_ORDER, LAST_CATEGORIES (Others last), SLIDE_INTERVAL_MS, SLIDE_RESUME_MS (also imported by scripts/lib/partners-snapshot.js)
 │   │
 │   ├── utils/
 │   │   ├── imgSrc.js             ← imgSrc(path): prefixes BASE_URL (NOT idempotent — see §11)
@@ -274,17 +295,21 @@ tide-new/
 │   │   ├── libraryFilters.js     ← Resource Centre: LIBRARY_GRADES (Foundational first), sortGrades, applyLibraryFilters (sort subject|type|owner, dir asc|desc), facetOptions (counts follow the other filters), OWNER_PINNED (TIDE Foundation first), typeParamKey, linkParts; re-exports normKey/optionsFor/orderFilterOptions
 │   │   ├── publicationFilters.js ← Publications: filters (search/type/field/year), order (date, ties by title, undated last), facets, URL params, paginate, groupByYear, yearCounts, stats, reportPeriod/formatPeriod, latestOfType, countOfTypes, isNew, safeLink, sourceOf, sourceName, typeIconKey, highlightParts, JSON-LD
 │   │   ├── publicationPhotos.js  ← getPublicationPhoto(id, 'thumb'|'full'), getPublicationThumb(id) (src + size + frame) from the publications photo manifest
+│   │   ├── partnerFilters.js     ← Partners: priorityRank, comparePartners, groupPartners (sections A→Z, Others last), matchesPartner, filterGroups
+│   │   ├── partnerPhotos.js      ← getPartnerLogo(id) → { src, width, height } from the partners logo manifest
 │   │   ├── focusRing.js          ← focusRing(radius): focus-visible ring classes keeping a control's own shape
 │   │   ├── navActive.js          ← Header active state: activeTopIndex, activeLeaf (most specific match)
 │   │   ├── videoLinks.js         ← getVideoEmbedUrl: Drive → /preview, YouTube → youtube-nocookie embed (needs the CSP frame-src entry), else null
 │   │   └── libraryPhotos.js      ← getLibraryPhoto(id, 'thumb'|'full') from the library photo manifest
 │   │
 │   ├── data/                     ← AUTO-GENERATED — never edit
-│   │   ├── *.json                ← 28 JSON files (17 pages + 9 shared from yaml-to-json.js, + the 2 photo manifests); git-tracked
+│   │   ├── *.json                ← 29 JSON files (17 pages + 9 shared from yaml-to-json.js, + the 3 photo manifests); git-tracked
 │   │   ├── pramaan-library-photos.json   ← Resource Centre id → synced photo paths — from scripts/sync-pramaan-library.js (not content:sync)
 │   │   ├── publications-photos.json      ← Publications id → synced thumbnail paths + pixel sizes — from scripts/sync-publications.js
+│   │   ├── partners-photos.json          ← Partners id → synced logo path + pixel size — from scripts/sync-partners.js
 │   │   ├── sheets/pramaan-library.json   ← Resource Centre snapshot (consented rows, allowlisted fields) — from scripts/sync-pramaan-library.js
-│   │   └── sheets/publications.json      ← Publications snapshot (TIDE + THRIvE rows, allowlisted fields) — from scripts/sync-publications.js
+│   │   ├── sheets/publications.json      ← Publications snapshot (TIDE + THRIvE rows, allowlisted fields) — from scripts/sync-publications.js
+│   │   └── sheets/partners.json          ← Partners snapshot (allowlisted fields; empty until the owner's setup) — from scripts/sync-partners.js
 │   │
 │   └── test/                     ← Vitest + Testing Library (see §12)
 │       ├── setup.js · utils/renderWithProviders.jsx
@@ -295,7 +320,7 @@ tide-new/
 ├── public/
 │   ├── 404.html                  ← GitHub Pages deep-link redirect (pairs with index.html's restorer)
 │   ├── robots.txt · sitemap.xml  ← hard-code https://tideinternational.org (there is no public/llms.txt — /llms.txt is generated, see siteDataPlugin)
-│   └── assets/                   ← images; assets/images/pramaan-library/ and assets/images/publications/ hold the synced Resource Centre / Publications WebPs; assets/images/shared/ holds the logo, banner texture and placeholder.svg
+│   └── assets/                   ← images; assets/images/pramaan-library/, assets/images/publications/ and assets/images/partners/ hold the synced Resource Centre / Publications / Partners WebPs; assets/images/shared/ holds the logo, banner texture and placeholder.svg
 │
 ├── scripts/
 │   ├── yaml-to-json.js          ← YAML → JSON sync (predev/prebuild hook)
@@ -308,9 +333,12 @@ tide-new/
 │   ├── sync-publications.js     ← Publications sync: snapshot + thumbnails (same photo/time limits as the library sync)
 │   ├── lib/publications-snapshot.js ← its rules: allowlist, Field of Work splitting (FIELDS_WITH_COMMAS), email scrub, per-page removal limits
 │   ├── lib/publications-images.js ← thumbnail rendering (sharp): trim borders, TIDE whole, THRIvE 3:4…16:9 — tested in src/test/scripts/
+│   ├── sync-partners.js         ← Partners sync: snapshot + logos (same photo/time limits)
+│   ├── lib/partners-snapshot.js ← its rules: allowlist, priority check (PRIORITY_ORDER), name-is-link, possible-duplicate per section, email scrub, removal limits
+│   ├── lib/partners-images.js   ← logo rendering (sharp): trim (trimBorders from publications-images.js), fit ≤ 400×400, transparency kept, never cropped
 │   ├── lib/snapshot-core.js     ← shared rules for any Sheet sync: safe ids, content hash, photo plan, removal/photo-deletion limits, Drive-link readers, photoFileBase, cleanString — tested in src/test/scripts/
 │   ├── lib/sync-runner.js       ← shared I/O for every sync script: .env.development loader (per prefix), token redaction, fetch + retry, report, GITHUB_OUTPUT, photo download/delete loops — tested in src/test/scripts/syncRunner.test.js
-│   ├── ci/alert-issue.sh        ← open/update/close the owner-alert GitHub Issues (used by all three workflows)
+│   ├── ci/alert-issue.sh        ← open/update/close the owner-alert GitHub Issues (used by all four workflows)
 │   └── a11y-audit.cjs           ← axe-core scan across every route (manual — see §12). Scrolls the full page first so whileInView animations settle before scanning — don't shorten that wait, it was added after a confirmed false positive.
 │
 ├── docs/
@@ -325,7 +353,9 @@ tide-new/
 │   ├── PRAMAAN-LIBRARY-SHEET-SCHEMA.md      ← which columns the library reads and who gets published
 │   ├── PUBLICATIONS-SETUP-GUIDE.md          ← owner setup for the Publications Sheet → /tide/publications + /thrive/publications
 │   ├── PUBLICATIONS-SHEET-SCHEMA.md         ← which columns the Publications sync reads and who gets published
-│   ├── STAKEHOLDER-REVIEW-2026-11-28.md     ← Publications Sheet questions parked for the owner's 2026-11-28 stakeholder meeting
+│   ├── PARTNERS-SETUP-GUIDE.md              ← owner setup for the Partners Sheet → /about/our-partners
+│   ├── PARTNERS-SHEET-SCHEMA.md             ← which columns the Partners sync reads, who gets published, the order
+│   ├── STAKEHOLDER-REVIEW-2026-11-28.md     ← Publications (§1–6) and Partners (§7) Sheet questions parked for the owner's 2026-11-28 stakeholder meeting
 │   ├── PRAMAAN-HARDENING-PLAN.md · OPERATIONS-*.md · PLATFORM-LIMITS.md  ← current plan, inventory, runbook, free-tier limits
 │   ├── ARCHITECTURE.html · ARCHITECTURE-DATAFLOW.html  ← interactive system diagrams (standalone)
 │   └── specs/                               ← site-restructure-plan.md, stranded-pages-review.md (historical), multilingual-i18n-spec.md (historical — framework removed), etc.
@@ -334,9 +364,11 @@ tide-new/
 └── .github/workflows/           ← (and .github/dependabot.yml: monthly pull requests updating the SHA-pinned actions)
     ├── deploy.yml                  ← lint → content:validate → unit tests → build → deploy to GitHub Pages; alert Issue on failure
     ├── sync-pramaan-library.yml    ← runs scripts/sync-pramaan-library.js every 6 h at :47, on Sheet change and manually; own concurrency group
-    └── sync-publications.yml       ← runs scripts/sync-publications.js every 6 h at :27, on Sheet change and manually; own concurrency group publications-sync
+    ├── sync-publications.yml       ← runs scripts/sync-publications.js every 6 h at :27, on Sheet change and manually; own concurrency group publications-sync
+    └── sync-partners.yml           ← runs scripts/sync-partners.js every 6 h at :07, on Sheet change and manually; own concurrency group partners-sync
 apps-script/pramaan-library/Code.gs ← the Resource Centre Sheet's Apps Script v1 (source of truth, pasted into Google by the owner; no public listing; consent filter)
 apps-script/publications/Code.gs    ← the Publications Sheet's Apps Script v1 (same pattern; no approval column — every TIDE/THRIvE row with a title)
+apps-script/partners/Code.gs        ← the Partners Sheet's Apps Script v1 (same pattern; no approval column — every row with a type and a name)
 ```
 
 ---
@@ -633,6 +665,15 @@ Each page has its own layout. Both pages (`src/pages/publications/`) render `Seo
 - `PublicationBits.jsx`: `NewBadge({ date, data, now })` (`data.newBadge` when `isNew(date, now, NEW_BADGE_DAYS)`, plus `data.a11y.newLabelTemplate` for screen readers), `SourceLine({ url, data, compact, className })` (THRIvE only: an "opens elsewhere" arrow + the name — `sourceName(host, data.source.names)` or the host — or an outlined `data.source.doi` tag; `data.source.label` as a CSS tooltip and for screen readers), `Highlight({ text, terms })` (`<mark>` via `highlightParts`).
 - `TypeIcon({ type, className = 'h-4 w-4' })` — one lucide icon per family (`typeIconKey` → `TYPE_ICON_RULES`); decorative. `typeStyles.js` — static Tailwind class sets: `FAMILY_STYLE` per family (`tint`, `veil`, `icon`), `FRAME` (`landscape`, `card`, `portrait`), `DOT_PATTERN`, `LINE_PATTERN`, `DRIFT`, `DRIFT_SLOW`.
 
+### Partners components (`src/components/partners/`)
+
+Used by `src/pages/about/OurPartners.jsx`: `PageHero` with `HeroStats` (`CountUp` figures; `meta.stats`) and `aside` = `PartnerConstellation` (top-priority real logos, sorted by `comparePartners`); then `PartnerIndexBar` (sticky); then the list — one `PartnerSlider` per section from `groupPartners` (§6) inside `SliderConductorContext`, on a spine (wide screens: a line whose fill is `useScroll` progress of the list) — or, while searching, one flat grid of `PartnerCard`s (`caption` = section name) from `filterGroups`; then a navy band with two `Button`s (`cta`). The section "being read" (`activeKey`) is the last heading above `READ_LINE` (170px: header + bar), updated on scroll (rAF); tabs jump with `scrollIntoView` (instant under reduced motion) and focus the heading. Text: `about-our-partners.json` `meta`, `directory`, `cta`.
+- `PartnerConstellation({ partners })` — `aria-hidden`; up to 9 discs at fixed slots (biggest = first in priority order) joined by curved threads (quadratic paths in a 100×90 viewBox, bending left/right in turn, gradient-stroked so they fade into the discs) that draw in (`pathLength`), with small lights travelling outwards along them (SVG `animateMotion`; not drawn under reduced motion or off screen); discs pop in (spring), then float gently while the banner is in view (`useInView`); a slow ring breathes from the centre disc. Hidden below `sm`. Reduced motion: still (MotionConfig).
+- `PartnerIndexBar({ groups, activeKey, onJump, headingId, search, text, searching })` — `sticky top-[70px] z-30`, translucent with blur; `<nav aria-label={text.jumpLabel}>` of tabs (label + count; `aria-current="location"` + a `layoutId` underline on the active one; the row scrolls sideways with edge fades and keeps the active tab in view without scrolling the page); not rendered while searching. `search` = `{ input, setInput, inputRef }` → `listing/SearchField` (now takes `inputRef`); on phones it folds into an icon button (`text.searchOpen`) with a close button (`text.searchClose`) that clears it.
+- `sliderConductor.js` — `useSliderConductor(intervalMs)` (page; one `setInterval`; each tick advances only the registered slider that may move, is ≥ 60% on screen and is nearest the window's middle; nothing while `document.hidden`) and `useConductedSlider(key, memberRef)` (slider; `memberRef.current` = `{ el, canMove(), advance() }`). Without a provider, sliders never move on their own.
+- `PartnerSlider({ group, index, text, suspended, headingId, active })` — `group` = `{ key, label, partners }`; a `motion.section` (fade-up once in view) with a spine node (wide screens; filled when `active`) or a small amber `01` eyebrow (phones), the heading (`tabIndex=-1`, `scroll-mt-[150px]`), "{count} partners", and — when the row overflows — one control pill: previous / next (a screenful, `scrollBy` 85% + snapping; disabled at the ends), the visible range (`text.slider.position`, "1–5 of 23", hidden on phones) and play/pause (`aria-label` from `text.slider.*`; its own look: a 44px target around a 36px disc — filled blue when paused (grows and glows on hover), white with a circling blue arc while playing (arc hidden under reduced motion); the icons cross-fade and rotate into each other). The `<ul>` hides the native scrollbar; a slim `aria-hidden` track below it shows the visible share and position and can be clicked or dragged (pointer capture); edges fade with `mask-image` (20px on phones, 56px wider; fixed class strings), except while focus is inside. Starts paused (`SLIDES_START_PAUSED`); when playing, the conductor may advance it one card (wrapping) while not hovered, no focus inside, not `suspended`, overflowing and no manual move in the last `SLIDE_RESUME_MS`. Cards slide in from the right (inner `motion.div`, never the `<li>` — a transformed `<li>` shifts its snap point). Each `<li>` is `relative` (keeps `sr-only` text and the stretched link inside the scroller). `w-[40%]` on phones so a third card peeks in.
+- `PartnerCard({ partner, text, caption, tier, order })` — a 3:2 tile built as a 3D object (`.partner-3d` frame / `-face` / `-float` logo at `translateZ` / `-glare` / `-ground` shadow in `src/index.css`): a mouse over the card tilts it towards the pointer (CSS variables `--rx/--ry/--mx/--my` set by the figure's pointer handlers, no re-render; none on touch or under reduced motion) and linked cards rise (`--lift`). A 1px frame whose look depends on `tier` (`partnerTier`): `feature` = blue gradient halo + glow + larger logo + a light sweep once in view (`order` staggers it); `high` = faint blue ring; `''` = plain border. The logo (`getPartnerLogo`, `object-contain`, `alt=""`) or the initials (`partnerInitials`, `aria-hidden`) when there is no logo, it failed to load, or it is a `placeholder`. Caption: the name (left-aligned, `line-clamp-2` with 2 lines always reserved, full name in `title`) and, with a website, its domain (`websiteLabel`) + ↗; the line is reserved without one, so captions align. With `partner.website` the link is stretched over the card (`after:absolute after:inset-0`; focus ring on the card), opens in a new tab (`rel="noopener noreferrer"`, `text.opensInNewTab`), and the card lifts / the name turns blue on hover; cards without a website don't react. `caption` = a small pill with the section name (search results).
+
 ### Layout components
 
 - `Layout` — `{ children }`; skip link (text from `navigation.yaml` `skipLink`), `Header`, `AnimatePresence mode="wait"` around `motion.main` keyed by `pathname`, `Footer`; scrolls to top on pathname change (not on query-only changes). Does not move focus on navigation.
@@ -719,7 +760,7 @@ imgSrc('https://…')                // → returned as-is (also data: URLs)
 imgSrc('')                         // → ''  (null/undefined too)
 ```
 
-Use it for any image path that comes from YAML/JSON so it works on both `/` (dev) and `/tide-testing/` (GitHub Pages). **It is not idempotent** — see the gotcha in §11. Some files (Home, OurPartners, Header, Footer, PageHero, SeoHead, ErrorBoundary) instead build `${import.meta.env.BASE_URL}${path}` by hand; that only works because `yaml-to-json.js` strips the leading `/` from `/assets/...` values.
+Use it for any image path that comes from YAML/JSON so it works on both `/` (dev) and `/tide-testing/` (GitHub Pages). **It is not idempotent** — see the gotcha in §11. Some files (Home, Header, Footer, PageHero, SeoHead, ErrorBoundary) instead build `${import.meta.env.BASE_URL}${path}` by hand; that only works because `yaml-to-json.js` strips the leading `/` from `/assets/...` values.
 
 ### imagePlaceholder.js
 
@@ -760,13 +801,17 @@ Generic, pure helpers for snapshot listing pages (Resource Centre and Publicatio
 
 `src/config/publications.js` (code, not YAML — a number changes here, not in the content files): `THRIVE_PAGE_SIZE` (12 per THRIvE page), `TIDE_PAGE_SIZE` (12 cards per TIDE library page; pages only above it), `NEW_BADGE_DAYS` (120), `LANDSCAPE_RATIO` (1.2), `HERO_CHART` (`{ TIDE: false, THRIvE: false }`; chart off — uneven yearly output and a part-done current year read as decline), `TYPE_ICON_RULES` (ordered `{ iconKey, keywords }`; the first rule with a keyword in the type wins, else `file`), `SCHEMA_TYPE_BY_ICON` (`{ article: 'ScholarlyArticle', book: 'Book' }`), `PUBLICATION_PAGES` (`{ TIDE: { path: '/tide/publications' }, THRIvE: { path: '/thrive/publications' } }`, used for SEO). Tested in `src/test/pages/publications.test.jsx`.
 
+### partnerFilters.js, partnerPhotos.js, config/partners.js
+
+`src/utils/partnerFilters.js`: `priorityRank(p)` (index in `PRIORITY_ORDER`, capitals/spaces ignored; unknown/empty → `PRIORITY_ORDER.length`), `comparePartners` (priority, then name A→Z, then id), `groupPartners(rows)` → `[{ key, label, partners }]` (one per type via `normKey`; label = the spelling most rows use; sections A→Z with `LAST_CATEGORIES` last), `matchesPartner(p, query)` (every word in the name; case- and accent-insensitive), `filterGroups(groups, query)` (drops empty sections), `partnerInitials(name)` (first letters of the first two significant words; a web address typed as the name uses its site name), `partnerTier(priority)` (`'feature'` for the top priority, `'high'` for the next, else `''`), `websiteLabel(url)` (hostname without `www.`; `''` for non-http(s)). `src/utils/partnerPhotos.js`: `getPartnerLogo(id)` → `{ src, width, height }` (already `imgSrc`-resolved) or `null` (also for a manifest entry marked `placeholder`). `src/config/partners.js` (plain constants, also imported by `scripts/lib/partners-snapshot.js` so the page and the sync's report agree): `PRIORITY_ORDER` (`['Extremely high', 'High', 'Medium', 'Low']`), `LAST_CATEGORIES` (`['Others', 'Other']`), `SLIDES_START_PAUSED` (true), `SLIDE_INTERVAL_MS` (4500; one row per step), `SLIDE_RESUME_MS` (8000), `CONSTELLATION_MAX` (9), `CONSTELLATION_MIN` (3). Tested in `src/test/pages/ourPartners.test.jsx`.
+
 ### focusRing.js and navActive.js
 
 `focusRing(radius)` returns the `focus-visible` ring classes plus the given `rounded-*` class (the global `:focus-visible` rule sets a 4px radius; see `FOCUS_PILL`). `activeTopIndex(items, path)` → index of the one top-level menu entry to highlight (longest matching `to`; on a tie the entry where the link sits least deep, then the first); `activeLeaf(items, path)` → the `to` of the most specific matching link anywhere in the menu. Items are `navigation.yaml` entries (`to` links, `children` dropdowns, `subItems` nested groups). Tested in `src/test/components/Header.test.jsx`.
 
 ### Sync script helpers (`scripts/lib/`, Node only)
 
-Not bundled into the site; used by `scripts/sync-*.js`. **`snapshot-core.js`** (pure): `THRESHOLDS`, `isSafeId`, `contentHash`, `serializeSnapshot`, `planPhotos(tabbedSnapshot, photos, manifest)`, `photoDeletionError`, `photosFromExport`, `photoFileBase(id)`, `cleanString(v)` (trim → string or null) and `cleanStringCollapseSpaces(v)` (also squeezes inner whitespace — Publications uses it), `asSingleTab(tab, resources)`, `planListPhotos(tab, resources, photos, manifest)`. Two Drive-link readers, kept apart on purpose: `extractDriveFileId` reads `/d/<id>` only (what `planPhotos` uses), `extractDriveFileIdAnyLink` also reads Form-upload `?id=<id>` links (10+ chars); `library-snapshot.js` and `publications-snapshot.js` re-export the latter **as `extractDriveFileId`**. **`sync-runner.js`** (I/O): `loadLocalEnv(prefix)`, `createRedactor(token)`, `createFetchJson({ redactToken, timeoutMs })`, `readJson`, `isInsideAssetsDir(dir, absPath)`, `setOutputs`, `createReport({ reportPath, summaryTitle, setupGuide, workflowName })` (push to `errors`/`refused`/`problems`/`notes`, then `write(outcome)`), `fetchExport`, `notePatExpiry`, `refuseUnlessAllowed` (exits 1), `fetchPhotos` (backfill + capped downloads via the script's own `processPhoto`), `deletePhotos`, `writeResults`, `runSync(main, …)` (failure report + exit 1). Paths, names, messages, stats line and image processing stay in each sync script.
+Not bundled into the site; used by `scripts/sync-*.js`. **`snapshot-core.js`** (pure): `THRESHOLDS`, `isSafeId`, `contentHash`, `serializeSnapshot`, `planPhotos(tabbedSnapshot, photos, manifest)`, `photoDeletionError`, `photosFromExport`, `photoFileBase(id)`, `cleanString(v)` (trim → string or null) and `cleanStringCollapseSpaces(v)` (also squeezes inner whitespace — Publications uses it), `asSingleTab(tab, resources)`, `planListPhotos(tab, resources, photos, manifest)`. Two Drive-link readers, kept apart on purpose: `extractDriveFileId` reads `/d/<id>` only (what `planPhotos` uses), `extractDriveFileIdAnyLink` also reads Form-upload `?id=<id>` links (10+ chars); `library-snapshot.js`, `publications-snapshot.js` and `partners-snapshot.js` re-export the latter **as `extractDriveFileId`**. **`sync-runner.js`** (I/O): `loadLocalEnv(prefix)`, `createRedactor(token)`, `createFetchJson({ redactToken, timeoutMs })`, `readJson`, `isInsideAssetsDir(dir, absPath)`, `setOutputs`, `createReport({ reportPath, summaryTitle, setupGuide, workflowName })` (push to `errors`/`refused`/`problems`/`notes`, then `write(outcome)`), `fetchExport`, `notePatExpiry`, `refuseUnlessAllowed` (exits 1), `fetchPhotos` (backfill + capped downloads via the script's own `processPhoto`), `deletePhotos`, `writeResults`, `runSync(main, …)` (failure report + exit 1). Paths, names, messages, stats line and image processing stay in each sync script.
 
 ### libraryFilters.js
 
@@ -795,7 +840,7 @@ npm run content:bootstrap  # Writes starter shared/navigation.yaml + footer.yaml
 
 Walks all of `content/`; a YAML parse error is an error (exit 1), a missing image is only a warning (exit 0). Images are checked only for values under the keys `photo, src, logo, coverImage, image, poster, img, heroPhoto, mainPhoto, diagramPhoto, backgroundImage, donorPoster` **and** only when the value starts with `/` and isn't http(s). So values without a leading slash, other keys (e.g. `photo1`/`photo2`), and image arrays of bare strings are not checked. It does not check hrefs/routes.
 
-**Consistency errors (exit 1):** via `scripts/contentConsistency.js`, every string in every YAML (plus the `llms.txt` template) is scanned. Any email address that differs from `site.yaml` `email` is an error, and so is any lives-impacted total (a `NN,NNN+` / `NNNNN+` figure in the same sentence as "lives / people / impacted / changed", or a bare figure whose sibling fields say so) that differs from `site.yaml` `livesImpacted`. Other metrics such as "15,000+ students" are deliberately not flagged. To change the email or the figure, edit `site.yaml` and then every page string that quotes it. CI (`deploy.yml`) runs the validator before building, so an error stops the deploy. It also checks the Resource Centre snapshot (`checkLibrarySnapshot()`: shape, unique ids, allowlisted fields only, no e-mail addresses, `meta.total`, photo manifest paths/files), the Publications snapshot (`checkPublicationsSnapshot()`: the same checks plus `org` TIDE/THRIvE, `date` `YYYY-MM-DD` or null, `fields` a list, http(s)-only `link`/`photoUrl`, `meta.counts` per org) and `abl-contribute.yaml` `formUrl` (empty → warning; anything but a Google Forms link → error).
+**Consistency errors (exit 1):** via `scripts/contentConsistency.js`, every string in every YAML (plus the `llms.txt` template) is scanned. Any email address that differs from `site.yaml` `email` is an error, and so is any lives-impacted total (a `NN,NNN+` / `NNNNN+` figure in the same sentence as "lives / people / impacted / changed", or a bare figure whose sibling fields say so) that differs from `site.yaml` `livesImpacted`. Other metrics such as "15,000+ students" are deliberately not flagged. To change the email or the figure, edit `site.yaml` and then every page string that quotes it. CI (`deploy.yml`) runs the validator before building, so an error stops the deploy. It also checks the Resource Centre snapshot (`checkLibrarySnapshot()`: shape, unique ids, allowlisted fields only, no e-mail addresses, `meta.total`, photo manifest paths/files), the Publications snapshot (`checkPublicationsSnapshot()`: the same checks plus `org` TIDE/THRIvE, `date` `YYYY-MM-DD` or null, `fields` a list, http(s)-only `link`/`photoUrl`, `meta.counts` per org), the Partners snapshot (`checkPartnersSnapshot()`: shape with `section: "partners"`, id/name/type present, unique ids, allowlisted fields, http(s)-only `website`/`photoUrl`, no e-mail address, `meta.total`, logo paths inside `assets/images/partners/` with their files) and `abl-contribute.yaml` `formUrl` (empty → warning; anything but a Google Forms link → error).
 
 ### File naming convention
 
@@ -973,6 +1018,27 @@ Google Sheet "TIDE THRIvE Publications (Responses)" (Google Form responses; "Ema
 
 Snapshot: `{ schemaVersion: 1, section: "publications", success, lastUpdated, contentHash, resources, meta: { total, counts: { TIDE, THRIvE } } }`; each row has exactly `id, org, date, title, type, fields, description, citation, link, photoUrl` (`fields` a list; `citation` THRIvE only; `date` `YYYY-MM-DD` or null). Safety rules, checked per page: a page that had rows suddenly has none, more than max(10, 20%) of a page's rows or of the thumbnails would go, or the data exceeds 2 MB → nothing is published unless run with `allow_large_change`. Secrets: `PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN`; Script Properties as for the library (`SYNC_TOKEN`, `GITHUB_PAT` = token `publications-sheet`, `GITHUB_REPO`, `ALERT_EMAIL`; `GITHUB_WORKFLOW` defaults to `sync-publications.yml`). Issue titles: "Publications sync failed — the publications pages are not updating" (`automation-alert`), "Publications Sheet: some rows need attention" (`sheet-needs-attention`). Row problems never block (they are listed in the "some rows need attention" issue), including `possible-duplicate` when a title repeats on one page (published anyway). Photo manifest entry: `{ fileId, modifiedTime, thumbWidth, thumbHeight, fullWidth, fullHeight, thumb, full }` (the page uses the sizes for `width`/`height` and the image's own ratio inside the component's fixed frame). Owner docs: `docs/PUBLICATIONS-SETUP-GUIDE.md`, `docs/PUBLICATIONS-SHEET-SCHEMA.md` (its "Thumbnails" section explains the image rules). A new Field of Work option containing a comma must be added to `FIELDS_WITH_COMMAS` (with a test).
 
+### Partners (third Sheet integration)
+
+Same snapshot mode as Publications. **Not live yet (2026-11-21):** `src/data/sheets/partners.json` is committed empty (`section: "partners"`, no rows) and `partners-photos.json` as `{}`, so `/about/our-partners` shows `directory.empty` until the owner's setup (`docs/PARTNERS-SETUP-GUIDE.md`). A local design preview (manifest `fileId: "preview"`) must never be committed.
+
+```
+Google Sheet "TIDE/THRIvE Partners (Responses)" (one tab "Form Responses 1"; 113 rows on 2026-11-21)
+  → apps-script/partners/Code.gs v1 — token-gated export/fetchImage only. COLUMNS (by header text): Timestamp,
+    Type of partner*, Priority*, Name of the partner*, Website, Logo*, Hide from website (* = required header).
+    "Column 2" and "Notes for Jwalin- to remove?" are never read; a line with only those filled is not a row.
+    Publishes a row with a type and a name unless "Hide from website" = Yes. id = "PA-" + 10 hex of SHA-256 of the
+    Timestamp (or of type + name for a row without one). fetchImage: PNG/JPEG/WebP/GIF ≤ 8 MB as the original
+    file (transparency), else Drive's thumbnail renderer. Heartbeat 06:00 UTC.
+  → .github/workflows/sync-partners.yml (every 6 h at :07; group partners-sync) → scripts/sync-partners.js (npm run content:sync-partners)
+  → rules: scripts/lib/partners-snapshot.js (allowlist id/type/priority/name/website/photoUrl, PRIORITY_ORDER check,
+    www. completion, http(s) only, name-is-link, missing-logo, possible-duplicate within a section, email scrub, removal limits)
+  → logos: scripts/lib/partners-images.js → <id>-logo.webp (≤ 400×400); manifest entry { fileId, modifiedTime, thumbWidth, thumbHeight, thumb }
+  → commits src/data/sheets/partners.json + src/data/partners-photos.json + public/assets/images/partners/ in one commit, then starts deploy.yml
+```
+
+Snapshot: `{ schemaVersion: 1, section: "partners", success, lastUpdated, contentHash, resources, meta: { total } }`, rows sorted by id (the page orders them). Safety rules: the page had partners and gets none, more than max(10, 20%) of the partners or logos would go, or the data exceeds 2 MB → nothing is published unless `allow_large_change`. Secrets `PARTNERS_API_URL`, `PARTNERS_SYNC_TOKEN`; GitHub token `partners-sheet`. Issue titles: "Partners sync failed — the partners page is not updating", "Partners Sheet: some rows need attention". Owner docs: `docs/PARTNERS-SETUP-GUIDE.md`, `docs/PARTNERS-SHEET-SCHEMA.md`; Sheet questions: `docs/STAKEHOLDER-REVIEW-2026-11-28.md` §7.
+
 ---
 
 ## 9. Common Tasks
@@ -1086,11 +1152,13 @@ Local builds use `base: '/'`. To reproduce the GitHub Pages path bugs (e.g. doub
 
 There is **no e2e step** (run Playwright locally). Lint, `content:validate` and unit-test failures stop the deploy.
 
-Hardening (2026-11-21): the workflow's top-level permission is `contents: read`; `pages: write` + `id-token: write` are granted to the `deploy` job only (the build job runs npm install scripts and never gets them), and `notify` gets `contents: read` + `issues: write`. In all three workflows every action is pinned to a full commit SHA with the version in a comment (e.g. `actions/checkout@d23441a… # v6.1.0`); `.github/dependabot.yml` opens a monthly pull request when newer versions exist. `scripts/ci/alert-issue.sh` cuts an issue body at 60,000 characters (GitHub's limit is 65,536; the run summary keeps the full report) and puts a zero-width space after every `@` in it, so a title typed into a Form cannot notify a GitHub user.
+Hardening (2026-11-21): the workflow's top-level permission is `contents: read`; `pages: write` + `id-token: write` are granted to the `deploy` job only (the build job runs npm install scripts and never gets them), and `notify` gets `contents: read` + `issues: write`. In all four workflows every action is pinned to a full commit SHA with the version in a comment (e.g. `actions/checkout@d23441a… # v6.1.0`); `.github/dependabot.yml` opens a monthly pull request when newer versions exist. `scripts/ci/alert-issue.sh` cuts an issue body at 60,000 characters (GitHub's limit is 65,536; the run summary keeps the full report) and puts a zero-width space after every `@` in it, so a title typed into a Form cannot notify a GitHub user.
 
 **`.github/workflows/sync-pramaan-library.yml`** — runs `scripts/sync-pramaan-library.js` every 6 h (`47 */6 * * *`), on `workflow_dispatch` (sent by the Resource Centre Sheet's Apps Script after Sheet changes and by its daily heartbeat; input `allow_large_change` overrides the safety refusal) and manually. Commits the snapshot + WebPs + photo manifest in one commit as `github-actions[bot]`, then starts `deploy.yml` explicitly (a `GITHUB_TOKEN` push starts no workflow). Own concurrency group `pramaan-library-sync`, never cancelled. Opens `automation-alert` / `sheet-needs-attention` Issues; adds an empty commit when the repo has been quiet 45+ days so GitHub keeps scheduled workflows enabled. Needs `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN`, variable `ALERT_ASSIGNEE`. `npm ci --ignore-scripts`.
 
 **`.github/workflows/sync-publications.yml`** — the same shape for the Publications Sheet: runs `scripts/sync-publications.js` every 6 h (`27 */6 * * *`), on `workflow_dispatch` from the Publications Apps Script (edits, form submissions, daily heartbeat) and manually (`allow_large_change` input). Thumbnails are rendered by `scripts/lib/publications-images.js` (§8). Commits `src/data/sheets/publications.json`, `src/data/publications-photos.json` and `public/assets/images/publications/` in one commit, then starts `deploy.yml`. Own concurrency group `publications-sync`. Its `check` job skips the run with a notice (no alert) while `PUBLICATIONS_API_URL` / `PUBLICATIONS_SYNC_TOKEN` are missing **and** the committed snapshot is empty (it has had rows since 2026-11-20, so today a missing secret fails loudly). Issue titles: "Publications sync failed — the publications pages are not updating", "Publications Sheet: some rows need attention".
+
+**`.github/workflows/sync-partners.yml`** — the same shape for the Partners Sheet: `scripts/sync-partners.js` every 6 h (`7 */6 * * *`), on `workflow_dispatch` from the Partners Apps Script and manually (`allow_large_change`). Commits `src/data/sheets/partners.json`, `src/data/partners-photos.json` and `public/assets/images/partners/`, then starts `deploy.yml`. Own concurrency group `partners-sync`. Its `check` job skips quietly while `PARTNERS_API_URL` / `PARTNERS_SYNC_TOKEN` are missing **and** the committed snapshot is empty (the case until the owner's setup). Issue titles: "Partners sync failed — the partners page is not updating", "Partners Sheet: some rows need attention".
 
 Deployed URL: `https://<user>.github.io/tide-testing/`
 
@@ -1219,7 +1287,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Smaller known issues (reported, not fixed)
 
 - The 16 former stranded routes were removed with no redirects; they now render `NotFound` (§1 Routing). The 97 images only those pages used were deleted too (recover with `git checkout a4126d1 -- public/assets/images/<folder>`); The old one-off downloader `scripts/download-images.mjs` (a hard-coded list of the original WordPress URLs) was deleted on 2026-10-26; recover it with `git checkout a4126d1 -- scripts/download-images.mjs`.
-- `content:validate` doesn't check bare filenames (e.g. `logoGallery.images` in `about-our-partners.yaml`); a missing one shows the placeholder image, so check those by eye. The one nonexistent entry there (`image-33-e1699293507264.png`) was removed.
+- `content:validate` doesn't check bare filenames in YAML (lists whose folder a component adds); a missing one shows the placeholder image, so check those by eye. (The former `logoGallery.images` list on Our Partners was replaced by the Partners Sheet on 2026-11-21; its 42 logos are in git history.)
 - Deleted 2026-10-25 with the owner's approval: `ui/Badge.jsx`, `WhatsAppIcon`, `TodoPlaceholder`, `getDriveDownloadUrl` (and its tests), `src/App.css`, `src/assets/*`, `public/icons.svg`, `public/favicon.svg`, and 91 unreferenced images under `public/assets/images/` (recover with `git checkout a4126d1 -- <path>`). The Devanagari font families deliberately stay loaded.
 
 ---
@@ -1229,7 +1297,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 23 files, 288 tests (jsdom, src/test/**)
+npm test               # vitest run — 28 files, 334 tests (jsdom, src/test/**)
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```
@@ -1255,6 +1323,11 @@ npm run test:ui        # Vitest UI
 | `scripts/publicationsSnapshot.test.js` | 13 | Publications sync rules (Field of Work splitting, allowlist, email scrub, org spelling, links/dates, `www.`/`doi.org` completion, `possible-duplicate`, order, per-page limits, photo plan) |
 | `scripts/publicationsImages.test.js` | 6 | thumbnail rendering (`publications-images.js`): trims black bars, TIDE cover kept whole, tall THRIvE image cropped to exactly 3:4, 16:10 slide kept in its shape, wide logo strip cropped to 16:9, an all-border image left unchanged, non-image bytes throw |
 | `scripts/publicationsAppsScript.test.js` | 13 | the Publications Apps Script in a simulated Google environment (no public listing, never outputs email/Timestamp, publish gate + "Hide from website", link completion, ids incl. rows without a Timestamp, triggers, dispatch) |
+| `scripts/partnersAppsScript.test.js` | 15 | the Partners Apps Script in a simulated Google environment (no public listing, notes columns and Timestamp never output, a notes-only line is not a row, columns by header, publish gate + "Hide from website", website links, ids, Drive errors, fetchImage: unknown id refused, PNG sent as the original, SVG not sent as-is; triggers, dispatch) |
+| `scripts/partnersSnapshot.test.js` | 15 | Partners sync rules (priority matching, allowlist, email scrub, skipped rows, unknown priority reported, links, missing logo, name-is-link, duplicates per section, order, removal limits, logo plan, shared-logo placeholders) |
+| `scripts/partnersImages.test.js` | 4 | logo rendering: margin trimmed + whole fit, transparency kept, small logo not enlarged, non-image bytes throw |
+| `pages/ourPartners.test.jsx` | 10 | `partnerFilters` (priority rank, grouping + order, search, tiers, domains, initials) and the page (hero figures, tabs + one marked, sections + counts + website links with domain, rows start paused, `?search=` → one grid with section captions, typed search → URL → no-match → clear, invitation band, empty state) |
+| `components/sliderConductor.test.jsx` | 2 | the Partners sliders' shared clock: only the movable, mostly visible row nearest the middle moves; nothing while the tab is hidden or after unregistering |
 | `utils/siteDataPlugin.test.js` | 21 | JSON-LD generated from `site.yaml`, `transformHtml` (title/og:site_name/marker/escaping), `llms.txt` rendering, content-consistency detection (email / lives total) |
 | `utils/imagePlaceholder.test.js` | 4 | global image fallback, opt-out, recursion guard, listener cleanup |
 | `routing/routes.smoke.test.jsx` | 17 | lazy-imports each page in a `MemoryRouter` and checks it renders something (weak: not content) |

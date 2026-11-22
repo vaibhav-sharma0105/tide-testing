@@ -1,19 +1,8 @@
 import { FileText } from 'lucide-react'
 import PageHero from '../ui/PageHero'
+import HeroStats from '../ui/HeroStats'
+import withValue from '../ui/withValue'
 import { countOfTypes, publicationStats } from '../../utils/publicationFilters'
-
-// "{n} publications" → ['', <strong>12</strong>, ' publications']: the number is set in white, the
-// words stay muted. Templates come from the page's YAML (`stats`).
-function withValue(template, token, value) {
-  const [before, after = ''] = template.split(`{${token}}`)
-  return (
-    <>
-      {before}
-      <strong className="font-semibold text-white tabular-nums">{value}</strong>
-      {after}
-    </>
-  )
-}
 
 // The dark navy page banner shared by both Publications pages, plus a line of figures counted
 // from the snapshot rows: count, distinct types, earliest year and — when the page's YAML lists
@@ -32,13 +21,7 @@ export function PublicationsHero({ data, rows, chart }) {
   const proofTemplate = others === 1 ? t.socialProofSingular : t.socialProofTemplate
   return (
     <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.subtitle || undefined} aside={chart || undefined}>
-      {items.length > 0 && (
-        <ul className="mt-8 flex flex-wrap items-center gap-y-2 font-body text-sm text-white/75 md:text-base">
-          {items.map((node, i) => (
-            <li key={i} className={i > 0 ? 'ml-4 border-l border-white/25 pl-4' : ''}>{node}</li>
-          ))}
-        </ul>
-      )}
+      <HeroStats items={items} />
       {others > 0 && proofTemplate && (
         <p className="mt-3 font-body text-sm text-white/75 md:text-base">{withValue(proofTemplate, 'n', others)}</p>
       )}

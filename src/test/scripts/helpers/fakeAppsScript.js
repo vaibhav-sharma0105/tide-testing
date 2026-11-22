@@ -1,5 +1,5 @@
 // Shared test harness for the Apps Script tests (libraryAppsScript.test.js,
-// publicationsAppsScript.test.js, and the next Sheet integration's): runs a real Code.gs in a Node vm
+// publicationsAppsScript.test.js, partnersAppsScript.test.js, and the next Sheet integration's): runs a real Code.gs in a Node vm
 // sandbox with fake Google services, because it can't run on Google from CI. Not a test file itself
 // (vitest only picks up *.test.js).
 //
@@ -7,7 +7,7 @@
 //   props (Script Properties), cache (CacheService), fetches (UrlFetchApp calls),
 //   triggers (ScriptApp), sheets (tab name → rows, header first; tests may edit it), clock.t (now).
 // DriveApp.getFileById('missingFile0001') throws "No item with the given ID could be found"; every
-// other id returns a file last updated 2026-01-01T00:00:00Z.
+// other id returns a 3-byte PNG file last updated 2026-01-01T00:00:00Z ('svgFile00001' is an SVG).
 import fs from 'node:fs'
 import path from 'node:path'
 import vm from 'node:vm'
@@ -46,6 +46,7 @@ export function makeAppsScriptEnv({ code, now, sheets, spreadsheetName, timeZone
   const utilities = {
     DigestAlgorithm: { SHA_256: 'sha256' },
     computeDigest: (_alg, text) => [...createHash('sha256').update(text).digest()].map(b => (b > 127 ? b - 256 : b)),
+    base64Encode: bytes => Buffer.from(bytes.map(b => (b + 256) % 256)).toString('base64'),
   }
   if (timeZone !== undefined) utilities.formatDate = (d, _tz, _fmt) => d.toISOString().slice(0, 10) // the fake Sheet is in UTC
   const ctx = {
@@ -60,7 +61,9 @@ export function makeAppsScriptEnv({ code, now, sheets, spreadsheetName, timeZone
     SpreadsheetApp: { getActiveSpreadsheet: () => spreadsheet, openById: () => spreadsheet },
     DriveApp: { getFileById: id => {
       if (id === 'missingFile0001') throw new Error('No item with the given ID could be found')
-      return { getLastUpdated: () => new RealDate('2026-01-01T00:00:00Z') }
+      const mime = id === 'svgFile00001' ? 'image/svg+xml' : 'image/png'
+      return { getLastUpdated: () => new RealDate('2026-01-01T00:00:00Z'), getMimeType: () => mime, getSize: () => 3,
+        getBlob: () => ({ getContentType: () => mime, getBytes: () => [1, 2, 3] }) }
     } },
     Utilities: utilities,
     UrlFetchApp: { fetch: (url, opts) => { fetches.push({ url, opts }); return { getResponseCode: () => 204, getHeaders: () => ({}), getContentText: () => '' } } },

@@ -10,8 +10,9 @@
 > |---|---|---|---|
 > | "Contributing to Pramaan; Educators' Resource Bank (Responses)" (Resource Centre) | `pramaan-library-sheet` | `[Pramaan Library website]` | **Sync Pramaan Library** |
 > | "TIDE THRIvE Publications (Responses)" (Publications pages) — set up 2026-11-20; the owner said (2026-11-21) its token has Actions read/write and a calendar reminder one year out | `publications-sheet` (recommended name; the name actually used was not recorded) | `[Publications website]` | **Sync Publications** |
+> | "TIDE/THRIvE Partners (Responses)" (Partners page) — not set up yet (2026-11-21) | `partners-sheet` (recommended name) | `[Partners website]` | **Sync Partners** |
 >
-> The steps below are written for the Resource Centre Sheet. For the Publications Sheet do exactly the same in **its** Apps Script, with its token name and its workflow. Renewing one token never affects the other.
+> The steps below are written for the Resource Centre Sheet. For the Publications and Partners Sheets do exactly the same in **their own** Apps Script, with that token name and workflow. Renewing one token never affects the others.
 >
 > The older Pramaan Sheet's script and its token are no longer used by the website (see `docs/PRAMAAN-HARDENING-PLAN.md` §13).
 
@@ -55,7 +56,7 @@
 
 1. Apps Script editor → function dropdown → **`testDispatch`** → **Run**.
 2. The Execution log must say **`SUCCESS (HTTP 204)`** or **`SUCCESS (HTTP 200)`**, and GitHub → **Actions** shows a new **Sync Pramaan Library** run within a minute. (`HTTP 401`: token pasted wrongly; `403`: missing Actions permission; `404`: wrong repository chosen in Step 1.8 or wrong `GITHUB_REPO`.)
-3. Write the new token's expiry date in `docs/OPERATIONS-INVENTORY.md` (the matching token row — Resource Centre or Publications) **and in your calendar** (2 weeks before). `showStatus` shows it too if GitHub reported it.
+3. Write the new token's expiry date in `docs/OPERATIONS-INVENTORY.md` (the matching token row — Resource Centre, Publications or Partners) **and in your calendar** (2 weeks before). `showStatus` shows it too if GitHub reported it.
 
 If all three pass, you're done — no redeployment needed. Only the Script Property changed.
 

@@ -22,7 +22,9 @@
 | GitHub email: issue **"Pramaan Library Sheet: some rows need attention"** (label **`sheet-needs-attention`**) | The site updated, but some **Sheet rows** have problems (missing name, duplicate ID, bad link, unreadable photo). The issue lists them and closes itself when they're fixed. |
 | GitHub email: issue **"Publications sync failed — the publications pages are not updating"** (`automation-alert`) | The Publications sync is broken; both publications pages keep the last good version. Closes itself after the next good run. |
 | GitHub email: issue **"Publications Sheet: some rows need attention"** (`sheet-needs-attention`) | The publications pages updated, but some rows have problems (no title, no TIDE/THRIvE answer, bad link, unreadable date or thumbnail, the same title twice on one page — that one is still published). |
-| Email **"[Pramaan Library website] …"** or **"[Publications website] …"** from Google | That Sheet couldn't reach GitHub, or its GitHub token expires soon. |
+| GitHub email: issue **"Partners sync failed — the partners page is not updating"** (`automation-alert`) | The Partners sync is broken; `/about/our-partners` keeps the last good version. Closes itself after the next good run. |
+| GitHub email: issue **"Partners Sheet: some rows need attention"** (`sheet-needs-attention`) | The partners page updated, but some rows have problems (no type or name, a misspelled priority, no or unreadable logo, bad website link, a name that is a web address, the same name twice in one section — published anyway). |
+| Email **"[Pramaan Library website] …"**, **"[Publications website] …"** or **"[Partners website] …"** from Google | That Sheet couldn't reach GitHub, or its GitHub token expires soon. |
 | Email from Google "Apps Script failure" | A script trigger crashed (set to "notify immediately" during setup). |
 | The Resource Centre's "Last updated …" date is old | No content change has been published since then — fine if nobody edited the Sheet. |
 
@@ -40,8 +42,9 @@
 | Contribute button opens the wrong form, or says "Form link coming soon" | Change `formUrl`: `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md`. |
 | An unwanted publication appeared (every Form answer goes live) | In the Publications Sheet add a column headed `Hide from website` (once) and type `Yes` in that row — it disappears at the next update. Or delete the row. |
 | A publication is missing or on the wrong page | Its "TIDE / THRIvE" answer decides the page; it needs a title for that choice. The "Publications Sheet: some rows need attention" issue gives the reason. More: `docs/PUBLICATIONS-SETUP-GUIDE.md` → Troubleshooting. |
+| An unwanted partner appeared, or one is in the wrong place | In the Partners Sheet: fix its "Type of partner" (section) or "Priority" (order), or add a `Hide from website` column and type `Yes`. Order: Extremely high → High → Medium → Low, then A→Z. More: `docs/PARTNERS-SETUP-GUIDE.md` → Troubleshooting. |
 | Banner in GitHub Actions: "This scheduled workflow is disabled" | Click **Enable workflow**, then **Run workflow**. (GitHub disables schedules after 60 days without activity; the workflow's keep-alive step and the Apps Script heartbeat normally prevent this.) |
-| Want to republish now | Actions → **Sync Pramaan Library** or **Sync Publications** (data/photos) or **Deploy to GitHub Pages** (site code) → **Run workflow**. **Never use "Re-run" on an old run** — use Run workflow. |
+| Want to republish now | Actions → **Sync Pramaan Library**, **Sync Publications** or **Sync Partners** (data/photos) or **Deploy to GitHub Pages** (site code) → **Run workflow**. **Never use "Re-run" on an old run** — use Run workflow. |
 | More library problems | Full table: `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md` → "How you hear about problems" and "Troubleshooting". |
 | Something looks badly wrong after a change and you need the old version back | Ask the developer to `git revert` the change; every published version is in the repository history. |
 
@@ -49,11 +52,11 @@
 
 **Monthly (5 minutes)**
 - [ ] No open issues labelled `automation-alert` on GitHub.
-- [ ] GitHub → Actions → **Sync Pramaan Library** and **Sync Publications** show green runs in the last day.
+- [ ] GitHub → Actions → **Sync Pramaan Library**, **Sync Publications** and (once set up) **Sync Partners** show green runs in the last day.
 - [ ] The Resource Centre's "Last updated" date matches the last time the Sheet was edited.
 
 **Yearly (30 minutes)**
-- [ ] Renew each GitHub token **before** its expiry date (`pramaan-library-sheet`, `publications-sheet`; `MAINTENANCE-GITHUB-PAT-REFRESH.md`).
+- [ ] Renew each GitHub token **before** its expiry date (`pramaan-library-sheet`, `publications-sheet`, `partners-sheet`; `MAINTENANCE-GITHUB-PAT-REFRESH.md`).
 - [ ] Sign in to the Google account(s) that own the Sheets (Google may delete accounts unused for 2 years).
 - [ ] Walk `docs/OPERATIONS-INVENTORY.md`; update anything that changed and the "Last verified" dates.
 - [ ] Re-check `docs/PLATFORM-LIMITS.md` against the official pages (limits can change).
@@ -63,6 +66,6 @@
 **At a handover (owner changes)**
 - [ ] Follow `docs/MIGRATION-OVERVIEW.md` (Google side first, then GitHub).
 - [ ] Update GitHub variable `ALERT_ASSIGNEE` and Script Property `ALERT_EMAIL` to the new owner.
-- [ ] New owner creates their **own** GitHub tokens (one per Sheet) and puts each in `GITHUB_PAT` in that Sheet's script (Resource Centre, Publications).
-- [ ] New owner changes the `cron:` schedule once in `.github/workflows/sync-pramaan-library.yml` (e.g. the minute `47` → `53`) and in `.github/workflows/sync-publications.yml` (e.g. `27` → `33`) — so GitHub's schedule emails go to them (GitHub notifies whoever last changed the cron syntax; a comment edit may not count).
+- [ ] New owner creates their **own** GitHub tokens (one per Sheet) and puts each in `GITHUB_PAT` in that Sheet's script (Resource Centre, Publications, Partners).
+- [ ] New owner changes the `cron:` schedule once in `.github/workflows/sync-pramaan-library.yml` (e.g. the minute `47` → `53`) in `.github/workflows/sync-publications.yml` (e.g. `27` → `33`) and in `.github/workflows/sync-partners.yml` (e.g. `7` → `13`) — so GitHub's schedule emails go to them (GitHub notifies whoever last changed the cron syntax; a comment edit may not count).
 - [ ] Walk `docs/OPERATIONS-INVENTORY.md` together and fill every ⚠️ row.

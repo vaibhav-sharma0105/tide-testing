@@ -49,7 +49,7 @@ Find the YAML file for the page you want to edit. Naming follows the URL (`/abou
 | About → Why TIDE? | `content/pages/about-why-tide.yaml` |
 | About → Past Programs | `content/pages/about-past-programs.yaml` |
 | About → Our Team | `content/pages/about-our-team.yaml` |
-| About → Our Partners | `content/pages/about-our-partners.yaml` |
+| About → Our Partners (the text around the partner sliders — the partners themselves come from the Sheet, see below) | `content/pages/about-our-partners.yaml` |
 | About → Our Publications → TIDE Publications (`/tide/publications`; the text around the list — the publications themselves come from the Sheet, see below) | `content/pages/tide-publications.yaml` |
 | Education for Harmony | `content/pages/education-for-harmony.yaml` |
 | Education for Harmony → Organise your MCCx | `content/pages/get-involved-mccx.yaml` |
@@ -145,6 +145,30 @@ different sections:
 - The menu entries (About Us → Our Publications → TIDE / THRIvE Publications, and THRIvE Research Centre →
   THRIvE Publications) are in `content/shared/navigation.yaml` (see "Update navigation labels").
 
+### What a Partners editor can change
+
+The **Our Partners** page (`/about/our-partners`) shows one slider per type of partner. The **partners
+themselves** (type, priority, name, website and logo) do **not** come from YAML — they come from the Google
+Sheet "TIDE/THRIvE Partners (Responses)", which the partners Google Form fills. Add a partner by submitting the
+Form; correct one by editing its row in the Sheet (for example change its Priority to move it within its
+slider). Once the connection is set up (`docs/PARTNERS-SETUP-GUIDE.md`; not yet on 2026-11-21), changes reach
+the website within minutes. Until then, the page shows the "being updated" message.
+
+> **Every Form answer goes live** — there is no approval step. To take a partner off the website without
+> deleting it, add a column headed `Hide from website` to the Sheet and type `Yes` in that row.
+
+- Order: sections A→Z with "Others" last; inside each, Extremely high → High → Medium → Low, then A→Z by name.
+  These rules and the slider speed are set in code (`src/config/partners.js`) — ask a developer to change them.
+- `about-our-partners.yaml`: page title, badge, subtitle and breadcrumb name (`meta:`), the figures under the
+  title (`meta.stats`: "{n} partners", "{n} types of partnership" and their one-item versions), `directory:` —
+  the label of the row of section links, the search box, the "no match" and "being updated" messages, the
+  "{count} partners" line under each heading, the "1–5 of 23" position between the arrows (`slider.position`),
+  the slider button labels and the phone search buttons (`searchOpen` / `searchClose`) read by screen readers — and `cta:`,
+  the band at the bottom (title, subtitle, two buttons, each a `label` and a `to` page path starting with `/`).
+- A partner whose logo is missing, or who shares one picture with two or more others (such as a "No Logo
+  Available" image), is shown with the initials of its name. Upload a real logo in the Sheet to replace them.
+- Rules for the Sheet itself: `docs/PARTNERS-SHEET-SCHEMA.md`.
+
 > **Placeholders in `{curly braces}`.** Some Pramaan and shared phrases contain a word in curly braces, for example `"Grade {n}"`, `"View {name}"`, `"{name} — TIDE Pramaan"` or `"Visit TIDE on {platform}"`. The website fills these in automatically (the grade number, the resource name, …). You can reword the text around them, but **keep the `{word}` exactly as written** — if you delete or misspell it, the site will show the raw `{word}` or leave a gap.
 
 ### 2. Edit the text
@@ -209,7 +233,6 @@ public/assets/images/
                               (the grey fallback picture, see below)
   home/                     ← homepage photos
   about-our-team/           ← team portrait photos
-  about-our-partners/       ← partner logo files
   get-involved-volunteer/   ← volunteer gallery
   projects-mcc/             ← photos on the Organise your MCCx page
   projects-bettered/        ← two of these are used on the homepage; gallery-04 is also the photo for THRIvE research area 01
@@ -449,7 +472,7 @@ This will:
 - **Stop with an error** if any email address in `content/` (including the `llms.txt` template) is different from the one in `content/shared/site.yaml`, or if a lives-impacted total such as `40,000+` (a number sitting in a sentence about lives, people or impact) is different from `livesImpacted` in `site.yaml`. The message names the file and the field to fix
 - **Warn** when an image path written as `/assets/images/...` under a field named `photo`, `src`, `logo`, `image`, `poster`, `img`, `coverImage`, `heroPhoto`, `mainPhoto`, `diagramPhoto`, `backgroundImage` or `donorPoster` points to a file that is not in `public/`
 
-It is a helper, not a guarantee: it does not check other image field names, links, or images written **without** a leading slash. In particular, the partner logos on the Our Partners page are a list of bare file names (`logoGallery.images:` in `about-our-partners.yaml`; the page adds the folder itself), so a misspelled or missing name there is not caught. A missing file shows the grey placeholder instead of the logo. Always look at the page in the preview too.
+It is a helper, not a guarantee: it does not check other image field names, links, or images written **without** a leading slash. A missing file shows the grey placeholder instead of the picture. Always look at the page in the preview too.
 
 If you're using Path A — editing directly on GitHub — there's no check beforehand, but the live build runs this same check (plus the code checks and tests) before publishing. A YAML syntax error or a mismatched email / lives-impacted figure **stops the update** (the **Actions** tab shows a red ✕, and the site keeps showing the previous version). A wrong image path (only a warning) or a misspelled key does *not* stop it — it just shows up as a grey placeholder picture or missing text on the page.
 
@@ -531,5 +554,6 @@ You only need this if you're using Path B (terminal with local preview). Path A 
 - Files in `dist/` — auto-generated build output
 - The `public/assets/images/pramaan-library/` folder — filled in automatically from the Resource Centre's Google Sheet
 - The `public/assets/images/publications/` folder — filled in automatically from the Publications Sheet
+- The `public/assets/images/partners/` folder — filled in automatically from the Partners Sheet
 
 If you need to change layout, colours, or add new pages, that requires a developer. Everything else a visitor or search engine reads — including the search-engine "structured data" and page breadcrumbs — comes from YAML (`site.yaml` and each page's `breadcrumbName`).

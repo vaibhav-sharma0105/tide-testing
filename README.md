@@ -23,7 +23,7 @@ npm run dev            # syncs content, then starts Vite on http://localhost:517
 
 ### Environment variables
 
-None are needed to run or build the site: every page, including the Pramaan Resource Centre, reads committed data. `.env.development` is gitignored; `.env.example` lists the only variables, which are used just to run the two Sheet syncs locally (`npm run content:sync-pramaan-library`, `npm run content:sync-publications`):
+None are needed to run or build the site: every page, including the Pramaan Resource Centre, reads committed data. `.env.development` is gitignored; `.env.example` lists the only variables, which are used just to run the three Sheet syncs locally (`npm run content:sync-pramaan-library`, `npm run content:sync-publications`, `npm run content:sync-partners`):
 
 | Variable | Purpose |
 |---|---|
@@ -44,10 +44,11 @@ The Contribute page's Google Form link is not a variable: it is `formUrl` in `co
 | `npm run test:e2e` | Playwright specs in `e2e/` (starts the dev server on port 5173 if none is running) |
 | `npm run test:all` | Unit tests, then e2e |
 | `npm run content:sync` | Convert `content/**/*.yaml` into `src/data/*.json` |
-| `npm run content:validate` | Check YAML syntax and that referenced image files exist (a missing image is a warning); fails if any email or lives-impacted total in `content/` differs from `content/shared/site.yaml`, if the Resource Centre or Publications snapshot or its photo list is malformed, or if the Contribute `formUrl` is not a Google Forms link |
+| `npm run content:validate` | Check YAML syntax and that referenced image files exist (a missing image is a warning); fails if any email or lives-impacted total in `content/` differs from `content/shared/site.yaml`, if the Resource Centre, Publications or Partners snapshot or its photo list is malformed, or if the Contribute `formUrl` is not a Google Forms link |
 | `npm run content:bootstrap` | Write starter navigation/footer YAML if absent (safe to re-run) |
 | `npm run content:sync-pramaan-library` | Refresh the Resource Centre snapshot and photos from its Sheet (normally run by CI; needs the two variables above) |
 | `npm run content:sync-publications` | Refresh the Publications snapshot and thumbnails from its Sheet (normally run by CI; needs `PUBLICATIONS_API_URL` and `PUBLICATIONS_SYNC_TOKEN` in `.env.development`) |
+| `npm run content:sync-partners` | Refresh the Partners snapshot and logos from its Sheet (normally run by CI; needs `PARTNERS_API_URL` and `PARTNERS_SYNC_TOKEN` in `.env.development`) |
 | `node scripts/a11y-audit.cjs [port]` | axe accessibility scan of every route; needs a dev server already running on that port (default 5175, e.g. `npx vite --port 5175`); the report is written to the OS temp folder as `a11y-report.json` |
 
 ## Where content lives
@@ -75,7 +76,7 @@ The site is English only. Page text comes straight from the YAML-generated JSON.
 
 ## Deployment
 
-Pushing to `main` (or running the workflow manually) triggers `.github/workflows/deploy.yml`: `npm ci`, `npm run build`, upload `dist/`, deploy to GitHub Pages. The build sets the Vite base path to `/tide-testing/` when `GITHUB_ACTIONS` is set (see `vite.config.js`). Before building it runs `npm run lint`, `npm run content:validate` and `npm test` (a failure stops the deploy); it does not run the Playwright e2e specs. The two Sheet sync workflows (Resource Centre, Publications) start this one themselves after committing new data. The build needs no secrets.
+Pushing to `main` (or running the workflow manually) triggers `.github/workflows/deploy.yml`: `npm ci`, `npm run build`, upload `dist/`, deploy to GitHub Pages. The build sets the Vite base path to `/tide-testing/` when `GITHUB_ACTIONS` is set (see `vite.config.js`). Before building it runs `npm run lint`, `npm run content:validate` and `npm test` (a failure stops the deploy); it does not run the Playwright e2e specs. The three Sheet sync workflows (Resource Centre, Publications, Partners) start this one themselves after committing new data. The build needs no secrets.
 
 Repository secrets used by the workflows:
 
@@ -85,17 +86,19 @@ Repository secrets used by the workflows:
 | `PRAMAAN_LIBRARY_SYNC_TOKEN` | `sync-pramaan-library.yml` |
 | `PUBLICATIONS_API_URL` | `sync-publications.yml` |
 | `PUBLICATIONS_SYNC_TOKEN` | `sync-publications.yml` |
+| `PARTNERS_API_URL` | `sync-partners.yml` |
+| `PARTNERS_SYNC_TOKEN` | `sync-partners.yml` |
 
 Deep links and reloads on GitHub Pages work through `public/404.html` plus a restore script at the top of `index.html`. `404.html` assumes the site is served under a single path segment (the project-site URL `/<repo>/`); serving from a domain root would need that script changed.
 
-A second workflow, `.github/workflows/sync-pramaan-library.yml`, feeds the Pramaan Resource Centre (`/pramaan/resource-centre`): every 6 hours, when its Sheet changes (the Sheet's Apps Script asks GitHub to run it), or manually, it copies the consented rows and their photos into `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json` and `public/assets/images/pramaan-library/`, then starts the deploy. A third workflow, `.github/workflows/sync-publications.yml`, does the same for the Publications pages (`/tide/publications` for TIDE rows, `/thrive/publications` for THRIvE rows) from the "TIDE THRIvE Publications (Responses)" Sheet, every 6 hours at :27 and on Sheet change; live since 2026-11-20 (setup: `docs/PUBLICATIONS-SETUP-GUIDE.md`). Its thumbnails are trimmed and shaped by `scripts/lib/publications-images.js`. No page calls Google at runtime.
+A second workflow, `.github/workflows/sync-pramaan-library.yml`, feeds the Pramaan Resource Centre (`/pramaan/resource-centre`): every 6 hours, when its Sheet changes (the Sheet's Apps Script asks GitHub to run it), or manually, it copies the consented rows and their photos into `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json` and `public/assets/images/pramaan-library/`, then starts the deploy. A third workflow, `.github/workflows/sync-publications.yml`, does the same for the Publications pages (`/tide/publications` for TIDE rows, `/thrive/publications` for THRIvE rows) from the "TIDE THRIvE Publications (Responses)" Sheet, every 6 hours at :27 and on Sheet change; live since 2026-11-20 (setup: `docs/PUBLICATIONS-SETUP-GUIDE.md`). Its thumbnails are trimmed and shaped by `scripts/lib/publications-images.js`. A fourth, `.github/workflows/sync-partners.yml`, feeds `/about/our-partners` from the "TIDE/THRIvE Partners (Responses)" Sheet (every 6 hours at :07 and on Sheet change; not set up yet on 2026-11-21 — setup: `docs/PARTNERS-SETUP-GUIDE.md`). No page calls Google at runtime.
 
 ## Documentation map
 
 - [CLAUDE.md](CLAUDE.md) - project overview and orientation (also read by AI coding assistants)
 - [AGENTS.md](AGENTS.md) - detailed component, pattern and design-system reference
 - [CONTENT-GUIDE.md](CONTENT-GUIDE.md) - guide for non-technical content editors
-- `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`, `docs/PRAMAAN-HARDENING-PLAN.md` - the Pramaan Resource Centre (its Sheet, rules and status); `docs/PUBLICATIONS-SETUP-GUIDE.md`, `docs/PUBLICATIONS-SHEET-SCHEMA.md` - the Publications pages' Sheet; `docs/SHEET-INTEGRATION-PLAYBOOK.md` - how to connect any new Sheet
+- `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md`, `docs/PRAMAAN-HARDENING-PLAN.md` - the Pramaan Resource Centre (its Sheet, rules and status); `docs/PUBLICATIONS-SETUP-GUIDE.md`, `docs/PUBLICATIONS-SHEET-SCHEMA.md` - the Publications pages' Sheet; `docs/PARTNERS-SETUP-GUIDE.md`, `docs/PARTNERS-SHEET-SCHEMA.md` - the Partners page's Sheet; `docs/SHEET-INTEGRATION-PLAYBOOK.md` - how to connect any new Sheet
 - `docs/OPERATIONS-INVENTORY.md`, `docs/OPERATIONS-RUNBOOK.md`, `docs/PLATFORM-LIMITS.md` - what the site depends on, what to do when something breaks, free-tier limits
 - `docs/MIGRATION-OVERVIEW.md` (start here), `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md`, `docs/MIGRATION-GITHUB-REPOSITORY.md`, `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md`, `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md` - handover and maintenance
 - `docs/ARCHITECTURE.html`, `docs/ARCHITECTURE-DATAFLOW.html` - system diagrams (open in a browser)

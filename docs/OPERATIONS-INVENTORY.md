@@ -23,6 +23,9 @@ handover). Last full review: 2026-11-15.
 | **Publications Sheet** ("TIDE THRIvE Publications (Responses)") | id ⚠️ not recorded — fill in | ⚠️ not recorded — fill in | **Holds personal data (column "Email address").** Never read by the script. Rows answered TIDE/THRIvE with a title are published; a `Hide from website` column = `Yes` takes one down. Rules: `docs/PUBLICATIONS-SHEET-SCHEMA.md` | 2026-11-20 (header read, range A1:P66, per the schema doc) |
 | Drive files with publication thumbnails | Google Drive (Form uploads linked from the thumbnail columns) | ⚠️ not recorded — fill in | Must stay readable by the script owner | not verified |
 | Publications Apps Script + Web App | Publications Sheet → Extensions → Apps Script; URL = GitHub secret `PUBLICATIONS_API_URL` | same as the Sheet | Source: `apps-script/publications/Code.gs` (v1). Installed 2026-11-20 (setup: `docs/PUBLICATIONS-SETUP-GUIDE.md`). Properties: `SYNC_TOKEN` (= `PUBLICATIONS_SYNC_TOKEN`), `GITHUB_PAT` (its own token `publications-sheet`), `GITHUB_REPO`, `ALERT_EMAIL`. Triggers: On change + On form submit + tick; daily heartbeat 05:00 UTC | 2026-11-21: Sync Publications runs from `workflow_dispatch` succeed (`gh run list`) |
+| Partners Google Form | the Form that fills the Partners Sheet (link ⚠️ not recorded — fill in; not used by the website code) | ⚠️ not recorded — fill in | **Every submission goes live** once the sync is set up (no approval column, owner decision 2026-11-21): anyone with the link can put a partner on `/about/our-partners` | not verified |
+| **Partners Sheet** ("TIDE/THRIvE Partners (Responses)") | id deliberately not written here: the Sheet is link-viewable (2026-11-21), so its id in this public repository would open it to anyone — record it once the Sheet is Restricted | TIDE Foundation Google account (Drive metadata, 2026-11-21) | No personal-data column found (header read 2026-11-21). The internal columns "Column 2" and "Notes for Jwalin- to remove?" are never read. Shared as **"Anyone with the link can view"** (2026-11-21) — question parked for 2026-11-28. Rules: `docs/PARTNERS-SHEET-SCHEMA.md` | 2026-11-21 (header + columns A–F read, 113 rows) |
+| Partners Apps Script + Web App | Partners Sheet → Extensions → Apps Script; URL = GitHub secret `PARTNERS_API_URL` | same as the Sheet | Source: `apps-script/partners/Code.gs` (v1). **Not installed yet** (2026-11-21; waits for the owner's edit access; setup: `docs/PARTNERS-SETUP-GUIDE.md`). Properties: `SYNC_TOKEN` (= `PARTNERS_SYNC_TOKEN`), `GITHUB_PAT` (its own token `partners-sheet`), `GITHUB_REPO`, `ALERT_EMAIL`. Triggers: On change + On form submit + tick; daily heartbeat 06:00 UTC | — |
 | Google account activity | — | owner | Google may delete a personal account after **2 years without sign-in**; sign in at least yearly | — |
 
 ## GitHub side
@@ -36,10 +39,13 @@ handover). Last full review: 2026-11-15.
 | Secrets `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN` | Settings → Secrets and variables → Actions | Set 2026-11-16 (`gh secret list`, names only) | 2026-11-16 |
 | Workflow `sync-publications.yml` | `.github/workflows/sync-publications.yml` — **keep this file name** (the Publications Apps Script calls it by name) | Every 6 h at :27 + when the Publications Sheet changes; own concurrency group `publications-sync`. Skipped quietly while its secrets are missing **and** the committed snapshot (`src/data/sheets/publications.json`) has no rows; the snapshot has had rows since 2026-11-20 (`f524770`), so a missing secret now fails loudly | 2026-11-21 (runs green, `gh run list`) |
 | Secrets `PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN` | Settings → Secrets and variables → Actions | Set 2026-11-19 | 2026-11-21 (`gh secret list`) |
+| Workflow `sync-partners.yml` | `.github/workflows/sync-partners.yml` — **keep this file name** (the Partners Apps Script calls it by name) | Every 6 h at :07 + when the Partners Sheet changes; own concurrency group `partners-sync`. Skipped quietly while its secrets are missing **and** the committed snapshot (`src/data/sheets/partners.json`) has no rows — the case until the owner's setup | — |
+| Secrets `PARTNERS_API_URL`, `PARTNERS_SYNC_TOKEN` | Settings → Secrets and variables → Actions | **Not set yet** (2026-11-21) | — |
 | Variable `ALERT_ASSIGNEE` | Settings → Secrets and variables → Actions → **Variables** | GitHub username alert issues are assigned to (emails them). Currently `vaibhav-sharma0105` | 2026-11-15 |
 | GitHub token (fine-grained PAT) used by the Resource Centre Apps Script (`pramaan-library-sheet`) | Owner's GitHub → Settings → Developer settings → Fine-grained tokens | Only this repository; **Actions: Read and write**; nothing else. **Expiry date: ⚠️ not recorded — fill in, and put it in a calendar** (created 2026-11-16 with a 1-year expiry per the setup steps). The script also emails before expiry *if* GitHub reports the date — not documented, so don't rely on it. Renew: `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` | not verified |
 | GitHub token (fine-grained PAT) used by the Publications Apps Script (`publications-sheet`) | Owner's GitHub → Settings → Developer settings → Fine-grained tokens | Same rules: only this repository, **Actions: Read and write**. Created for the 2026-11-20 setup; the owner said (2026-11-21) it has Actions read/write and a calendar reminder one year out — its name and exact expiry date are not recorded yet (to note at the 2026-11-28 meeting, `docs/STAKEHOLDER-REVIEW-2026-11-28.md`). Renew: `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` | owner, 2026-11-21 |
-| Who receives schedule-failure emails | GitHub sends them to the last person who edited the `cron:` line | After a handover the new owner changes the schedule once in each sync workflow (e.g. minute `47` → `53` in `sync-pramaan-library.yml`, `27` → `33` in `sync-publications.yml`; any minute not used by the other sync) | — |
+| GitHub token (fine-grained PAT) for the Partners Apps Script (`partners-sheet`) | Owner's GitHub → Settings → Developer settings → Fine-grained tokens | Same rules: only this repository, **Actions: Read and write**, expiry in a calendar. **Not created yet** (2026-11-21) | — |
+| Who receives schedule-failure emails | GitHub sends them to the last person who edited the `cron:` line | After a handover the new owner changes the schedule once in each sync workflow (e.g. minute `47` → `53` in `sync-pramaan-library.yml`, `27` → `33` in `sync-publications.yml`, `7` → `13` in `sync-partners.yml`; any minute not used by the other sync) | — |
 | Labels `automation-alert`, `sheet-needs-attention` | Issues → Labels | Created by the workflows | 2026-11-15 |
 
 ## Bot-owned files (never edit by hand)
@@ -48,16 +54,17 @@ handover). Last full review: 2026-11-15.
 |---|---|
 | `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json`, `public/assets/images/pramaan-library/*` | the Resource Centre sync (`scripts/sync-pramaan-library.js`) |
 | `src/data/sheets/publications.json`, `src/data/publications-photos.json`, `public/assets/images/publications/*` | the Publications sync (`scripts/sync-publications.js`) |
+| `src/data/sheets/partners.json`, `src/data/partners-photos.json`, `public/assets/images/partners/*` | the Partners sync (`scripts/sync-partners.js`) |
 | `src/data/*.json` (others) | `scripts/yaml-to-json.js` from `content/` |
 
 ## Dates to put in a calendar
 
 | When | What | Action |
 |---|---|---|
-| PAT expiry, one date per token (`pramaan-library-sheet` ⚠️ fill in; `publications-sheet` ⚠️ fill in) | GitHub token stops working | Renew 2 weeks before (`MAINTENANCE-GITHUB-PAT-REFRESH.md`) |
+| PAT expiry, one date per token (`pramaan-library-sheet` ⚠️ fill in; `publications-sheet` ⚠️ fill in; `partners-sheet` once created) | GitHub token stops working | Renew 2 weeks before (`MAINTENANCE-GITHUB-PAT-REFRESH.md`) |
 | Yearly | Health review | `docs/OPERATIONS-RUNBOOK.md` → yearly checklist |
-| 2028-04 | Node.js 24 end of life | Bump `node-version` in all three workflows (`deploy.yml`, `sync-pramaan-library.yml`, `sync-publications.yml`) |
-| ~2029 | `ubuntu-24.04` runner retirement (GitHub announces dates) | Bump `runs-on` in all three workflows |
+| 2028-04 | Node.js 24 end of life | Bump `node-version` in all four workflows (`deploy.yml`, `sync-pramaan-library.yml`, `sync-publications.yml`, `sync-partners.yml`) |
+| ~2029 | `ubuntu-24.04` runner retirement (GitHub announces dates) | Bump `runs-on` in all four workflows |
 
 ## Retired — no longer used by the website (since 2026-11-19)
 

@@ -18,7 +18,7 @@ React static site rebuild of [tideinternational.org](https://tideinternational.o
 ## Deployment & CI
 - `npm run build` → `dist/` → GitHub Pages at `/tide-testing/`. `vite.config.js` sets base `/tide-testing/` when `GITHUB_ACTIONS` is set, else `/` — so dev hides base-path bugs (see `imgSrc` below). The build needs no secrets.
 - `.github/workflows/deploy.yml` (push to `main` / manual): `npm ci` → `npm run lint` → `npm run content:validate` → `npm test` → `npm run build` → deploy. Any failure stops the deploy. **CI does not run the Playwright e2e specs** — run them locally.
-- `.github/workflows/sync-pramaan-library.yml` syncs the Resource Centre and `.github/workflows/sync-publications.yml` the Publications pages (both below); each starts `deploy.yml` itself after committing. All three workflows open/close `automation-alert` Issues assigned to repo variable `ALERT_ASSIGNEE`; all pin `ubuntu-24.04` and Node 24 (bump deliberately), and every action to a commit SHA (`.github/dependabot.yml` proposes updates monthly). `deploy.yml` grants `pages`/`id-token` write to its deploy job only. Mechanics: AGENTS.md §10.
+- `.github/workflows/sync-pramaan-library.yml` syncs the Resource Centre, `.github/workflows/sync-publications.yml` the Publications pages and `.github/workflows/sync-partners.yml` the Partners page (all below); each starts `deploy.yml` itself after committing. All four workflows open/close `automation-alert` Issues assigned to repo variable `ALERT_ASSIGNEE`; all pin `ubuntu-24.04` and Node 24 (bump deliberately), and every action to a commit SHA (`.github/dependabot.yml` proposes updates monthly). `deploy.yml` grants `pages`/`id-token` write to its deploy job only. Mechanics: AGENTS.md §10.
 
 ## Design System
 - Primary `#1E6BAA` · Background `#FDFCF9` · Text `#0D1F3C` · Accent `#F59E0B` — full token map in `tailwind.config.js` (trust it over any doc).
@@ -29,23 +29,26 @@ React static site rebuild of [tideinternational.org](https://tideinternational.o
 ## Repository Structure
 ```
 src/
-  components/  layout/ (Header, Footer, Layout) · ui/ (Button, PageHero, SeoHead, Lightbox, …)
+  components/  layout/ (Header, Footer, Layout) · ui/ (Button, PageHero, HeroStats, CountUp, SeoHead, Lightbox, …)
                abl/ (shared Pramaan pieces: AblNavBar, Pagination, DriveImage, ImageLightbox, VideoLightbox, …)
                library/ (Resource Centre: LibraryFilters, LibraryDropdown, LibraryCard, LibraryTypeBadge)
-               listing/ (SearchField, FilterChips, FilterDrawer, PickerField — all used by the Resource Centre)
+               listing/ (SearchField, FilterChips, FilterDrawer, PickerField — all used by the Resource Centre; SearchField also by Our Partners)
                publications/ (PublicationsHero, TideCollection, ResearchArchive, ResearchEntry, PublicationCover, PublicationMedia,
-                 PublicationControls, PublicationsPagination, YearChart, PublicationsJsonLd, PublicationBits, TypeIcon, FadeImage, typeStyles.js) · ErrorBoundary.jsx
+                 PublicationControls, PublicationsPagination, YearChart, PublicationsJsonLd, PublicationBits, TypeIcon, FadeImage, typeStyles.js)
+               partners/ (PartnerConstellation, PartnerIndexBar, PartnerSlider, PartnerCard, sliderConductor.js) · ErrorBoundary.jsx
   pages/       Home, Contact, THRIvE, EducationForHarmony, SocialChangemakers, ComingSoon, NotFound
                about/ · get-involved/ · resources/ (AblHome, AblContribute) · library/ (PramaanLibrary, PramaanLibraryDetail, LibraryRedirect)
                publications/ (TidePublications, ThrivePublications, TidePublicationsRedirect)
-  hooks/ (incl. usePublicationControls) config/ (abl.js, library.js, publications.js) utils/ test/   App.jsx (routes) · main.jsx · index.css
+  hooks/ (incl. usePublicationControls) config/ (abl.js, library.js, publications.js, partners.js) utils/ test/   App.jsx (routes) · main.jsx · index.css
   data/        AUTO-GENERATED — never edit
 content/pages/ (17 YAMLs) · content/shared/ (9 YAMLs + llms.txt template)
 scripts/       yaml-to-json, siteDataPlugin, validate-content, contentConsistency, bootstrap-yaml,
-               sync-pramaan-library, sync-publications + lib/ (library-snapshot, publications-snapshot, publications-images, snapshot-core, sync-runner),
+               sync-pramaan-library, sync-publications, sync-partners + lib/ (library-snapshot, publications-snapshot, publications-images,
+                 partners-snapshot, partners-images, snapshot-core, sync-runner),
                ci/alert-issue.sh, a11y-audit.cjs
 apps-script/pramaan-library/Code.gs   the Resource Centre Sheet's Apps Script (source of truth; the owner pastes it into Google)
 apps-script/publications/Code.gs      the Publications Sheet's Apps Script (same pattern)
+apps-script/partners/Code.gs          the Partners Sheet's Apps Script (same pattern)
 e2e/ (Playwright, 3 specs) · docs/ (guides, playbook, architecture diagrams, specs/)
 ```
 Full annotated tree: AGENTS.md §2.
@@ -56,7 +59,8 @@ Full annotated tree: AGENTS.md §2.
 | Route | Component | Data |
 |-------|-----------|------|
 | `/` | Home | `home.json` |
-| `/about/why-tide` · `/past-programs` · `/our-team` · `/our-partners` | WhyTide · PastPrograms · OurTeam · OurPartners | `about-*.json` |
+| `/about/why-tide` · `/past-programs` · `/our-team` | WhyTide · PastPrograms · OurTeam | `about-*.json` |
+| `/about/our-partners` | OurPartners | `about-our-partners.json` + snapshot `sheets/partners.json` |
 | `/tide/publications` | TidePublications | `tide-publications.json` + snapshot `sheets/publications.json` (TIDE rows) |
 | `/education-for-harmony` | EducationForHarmony | `education-for-harmony.json` |
 | `/education-for-harmony/mccx` | OrganizeMCCx | `get-involved-mccx.json` |
@@ -81,8 +85,8 @@ Full annotated tree: AGENTS.md §2.
 content/pages/*.yaml + content/shared/*.yaml  →  scripts/yaml-to-json.js (predev/prebuild)  →  src/data/*.json  →  React imports
 content/shared/site.yaml + llms.txt           →  scripts/siteDataPlugin.js (Vite)  →  index.html JSON-LD/<title>/og:site_name, /llms.txt
 ```
-- **Never edit `src/data/`** — it is regenerated (flat: one JSON per YAML basename, so never reuse a basename across `pages/` and `shared/`; stale JSON is never deleted). The Sheet files there (`sheets/pramaan-library.json`, `pramaan-library-photos.json`, `sheets/publications.json`, `publications-photos.json`) are written by the sync bots — never hand-edit those either.
-- Commands: `npm run content:sync` · `content:validate` (YAML syntax, leading-slash image paths, Resource Centre and Publications snapshots, `formUrl`, email/lives-impacted consistency) · `dev` (localhost:5173) · `build` · `lint` · `test` (Vitest, 23 files / 288 tests) · `test:e2e`.
+- **Never edit `src/data/`** — it is regenerated (flat: one JSON per YAML basename, so never reuse a basename across `pages/` and `shared/`; stale JSON is never deleted). The Sheet files there (`sheets/pramaan-library.json`, `pramaan-library-photos.json`, `sheets/publications.json`, `publications-photos.json`, `sheets/partners.json`, `partners-photos.json`) are written by the sync bots — never hand-edit those either.
+- Commands: `npm run content:sync` · `content:validate` (YAML syntax, leading-slash image paths, Resource Centre, Publications and Partners snapshots, `formUrl`, email/lives-impacted consistency) · `dev` (localhost:5173) · `build` · `lint` · `test` (Vitest, 28 files / 334 tests) · `test:e2e`.
 - **No hardcoded visible text:** every visible string comes from YAML (`data.*`, `common.*`, `ui.*`), never typed into JSX. `react/jsx-no-literals` is an **error** in `src/pages/**` and `src/components/**`, but it does not see string props (`aria-label`, `alt`, `title`) — follow the convention anyway (`cms-integrity` skill). Variable text uses `{token}` placeholders filled in code.
 - **Site-wide facts** (name, url, email, `livesImpacted`, `gradeRange`, `placeholderImage`, `breadcrumbs.*`, …) live only in `content/shared/site.yaml`. A page's last breadcrumb is `meta.breadcrumbName` in its own YAML.
 - Icons and Tailwind classes can't live in JSON: store a key in YAML (`iconKey`, `colorKey`) and map it in the component; never build Tailwind class names dynamically.
@@ -120,11 +124,25 @@ Google Sheet "TIDE THRIvE Publications (Responses)" (Form responses; private, ha
 - Pipeline details: links typed as `www.…` / `doi.org/…` get `https://` added; a title repeated on one page is published but reported (`possible-duplicate`).
 - Docs: `docs/PUBLICATIONS-SETUP-GUIDE.md`, `docs/PUBLICATIONS-SHEET-SCHEMA.md`.
 
+## Partners (third Sheet integration)
+`/about/our-partners` is built from the snapshot of the Sheet "TIDE/THRIvE Partners (Responses)" (Form responses; owner: the TIDE Foundation Google account), same pattern:
+```
+Google Sheet → apps-script/partners/Code.gs   token-gated; reads only Type of partner, Priority, Name, Website, Logo (+ Timestamp → anonymous id);
+                                              never reads the "Column 2" / "Notes for …" columns
+  → sync-partners.yml (every 6 h at :07, on Sheet change, manually) → scripts/sync-partners.js (logos: scripts/lib/partners-images.js)
+  → commits src/data/sheets/partners.json + src/data/partners-photos.json + public/assets/images/partners/ → deploy
+```
+- **No approval column** (owner decision, 2026-11-21): every row with a type + a name goes live; an optional `Hide from website` = `Yes` takes one down. Same safety rules. Secrets: `PARTNERS_API_URL`, `PARTNERS_SYNC_TOKEN`; heartbeat 06:00 UTC.
+- **Not live yet** (2026-11-21): the committed snapshot is empty (the page shows `directory.empty`) until the owner's setup (`docs/PARTNERS-SETUP-GUIDE.md`; needs edit access to the Sheet). Never commit partners data made locally (a design preview has manifest `fileId: "preview"`).
+- UI (redesign 2026-11-22, second pass): **banner** — title, figures counting up (`HeroStats` + `withValue` + `CountUp`; YAML `meta.stats`) and, beside them, the highest-priority partners' logos as a floating network joined by curved threads that fade into the discs, with small lights travelling outwards (`PartnerConstellation`: up to `CONSTELLATION_MAX`, real logos only, hidden below `CONSTELLATION_MIN` and on phones). **Sticky index bar** under the header (`PartnerIndexBar`): one tab per section with its count, a gliding underline on the section being read (scroll-spy), tabs scroll sideways for any number of types; the name search beside it (folds into an icon on phones). **Sections** are numbered chapters (`01`…; on wide screens on a spine that fills as you scroll), one `PartnerSlider` per "Type of partner" (A→Z, `LAST_CATEGORIES` = Others last; `PRIORITY_ORDER` then A→Z — `src/utils/partnerFilters.js`, `src/config/partners.js`). Rows **start paused** (`SLIDES_START_PAUSED`); cards slide in from the right as they appear; one control pill (previous · "1–5 of 23" · next · play/pause: a filled blue disc when paused, a white disc with a circling arc while playing, icons cross-fade); a slim draggable track replaces the scrollbar; edges fade. Play hands a row to the page conductor (`components/partners/sliderConductor.js`): one movable row ≥ 60% on screen, nearest the middle, every `SLIDE_INTERVAL_MS`. **Priority without labels** (`partnerTier`): Extremely high → blue gradient halo + glow + larger logo + a one-time light sweep (and the banner); High → faint blue ring. `PartnerCard`: logo or initials (`partnerInitials`) on a 3:2 tile built as a 3D object (lit face, layered + ground shadows; with a mouse it tilts towards the pointer, a glare follows it and the logo floats above the face — `.partner-3d*` in `src/index.css`; no tilt on touch or under reduced motion); name left-aligned, always 2 lines reserved (clamped), the website's domain under it (`websiteLabel`); with a website the whole card is the link (new tab) and lifts on hover. While searching (`?search=`) the matches are one grid with section captions. Ends with a navy invitation band (YAML `cta`). Text: `about-our-partners.yaml`.
+- Logos: trimmed, transparency kept, never cropped, ≤ 400 × 400 WebP; Apps Script sends small PNG/JPEG/WebP/GIF as the original file, anything else via Drive's thumbnail renderer. One picture used by `SHARED_LOGO_MIN` (3) or more partners (e.g. "No Logo Available") is flagged `placeholder` in the manifest (`markSharedLogos`, by a fingerprint `hash`) → initials on the page + a `shared-logo` report item.
+- Docs: `docs/PARTNERS-SETUP-GUIDE.md`, `docs/PARTNERS-SHEET-SCHEMA.md`; open Sheet questions in `docs/STAKEHOLDER-REVIEW-2026-11-28.md` §7.
+
 ## Known Gotchas and Open Decisions
 - **`imgSrc()` is not idempotent** under `/tide-testing/`: applying it twice breaks the URL on GitHub Pages (invisible in dev). `Lightbox` applies it itself — pass raw YAML paths. Verify with a `GITHUB_ACTIONS=true` build + preview.
 - **Don't write a literal `<title>` inside an HTML comment in `index.html`** — `siteDataPlugin`'s regex would replace it instead of the real one; keep the `<!-- site-jsonld -->` marker.
 - **Owner-decided facts:** email `tidefoundation@gmail.com`, lives impacted `52,500+`, everywhere; `content:validate` errors on any other value in `content/`.
-- **Failed images** are swapped site-wide for `site.placeholderImage` (`src/utils/imagePlaceholder.js`), which hides typos — check filenames. Opt out with `data-no-placeholder` (`DriveImage` does). `content:validate` doesn't check bare filenames (e.g. `logoGallery.images` in `about-our-partners.yaml`).
+- **Failed images** are swapped site-wide for `site.placeholderImage` (`src/utils/imagePlaceholder.js`), which hides typos — check filenames. Opt out with `data-no-placeholder` (`DriveImage` does). `content:validate` doesn't check bare filenames in YAML.
 - **Deleted files are recoverable:** removed pages/images/components from 2026-10-25 via `git checkout a4126d1 -- <path>` (list in AGENTS.md §11).
 - **Open (not decided):** `site.yaml` `gradeRange` ("1–5") must agree with `LIBRARY_GRADES` in `src/utils/libraryFilters.js` (a unit test checks it); Foundational has no resources yet.
 

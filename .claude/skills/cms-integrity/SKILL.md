@@ -82,8 +82,8 @@ below. Don't silence the rule with `eslint-disable`; move the text to YAML inste
    `imgSrc` to images handed to `Lightbox` — it applies it itself.
    A failed `<img>` is swapped for the `placeholderImage` from `site.yaml` by
    `src/utils/imagePlaceholder.js`, so a wrong path never looks broken: check the file exists.
-   Bare-filename lists (e.g. `logoGallery.images` in `about-our-partners.yaml`, with the folder
-   added in `OurPartners.jsx`) are not covered by `content:validate`.
+   Bare-filename lists (a YAML list of file names whose folder is added in the component) are not
+   covered by `content:validate`.
 4. **Breadcrumb names** — the last breadcrumb step is the page's `meta.breadcrumbName` in its
    YAML; the parent steps are `site.breadcrumbs.*` from `content/shared/site.yaml`
    (`import site from '../data/site.json'`). Never type `{ name: 'Home' }` in JSX.
@@ -155,10 +155,10 @@ grep -rnE "assets/images" src/pages src/components
 grep -rnE "name: '[A-Z]" src/pages
 ```
 
-As of 2026-11-19, check (2) and check (4) return nothing, and `npm run lint` is clean. Check (3) matches two
-structural image paths still built in code: the `PageHero` banner texture and the `BASE` folder
-constant in `OurPartners.jsx` (its YAML holds bare filenames). Don't treat those as new
-findings, and don't copy them as precedent. None of the checks is exhaustive (multi-line JSX,
+As of 2026-11-19, check (2) and check (4) return nothing, and `npm run lint` is clean. Check (3) matches one
+structural image path still built in code: the `PageHero` banner texture (the `BASE` constant in
+`OurPartners.jsx` went with its logo gallery on 2026-11-21). Don't treat it as a new
+finding, and don't copy it as precedent. None of the checks is exhaustive (multi-line JSX,
 template literals and conditional ternaries inside `{}` won't match) — they're a fast first
 pass, not a substitute for reading the file.
 

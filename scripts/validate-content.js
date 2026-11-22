@@ -164,6 +164,42 @@ function checkPublicationsSnapshot() {
 }
 checkPublicationsSnapshot()
 
+// Partners snapshot ("TIDE/THRIvE Partners (Responses)" Sheet, scripts/sync-partners.js). Same
+// backstop: allowlisted fields only, no email address, http(s) links only, a count that matches,
+// and every logo entry has its file inside its own folder.
+function checkPartnersSnapshot() {
+  const snapFile = path.join('src', 'data', 'sheets', 'partners.json')
+  const manFile = path.join('src', 'data', 'partners-photos.json')
+  const allowed = new Set(['id', 'type', 'priority', 'name', 'website', 'photoUrl'])
+  let snap, manifest
+  try { snap = JSON.parse(fs.readFileSync(snapFile, 'utf8')) } catch (e) { error(snapFile, `missing or not valid JSON: ${e.message}`); return }
+  try { manifest = JSON.parse(fs.readFileSync(manFile, 'utf8')) } catch (e) { error(manFile, `missing or not valid JSON: ${e.message}`); return }
+  if (snap.schemaVersion !== 1 || snap.success !== true || snap.section !== 'partners' || !Array.isArray(snap.resources)) {
+    error(snapFile, 'unexpected shape (needs schemaVersion 1, success, section "partners", resources[])')
+    return
+  }
+  const ids = new Set()
+  for (const r of snap.resources) {
+    if (!r || typeof r.id !== 'string' || !r.id || typeof r.name !== 'string' || !r.name || typeof r.type !== 'string' || !r.type) { error(snapFile, 'a row has no id, name or type'); continue }
+    if (ids.has(r.id)) error(snapFile, `duplicate id ${r.id}`)
+    ids.add(r.id)
+    const extra = Object.keys(r).filter(k => !allowed.has(k))
+    if (extra.length) error(snapFile, `${r.id}: field(s) not allowed in the public snapshot: ${extra.join(', ')}`)
+    for (const k of ['website', 'photoUrl']) {
+      if (r[k] !== null && r[k] !== undefined && !/^https?:\/\//.test(String(r[k]))) error(snapFile, `${r.id}: ${k} must be an http(s) link or null`)
+    }
+    if (/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(JSON.stringify(r))) error(snapFile, `${r.id}: contains an email address`)
+  }
+  if (snap.meta?.total !== snap.resources.length) error(snapFile, `meta.total is ${snap.meta?.total} but there are ${snap.resources.length} rows`)
+  for (const [id, entry] of Object.entries(manifest)) {
+    if (!ids.has(id)) error(manFile, `logo entry ${id} has no matching partner in the snapshot`)
+    const rel = entry?.thumb
+    if (typeof rel !== 'string' || !rel.startsWith('assets/images/partners/') || rel.includes('..')) { error(manFile, `${id}: bad logo path ${JSON.stringify(rel)}`); continue }
+    if (!fs.existsSync(path.join(PUBLIC_DIR, rel))) error(manFile, `${id}: missing file public/${rel}`)
+  }
+}
+checkPartnersSnapshot()
+
 // The Contribute button's link (abl-contribute.yaml → formUrl): empty, or a Google Forms link.
 function checkContributeForm() {
   const file = path.join('content', 'pages', 'abl-contribute.yaml')

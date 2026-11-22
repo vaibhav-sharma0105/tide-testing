@@ -14,7 +14,7 @@ This move touches two completely different platforms (Google and GitHub), and ea
 
 | Document | Covers | When |
 |---|---|---|
-| `MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` | Moving the Resource Centre Sheet, its Google Form and its Apps Script to the new owner's Google account — then the same steps once more for the Publications Sheet | **Do this first** |
+| `MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` | Moving the Resource Centre Sheet, its Google Form and its Apps Script to the new owner's Google account — then the same steps once more for the Publications Sheet and the Partners Sheet | **Do this first** |
 | `MIGRATION-GITHUB-REPOSITORY.md` | Transferring the GitHub repository itself to the new owner's GitHub account | **Do this second** |
 | `MAINTENANCE-GITHUB-PAT-REFRESH.md` | A short, recurring task — regenerating an expired GitHub token | Ongoing, after migration is complete |
 
@@ -55,18 +55,21 @@ The Pramaan Resource Centre (`/pramaan/resource-centre`, and the counts on `/pra
 
 The Publications pages (`/tide/publications` for TIDE rows, `/thrive/publications` for THRIvE rows) are fed by a **second**, separate Sheet, "TIDE THRIvE Publications (Responses)", also filled by a Google Form, with its own Apps Script (`apps-script/publications/Code.gs`), token (`publications-sheet`), GitHub secrets (`PUBLICATIONS_API_URL`, `PUBLICATIONS_SYNC_TOKEN`) and workflow (`sync-publications.yml`). Move it the same way as the first: transfer the Sheet and its Form, then the new owner repeats Steps 2–8 of `docs/PUBLICATIONS-SETUP-GUIDE.md`. It holds each submitter's email address — share it only with the new owner. (Live since 2026-11-20.)
 
+The Partners page (`/about/our-partners`) is fed by a **third** Sheet, "TIDE/THRIvE Partners (Responses)" (also a Google Form), with its own Apps Script (`apps-script/partners/Code.gs`), token (`partners-sheet`), GitHub secrets (`PARTNERS_API_URL`, `PARTNERS_SYNC_TOKEN`) and workflow (`sync-partners.yml`). Move it the same way, then the new owner repeats Steps 2–8 of `docs/PARTNERS-SETUP-GUIDE.md`. (Not set up yet on 2026-11-21.)
+
 ## After both migrations are complete
 
 - [ ] New owner owns the Google Sheet and its Google Form.
 - [ ] New owner owns the Publications Sheet and its Google Form.
+- [ ] New owner owns the Partners Sheet and its Google Form.
 - [ ] New owner can open each Apps Script project and sees their own deployment and three triggers in each.
 - [ ] New owner owns the GitHub repository, and the original developer still has collaborator access (this happens automatically for personal-to-personal transfers — see the GitHub guide).
 - [ ] Live site loads correctly at its new URL and shows current data.
-- [ ] A test edit in the Sheet shows up on `/pramaan/resource-centre` within a few minutes (confirms the whole pipeline survived the move, end to end) — and the same for the Publications Sheet on `/tide/publications` or `/thrive/publications`.
+- [ ] A test edit in the Sheet shows up on `/pramaan/resource-centre` within a few minutes (confirms the whole pipeline survived the move, end to end) — and the same for the Publications Sheet on `/tide/publications` or `/thrive/publications`, and the Partners Sheet on `/about/our-partners`.
 - [ ] Drive photo folders are readable by the new owner (Google guide Step 3).
 - [ ] Alerts reach the new owner: GitHub variable `ALERT_ASSIGNEE` and Script Property `ALERT_EMAIL` (in each Sheet's script) updated; the cron schedule changed once by the new owner (GitHub guide Step 7).
 - [ ] Every row of `docs/OPERATIONS-INVENTORY.md` points at the new owner, with the token expiry date in their calendar.
-- [ ] New owner has bookmarked `docs/OPERATIONS-RUNBOOK.md`, `CONTENT-GUIDE.md`, `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `docs/PUBLICATIONS-SETUP-GUIDE.md`, `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md` and `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` for future reference.
+- [ ] New owner has bookmarked `docs/OPERATIONS-RUNBOOK.md`, `CONTENT-GUIDE.md`, `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `docs/PUBLICATIONS-SETUP-GUIDE.md`, `docs/PARTNERS-SETUP-GUIDE.md`, `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md` and `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` for future reference.
 
 ---
 

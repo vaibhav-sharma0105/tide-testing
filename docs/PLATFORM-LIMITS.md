@@ -10,7 +10,7 @@
 - **Visitors should never depend on Google at page-view time.** Apps Script allows only
   **30 executions at the same moment** for the account the script runs as, and each live call
   takes ~2 seconds. That is why every Pramaan page reads a snapshot built into the site (since
-  2026-11-19; `docs/PRAMAAN-HARDENING-PLAN.md` §13), and so do the Publications pages.
+  2026-11-19; `docs/PRAMAAN-HARDENING-PLAN.md` §13), and so do the Publications and Partners pages.
 - **The GitHub repository must stay public.** On a free account, GitHub Pages only works for
   public repositories. Secrets stay safe in GitHub Actions secrets; everything committed is public.
 - **The one long-term thing to watch is repository size** — git keeps every old version of every
@@ -26,15 +26,15 @@
 | Executions per script at the same moment | 1,000 | 1,000 | Not reached; the per-user limit above bites first. |
 | Web app requests per day | not published | not published | Google publishes no daily cap. |
 | Time per execution | 6 min | 6 min | The sync's export must finish well inside this (alert above 120 s). |
-| Trigger run time, total per day | 90 min | 6 hours | Edit/tick triggers use < 5 min on a heavy day (Resource Centre script; the Publications script has the same design — not measured yet). If both scripts run under one Google account they share this daily total. |
-| Installable triggers | 20 per user per script | 20 per user per script | Resource Centre (Pramaan Library) Sheet: 3 (On change, On form submit, 5-minute tick). Publications Sheet: the same 3 (separate script). |
+| Trigger run time, total per day | 90 min | 6 hours | Edit/tick triggers use < 5 min on a heavy day (Resource Centre script; the Publications and Partners scripts have the same design — not measured yet). Scripts running under one Google account share this daily total. |
+| Installable triggers | 20 per user per script | 20 per user per script | Resource Centre (Pramaan Library) Sheet: 3 (On change, On form submit, 5-minute tick). Publications Sheet and Partners Sheet: the same 3 each (separate scripts). |
 | URL Fetch calls per day | 20,000 | 100,000 | Dispatches to GitHub; < 350 on a heavy day. |
 | URL Fetch response size | 50 MB per call | 50 MB per call | Not relevant. |
 | Script Properties reads/writes per day | 50,000 | 500,000 | Debounce bookkeeping; ~3–4k on a heavy day. |
 | Script Property value size | 9 KB per value | 9 KB per value | Tokens and timestamps only. |
 | Script Properties total | 500 KB per store | 500 KB per store | Fine. |
 | CacheService value size | 100 KB per key | 100 KB per key | Large data must be split. The Resource Centre script's photo map is one key — about 1,500 IDs fit; beyond that photo requests re-read the Sheet (slower, still works). |
-| CacheService longest expiry | 6 hours | 6 hours | The Resource Centre and Publications scripts keep their photo maps 30 minutes (`PHOTO_CACHE_S` = 1800). |
+| CacheService longest expiry | 6 hours | 6 hours | The Resource Centre, Publications and Partners scripts keep their photo maps 30 minutes (`PHOTO_CACHE_S` = 1800). |
 | CacheService items | 1,000 (oldest dropped beyond that) | same | Fine. |
 
 Quotas reset 24 hours after the first request. Google may delete a personal account after

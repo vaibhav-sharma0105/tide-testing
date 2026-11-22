@@ -119,7 +119,7 @@ The former "stranded" pages (Our Results, the six `projects-*` pages, Work With 
 | `site.yaml` | `site.json` | `ui/SeoHead.jsx`, the 18 page files that build breadcrumbs (`site.breadcrumbs.*`) and `src/utils/imagePlaceholder.js` (`placeholderImage`); also read directly by `scripts/siteDataPlugin.js` |
 | `llms.txt` | — (not synced) | Template rendered by `siteDataPlugin.js` into `/llms.txt` |
 
-`src/data/` also holds `pramaan-library-photos.json`, `publications-photos.json`, `sheets/pramaan-library.json` and `sheets/publications.json`, which are **not** produced by this pipeline (they come from the Resource Centre and Publications syncs, `sync-pramaan-library` and `sync-publications`): 26 generated JSON files (17 + 9) plus those two manifests = 28 files at the top level, and the two snapshots under `sheets/`.
+`src/data/` also holds `pramaan-library-photos.json`, `publications-photos.json`, `partners-photos.json`, `sheets/pramaan-library.json`, `sheets/publications.json` and `sheets/partners.json`, which are **not** produced by this pipeline (they come from the Resource Centre, Publications and Partners syncs, `sync-pramaan-library`, `sync-publications` and `sync-partners`): 26 generated JSON files (17 + 9) plus those three manifests = 29 files at the top level, and the three snapshots under `sheets/`.
 
 ## React Component Import Pattern
 
@@ -203,9 +203,9 @@ photo: assets/images/about-our-team/jane-smith.jpg    # works, but `content:vali
 
 `scripts/validate-content.js` only checks values that start with `/` and sit under these key names: `photo, src, logo, coverImage, image, poster, img, heroPhoto, mainPhoto, diagramPhoto, backgroundImage, donorPoster`. Other keys (e.g. `photo1`), bare-filename lists and slash-less paths are not validated, and a missing image is only a warning. CI runs it before the build, so an error stops the deploy.
 
-In components, resolve a data image with `imgSrc(path)` from `src/utils/imgSrc.js` (handles `BASE_URL` on GitHub Pages). `imgSrc` is not idempotent under `/tide-testing/`, and `Lightbox` already applies it to every `src` it receives, so never pre-apply it to lightbox images. A few spots build `${import.meta.env.BASE_URL}…` by hand (Header, Footer, `PageHero` banner texture, `SeoHead` default OG image, `OurPartners`, `Home`, `ErrorBoundary`) — that works because the leading slash was stripped.
+In components, resolve a data image with `imgSrc(path)` from `src/utils/imgSrc.js` (handles `BASE_URL` on GitHub Pages). `imgSrc` is not idempotent under `/tide-testing/`, and `Lightbox` already applies it to every `src` it receives, so never pre-apply it to lightbox images. A few spots build `${import.meta.env.BASE_URL}…` by hand (Header, Footer, `PageHero` banner texture, `SeoHead` default OG image, `Home`, `ErrorBoundary`) — that works because the leading slash was stripped.
 
-**Missing-image fallback.** `src/utils/imagePlaceholder.js` (installed once in `src/main.jsx`) listens for failed `<img>` loads site-wide and swaps the source for the `placeholderImage` in `content/shared/site.yaml` (`public/assets/images/shared/placeholder.svg`). So a missing or mistyped file shows a grey placeholder rather than a broken icon, which hides the mistake: still check the filename. An `<img>` opts out with the `data-no-placeholder` attribute (`DriveImage.jsx` does, because it draws its own icon). Bare-filename lists like `logoGallery.images` are not covered by `content:validate`.
+**Missing-image fallback.** `src/utils/imagePlaceholder.js` (installed once in `src/main.jsx`) listens for failed `<img>` loads site-wide and swaps the source for the `placeholderImage` in `content/shared/site.yaml` (`public/assets/images/shared/placeholder.svg`). So a missing or mistyped file shows a grey placeholder rather than a broken icon, which hides the mistake: still check the filename. An `<img>` opts out with the `data-no-placeholder` attribute (`DriveImage.jsx` does, because it draws its own icon). Bare-filename lists (file names whose folder the component adds) are not covered by `content:validate`.
 
 ## Non-Serializable Values (YAML Workaround)
 
@@ -236,7 +236,7 @@ npm run content:validate
 # Visible-text guard (react/jsx-no-literals) + other lint rules — also run in CI
 npm run lint
 
-# Unit tests (23 files / 288 tests as of 2026-11-21) and Playwright e2e (3 specs; not run in CI)
+# Unit tests (28 files / 334 tests as of 2026-11-22) and Playwright e2e (3 specs; not run in CI)
 npm test
 npm run test:e2e
 
