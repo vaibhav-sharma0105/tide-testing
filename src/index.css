@@ -252,14 +252,29 @@
    against the frame like a real object. Linked cards also rise (--lift), the ground shadow under
    them spreads and fades — higher object, softer shadow. Shadows are set here per tier (not with
    Tailwind classes) so the hover states can deepen them. Reduced motion: no tilt, no lift. */
-.partner-3d {
+/* Shared 3D tilt (Partners cards, homepage cards): the element tilts towards the mouse — JS
+   (src/utils/tilt.js) writes --rx/--ry (tilt) and --mx/--my (glare position); --lift raises it.
+   Children lifted with translateZ (e.g. .partner-3d-float) shift against it like real objects. */
+.tilt-3d {
   --rx: 0deg; --ry: 0deg; --lift: 0px; --mx: 50%; --my: 0%;
   transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--lift));
   transform-style: preserve-3d;
   transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tilt-3d.is-tilting { transition: transform 140ms ease-out, box-shadow 500ms cubic-bezier(0.16, 1, 0.3, 1); }
+.tilt-3d-glare {
+  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 58%);
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity 400ms ease-out;
+}
+.group:hover .tilt-3d-glare { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .tilt-3d, .group:hover .tilt-3d { transform: none !important; }
+}
+.partner-3d {
   box-shadow: 0 1px 1px rgba(13, 31, 60, 0.04), 0 3px 6px -2px rgba(13, 31, 60, 0.06), 0 14px 24px -14px rgba(13, 31, 60, 0.16);
 }
-.partner-3d.is-tilting { transition: transform 140ms ease-out, box-shadow 500ms cubic-bezier(0.16, 1, 0.3, 1); }
 .partner-3d[data-tier='high'] {
   box-shadow: 0 1px 1px rgba(13, 31, 60, 0.04), 0 4px 8px -3px rgba(30, 107, 170, 0.12), 0 16px 28px -16px rgba(30, 107, 170, 0.32);
 }
@@ -286,14 +301,6 @@
   transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .group:hover .partner-3d-float { transform: translateZ(16px) scale(0.99); }
-/* Glare: a soft light that follows the pointer across the face. */
-.partner-3d-glare {
-  background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 58%);
-  mix-blend-mode: soft-light;
-  opacity: 0;
-  transition: opacity 400ms ease-out;
-}
-.group:hover .partner-3d-glare { opacity: 1; }
 /* The ground shadow under the card: tight at rest, wider and fainter while the card is raised. */
 .partner-3d-ground {
   transform: scale(0.86);
@@ -303,6 +310,5 @@
 .group:hover .partner-3d-ground.is-linked,
 .group:focus-within .partner-3d-ground.is-linked { transform: scale(1.04); opacity: 0.3; }
 @media (prefers-reduced-motion: reduce) {
-  .partner-3d, .group:hover .partner-3d[data-linked], .group:focus-within .partner-3d[data-linked] { transform: none; }
   .partner-3d-float, .group:hover .partner-3d-float { transform: none; }
 }

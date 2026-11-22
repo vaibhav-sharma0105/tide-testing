@@ -31,6 +31,8 @@ vi.mock('framer-motion', async () => {
       scrollYProgress: { get: () => 0, onChange: vi.fn(), clearListeners: vi.fn() },
     }),
     useTransform: () => ({ get: () => 0, onChange: vi.fn() }),
+    useMotionValue: (v) => ({ get: () => v, set: vi.fn(), onChange: vi.fn() }),
+    useSpring: (v) => v,
     // Imperative animation (e.g. CountUp): jump straight to the end value.
     animate: (from, to, opts = {}) => { opts.onUpdate?.(to); opts.onComplete?.(); return { stop: vi.fn() } },
   }

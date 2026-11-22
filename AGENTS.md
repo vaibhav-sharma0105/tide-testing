@@ -23,7 +23,7 @@ npm run dev          # auto-syncs content, then starts dev server at localhost:5
 npm run build        # auto-syncs content, then builds to dist/
 npm run content:validate   # YAML syntax, image paths, Resource Centre + Publications snapshots, formUrl, email / lives-impacted consistency
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — run in CI (deploy.yml)
-npm test             # Vitest unit/component tests (28 files, 334 tests) — run in CI (deploy.yml)
+npm test             # Vitest unit/component tests (29 files, 340 tests) — run in CI (deploy.yml)
 ```
 
 **Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
@@ -244,7 +244,7 @@ tide-new/
 │   │       └── typeStyles.js           ← static class sets: FAMILY_STYLE (tint, veil, icon), FRAME, DOT_PATTERN, LINE_PATTERN, DRIFT, DRIFT_SLOW
 │   │
 │   ├── pages/
-│   │   ├── Home.jsx               ← hero, mission, approach (3 programme cards), journey, CTA
+│   │   ├── Home.jsx               ← composes src/components/home/: hero, mission, approach, journey, partners, CTA
 │   │   ├── Contact.jsx            ← contact details (address, phones, email, hours, social) + embedded Google map card (`map.embedQuery`); no form
 │   │   ├── THRIvE.jsx             ← THRIvE page: statement, centred About, "Our team" co-directors (three large `size="lg"` ArchPortrait cards), research associates (ArchPortrait grid), dark core-principles band, then four full-width Research Area bands under a sticky jump nav with scroll-spy (numeral, organic parallax photo; static under reduced motion)
 │   │   ├── EducationForHarmony.jsx ← /education-for-harmony
@@ -664,6 +664,17 @@ Each page has its own layout. Both pages (`src/pages/publications/`) render `Seo
 - `PublicationsJsonLd({ rows, name, path })` — `publicationsJsonLd` ItemList added to `<head>` through react-helmet-async.
 - `PublicationBits.jsx`: `NewBadge({ date, data, now })` (`data.newBadge` when `isNew(date, now, NEW_BADGE_DAYS)`, plus `data.a11y.newLabelTemplate` for screen readers), `SourceLine({ url, data, compact, className })` (THRIvE only: an "opens elsewhere" arrow + the name — `sourceName(host, data.source.names)` or the host — or an outlined `data.source.doi` tag; `data.source.label` as a CSS tooltip and for screen readers), `Highlight({ text, terms })` (`<mark>` via `highlightParts`).
 - `TypeIcon({ type, className = 'h-4 w-4' })` — one lucide icon per family (`typeIconKey` → `TYPE_ICON_RULES`); decorative. `typeStyles.js` — static Tailwind class sets: `FAMILY_STYLE` per family (`tint`, `veil`, `icon`), `FRAME` (`landscape`, `card`, `portrait`), `DOT_PATTERN`, `LINE_PATTERN`, `DRIFT`, `DRIFT_SLOW`.
+
+### Homepage components (`src/components/home/`)
+
+`src/pages/Home.jsx` = `SeoHead` + six sections, each given its `home.json` block (text) and, where needed, `site.json`:
+- `HomeHero({ hero, site })` — full-height photo banner (parallax via `useScroll`; photo revealed only once decoded), headline with an SVG stroke under `taglineHighlight` that draws itself (`pathLength`), two `Button`s, a figures strip (`CountUpText` for `site.livesImpacted`, each `hero.pills[].value`, `site.foundingYear`; labels `hero.floatLives`, `pills[].label`, `hero.floatFounded`), two floating photos (xl) moved by the mouse at two depths (`useMotionValue` + `useSpring`), a scroll cue.
+- `HomeMission({ mission, founded })` — text + pull quote (accent bar scales in) + "learn more" link; two photos with scroll-linked drift at different speeds; the founding chip (`founded` = `{ value: site.foundingYear, label: hero.floatFounded }`).
+- `HomePrograms({ programs })` — three numbered cards joined by a line that scales in (md+); each card a `Link` with `tiltHandler`/`settleTilt` (`src/utils/tilt.js`), `.tilt-3d` + `.tilt-3d-glare`, text layer at `translateZ(30px)`; icons from `iconKey` (`ICONS`), accent gradients by index (`ACCENTS`); "Explore" always visible.
+- `HomeJourney({ journey })` — `<ol>` timeline; track filled by `useScroll` progress (`useSpring`), horizontal md+, vertical on phones; `CountUpText` for `phases[].lives`; the last phase styled as a plan (hollow dashed marker, lighter figure).
+- `HomePartners({ text })` — reads `src/data/sheets/partners.json`: up to 10 real logos sorted by `comparePartners` as small tilt tiles (reusing `.partner-3d*`), the partner count (`text.count` / `countOne`, `{n}` → `CountUp`), a link (`text.linkLabel` → `text.linkHref`); renders nothing below `CONSTELLATION_MIN` logos.
+- `HomeCta({ cta })` — photo band; volunteer / donate as two large tilt cards (`Door`), donate in the accent colour.
+Shared: `CountUpText({ text })` (`src/components/ui/`) counts the number inside a text figure once in view, keeping the words and the grouping (`src/utils/figures.js`: `splitFigure`, `formatFigure` — commas → Indian grouping, none → plain, so "2014" stays "2014"); final text for screen readers and under reduced motion. `withValue(template, token, value, strongClass)` now takes the number's colour classes (default white).
 
 ### Partners components (`src/components/partners/`)
 
@@ -1297,7 +1308,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 28 files, 334 tests (jsdom, src/test/**)
+npm test               # vitest run — 29 files, 340 tests (jsdom, src/test/**)
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```
@@ -1327,6 +1338,7 @@ npm run test:ui        # Vitest UI
 | `scripts/partnersSnapshot.test.js` | 15 | Partners sync rules (priority matching, allowlist, email scrub, skipped rows, unknown priority reported, links, missing logo, name-is-link, duplicates per section, order, removal limits, logo plan, shared-logo placeholders) |
 | `scripts/partnersImages.test.js` | 4 | logo rendering: margin trimmed + whole fit, transparency kept, small logo not enlarged, non-image bytes throw |
 | `pages/ourPartners.test.jsx` | 10 | `partnerFilters` (priority rank, grouping + order, search, tiers, domains, initials) and the page (hero figures, tabs + one marked, sections + counts + website links with domain, rows start paused, `?search=` → one grid with section captions, typed search → URL → no-match → clear, invitation band, empty state) |
+| `pages/home.test.jsx` | 6 | figure helpers (split, Indian grouping, plain years) and the homepage (banner figures from `site.yaml` + pills with labels, three approach links with "Explore", every journey phase, "In good company" hidden until the Partners snapshot has logos then linking to the Partners page, the two ways to help) |
 | `components/sliderConductor.test.jsx` | 2 | the Partners sliders' shared clock: only the movable, mostly visible row nearest the middle moves; nothing while the tab is hidden or after unregistering |
 | `utils/siteDataPlugin.test.js` | 21 | JSON-LD generated from `site.yaml`, `transformHtml` (title/og:site_name/marker/escaping), `llms.txt` rendering, content-consistency detection (email / lives total) |
 | `utils/imagePlaceholder.test.js` | 4 | global image fallback, opt-out, recursion guard, listener cleanup |

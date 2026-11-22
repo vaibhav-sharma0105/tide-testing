@@ -23,9 +23,7 @@
     "ctaSecondaryLabel": "Get Involved",
     "ctaSecondaryHref": "/get-involved/volunteer",
     "floatLives": "Lives impacted",
-    "floatLivesValue": "52,500+",
     "floatFounded": "Founded in Ahmedabad",
-    "floatFoundedValue": "2014",
     "scroll": "Scroll",
     "pills": [
       {
@@ -102,6 +100,14 @@
         "desc": "Understanding and empowering educational systems to promote holistic education."
       }
     ]
+  },
+  "partners": {
+    "sectionBadge": "Our Partners",
+    "title": "In good company",
+    "count": "{n} schools, universities, organisations and funders work with us.",
+    "countOne": "{n} partner works with us.",
+    "linkLabel": "Meet all our partners",
+    "linkHref": "/about/our-partners"
   },
   "cta": {
     "backgroundImage": "assets/images/home/bg-contact-strip.jpg",

@@ -146,6 +146,7 @@ Sheet.** Column rules: `docs/PARTNERS-SHEET-SCHEMA.md`.
 | Figures under the title | "113 partners", "5 types of partnership" | same file, `meta.stats` |
 | Section links, search, empty and no-match texts, slider button labels | e.g. "Jump to a type of partner" (screen readers), "Search partners by name", "Our partner list is being updated. Please check back soon." | same file, `directory` |
 | Band at the bottom (added in the 2026-11-22 redesign) | "Work with TIDE" / "Schools, universities, organisations and volunteers partner with us in different ways. Find yours, and help us change the way children learn." / buttons "Get in touch" (→ /contact) and "Volunteer with us" (→ /get-involved/volunteer). Is /contact the right place for a would-be partner, or should there be a partner form? | same file, `cta` |
+| Homepage "In good company" block (added in the 2026-11-22 homepage redesign; shown once the Partners sync has published logos) | "Our Partners" / "In good company" / "{n} schools, universities, organisations and funders work with us." / "Meet all our partners". Note: the homepage banner also says "100+ partners" (`home.yaml` pills, owner figure) while the Partners Sheet preview has 113 rows — keep them in step. | `content/pages/home.yaml` (`partners`, `hero.pills`) |
 | Optional one-line intro per type of partner (not built — needs wording) | e.g. what "Beneficiaries" means | — |
 
 ### 7.5 Not done yet (owner)

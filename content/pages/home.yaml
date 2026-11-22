@@ -16,10 +16,10 @@ hero:
   ctaHref: "/education-for-harmony"
   ctaSecondaryLabel: "Get Involved"
   ctaSecondaryHref: "/get-involved/volunteer"
+  # Labels of the figures strip in the banner. The figures themselves: the lives total and the
+  # founding year come from content/shared/site.yaml (livesImpacted, foundingYear); then the pills.
   floatLives: "Lives impacted"
-  floatLivesValue: "52,500+"
   floatFounded: "Founded in Ahmedabad"
-  floatFoundedValue: "2014"
   scroll: "Scroll"
   pills:
     - value: "12 yrs"
@@ -77,6 +77,16 @@ programs:
       iconKey: "Lightbulb"
       title: "THRIvE: Systems research"
       desc: "Understanding and empowering educational systems to promote holistic education."
+
+# "In good company": logos of the highest-priority partners, from the Partners Sheet (shown only
+# once the Partners sync has published logos). {n} = the number of partners on the Partners page.
+partners:
+  sectionBadge: "Our Partners"
+  title: "In good company"
+  count: "{n} schools, universities, organisations and funders work with us."
+  countOne: "{n} partner works with us."
+  linkLabel: "Meet all our partners"
+  linkHref: "/about/our-partners"
 
 cta:
   backgroundImage: "/assets/images/home/bg-contact-strip.jpg"

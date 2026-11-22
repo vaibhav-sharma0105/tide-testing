@@ -3,13 +3,14 @@ import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { getPartnerLogo } from '../../utils/partnerPhotos'
 import { partnerInitials, websiteLabel } from '../../utils/partnerFilters'
+import { tiltHandler, settleTilt } from '../../utils/tilt'
 
 // One partner: the whole logo on a white tile (fixed 3:2), then the name and — when the Sheet has a
 // website — its address, e.g. "cam.ac.uk ↗".
 //
 // Depth: a thin physical tile (lit face, layered shadows, ground shadow); with a mouse it tilts
 // towards the pointer, a glare follows it and the logo floats above the face (styles: .partner-3d*
-// in src/index.css). Touch and "reduce motion": no tilt.
+// and .tilt-3d* in src/index.css; tilt: src/utils/tilt.js). Touch and "reduce motion": no tilt.
 // Weight without labels (`tier`, from the priority — partnerTier):
 //   'feature' → a hairline blue gradient halo, a soft blue glow, a slightly larger logo, and a light that
 //               sweeps across the tile once when it first comes into view;
@@ -30,32 +31,8 @@ const FRAME = {
   high: 'bg-gradient-to-b from-primary/25 to-primary/15',
   '': 'bg-gradient-to-b from-tide-border/70 to-tide-border',
 }
-// Most a card tilts towards the pointer (degrees).
-const TILT_Y = 9
-const TILT_X = 7
-
-const reducedMotion = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-
-/** Pointer-following tilt + glare: writes CSS variables straight onto the card's frame (no re-render). */
-function tiltTowards(e) {
-  const el = e.currentTarget.querySelector('.partner-3d')
-  if (!el || e.pointerType !== 'mouse' || reducedMotion()) return
-  const r = el.getBoundingClientRect()
-  const px = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width))
-  const py = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height))
-  el.style.setProperty('--ry', `${((px - 0.5) * 2 * TILT_Y).toFixed(2)}deg`)
-  el.style.setProperty('--rx', `${((0.5 - py) * 2 * TILT_X).toFixed(2)}deg`)
-  el.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`)
-  el.style.setProperty('--my', `${(py * 100).toFixed(1)}%`)
-  el.classList.add('is-tilting')
-}
-
-function settle(e) {
-  const el = e.currentTarget.querySelector('.partner-3d')
-  if (!el) return
-  for (const v of ['--rx', '--ry', '--mx', '--my']) el.style.removeProperty(v)
-  el.classList.remove('is-tilting')
-}
+// Tilt towards the pointer (src/utils/tilt.js): at most 9° sideways, 7° up/down.
+const tiltTowards = tiltHandler(9, 7)
 
 export default function PartnerCard({ partner, text, caption, tier = '', order = 0 }) {
   const [failed, setFailed] = useState(false)
@@ -65,14 +42,14 @@ export default function PartnerCard({ partner, text, caption, tier = '', order =
   const inset = tier === 'feature' ? 'inset-[10%] h-[80%] w-[80%]' : 'inset-[13%] h-[74%] w-[74%]'
 
   return (
-    <figure className="group flex h-full flex-col" onPointerMove={tiltTowards} onPointerLeave={settle}>
+    <figure className="group flex h-full flex-col" onPointerMove={tiltTowards} onPointerLeave={settleTilt}>
       <div className="relative">
         {/* Ground shadow: an ellipse under the card that widens and fades as the card rises. */}
         <span aria-hidden="true" className={`partner-3d-ground pointer-events-none absolute inset-x-3 -bottom-2 h-5 rounded-[50%] bg-tide-text/25 blur-md ${linked ? 'is-linked' : ''}`} />
         <div
           data-tier={tier || undefined}
           data-linked={linked || undefined}
-          className={`partner-3d relative rounded-2xl p-px ${FRAME[tier] ?? FRAME['']}`}
+          className={`tilt-3d partner-3d relative rounded-2xl p-px ${FRAME[tier] ?? FRAME['']}`}
         >
           <div className="partner-3d-face relative aspect-[3/2] w-full rounded-[15px]">
             {logo ? (
@@ -95,7 +72,7 @@ export default function PartnerCard({ partner, text, caption, tier = '', order =
             )}
             {/* Light layers, clipped to the face: the pointer glare, and (top tier) the one-time sweep. */}
             <span aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden rounded-[15px]">
-              <span className="partner-3d-glare absolute inset-0" />
+              <span className="tilt-3d-glare absolute inset-0" />
               {tier === 'feature' && (
                 <motion.span
                   className="absolute inset-y-0 left-0 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/70 to-transparent"
