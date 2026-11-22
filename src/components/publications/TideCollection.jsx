@@ -15,6 +15,9 @@ import {
   formatPeriod, formatPublicationDate, paginate, publicationParamsToSearch, reportPeriod, safeLink, latestOfType,
 } from '../../utils/publicationFilters'
 import { normKey } from '../../utils/listingFilters'
+import TiltGlare from '../ui/TiltGlare'
+import { tiltProps } from '../../utils/tilt'
+const TILT = tiltProps(5, 4)
 
 // /tide/publications body — a small collection today (16 rows) that must stay good at 5 or 500.
 // Two jobs, two parts, one layout that never changes while filtering:
@@ -132,7 +135,8 @@ function PublicationCard({ row, data, terms }) {
   const link = safeLink(row.link)
   const media = <PublicationMedia thumb={getPublicationThumb(row.id)} type={row.type} shape="card" className="rounded-xl" />
   return (
-    <article className="group/media flex h-full flex-col rounded-3xl border border-tide-border bg-white p-3 shadow-card transition-shadow duration-500 hover:shadow-card-hover">
+    <article {...TILT} className="tilt-3d tilt-lift group/media relative flex h-full flex-col rounded-3xl border border-tide-border bg-white p-3 shadow-card hover:shadow-card-hover">
+      <TiltGlare />
       {link
         ? <a href={link} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true" className="block">{media}</a>
         : media}

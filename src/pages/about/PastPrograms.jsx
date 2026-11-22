@@ -7,6 +7,9 @@ import data from '../../data/about-past-programs.json'
 import site from '../../data/site.json'
 import { fadeUp } from '../../utils/motionPresets'
 import { imgSrc } from '../../utils/imgSrc'
+import TiltGlare from '../../components/ui/TiltGlare'
+import { tiltProps } from '../../utils/tilt'
+const TILT = tiltProps()
 
 export default function PastPrograms() {
   return (
@@ -69,7 +72,8 @@ export default function PastPrograms() {
           <ul className="mt-10 grid sm:grid-cols-3 gap-4 md:gap-5">
             {data.cta.links.map(link => (
               <li key={link.to}>
-                <Link to={link.to} className="group relative block overflow-hidden rounded-2xl bg-navy aspect-[4/3] sm:aspect-[3/4]">
+                <Link to={link.to} {...TILT} className="tilt-3d tilt-lift group relative block overflow-hidden rounded-2xl bg-navy aspect-[4/3] sm:aspect-[3/4] shadow-card hover:shadow-card-hover">
+                  <TiltGlare />
                   <img src={imgSrc(link.image)} alt="" loading="lazy" decoding="async"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent" />

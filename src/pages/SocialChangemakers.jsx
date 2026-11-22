@@ -10,6 +10,9 @@ import data from '../data/social-changemakers.json'
 import site from '../data/site.json'
 import comingSoon from '../data/coming-soon.json'
 import { fadeUp } from '../utils/motionPresets'
+import TiltGlare from '../components/ui/TiltGlare'
+import { tiltProps } from '../utils/tilt'
+const TILT = tiltProps()
 
 const SHEEN_MS = 6400
 const PLACEHOLDER_COUNT = 6
@@ -168,9 +171,11 @@ function ProfileCard({ index, beat, reduce }) {
   return (
     <motion.li
       {...fadeUp((index % 3) * 0.1)}
-      whileHover={reduce ? undefined : { y: -5, transition: { type: 'spring', stiffness: 160, damping: 16 } }}
-      className="group overflow-hidden rounded-2xl border border-tide-border bg-white shadow-card transition-shadow duration-300 hover:shadow-float"
+      {...TILT}
+      className="group"
     >
+      <div className="tilt-3d tilt-lift relative h-full overflow-hidden rounded-2xl border border-tide-border bg-white shadow-card hover:shadow-float">
+      <TiltGlare />
       <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gradient-to-br from-primary-light to-primary-faint">
         <User className="h-14 w-14 text-primary/40 transition-transform duration-500 group-hover:scale-105" strokeWidth={1.25} aria-hidden="true" />
         <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1.5 shadow-sm">
@@ -196,6 +201,7 @@ function ProfileCard({ index, beat, reduce }) {
             <span key={w} className={`block h-2 rounded-full bg-tide-subtle ${w}`} />
           ))}
         </div>
+      </div>
       </div>
     </motion.li>
   )

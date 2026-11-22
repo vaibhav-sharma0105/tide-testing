@@ -6,6 +6,9 @@ import { libraryTypeColors } from '../../config/library'
 import { getLibraryPhoto } from '../../utils/libraryPhotos'
 import { gradeLabel, sortGrades } from '../../utils/libraryFilters'
 import data from '../../data/pramaan-library.json'
+import TiltGlare from '../ui/TiltGlare'
+import { tiltProps } from '../../utils/tilt'
+const TILT = tiltProps()
 
 
 
@@ -18,8 +21,10 @@ export default function LibraryCard({ resource }) {
     <Link
       to={`/pramaan/resource-centre/${encodeURIComponent(resource.id)}`}
       aria-label={data.card.viewTemplate.replace('{name}', () => resource.name)}
-      className="group/card relative w-full bg-white rounded-3xl border border-tide-border shadow-card hover:shadow-card-hover hover:-translate-y-1.5 transition-all duration-300 overflow-hidden flex flex-col"
+      {...TILT}
+      className="tilt-3d tilt-lift group/card relative w-full bg-white rounded-3xl border border-tide-border shadow-card hover:shadow-card-hover overflow-hidden flex flex-col"
     >
+      <TiltGlare />
       <span className={`absolute inset-x-0 top-0 z-10 h-1.5 ${colors.solid} opacity-75 transition-opacity duration-300 group-hover/card:opacity-100`} aria-hidden="true" />
       <div className="relative overflow-hidden">
         <DriveImage

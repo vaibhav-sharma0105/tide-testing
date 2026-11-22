@@ -2,10 +2,915 @@
   "schemaVersion": 1,
   "section": "partners",
   "success": true,
-  "lastUpdated": null,
-  "contentHash": "sha256:2b6bd02beb21da9fd7d5210e565928b4e8b10caf20ac63051b0bc295d41ed96c",
-  "resources": [],
+  "lastUpdated": "2026-11-20T23:12:06.755Z",
+  "contentHash": "sha256:28ea858efb9771bc68c69ae5dcd427566be2c65158341cf9901d2a31bc090875",
+  "resources": [
+    {
+      "id": "PA-0bb6bb1b6d",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Crescent School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1qSaPtkwPRu_nLYkdxGpHX0zLw_Mp2kr8"
+    },
+    {
+      "id": "PA-0cf8a4f1d5",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Low",
+      "name": "Decathlon",
+      "website": "https://www.decathlon.com/?srsltid=AfmBOorlS74y7Ot9tqrjiIWFKJYVXndfXEA5X88zOoo1nXmEd3uHKACC",
+      "photoUrl": "https://drive.google.com/open?id=1jkWqi4qM5v4xX0YEiYy_B4tbDimFs6gn"
+    },
+    {
+      "id": "PA-0d98d51846",
+      "type": "Beneficiaries",
+      "priority": "Medium",
+      "name": "Shela Primary School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1YZSiIaIMZzpjDcPRyWkr91TyjMsDYhML"
+    },
+    {
+      "id": "PA-2f07ed80a9",
+      "type": "Collaborators",
+      "priority": "Medium",
+      "name": "Gyanprakash Foundation",
+      "website": "https://gyanprakash.org/",
+      "photoUrl": "https://drive.google.com/open?id=1KihSD5u_iKLelllazDiWZxjDnDok227w"
+    },
+    {
+      "id": "PA-3a3eb80332",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Extremely high",
+      "name": "University of Cambridge",
+      "website": "https://www.cam.ac.uk/",
+      "photoUrl": "https://drive.google.com/open?id=1A4K0RZ8shl5PTH0St8-XR--oTvB6Q5Dz"
+    },
+    {
+      "id": "PA-03d91d16c7",
+      "type": "Collaborators",
+      "priority": "Medium",
+      "name": "Shaishav Foundation",
+      "website": "https://shaishavchildrights.org/",
+      "photoUrl": "https://drive.google.com/open?id=1VZ5F_29h8EiMKaho0ucYJ1XS381a-oRr"
+    },
+    {
+      "id": "PA-3e8aa62e92",
+      "type": "Collaborators",
+      "priority": "High",
+      "name": "Ayur Gyan Nyas",
+      "website": "https://ayurgyannyas.org/",
+      "photoUrl": "https://drive.google.com/open?id=1jUD4qQHVDL_-rGFuyJFIFlq0kbzQZ-XL"
+    },
+    {
+      "id": "PA-3f8926ebe7",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Nirman School",
+      "website": "https://www.nirmanhighschool.com/",
+      "photoUrl": "https://drive.google.com/open?id=1-gpZ-XZyFdYR-ghX5N_tVz-h0V5d_2mI"
+    },
+    {
+      "id": "PA-3ff112eccb",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Republic School",
+      "website": "https://www.republicschoolahd.edu.in/",
+      "photoUrl": "https://drive.google.com/open?id=179Udq6MFNjLxzRfE6FnuACaUM54Tz5Ce"
+    },
+    {
+      "id": "PA-4c7e65c25d",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Medium",
+      "name": "Design for good",
+      "website": "https://www.designforgood.org/",
+      "photoUrl": "https://drive.google.com/open?id=1uWiH0sEZF3DUprz80mx8mwOjL4Aed1LX"
+    },
+    {
+      "id": "PA-4f32392fc0",
+      "type": "Beneficiaries",
+      "priority": "High",
+      "name": "Bluebell school",
+      "website": "https://www.bluebellsinternational.com/",
+      "photoUrl": "https://drive.google.com/open?id=1TsKS3kEzdk5bPDHG58OFlMCuHj6HC72l"
+    },
+    {
+      "id": "PA-5a02d67691",
+      "type": "Beneficiaries",
+      "priority": "Extremely high",
+      "name": "Apple global school",
+      "website": "https://appleglobal.in/",
+      "photoUrl": "https://drive.google.com/open?id=1Ie6RYdUXJ20J78wtAUc8Q7Kgph5AmkJI"
+    },
+    {
+      "id": "PA-5d90d93eac",
+      "type": "Beneficiaries",
+      "priority": "Medium",
+      "name": "Euroschool",
+      "website": "https://www.euroschoolindia.com/",
+      "photoUrl": "https://drive.google.com/open?id=1HgruMh5butIhPgl1tFelc2nPuJNnZXFi"
+    },
+    {
+      "id": "PA-5e93531e26",
+      "type": "Volunteer partners",
+      "priority": "Low",
+      "name": "Cosmos Castle",
+      "website": "https://ccis.edu.in/",
+      "photoUrl": "https://drive.google.com/open?id=15pN_NHum4_cf4tNUOVPjE5M9c8p7XI0E"
+    },
+    {
+      "id": "PA-6dd6626359",
+      "type": "Beneficiaries",
+      "priority": "Medium",
+      "name": "Dantali Primary School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1DdfzoIzUA_1IXdDH3Owxav6_z7gf_JVT"
+    },
+    {
+      "id": "PA-7deaff1a80",
+      "type": "Beneficiaries",
+      "priority": "Medium",
+      "name": "Vikasgurh School Paldi",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1SNCWiNK8EZH1o6YDrHydB_efD0x9qD6q"
+    },
+    {
+      "id": "PA-7e8ceb3b5a",
+      "type": "Collaborators",
+      "priority": "High",
+      "name": "Piramal School of Leadership",
+      "website": "https://www.piramalfoundation.org/piramal-school-of-leadership",
+      "photoUrl": "https://drive.google.com/open?id=1rvX0pnNpvLsXo0oobUq96jmkdnAFS_cJ"
+    },
+    {
+      "id": "PA-7fd6bd87d3",
+      "type": "Collaborators",
+      "priority": "Low",
+      "name": "Saath Trust",
+      "website": "https://saath.org/",
+      "photoUrl": "https://drive.google.com/open?id=137LaPQElTzLGq5uxfkGUe1Uj6bG1iWCX"
+    },
+    {
+      "id": "PA-8a3cb0a282",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Medium",
+      "name": "Vimal PVT ltd",
+      "website": "https://www.vimalagencies.net/",
+      "photoUrl": "https://drive.google.com/open?id=15-bd9xx1FU7rHq7rzWQa9sE9DgABL7-8"
+    },
+    {
+      "id": "PA-8b073b8667",
+      "type": "Volunteer partners",
+      "priority": "High",
+      "name": "Redbricks School",
+      "website": "https://redbrickseducation.org/",
+      "photoUrl": "https://drive.google.com/open?id=1CaCBIlGEpQAyufzy-Jdl4WP9lO8GIV7B"
+    },
+    {
+      "id": "PA-08b4795cd2",
+      "type": "Beneficiaries",
+      "priority": "High",
+      "name": "ZED english medium",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1wM3JEf68WMqhw0cyHBqa76Djb_6ehwsA"
+    },
+    {
+      "id": "PA-9ca1cd831f",
+      "type": "Others",
+      "priority": "Medium",
+      "name": "Global Schools Forum",
+      "website": "https://www.globalschoolsforum.org/",
+      "photoUrl": "https://drive.google.com/open?id=15I0XPaJ_GgIEG-jQSc1sjPC9PkVWsaoP"
+    },
+    {
+      "id": "PA-18e975188d",
+      "type": "Collaborators",
+      "priority": "Medium",
+      "name": "Knowledge Consortium of Gujarat",
+      "website": "https://kcg.gujarat.gov.in/",
+      "photoUrl": "https://drive.google.com/open?id=1RsZ5K3m6fQJ2eEZ7KF5AJyYv_lIC5MJJ"
+    },
+    {
+      "id": "PA-20b8a2beb9",
+      "type": "Beneficiaries",
+      "priority": "High",
+      "name": "Ahmedabad Zilla Parishad Office",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1zjEcOeUbMskJwmdayFkqUDw1abJIpxiO"
+    },
+    {
+      "id": "PA-27f4701bac",
+      "type": "Collaborators",
+      "priority": "Medium",
+      "name": "Indian Multi-university Alliance",
+      "website": "https://www.multiversities.org/",
+      "photoUrl": "https://drive.google.com/open?id=1xj_c4oRjNxi1Ob2pQC0_bh1DoyDYOzY6"
+    },
+    {
+      "id": "PA-33d1aeebb7",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Medium",
+      "name": "Adventure Pvt ltd",
+      "website": "https://www.actual-adventure.com/?srsltid=AfmBOop4SSQXRBkq04Oz3PwR0IhKRX6Xpkp9FS7DthrwTMgF18MFPoaz",
+      "photoUrl": "https://drive.google.com/open?id=1U8-Q1S0uZThhlali_TvctkgZcB-C2NyW"
+    },
+    {
+      "id": "PA-36ab24cc4a",
+      "type": "Volunteer partners",
+      "priority": "Medium",
+      "name": "Travellers university",
+      "website": "https://www.travellersuniversity.org/",
+      "photoUrl": "https://drive.google.com/open?id=192MJG97qy9bTbqI1GbR6129_TvSHLeBi"
+    },
+    {
+      "id": "PA-50c9f276d0",
+      "type": "Volunteer partners",
+      "priority": "High",
+      "name": "Calorx olive international school",
+      "website": "https://cois.edu.in/",
+      "photoUrl": "https://drive.google.com/open?id=1ddbYwYlBIC4DnAgN667Xz6xTzUUBHfUl"
+    },
+    {
+      "id": "PA-54b2d2c20d",
+      "type": "Others",
+      "priority": "High",
+      "name": "Adani International School",
+      "website": "https://www.adaniinternationalschool.org/",
+      "photoUrl": "https://drive.google.com/open?id=1xqOebJL-pYDDdDlIsJK6oC6coujfw6lO"
+    },
+    {
+      "id": "PA-58d77037a1",
+      "type": "Collaborators",
+      "priority": "Medium",
+      "name": "Diksha Foundation",
+      "website": "https://dikshafoundation.org/",
+      "photoUrl": "https://drive.google.com/open?id=1OV6J_XJ_zOeYHIA5t6evgHQoBUwzq6bn"
+    },
+    {
+      "id": "PA-60af7d3e4e",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Medium",
+      "name": "Aurobindo Ashram Delhi Branch",
+      "website": "https://sriaurobindoashram.net/",
+      "photoUrl": "https://drive.google.com/open?id=1SrD6EfK__Ft_wShzQ4kG43QTZzTNIBAN"
+    },
+    {
+      "id": "PA-63a390bc98",
+      "type": "Knowledge, Research and Funding",
+      "priority": "High",
+      "name": "Nissem",
+      "website": "https://nissem.org/",
+      "photoUrl": "https://drive.google.com/open?id=1Au4reZcss0MUQmjNO3WqaTOjU1c5yO4J"
+    },
+    {
+      "id": "PA-65c729e33c",
+      "type": "Beneficiaries",
+      "priority": "Medium",
+      "name": "Shams school",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1jbrzDzV6PxQo3hF0NDNybs12yLh2qBoI"
+    },
+    {
+      "id": "PA-69a68eb49b",
+      "type": "Beneficiaries",
+      "priority": "Extremely high",
+      "name": "GGIS international school",
+      "website": "https://www.theggis.com/",
+      "photoUrl": "https://drive.google.com/open?id=1EL-pmj6DAygKR45u-qfis-y0i-JEOwIQ"
+    },
+    {
+      "id": "PA-71a5e1d039",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Low",
+      "name": "Havmor Icecream",
+      "website": "https://www.havmor.com/",
+      "photoUrl": "https://drive.google.com/open?id=1A5469IUgsUKmXUWF9CDO4qIwCnOZxPLD"
+    },
+    {
+      "id": "PA-72fd0f32fe",
+      "type": "Collaborators",
+      "priority": "Low",
+      "name": "Aasman foundation",
+      "website": "https://www.aasmaanfoundation.org/",
+      "photoUrl": "https://drive.google.com/open?id=1DS2lWyYGT4r9x3yAzgcAN7VEK4FZBxh3"
+    },
+    {
+      "id": "PA-89c8d1f36a",
+      "type": "Volunteer partners",
+      "priority": "Low",
+      "name": "IITs Bombay Student Council",
+      "website": "http://www.et.iitb.ac.in/about-us/whos-who/student-council",
+      "photoUrl": "https://drive.google.com/open?id=1aKtXPe5lhpzeXLjV_a1TQGSc8-VoVWmJ"
+    },
+    {
+      "id": "PA-91be1e7e63",
+      "type": "Volunteer partners",
+      "priority": "Medium",
+      "name": "Connectfor",
+      "website": "https://www.connectfor.org/",
+      "photoUrl": "https://drive.google.com/open?id=1Uq3rCKuUXpAfWiUqBtTFCQRwLm0FC7Ps"
+    },
+    {
+      "id": "PA-94c501850f",
+      "type": "Collaborators",
+      "priority": "Low",
+      "name": "CounSel",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1ZMOOf4Qz_-viqBlW93fadTogYiozV4x_"
+    },
+    {
+      "id": "PA-94d15fc9cf",
+      "type": "Beneficiaries",
+      "priority": "High",
+      "name": "Pratap Highschool",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=101cX80djKB5FTvQh6GuCTSKTHkKTnwg4"
+    },
+    {
+      "id": "PA-97e4247320",
+      "type": "Beneficiaries",
+      "priority": "High",
+      "name": "Saraswati School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1YMAE1PNmOPtz6HIJQz7L4RiiXjoM1Iaw"
+    },
+    {
+      "id": "PA-140ee58daf",
+      "type": "Others",
+      "priority": "Medium",
+      "name": "MS University",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=13hGVp6xTdGjQPmQgO4II41Bu28q4ZUHf"
+    },
+    {
+      "id": "PA-469ded9f89",
+      "type": "Beneficiaries",
+      "priority": "High",
+      "name": "Shreyas Foundation",
+      "website": "https://www.shreyasfoundation.in/",
+      "photoUrl": "https://drive.google.com/open?id=1xrVA599W2rz1esPqbsXx9_3qBzXCuEr7"
+    },
+    {
+      "id": "PA-532a1b6510",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Bharat Higher Secondary",
+      "website": "https://bharatpublicschool.org/academics/higher-secondary/",
+      "photoUrl": "https://drive.google.com/open?id=1NtwsPU4NtrjJD9QqDGvXF5Tpynps6kTa"
+    },
+    {
+      "id": "PA-575f46cdac",
+      "type": "Volunteer partners",
+      "priority": "Medium",
+      "name": "JG College of Education",
+      "website": "https://jgce.jgcolleges.org/",
+      "photoUrl": "https://drive.google.com/open?id=1k_DLoWgwgiEj6t32hpQOTykaFnulP8nB"
+    },
+    {
+      "id": "PA-619daee8a2",
+      "type": "Beneficiaries",
+      "priority": "Medium",
+      "name": "Gibpura Primary School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1mQr4kzS_5pi9Y2Ed3sjJnc4LMuflVaXu"
+    },
+    {
+      "id": "PA-764af268c8",
+      "type": "Beneficiaries",
+      "priority": "Medium",
+      "name": "St Xaviers College",
+      "website": "https://www.sxccal.edu/",
+      "photoUrl": "https://drive.google.com/open?id=1uziSgbGd1yLOrmxf7lgOLkVxpeCK0dh5"
+    },
+    {
+      "id": "PA-821e81cf70",
+      "type": "Volunteer partners",
+      "priority": "Medium",
+      "name": "einfochips",
+      "website": "https://www.einfochips.com/",
+      "photoUrl": "https://drive.google.com/open?id=14gmjuchXHipheTicXWTmN_FblPxrY7Ho"
+    },
+    {
+      "id": "PA-822cb4b248",
+      "type": "Knowledge, Research and Funding",
+      "priority": "High",
+      "name": "BCM corporation",
+      "website": "https://www.bcmcorporation.com/",
+      "photoUrl": "https://drive.google.com/open?id=1ak5juXSCdP7NEe68akxVhBn8jKaM4MNc"
+    },
+    {
+      "id": "PA-952e171611",
+      "type": "Beneficiaries",
+      "priority": "High",
+      "name": "SMT AAS Primary School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=13j6kySGGO2TfAZq-OrMAteGGPKWISPGt"
+    },
+    {
+      "id": "PA-3368f07428",
+      "type": "Beneficiaries",
+      "priority": "Medium",
+      "name": "Jaspur Primary School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1rzksAM8yDG5xwwcar0Vz7MRn_DCrJfA6"
+    },
+    {
+      "id": "PA-3432beddd4",
+      "type": "Beneficiaries",
+      "priority": "High",
+      "name": "Vandana School",
+      "website": "https://www.vandanainternationalschool.in/",
+      "photoUrl": "https://drive.google.com/open?id=1SLWN_yCjs_L-meHcBDX58eWZvYqVwQns"
+    },
+    {
+      "id": "PA-7381f5843d",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Extremely high",
+      "name": "TTEC India",
+      "website": "https://www.ttec.com/global-locations/india",
+      "photoUrl": "https://drive.google.com/open?id=1Nb3vNd4qUjK1SqRZI8MzIwmRbCi2KLcc"
+    },
+    {
+      "id": "PA-8459a97066",
+      "type": "Volunteer partners",
+      "priority": "High",
+      "name": "GLS",
+      "website": "https://www.glsuniversity.ac.in/",
+      "photoUrl": "https://drive.google.com/open?id=1hK_200llmLreLEGTaEF2KofM6M1k0n9I"
+    },
+    {
+      "id": "PA-19702abcc2",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Low",
+      "name": "Chicago Pizza",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1KuwJVjRz9sEQt7Y3WzQaqcIuWRa0P4Ph"
+    },
+    {
+      "id": "PA-62336c64be",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Medium",
+      "name": "Notre Dame",
+      "website": "https://www.nd.edu/",
+      "photoUrl": "https://drive.google.com/open?id=17t3kYakA_j9ttaEuhrAr3Nsv5onS8gYg"
+    },
+    {
+      "id": "PA-63234bd423",
+      "type": "Volunteer partners",
+      "priority": "High",
+      "name": "Nirma University",
+      "website": "https://nirmauni.ac.in/",
+      "photoUrl": "https://drive.google.com/open?id=11FOO5byGbmPnUvg6aMGwKh3n429K8Atm"
+    },
+    {
+      "id": "PA-68582a53af",
+      "type": "Others",
+      "priority": "Medium",
+      "name": "Pratham Education Foundation",
+      "website": "https://www.google.com/aclk?sa=L&ai=DChsSEwiAuKaAvsmWAxVWckcBHR9_HEoYACICCAEQABoCcXU&ae=2&aspm=1&co=1&ase=2&gclid=CjwKCAjwqc_UBhBKEiwAWbl25oaee4Ax_NYgn4qoS9aP3HF3KUVpKg4wQ4TXxirj6qdxNxHJp8IsYxoCnjwQAvD_BwE&cid=CAAS0gHkaPgLkb8CwooUulLZrXOrON_AdIpzUD30kYMqPMhHf66S6CfKld6txU9HT-D_horD6h_aeqRIIzaLhDePULser1Hf_sQtVftt8vqlrI1sSjqUBvvSi5-VIj8IDm9ylYdd1BMmTgkx1XZyIMruuEbcDaGuVCdvQzN0aLfOoFlFfafOb-A8AnLo4dBo06fspClhwiS8pD5KXKYoj1a4YCO0qs7GgC7KRdF1EusKKomJOq4m7fWob8XT_pA4EB7pU8zxz8CPJulYn-hvPhBS17DJSBk&cce=2&category=acrcp_v1_35&sig=AOD64_12Ql6Xhv_dR_0cgg-5XODulWCXDA&q&nis=4&adurl&ved=2ahUKEwjQ-J-AvsmWAxXlF2IAHd8cCosQ0Qx6BAgQEAE",
+      "photoUrl": "https://drive.google.com/open?id=1s0fxojDFIQfPlVjMzWKIUYCV40U4Hq9p"
+    },
+    {
+      "id": "PA-70761fcc29",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Medium",
+      "name": "The Media Cafe",
+      "website": "https://mediacafeonline.com/work/",
+      "photoUrl": "https://drive.google.com/open?id=1QDuqGaK-liOOVW7Md-dRE-tFoq7QyHi3"
+    },
+    {
+      "id": "PA-94973de390",
+      "type": "Volunteer partners",
+      "priority": "Medium",
+      "name": "UPES university",
+      "website": "https://www.upes.ac.in/?srsltid=AfmBOopQvccmDgXZpZMFztxeKlGzMo2MYMqpylMw79BajN5WXIN59-d3",
+      "photoUrl": "https://drive.google.com/open?id=19tDU-b9pd7MjD7bZ_qN5NxaykxIl4I4i"
+    },
+    {
+      "id": "PA-278714bece",
+      "type": "Volunteer partners",
+      "priority": "Medium",
+      "name": "Omprakash",
+      "website": "https://www.omprakash.org/",
+      "photoUrl": "https://drive.google.com/open?id=11xyR_wgYI5ToK-wBRb-7WtJGwmcUdIZP"
+    },
+    {
+      "id": "PA-4169349c20",
+      "type": "Collaborators",
+      "priority": "Medium",
+      "name": "Had anhad",
+      "website": "https://hadanhad.com/",
+      "photoUrl": "https://drive.google.com/open?id=1yHWf5P367qlzgUJXhU-0ixNRVqd2V3lg"
+    },
+    {
+      "id": "PA-26878136e7",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Childrens home Paldi",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=19aYVW0QoASThdHA5AsbsAJpyF8MFj0pI"
+    },
+    {
+      "id": "PA-36690757cc",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Extremely high",
+      "name": "University college of London",
+      "website": "https://www.ucl.ac.uk/",
+      "photoUrl": "https://drive.google.com/open?id=1jkPjEkEgifhcdnpD5s-XvvIEVIMk-0CM"
+    },
+    {
+      "id": "PA-072121571a",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Sultan Ahmed Zanana",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=17oGGlu88pAxYXgvFmyXQttHYOwrI218o"
+    },
+    {
+      "id": "PA-879104902b",
+      "type": "Collaborators",
+      "priority": "Medium",
+      "name": "Bharat Youth Convention",
+      "website": "http://mybharat.gov.in/mega_events/youth-for-viksit-bharat-my-bharat-youth-convention",
+      "photoUrl": "https://drive.google.com/open?id=1GJyDEBO_Je-fPrmjN_tpTVsvS2xS8CHm"
+    },
+    {
+      "id": "PA-a0c5f6d628",
+      "type": "Collaborators",
+      "priority": "Medium",
+      "name": "Ohmbhole Trust",
+      "website": "https://ohmbhole.org/home.html",
+      "photoUrl": "https://drive.google.com/open?id=1He6OoW5Sb6jswg4LH4BYblyoAaLWvSeO"
+    },
+    {
+      "id": "PA-a081a2dc30",
+      "type": "Collaborators",
+      "priority": "High",
+      "name": "Cell for human value and transformative learning",
+      "website": "https://scert.delhi.gov.in/scert/about-cell-chvtl",
+      "photoUrl": "https://drive.google.com/open?id=1MnDc-LN1UcxV5m2Smx7SYtk3JdSWoBzf"
+    },
+    {
+      "id": "PA-a2768c0e7c",
+      "type": "Beneficiaries",
+      "priority": "High",
+      "name": "Vidya Sagar School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1vjaKWBshnL7QHJuAvcVFKo0hSGxeK35z"
+    },
+    {
+      "id": "PA-a19445ef3b",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Medium",
+      "name": "Samagata Foundation",
+      "website": "https://samagata.org/",
+      "photoUrl": "https://drive.google.com/open?id=1snQFinU-cQS2JKG9PWWmekvDpDfhaQTL"
+    },
+    {
+      "id": "PA-a0344563ce",
+      "type": "Volunteer partners",
+      "priority": "Low",
+      "name": "Riverside School",
+      "website": "https://schoolriverside.com/",
+      "photoUrl": "https://drive.google.com/open?id=1BTdEDOH886j0Sfkih-SIm8jKAFPhmi3V"
+    },
+    {
+      "id": "PA-acc1126e79",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Sultan Ahmed Yateenkhanna",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1v3jn97ocfMsNG8SaHWq401UXYkDdlUhq"
+    },
+    {
+      "id": "PA-adbd7e18e5",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Neema School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1HI15rRw4F3mM5lQecveLsC-ZGcyVdbEP"
+    },
+    {
+      "id": "PA-ae8b9cbd4c",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Anjuman School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1TJKPr94MJyjrWY4czOOBJCuvqxRr6ALv"
+    },
+    {
+      "id": "PA-aee2622210",
+      "type": "Beneficiaries",
+      "priority": "High",
+      "name": "Memnagar Sarwajanik Vidhyalaya",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1EtTb0LXDqfrQO4CowUDQdVBE7v1iZsa1"
+    },
+    {
+      "id": "PA-af02c5873f",
+      "type": "Volunteer partners",
+      "priority": "Extremely high",
+      "name": "Gujarat Vidhyapith",
+      "website": "https://www.gujaratvidyapith.org/",
+      "photoUrl": "https://drive.google.com/open?id=1goF6H052kpZbNy6-rxv2WQNOhLTpB-DY"
+    },
+    {
+      "id": "PA-b4c07f03ff",
+      "type": "Beneficiaries",
+      "priority": "Extremely high",
+      "name": "Sanand BRC Bhavan",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1dMfMrBGJjrTT7xrLE50h_H3sn7Q8Fmo-"
+    },
+    {
+      "id": "PA-b8a9ef840f",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Rah-e Khair School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=184nYS6tjn0xN7T7o3ca2we9bV4pQoc-t"
+    },
+    {
+      "id": "PA-b444dbe4e0",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Shree Shakuntal Higher Secondary School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1-2NSBJXyFMwFfdkGXVwmrPom7i0kVcCg"
+    },
+    {
+      "id": "PA-b682d4e0c8",
+      "type": "Collaborators",
+      "priority": "Medium",
+      "name": "Classrooms to Climate action",
+      "website": "https://ccac.co.in/",
+      "photoUrl": "https://drive.google.com/open?id=190CD2v99l9idFGW5f8RexyGRPzV8jNiK"
+    },
+    {
+      "id": "PA-ba41dad0f9",
+      "type": "Collaborators",
+      "priority": "Medium",
+      "name": "Jeevantirth Foundation",
+      "website": "https://www.jeevantirth.org/",
+      "photoUrl": "https://drive.google.com/open?id=1301Fp62NIu6WAkRcH_ALO9mC4yDdEQdN"
+    },
+    {
+      "id": "PA-bbbdbb72d4",
+      "type": "Collaborators",
+      "priority": "High",
+      "name": "Yuva unstoppable",
+      "website": "https://yuvaunstoppable.org/our-story/",
+      "photoUrl": "https://drive.google.com/open?id=1bBaKTGqtePt98ZHbP9Ui3cVTpZ22kc9E"
+    },
+    {
+      "id": "PA-bd2e76002c",
+      "type": "Collaborators",
+      "priority": "Medium",
+      "name": "Prabhat Foundation",
+      "website": "https://prabhateducationfoundation.org/",
+      "photoUrl": "https://drive.google.com/open?id=19rLS9m8885J7VL81tdZlY8FhieT5rzVE"
+    },
+    {
+      "id": "PA-bdb1c88368",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "FD Jamalpura",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1PLbJ8P90jeDh40jfRv6no8V9Grk2GM2h"
+    },
+    {
+      "id": "PA-c2f9c4a87a",
+      "type": "Collaborators",
+      "priority": "Low",
+      "name": "Kahaani Sports Academy",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1eVONLgDEJK1VRBVJRjq4OpMqaWoWJsBQ"
+    },
+    {
+      "id": "PA-c6c5ba8410",
+      "type": "Volunteer partners",
+      "priority": "High",
+      "name": "Ahmedhabad International School",
+      "website": "https://www.aischool.net/",
+      "photoUrl": "https://drive.google.com/open?id=1kn-_IufX2SU8BDKq9ZOmCLd-kMXYveES"
+    },
+    {
+      "id": "PA-c7dce5cd46",
+      "type": "Volunteer partners",
+      "priority": "High",
+      "name": "https://ahduni.edu.in/",
+      "website": "https://ahduni.edu.in/",
+      "photoUrl": "https://drive.google.com/open?id=1qS-A9LbpA7m5WT6PmOgNX8Pg9yMeJAON"
+    },
+    {
+      "id": "PA-c20f62220b",
+      "type": "Beneficiaries",
+      "priority": "Medium",
+      "name": "Childrens Home Paldi",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1L6FFlV6GFfWuLIWTFjt1-rYmX52gTS62"
+    },
+    {
+      "id": "PA-c670bb73ba",
+      "type": "Knowledge, Research and Funding",
+      "priority": "High",
+      "name": "Royal Society of Arts",
+      "website": "https://www.thersa.org/",
+      "photoUrl": "https://drive.google.com/open?id=1SQKQjq0VkGzw9vzbm9MzcxXF5iFsrhkW"
+    },
+    {
+      "id": "PA-c767e57959",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Extremely high",
+      "name": "Mind and Life Institute",
+      "website": "https://www.mindandlife.org/",
+      "photoUrl": "https://drive.google.com/open?id=1PNmpRdELKvCbBfGR-UnQXMwsMSvIpT1W"
+    },
+    {
+      "id": "PA-c5830958a2",
+      "type": "Collaborators",
+      "priority": "High",
+      "name": "Ivy Prep",
+      "website": "https://www.ivyprepindia.co.in/",
+      "photoUrl": "https://drive.google.com/open?id=1IAsL0bZ6DNr4jTF5DrOOxUqwnKcCM1m7"
+    },
+    {
+      "id": "PA-cc903f9e0f",
+      "type": "Collaborators",
+      "priority": "High",
+      "name": "Dream a Dream Foundation",
+      "website": "https://dreamadream.org/",
+      "photoUrl": "https://drive.google.com/open?id=1g-LPnkSKeCWoNCQPnpMtA19dWAPJ4zFY"
+    },
+    {
+      "id": "PA-d6b7a0d4ee",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Medium",
+      "name": "Spencer Foundation",
+      "website": "https://www.spencer.org/",
+      "photoUrl": "https://drive.google.com/open?id=1EdD9LShcAnlrcnnoR__shetodmvXtx0N"
+    },
+    {
+      "id": "PA-d7d4b3e1f3",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Extremely high",
+      "name": "Aga khan foundation",
+      "website": "https://akfusa.org/",
+      "photoUrl": "https://drive.google.com/open?id=1G-Sp3C9dHhIAnyFIa4BBTGUIzFN2xRDf"
+    },
+    {
+      "id": "PA-d8a0f231eb",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Medium",
+      "name": "Khushi media solutions",
+      "website": "https://khushiadvertising.com/",
+      "photoUrl": "https://drive.google.com/open?id=1jV04LOwdUv55jZ8uxPu7CEcUAGYCS6cP"
+    },
+    {
+      "id": "PA-dba11184c1",
+      "type": "Others",
+      "priority": "Medium",
+      "name": "Sadvichar Parivar",
+      "website": "https://sadvicharparivar.org/",
+      "photoUrl": "https://drive.google.com/open?id=1MszEH6dDUVDb-ZLaelWsVcRGw3fatZC8"
+    },
+    {
+      "id": "PA-e0bf5b823f",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Boys Remand Home Sola",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1OQ3-W03x_YxQz9dHuPDYgbw3ffGB6dhD"
+    },
+    {
+      "id": "PA-e9c8fb0001",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Medium",
+      "name": "TDU Bangalore",
+      "website": "https://www.tdu.edu.in/",
+      "photoUrl": "https://drive.google.com/open?id=1ApoKHEKXhbk03p2vXcIcpHxroU_W_CCY"
+    },
+    {
+      "id": "PA-e94a59e25a",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Medium",
+      "name": "INSTRUCT Labs",
+      "website": "https://sites.google.com/site/instructlab/",
+      "photoUrl": "https://drive.google.com/open?id=1Fe5aN_Gz9TISSPuLgC8yPMuBhVkvx_v3"
+    },
+    {
+      "id": "PA-ea82d4a320",
+      "type": "Knowledge, Research and Funding",
+      "priority": "Medium",
+      "name": "India welfare trust",
+      "website": "https://www.indiawelfaretrust.in/",
+      "photoUrl": "https://drive.google.com/open?id=1uFEHpWBly8xZl9G1znDE6VG_I-BwaP0K"
+    },
+    {
+      "id": "PA-eb96d09208",
+      "type": "Beneficiaries",
+      "priority": "Medium",
+      "name": "Vikasgruh Orphanage Paldi",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1_uLKdWwppvP8b8Q2bs3EXIMVJkyrMCt-"
+    },
+    {
+      "id": "PA-f0a6526cde",
+      "type": "Volunteer partners",
+      "priority": "Medium",
+      "name": "Symbiosis Hydrabad",
+      "website": "https://www.slsh.edu.in/",
+      "photoUrl": "https://drive.google.com/open?id=1lumY8DgukUew9Nx-jmgN6F4YXT6fuEKI"
+    },
+    {
+      "id": "PA-f0c04a5837",
+      "type": "Collaborators",
+      "priority": "Medium",
+      "name": "Mulya Foundation",
+      "website": "https://mulya.org.in/",
+      "photoUrl": "https://drive.google.com/open?id=1vd52Tqx6TL-s4BsZjcGU-M1Sm35x5XkP"
+    },
+    {
+      "id": "PA-f0c4e75d9a",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "FD juhapura",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1Wsi7uZoBC1XUCrS5V6NHDfaQU_dJrEn-"
+    },
+    {
+      "id": "PA-f2d226d574",
+      "type": "Collaborators",
+      "priority": "Low",
+      "name": "Karma Foundation",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1mwC4g7dHtRo2tkvotemlMjuYe1rDUwB4"
+    },
+    {
+      "id": "PA-f6f1b15bb4",
+      "type": "Knowledge, Research and Funding",
+      "priority": "High",
+      "name": "Global Schools Forum",
+      "website": "https://www.globalschoolsforum.org/",
+      "photoUrl": "https://drive.google.com/open?id=1wF9DU0j9LZxc-mSR67dHvQwirUyTUE3r"
+    },
+    {
+      "id": "PA-f7a5942024",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Balbharti School",
+      "website": "https://balbharati.org/",
+      "photoUrl": "https://drive.google.com/open?id=19j-nsv4gLhTBhOTBqsWhijtCrPQykbjB"
+    },
+    {
+      "id": "PA-f9b20efd6f",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Matruchaya School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=18jVgEVn2CmRinezi6L7Z8ZOGNfZCWMbA"
+    },
+    {
+      "id": "PA-f236eb62de",
+      "type": "Beneficiaries",
+      "priority": "Medium",
+      "name": "Eklavya India Foundation",
+      "website": "https://www.eklavyaindia.org/",
+      "photoUrl": "https://drive.google.com/open?id=1m3-21IeN3QZPl0Wkqe3B0vfa7AOuHGyf"
+    },
+    {
+      "id": "PA-f00495d40b",
+      "type": "Beneficiaries",
+      "priority": "Medium",
+      "name": "Adalaj Primary School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1CDqarED7NmS0kNWpqfGDk1nVhXRRvCy6"
+    },
+    {
+      "id": "PA-fad133543e",
+      "type": "Beneficiaries",
+      "priority": "Low",
+      "name": "Matrutva School",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1Ph8PRl4EMhDZX1Lo2xSwIAbhVA2oLwXk"
+    },
+    {
+      "id": "PA-fda95b59e7",
+      "type": "Others",
+      "priority": "High",
+      "name": "Mahatma Gandhi International School",
+      "website": "https://www.mgis.in/en/",
+      "photoUrl": "https://drive.google.com/open?id=1NTCwqIzo0n41xosVjsI3mQgeVj0pLaV1"
+    },
+    {
+      "id": "PA-ff9892423e",
+      "type": "Volunteer partners",
+      "priority": "Mediun",
+      "name": "Alps Institute",
+      "website": null,
+      "photoUrl": "https://drive.google.com/open?id=1rj8T9rIOLSCcVXwuX6Vj9bs1ekjNR7-j"
+    }
+  ],
   "meta": {
-    "total": 0
+    "total": 113
   }
 }

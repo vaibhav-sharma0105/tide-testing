@@ -34,8 +34,9 @@ mission:
   quote: "We imagine an education that helps students develop as a whole person and learn to work together to counter the many 21st century challenges that India and the globe faces."
   learnMore: "Learn why we do this"
   learnMoreHref: "/about/why-tide"
-  image1: "/assets/images/home/why-tide.jpg"
-  image1Alt: "TIDE Foundation students learning in a classroom"
+  # An Education for Harmony moment: students deliberating at a Model City Council (MCCx) session.
+  image1: "/assets/images/projects-mcc/mccx-2025-au.jpg"
+  image1Alt: "Students taking part in a Model City Council session at Ahmedabad University, 2025"
   image2: "/assets/images/home/join-us.jpg"
   image2Alt: "Community members joining TIDE's mission"
 

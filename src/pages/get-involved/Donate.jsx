@@ -7,6 +7,9 @@ import WaveDivider from '../../components/ui/WaveDivider'
 import data from '../../data/get-involved-donate.json'
 import site from '../../data/site.json'
 import { fadeUp } from '../../utils/motionPresets'
+import TiltGlare from '../../components/ui/TiltGlare'
+import { tiltProps } from '../../utils/tilt'
+const TILT = tiltProps()
 
 const HIGHLIGHT_ICONS = [BadgeCheck, Handshake]
 
@@ -128,8 +131,10 @@ export default function Donate() {
           <div className="max-w-xl mx-auto grid grid-cols-1 min-[420px]:grid-cols-2 gap-3 text-left">
             <a
               href={`mailto:${data.hero.email}`}
-              className="flex flex-col items-center justify-center text-center gap-1.5 px-3 py-5 rounded-2xl font-body bg-accent text-navy hover:bg-accent-dark transition-colors"
+              {...TILT}
+              className="tilt-3d tilt-lift relative overflow-hidden flex flex-col items-center justify-center text-center gap-1.5 px-3 py-5 rounded-2xl font-body bg-accent text-navy hover:bg-accent-dark shadow-float"
             >
+              <TiltGlare />
               <Mail className="w-6 h-6" />
               <span className="font-semibold text-sm">{data.hero.emailCta}</span>
               <span className="text-xs text-navy/80 break-all">{data.hero.email}</span>
@@ -138,8 +143,10 @@ export default function Donate() {
               href={data.hero.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center justify-center text-center gap-1.5 px-3 py-5 rounded-2xl font-body border-2 border-white/50 text-white hover:bg-white/10 transition-colors"
+              {...TILT}
+              className="tilt-3d tilt-lift relative overflow-hidden flex flex-col items-center justify-center text-center gap-1.5 px-3 py-5 rounded-2xl font-body border-2 border-white/50 text-white hover:bg-white/10"
             >
+              <TiltGlare />
               <MessageCircle className="w-6 h-6" />
               <span className="font-semibold text-sm">{data.hero.whatsappCta}</span>
               <span className="text-xs text-white/80 break-all">{data.hero.whatsappText}</span>

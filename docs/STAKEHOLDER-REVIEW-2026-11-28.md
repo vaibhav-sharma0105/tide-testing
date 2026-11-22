@@ -152,5 +152,6 @@ Sheet.** Column rules: `docs/PARTNERS-SHEET-SCHEMA.md`.
 ### 7.5 Not done yet (owner)
 
 - The Partners sync is **not connected** yet: the owner's edit access to the Sheet was requested on
-  2026-11-21. Setup: `docs/PARTNERS-SETUP-GUIDE.md`. Until then the page shows "Our partner list is being
-  updated" (the committed data file is empty).
+  2026-11-21. Setup: `docs/PARTNERS-SETUP-GUIDE.md`. Until then the site shows a **static preview** of the
+  Sheet (owner decision, 2026-11-23: 113 partners as the public export had them), so the issues in §7.2 are
+  visible on the live page until they are fixed in the Sheet and the first real sync runs.

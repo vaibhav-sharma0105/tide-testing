@@ -18,6 +18,9 @@ import { imgSrc } from '../../utils/imgSrc'
 import snapshot from '../../data/sheets/pramaan-library.json'
 import data from '../../data/pramaan-library.json'
 import site from '../../data/site.json'
+import TiltGlare from '../../components/ui/TiltGlare'
+import { tiltProps } from '../../utils/tilt'
+const TILT = tiltProps(5, 4)
 
 const d = data.detail
 const fill = (tpl, vars) => tpl.replace(/\{(\w+)\}/g, (_, k) => vars[k])
@@ -207,8 +210,10 @@ export default function PramaanLibraryDetail() {
                         onClick={() => setVideoOpen(true)}
                         aria-label={d.playVideoLabel}
                         aria-haspopup="dialog"
-                        className={`group/video relative block aspect-video w-full overflow-hidden rounded-2xl border border-tide-border bg-gradient-to-br ${accent.poster} shadow-card transition-transform hover:-translate-y-0.5`}
+                        {...TILT}
+                        className={`tilt-3d tilt-lift group/video relative block aspect-video w-full overflow-hidden rounded-2xl border border-tide-border bg-gradient-to-br ${accent.poster} shadow-card hover:shadow-card-hover`}
                       >
+                        <TiltGlare />
                         <span className="absolute inset-0 flex items-center justify-center">
                           <img src={imgSrc(d.videoLogo)} alt="" className="h-24 w-24 opacity-50 mix-blend-multiply" />
                         </span>

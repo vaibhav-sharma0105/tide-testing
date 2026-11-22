@@ -4,6 +4,9 @@ import PageHero from '../../components/ui/PageHero'
 import data from '../../data/about-why-tide.json'
 import site from '../../data/site.json'
 import { imgSrc } from '../../utils/imgSrc'
+import TiltGlare from '../../components/ui/TiltGlare'
+import { tiltProps } from '../../utils/tilt'
+const TILT = tiltProps()
 
 const GOAL_ICONS = { Heart, Lightbulb, Target, GraduationCap }
 
@@ -73,7 +76,8 @@ export default function WhyTide() {
             {data.goals.items.map((g) => {
               const Icon = GOAL_ICONS[g.iconKey] || Target
               return (
-                <li key={g.text} className="relative bg-tide-bg border border-tide-border rounded-2xl px-6 pt-10 pb-7 transition-shadow duration-300 hover:shadow-card-hover">
+                <li key={g.text} {...TILT} className="tilt-3d tilt-lift relative bg-tide-bg border border-tide-border rounded-2xl px-6 pt-10 pb-7 hover:shadow-card-hover">
+                  <TiltGlare />
                   <span className="absolute -top-6 left-6 w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-white">
                     <Icon aria-hidden="true" className="w-5 h-5" />
                   </span>

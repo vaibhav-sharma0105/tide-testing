@@ -122,7 +122,7 @@ Google Sheet "TIDE/THRIvE Partners (Responses)" (Google Form responses; columns 
     ↓  commits src/data/sheets/partners.json + src/data/partners-photos.json + public/assets/images/partners/
 OurPartners (/about/our-partners) — imports the snapshot at build time
 ```
-Not live yet (2026-11-21): the committed snapshot is empty until the owner's setup. See §8 "Partners".
+Sync not connected yet: a static preview is published (owner decision, 2026-11-23) until the owner's setup. See §8 "Partners".
 
 ### Routing
 
@@ -674,6 +674,7 @@ Each page has its own layout. Both pages (`src/pages/publications/`) render `Seo
 - `HomeJourney({ journey })` — `<ol>` timeline; track filled by `useScroll` progress (`useSpring`), horizontal md+, vertical on phones; `CountUpText` for `phases[].lives`; the last phase styled as a plan (hollow dashed marker, lighter figure).
 - `HomePartners({ text })` — reads `src/data/sheets/partners.json`: up to 10 real logos sorted by `comparePartners` as small tilt tiles (reusing `.partner-3d*`), the partner count (`text.count` / `countOne`, `{n}` → `CountUp`), a link (`text.linkLabel` → `text.linkHref`); renders nothing below `CONSTELLATION_MIN` logos.
 - `HomeCta({ cta })` — photo band; volunteer / donate as two large tilt cards (`Door`), donate in the accent colour.
+Shared tilt: `src/utils/tilt.js` — `tiltHandler(maxY, maxX)`, `settleTilt`, `tiltProps(maxY, maxX)` (both handlers; they move the hover area itself when it has `.tilt-3d`, else its `.tilt-3d` child); `TiltGlare` (`src/components/ui/`) is the glare layer; CSS `.tilt-3d`, `.tilt-lift` (rise on hover/focus via `--lift`), `.tilt-3d-glare`. Used by every hover-reactive tile on the site and by `Button` (`md`/`lg`); see CLAUDE.md "Tiles and buttons" for the list and the exceptions.
 Shared: `CountUpText({ text })` (`src/components/ui/`) counts the number inside a text figure once in view, keeping the words and the grouping (`src/utils/figures.js`: `splitFigure`, `formatFigure` — commas → Indian grouping, none → plain, so "2014" stays "2014"); final text for screen readers and under reduced motion. `withValue(template, token, value, strongClass)` now takes the number's colour classes (default white).
 
 ### Partners components (`src/components/partners/`)
@@ -1031,7 +1032,7 @@ Snapshot: `{ schemaVersion: 1, section: "publications", success, lastUpdated, co
 
 ### Partners (third Sheet integration)
 
-Same snapshot mode as Publications. **Not live yet (2026-11-21):** `src/data/sheets/partners.json` is committed empty (`section: "partners"`, no rows) and `partners-photos.json` as `{}`, so `/about/our-partners` shows `directory.empty` until the owner's setup (`docs/PARTNERS-SETUP-GUIDE.md`). A local design preview (manifest `fileId: "preview"`) must never be committed.
+Same snapshot mode as Publications. **Sync not connected yet:** until the owner's setup (`docs/PARTNERS-SETUP-GUIDE.md`) a **static preview** is published (owner decision, 2026-11-23): 113 partners and 112 logos built locally from the Sheet's public export, with manifest `fileId: "preview"`. The sync workflow's setup check treats a manifest whose every entry is `"preview"` as not yet published, so without secrets it skips with a notice (no alert). The preview's ids come from the CSV Timestamp text, the Apps Script's from the Timestamp date (`toISOString()`), so they differ: the **first real sync must be run once with `allow_large_change`** (the setup guide, Step 8). Apart from this decision, never commit partners data made locally.
 
 ```
 Google Sheet "TIDE/THRIvE Partners (Responses)" (one tab "Form Responses 1"; 113 rows on 2026-11-21)

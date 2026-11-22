@@ -8,6 +8,9 @@ import site from '../../data/site.json'
 import common from '../../data/common.json'
 import Button from '../../components/ui/Button'
 import { imgSrc } from '../../utils/imgSrc'
+import TiltGlare from '../../components/ui/TiltGlare'
+import { tiltProps } from '../../utils/tilt'
+const TILT = tiltProps(8, 8)
 
 const getInitials = name => name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
 
@@ -30,11 +33,12 @@ function Tile({ name, linkedin, delay = 0, className = '', children }) {
     transition: { duration: 0.55, delay, ease: EASE },
   }
   if (!linkedin) {
-    return <motion.div {...motionProps} className={className}>{children}</motion.div>
+    return <motion.div {...motionProps} {...TILT} className={className}>{children}</motion.div>
   }
   return (
     <motion.a
       {...motionProps}
+      {...TILT}
       href={linkedin}
       target="_blank"
       rel="noopener noreferrer"
@@ -61,7 +65,8 @@ function LinkBadge({ className = '' }) {
 
 function Photo({ photo, name, className, initialsClass = 'text-4xl' }) {
   return (
-    <div className={`relative overflow-hidden bg-primary-light ${className}`}>
+    <div className={`tilt-3d tilt-lift relative overflow-hidden bg-primary-light ${className}`}>
+      <TiltGlare />
       {photo ? (
         <img
           src={imgSrc(photo)}
@@ -98,7 +103,7 @@ function PersonCard({ name, role, bio, photo, suffix, linkedin, index }) {
           photo={photo}
           name={name}
           initialsClass="text-6xl"
-          className="relative aspect-square rounded-b-[4rem] rounded-t-[999px] shadow-card transition-shadow duration-500 group-hover:shadow-card-hover"
+          className="aspect-square rounded-b-[4rem] rounded-t-[999px] shadow-card group-hover:shadow-card-hover"
         />
         {linkedin && <LinkBadge className="bottom-3 right-3 h-9 w-9" />}
       </div>
@@ -131,7 +136,7 @@ function AdvisorCard({ name, role, photo, linkedin, index }) {
           photo={photo}
           name={name}
           initialsClass="text-4xl"
-          className="relative h-full w-full rounded-full ring-4 ring-white/90 shadow-float"
+          className="h-full w-full rounded-full ring-4 ring-white/90 shadow-float"
         />
         {linkedin && <LinkBadge className="bottom-1 right-1 h-9 w-9" />}
       </div>

@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import TiltGlare from './TiltGlare'
+import { tiltProps } from '../../utils/tilt'
 
 const variants = {
   // Gradient stops chosen so white text clears 4.5:1 at BOTH ends, not just
@@ -15,6 +17,12 @@ const variants = {
   ghost:     'text-primary hover:bg-primary-faint',
   white:     'bg-white text-primary border border-white/60 shadow-sm hover:bg-primary-faint hover:shadow-md',
 }
+
+// Medium and large buttons are tactile like the site's tiles: they tilt towards the mouse, a glare
+// follows the pointer and they rise a little (src/utils/tilt.js, .tilt-3d in src/index.css). Small
+// ones stay flat. No tilt on touch or under "reduce motion".
+const TILT_SIZES = new Set(['md', 'lg'])
+const tilt = tiltProps(6, 8)
 
 const sizes = {
   sm: 'px-4 py-2 text-sm',
@@ -34,14 +42,17 @@ export default function Button({
 }) {
   const base =
     'inline-flex items-center gap-2 font-body font-semibold rounded-full transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
-  const cls = `${base} ${variants[variant]} ${sizes[size]} ${className}`
+  const tilts = TILT_SIZES.has(size)
+  const cls = `${base} ${variants[variant]} ${sizes[size]} ${tilts ? 'tilt-3d tilt-lift relative overflow-hidden' : ''} ${className}`
+  const extra = tilts ? tilt : {}
+  const content = tilts ? <>{children}<TiltGlare /></> : children
 
-  if (to) return <Link to={to} className={cls} {...props}>{children}</Link>
+  if (to) return <Link to={to} className={cls} {...extra} {...props}>{content}</Link>
   if (href)
     return (
-      <a href={href} className={cls} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} {...props}>
-        {children}
+      <a href={href} className={cls} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} {...extra} {...props}>
+        {content}
       </a>
     )
-  return <button className={cls} {...props}>{children}</button>
+  return <button className={cls} {...extra} {...props}>{content}</button>
 }

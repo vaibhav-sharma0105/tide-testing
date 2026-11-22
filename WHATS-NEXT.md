@@ -6,6 +6,7 @@
 
 ### Decisions waiting on the site owner
 
+0. **Unused image (2026-11-23):** `public/assets/images/home/why-tide.jpg` is no longer used (the homepage mission photo is now `projects-mcc/mccx-2025-au.jpg`). Delete it only with the owner's OK.
 1. ~~Images left unused by the removed pages~~ — **done 2026-10-25:** the 97 unused files (about 21 MB) were deleted with the owner's approval; recover with `git checkout a4126d1 -- <path>`. The unused legacy downloader `scripts/download-images.mjs` was deleted on 2026-10-26 (recover with `git checkout a4126d1 -- scripts/download-images.mjs`).
 2. **`intro.ctaHref` in `content/pages/get-involved-volunteer.yaml`** is the placeholder `https://docs.google.com/forms`, not a real application form. Owner said keep as is for now. The page is reachable from the About menu.
 3. **Unused images:** none left from the 2026-10-27 pass, apart from the six `thrive-happiness/` images (see the THRIvE item under "Content and data issues"). `home/testimonial-quote.png` (the removed Home testimonial) was deleted; recover with `git checkout HEAD~ -- public/assets/images/home/testimonial-quote.png` if needed.

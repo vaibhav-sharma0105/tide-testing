@@ -259,18 +259,26 @@
   --rx: 0deg; --ry: 0deg; --lift: 0px; --mx: 50%; --my: 0%;
   transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--lift));
   transform-style: preserve-3d;
-  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 500ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 300ms ease, border-color 300ms ease, color 300ms ease, filter 300ms ease;
 }
-.tilt-3d.is-tilting { transition: transform 140ms ease-out, box-shadow 500ms cubic-bezier(0.16, 1, 0.3, 1); }
+.tilt-3d.is-tilting {
+  transition: transform 140ms ease-out, box-shadow 500ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 300ms ease, border-color 300ms ease, color 300ms ease, filter 300ms ease;
+}
+/* .tilt-lift: the tile also rises on hover / keyboard focus (replaces hover:-translate-y-*, which
+   would override the tilt transform). */
+.tilt-3d.tilt-lift:hover, .tilt-3d.tilt-lift:focus-visible, .tilt-3d.tilt-lift:focus-within,
+.group:hover > .tilt-3d.tilt-lift, .group:focus-visible > .tilt-3d.tilt-lift { --lift: -5px; }
 .tilt-3d-glare {
   background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 58%);
   mix-blend-mode: soft-light;
   opacity: 0;
   transition: opacity 400ms ease-out;
 }
-.group:hover .tilt-3d-glare { opacity: 1; }
+.group:hover .tilt-3d-glare, .tilt-3d:hover > .tilt-3d-glare { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
-  .tilt-3d, .group:hover .tilt-3d { transform: none !important; }
+  .tilt-3d, .group:hover .tilt-3d, .tilt-3d.tilt-lift:hover { transform: none !important; }
 }
 .partner-3d {
   box-shadow: 0 1px 1px rgba(13, 31, 60, 0.04), 0 3px 6px -2px rgba(13, 31, 60, 0.06), 0 14px 24px -14px rgba(13, 31, 60, 0.16);

@@ -18,6 +18,9 @@ import snapshot from '../../data/sheets/pramaan-library.json'
 import ablData from '../../data/abl-home.json'
 import site from '../../data/site.json'
 import { fadeUp } from '../../utils/motionPresets'
+import TiltGlare from '../../components/ui/TiltGlare'
+import { tiltProps } from '../../utils/tilt'
+const TILT = tiltProps()
 
 // Icons cannot live in YAML: one per "Why ABL works" point (in order) and one per resource type.
 const WHY_ICONS = [Eye, Brain, Users, Languages]
@@ -197,8 +200,10 @@ export default function AblHome() {
                   <motion.div key={value} {...fadeUp(i * 0.08)}>
                     <Link
                       to={`/pramaan/resource-centre?type=${encodeURIComponent(value)}`}
-                      className={`group relative block h-full rounded-3xl border border-tide-border bg-tide-bg p-6 shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card-hover ${colors.cardHover}`}
+                      {...TILT}
+                      className={`tilt-3d tilt-lift group relative block h-full rounded-3xl border border-tide-border bg-tide-bg p-6 shadow-card hover:shadow-card-hover ${colors.cardHover}`}
                     >
+                      <TiltGlare />
                       <ArrowUpRight className={`absolute right-5 top-5 h-5 w-5 ${colors.eyebrow} opacity-0 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100`} aria-hidden="true" />
                       <span className={`mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border shadow-sm transition-all duration-300 group-hover:-rotate-3 group-hover:scale-110 ${colors.badge} ${colors.tileHover}`}>
                         <TypeIcon type={tab} className="h-6 w-6" />

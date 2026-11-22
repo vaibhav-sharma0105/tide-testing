@@ -11,6 +11,9 @@ import common from '../../data/common.json'
 import comingSoon from '../../data/coming-soon.json'
 import { imgSrc } from '../../utils/imgSrc'
 import { fadeUp } from '../../utils/motionPresets'
+import TiltGlare from '../../components/ui/TiltGlare'
+import { tiltProps } from '../../utils/tilt'
+const TILT = tiltProps()
 
 const STEP_ICONS = { Mail, Users, Lightbulb, Vote }
 const HIGHLIGHT_ICONS = { MessagesSquare, Leaf, Landmark }
@@ -78,12 +81,16 @@ function WhatIs() {
                 <motion.li
                   key={h.label}
                   {...fadeUp(0.1 + i * 0.08)}
-                  className="group flex items-center gap-3 rounded-2xl border border-tide-border bg-white p-4 transition-colors duration-300 hover:border-primary/40 hover:bg-primary-faint sm:flex-col sm:items-start sm:gap-4"
+                  {...TILT}
+                  className="group"
                 >
+                  <div className="tilt-3d tilt-lift relative flex h-full items-center gap-3 rounded-2xl border border-tide-border bg-white p-4 shadow-card hover:border-primary/40 hover:bg-primary-faint hover:shadow-card-hover sm:flex-col sm:items-start sm:gap-4">
+                  <TiltGlare />
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-light text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <span className="font-body text-sm font-semibold leading-snug text-tide-text">{h.label}</span>
+                  </div>
                 </motion.li>
               )
             })}

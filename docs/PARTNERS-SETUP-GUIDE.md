@@ -154,6 +154,12 @@ Then, for each trigger: pencil → **Failure notification settings → Notify me
 
 ## Step 8: First update
 
+> **The first run replaces a preview (2026-11-23).** Until this setup, the site shows a static preview of
+> the partners (built from the Sheet's public export; its ids are made differently from the script's).
+> The first real update replaces every one of them, which the safety rule refuses unless you allow it
+> **once**: GitHub → **Actions → Sync Partners → Run workflow** → tick **allow_large_change** → **Run**.
+> Do this right after Step 7 (instead of waiting for `testDispatch` below); later runs need nothing special.
+
 1. Apps Script → **`testDispatch`** → **Run**. The log should say `SUCCESS (HTTP 204)` (GitHub's normal
    answer; `SUCCESS (HTTP 200)` also counts).
 2. GitHub → **Actions → Sync Partners**: a run starts within a minute and turns green. If anything

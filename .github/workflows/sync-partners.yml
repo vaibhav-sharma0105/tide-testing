@@ -34,8 +34,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Before the partners sync is set up (secrets missing AND the page shows no resources) the sync job is
-  # skipped with a notice — no failure, no alert. If the page HAS been published before and a
+  # Before the partners sync is set up (secrets missing AND the page shows no resources, or only a
+  # preview — every logo in the manifest has fileId "preview", published by the owner's decision of
+  # 2026-11-23 until the setup) the sync job is skipped with a notice — no failure, no alert. If the page HAS been published before and a
   # secret goes missing, the sync job runs anyway and fails loudly (alert issue), so a deleted
   # secret can never stop updates silently.
   check:
@@ -49,7 +50,9 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           ref: main
-          sparse-checkout: src/data/sheets/partners.json
+          sparse-checkout: |
+            src/data/sheets/partners.json
+            src/data/partners-photos.json
           sparse-checkout-cone-mode: false
 
       - name: Check the partners sync is set up
@@ -59,8 +62,9 @@ jobs:
           HAS_TOKEN: ${{ secrets.PARTNERS_SYNC_TOKEN != '' }}
         run: |
           published=false
-          # "Published" = the page shows at least one resource (an empty sync doesn't count).
-          if node -e "process.exit(require('./src/data/sheets/partners.json').resources.length > 0 ? 0 : 1)" 2>/dev/null; then published=true; fi
+          # "Published" = the page shows at least one resource from a real sync (an empty sync doesn't
+          # count, nor a preview: every logo entry has fileId "preview").
+          if node -e "const r=require('./src/data/sheets/partners.json').resources; let m={}; try { m=require('./src/data/partners-photos.json') } catch {} const v=Object.values(m); const preview=v.length>0 && v.every(e=>e && e.fileId==='preview'); process.exit(r.length > 0 && !preview ? 0 : 1)" 2>/dev/null; then published=true; fi
           if [ "$HAS_URL" = true ] && [ "$HAS_TOKEN" = true ]; then
             echo "ok=true" >> "$GITHUB_OUTPUT"
           elif [ "$published" = true ]; then

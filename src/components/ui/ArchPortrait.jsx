@@ -3,6 +3,9 @@ import { ArrowUpRight } from 'lucide-react'
 import common from '../../data/common.json'
 import { imgSrc } from '../../utils/imgSrc'
 import { fadeUp } from '../../utils/motionPresets'
+import TiltGlare from './TiltGlare'
+import { tiltProps } from '../../utils/tilt'
+const TILT = tiltProps(8, 8)
 
 // The team-portrait style used on /about/our-team: an arched photo on a tilted colour frame.
 // `layout="card"` stacks the portrait over the text; `layout="row"` puts them side by side.
@@ -32,6 +35,7 @@ export default function ArchPortrait({ name, role, suffix, photo, linkedin, inde
     <Wrapper
       {...fadeUp(delay)}
       {...linkProps}
+      {...TILT}
       className={`group ${row ? 'flex items-center gap-5' : 'block'} ${className}`}
     >
       <div className={`relative shrink-0 ${row ? 'w-24 sm:w-28' : ''}`}>
@@ -39,7 +43,8 @@ export default function ArchPortrait({ name, role, suffix, photo, linkedin, inde
           aria-hidden="true"
           className={`absolute inset-0 translate-x-1.5 translate-y-1.5 ${arch} transition-transform duration-500 motion-safe:group-hover:rotate-0 ${FRAME_TONES[index % FRAME_TONES.length]}`}
         />
-        <div className={`relative aspect-square overflow-hidden bg-primary-light shadow-card transition-shadow duration-500 group-hover:shadow-card-hover ${arch}`}>
+        <div className={`tilt-3d tilt-lift relative aspect-square overflow-hidden bg-primary-light shadow-card group-hover:shadow-card-hover ${arch}`}>
+          <TiltGlare />
           {photo ? (
             <img
               src={imgSrc(photo)}
