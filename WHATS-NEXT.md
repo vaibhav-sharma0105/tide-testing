@@ -17,9 +17,9 @@
    so a normal first run refuses) → edit test. Then update CLAUDE.md, AGENTS.md and
    `docs/STAKEHOLDER-REVIEW-2026-11-28.md` §7.5: sync live, preview gone, "never commit locally made partners
    data" applies again without exception. Until then the sync workflow skips quietly (no alerts).
-0. **Social Changemakers (Past SCF) sync — built 2026-11-23, waiting for the owner setup.** The owner has
-   access to the Sheet; follow `docs/SOCIAL-CHANGEMAKERS-SETUP-GUIDE.md` Steps 1–9 one at a time (the owner
-   enters every credential). Committed snapshot is empty until then; never commit locally made data. Open
+0. **Social Changemakers (Past SCF) sync — live since 2026-11-23** (setup Steps 1–9 done, edit test passed).
+   10 fellows published, no photos yet (the Sheet's photo columns are empty; the "rows need attention" issue
+   lists them). Its GitHub token expires about 2027-11-23 (`docs/OPERATIONS-INVENTORY.md`). Open
    Sheet questions (photos empty, publish flag, sharing, ownership): `docs/STAKEHOLDER-REVIEW-2026-11-28.md` §8.
 0. **Unused image (2026-11-23):** `public/assets/images/home/why-tide.jpg` is no longer used (the homepage mission photo is now `projects-mcc/mccx-2025-au.jpg`). Delete it only with the owner's OK.
 1. ~~Images left unused by the removed pages~~ — **done 2026-10-25:** the 97 unused files (about 21 MB) were deleted with the owner's approval; recover with `git checkout a4126d1 -- <path>`. The unused legacy downloader `scripts/download-images.mjs` was deleted on 2026-10-26 (recover with `git checkout a4126d1 -- scripts/download-images.mjs`).

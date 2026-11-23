@@ -158,8 +158,8 @@ Sheet.** Column rules: `docs/PARTNERS-SHEET-SCHEMA.md`.
 
 ## 8. Past SCF page — Social Changemakers profiles (`/education-for-harmony/social-changemakers`)
 
-Built 2026-11-23 from the Sheet "Social Changemakers' Fellowship Completion Form (Responses)"; not
-connected until the owner's setup (`docs/SOCIAL-CHANGEMAKERS-SETUP-GUIDE.md`). Only the header row and
+Built 2026-11-23 from the Sheet "Social Changemakers' Fellowship Completion Form (Responses)"; the
+sync is live since 2026-11-23 (10 fellows published, no photos uploaded yet). Only the header row and
 counts were read (10 rows, all batch "23-24", on 2026-11-23).
 
 ### 8.1 Decisions taken with the owner
