@@ -36,7 +36,7 @@ export default function FellowCard({ fellow, text, index = 0, onOpen }) {
       {...TILT}
       className="group"
     >
-      <article onClick={openFromCard} className="tilt-3d tilt-lift relative h-full cursor-pointer rounded-[1.25rem] border border-tide-border bg-white p-2 shadow-card hover:shadow-card-hover focus-within:shadow-card-hover sm:p-2.5">
+      <article onClick={openFromCard} className="tilt-3d tilt-lift relative h-full cursor-pointer rounded-[1.25rem] border border-tide-border bg-white p-2 shadow-card hover:shadow-card-hover has-[:focus-visible]:shadow-card-hover sm:p-2.5">
         <TiltGlare />
         <div className="relative">
           <FellowPhotos fellow={fellow} photos={photos} text={text} frameClass="rounded-2xl" />
@@ -57,7 +57,7 @@ export default function FellowCard({ fellow, text, index = 0, onOpen }) {
             </button>
           </h3>
           <p className="mt-1 line-clamp-2 min-h-10 font-body text-sm leading-5 text-tide-muted">{fellow.project}</p>
-          <span aria-hidden="true" className="mt-3 inline-flex min-h-[36px] items-center gap-1.5 rounded-full bg-primary-faint px-3.5 font-body text-sm font-semibold text-primary-dark ring-1 ring-primary/15 transition-colors duration-300 group-hover:bg-primary group-hover:text-white group-hover:ring-primary group-focus-within:bg-primary group-focus-within:text-white">
+          <span aria-hidden="true" className="mt-3 inline-flex min-h-[36px] items-center gap-1.5 rounded-full bg-primary-faint px-3.5 font-body text-sm font-semibold text-primary-dark ring-1 ring-primary/15 transition-colors duration-300 group-hover:bg-primary group-hover:text-white group-hover:ring-primary group-has-[:focus-visible]:bg-primary group-has-[:focus-visible]:text-white">
             {text.cta}
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
           </span>
