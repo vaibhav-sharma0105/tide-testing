@@ -2,10 +2,132 @@
   "schemaVersion": 1,
   "section": "social-changemakers",
   "success": true,
-  "contentHash": "sha256:28759990f81dca45e46b6126d2c6416a63fe00028a7b20f561666e15e9096afd",
-  "resources": [],
+  "lastUpdated": "2026-11-23T14:47:48.612Z",
+  "contentHash": "sha256:ed8b3188663df48302fb44df097f2e5f717a2acac049900d197b408758670087",
+  "resources": [
+    {
+      "id": "SC-1a9635ce22",
+      "batch": "23-24",
+      "order": 8,
+      "name": "Yashvit Sancheti",
+      "project": "Mindful Futures: investing in Students' mental Well-being",
+      "summary": "\"Our project is all about creating a vibrant, safe space within schools. We aim to empower students to embrace their uniqueness while fostering mental well-being. Through engaging workshops, fun activities, and open discussions, we're painting a colourful world where every student's mental health matters. Join us on this journey to sprinkle positivity and amplify mindfulness within our school community!\"",
+      "nextSteps": "I plan on taking more sessions and also implementing some of the other things we discussed such as the anonymous box. I may write an article in the future surrounding mental well being of students.",
+      "videoUrl": "https://drive.google.com/file/d/1GS89oEQ5DjxwxWJknWeGyir-nL3qk_nk/preview",
+      "testimonialUrl": "https://drive.google.com/file/d/1VjGPmVEOYGqDLKayTzqt-OxL_ueU_UjH/preview",
+      "writeupUrl": "https://drive.google.com/file/d/12RW29PiQ5EwUv4dGp5dYb7g-d0Ei2CTc/preview"
+    },
+    {
+      "id": "SC-5d73c4fea2",
+      "batch": "23-24",
+      "order": 10,
+      "name": "Arth Patel",
+      "project": "RareFlora Revival: Restoring beauty in endangered botanical treasures",
+      "summary": "\"Campaigning the revival of endangered visually appealing plants, fostering awareness, and working towards their rejuvenation.\"",
+      "nextSteps": null,
+      "videoUrl": null,
+      "testimonialUrl": null,
+      "writeupUrl": null
+    },
+    {
+      "id": "SC-6acc6e5769",
+      "batch": "23-24",
+      "order": 2,
+      "name": "Havisha Chokshi",
+      "project": "RedWisdom: Empowering Girls through Menstrual Education",
+      "summary": "\"At RedWisdom, we're dedicated to reshaping the narrative around menstruation and education. By fostering a comfortable and informed environment, RedWisdom stands as a beacon of empowerment, breaking down barriers and ensuring that every girl can confidently pursue her education, unrestricted by the challenges of her menstrual cycle.\"",
+      "nextSteps": null,
+      "videoUrl": null,
+      "testimonialUrl": null,
+      "writeupUrl": null
+    },
+    {
+      "id": "SC-9c6c76264f",
+      "batch": "23-24",
+      "order": 5,
+      "name": "Samaya Bhowmick",
+      "project": "Bridging the Silence, Enriching the Deaf: Sign Language for a World of Communication",
+      "summary": "\"I'm striving to improve the lives of the deaf people and helping others communicate with them by promoting sign language.\"",
+      "nextSteps": "I enjoyed and learnt a lot during my project. I want to continue working in the field of hearing disabilities by making a technological device that will act as an alarm for them or help them communicate with others. And of course, whenever I get time, I will try to visit Umang school again and meet the lovely children.",
+      "videoUrl": "https://drive.google.com/file/d/11XWygUU-Lv_59gJcb3juVogZA1CXqOCC/preview",
+      "testimonialUrl": "https://drive.google.com/file/d/1IW3xKZXQMIR8As7N8CB14CjfF1iW4HZP/preview",
+      "writeupUrl": "https://drive.google.com/file/d/1rpH-Mwh9Iz-8W6_VLGPLZLYcAcJ0_bYc/preview"
+    },
+    {
+      "id": "SC-9d11843cf9",
+      "batch": "23-24",
+      "order": 7,
+      "name": "Arav Gupta",
+      "project": "Paws for a Cause: Extending a Helping Hand to Our Furry Friends",
+      "summary": "\"With Paws for the Cause, I strive to work towards bridging the gap between humans and dogs.\"",
+      "nextSteps": "As the project’s podcast series progresses we want to include experts on human-dog conflict in our conversations to provide more insightful perceptions to the mix for others to listen to. The next phase of our initiative will focus on data collection and public engagement. We will be conducting surveys at universities across the country to gather in-depth information on the scope and nature of this complex issue. Along with the surveys, we are developing a comprehensive web platform. This platform will consist of a website and a user-friendly web application. The web application will serve as a central hub for reporting human-dog conflict incidents. Users will be able to submit detailed reports, providing valuable information for researchers and policymakers working towards solutions. The website component will expand beyond conflict reporting. It will also serve as a platform for promoting positive human-dog interactions. We aim to promote adopting dogs rather than buying them hence, a page will be dedicated to showcase adoptable dogs from shelters across India . This page will include detailed information on each dog, along with contact information for the respective shelters.",
+      "videoUrl": "https://drive.google.com/file/d/1wrIVT4kf-ZOIE7OXXE0_MuUraTXzbK_y/preview",
+      "testimonialUrl": "https://drive.google.com/file/d/1I4CzaBZOQHjPHcjj0_NJaiv6YDuKk7ws/preview",
+      "writeupUrl": "https://drive.google.com/file/d/1PieqfiofeneZ_NE09xAqsI1sHJeZWbhw/preview"
+    },
+    {
+      "id": "SC-799f00c393",
+      "batch": "23-24",
+      "order": 3,
+      "name": "Anaya Patel",
+      "project": "Beyond barriers: Redefining Possibilities, One Dream at a Time.",
+      "summary": "\"I'm dedicated to empowering underprivileged students for a brighter future through personalized career counselling, and unlocking opportunities for education because dreams don't discriminate.\"",
+      "nextSteps": "I have utilised my vacation to keep all the content that I want to present in the career counselling workshop and the pamphlets ready. As soon as schools reopen I shall be having my first career fair in June at AAS school.",
+      "videoUrl": "https://drive.google.com/file/d/1E_JG7vSbMmte1aco4Nq3beinBdLQUMct/preview",
+      "testimonialUrl": "https://drive.google.com/file/d/1KaxpBF5UQI9CRfm4gcqe7q6kOdvqP0w0/preview",
+      "writeupUrl": "https://drive.google.com/file/d/18tSBhrGI3XG1GeLOS1ueQtuo83H9I0YO/preview"
+    },
+    {
+      "id": "SC-8104649fd4",
+      "batch": "23-24",
+      "order": 1,
+      "name": "Tanay Sanghvi",
+      "project": "Blue Oasis: Revitalizing water, reviving life",
+      "summary": "\"I'm dedicated to safeguarding our future by ensuring that water, our most crucial resource, remains available for the generations to come.\"",
+      "nextSteps": "With the project yielding positive results, I intend to expand the implementation of the floating islands to other lakes across the city. This initiative has demonstrated its potential to enhance local ecosystems and improve water quality, making it a valuable addition to our urban environment. To achieve this expansion, I will be hiring dedicated volunteers who can assist me in building more of these innovative floating islands. Their support will be crucial in increasing our reach and ensuring the success of the project. Additionally, I aim to raise funds from both local residents and companies. Engaging the community and businesses in this effort is essential to gather the necessary resources for the project's continuation and growth. By fostering a sense of collective responsibility and investment, we can secure the financial support required to extend the benefits of these floating islands to numerous lakes throughout the city, thereby creating a healthier and more sustainable environment for all.",
+      "videoUrl": "https://drive.google.com/file/d/1fQ0glWPedL2LjjtU0sjph3kDG0W2fc0i/preview",
+      "testimonialUrl": "https://drive.google.com/file/d/1PGVLrG6vli1vKw0PRlZjQCjxu6fyXeik/preview",
+      "writeupUrl": "https://drive.google.com/file/d/102R60TT4e7PfdIP4TmfJuKPHsognwaJb/preview"
+    },
+    {
+      "id": "SC-b75123e2f2",
+      "batch": "23-24",
+      "order": 6,
+      "name": "Prisha Arora",
+      "project": "Paws for a Cause: Extending a Helping Hand to Our Furry Friends",
+      "summary": "\"With Paws for the Cause, I strive to work towards bridging the gap between humans and dogs.\"",
+      "nextSteps": "We’ve been working on our podcast. We’ve released the first episode on Spotify for podcast and will be releasing more episodes soon (once in 10-14 days). Other than our podcast, I’m working on creating a survey for university students and staff to gather data about dog menace in academic institutions. We’re thinking of presenting our conclusions from this data collection with a white paper, catering to promoting a change in mindset about stray dogs. My partner in the project is working on a website, where one will be able to report any human dog conflict observances. We may also include an ‘ up for adoption’ portal and a database for the nearest animal doctor in case of a stray animal injury in the webapp.",
+      "videoUrl": "https://drive.google.com/file/d/13Cy2SeGFvQoVWQsXmd6ed16s-QPXvidi/preview",
+      "testimonialUrl": "https://drive.google.com/file/d/1RjSnOAiqLTLzyfsl8r0iwSdx3YcrXizY/preview",
+      "writeupUrl": "https://drive.google.com/file/d/1GLPFis1apf6jjNFVxkv_NFBs0JEfrwxWx44W4TemB5A/preview"
+    },
+    {
+      "id": "SC-dcb0da6dea",
+      "batch": "23-24",
+      "order": 9,
+      "name": "Hiya Patel",
+      "project": "Visionary: seeing beyond sight",
+      "summary": "\"I want to help visually impaired individuals by using smart glasses that can read books or chapters aloud and also help them learn. I urge you to join in and help me bring 'seeing beyond sight' to reality!\"",
+      "nextSteps": "I am working towards the blind people where I will help them use a deice which is called orbit reader which would help then with their studies. Then with the needs assessment that i had done I am going to try and find out different occupations in which they are likely interested in and would like to work in the future to do a carrier fair",
+      "videoUrl": "https://drive.google.com/file/d/1NVxZ0WcjV7FSiPAoAMWZfXZWai16_z8V/preview",
+      "testimonialUrl": "https://drive.google.com/file/d/1iS5fCf8S7RPaQNoRt6XqkI8ng3XtJFgr/preview",
+      "writeupUrl": "https://drive.google.com/file/d/1f7UTLLcABCQoDnGjg48SegXh86lHcYP9/preview"
+    },
+    {
+      "id": "SC-f72c331b0f",
+      "batch": "23-24",
+      "order": 4,
+      "name": "Anaya Zaveri",
+      "project": "Waste2Feast: Nourishing the needy, not the bins",
+      "summary": "\"We aim to join forces between restaurants and those facing food shortages. We aim to rescue surplus food to feed the hungry and cut down on waste. It's a dual-purpose initiative: nourishing those in need while battling food scarcity!\"",
+      "nextSteps": "I will continue working on combining forces with more restraunts and delivering food to the needy in more areas",
+      "videoUrl": "https://drive.google.com/file/d/1Yo5es53_DcSsLTCyIyEdk7N1hKCPNKOF/preview",
+      "testimonialUrl": "https://drive.google.com/file/d/1LoX_6htdUhr-Ohc17ybkH9WfL94cnzQl/preview",
+      "writeupUrl": "https://drive.google.com/file/d/1O47nopcOkeu1RjxbwY_mmMWRFe_VGJNl/preview"
+    }
+  ],
   "meta": {
-    "total": 0,
-    "batches": 0
+    "total": 10,
+    "batches": 1
   }
 }
