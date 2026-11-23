@@ -70,7 +70,7 @@ Pick a short kebab-case slug (e.g. `pramaan-library`, `social-changemakers`) and
 | Apps Script source | `apps-script/<slug>/Code.gs` | `apps-script/pramaan-library/Code.gs` |
 | Workflow (keep the file name — the script calls it by name) | `.github/workflows/sync-<slug>.yml` | `sync-pramaan-library.yml` |
 | Concurrency group | `<slug>-sync` | `pramaan-library-sync` |
-| Cron | every 6 h at a **minute not used by another sync** (taken: `:47` Resource Centre / library, `:27` Publications, `:07` Partners; `:17` was the retired ABL sync — free again) | `47 */6 * * *` |
+| Cron | every 6 h at a **minute not used by another sync** (taken: `:47` Resource Centre / library, `:27` Publications, `:07` Partners, `:17` Social Changemakers — `:37` and `:57` are free) | `47 */6 * * *` |
 | Sync script + rules | `scripts/sync-<slug>.js` (built on the shared `scripts/lib/sync-runner.js` — never copy its plumbing), `scripts/lib/<slug>-snapshot.js` | `sync-pramaan-library.js`, `library-snapshot.js` |
 | npm script | `content:sync-<slug>` | `content:sync-pramaan-library` |
 | GitHub secrets | `<PREFIX>_API_URL`, `<PREFIX>_SYNC_TOKEN` | `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN` |
@@ -79,7 +79,7 @@ Pick a short kebab-case slug (e.g. `pramaan-library`, `social-changemakers`) and
 | Photo manifest | `src/data/<slug>-photos.json` — must not collide with a YAML basename | `pramaan-library-photos.json` |
 | Photos | `public/assets/images/<slug>/` | `public/assets/images/pramaan-library/` |
 | Alert issue titles | "`<Name>` sync failed — the page is not updating", "`<Name>` Sheet: some rows need attention" | "Pramaan Library sync failed — …" |
-| Heartbeat hour (UTC) | different from the other scripts (taken: 04:00 Resource Centre, 05:00 Publications, 06:00 Partners) | 04:00 |
+| Heartbeat hour (UTC) | different from the other scripts (taken: 04:00 Resource Centre, 05:00 Publications, 06:00 Partners, 07:00 Social Changemakers) | 04:00 |
 | Page YAML | `content/pages/<slug>.yaml` | `pramaan-library.yaml` |
 | Pages / components / config / utils | `src/pages/<area>/`, `src/components/<area>/`, `src/config/<area>.js`, `src/utils/<area>Filters.js` | `library/`, `config/library.js`, `libraryFilters.js` |
 | Owner docs | `docs/<SLUG>-SETUP-GUIDE.md`, `docs/<SLUG>-SHEET-SCHEMA.md` | `PRAMAAN-LIBRARY-SETUP-GUIDE.md`, `PRAMAAN-LIBRARY-SHEET-SCHEMA.md` |

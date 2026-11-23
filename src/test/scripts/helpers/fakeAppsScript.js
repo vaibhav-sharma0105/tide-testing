@@ -59,12 +59,17 @@ export function makeAppsScriptEnv({ code, now, sheets, spreadsheetName, timeZone
     LockService: { getScriptLock: () => ({ tryLock: () => true, releaseLock: () => {} }) },
     CacheService: { getScriptCache: () => ({ get: k => cache.get(k) ?? null, put: (k, v) => { cache.set(k, v) } }) },
     SpreadsheetApp: { getActiveSpreadsheet: () => spreadsheet, openById: () => spreadsheet },
-    DriveApp: { getFileById: id => {
-      if (id === 'missingFile0001') throw new Error('No item with the given ID could be found')
-      const mime = id === 'svgFile00001' ? 'image/svg+xml' : 'image/png'
-      return { getLastUpdated: () => new RealDate('2026-01-01T00:00:00Z'), getMimeType: () => mime, getSize: () => 3,
-        getBlob: () => ({ getContentType: () => mime, getBytes: () => [1, 2, 3] }) }
-    } },
+    DriveApp: {
+      // Sharing: ids starting with "private" are owner-only; every other file is "Anyone with the link".
+      Access: { ANYONE: 'ANYONE', ANYONE_WITH_LINK: 'ANYONE_WITH_LINK', DOMAIN: 'DOMAIN', PRIVATE: 'PRIVATE' },
+      getFileById: id => {
+        if (id === 'missingFile0001') throw new Error('No item with the given ID could be found')
+        const mime = id === 'svgFile00001' ? 'image/svg+xml' : 'image/png'
+        return { getLastUpdated: () => new RealDate('2026-01-01T00:00:00Z'), getMimeType: () => mime, getSize: () => 3,
+          getBlob: () => ({ getContentType: () => mime, getBytes: () => [1, 2, 3] }),
+          getSharingAccess: () => (id.startsWith('private') ? 'PRIVATE' : 'ANYONE_WITH_LINK') }
+      },
+    },
     Utilities: utilities,
     UrlFetchApp: { fetch: (url, opts) => { fetches.push({ url, opts }); return { getResponseCode: () => 204, getHeaders: () => ({}), getContentText: () => '' } } },
     MailApp: { sendEmail: () => {} },

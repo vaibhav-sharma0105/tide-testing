@@ -155,3 +155,45 @@ Sheet.** Column rules: `docs/PARTNERS-SHEET-SCHEMA.md`.
   2026-11-21. Setup: `docs/PARTNERS-SETUP-GUIDE.md`. Until then the site shows a **static preview** of the
   Sheet (owner decision, 2026-11-23: 113 partners as the public export had them), so the issues in §7.2 are
   visible on the live page until they are fixed in the Sheet and the first real sync runs.
+
+## 8. Past SCF page — Social Changemakers profiles (`/education-for-harmony/social-changemakers`)
+
+Built 2026-11-23 from the Sheet "Social Changemakers' Fellowship Completion Form (Responses)"; not
+connected until the owner's setup (`docs/SOCIAL-CHANGEMAKERS-SETUP-GUIDE.md`). Only the header row and
+counts were read (10 rows, all batch "23-24", on 2026-11-23).
+
+### 8.1 Decisions taken with the owner
+
+- Order: **SCF Batch** newest first, then **Order to post within batch** ascending — the number decides the
+  order but is **never shown**.
+- The two photos are **H** (the fellow) and **I** (field work), turning over on hover; the notes said J and K,
+  but J is the final video and K is an email column.
+- Shown: name and project under the photos, the 50–100-word summary, "What's next" (folded) and the project /
+  testimonial videos when shared publicly. Consent is part of the fellowship (owner).
+
+### 8.2 Questions for the stakeholder
+
+| # | Question |
+|---|---|
+| a | Every Form answer goes live today. Do you want a **"Publish on website"** (or "Hide from website") column as a flag, like the other Sheets? |
+| b | The **photo columns (H, I) are empty** for all 10 rows. Can the fellows upload them (file uploads, not images pasted into cells)? Until then each card shows initials. |
+| c | Videos appear only when the Drive file is shared **"Anyone with the link"**. Should the fellows' uploads be shared that way? |
+| d | **Sharing:** the Sheet is set to "Anyone with the link can **edit**" — anyone with the link could change or delete the fellows' answers. Restrict it to "Viewer" or to named people? |
+| e | **Ownership:** the Sheet belongs to a personal Google account. Move it (and the Form) to the TIDE Foundation account for handover safety? |
+| f | Two rows were typed in by hand (no Timestamp). Fine to keep? Their id comes from batch + name, so renaming them re-downloads their photos. |
+
+### 8.3 Wording written by the developer — needs approval
+
+`content/pages/social-changemakers.yaml` `profiles`: "{n} fellows", "{n} batches", "{n} project films", "SCF {batch}",
+"Meet the Changemakers", "Every Social Changemakers fellow and the project they led, newest batch first. Search by name or
+project, or choose a batch.", "Search fellows", "Name or project", "Batch", "All batches", "No fellow matches your search.",
+"See the field work", "See the fellow", "See their story", "Their work", "Watch", "Read", "{at} of {total}", "Read more", "Show less", the page title "Past Social Changemakers" (was "Past SCF"; badge now "Education for Harmony"), the intro eyebrow "Social Changemakers' Fellowship" and heading "Students driving positive change",
+"More about this project is coming soon.", "Project film", "{firstName} in their own words",
+"Read the write-up", "About the project", "What's next".
+
+### 8.4 Design questions
+
+- Profiles can be shared by link (`?fellow=`). Fine for these students?
+- Until the photos arrive, could a frame from the testimonial video stand in for the portrait? (Not built; a video
+  frame may be unflattering.)
+- Shorten the page intro to one sentence so the fellows appear sooner? (Not done — wording change.)

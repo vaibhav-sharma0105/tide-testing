@@ -198,7 +198,46 @@ function checkPartnersSnapshot() {
     if (!fs.existsSync(path.join(PUBLIC_DIR, rel))) error(manFile, `${id}: missing file public/${rel}`)
   }
 }
+
+// The Past SCF snapshot (scripts/sync-social-changemakers.js): shape, allowed fields only (no photo
+// links), video links only in the two shapes the Apps Script makes, no email address, and every photo
+// entry belonging to a profile ("<id>" or "<id>__field") with its file on disk.
+function checkSocialChangemakersSnapshot() {
+  const snapFile = path.join('src', 'data', 'sheets', 'social-changemakers.json')
+  const manFile = path.join('src', 'data', 'social-changemakers-photos.json')
+  const allowed = new Set(['id', 'batch', 'order', 'name', 'project', 'summary', 'nextSteps', 'videoUrl', 'testimonialUrl', 'writeupUrl'])
+  const video = /^https:\/\/(?:drive\.google\.com\/file\/d\/[A-Za-z0-9_-]{10,}\/preview|www\.youtube-nocookie\.com\/embed\/[A-Za-z0-9_-]{11})$/
+  let snap, manifest
+  try { snap = JSON.parse(fs.readFileSync(snapFile, 'utf8')) } catch (e) { error(snapFile, `missing or not valid JSON: ${e.message}`); return }
+  try { manifest = JSON.parse(fs.readFileSync(manFile, 'utf8')) } catch (e) { error(manFile, `missing or not valid JSON: ${e.message}`); return }
+  if (snap.schemaVersion !== 1 || snap.success !== true || snap.section !== 'social-changemakers' || !Array.isArray(snap.resources)) {
+    error(snapFile, 'unexpected shape (needs schemaVersion 1, success, section "social-changemakers", resources[])')
+    return
+  }
+  const ids = new Set()
+  for (const r of snap.resources) {
+    if (!r || typeof r.id !== 'string' || !r.id || typeof r.name !== 'string' || !r.name || typeof r.batch !== 'string' || !r.batch) { error(snapFile, 'a row has no id, name or batch'); continue }
+    if (ids.has(r.id)) error(snapFile, `duplicate id ${r.id}`)
+    ids.add(r.id)
+    const extra = Object.keys(r).filter(k => !allowed.has(k))
+    if (extra.length) error(snapFile, `${r.id}: field(s) not allowed in the public snapshot: ${extra.join(', ')}`)
+    for (const k of ['videoUrl', 'testimonialUrl']) {
+      if (r[k] !== null && r[k] !== undefined && !video.test(String(r[k]))) error(snapFile, `${r.id}: ${k} must be a Drive /preview or youtube-nocookie embed link, or null`)
+    }
+    if (r.writeupUrl !== null && r.writeupUrl !== undefined && !/^https:\/\/drive\.google\.com\/file\/d\/[A-Za-z0-9_-]{10,}\/preview$/.test(String(r.writeupUrl))) error(snapFile, `${r.id}: writeupUrl must be a Drive /preview link or null`)
+    if (r.order !== null && r.order !== undefined && !(Number.isInteger(r.order) && r.order > 0)) error(snapFile, `${r.id}: order must be a whole number or null`)
+    if (/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(JSON.stringify(r))) error(snapFile, `${r.id}: contains an email address`)
+  }
+  if (snap.meta?.total !== snap.resources.length) error(snapFile, `meta.total is ${snap.meta?.total} but there are ${snap.resources.length} rows`)
+  for (const [id, entry] of Object.entries(manifest)) {
+    if (!ids.has(id.replace(/__(field|video|testimonial)$/, ''))) error(manFile, `photo entry ${id} has no matching profile in the snapshot`)
+    const rel = entry?.thumb
+    if (typeof rel !== 'string' || !rel.startsWith('assets/images/social-changemakers/') || rel.includes('..')) { error(manFile, `${id}: bad photo path ${JSON.stringify(rel)}`); continue }
+    if (!fs.existsSync(path.join(PUBLIC_DIR, rel))) error(manFile, `${id}: missing file public/${rel}`)
+  }
+}
 checkPartnersSnapshot()
+checkSocialChangemakersSnapshot()
 
 // The Contribute button's link (abl-contribute.yaml → formUrl): empty, or a Google Forms link.
 function checkContributeForm() {

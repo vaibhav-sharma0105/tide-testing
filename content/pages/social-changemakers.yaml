@@ -1,22 +1,107 @@
 meta:
-  breadcrumbName: "Past SCF"
-  badge: "Social Changemakers"
-  title: "Past SCF"
-  seoTitle: "Past SCF — Social Changemakers — TIDE Foundation"
+  breadcrumbName: "Past Social Changemakers"
+  # The small label above the banner title: the programme this page belongs to.
+  badge: "Education for Harmony"
+  title: "Past Social Changemakers"
+  seoTitle: "Past Social Changemakers — TIDE Foundation"
   seoDescription: "Meet the students of TIDE Foundation's Social Changemakers fellowship and the projects they led, from environmental challenges to social justice."
   backLabel: "Education for Harmony"
   backHref: "/education-for-harmony"
 
 # The three sentences are read in order, one per stop on the thread; the highlighted words are underlined.
 intro:
+  # The small label and the heading above the three sentences.
+  eyebrow: "Social Changemakers' Fellowship"
+  heading: "Students driving positive change"
   highlights: ["positive change", "environmental challenges", "social justice"]
   jumpLabel: "See the student profiles"
   jumpHref: "#profiles"
   lead: "We are proud to showcase the incredible work of our team of passionate individuals dedicated to driving positive change in various aspects of society."
   body: "From addressing environmental challenges to advocating for social justice, they have embarked on impactful journeys, each contributing their unique skills and perspectives to create a better world. Explore their projects, learn about their inspiring stories, and join us in celebrating their commitment to making a difference!"
 
-# PLACEHOLDER until the Google Sheet sync is added (same Sheet -> Apps Script flow as Pramaan).
-# Each live entry will have: photo, student name, school and university graduation years,
-# SCF batch year and a 50-100 word project description. Newest batch first.
+# Shown while no profile has been published yet (before the Sheet sync's first run).
 grid:
   note: "Student profiles will appear here, newest batch first."
+
+# The fellows' profiles. The profiles themselves (name, project, summary, next steps, photos, videos)
+# come from the Google Sheet "Social Changemakers' Fellowship Completion Form (Responses)" through the
+# sync (src/data/sheets/social-changemakers.json) — edit them in the Sheet / Form, not here.
+# Rules: docs/SOCIAL-CHANGEMAKERS-SHEET-SCHEMA.md. {words} in curly brackets are filled in by the page.
+profiles:
+  # The figures in the banner, counted from the Sheet. {n} = the number. Hidden until a profile is published.
+  stats:
+    fellows: "{n} fellows"
+    fellowsOne: "{n} fellow"
+    batches: "{n} batches"
+    batchesOne: "{n} batch"
+    films: "{n} project films"
+    filmsOne: "{n} project film"
+  # The list of fellows: its heading, the search and the Batch filter (one list for every year).
+  list:
+    heading: "Meet the Changemakers"
+    intro: "Every Social Changemakers fellow and the project they led, newest batch first. Search by name or project, or choose a batch."
+    search:
+      label: "Search fellows"
+      placeholder: "Name or project"
+      clearLabel: "Clear search"
+      shortcutKey: ""
+    batchLabel: "Batch"
+    allBatches: "All batches"
+    # The removable chip for the words searched; {q} = those words. {name} = a chip's label.
+    searchChip: "“{q}”"
+    removeFilter: "Remove filter: {name}"
+    clearAll: "Clear all"
+    # Above the grid. {from}–{to} = the fellows on this page, {count} = all that match, {total} = everyone.
+    results: "Showing {from}–{to} of {count} fellows"
+    resultsOne: "Showing 1 fellow"
+    noMatch: "No fellow matches your search."
+    noMatchClear: "Clear search and filters"
+    pagination:
+      label: "Pages"
+      previous: "Previous"
+      next: "Next"
+      pageLabelTemplate: "Page {n}"
+  # A batch's name in the filter, on each card and in a profile; {batch} = as written in the Sheet, e.g. "23-24".
+  batchHeading: "SCF {batch}"
+  # The small label with the batch (on the back of a card without photos, and in a profile).
+  eyebrow: "SCF {batch}"
+  # Read by screen readers for each card (the whole card opens the profile). {name} = the fellow.
+  openProfile: "{name}: open profile"
+  # The highlighted cue at the bottom of each card.
+  cta: "See their story"
+  # Photo descriptions for screen readers. {name} = the fellow, {project} = the project.
+  photoAlt: "{name}"
+  fieldAlt: "Field work for {project}"
+  # The round button on a card's photo that turns it over (touch screens and keyboard).
+  flipToField: "See the field work"
+  flipToFellow: "See the fellow"
+  nextSteps: "What's next"
+  # The work tiles in the profile. {firstName} = the fellow's first name.
+  work:
+    # The small heading above the film, testimonial and write-up in a profile.
+    heading: "Their work"
+    # The small word under each tile: videos open the player, the write-up opens in a new tab.
+    watch: "Watch"
+    read: "Read"
+    videoLabel: "Project film"
+    testimonialLabel: "{firstName} in their own words"
+    writeupLabel: "Read the write-up"
+    # Read by screen readers after "Read the write-up" (it opens in a new tab).
+    opensInNewTab: "(opens in a new tab)"
+  # The profile window.
+  profile:
+    aboutHeading: "About the project"
+    # Under a long "What's next" (it shows a few lines first).
+    readMore: "Read more"
+    readLess: "Show less"
+    close: "Close profile"
+    prev: "Previous fellow"
+    next: "Next fellow"
+    navLabel: "Other fellows"
+    # Between the previous / next arrows: where this fellow is in the list being looked at.
+    position: "{at} of {total}"
+    # Shown in a profile that has no summary, next steps, films or write-up yet.
+    empty: "More about this project is coming soon."
+  # Names of the video player for screen readers.
+  videoTitle: "{project}: project film"
+  testimonialTitle: "{name}: testimonial video"

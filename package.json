@@ -20,7 +20,8 @@
     "test:all": "npm run test && npm run test:e2e",
     "content:sync-pramaan-library": "node scripts/sync-pramaan-library.js",
     "content:sync-publications": "node scripts/sync-publications.js",
-    "content:sync-partners": "node scripts/sync-partners.js"
+    "content:sync-partners": "node scripts/sync-partners.js",
+    "content:sync-social-changemakers": "node scripts/sync-social-changemakers.js"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",

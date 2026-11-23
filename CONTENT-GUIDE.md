@@ -53,7 +53,7 @@ Find the YAML file for the page you want to edit. Naming follows the URL (`/abou
 | About → Our Publications → TIDE Publications (`/tide/publications`; the text around the list — the publications themselves come from the Sheet, see below) | `content/pages/tide-publications.yaml` |
 | Education for Harmony | `content/pages/education-for-harmony.yaml` |
 | Education for Harmony → Organise your MCCx | `content/pages/get-involved-mccx.yaml` |
-| Education for Harmony → Past SCF (Social Changemakers; reached only from the Education for Harmony page, still placeholder content) | `content/pages/social-changemakers.yaml` |
+| Education for Harmony → Past SCF (Social Changemakers; reached only from the Education for Harmony page; the profiles come from the fellowship completion Sheet) | `content/pages/social-changemakers.yaml` |
 | Pramaan → About Pramaan | `content/pages/abl-home.yaml` |
 | Pramaan → Resource Centre (the list, filters, and each resource's page) | `content/pages/pramaan-library.yaml` |
 | Pramaan → Contribute (incl. the form link `formUrl`) | `content/pages/abl-contribute.yaml` |

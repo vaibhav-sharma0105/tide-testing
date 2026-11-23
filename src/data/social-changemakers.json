@@ -1,14 +1,16 @@
 {
   "meta": {
-    "breadcrumbName": "Past SCF",
-    "badge": "Social Changemakers",
-    "title": "Past SCF",
-    "seoTitle": "Past SCF — Social Changemakers — TIDE Foundation",
+    "breadcrumbName": "Past Social Changemakers",
+    "badge": "Education for Harmony",
+    "title": "Past Social Changemakers",
+    "seoTitle": "Past Social Changemakers — TIDE Foundation",
     "seoDescription": "Meet the students of TIDE Foundation's Social Changemakers fellowship and the projects they led, from environmental challenges to social justice.",
     "backLabel": "Education for Harmony",
     "backHref": "/education-for-harmony"
   },
   "intro": {
+    "eyebrow": "Social Changemakers' Fellowship",
+    "heading": "Students driving positive change",
     "highlights": [
       "positive change",
       "environmental challenges",
@@ -21,5 +23,71 @@
   },
   "grid": {
     "note": "Student profiles will appear here, newest batch first."
+  },
+  "profiles": {
+    "stats": {
+      "fellows": "{n} fellows",
+      "fellowsOne": "{n} fellow",
+      "batches": "{n} batches",
+      "batchesOne": "{n} batch",
+      "films": "{n} project films",
+      "filmsOne": "{n} project film"
+    },
+    "list": {
+      "heading": "Meet the Changemakers",
+      "intro": "Every Social Changemakers fellow and the project they led, newest batch first. Search by name or project, or choose a batch.",
+      "search": {
+        "label": "Search fellows",
+        "placeholder": "Name or project",
+        "clearLabel": "Clear search",
+        "shortcutKey": ""
+      },
+      "batchLabel": "Batch",
+      "allBatches": "All batches",
+      "searchChip": "“{q}”",
+      "removeFilter": "Remove filter: {name}",
+      "clearAll": "Clear all",
+      "results": "Showing {from}–{to} of {count} fellows",
+      "resultsOne": "Showing 1 fellow",
+      "noMatch": "No fellow matches your search.",
+      "noMatchClear": "Clear search and filters",
+      "pagination": {
+        "label": "Pages",
+        "previous": "Previous",
+        "next": "Next",
+        "pageLabelTemplate": "Page {n}"
+      }
+    },
+    "batchHeading": "SCF {batch}",
+    "eyebrow": "SCF {batch}",
+    "openProfile": "{name}: open profile",
+    "cta": "See their story",
+    "photoAlt": "{name}",
+    "fieldAlt": "Field work for {project}",
+    "flipToField": "See the field work",
+    "flipToFellow": "See the fellow",
+    "nextSteps": "What's next",
+    "work": {
+      "heading": "Their work",
+      "watch": "Watch",
+      "read": "Read",
+      "videoLabel": "Project film",
+      "testimonialLabel": "{firstName} in their own words",
+      "writeupLabel": "Read the write-up",
+      "opensInNewTab": "(opens in a new tab)"
+    },
+    "profile": {
+      "aboutHeading": "About the project",
+      "readMore": "Read more",
+      "readLess": "Show less",
+      "close": "Close profile",
+      "prev": "Previous fellow",
+      "next": "Next fellow",
+      "navLabel": "Other fellows",
+      "position": "{at} of {total}",
+      "empty": "More about this project is coming soon."
+    },
+    "videoTitle": "{project}: project film",
+    "testimonialTitle": "{name}: testimonial video"
   }
 }

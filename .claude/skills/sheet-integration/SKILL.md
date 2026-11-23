@@ -64,6 +64,16 @@ transparency; small raster files sent as the original by `fetchImage`), `.github
 so the page order and the sync's "unknown priority" report agree). Reused `SearchField` + `useDebouncedSearch`.
 Its stakeholder notes named columns by letter wrongly — always map by the real header row.
 
+**Fourth implementation (2026-11-23, not live until the owner's setup):** Social Changemakers (Past SCF) —
+`apps-script/social-changemakers/Code.gs`, `scripts/sync-social-changemakers.js`,
+`scripts/lib/social-changemakers-snapshot.js`, `scripts/lib/social-changemakers-images.js`,
+`.github/workflows/sync-social-changemakers.yml`, `checkSocialChangemakersSnapshot()`, `src/components/changemakers/`,
+`src/utils/changemakers.js` (ordering shared by page and sync). Shows **two photos per row** (photo ids `<id>` and
+`<id>__field` through the unchanged shared photo plan), photo links kept **out of** the public snapshot, and
+**videos published only when the Drive file is shared publicly** (`getSharingAccess()`). Learn the structure
+with header-only / aggregate queries (`gviz/tq?tq=select * limit 0`, `select count(A) group by D`) — never
+read rows. The stakeholder's letters were wrong again.
+
 **Retired, do not reintroduce:** a browser-side Sheet read (the former `useABLData` hook, a public
 `doGet` listing, a `VITE_*` Sheet URL in the bundle). It was deleted on 2026-11-19
 (`docs/PRAMAAN-HARDENING-PLAN.md` §13); the code is only in the local git tag
