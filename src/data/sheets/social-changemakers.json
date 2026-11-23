@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "social-changemakers",
   "success": true,
-  "lastUpdated": "2026-11-23T15:03:09.783Z",
-  "contentHash": "sha256:b05c0a315b43595a0a6657882cd68b4478555355e9b554b66a657a03c6399de9",
+  "lastUpdated": "2026-11-23T18:27:51.560Z",
+  "contentHash": "sha256:ed8b3188663df48302fb44df097f2e5f717a2acac049900d197b408758670087",
   "resources": [
     {
       "id": "SC-1a9635ce22",
@@ -32,7 +32,7 @@
     {
       "id": "SC-6acc6e5769",
       "batch": "23-24",
-      "order": 1,
+      "order": 2,
       "name": "Havisha Chokshi",
       "project": "RedWisdom: Empowering Girls through Menstrual Education",
       "summary": "\"At RedWisdom, we're dedicated to reshaping the narrative around menstruation and education. By fostering a comfortable and informed environment, RedWisdom stands as a beacon of empowerment, breaking down barriers and ensuring that every girl can confidently pursue her education, unrestricted by the challenges of her menstrual cycle.\"",
@@ -80,7 +80,7 @@
     {
       "id": "SC-8104649fd4",
       "batch": "23-24",
-      "order": 2,
+      "order": 1,
       "name": "Tanay Sanghvi",
       "project": "Blue Oasis: Revitalizing water, reviving life",
       "summary": "\"I'm dedicated to safeguarding our future by ensuring that water, our most crucial resource, remains available for the generations to come.\"",
