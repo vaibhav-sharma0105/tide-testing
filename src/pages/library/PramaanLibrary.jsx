@@ -14,6 +14,7 @@ import FilterChips from '../../components/listing/FilterChips'
 import FilterDrawer from '../../components/listing/FilterDrawer'
 import { LIBRARY_PAGE_SIZE } from '../../config/library'
 import { useSidebarFits } from '../../hooks/useSidebarFits'
+import { paginate } from '../../utils/publicationFilters'
 import { applyLibraryFilters, facetOptions, gradeLabel, typeParamKey, LIBRARY_SORTS, DEFAULT_SORT } from '../../utils/libraryFilters'
 import snapshot from '../../data/sheets/pramaan-library.json'
 import data from '../../data/pramaan-library.json'
@@ -52,6 +53,10 @@ function filtersToSearch(f, page) {
   return s ? `?${s}` : ''
 }
 
+// Router state on the navigations this page makes itself (see seenKey below).
+const OWN = 'resourceCentreOwn'
+const OWN_STATE = { [OWN]: true }
+
 const STICKY_TOP = 130 // px, matches top-[130px] (below the fixed header and the Pramaan tab bar)
 
 export default function PramaanLibrary() {
@@ -61,6 +66,18 @@ export default function PramaanLibrary() {
   const params = new URLSearchParams(location.search)
   const [filters, setFilters] = useState(() => paramsToFilters(params))
   const [page, setPage] = useState(() => parseInt(params.get('page') ?? '1', 10) || 1)
+  // The address is the source of truth. This page writes it itself (marked OWN, replace) and keeps
+  // its own state meanwhile; any other navigation to this page — the header or tab-bar link without
+  // a query, Back/Forward — re-reads filters and page from it (React's "adjust state while
+  // rendering" pattern). Without this, the menu link cleared the address but left the old filters.
+  const [seenKey, setSeenKey] = useState(location.key)
+  if (location.key !== seenKey) {
+    setSeenKey(location.key)
+    if (!location.state?.[OWN]) {
+      setFilters(paramsToFilters(params))
+      setPage(parseInt(params.get('page') ?? '1', 10) || 1)
+    }
+  }
   const [drawerOpen, setDrawerOpen] = useState(false)
   const closeDrawer = useCallback(() => setDrawerOpen(false), [])
 
@@ -71,17 +88,19 @@ export default function PramaanLibrary() {
   const change = useCallback((next) => {
     setFilters(next)
     setPage(1)
-    navigate({ search: filtersToSearch(next, 1) }, { replace: true })
+    navigate({ search: filtersToSearch(next, 1) }, { replace: true, state: OWN_STATE })
   }, [navigate])
   const clear = useCallback(() => change({ ...DEFAULT_FILTERS, sort: filters.sort, dir: filters.dir }), [change, filters.sort, filters.dir])
   const changePage = useCallback((p) => {
     setPage(p)
-    navigate({ search: filtersToSearch(filters, p) }, { replace: true })
+    navigate({ search: filtersToSearch(filters, p) }, { replace: true, state: OWN_STATE })
     gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [navigate, filters])
 
   const filtered = applyLibraryFilters(resources, filters)
-  const pageItems = filtered.slice((page - 1) * LIBRARY_PAGE_SIZE, page * LIBRARY_PAGE_SIZE)
+  // Clamped to 1…last page: ?page=99 shows the last page, ?page=-2 the first (was: an empty list,
+  // or rows from the end of the list for a negative number).
+  const { page: currentPage, items: pageItems } = paginate(filtered, page, LIBRARY_PAGE_SIZE)
   const activeCount = [filters.search, filters.subject, filters.type, ...filters.grades, filters.owner].filter(Boolean).length
 
   const labelOf = (list, value) => list.find(o => o.value === value)?.label ?? value
@@ -214,7 +233,7 @@ export default function PramaanLibrary() {
                   )}
                 </div>
 
-                <Pagination total={filtered.length} page={page} perPage={LIBRARY_PAGE_SIZE} onChange={changePage} />
+                <Pagination total={filtered.length} page={currentPage} perPage={LIBRARY_PAGE_SIZE} onChange={changePage} hrefFor={p => ({ search: filtersToSearch(filters, p) })} />
               </div>
             </div>
           )}
