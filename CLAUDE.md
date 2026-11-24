@@ -11,7 +11,7 @@
 React static site rebuild of [tideinternational.org](https://tideinternational.org/) for TIDE Foundation (Together in Development and Education), an NGO in Ahmedabad, India focused on educational reform. `AGENTS.md` is the detailed reference (component/hook/utility APIs, full repo tree, §11 Gotchas, §12 tests).
 
 ## Tech Stack
-- **Vite 8 + React 19** static site; **React Router v7** `BrowserRouter` (clean URLs — GitHub Pages deep links/reloads work via `public/404.html` + a restore script in `index.html`, not hash routing)
+- **Vite 8 + React 19** static site; **React Router v7** `BrowserRouter` (clean URLs, not hash routing). **Every public page is prerendered at build time** (`scripts/prerender.mjs`, audit P3 2026-11-24): `npm run build` = `vite build` + headless Chromium (Playwright, dev dep) saving each route as real HTML (`dist/about/why-tide.html`, one file per Resource Centre row, `404.html` = the NotFound page, forwarding pages for the redirect routes, `llms-full.txt`); the app does not hydrate it — `src/main.jsx` preloads the page's code and renders it fresh over the HTML. Route list for the build: `src/config/siteRoutes.js` (a test keeps it equal to `src/routes.js`)
 - **Tailwind CSS v3**, **Framer Motion 12**, **Lucide React**, **react-helmet-async** (always via `src/components/ui/SeoHead.jsx`)
 - **English only.** The multilingual framework (i18next, `t()`, language switcher) was removed; it is preserved in the local git tag `archive/multilingual-framework` (`git show archive/multilingual-framework:<path>`).
 
@@ -87,10 +87,10 @@ Full annotated tree: AGENTS.md §2.
 ## CMS Pipeline
 ```
 content/pages/*.yaml + content/shared/*.yaml  →  scripts/yaml-to-json.js (predev/prebuild)  →  src/data/*.json  →  React imports
-content/shared/site.yaml + llms.txt           →  scripts/siteDataPlugin.js (Vite)  →  index.html JSON-LD/<title>/og:site_name, /llms.txt
+content/shared/site.yaml + llms.txt           →  scripts/siteDataPlugin.js (Vite)  →  index.html JSON-LD/<title>/og:site_name, /llms.txt, /robots.txt, /sitemap.xml
 ```
 - **Never edit `src/data/`** — it is regenerated (flat: one JSON per YAML basename, so never reuse a basename across `pages/` and `shared/`; stale JSON is never deleted). The Sheet files there (`sheets/pramaan-library.json`, `pramaan-library-photos.json`, `sheets/publications.json`, `publications-photos.json`, `sheets/partners.json`, `partners-photos.json`, `sheets/social-changemakers.json`, `social-changemakers-photos.json`) are written by the sync bots — never hand-edit those either.
-- Commands: `npm run content:sync` · `content:validate` (YAML syntax, every local image path whatever its key, Resource Centre, Publications, Partners and Social Changemakers snapshots, `formUrl`, email/lives-impacted consistency) · `dev` (localhost:5173) · `build` · `lint` · `test` (Vitest, 36 files / 408 tests) · `test:e2e`.
+- Commands: `npm run content:sync` · `content:validate` (YAML syntax, every local image path whatever its key, Resource Centre, Publications, Partners and Social Changemakers snapshots, `formUrl`, email/lives-impacted consistency) · `dev` (localhost:5173) · `build` · `lint` · `test` (Vitest, 39 files / 446 tests) · `test:e2e`.
 - **No hardcoded visible text:** every visible string comes from YAML (`data.*`, `common.*`, `ui.*`), never typed into JSX. `react/jsx-no-literals` is an **error** in `src/pages/**` and `src/components/**`; a `no-restricted-syntax` guard beside it (2026-11-24) also fails on words in text props (`alt`, `aria-label`, `title`, `placeholder`, `label`, `badge`, …) and on `{'…'}` / template-literal text in JSX (`src/test/scripts/cmsGuard.test.js`). It can't see text built in plain JS outside JSX — follow the convention anyway (`cms-integrity` skill). Variable text uses `{token}` placeholders filled in code.
 - **Site-wide facts** (name, url, email, `livesImpacted`, `gradeRange`, `placeholderImage`, `breadcrumbs.*`, …) live only in `content/shared/site.yaml`. A page's last breadcrumb is `meta.breadcrumbName` in its own YAML.
 - Icons and Tailwind classes can't live in JSON: store a key in YAML (`iconKey`, `colorKey`) and map it in the component; never build Tailwind class names dynamically.

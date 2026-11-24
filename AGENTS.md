@@ -23,7 +23,7 @@ npm run dev          # auto-syncs content, then starts dev server at localhost:5
 npm run build        # auto-syncs content, then builds to dist/
 npm run content:validate   # YAML syntax, image paths, Resource Centre + Publications snapshots, formUrl, email / lives-impacted consistency
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — run in CI (deploy.yml)
-npm test             # Vitest unit/component tests (36 files, 408 tests) — run in CI (deploy.yml)
+npm test             # Vitest unit/component tests (39 files, 446 tests) — run in CI (deploy.yml)
 ```
 
 **Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
@@ -83,9 +83,11 @@ content/shared/*.yaml ─┤   (9: navigation, footer, common, ui, loader, error
 ```
 content/shared/site.yaml ──→ src/data/site.json   (via yaml-to-json; SeoHead + pages read it: SITE_URL, logo, breadcrumb parents)
 content/shared/site.yaml ─┐
-content/shared/llms.txt  ─┴─ scripts/siteDataPlugin.js (Vite plugin, build + dev)
+content/shared/llms.txt  ─┴─ scripts/siteDataPlugin.js (Vite plugin, build + dev; + src/config/siteRoutes.js, the Resource Centre snapshot, footer.yaml social, contact.yaml address)
                               ├─ index.html: two JSON-LD blocks (NGO, WebSite) at the `<!-- site-jsonld -->` marker, <title>, og:site_name
-                              └─ /llms.txt  (template tokens {{name}} {{url}} {{email}} {{livesImpacted}} {{gradeRange}} {{foundingYear}} {{location}})
+                              ├─ /llms.txt  (template tokens {{name}} {{url}} {{email}} {{livesImpacted}} {{gradeRange}} {{foundingYear}} {{location}} {{pages}} — {{pages}} = one line per sitemap page: breadcrumb name + meta.seoDescription)
+                              ├─ /robots.txt (site.yaml crawlers + url)
+                              └─ /sitemap.xml (siteRoutes.js PRIMARY_ROUTES minus sitemap:false + one URL per Resource Centre row; <lastmod> = last git commit of the page's sources, left out in a shallow clone)
 ```
 `siteDataPlugin.js` reads the YAML directly, so it doesn't depend on `content:sync` having run. `scripts/contentConsistency.js` + `validate-content.js` make `content:validate` fail if any email in `content/` differs from `site.yaml` `email`, or any lives-impacted total (a `NN,NNN+` figure next to "lives/people/impacted/changed" wording) differs from `livesImpacted`. `content/shared/llms.txt` is a template, not YAML, so `yaml-to-json.js` ignores it.
 
@@ -316,8 +318,7 @@ tide-new/
 ├── e2e/                          ← Playwright specs: home, navigation, pramaan
 │
 ├── public/
-│   ├── 404.html                  ← GitHub Pages deep-link redirect (pairs with index.html's restorer)
-│   ├── robots.txt · sitemap.xml  ← hard-code https://tideinternational.org (there is no public/llms.txt — /llms.txt is generated, see siteDataPlugin)
+│   (no 404.html / robots.txt / sitemap.xml / llms.txt here: all generated at build — siteDataPlugin + scripts/prerender.mjs)
 │   └── assets/                   ← images; assets/images/pramaan-library/, assets/images/publications/ and assets/images/partners/ hold the synced Resource Centre / Publications / Partners WebPs; assets/images/shared/ holds the logo, banner texture and placeholder.svg
 │
 ├── scripts/
@@ -505,7 +506,7 @@ Props are exactly `{ badge, badgeClassName, title, subtitle, children, aside }`;
 />
 ```
 
-Every page except `ComingSoon` and `NotFound` (which use `<Helmet>` directly with `noindex`) renders `SeoHead`. It emits title, description, canonical, og:*, twitter:*, optional `robots noindex`, and a BreadcrumbList JSON-LD block (a breadcrumb without `path` omits `item`). `SITE_URL` and the default og:image (`site.logo` under `BASE_URL`) come from `site.json`. Breadcrumb names are not hardcoded: parent steps come from `content/shared/site.yaml` `breadcrumbs.*` and each page's own last step is `meta.breadcrumbName` in its YAML (`PramaanLibraryDetail` uses the resource name). Head tags are injected client-side only (no prerender); `index.html` has no static description/canonical, but its `<title>`, `og:site_name` and the NGO/WebSite JSON-LD are generated from `site.yaml` by `scripts/siteDataPlugin.js`.
+Every page except `ComingSoon` and `NotFound` (which use `<Helmet>` directly with `noindex`) renders `SeoHead`. It emits title, description, canonical, og:*, twitter:*, optional `robots noindex`, and a BreadcrumbList JSON-LD block (a breadcrumb without `path` omits `item`). `SITE_URL` and the default og:image (`site.logo` under `BASE_URL`) come from `site.json`. Breadcrumb names are not hardcoded: parent steps come from `content/shared/site.yaml` `breadcrumbs.*` and each page's own last step is `meta.breadcrumbName` in its YAML (`PramaanLibraryDetail` uses the resource name). Head tags are rendered by React 19 (react-helmet-async v3 hands `<title>`/`<meta>`/`<link>` to React's own hoisting; the BreadcrumbList `<script>` stays in the body). The build prerenders each page with them (`scripts/prerender.mjs` marks them `data-prerender`); `src/main.jsx` removes those and every `<title>` before the app renders, because React added a second `<title>` instead of reusing the HTML's (seen on staging 2026-11-24). `site.yaml` `indexable: false` adds `noindex` on every page. `ogImagePath` / the default og:image use `window.location.origin` (the prerender runs at the real origin, see §10 Base path). `index.html` has no static description/canonical, but its `<title>`, `og:site_name` and the NGO/WebSite JSON-LD are generated from `site.yaml` by `scripts/siteDataPlugin.js`.
 
 ### SectionHeader
 
@@ -1110,7 +1111,7 @@ export default function NewPage() {
 
 # 4. Register a lazy route — src/App.jsx (above the "Functional / system pages" block)
 # 5. Add nav entry — content/shared/navigation.yaml
-# 6. Add the URL to public/sitemap.xml
+# 6. Add the path to src/config/siteRoutes.js PRIMARY_ROUTES (prerender + sitemap.xml; a test fails until you do)
 npm run content:sync
 npm run lint && npm test && npm run build
 ```
@@ -1180,7 +1181,7 @@ Deployed URL: `https://<user>.github.io/tide-testing/`
 
 `vite.config.js` sets `base: '/tide-testing/'` when `process.env.GITHUB_ACTIONS` is set, otherwise `/` (the router's `basename` is `import.meta.env.BASE_URL`). **Never hardcode `/tide-testing/` in source** — use relative paths, `imgSrc()` or `import.meta.env.BASE_URL`.
 
-`public/404.html` hard-codes the project-site shape (it keeps one leading path segment, `/tide-testing/`); serving from a custom-domain root with `base: '/'` would need that script revisited.
+`dist/404.html` is the prerendered NotFound page (since 2026-11-24): GitHub Pages sends it with HTTP 404 for any address it has no file for, and the app then starts there and renders whatever route the address matches (so `/pramaan-library/W1` or a trailing slash still work). The `?/path` restorer in `index.html` is kept only for old links of that form. `scripts/prerender.mjs` takes the site origin for absolute `og:image` URLs from `SITE_ORIGIN`, else `https://<GITHUB_REPOSITORY_OWNER>.github.io`, else `http://localhost:4173` — set `SITE_ORIGIN` if the site moves to its own domain.
 
 ---
 
@@ -1199,7 +1200,7 @@ All internal links must use `<Link to="...">` from React Router, never `<a href=
 
 Plain `href` triggers a real page navigation instead of client-side routing — slower, and on first load `index.html`'s inline script has to run the redirect-restoration logic again.
 
-GitHub Pages serves static files only — there's no server-side rewrite for deep routes. The site uses the standard `404.html`-redirect trick: a hard reload or direct link to e.g. `/pramaan/resource-centre?type=worksheet` gets served `public/404.html`, which redirects to `/?/pramaan/resource-centre&type=worksheet`; `index.html`'s inline script then decodes that back into the real path via `history.replaceState` before React mounts. **If you touch either script, verify the query-string case specifically** — a previous bug here joined the restored path and query with `&` instead of `?`, which silently produced a malformed URL (no error, just a blank page) for any route with query params on a hard reload.
+**Since 2026-11-24 every public route is a real file** (`scripts/prerender.mjs`): GitHub Pages answers `/about/why-tide` from `about/why-tide.html` with HTTP 200 (verified on the live host for `/404` → `404.html`), and a path that is also a folder (`/pramaan`) gets `pramaan.html` + `pramaan/index.html` (which of the two GitHub Pages picks was not verified). `404.html` is the prerendered NotFound page; the app renders the right route on top of it for addresses with no file. The paragraph below describes the old trick, which is now only a fallback for old `/?/path` links. GitHub Pages serves static files only — there's no server-side rewrite for deep routes. Before, the site used the standard `404.html`-redirect trick: a hard reload or direct link to e.g. `/pramaan/resource-centre?type=worksheet` gets served `public/404.html`, which redirects to `/?/pramaan/resource-centre&type=worksheet`; `index.html`'s inline script then decodes that back into the real path via `history.replaceState` before React mounts. **If you touch either script, verify the query-string case specifically** — a previous bug here joined the restored path and query with `&` instead of `?`, which silently produced a malformed URL (no error, just a blank page) for any route with query params on a hard reload.
 
 ### `imgSrc()` is not idempotent
 
@@ -1311,7 +1312,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 36 files, 408 tests (jsdom, src/test/**)
+npm test               # vitest run — 39 files, 446 tests (jsdom, src/test/**)
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```
