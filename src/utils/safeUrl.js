@@ -2,7 +2,7 @@
 // into a Form). The sync already refuses anything but http(s) links at ingest
 // (scripts/lib/snapshot-core.js isHttpUrl); these are the second, independent check, so a bad value
 // that reaches a snapshot some other way still can't become a javascript:/data: link or an
-// unexpected frame. Tested in src/test/utils/safeUrl.test.js.
+// unexpected frame. Tested in src/test/scripts/securitySanitizers.test.js.
 
 /** An absolute http(s) link to a named host with no user name/password, trimmed — otherwise null. */
 export function safeHttpUrl(url) {

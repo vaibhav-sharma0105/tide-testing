@@ -1,7 +1,7 @@
 // The site's public addresses, in one list that the build reads (scripts/prerender.mjs writes a real
 // HTML file for each; scripts/siteDataPlugin.js builds sitemap.xml from it) and the app checks against
 // (src/test/routing/siteRoutes.test.jsx renders every path through <App />). Paths only — the page
-// components are registered in src/App.jsx.
+// components are registered in src/routes.js.
 //
 // sources: the files a page's content comes from; the newest git commit touching them is the page's
 // <lastmod> in sitemap.xml (never invented: no git history → no <lastmod>).

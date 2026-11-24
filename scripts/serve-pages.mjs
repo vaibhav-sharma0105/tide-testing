@@ -1,5 +1,5 @@
 // scripts/serve-pages.mjs — serve the built site (dist/) the way GitHub Pages does, for the e2e tests
-// against the shipped output (playwright.pages.config.js) and for checking a build by hand.
+// against the shipped output (playwright.site.config.js) and for checking a build by hand.
 //
 //   node scripts/serve-pages.mjs [root=dist] [base=/tide-testing/] [port=4300]
 //

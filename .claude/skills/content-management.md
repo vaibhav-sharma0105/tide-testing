@@ -24,7 +24,7 @@ import common from '../../data/common.json'
 <p>{common.step}</p>
 ```
 
-`eslint.config.js` enforces `react/jsx-no-literals` as an **error** for `src/pages/**/*.jsx` and `src/components/**/*.jsx` (only punctuation/glyphs are allowed as bare text), so visible text typed into JSX fails `npm run lint`. CI runs lint too (a failure stops the deploy) — still run it locally. The rule does **not** see string props (`aria-label`, `alt`, `title`, `placeholder`), template literals, JSON-LD, or other string attributes; see the `cms-integrity` skill for the checklist that covers those.
+`eslint.config.js` enforces `react/jsx-no-literals` as an **error** for `src/pages/**/*.jsx` and `src/components/**/*.jsx` (only punctuation/glyphs are allowed as bare text), so visible text typed into JSX fails `npm run lint`. CI runs lint too (a failure stops the deploy) — still run it locally. A second rule in the same block (`no-restricted-syntax`, `CMS_TEXT_SELECTORS`, audit P1 2026-11-24) also fails on words in text props (`alt`, `aria-label`, `title`, `placeholder`, `label`, `badge`, …) and in `{'…'}` / template-literal text in JSX (tests: `src/test/scripts/cmsGuard.test.js`). Neither sees text built in plain JS away from the JSX, JSON-LD objects or breadcrumb names; see the `cms-integrity` skill for the checklist that covers those.
 
 ## Content Pipelines
 
@@ -47,12 +47,14 @@ Behaviour of `scripts/yaml-to-json.js` worth knowing:
 ```
 content/shared/site.yaml       ─┐
 content/shared/llms.txt (tmpl) ─┤  scripts/siteDataPlugin.js (Vite plugin)  →  index.html <title>, og:site_name, JSON-LD (NGO + WebSite)
-                                └──────────────────────────────────────────→  /llms.txt (served in dev, emitted into dist/ on build)
+                                ├──────────────────────────────────────────→  /llms.txt, /robots.txt, /sitemap.xml (served in dev, emitted into dist/ on build;
+                                │                                              sitemap + llms {{pages}} from src/config/siteRoutes.js + the Resource Centre snapshot)
+                                └── scripts/prerender.mjs (after vite build)  →  one HTML file per public page, 404.html, forwarding pages, /llms-full.txt
 content/shared/site.yaml       ──  scripts/yaml-to-json.js  →  src/data/site.json  →  SeoHead + page breadcrumbs
 ```
-`content/shared/site.yaml` is the single source for site-wide facts: `name`, `alternateName`, `url`, `logo`, `email`, `livesImpacted`, `gradeRange`, `foundingYear`, `location`, `country`, `language`, `description` (may contain `{livesImpacted}`), `websiteDescription`, `keywords`, and `breadcrumbs.*` (names of the parent steps: `home`, `aboutUs`, `getInvolved`, `pramaan`, `educationForHarmony`, `resourceCentre`, `thrive`). The plugin reads the YAML directly, so it does not depend on `content:sync` having run.
+`content/shared/site.yaml` is the single source for site-wide facts: `name`, `alternateName`, `url` (the canonical base: canonicals, sitemap, robots, llms), `indexable` (false → noindex on every page), `logo`, `placeholderImage`, `pageBannerTexture`, `email`, `livesImpacted`, `gradeRange`, `foundingYear`, `location`, `country`, `language`, `description` (may contain `{livesImpacted}` and `{foundingYear}`), `websiteDescription`, `keywords`, `crawlers` (`search`, `training`, `allowTraining` → robots.txt), and `breadcrumbs.*` (names of the parent steps: `home`, `aboutUs`, `getInvolved`, `pramaan`, `educationForHarmony`, `resourceCentre`, `thrive`). The plugin reads the YAML directly, so it does not depend on `content:sync` having run.
 
-`public/llms.txt` no longer exists. The editable template is `content/shared/llms.txt`; `siteDataPlugin.js` `renderLlms()` replaces `{{name}}`, `{{url}}`, `{{email}}`, `{{livesImpacted}}`, `{{gradeRange}}`, `{{foundingYear}}` and `{{location}}` (an unknown token throws). The page list inside the template is hand-maintained — review it, `public/sitemap.xml` and `public/robots.txt` when pages are added or removed.
+`public/llms.txt` no longer exists. The editable template is `content/shared/llms.txt`; `siteDataPlugin.js` `renderLlms()` replaces `{{name}}`, `{{url}}`, `{{email}}`, `{{livesImpacted}}`, `{{gradeRange}}`, `{{foundingYear}}`, `{{location}}` and `{{pages}}` (an unknown token throws). `{{pages}}` is generated: one line per sitemap page (its `meta.breadcrumbName` + `meta.seoDescription`). There is no `public/sitemap.xml`, `public/robots.txt` or `public/404.html` any more — all generated at build; a new public page only needs its path in `src/config/siteRoutes.js` (`sitemap: false` keeps it out of the sitemap and llms list). The figures typed in the template ("100+ partner organisations", "12 years", …) are still plain text — an open owner question (audit ledger).
 
 Each page's **last breadcrumb name** is its own `meta.breadcrumbName` in the page YAML; the parent steps come from `site.json` `breadcrumbs.*`:
 ```jsx
@@ -68,7 +70,8 @@ Sixteen of the 17 page YAMLs carry `meta.breadcrumbName` (every page except `hom
 
 ### Pipeline C — Google Sheets
 ```
-Snapshot mode (the only Sheet pattern; Pramaan Resource Centre, /pramaan/resource-centre; Publications, /tide/publications + /thrive/publications):
+Snapshot mode (the only Sheet pattern; Pramaan Resource Centre, /pramaan/resource-centre; Publications, /tide/publications + /thrive/publications;
+Partners, /about/our-partners (static preview until the sync is connected); Social Changemakers, /education-for-harmony/social-changemakers):
 Google Sheet → token-gated Apps Script → GitHub Actions sync → src/data/sheets/<slug>.json (+ photos) → page (build time)
 ```
 New Sheet integrations follow `docs/SHEET-INTEGRATION-PLAYBOOK.md` (skill: `.claude/skills/sheet-integration/SKILL.md`). No page reads a Sheet in the browser (the former `useABLData` live read was retired on 2026-11-19; archived in git tag `archive/pramaan-live-read`).
@@ -77,7 +80,7 @@ The **resource data** (title, description, grades…) comes from the Sheet snaps
 ## File Naming Convention
 
 ### Page YAML → JSON
-17 files in `content/pages/` (one per page or screen; `src/App.jsx` registers 24 `<Route>`s: 18 primary routes — the Resource Centre list and detail share `pramaan-library.yaml` — plus 3 redirects (`/about/publications`, `/pramaan-library`, `/pramaan-library/:id`) and the 3 system routes `/coming-soon`, `/404` and `*`):
+17 files in `content/pages/` (one per page or screen; `src/routes.js` lists 24 routes: 18 primary routes — the Resource Centre list and detail share `pramaan-library.yaml` — plus 3 redirects (`/about/publications`, `/pramaan-library`, `/pramaan-library/:id`) and the 3 system routes `/coming-soon`, `/404` and `*`):
 
 | Content file | Generated JSON (in `src/data/`) | Component |
 |---|---|---|
@@ -119,7 +122,7 @@ The former "stranded" pages (Our Results, the six `projects-*` pages, Work With 
 | `site.yaml` | `site.json` | `ui/SeoHead.jsx`, the 18 page files that build breadcrumbs (`site.breadcrumbs.*`) and `src/utils/imagePlaceholder.js` (`placeholderImage`); also read directly by `scripts/siteDataPlugin.js` |
 | `llms.txt` | — (not synced) | Template rendered by `siteDataPlugin.js` into `/llms.txt` |
 
-`src/data/` also holds `pramaan-library-photos.json`, `publications-photos.json`, `partners-photos.json`, `sheets/pramaan-library.json`, `sheets/publications.json` and `sheets/partners.json`, which are **not** produced by this pipeline (they come from the Resource Centre, Publications and Partners syncs, `sync-pramaan-library`, `sync-publications` and `sync-partners`): 26 generated JSON files (17 + 9) plus those three manifests = 29 files at the top level, and the three snapshots under `sheets/`.
+`src/data/` also holds `pramaan-library-photos.json`, `publications-photos.json`, `partners-photos.json`, `social-changemakers-photos.json` and `sheets/pramaan-library.json`, `sheets/publications.json`, `sheets/partners.json`, `sheets/social-changemakers.json`, which are **not** produced by this pipeline (they come from the four Sheet syncs `sync-pramaan-library`, `sync-publications`, `sync-partners` and `sync-social-changemakers`): 26 generated JSON files (17 + 9) plus those four manifests = 30 files at the top level, and the four snapshots under `sheets/`.
 
 ## React Component Import Pattern
 
@@ -230,15 +233,18 @@ const COLOR_MAP = {
 # Sync page + shared YAML → src/data/
 npm run content:sync
 
-# Validate YAML syntax, check (some) image paths, enforce site.yaml email / lives-total consistency
+# Validate YAML syntax, every local file path in YAML (missing → warning), the four Sheet snapshots, formUrl,
+# and site.yaml email / lives-total consistency (→ error)
 npm run content:validate
 
-# Visible-text guard (react/jsx-no-literals) + other lint rules — also run in CI
+# Visible-text guards (react/jsx-no-literals + no-restricted-syntax on text props) + other lint rules — also run in CI
 npm run lint
 
-# Unit tests (33 files / 391 tests as of 2026-11-24) and Playwright e2e (3 specs; not run in CI)
+# Unit tests (46 files / 524 tests as of 2026-11-24); Playwright against the dev server (local only)
 npm test
 npm run test:e2e
+# Playwright against the built base-path site (CI runs this after the build): $env:GITHUB_ACTIONS='true'; npm run build first
+npm run test:e2e:site
 
 # Start dev server (auto-syncs first)
 npm run dev
@@ -253,20 +259,20 @@ npm run build
 1. Create `content/pages/new-page.yaml` with all visible text (heading, SEO, labels, aria-labels, image paths and alts — nothing typed in JSX) and `meta.breadcrumbName`
 2. Run `npm run content:sync` → creates `src/data/new-page.json`
 3. Create `src/pages/NewPage.jsx` following the `SeoHead` + `PageHero` pattern above
-4. Add a lazy-loaded route to `src/App.jsx`
-5. Add a nav entry to `content/shared/navigation.yaml`; review `public/sitemap.xml` and the page list in `content/shared/llms.txt`, which are maintained by hand
+4. Add a lazy-loaded route to `src/routes.js` (`lazyPage` import + a `ROUTES` entry)
+5. Add the path to `src/config/siteRoutes.js` `PRIMARY_ROUTES` with its `sources` (prerender, sitemap.xml and the llms page list; `siteRoutes.test.jsx` fails until you do), and a nav entry to `content/shared/navigation.yaml`. The page needs exactly one `<h1>` (the prerender fails the build otherwise; `Layout` moves focus to it)
 6. Add the page to `CONTENT-GUIDE.md`'s file table
 7. Run `npm run content:sync` again, then `npm run content:validate`, `npm run lint`, `npm test` and `npm run build`
 
 ## Tech Stack Context
 
 - **Vite 8 + React 19** — static site
-- **React Router v7** — `BrowserRouter` (clean URLs; GitHub Pages SPA fallback via `public/404.html` + `index.html` redirect script, not hash routing)
+- **React Router v7** — `BrowserRouter` (clean URLs, not hash routing); every public page prerendered at build (`scripts/prerender.mjs`), the generated `404.html` is the NotFound page and the app renders the matching route over it
 - **Tailwind CSS v3** — utility classes
 - **Framer Motion 12** — animations (shared fade-up presets in `src/utils/motionPresets.js`)
 - **Lucide React** — icons
 - **js-yaml** — YAML parsing in Node.js scripts (devDependency)
-- **react-helmet-async** — SEO meta tags (HelmetProvider in App.jsx), via `src/components/ui/SeoHead.jsx`
+- **react-helmet-async** — SEO meta tags (HelmetProvider in App.jsx), via `src/components/ui/SeoHead.jsx`; JSON-LD always through `jsonLdText` (`src/utils/jsonLd.js`)
 
 ## Design Tokens
 

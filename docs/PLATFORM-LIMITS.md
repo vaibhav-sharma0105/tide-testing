@@ -45,7 +45,7 @@ Quotas reset 24 hours after the first request. Google may delete a personal acco
 | Limit | Value | This site today | Verdict |
 |---|---|---|---|
 | Repository visibility | **Public required** on GitHub Free | Public | Must stay public |
-| Published site size | 1 GB | 49 MB built site (2026-11-19, `dist/`), of which Resource Centre photos 33 MB / 400 files (~85 KB each). The former Pramaan photos (29 MB) were removed from the site that day | Room for several thousand more photos |
+| Published site size | 1 GB | 65 MB built site on 2026-11-24 (`du -sh dist`, base-path build with 265 prerendered HTML files); 49 MB on 2026-11-19, of which Resource Centre photos 33 MB / 400 files (~85 KB each). The former Pramaan photos (29 MB) were removed from the site that day | Room for several thousand more photos |
 | Bandwidth | 100 GB / month (soft) | not measured; a few MB per visit | Tens of thousands of visits/month |
 | Builds per hour | 10 / hour (soft) | **does not apply** — we deploy with a custom Actions workflow | OK |
 | Deploy timeout | 10 minutes | ~1–2 minutes | OK |
@@ -68,14 +68,14 @@ ever gets close: move photo history to a separate assets repository.
 | Limit | Value | What it means here |
 |---|---|---|
 | Cost for public repositories | **free, unlimited** on standard runners | Our syncs and deploys cost nothing |
-| Cost if the repo became private | $12/month of included compute (≈ 2,000 Linux minutes — derived, not quoted) | Still enough, but Pages would stop working on Free |
-| Job run time | 6 hours per job | Sync ~1–2 min |
-| Concurrent jobs | 20 (Free plan) | We run 1–3 (deploy + two syncs) |
+| Cost if the repo became private | $12/month of included compute (≈ 2,000 Linux minutes — derived, not quoted) | Since 2026-11-24 the deploy also prerenders and runs browser tests, and a nightly test run (up to 45 min) was added — neither measured on GitHub yet; a private repo would need that re-checked. Pages would stop working on Free anyway |
+| Job run time | 6 hours per job | Sync ~1–2 min; deploy build: prerender ~1 min + built-site tests ~2 min locally (not measured on GitHub); nightly job capped at 45 min |
+| Concurrent jobs | 20 (Free plan) | We run 1–3 at a time (deploy, a sync, the nightly tests) |
 | `GITHUB_TOKEN` API calls | 1,000 per hour per repository | A handful per sync |
 | Trigger events | 1,500 per 10 s per repository | Not reached |
 | Scheduled workflows | **auto-disabled after 60 days without repository activity** (public repos) | Handled by the keep-alive commit + the Apps Script daily heartbeat |
-| Artifact storage | 500 MB | Not used |
-| Cache storage | 10 GB per repository | Not used |
+| Artifact storage | 500 MB | Only when browser tests fail: their report and traces (deploy: kept 14 days) |
+| Cache storage | 10 GB per repository | npm cache + the Playwright browsers (deploy: Chromium; nightly: three browsers) |
 | A push made with `GITHUB_TOKEN` | does **not** start other workflows | That is why the sync starts the deploy explicitly |
 
 ## Sources

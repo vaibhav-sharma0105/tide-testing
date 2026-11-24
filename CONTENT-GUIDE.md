@@ -388,7 +388,7 @@ gradeRange: "1–5"      # grades the Pramaan library covers; pages write {grade
 foundingYear: "2014"
 ```
 
-(The same file also holds the logo, location, search-engine description and keywords, and the parent names used in page breadcrumbs.) Anything you change in `site.yaml` flows automatically into the search-engine information in the page header and into `/llms.txt`.
+(The same file also holds the logo, the placeholder picture, the faint texture behind the page banners (`pageBannerTexture`), location, search-engine description and keywords, the parent names used in page breadcrumbs, and two search-engine switches: `indexable` — `false` asks search engines not to list any page, for a test copy of the site — and `crawlers`, which decides what `/robots.txt` allows; `allowTraining: false` would ask AI-training crawlers to stay away. Ask a developer before changing either switch.) Anything you change in `site.yaml` flows automatically into the search-engine information in the page header and into `/llms.txt`.
 
 **Rule: the email address and the lives-impacted figure must be the same everywhere.** The decided values today are `tidefoundation@gmail.com` and `52,500+`. If you ever need to change one:
 
@@ -414,9 +414,9 @@ Change `breadcrumbName` only if the page itself is renamed. The earlier steps ("
 
 `/llms.txt` is a short plain-text summary of TIDE that AI assistants read. Edit its template, `content/shared/llms.txt`. It is ordinary text with a few fill-in words in double curly braces that the website replaces from `site.yaml`:
 
-`{{name}}`  `{{url}}`  `{{email}}`  `{{livesImpacted}}`  `{{gradeRange}}`  `{{foundingYear}}`
+`{{name}}`  `{{url}}`  `{{email}}`  `{{livesImpacted}}`  `{{gradeRange}}`  `{{foundingYear}}`  `{{location}}`  `{{pages}}`
 
-Keep those words exactly as written (an unknown word in double braces stops the build). The list of pages in this file is typed by hand — if a page is added or removed, update the list. Do not create a `public/llms.txt` file; the website builds `/llms.txt` itself.
+Keep those words exactly as written (an unknown word in double braces stops the build). `{{pages}}` becomes the list of the site's pages, written automatically from each page's breadcrumb name and search-engine description (`meta.breadcrumbName` and `meta.seoDescription` in its YAML) — change those to change the list. The other lines are ordinary text you can edit; numbers typed there (for example the partner and volunteer counts) are not checked against the rest of the site, so keep them up to date. Do not create a `public/llms.txt` file; the website builds `/llms.txt`, a full-text `/llms-full.txt`, `/sitemap.xml` and `/robots.txt` itself.
 
 ### Change the "Something went wrong" screen
 
@@ -471,11 +471,11 @@ npm run content:validate
 This will:
 - **Stop with an error** if a YAML file has a syntax mistake (missing colons, bad indentation, etc.) — these must be fixed
 - **Stop with an error** if any email address in `content/` (including the `llms.txt` template) is different from the one in `content/shared/site.yaml`, or if a lives-impacted total such as `40,000+` (a number sitting in a sentence about lives, people or impact) is different from `livesImpacted` in `site.yaml`. The message names the file and the field to fix
-- **Warn** when an image path written as `/assets/images/...` under a field named `photo`, `src`, `logo`, `image`, `poster`, `img`, `coverImage`, `heroPhoto`, `mainPhoto`, `diagramPhoto`, `backgroundImage` or `donorPoster` points to a file that is not in `public/`
+- **Warn** when any value that looks like a file path — it starts with `/assets/` or `assets/`, or ends in a picture, video or PDF ending such as `.jpg`, `.png`, `.webp`, `.svg`, `.mp4` or `.pdf` — points to a file that is not in `public/`, whatever the field is called, or is a bare file name with no folder in front of it
 
-It is a helper, not a guarantee: it does not check other image field names, links, or images written **without** a leading slash. A missing file shows the grey placeholder instead of the picture. Always look at the page in the preview too.
+It is a helper, not a guarantee: it does not check links, and a picture path it can't recognise as a file still slips through. A missing file shows the grey placeholder instead of the picture. Always look at the page in the preview too.
 
-If you're using Path A — editing directly on GitHub — there's no check beforehand, but the live build runs this same check (plus the code checks and tests) before publishing. A YAML syntax error or a mismatched email / lives-impacted figure **stops the update** (the **Actions** tab shows a red ✕, and the site keeps showing the previous version). A wrong image path (only a warning) or a misspelled key does *not* stop it — it just shows up as a grey placeholder picture or missing text on the page.
+If you're using Path A — editing directly on GitHub — there's no check beforehand, but the live build runs this same check (plus the code checks, the tests, and since 2026-11-24 a check of every page in a real browser) before publishing. A YAML syntax error or a mismatched email / lives-impacted figure **stops the update** (the **Actions** tab shows a red ✕, and the site keeps showing the previous version). A misspelled key does *not* stop it — it just shows up as missing text on the page. A wrong image path is only a warning in the content check, but since 2026-11-24 the browser check counts a missing file on a page as a failure, so it may stop the update too (not tested with a real wrong path); otherwise it shows up as a grey placeholder picture.
 
 ---
 

@@ -21,12 +21,14 @@ Two exceptions come from a different pipeline: the Pramaan Resource Centre files
 npm install          # first time only
 npm run dev          # auto-syncs content, then starts dev server at localhost:5173
 npm run build        # auto-syncs content, then builds to dist/
-npm run content:validate   # YAML syntax, image paths, Resource Centre + Publications snapshots, formUrl, email / lives-impacted consistency
+npm run content:validate   # YAML syntax, every local file path, the four Sheet snapshots, formUrl, email / lives-impacted consistency
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — run in CI (deploy.yml)
-npm test             # Vitest unit/component tests (39 files, 446 tests) — run in CI (deploy.yml)
+npm test             # Vitest unit/component tests (46 files, 524 tests) — run in CI (deploy.yml)
+npm run test:e2e     # Playwright against the dev server (local only)
+npm run test:e2e:site  # Playwright against the built base-path dist/ (Chromium) — run in CI after the build
 ```
 
-**Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
+**Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building, then `check:dist` and the built-site e2e (`test:e2e:site`); a failure stops the deploy. The dev-server specs (`npm run test:e2e`) and the visual baselines are local only.**
 
 ---
 
@@ -51,22 +53,22 @@ npm test             # Vitest unit/component tests (39 files, 446 tests) — run
 
 ### What this project is
 
-Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 24 `<Route>`s in `src/App.jsx` (18 primary, 3 redirects, 3 system) backed by 22 lazy-loaded page components. No server, no database. Built by Vite, deployed to GitHub Pages at `/tide-testing/`.
+Production React static site for TIDE Foundation (NGO, Ahmedabad, India). 24 routes in `src/routes.js` (18 primary, 3 redirects, 3 system; `src/App.jsx` maps them to `<Route>`s) backed by 22 lazy-loaded page components. No server, no database. Built by Vite, every public page prerendered to HTML (`scripts/prerender.mjs`), deployed to GitHub Pages at `/tide-testing/`.
 
 ### Tech stack
 
 - **Vite 8 + React 19** — static bundle, `npm run build` → `dist/`
-- **React Router v7** — `BrowserRouter` (clean URLs, e.g. `/pramaan/resource-centre`). GitHub Pages has no server-side rewrite, so deep links and hard reloads rely on `public/404.html` redirecting to `index.html`, which restores the original path via `history.replaceState`. **Do not assume HashRouter** — older notes in this repo's history said otherwise; `src/App.jsx` is the source of truth. A catch-all `<Route path="*" element={<NotFound />} />` is the last route in `src/App.jsx` — it only handles paths that don't match *any* route once React has mounted; the `404.html` trick above is a separate, earlier-stage mechanism for raw server-level 404s on a hard reload. `/404` is also a standalone, permanent route to the same `NotFound` page (so it can be linked/tested directly without relying on an actual unmatched path) — both must stay in sync if `NotFound` is ever replaced.
+- **React Router v7** — `BrowserRouter` (clean URLs, e.g. `/pramaan/resource-centre`). GitHub Pages has no server-side rewrite; since 2026-11-24 every public route is a prerendered file (`about/why-tide.html`), and `dist/404.html` (the prerendered NotFound page, generated — there is no `public/404.html`) is served with HTTP 404 for any other address, after which the app renders whatever route matches (§11). **Do not assume HashRouter** — older notes in this repo's history said otherwise; `src/routes.js` + `src/App.jsx` are the source of truth. A catch-all `['*', NotFound]` is the last entry in `src/routes.js` — it handles paths that don't match *any* route once React has mounted. `/404` is also a standalone, permanent route to the same `NotFound` page (so it can be linked/tested directly without relying on an actual unmatched path) — both must stay in sync if `NotFound` is ever replaced.
 - **Tailwind CSS v3** — utility classes, design tokens in `tailwind.config.js`
 - **Framer Motion 12** — page transitions, scroll animations
-- **react-helmet-async** — head tags; every page except ComingSoon/NotFound renders the shared `SeoHead` component (which wraps `<Helmet>`) — don't hand-roll `<Helmet>` title/meta in new pages
+- **react-helmet-async** — head tags; every page except ComingSoon/NotFound (and the two redirect components, which render no head tags) renders the shared `SeoHead` component (which wraps `<Helmet>`) — don't hand-roll `<Helmet>` title/meta in new pages
 - **Lucide React** — icon library
 
 **English only.** The multilingual (EN/HI/GU) framework — i18next / react-i18next, `src/i18n/`, `content/locales/`, `LanguageSwitcher`, `src/config/features.js` (`MULTILINGUAL_ENABLED`) and the `t()` convention — has been removed; pages read the generated JSON directly (`data.x.y`). The old code is kept under the local git tag `archive/multilingual-framework` (commit `a4126d1`): `git show archive/multilingual-framework:<path>` reads a single file, `git checkout archive/multilingual-framework` browses the whole tree. `<html lang>` is a static `en` in `index.html`. Google Fonts still loads the Noto Devanagari and Gujarati families, and `font-display` / `font-body` keep them as glyph fallbacks (§3): Gujarati is needed because Pramaan resource data contains Gujarati titles; the owner chose to keep Devanagari as a fallback too.
 
 ### Data flows
 
-There are four distinct data pipelines:
+There are six data pipelines (the CMS, the site data, and four Sheet snapshots):
 
 **1 — CMS pipeline (17 page YAMLs + 9 shared YAMLs → 26 JSON files)**
 ```
@@ -126,9 +128,21 @@ OurPartners (/about/our-partners) — imports the snapshot at build time
 ```
 Sync not connected yet: a static preview is published (owner decision, 2026-11-23) until the owner's setup. See §8 "Partners".
 
+**6 — Social Changemakers pipeline (fourth Sheet integration, same pattern)**
+```
+Google Sheet "Social Changemakers' Fellowship Completion Form (Responses)" (Form responses; two email columns never read)
+    ↓  apps-script/social-changemakers/Code.gs — token-gated export/fetchImage only; rows with a Name and an SCF Batch
+.github/workflows/sync-social-changemakers.yml → scripts/sync-social-changemakers.js (+ scripts/lib/social-changemakers-snapshot.js, -images.js, snapshot-core.js, sync-runner.js)
+    ↓  commits src/data/sheets/social-changemakers.json + src/data/social-changemakers-photos.json + public/assets/images/social-changemakers/
+SocialChangemakers (/education-for-harmony/social-changemakers) — imports the snapshot at build time
+```
+Live since 2026-11-23. See §8 "Social Changemakers".
+
+**Build output.** `npm run build` = `vite build` + `scripts/prerender.mjs`: headless Chromium (Playwright) loads every address in `src/config/siteRoutes.js` (17 primary pages + one per Resource Centre row; the sitemap leaves out Social Changemakers) from `dist/` and saves the rendered HTML, plus forwarding pages for `REDIRECT_ROUTES`, `404.html` and `llms-full.txt` (§10).
+
 ### Routing
 
-`src/App.jsx` registers 24 `<Route>`s (22 lazy-loaded page components). `BrowserRouter` (`basename={import.meta.env.BASE_URL}`) wraps everything — clean URLs, no `#`. `Layout` (skip link + Header + Footer) wraps every route; each page chunk is loaded with `lazyPage()` (`src/utils/reloadOnStaleChunk.js`: React.lazy that, when a page's file is gone after a deploy, reloads once and keeps the loader up instead of showing the crash screen; a second failure within 10 s is re-thrown) behind a `Suspense` fallback that shows `CreativeLoader` only after 200 ms (`useDelayedVisible`). `src/components/ErrorBoundary.jsx` wraps the whole app (outside the Router and `HelmetProvider`): on a render crash it shows a friendly screen (heading/body/button labels from `content/shared/error.yaml`, a reload button and a plain `<a>` home link) and logs the error to the console; the error message and stack are rendered only when `import.meta.env.DEV`. `MotionConfig reducedMotion="user"` makes all Framer animations respect the OS setting.
+`src/routes.js` exports `ROUTES` (24 `[path, Page]` pairs, 22 lazy-loaded page components) and `preloadPage(pathname)`; `src/App.jsx` maps them to `<Route>`s. `src/main.jsx` removes the prerendered `<title>` and `[data-prerender]` head tags, preloads the current page's code, then renders (no hydration: the app replaces the prerendered DOM). Public addresses for the build are listed separately in `src/config/siteRoutes.js` (`PRIMARY_ROUTES`, `RESOURCE_ROUTE`, `REDIRECT_ROUTES`); `src/test/routing/siteRoutes.test.jsx` keeps the two lists equal. `BrowserRouter` (`basename={import.meta.env.BASE_URL}`) wraps everything — clean URLs, no `#`. `Layout` (skip link + Header + Footer) wraps every route; each page chunk is loaded with `lazyPage()` (`src/utils/reloadOnStaleChunk.js`: React.lazy that, when a page's file is gone after a deploy, reloads once and keeps the loader up instead of showing the crash screen; a second failure within 10 s is re-thrown) behind a `Suspense` fallback that shows `CreativeLoader` only after 200 ms (`useDelayedVisible`). `src/components/ErrorBoundary.jsx` wraps the whole app (outside the Router and `HelmetProvider`), and `Layout` wraps each page in a second `<ErrorBoundary inline>` inside `<main>` (since 2026-11-24, audit P5): a crash in one page shows the same screen as a `<div>` while the header and footer stay, and moving to another page clears it. On a render crash it shows a friendly screen (heading/body/button labels from `content/shared/error.yaml`, a reload button and a plain `<a>` home link) and logs the error to the console; the error message and stack are rendered only when `import.meta.env.DEV`. `MotionConfig reducedMotion="user"` makes all Framer animations respect the OS setting.
 
 | Group | Count | Routes |
 |---|---|---|
@@ -151,11 +165,12 @@ tide-new/
 ├── README.md · WHATS-NEXT.md · CONTENT-MANAGEMENT-PLAN.md  ← other root docs (check each file's own status line)
 ├── vite.config.js         ← base path: '/tide-testing/' on GITHUB_ACTIONS, '/' locally; manualChunks; registers siteDataPlugin
 ├── vitest.config.js       ← jsdom, setup file, include src/test/**
-├── playwright.config.js   ← e2e: chromium, runs/reuses `npm run dev` on :5173
+├── playwright.config.js   ← dev-server e2e (`npm run test:e2e`): chromium, runs/reuses `npm run dev` on :5173 (`E2E_DEV_URL`), ignores e2e/site + e2e/visual
+├── playwright.site.config.js ← built-site e2e (`test:e2e:site|full|visual`): serves dist/ under /tide-testing/ with scripts/serve-pages.mjs on :4300; projects chromium / firefox / webkit / visual
 ├── eslint.config.js       ← flat config; react/jsx-no-literals CMS guard for pages + components
 ├── tailwind.config.js     ← all design tokens (colours, fonts, shadows, animations)
 ├── postcss.config.js
-├── index.html             ← single HTML entry: SPA-redirect restorer, static head, CSP (its `frame-src` allows https://www.google.com for the Contact map, plus Padlet/YouTube (incl. youtube-nocookie.com, used by the Pramaan Library video player)/Google Docs/Drive/Apps Script/Forms), Google Fonts; <title>, og:site_name and JSON-LD are filled in by siteDataPlugin
+├── index.html             ← single HTML entry: `?/path` restorer (old links), static head, CSP meta (`frame-src`: Google Maps, YouTube incl. youtube-nocookie.com, Google Docs/Drive/Apps Script; `object-src 'none'`, `connect-src 'self'`; the build swaps script-src `'unsafe-inline'` for the inline script's hash), Google Fonts; <title>, og:site_name and JSON-LD are filled in by siteDataPlugin
 ├── package.json           ← deps + scripts (predev/prebuild auto-sync YAML)
 ├── .env.example           ← documents required env vars (committed; no real values)
 │
@@ -176,16 +191,17 @@ tide-new/
 │       └── llms.txt         ← template (NOT YAML — the sync ignores it) rendered to /llms.txt by siteDataPlugin
 │
 ├── src/
-│   ├── App.jsx            ← BrowserRouter + 24 routes + ErrorBoundary + lazyPage() pages (reload once on a stale chunk)
-│   ├── main.jsx           ← React root; imports index.css; calls installImagePlaceholder() before rendering
+│   ├── App.jsx            ← ErrorBoundary + HelmetProvider + BrowserRouter; maps ROUTES to <Route>s
+│   ├── routes.js          ← ROUTES (24 [path, Page] pairs; lazyPage() pages reload once on a stale chunk) + preloadPage()
+│   ├── main.jsx           ← React root; imports index.css; installImagePlaceholder(); removes prerendered <title>/[data-prerender] tags; preloads the page, then renders
 │   ├── index.css          ← Tailwind directives + global styles + section-padding
 │   │
 │   ├── components/
-│   │   ├── ErrorBoundary.jsx      ← root crash screen (error.yaml); message/stack only in DEV
+│   │   ├── ErrorBoundary.jsx      ← crash screen (error.yaml); message/stack only in DEV; `inline` = the per-page copy inside Layout's <main>
 │   │   ├── layout/
 │   │   │   ├── Header.jsx     ← fixed nav (transparent → glass on scroll), dropdowns + nested sub-menus (`SubGroup`), mobile hamburger; active state via utils/navActive.js
 │   │   │   ├── Footer.jsx     ← footer.json + contact.json
-│   │   │   └── Layout.jsx     ← skip link, page transition (AnimatePresence keyed by pathname), scroll-to-top
+│   │   │   └── Layout.jsx     ← skip link, page transition (AnimatePresence keyed by pathname), per-page ErrorBoundary inline, scroll-to-top, focus to the new <h1>
 │   │   │
 │   │   ├── ui/
 │   │   │   ├── Button.jsx           ← polymorphic (Link/a/button), 5 variants
@@ -194,6 +210,8 @@ tide-new/
 │   │   │   ├── HeroStats.jsx        ← figures line under a PageHero title (Publications + Partners); withValue.jsx sets the {n} in white
 │   │   │   ├── CountUpText.jsx      ← the ONE count-up: the main figure of a page settles from 80% to its value once in view (width reserved; < 100 shown as is)
 │   │   │   ├── Highlight.jsx        ← amber highlighter underline over listed words in a sentence
+│   │   │   ├── LangText.jsx         ← wraps Gujarati-script runs of Sheet text in <span lang="gu"> (utils/scriptLang.js)
+│   │   │   ├── TiltGlare.jsx        ← the glare layer of the shared tilt hover (utils/tilt.js)
 │   │   │   ├── SeoHead.jsx          ← title/description/canonical/OG/Twitter + BreadcrumbList JSON-LD
 │   │   │   ├── CreativeLoader.jsx   ← open book + growing sprout SVG; gate behind useDelayedVisible
 │   │   │   ├── Lightbox.jsx         ← full-screen image gallery with keyboard nav; optional `translucent` backdrop; never shows a caption
@@ -204,7 +222,7 @@ tide-new/
 │   │   │
 │   │   ├── abl/
 │   │   │   ├── AblNavBar.jsx        ← tab bar under the hero on every Pramaan page (About / Resource Centre / Contribute)
-│   │   │   ├── Pagination.jsx       ← numbered pagination with ellipsis (Resource Centre only; optional `labels` prop)
+│   │   │   ├── Pagination.jsx       ← numbered pagination with ellipsis (Resource Centre only; optional `labels`; optional `hrefFor` makes the numbers real links)
 │   │   │   ├── DriveImage.jsx       ← self-hosted photo (src), shimmer + book-icon fallback
 │   │   │   ├── ResourceTypeBadge.jsx ← colour pill for resource type (optional icon / overlay-on-photo look)
 │   │   │   ├── typeIcons.jsx        ← `TypeIcon`: one lucide icon per resource type, shared by badges, filter tiles and /pramaan cards
@@ -212,6 +230,8 @@ tide-new/
 │   │   │   ├── VideoLightbox.jsx    ← full-screen video overlay, mirrors ImageLightbox; `translucent` prop = blurred see-through backdrop + larger player (PromoVideo, and the resource page's video). `ui/Lightbox` has the same prop
 │   │   │   ├── PromoVideo.jsx       ← promo video as a pinned print in the /pramaan banner (player loads on click)
 │   │   │   └── PhotoStrip.jsx       ← photo strip moved by one sub-pixel transform: eased drift, drag/swipe/wheel with momentum, arrow buttons; pauses on hover; a tap or Enter opens the photo in a translucent Lightbox
+│   │   ├── home/                   ← homepage sections: HomeHero, HomeMission, HomePrograms, HomeJourney, HomePartners, HomeCta (§4)
+│   │   ├── changemakers/           ← Past SCF: FellowCard, FellowPhotos, FellowProfile (§4)
 │   │   ├── library/                ← Pramaan Resource Centre (/pramaan/resource-centre)
 │   │   │   ├── LibraryFilters.jsx   ← sidebar/drawer filters: Ownership + Subject pickers (listing/PickerField), type tiles, grade pills; variant card | drawer
 │   │   │   ├── LibraryDropdown.jsx  ← rounded listbox replacing <select> (sort menu); exports FOCUS_PILL (see §11 focus note)
@@ -260,7 +280,7 @@ tide-new/
 │   │   │   ├── Volunteer.jsx
 │   │   │   ├── Donate.jsx             ← intro + large impact figure + bank-transfer card (icon-only copy buttons) + blue banner (WaveDivider) with Email/WhatsApp buttons
 │   │   │   └── OrganizeMCCx.jsx  ← served at /education-for-harmony/mccx
-│   │   ├── SocialChangemakers.jsx ← "Past SCF" placeholder grid, served at /education-for-harmony/social-changemakers (linked only from Education for Harmony)
+│   │   ├── SocialChangemakers.jsx ← Past SCF profiles from the Social Changemakers snapshot (waiting grid when empty), served at /education-for-harmony/social-changemakers (linked only from Education for Harmony)
 │   │   ├── resources/            ← the Pramaan screens
 │   │   │   ├── AblHome.jsx          ← /pramaan: stats bar + type cards (from the Resource Centre snapshot), about, photo strip
 │   │   │   └── AblContribute.jsx     ← /pramaan/contribute: steps + form button (formUrl in abl-contribute.yaml)
@@ -278,14 +298,17 @@ tide-new/
 │   │   ├── useModalBehavior.js   ← Escape-to-close + body scroll lock for overlays (Lightbox/ImageLightbox/VideoLightbox)
 │   │   ├── useDelayedVisible.js  ← gates a loading UI behind a threshold so fast loads never flash it
 │   │   ├── useSidebarFits.js     ← sticky listing sidebar only while it fits the window (Resource Centre)
+│   │   ├── useLoopWindow.js      ← true for 5 s after a decorative loop starts, then false for good (WCAG 2.2.2)
 │   │   ├── usePublicationControls.js ← Publications: usePublicationQuery, useDebouncedSearch, useFocusShortcut, focusResults
-│   │   └── useFocusTrap.js       ← modal focus management (trap Tab, focus on open, restore on close, without scrolling the page) — used by all 3 lightbox components
+│   │   └── useFocusTrap.js       ← modal focus management (trap Tab, focus on open, restore on close, without scrolling the page) — used by the 3 lightbox components, FilterDrawer and FellowProfile (one shared trap stack)
 │   │
 │   ├── config/
 │   │   ├── abl.js                ← resource types: TAB_STYLE_MAP, getTabStyle, TYPE_COLORS, getTypeColors
 │   │   ├── library.js            ← LIBRARY_PAGE_SIZE (9), libraryTypeKey, libraryTypeColors
 │   │   ├── publications.js       ← Publications thresholds (THRIVE_PAGE_SIZE 12, TIDE_PAGE_SIZE 12, NEW_BADGE_DAYS 120, LANDSCAPE_RATIO 1.2), HERO_CHART (both off), TYPE_ICON_RULES, SCHEMA_TYPE_BY_ICON, PUBLICATION_PAGES
-│   │   └── partners.js           ← Partners rules: PRIORITY_ORDER, LAST_CATEGORIES (Others last), SLIDE_INTERVAL_MS, SLIDE_RESUME_MS (also imported by scripts/lib/partners-snapshot.js)
+│   │   ├── partners.js           ← Partners rules: PRIORITY_ORDER, LAST_CATEGORIES (Others last), SLIDE_INTERVAL_MS, SLIDE_RESUME_MS (also imported by scripts/lib/partners-snapshot.js)
+│   │   ├── changemakers.js       ← FELLOWS_PAGE_SIZE (12)
+│   │   └── siteRoutes.js         ← public addresses for the build: PRIMARY_ROUTES (sitemap: false for SCF), RESOURCE_ROUTE, REDIRECT_ROUTES (prerender + sitemap.xml)
 │   │
 │   ├── utils/
 │   │   ├── imgSrc.js             ← imgSrc(path): prefixes BASE_URL (NOT idempotent — see §11)
@@ -300,30 +323,45 @@ tide-new/
 │   │   ├── focusRing.js          ← focusRing(radius): focus-visible ring classes keeping a control's own shape
 │   │   ├── navActive.js          ← Header active state: activeTopIndex, activeLeaf (most specific match)
 │   │   ├── videoLinks.js         ← getVideoEmbedUrl: Drive → /preview, YouTube → youtube-nocookie embed (needs the CSP frame-src entry), else null
-│   │   └── libraryPhotos.js      ← getLibraryPhoto(id, 'thumb'|'full') from the library photo manifest
+│   │   ├── libraryPhotos.js      ← getLibraryPhoto(id, 'thumb'|'full') from the library photo manifest
+│   │   ├── libraryJsonLd.js      ← LearningResource JSON-LD for a resource page
+│   │   ├── jsonLd.js             ← jsonLdText(data): JSON for a <script type="application/ld+json"> with < > & escaped (P4)
+│   │   ├── safeUrl.js            ← safeHttpUrl (links), safeEmbedUrl (Drive /preview + YouTube /embed only) for Sheet URLs at render (P4)
+│   │   ├── scriptLang.js         ← Gujarati-run detection for LangText / textLang
+│   │   ├── reloadOnStaleChunk.js ← lazyPage(): React.lazy + one reload on a missing chunk, .preload()
+│   │   ├── tilt.js · figures.js · copyText.js ← shared tilt hover, CountUpText number helpers, clipboard
+│   │   └── changemakers.js · changemakersPhotos.js ← Past SCF order/grouping/search helpers, photo manifest reader
 │   │
 │   ├── data/                     ← AUTO-GENERATED — never edit
-│   │   ├── *.json                ← 29 JSON files (17 pages + 9 shared from yaml-to-json.js, + the 3 photo manifests); git-tracked
+│   │   ├── *.json                ← 30 JSON files (17 pages + 9 shared from yaml-to-json.js, + the 4 photo manifests); git-tracked
 │   │   ├── pramaan-library-photos.json   ← Resource Centre id → synced photo paths — from scripts/sync-pramaan-library.js (not content:sync)
 │   │   ├── publications-photos.json      ← Publications id → synced thumbnail paths + pixel sizes — from scripts/sync-publications.js
 │   │   ├── partners-photos.json          ← Partners id → synced logo path + pixel size — from scripts/sync-partners.js
 │   │   ├── sheets/pramaan-library.json   ← Resource Centre snapshot (consented rows, allowlisted fields) — from scripts/sync-pramaan-library.js
 │   │   ├── sheets/publications.json      ← Publications snapshot (TIDE + THRIvE rows, allowlisted fields) — from scripts/sync-publications.js
-│   │   └── sheets/partners.json          ← Partners snapshot (allowlisted fields; empty until the owner's setup) — from scripts/sync-partners.js
+│   │   ├── social-changemakers-photos.json ← Past SCF photo/poster paths — from scripts/sync-social-changemakers.js
+│   │   ├── sheets/partners.json          ← Partners snapshot (allowlisted fields; static preview until the owner's setup) — from scripts/sync-partners.js
+│   │   └── sheets/social-changemakers.json ← Past SCF snapshot — from scripts/sync-social-changemakers.js
 │   │
 │   └── test/                     ← Vitest + Testing Library (see §12)
-│       ├── setup.js · utils/renderWithProviders.jsx
-│       └── components/ · hooks/ · utils/ · routing/ · pages/ · scripts/
+│       ├── setup.js · utils/renderWithProviders.jsx (not used by any test; knip, P5)
+│       └── components/ · hooks/ · utils/ · routing/ (+ removedPaths.js, shared with e2e) · pages/ · scripts/ (+ helpers/)
 │
-├── e2e/                          ← Playwright specs: home, navigation, pramaan
+├── e2e/                          ← Playwright (§12): dev-server specs home, navigation, pramaan, a11y (+ dev-warmup.js);
+│                                   site/ = built-site specs (routes, menus, listings, dialogs, quality, responsive + fixtures.js, global-setup.js);
+│                                   visual/ = screenshot baselines (Windows, local) + README.md
 │
 ├── public/
 │   (no 404.html / robots.txt / sitemap.xml / llms.txt here: all generated at build — siteDataPlugin + scripts/prerender.mjs)
-│   └── assets/                   ← images; assets/images/pramaan-library/, assets/images/publications/ and assets/images/partners/ hold the synced Resource Centre / Publications / Partners WebPs; assets/images/shared/ holds the logo, banner texture and placeholder.svg
+│   └── assets/                   ← images; assets/images/{pramaan-library,publications,partners,social-changemakers}/ hold the synced WebPs (bot-owned); assets/images/shared/ holds the logo, banner texture (WebP + PNG) and placeholder.svg
 │
 ├── scripts/
 │   ├── yaml-to-json.js          ← YAML → JSON sync (predev/prebuild hook)
-│   ├── siteDataPlugin.js        ← Vite plugin (registered in vite.config.js): site.yaml → JSON-LD/<title>/og:site_name in index.html; renders llms.txt
+│   ├── siteDataPlugin.js        ← Vite plugin (registered in vite.config.js): site.yaml → JSON-LD/<title>/og:site_name in index.html; llms.txt, robots.txt, sitemap.xml; build-time CSP script hash
+│   ├── prerender.mjs            ← after vite build: saves every siteRoutes.js address as HTML, forwarding pages, 404.html, llms-full.txt (fails on a bad page)
+│   ├── lib/prerender-check.js   ← its pure parts: outputFiles (decoded file names), checkPage, redirectHtml, relativePreloads
+│   ├── serve-pages.mjs          ← GitHub-Pages-like static server for dist/ (a file x; else a folder → 301 to x/ → x/index.html; else x.html; else 404.html with 404); `node scripts/serve-pages.mjs dist /tide-testing/ 4300`
+│   ├── check-dist.mjs           ← `npm run check:dist`: link/asset/sitemap crawl of dist/ + bundle budget (first load ≤ 180 kB gz, largest chunk ≤ 61 kB gz)
 │   ├── contentConsistency.js    ← pure email / lives-impacted detection used by validate-content.js (unit-tested)
 │   ├── validate-content.js      ← YAML syntax + image path validation + site.yaml consistency (also run in CI)
 │   ├── bootstrap-yaml.js        ← writes starter shared/navigation.yaml + footer.yaml (mirroring the current ones) only if absent
@@ -335,9 +373,11 @@ tide-new/
 │   ├── sync-partners.js         ← Partners sync: snapshot + logos (same photo/time limits)
 │   ├── lib/partners-snapshot.js ← its rules: allowlist, priority check (PRIORITY_ORDER), name-is-link, possible-duplicate per section, email scrub, removal limits
 │   ├── lib/partners-images.js   ← logo rendering (sharp): trim (trimBorders from publications-images.js), fit ≤ 400×400, transparency kept, never cropped
-│   ├── lib/snapshot-core.js     ← shared rules for any Sheet sync: safe ids, content hash, photo plan, removal/photo-deletion limits, Drive-link readers, photoFileBase, cleanString — tested in src/test/scripts/
+│   ├── sync-social-changemakers.js · lib/social-changemakers-snapshot.js · lib/social-changemakers-images.js ← Past SCF sync, rules, photo rendering
+│   ├── lib/image-safety.js      ← assertSafeImage: JPEG/PNG/WebP/GIF by magic bytes, ≤ 100 MP — first step of every image pipeline (P4)
+│   ├── lib/snapshot-core.js     ← shared rules for any Sheet sync: safe ids, content hash, photo plan, removal/photo-deletion limits, Drive-link readers, photoFileBase, cleanString, isHttpUrl, withoutAccountId, reportText — tested in src/test/scripts/
 │   ├── lib/sync-runner.js       ← shared I/O for every sync script: .env.development loader (per prefix), token redaction, fetch + retry, report, GITHUB_OUTPUT, photo download/delete loops — tested in src/test/scripts/syncRunner.test.js
-│   ├── ci/alert-issue.sh        ← open/update/close the owner-alert GitHub Issues (used by all five workflows)
+│   ├── ci/alert-issue.sh        ← open/update/close the owner-alert GitHub Issues (used by all six workflows)
 │   └── a11y-audit.cjs           ← axe-core scan across every route (manual — see §12). Scrolls the full page first so whileInView animations settle before scanning — don't shorten that wait, it was added after a confirmed false positive.
 │
 ├── docs/
@@ -354,20 +394,25 @@ tide-new/
 │   ├── PUBLICATIONS-SHEET-SCHEMA.md         ← which columns the Publications sync reads and who gets published
 │   ├── PARTNERS-SETUP-GUIDE.md              ← owner setup for the Partners Sheet → /about/our-partners
 │   ├── PARTNERS-SHEET-SCHEMA.md             ← which columns the Partners sync reads, who gets published, the order
-│   ├── STAKEHOLDER-REVIEW-2026-11-28.md     ← Publications (§1–6) and Partners (§7) Sheet questions parked for the owner's 2026-11-28 stakeholder meeting
+│   ├── SOCIAL-CHANGEMAKERS-SETUP-GUIDE.md · SOCIAL-CHANGEMAKERS-SHEET-SCHEMA.md ← owner setup + column rules for the Past SCF Sheet
+│   ├── STAKEHOLDER-REVIEW-2026-11-28.md     ← Publications (§1–6), Partners (§7) and Social Changemakers (§8) Sheet questions parked for the owner's 2026-11-28 stakeholder meeting
+│   ├── audits/2026-11-site-audit.md         ← the seven-phase audit ledger (findings, gates, owner decisions needed)
 │   ├── PRAMAAN-HARDENING-PLAN.md · OPERATIONS-*.md · PLATFORM-LIMITS.md  ← current plan, inventory, runbook, free-tier limits
 │   ├── ARCHITECTURE.html · ARCHITECTURE-DATAFLOW.html  ← interactive system diagrams (standalone)
 │   └── specs/                               ← site-restructure-plan.md, stranded-pages-review.md (historical), multilingual-i18n-spec.md (historical — framework removed), etc.
 │
 ├── .claude/skills/              ← agent skills: content-management.md, cms-integrity/, doc-sync/, sheet-integration/
 └── .github/workflows/           ← (and .github/dependabot.yml: monthly pull requests updating the SHA-pinned actions)
-    ├── deploy.yml                  ← lint → content:validate → unit tests → build → deploy to GitHub Pages; alert Issue on failure
+    ├── deploy.yml                  ← lint → content:validate → unit tests → build (+ prerender) → check:dist → test:e2e:site → deploy to GitHub Pages; alert Issue on failure
+    ├── e2e-nightly.yml             ← 02:41 UTC + manual: build, check:dist, test:e2e:full (3 browsers); alert "Nightly end-to-end tests failed"; never deploys
     ├── sync-pramaan-library.yml    ← runs scripts/sync-pramaan-library.js every 6 h at :47, on Sheet change and manually; own concurrency group
     ├── sync-publications.yml       ← runs scripts/sync-publications.js every 6 h at :27, on Sheet change and manually; own concurrency group publications-sync
-    └── sync-partners.yml           ← runs scripts/sync-partners.js every 6 h at :07, on Sheet change and manually; own concurrency group partners-sync
+    ├── sync-partners.yml           ← runs scripts/sync-partners.js every 6 h at :07, on Sheet change and manually; own concurrency group partners-sync
+    └── sync-social-changemakers.yml ← runs scripts/sync-social-changemakers.js every 6 h at :17, on Sheet change and manually; group social-changemakers-sync
 apps-script/pramaan-library/Code.gs ← the Resource Centre Sheet's Apps Script v1 (source of truth, pasted into Google by the owner; no public listing; consent filter)
 apps-script/publications/Code.gs    ← the Publications Sheet's Apps Script v1 (same pattern; no approval column — every TIDE/THRIvE row with a title)
 apps-script/partners/Code.gs        ← the Partners Sheet's Apps Script v1 (same pattern; no approval column — every row with a type and a name)
+apps-script/social-changemakers/Code.gs ← the Past SCF Sheet's Apps Script v1 (same pattern; every row with a Name and an SCF Batch)
 ```
 
 ---
@@ -506,7 +551,7 @@ Props are exactly `{ badge, badgeClassName, title, subtitle, children, aside }`;
 />
 ```
 
-Every page except `ComingSoon` and `NotFound` (which use `<Helmet>` directly with `noindex`) renders `SeoHead`. It emits title, description, canonical, og:*, twitter:*, optional `robots noindex`, and a BreadcrumbList JSON-LD block (a breadcrumb without `path` omits `item`). `SITE_URL` and the default og:image (`site.logo` under `BASE_URL`) come from `site.json`. Breadcrumb names are not hardcoded: parent steps come from `content/shared/site.yaml` `breadcrumbs.*` and each page's own last step is `meta.breadcrumbName` in its YAML (`PramaanLibraryDetail` uses the resource name). Head tags are rendered by React 19 (react-helmet-async v3 hands `<title>`/`<meta>`/`<link>` to React's own hoisting; the BreadcrumbList `<script>` stays in the body). The build prerenders each page with them (`scripts/prerender.mjs` marks them `data-prerender`); `src/main.jsx` removes those and every `<title>` before the app renders, because React added a second `<title>` instead of reusing the HTML's (seen on staging 2026-11-24). `site.yaml` `indexable: false` adds `noindex` on every page. `ogImagePath` / the default og:image use `window.location.origin` (the prerender runs at the real origin, see §10 Base path). `index.html` has no static description/canonical, but its `<title>`, `og:site_name` and the NGO/WebSite JSON-LD are generated from `site.yaml` by `scripts/siteDataPlugin.js`.
+Every page except `ComingSoon` and `NotFound` (which use `<Helmet>` directly with `noindex`) and the redirect components `LibraryRedirect` / `TidePublicationsRedirect` (no head tags; the build writes their noindex forwarding pages) renders `SeoHead`. It emits title, description, canonical, og:*, twitter:*, optional `robots noindex`, and a BreadcrumbList JSON-LD block (a breadcrumb without `path` omits `item`; written with `jsonLdText`, because a resource page's last step is Sheet text). `SITE_URL` and the default og:image (`site.logo` under `BASE_URL`) come from `site.json`. Breadcrumb names are not hardcoded: parent steps come from `content/shared/site.yaml` `breadcrumbs.*` and each page's own last step is `meta.breadcrumbName` in its YAML (`PramaanLibraryDetail` uses the resource name). Head tags are rendered by React 19 (react-helmet-async v3 hands `<title>`/`<meta>`/`<link>` to React's own hoisting; the BreadcrumbList `<script>` stays in the body). The build prerenders each page with them (`scripts/prerender.mjs` marks them `data-prerender`); `src/main.jsx` removes those and every `<title>` before the app renders, because React added a second `<title>` instead of reusing the HTML's (seen on staging 2026-11-24). `site.yaml` `indexable: false` adds `noindex` on every page. `ogImagePath` / the default og:image use `window.location.origin` (the prerender runs at the real origin, see §10 Base path). `index.html` has no static description/canonical, but its `<title>`, `og:site_name` and the NGO/WebSite JSON-LD are generated from `site.yaml` by `scripts/siteDataPlugin.js`.
 
 ### SectionHeader
 
@@ -632,10 +677,11 @@ Container always `aspect-[3/4]` (portrait). Shows a shimmer while loading and a 
   onChange={handlePageChange}
   perPage={LIBRARY_PAGE_SIZE}  // optional, defaults to LIBRARY_PAGE_SIZE (9, src/config/library.js)
   labels={data.pagination}     // optional, defaults to pramaan-library.yaml → pagination
+  hrefFor={(p) => ({ search: filtersToSearch(filters, p) })}  // optional: router location of page p
 />
 ```
 
-Renders nothing when there's only one page. Below `sm` it shows only the arrows (the Previous/Next words are hidden; the buttons keep their aria-labels) and smaller number buttons, so it fits a 360px phone. Text: `labels` = an object with the keys `ariaLabel, showing, of, resources, previousLabel, previousShort, next`; the default is `pramaan-library.yaml` → `pagination.*`. Only the Resource Centre uses `Pagination` (it passes no `labels`); the Publications pages use their own `PublicationsPagination` (numbered `?page=` links).
+Renders nothing when there's only one page. With `hrefFor` (since 2026-11-24, audit P5; the Resource Centre passes it) the numbers and Previous/Next are React Router `<Link>`s, so the prerendered page links every page for crawlers; a plain click still calls `onChange` (no history entry), Ctrl/⌘-click opens a new tab, and links activate on Enter (not Space). Without `hrefFor` they are buttons. Below `sm` it shows only the arrows (the Previous/Next words are hidden; the buttons keep their aria-labels) and smaller number buttons, so it fits a 360px phone. Text: `labels` = an object with the keys `ariaLabel, showing, of, resources, previousLabel, previousShort, next`; the default is `pramaan-library.yaml` → `pagination.*`. Only the Resource Centre uses `Pagination` (it passes no `labels`); the Publications pages use their own `PublicationsPagination` (numbered `?page=` links).
 
 ### Listing pieces (`src/components/listing/`)
 
@@ -684,7 +730,7 @@ Used by `src/pages/about/OurPartners.jsx`: `PageHero` with `HeroStats` (`meta.st
 - `PartnerConstellation({ partners })` — `aria-hidden`; up to 9 discs at fixed slots (biggest = first in priority order) joined by curved threads (quadratic paths in a 100×90 viewBox, bending left/right in turn, gradient-stroked so they fade into the discs) that draw in (`pathLength`), with small lights travelling outwards along them (SVG `animateMotion`; not drawn under reduced motion or off screen); discs pop in (spring), then float gently while the banner is in view (`useInView`); a slow ring breathes from the centre disc. Hidden below `sm`. Reduced motion: still (MotionConfig).
 - `PartnerIndexBar({ groups, activeKey, onJump, headingId, search, text, searching })` — `sticky top-[70px] z-30`, translucent with blur over the banner; once locked (measured on scroll) solid, with a `before:` strip of the same colour behind the see-through header (stops logos flashing through the header); `<nav aria-label={text.jumpLabel}>` of tabs (label + count; `aria-current="location"` + a `layoutId` underline on the active one; the row scrolls sideways with edge fades and keeps the active tab in view without scrolling the page); not rendered while searching. `search` = `{ input, setInput, inputRef }` → `listing/SearchField` (now takes `inputRef`); on phones it folds into an icon button (`text.searchOpen`) with a close button (`text.searchClose`) that clears it.
 - `sliderConductor.js` — `useSliderConductor(intervalMs)` (page; one `setInterval`; each tick advances only the registered slider that may move, is ≥ 60% on screen and is nearest the window's middle; nothing while `document.hidden`) and `useConductedSlider(key, memberRef)` (slider; `memberRef.current` = `{ el, canMove(), advance() }`). Without a provider, sliders never move on their own.
-- `PartnerSlider({ group, index, text, suspended, headingId, active })` — `group` = `{ key, label, partners }`; a `motion.section` (fade-up once in view) with a spine node (wide screens; filled when `active`) or a small amber `01` eyebrow (phones), the heading (`tabIndex=-1`, `scroll-mt-[150px]`), "{count} partners", and — when the row overflows — one control pill: previous / next (a screenful, `scrollBy` 85% + snapping; disabled at the ends), the visible range (`text.slider.position`, "1–5 of 23", hidden on phones) and play/pause (`aria-label` from `text.slider.*`; its own look: a 44px target around a 36px disc — filled blue when paused (grows and glows on hover), white with a circling blue arc while playing (arc hidden under reduced motion); the icons cross-fade and rotate into each other). The `<ul>` hides the native scrollbar; a slim `aria-hidden` track below it shows the visible share and position and can be clicked or dragged (pointer capture); edges fade with `mask-image` (20px on phones, 56px wider; fixed class strings), except while focus is inside. Starts paused (`SLIDES_START_PAUSED`); when playing, the conductor may advance it one card (wrapping) while not hovered, no focus inside, not `suspended`, overflowing and no manual move in the last `SLIDE_RESUME_MS`. Cards slide in from the right (inner `motion.div`, never the `<li>` — a transformed `<li>` shifts its snap point). Each `<li>` is `relative` (keeps `sr-only` text and the stretched link inside the scroller). `w-[40%]` on phones so a third card peeks in.
+- `PartnerSlider({ group, index, text, suspended, headingId, active })` — `group` = `{ key, label, partners }`; a `motion.section` (fade-up once in view) with a spine node (wide screens; filled when `active`) or a small amber `01` eyebrow (phones), the heading (`tabIndex=-1`; the html `scroll-padding-top` keeps it below the sticky bars), "{count} partners", and — when the row overflows — one control pill: previous / next (a screenful, `scrollBy` 85% + snapping; disabled at the ends), the visible range (`text.slider.position`, "1–5 of 23", hidden on phones) and play/pause (`aria-label` from `text.slider.*`; its own look: a 44px target around a 36px disc — filled blue when paused (grows and glows on hover), white with a circling blue arc while playing (arc hidden under reduced motion); the icons cross-fade and rotate into each other). The `<ul>` hides the native scrollbar; a slim `aria-hidden` track below it shows the visible share and position and can be clicked or dragged (pointer capture); edges fade with `mask-image` (20px on phones, 56px wider; fixed class strings), except while focus is inside. Starts paused (`SLIDES_START_PAUSED`); when playing, the conductor may advance it one card (wrapping) while not hovered, no focus inside, not `suspended`, overflowing and no manual move in the last `SLIDE_RESUME_MS`. Cards slide in from the right (inner `motion.div`, never the `<li>` — a transformed `<li>` shifts its snap point). Each `<li>` is `relative` (keeps `sr-only` text and the stretched link inside the scroller). `w-[40%]` on phones so a third card peeks in.
 - `PartnerCard({ partner, text, caption, tier, order })` — a 3:2 tile built as a 3D object (`.partner-3d` frame / `-face` / `-float` logo at `translateZ` / `-glare` / `-ground` shadow in `src/index.css`): a mouse over the card tilts it towards the pointer (CSS variables `--rx/--ry/--mx/--my` set by the figure's pointer handlers, no re-render; none on touch or under reduced motion) and linked cards rise (`--lift`). A 1px frame whose look depends on `tier` (`partnerTier`): `feature` = blue gradient halo + glow + larger logo + a light sweep once in view (`order` staggers it); `high` = faint blue ring; `''` = plain border. The logo (`getPartnerLogo`, `object-contain`, `alt=""`) or the initials (`partnerInitials`, `aria-hidden`) when there is no logo, it failed to load, or it is a `placeholder`. Caption: the name (left-aligned, `line-clamp-2` with 2 lines always reserved, full name in `title`) and, with a website, its domain (`websiteLabel`) + ↗; the line is reserved without one, so captions align. With `partner.website` the link is stretched over the card (`after:absolute after:inset-0`; focus ring on the card), opens in a new tab (`rel="noopener noreferrer"`, `text.opensInNewTab`), and the card lifts / the name turns blue on hover; cards without a website don't react. `caption` = a small pill with the section name (search results).
 
 ### Past SCF components (`src/components/changemakers/`)
@@ -697,7 +743,7 @@ Helpers in `src/utils/changemakers.js`: `personInitials`, `firstName`, `posterIn
 
 ### Layout components
 
-- `Layout` — `{ children }`; skip link (text from `navigation.yaml` `skipLink`), `Header`, `AnimatePresence mode="wait"` around `motion.main` keyed by `pathname`, `Footer`; scrolls to top on pathname change (not on query-only changes). After a page change (not on the first page of a visit, not on query-only changes) it moves focus to the new page's `<h1>` (waits up to 3 s for the lazy page, then `<main>`; leaves focus alone if the visitor already moved it); `main`/`h1` with `tabindex=-1` draw no focus ring (`src/index.css`).
+- `Layout` — `{ children }`; skip link (text from `navigation.yaml` `skipLink`), `Header`, `AnimatePresence mode="wait"` around `motion.main` keyed by `pathname` (holding `<ErrorBoundary inline>{children}</ErrorBoundary>`, so a page crash keeps the header and footer and is cleared by the next page change), `Footer`; scrolls to top on pathname change (not on query-only changes). After a page change (not on the first page of a visit, not on query-only changes) it moves focus to the new page's `<h1>` (waits up to 3 s for the lazy page, then `<main>`; leaves focus alone if the visitor already moved it); `main`/`h1` with `tabindex=-1` draw no focus ring (`src/index.css`).
 - `Header` — no props; reads `navigation.json` (all labels, logo, aria strings). `position: fixed`, transparent with white text until `scrollY > 20`, then glass. Dropdown triggers are `<button>`s (aria-expanded/controls, Escape closes). A dropdown child with `subItems` is a nested group (`SubGroup`): on desktop a button that opens a sub-menu to the right (Enter/Space/→ open and focus the first link, ↑ ↓ Home End move, ← or Esc close only the sub-menu); on mobile a collapsible list (§7 "Navigation subItems"). The highlighted entry is the most specific match (`activeTopIndex` / `activeLeaf` in `src/utils/navActive.js`). There is no language switcher. Keep `overflow-visible` on the dropdown wrapper (§11).
 - `Footer` — no props; reads `footer.json` + `contact.json`. No link columns (removed by owner decision, 2026-11-14): one compact row — logo, name + tagline byline on the left; email, phone, social icons and a Donate button (`donateLabel` → `donateHref`) on the right — above a thin copyright strip; stacks on small screens. `rights` contains a `{year}` token replaced with `new Date().getFullYear()` at render, so the static build never shows a stale year.
 
@@ -806,6 +852,8 @@ Generic, pure helpers for snapshot listing pages (Resource Centre and Publicatio
 - `latestOfType(rows, type)` → the row of `type` (case/space-insensitive) whose title names the latest report period (`reportPeriod`), then the newest date, then title; `null` when none (the TIDE spotlight).
 - `isNew(date, now, days)` (today counts, future dates don't); `safeLink(url)` (http(s) only, else `null`); `sourceOf(url)` → `{ kind: 'doi' | 'driveFile' | 'driveFolder' }`, `{ kind: 'host', host }` (no "www.") or `null`; `typeIconKey(type, rules = TYPE_ICON_RULES)` → icon family or `'file'`; `sourceName(host, names)` → the display name from YAML `source.names` for the host or its closest listed parent domain, else the host; `latestOfType(rows, type)` → the row of `type` whose report period (title, else date year) ends latest, then newest date; `highlightParts(text, terms)` → `[{ text, match }]`; `publicationsJsonLd(rows, { name, url })` → schema.org `ItemList` (name/date/url only when present; `@type` from `SCHEMA_TYPE_BY_ICON`, else `CreativeWork`).
 
+`safeLink` is `safeHttpUrl` from `src/utils/safeUrl.js` (below).
+
 `copyText(text)` (`src/utils/copyText.js`) → `Promise<boolean>`: Clipboard API when available, otherwise a hidden textarea + `execCommand('copy')`.
 
 `src/utils/publicationPhotos.js` reads `src/data/publications-photos.json`: `getPublicationThumb(id)` → `{ src, width, height, full, fullWidth, fullHeight }` (already `imgSrc`-resolved; sizes from the manifest) or `null`. Don't apply `imgSrc` again.
@@ -816,13 +864,20 @@ Generic, pure helpers for snapshot listing pages (Resource Centre and Publicatio
 
 `src/utils/partnerFilters.js`: `priorityRank(p)` (index in `PRIORITY_ORDER`, capitals/spaces ignored; unknown/empty → `PRIORITY_ORDER.length`), `comparePartners` (priority, then name A→Z, then id), `groupPartners(rows)` → `[{ key, label, partners }]` (one per type via `normKey`; label = the spelling most rows use; sections A→Z with `LAST_CATEGORIES` last), `matchesPartner(p, query)` (every word in the name; case- and accent-insensitive), `filterGroups(groups, query)` (drops empty sections), `partnerInitials(name)` (first letters of the first two significant words; a web address typed as the name uses its site name), `partnerTier(priority)` (`'feature'` for the top priority, `'high'` for the next, else `''`), `websiteLabel(url)` (hostname without `www.`; `''` for non-http(s)). `src/utils/partnerPhotos.js`: `getPartnerLogo(id)` → `{ src, width, height }` (already `imgSrc`-resolved) or `null` (also for a manifest entry marked `placeholder`). `src/config/partners.js` (plain constants, also imported by `scripts/lib/partners-snapshot.js` so the page and the sync's report agree): `PRIORITY_ORDER` (`['Extremely high', 'High', 'Medium', 'Low']`), `LAST_CATEGORIES` (`['Others', 'Other']`), `SLIDES_START_PAUSED` (true), `SLIDE_INTERVAL_MS` (4500; one row per step), `SLIDE_RESUME_MS` (8000), `CONSTELLATION_MAX` (9), `CONSTELLATION_MIN` (3). Tested in `src/test/pages/ourPartners.test.jsx`.
 
+### jsonLd.js and safeUrl.js (render-time guards for Sheet text, audit P4)
+
+- `jsonLdText(data)` (`src/utils/jsonLd.js`) → `JSON.stringify(data)` with `<`, `>`, `&` written as `<` etc. Use it for **every** `<script type="application/ld+json">` (`SeoHead`, `PublicationsJsonLd`, `PramaanLibraryDetail`): the prerender saves the DOM as HTML, and Sheet text containing `</script>` would otherwise end the script tag.
+- `safeHttpUrl(url)` (`src/utils/safeUrl.js`) → the URL when it is http(s) with a dotted host and no credentials/whitespace, else `null`. Use it for every Sheet value rendered as an `href` (partner websites, resource files, publication links via `safeLink`).
+- `safeEmbedUrl(url)` → only `https://drive.google.com/file/d/<id>/preview` and YouTube `/embed/<id>` players, else `null` (`VideoLightbox`'s iframe `src`; also the SCF write-up link in `FellowProfile`, which turns the checked `/preview` into `/view`).
+- `libraryResourceJsonLd(resource, { url, collectionUrl, collectionName })` (`src/utils/libraryJsonLd.js`) → the `LearningResource` block on each resource page.
+
 ### focusRing.js and navActive.js
 
 `focusRing(radius)` returns the `focus-visible` ring classes plus the given `rounded-*` class (the global `:focus-visible` rule sets a 4px radius; see `FOCUS_PILL`). `activeTopIndex(items, path)` → index of the one top-level menu entry to highlight (longest matching `to`; on a tie the entry where the link sits least deep, then the first); `activeLeaf(items, path)` → the `to` of the most specific matching link anywhere in the menu. Items are `navigation.yaml` entries (`to` links, `children` dropdowns, `subItems` nested groups). Tested in `src/test/components/Header.test.jsx`.
 
 ### Sync script helpers (`scripts/lib/`, Node only)
 
-Not bundled into the site; used by `scripts/sync-*.js`. **`snapshot-core.js`** (pure): `THRESHOLDS`, `isSafeId`, `contentHash`, `serializeSnapshot`, `planPhotos(tabbedSnapshot, photos, manifest)`, `photoDeletionError`, `photosFromExport`, `photoFileBase(id)`, `cleanString(v)` (trim → string or null) and `cleanStringCollapseSpaces(v)` (also squeezes inner whitespace — Publications uses it), `asSingleTab(tab, resources)`, `planListPhotos(tab, resources, photos, manifest)`. Two Drive-link readers, kept apart on purpose: `extractDriveFileId` reads `/d/<id>` only (what `planPhotos` uses), `extractDriveFileIdAnyLink` also reads Form-upload `?id=<id>` links (10+ chars); `library-snapshot.js`, `publications-snapshot.js` and `partners-snapshot.js` re-export the latter **as `extractDriveFileId`**. **`sync-runner.js`** (I/O): `loadLocalEnv(prefix)`, `createRedactor(token)`, `createFetchJson({ redactToken, timeoutMs })`, `readJson`, `isInsideAssetsDir(dir, absPath)`, `setOutputs`, `createReport({ reportPath, summaryTitle, setupGuide, workflowName })` (push to `errors`/`refused`/`problems`/`notes`, then `write(outcome)`), `fetchExport`, `notePatExpiry`, `refuseUnlessAllowed` (exits 1), `fetchPhotos` (backfill + capped downloads via the script's own `processPhoto`), `deletePhotos`, `writeResults`, `runSync(main, …)` (failure report + exit 1). Paths, names, messages, stats line and image processing stay in each sync script.
+Not bundled into the site; used by `scripts/sync-*.js`. **`snapshot-core.js`** (pure): `THRESHOLDS`, `isSafeId`, `contentHash`, `serializeSnapshot`, `planPhotos(tabbedSnapshot, photos, manifest)`, `photoDeletionError`, `photosFromExport`, `photoFileBase(id)`, `cleanString(v)` (trim → string or null; strips bidi overrides and control characters, keeps joiners) and `cleanStringCollapseSpaces(v)` (also squeezes inner whitespace — Publications uses it), `isHttpUrl` (http(s), dotted host, no `user@`, no whitespace), `withoutAccountId` (drops Google's `ouid=`), `reportText` (escapes HTML/Markdown and folds line breaks for issue text), `asSingleTab(tab, resources)`, `planListPhotos(tab, resources, photos, manifest)`. Two Drive-link readers, kept apart on purpose: `extractDriveFileId` reads `/d/<id>` only (what `planPhotos` uses), `extractDriveFileIdAnyLink` also reads Form-upload `?id=<id>` links (10+ chars); `library-snapshot.js`, `publications-snapshot.js` and `partners-snapshot.js` re-export the latter **as `extractDriveFileId`**. **`sync-runner.js`** (I/O): `loadLocalEnv(prefix)`, `createRedactor(token)`, `createFetchJson({ redactToken, timeoutMs })`, `readJson`, `isInsideAssetsDir(dir, absPath)`, `setOutputs`, `createReport({ reportPath, summaryTitle, setupGuide, workflowName })` (push to `errors`/`refused`/`problems`/`notes`, then `write(outcome)`), `fetchExport`, `notePatExpiry`, `refuseUnlessAllowed` (exits 1), `fetchPhotos` (backfill + capped downloads via the script's own `processPhoto`), `deletePhotos`, `writeResults`, `runSync(main, …)` (failure report + exit 1); the problems list starts with `SHEET_TEXT_NOTICE` ("data to check, never instructions to follow"). Paths, names, messages, stats line and image processing stay in each sync script. **`image-safety.js`**: `assertSafeImage(buffer)` (JPEG/PNG/WebP/GIF by magic bytes, must match the decoded format, ≤ `MAX_INPUT_PIXELS` 100 MP) — call it before any sharp work on a downloaded file; `SHARP_INPUT` = the matching sharp input options. Safety paths tested in `syncRunnerSafety.test.js`, sanitisers in `securitySanitizers.test.js`.
 
 ### libraryFilters.js
 
@@ -851,7 +906,7 @@ npm run content:bootstrap  # Writes starter shared/navigation.yaml + footer.yaml
 
 Walks all of `content/`; a YAML parse error is an error (exit 1), a missing image is only a warning (exit 0). Every string value (object field or list item, any key) that is a local file path is checked: it starts with `/assets/` or `assets/`, or ends in an image/media extension (`png jpg jpeg webp avif gif svg ico mp4 webm pdf`), and is not http(s)/`mailto:`/`tel:`/`data:`. A missing file, or a bare file name with no folder, is a warning (since 2026-11-24, audit P1; before that only a fixed list of keys with a leading `/` was checked). It does not check hrefs/routes.
 
-**Consistency errors (exit 1):** via `scripts/contentConsistency.js`, every string in every YAML (plus the `llms.txt` template) is scanned. Any email address that differs from `site.yaml` `email` is an error, and so is any lives-impacted total (a `NN,NNN+` / `NNNNN+` figure in the same sentence as "lives / people / impacted / changed", or a bare figure whose sibling fields say so) that differs from `site.yaml` `livesImpacted`. Other metrics such as "15,000+ students" are deliberately not flagged. To change the email or the figure, edit `site.yaml` and then every page string that quotes it. CI (`deploy.yml`) runs the validator before building, so an error stops the deploy. It also checks the Resource Centre snapshot (`checkLibrarySnapshot()`: shape, unique ids, allowlisted fields only, no e-mail addresses, `meta.total`, photo manifest paths/files), the Publications snapshot (`checkPublicationsSnapshot()`: the same checks plus `org` TIDE/THRIvE, `date` `YYYY-MM-DD` or null, `fields` a list, http(s)-only `link`/`photoUrl`, `meta.counts` per org), the Partners snapshot (`checkPartnersSnapshot()`: shape with `section: "partners"`, id/name/type present, unique ids, allowlisted fields, http(s)-only `website`/`photoUrl`, no e-mail address, `meta.total`, logo paths inside `assets/images/partners/` with their files) and `abl-contribute.yaml` `formUrl` (empty → warning; anything but a Google Forms link → error).
+**Consistency errors (exit 1):** via `scripts/contentConsistency.js`, every string in every YAML (plus the `llms.txt` template) is scanned. Any email address that differs from `site.yaml` `email` is an error, and so is any lives-impacted total (a `NN,NNN+` / `NNNNN+` figure in the same sentence as "lives / people / impacted / changed", or a bare figure whose sibling fields say so) that differs from `site.yaml` `livesImpacted`. Other metrics such as "15,000+ students" are deliberately not flagged. To change the email or the figure, edit `site.yaml` and then every page string that quotes it. CI (`deploy.yml`) runs the validator before building, so an error stops the deploy. It also checks the Resource Centre snapshot (`checkLibrarySnapshot()`: shape, unique ids, allowlisted fields only, no e-mail addresses, `meta.total`, photo manifest paths/files), the Publications snapshot (`checkPublicationsSnapshot()`: the same checks plus `org` TIDE/THRIvE, `date` `YYYY-MM-DD` or null, `fields` a list, http(s)-only `link`/`photoUrl`, `meta.counts` per org), the Partners snapshot (`checkPartnersSnapshot()`: shape with `section: "partners"`, id/name/type present, unique ids, allowlisted fields, http(s)-only `website`/`photoUrl`, no e-mail address, `meta.total`, logo paths inside `assets/images/partners/` with their files) the Social Changemakers snapshot (`checkSocialChangemakersSnapshot()`) and `abl-contribute.yaml` `formUrl` (empty → warning; anything but a Google Forms link → error).
 
 ### File naming convention
 
@@ -913,7 +968,7 @@ import ui from '../../data/ui.json'                // Lightbox.jsx
 Images live in `public/assets/`. Both spellings work because the sync script strips a leading `/` from `/assets/…` values, and the repo overwhelmingly uses the leading-slash form (≈165 values vs 5 without):
 ```yaml
 photo: /assets/team/jane-smith.jpg   # dominant style
-photo: assets/team/jane-smith.jpg    # also works, but is invisible to the validator
+photo: assets/team/jane-smith.jpg    # also works (checked by the validator since 2026-11-24)
 ```
 The one hard rule: components must pass YAML image values through `imgSrc()` (or prefix `import.meta.env.BASE_URL`), never use them raw (§6, §11). `CONTENT-GUIDE.md` tells editors the leading-slash form.
 
@@ -994,7 +1049,7 @@ Not a secret: `content/pages/abl-contribute.yaml` → `formUrl` (the Google Form
 
 ### URL params (Resource Centre)
 
-`?search=&subject=&type=&grade=GRADE+1,GRADE+3&owner=&sort=subject|type|owner&dir=desc&page=2`. `subject` / `type` / `owner` hold normalised keys (lower-case, single spaces); `type` also accepts the former Resource Centre's names (`Kits`, `Flashcards`). State is read once on mount; changes call `navigate({ search }, { replace: true })`, so there is no history entry per filter change.
+`?search=&subject=&type=&grade=GRADE+1,GRADE+3&owner=&sort=subject|type|owner&dir=desc&page=2`. `subject` / `type` / `owner` hold normalised keys (lower-case, single spaces); `type` also accepts the former Resource Centre's names (`Kits`, `Flashcards`). Changes the page makes itself call `navigate({ search }, { replace: true, state: { resourceCentreOwn: true } })`, so there is no history entry per filter change; any other navigation (a menu or tab-bar link, Back/Forward) re-reads the address (since 2026-11-24, audit P5). `?page=` is clamped to 1…last (`paginate`). The search box still writes the URL on every keystroke. Page numbers are links (`Pagination` `hrefFor`).
 
 ### Publications (second Sheet integration)
 
@@ -1109,7 +1164,7 @@ export default function NewPage() {
   )
 }
 
-# 4. Register a lazy route — src/App.jsx (above the "Functional / system pages" block)
+# 4. Register a lazy route — src/routes.js (lazyPage import + a ROUTES entry above the "Functional / system pages" block)
 # 5. Add nav entry — content/shared/navigation.yaml
 # 6. Add the path to src/config/siteRoutes.js PRIMARY_ROUTES (prerender + sitemap.xml; a test fails until you do)
 npm run content:sync
@@ -1132,7 +1187,7 @@ Use `useLightbox(count)` + `Lightbox` (§4). The only gallery today is the `/pra
 
 ```bash
 npm run content:validate
-# Lists YAML image values (leading-slash paths under the known image keys) that don't exist under public/
+# Warns on every YAML value that is a local file path (any key) whose file is missing under public/, or a bare file name
 ```
 
 ---
@@ -1151,23 +1206,31 @@ npm run dev
 
 ```bash
 npm run build
-# Output: dist/ — self-contained static site (includes the generated llms.txt and the JSON-LD/<title> filled into index.html by siteDataPlugin)
+# = vite build && node scripts/prerender.mjs
+# Output: dist/ — self-contained static site: one prerendered HTML file per public address (259 pages + 2 forwarding pages
+# on 2026-11-24), 404.html, llms.txt, llms-full.txt, robots.txt, sitemap.xml; index.html gets the JSON-LD/<title> from siteDataPlugin
+npm run check:dist   # links, assets and sitemap inside dist/ resolve; bundle budget
 ```
 
-Local builds use `base: '/'`. To reproduce the GitHub Pages path bugs (e.g. double `imgSrc`), build with `GITHUB_ACTIONS=true` and preview at `/tide-testing/`.
+The prerender needs Playwright's Chromium (`npx playwright install chromium` once; CI installs it), takes about a minute (`PRERENDER_CONCURRENCY`, default 6) and **fails the build** on a page with no title, ≠ 1 `<h1>`, almost no text, a wrong canonical or a console/page error. It writes `x.html` and, for an address that is also a folder (`/pramaan`), `x/index.html` too; resource ids with spaces are written under the decoded name (`F22 repeat.html`). Module preloads are made root-relative (`relativePreloads`), so the HTML works on any origin.
+
+Local builds use `base: '/'`. To reproduce the GitHub Pages path bugs (e.g. double `imgSrc`), build with `GITHUB_ACTIONS=true` and serve under `/tide-testing/` — either `$env:GITHUB_ACTIONS='true'; npx vite preview` (the env var is needed for preview too) or `node scripts/serve-pages.mjs dist /tide-testing/ 4300` (§11).
 
 ### GitHub Actions
 
 **`.github/workflows/deploy.yml`** — triggered by push to `main` and manual `workflow_dispatch`:
 1. `npm ci` (Node 24), always checking out the newest `main` (so a re-run never republishes an old commit)
 2. `npm run lint` → `npm run content:validate` → `npm test`
-3. `npm run build` with `GITHUB_ACTIONS=true` (`prebuild` runs the YAML sync first; the build needs no secrets)
-4. Upload `dist/` as Pages artifact → deploy to GitHub Pages (`cancel-in-progress: false`: deploys queue, never cancel)
-5. `notify` job: opens an `automation-alert` Issue assigned to `vars.ALERT_ASSIGNEE` on failure, closes it on success
+3. Restore the cached Playwright browser, `npx playwright install --with-deps chromium`, then `npm run build` with `GITHUB_ACTIONS=true` (`prebuild` runs the YAML sync first; the prerender needs the browser; the build needs no secrets). The checkout uses `fetch-depth: 0` so the sitemap's `<lastmod>` can come from git.
+4. `npm run check:dist`, then `npm run test:e2e:site` (built-site Playwright suite, Chromium, `CI` retries 1); on failure the report and traces are uploaded as an artifact
+5. Upload `dist/` as Pages artifact → deploy to GitHub Pages (`cancel-in-progress: false`: deploys queue, never cancel)
+6. `notify` job: opens an `automation-alert` Issue ("Website deploy failed") assigned to `vars.ALERT_ASSIGNEE` on failure, closes it on success
 
-There is **no e2e step** (run Playwright locally). Lint, `content:validate` and unit-test failures stop the deploy.
+Any failing step stops the deploy — including a deploy started by a sync, so a Sheet value that breaks a page keeps the previous version live and opens the alert. The dev-server specs (`npm run test:e2e`) and the visual baselines are not run in CI.
 
-Hardening (2026-11-21): the workflow's top-level permission is `contents: read`; `pages: write` + `id-token: write` are granted to the `deploy` job only (the build job runs npm install scripts and never gets them), and `notify` gets `contents: read` + `issues: write`. In all five workflows every action is pinned to a full commit SHA with the version in a comment (e.g. `actions/checkout@d23441a… # v6.1.0`); `.github/dependabot.yml` opens a monthly pull request when newer versions exist. `scripts/ci/alert-issue.sh` cuts an issue body at 60,000 characters (GitHub's limit is 65,536; the run summary keeps the full report) and puts a zero-width space after every `@` in it, so a title typed into a Form cannot notify a GitHub user.
+**`.github/workflows/e2e-nightly.yml`** — 02:41 UTC daily and manual: builds, runs `check:dist` and `npm run test:e2e:full` (Chromium, Firefox, WebKit, full responsive matrix; 45-minute cap); `contents: read`, `issues: write` only for its alert job; no secrets; never deploys. Failure → `automation-alert` Issue "Nightly end-to-end tests failed" (closed on the next pass).
+
+Hardening (2026-11-21): the workflow's top-level permission is `contents: read`; `pages: write` + `id-token: write` are granted to the `deploy` job only (the build job runs npm install scripts and never gets them), and `notify` gets `contents: read` + `issues: write`. In all six workflows every action is pinned to a full commit SHA with the version in a comment (e.g. `actions/checkout@d23441a… # v6.1.0`); `.github/dependabot.yml` opens monthly pull requests for actions and for npm (grouped production / development, 7-day cooldown). `scripts/ci/alert-issue.sh` cuts an issue body at 60,000 characters (GitHub's limit is 65,536; the run summary keeps the full report) and puts a zero-width space after every `@` in it, so a title typed into a Form cannot notify a GitHub user.
 
 Security hardening (audit P4, 2026-11-24 — details in `docs/audits/2026-11-site-audit.md` §P4):
 - **Workflows:** every checkout has `persist-credentials: false`. In the sync jobs `GH_TOKEN` is given only to the steps that call GitHub; the `Run sync` step (which decodes Form uploads) never sees a token, and a `Let git push` step adds the push credential afterwards. `src/test/scripts/workflowSecurity.test.js` fails on `${{ … }}` with untrusted context in a `run:` script, on fork/comment triggers, on unpinned actions, and on those token rules.
@@ -1181,6 +1244,8 @@ Security hardening (audit P4, 2026-11-24 — details in `docs/audits/2026-11-sit
 **`.github/workflows/sync-publications.yml`** — the same shape for the Publications Sheet: runs `scripts/sync-publications.js` every 6 h (`27 */6 * * *`), on `workflow_dispatch` from the Publications Apps Script (edits, form submissions, daily heartbeat) and manually (`allow_large_change` input). Thumbnails are rendered by `scripts/lib/publications-images.js` (§8). Commits `src/data/sheets/publications.json`, `src/data/publications-photos.json` and `public/assets/images/publications/` in one commit, then starts `deploy.yml`. Own concurrency group `publications-sync`. Its `check` job skips the run with a notice (no alert) while `PUBLICATIONS_API_URL` / `PUBLICATIONS_SYNC_TOKEN` are missing **and** the committed snapshot is empty (it has had rows since 2026-11-20, so today a missing secret fails loudly). Issue titles: "Publications sync failed — the publications pages are not updating", "Publications Sheet: some rows need attention".
 
 **`.github/workflows/sync-partners.yml`** — the same shape for the Partners Sheet: `scripts/sync-partners.js` every 6 h (`7 */6 * * *`), on `workflow_dispatch` from the Partners Apps Script and manually (`allow_large_change`). Commits `src/data/sheets/partners.json`, `src/data/partners-photos.json` and `public/assets/images/partners/`, then starts `deploy.yml`. Own concurrency group `partners-sync`. Its `check` job skips quietly while `PARTNERS_API_URL` / `PARTNERS_SYNC_TOKEN` are missing **and** the committed snapshot is empty (the case until the owner's setup). Issue titles: "Partners sync failed — the partners page is not updating", "Partners Sheet: some rows need attention".
+
+**`.github/workflows/sync-social-changemakers.yml`** — the same shape for the Past SCF Sheet: `scripts/sync-social-changemakers.js` every 6 h (`17 */6 * * *`), on `workflow_dispatch` from its Apps Script and manually (`allow_large_change`). Commits `src/data/sheets/social-changemakers.json`, `src/data/social-changemakers-photos.json` and `public/assets/images/social-changemakers/`, then starts `deploy.yml`. Concurrency group `social-changemakers-sync`. Secrets `SOCIAL_CHANGEMAKERS_API_URL`, `SOCIAL_CHANGEMAKERS_SYNC_TOKEN`.
 
 Deployed URL: `https://<user>.github.io/tide-testing/`
 
@@ -1214,7 +1279,18 @@ Plain `href` triggers a real page navigation instead of client-side routing — 
 `imgSrc(path)` prepends `BASE_URL` to anything that isn't already `http(s):`/`data:`. On GitHub Pages `BASE_URL` is `/tide-testing/`, so applying it to an already-resolved path yields `/tide-testing/tide-testing/...` (a 404). In dev `BASE_URL` is `/`, which hides the bug completely.
 
 - `Lightbox` applies `imgSrc` to every image `src` themselves — pass **raw YAML paths** into them.
-- To check a change: `GITHUB_ACTIONS=true npm run build && npm run preview`, then open `/tide-testing/…`.
+- To check a change: `GITHUB_ACTIONS=true npm run build && GITHUB_ACTIONS=true npm run preview`, then open `/tide-testing/…` (next section).
+
+### Previewing the base-path build locally
+
+- `vite preview` must also run with `GITHUB_ACTIONS=true` (PowerShell: `$env:GITHUB_ACTIONS='true'; npx vite preview`). Without it the preview serves base `/`, answers every `/tide-testing/*` request with the index HTML, the JS files load as HTML and the page is blank — not a site bug.
+- `vite preview` answers HTTP 200 for every path, so it can't show GitHub Pages' 404s or folder redirects. `node scripts/serve-pages.mjs dist /tide-testing/ <port>` mimics Pages: a file `x`, else a folder → 301 to `x/` (then `x/index.html`), else `x.html`, else `404.html` with status 404. So `/pramaan` answers 301 → `/pramaan/` there even though `pramaan.html` exists — what real Pages does in that case is not verified (P3-3, P6-7). The built-site e2e uses it.
+- In Git Bash, any `/tide-testing/` argument (to `vite --base` or `serve-pages.mjs`) is rewritten to a Windows path (`C:/Program Files/Git/tide-testing/`) unless `MSYS_NO_PATHCONV=1` is set — every address then answers 404.
+- The prerender loads pages at `http://localhost:4173` locally; og:image URLs in a local build therefore point there (CI uses the real origin).
+
+### The app renders over prerendered HTML (no hydration)
+
+`createRoot` replaces the prerendered DOM; anything that reads `document` before React mounts sees the prerendered page. `main.jsx` removes `<title>` and `[data-prerender]` head tags first — don't add hand-written head tags that rely on surviving that. A page that throws in headless Chromium, or logs a console error (e.g. a CSP violation), now stops the build. The built CSP allows only the hashed inline script of `index.html`; script injected at runtime is blocked in `dist/` but not in dev, so check such changes with the built-site e2e.
 
 ### Tailwind dynamic class construction is forbidden
 
@@ -1257,7 +1333,7 @@ VITE_MY_SECRET=foo     # visible via import.meta.env.VITE_MY_SECRET
 
 ### Image paths in YAML
 
-Either `/assets/hero.jpg` or `assets/hero.jpg` works (the sync script strips the leading `/` from `/assets/…`); the repo's dominant style is the leading-slash form, and only that form is checked by `content:validate`. What breaks things is using the value raw without `imgSrc()` / `BASE_URL` — see §6.
+Either `/assets/hero.jpg` or `assets/hero.jpg` works (the sync script strips the leading `/` from `/assets/…`); the repo's dominant style is the leading-slash form; `content:validate` checks both (any key, since 2026-11-24). What breaks things is using the value raw without `imgSrc()` / `BASE_URL` — see §6.
 
 ### Multiple galleries on the same page
 
@@ -1282,7 +1358,8 @@ Never type English into JSX — that bypasses the CMS and makes the text unedita
 ```
 
 - Shared micro-copy goes in `content/shared/common.yaml` (page-agnostic hints/labels such as `step`, `viewLinkedIn`) and component chrome in `content/shared/ui.yaml` (Lightbox and Pramaan photo/video viewer labels). Component-specific text goes in the page/screen YAML (e.g. `pramaan-library.yaml`).
-- `react/jsx-no-literals` is an **error** for `src/pages/**` and `src/components/**` (see §7), so bare JSX text fails `npm run lint`. It doesn't see string props or attributes (`aria-label`, `alt`, …), so review those by hand.
+- `react/jsx-no-literals` is an **error** for `src/pages/**` and `src/components/**` (see §7), so bare JSX text fails `npm run lint`; the `no-restricted-syntax` guard beside it also fails on words in text props (`aria-label`, `alt`, `title`, …) and in `{'…'}` / template text. Text assembled in plain JS away from the JSX is still invisible to both — review by hand.
+- **Code-side text accepted on purpose (audit P1; leave it):** Sheet *values* matched in code, not shown as labels — `PRIORITY_ORDER` / `LAST_CATEGORIES` (`src/config/partners.js`), `TYPE_ICON_RULES` keywords (`src/config/publications.js`), `LIBRARY_GRADES` and `OWNER_PINNED` (`src/utils/libraryFilters.js`; grade labels come from `pramaan-library.yaml`), the org filters "TIDE" / "THRIvE" in the two publications pages; schema.org type names, key names, easing names, CSS/SVG values, selectors, `{token}` names, the initials stop-words in `partnerFilters.js`; the `en-IN` locale for numbers and dates (month names come from the browser); punctuation joining YAML text (`` `${a}: ${b}` ``); defensive fallbacks shown only when the YAML is empty (`CreativeLoader` "Loading…", `publicationFilters` `'Undated'` default); `lang="en"` and `theme-color` in `index.html`.
 - CI runs lint (a failure stops the deploy), but run `npm run lint` before pushing.
 
 ### The e-mail and lives-impacted figure live in `site.yaml`
@@ -1319,7 +1396,8 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 39 files, 446 tests (jsdom, src/test/**)
+npm test               # vitest run — 46 files, 524 tests (jsdom, src/test/**)
+npx vitest run --config vitest.config.js --coverage   # coverage (@vitest/coverage-v8, dev dependency); report in coverage/
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```
@@ -1328,6 +1406,22 @@ npm run test:ui        # Vitest UI
 |---|---|---|
 | `components/Button.test.jsx` | 17 | variants/sizes (lg 48px, md 44px minimums), button vs `<a>` vs `<Link>`, external target/rel |
 | `components/ErrorBoundary.test.jsx` | 5 | children pass-through, friendly screen + actions, console logging, message/stack hidden unless DEV |
+| `components/pageErrorBoundary.test.jsx` | 1 | a page crash inside `Layout` shows the inline error screen and keeps the header |
+| `hooks/useFocusTrap.test.jsx` | 7 | usable-only focus list, wrap from outside the list, `focusin` guard, trap stack, focus restore |
+| `hooks/useLoopWindow.test.js` | 3 | true for `LOOP_BUDGET_MS`, then false for good |
+| `pages/pramaanLibraryUrlState.test.jsx` | 6 | Resource Centre re-reads the address on outside navigation, `?page=` clamp, page links |
+| `pages/socialChangemakers.test.jsx` | 14 | Past SCF list, search/batch/page in the URL (incl. `?page=1.5`), profile dialog via `?fellow=` |
+| `routing/siteRoutes.test.jsx` | 22 | `src/config/siteRoutes.js` equals the route table; every public path renders through `<App />` |
+| `scripts/checkDist.test.js` | 5 | `scripts/check-dist.mjs`: broken links/assets, sitemap entries, bundle budget |
+| `scripts/cmsGuard.test.js` | 22 | the lint guard fires on 14 hard-coded-text patterns and passes 8 good ones |
+| `scripts/seoBuild.test.js` | 12 | prerender helpers: `outputFiles` (folder + decoded names), `checkPage`, forwarding pages, `relativePreloads`, robots/sitemap |
+| `scripts/securitySanitizers.test.js` | 21 | a malicious value per published Sheet field in each sync; report escaping; SVG/TIFF/pixel bomb/EXIF; `jsonLdText`; render URLs; CSP |
+| `scripts/workflowSecurity.test.js` | 9 | six workflows: no untrusted `${{ }}` in `run:`, no fork/comment triggers, boolean inputs, SHA pins, `persist-credentials: false`, permissions, token-free sync step |
+| `scripts/syncRunnerSafety.test.js` | 14 | sync safety paths: refuse/exit 1, retries + redaction, version gate, photo failure keeps the previous file, per-run cap, delete guard, write only on change, sorted manifests |
+| `scripts/socialChangemakersAppsScript.test.js` / `…Snapshot` / `…Images` | 13 / 13 / 4 | the Past SCF Apps Script, sync rules, photo rendering |
+| `utils/listingEdgeCases.test.js` | 19 | the four listings with 0/1/500 rows, long/duplicate/Unicode titles, URL parsing, nav ↔ routes |
+| `utils/scriptLang.test.js` | 7 | Gujarati runs and `lang` for `LangText` / `textLang` |
+| `utils/libraryJsonLd.test.js` | 3 | `LearningResource` JSON-LD for a resource page |
 | `components/Header.test.jsx` | 5 | nested "Our Publications" group (keyboard), THRIvE dropdown, mobile nested list + current page, `navActive` most-specific match |
 | `hooks/useLightbox.test.js` | 13 | open/close/prev/next wrap |
 | `utils/imgSrc.test.js` | 8 | path forms, passthrough, base prefix |
@@ -1350,21 +1444,31 @@ npm run test:ui        # Vitest UI
 | `pages/ourPartners.test.jsx` | 10 | `partnerFilters` (priority rank, grouping + order, search, tiers, domains, initials) and the page (hero figures, tabs + one marked, sections + counts + website links with domain, rows start paused, `?search=` → one grid with section captions, typed search → URL → no-match → clear, invitation band, empty state) |
 | `pages/home.test.jsx` | 6 | figure helpers (split, Indian grouping, plain years) and the homepage (banner figures from `site.yaml` + pills with labels, three approach links with "Explore", every journey phase, "In good company" hidden until the Partners snapshot has logos then linking to the Partners page, the two ways to help) |
 | `components/sliderConductor.test.jsx` | 2 | the Partners sliders' shared clock: only the movable, mostly visible row nearest the middle moves; nothing while the tab is hidden or after unregistering |
-| `utils/siteDataPlugin.test.js` | 21 | JSON-LD generated from `site.yaml`, `transformHtml` (title/og:site_name/marker/escaping), `llms.txt` rendering, content-consistency detection (email / lives total) |
+| `utils/siteDataPlugin.test.js` | 24 | JSON-LD generated from `site.yaml`, `transformHtml` (title/og:site_name/marker/escaping), `llms.txt` rendering, content-consistency detection (email / lives total) |
 | `utils/imagePlaceholder.test.js` | 4 | global image fallback, opt-out, recursion guard, listener cleanup |
 | `routing/routes.smoke.test.jsx` | 17 | lazy-imports each page in a `MemoryRouter` and checks it renders something (weak: not content) |
 | `routing/removedRoutes.test.jsx` | 17 | each removed URL renders `NotFound`; a live route remains live |
 
-`src/test/setup.js` globally mocks `framer-motion` (a fixed list of `motion.*` tags — HTML elements plus `svg/g/path/rect/ellipse/line/circle` — along with `AnimatePresence` and `MotionConfig`; any other export, e.g. `LayoutGroup`, is not mocked; `removedRoutes.test.jsx` renders the whole `<App />` through this mock), and `react-helmet-async` (`Helmet` renders nothing, so `SeoHead` tags can't be asserted). It also stubs `IntersectionObserver`, `ResizeObserver`, `matchMedia`, `scrollTo`, an in-memory `sessionStorage`, and sets `import.meta.env` (`BASE_URL: '/'`). Not covered: `useFocusTrap`, `useModalBehavior`, `useSidebarFits`, the lightbox components, Footer/Layout/App, `SeoHead`, and the syncs' I/O scripts (`sync-pramaan-library.js`, `sync-publications.js`; their rules are tested). Header is covered only for its menus (`Header.test.jsx`).
+`src/test/setup.js` globally mocks `framer-motion` (a fixed list of `motion.*` tags — HTML elements plus `svg/g/path/rect/ellipse/line/circle` — along with `AnimatePresence` and `MotionConfig`; any other export, e.g. `LayoutGroup`, is not mocked; `removedRoutes.test.jsx` renders the whole `<App />` through this mock), and `react-helmet-async` (`Helmet` renders nothing, so `SeoHead` tags can't be asserted). It also stubs `IntersectionObserver`, `ResizeObserver`, `matchMedia`, `scrollTo`, an in-memory `sessionStorage`, and sets `import.meta.env` (`BASE_URL: '/'`). Not covered by Vitest: `useModalBehavior`, `useSidebarFits`, the lightbox components, Footer, `SeoHead` and the top-level `sync-*.js` scripts (their rules and the shared `sync-runner.js` are tested); the built-site e2e covers the lightboxes, menus and head tags in a real browser. Header is covered only for its menus (`Header.test.jsx`).
 
 ### End-to-end (Playwright)
 
+Two Playwright configs (audit P6, 2026-11-24):
+
 ```bash
-npm run test:e2e       # playwright test — chromium only, workers 1
-npm run test:all       # unit + e2e
+npm run test:e2e         # playwright.config.js — the dev server (starts/reuses npm run dev on :5173, or E2E_DEV_URL); chromium, workers 1; local only (62 tests)
+npm run test:all         # unit + dev-server e2e
+# built site — needs a base-path build first: $env:GITHUB_ACTIONS='true'; npm run build  (global setup refuses a dist/ without the base)
+npm run test:e2e:site    # playwright.site.config.js, Chromium, without the @matrix sizes — the CI set (170 tests)
+npm run test:e2e:full    # Chromium + Firefox + WebKit + full responsive matrix (nightly workflow; 948 passed / 2 skipped on 2026-11-24)
+npm run test:e2e:visual  # screenshot baselines (Windows only, local; e2e/visual/README.md explains updating them)
 ```
 
-`playwright.config.js` starts (or reuses, outside CI) `npm run dev` on `http://localhost:5173`. Specs live in `e2e/` (`home`, `navigation`, `pramaan`, `a11y` — axe WCAG A/AA = 0 on 20 routes and 7 open states, AAA/best-practice reported as annotations; keyboard: skip link, focus to the new `<h1>` after a page change, each dialog's trap/Escape/focus return, the header dropdown, no sideways scroll at 320 px; `[data-a11y-decorative]` marks aria-hidden decorative text excluded from contrast): `navigation.spec` loads 13 routes without page errors (incl. `/tide/publications` and `/thrive/publications`), `home.spec` and `pramaan.spec` check basic structure and links; there are no lightbox, filter, mobile-viewport or axe flows. The removed routes are covered only by the Vitest suite. `pramaan.spec` also opens a resource at `/pramaan/resource-centre/W1` and checks the `/pramaan-library` redirect. Requires `npx playwright install chromium` once.
+**Dev-server specs** (`e2e/*.spec.js`): `home`, `navigation`, `pramaan` (structure, links, the `/pramaan-library` redirect, resource `W1`) and `a11y` — axe WCAG A/AA = 0 on 20 routes and 7 open states (AAA/best-practice as annotations; third-party iframes excluded; `[data-a11y-decorative]` excluded from contrast; the lightbox dot strip's `target-size` is quarantined, owner item P6-11) and keyboard flows (skip link, focus to the new `<h1>`, each dialog's trap/Escape/focus return, the header dropdown, no sideways scroll at 320 px). It waits on state (`still()`), not timeouts; `e2e/dev-warmup.js` opens every route first.
+
+**Built-site specs** (`e2e/site/`, plus `a11y.spec.js` on Chromium): the base-path `dist/` served by `scripts/serve-pages.mjs` on 127.0.0.1:4300. `fixtures.js` stubs every other host (offline, deterministic) and fails a test on a console/page error, a CSP violation or a failed same-site request; helpers `go`, `ready` (waits for React over the prerendered HTML — it relies on React's `__reactFiber` key on the `<h1>`), `sitePath`, `still`. Specs: `routes` (17 primary routes + resource pages incl. encoded ids: deep link, reload, one `<h1>`, forwarding pages, `/?/` restorer, removed routes → 404), `menus`, `listings`, `dialogs`, `quality` (stale chunk, reduced motion, forced colours, 200 % zoom) and `responsive` (14 viewports × 17 routes; 4 must-pass sizes, the rest tagged `@matrix`). Fragile on purpose: the Partners tab test assumes a section heading equals its tab text minus the count; the visual card picks are resource `W1`, the first partner with a website and the first fellow. On local Windows, long WebKit runs can wait ~300 s at teardown for leftover `WebKitNetworkProcess.exe` and exit 1 after all tests passed (audit P6-12).
+
+Requires `npx playwright install chromium` once (Firefox/WebKit for `test:e2e:full`).
 
 ### Accessibility scan
 
@@ -1373,15 +1477,15 @@ npx vite --port 5175                      # terminal 1: dev server on the port t
 node scripts/a11y-audit.cjs [port]        # terminal 2 (port arg, or A11Y_PORT; default 5175)
 ```
 
-Uses `@playwright/test` (Chromium) + `@axe-core/playwright` (tags wcag2a/aa, 21a/aa, 22aa) over a hard-coded list of 21 URLs (all 18 primary routes, `/coming-soon`, `/404`, with `/pramaan/resource-centre/W1` standing in for `:id`, plus a made-up path that exercises the 404 page). AA results (the gate) are under `violations`, AAA + best-practice under `aaaAndBestPractice`; `[data-a11y-decorative]` is excluded. It scrolls each page fully and waits 1.2 s so `whileInView` animations settle before scanning — don't shorten that. The JSON report is written to the OS temp dir as `a11y-report.json` (override with `A11Y_REPORT`). Update `ROUTES` in the script when routes change.
+Uses `@playwright/test` (Chromium) + `@axe-core/playwright` (tags wcag2a/aa, 21a/aa, 22aa) over a hard-coded list of 21 URLs (the 18 primary routes with `/pramaan/resource-centre/W1` standing in for `:id`, `/coming-soon`, `/404`, plus a made-up path that exercises the 404 page). AA results (the gate) are under `violations`, AAA + best-practice under `aaaAndBestPractice`; `[data-a11y-decorative]` is excluded. It scrolls each page fully and waits 1.2 s so `whileInView` animations settle before scanning — don't shorten that. The JSON report is written to the OS temp dir as `a11y-report.json` (override with `A11Y_REPORT`). Update `ROUTES` in the script when routes change.
 
 ### Lint
 
-`npm run lint` → ESLint 9 flat config: `@eslint/js` recommended, `react-hooks` (recommended), `react-refresh` (vite), `no-unused-vars` ignoring `^[A-Z_]`, plus the `react/jsx-no-literals` CMS guard for pages and components (§7). Node globals for config/scripts, Vitest globals under `src/test/`. No Prettier, no TypeScript.
+`npm run lint` → ESLint 9 flat config: `@eslint/js` recommended, `react-hooks` (recommended), `react-refresh` (vite), `no-unused-vars` ignoring `^[A-Z_]`, plus the CMS guards for pages and components (`react/jsx-no-literals` + `no-restricted-syntax` `CMS_TEXT_SELECTORS`, §7). Node globals for config/scripts, `e2e/**` and the Playwright configs; Vitest globals under `src/test/`; the Playwright report/result folders are ignored. No Prettier, no TypeScript.
 
 ### CI
 
-Only `deploy.yml` (lint, `content:validate`, unit tests, build, deploy), `sync-pramaan-library.yml` (the Resource Centre sync) and `sync-publications.yml` (the Publications sync) exist. Nothing in CI runs e2e or the a11y script.
+Six workflows (§10): `deploy.yml` (lint, `content:validate`, unit tests, build + prerender, `check:dist`, built-site e2e incl. the axe spec, deploy), `e2e-nightly.yml` (all three browsers + the full matrix), and the four syncs. Not in CI: the dev-server e2e, the visual baselines and `scripts/a11y-audit.cjs`.
 
 ---
 
@@ -1400,9 +1504,14 @@ Only `deploy.yml` (lint, `content:validate`, unit tests, build, deploy), `sync-p
 | `docs/specs/site-restructure-plan.md` | Route restructure plan (historical; the leftover routes it tracked have since been removed) |
 | `docs/specs/stranded-pages-review.md` | Historical stakeholder review of the pages that were later removed |
 | `content/shared/site.yaml` | Single source of site-wide facts (name, URL, email, lives-impacted figure, breadcrumb parents) |
-| `scripts/siteDataPlugin.js` | Vite plugin that generates JSON-LD / `<title>` / `og:site_name` and `/llms.txt` from `site.yaml` |
+| `scripts/siteDataPlugin.js` | Vite plugin that generates JSON-LD / `<title>` / `og:site_name`, `/llms.txt`, `/robots.txt`, `/sitemap.xml` and the built CSP hash from `site.yaml` + `src/config/siteRoutes.js` |
+| `scripts/prerender.mjs` · `src/config/siteRoutes.js` | Build-time prerender of every public page; the address list it (and the sitemap) reads |
+| `docs/audits/2026-11-site-audit.md` | The 2026-11 audit ledger: findings per phase, gate results, the consolidated "Owner decisions needed" list |
+| `e2e/visual/README.md` | Running and updating the visual baselines |
 | `docs/PRAMAAN-LIBRARY-SETUP-GUIDE.md` / `PRAMAAN-LIBRARY-SHEET-SCHEMA.md` | Owner setup and column rules for the Resource Centre Sheet |
 | `docs/PUBLICATIONS-SETUP-GUIDE.md` / `PUBLICATIONS-SHEET-SCHEMA.md` | Owner setup and column rules for the Publications Sheet |
+| `docs/PARTNERS-SETUP-GUIDE.md` / `PARTNERS-SHEET-SCHEMA.md` | Owner setup and column rules for the Partners Sheet |
+| `docs/SOCIAL-CHANGEMAKERS-SETUP-GUIDE.md` / `SOCIAL-CHANGEMAKERS-SHEET-SCHEMA.md` | Owner setup and column rules for the Past SCF Sheet |
 | `docs/MIGRATION-OVERVIEW.md` | Start here when handing the whole project (Google + GitHub) to a new owner |
 | `docs/MIGRATION-GOOGLE-SHEET-APPSCRIPT.md` | Moving the Sheet + Apps Script to a new Google account — uses a fresh-copy approach, not Google's "transfer ownership," because Apps Script Web App deployments don't transfer ownership the way you'd expect |
 | `docs/MIGRATION-GITHUB-REPOSITORY.md` | Transferring the GitHub repository to a new owner |
@@ -1414,4 +1523,4 @@ Only `deploy.yml` (lint, `content:validate`, unit tests, build, deploy), `sync-p
 | `src/pages/Home.jsx` | Reference example of a full page component |
 | `src/pages/get-involved/Volunteer.jsx` | Reference for `SeoHead` + `fadeUp` |
 | `src/pages/library/PramaanLibrary.jsx` | Reference for faceted filters + URL-param sync + phone filter drawer |
-| `eslint.config.js` | The `react/jsx-no-literals` CMS guard and other lint rules |
+| `eslint.config.js` | The CMS guards (`react/jsx-no-literals`, `CMS_TEXT_SELECTORS`) and other lint rules |

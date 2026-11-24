@@ -130,7 +130,10 @@ Do these in order; each step has a reference file to copy from.
    run deploy.yml`, alert open/close steps, `timeout-minutes: 30`, pinned `ubuntu-24.04`.
 7. **Deploy backstop** — add a `check<Name>Snapshot()` to `scripts/validate-content.js` (shape, allowed
    fields, no email address, unique ids, `meta.total`, every photo entry has its files).
-8. **UI** — §5. Text in `content/pages/<slug>.yaml`; routes in `src/App.jsx`; if videos are embedded,
+8. **UI** — §5. Text in `content/pages/<slug>.yaml`; routes in `src/routes.js` and, for public pages,
+   `src/config/siteRoutes.js` (the build prerenders and sitemaps only what is listed there; set
+   `sitemap: false` while a page is unlinked); every Sheet URL rendered through `safeHttpUrl` /
+   `safeEmbedUrl` (`src/utils/safeUrl.js`) and JSON-LD through `jsonLdText` (`src/utils/jsonLd.js`); if videos are embedded,
    their host must be in the `frame-src` of the CSP in `index.html` (YouTube needed
    `https://www.youtube-nocookie.com`).
 9. **Docs** — `docs/<SLUG>-SETUP-GUIDE.md` (copy the library guide's steps 1–9, "How you hear about
@@ -173,7 +176,8 @@ landscape, with no horizontal overflow (2026-11-16).
 
 **Unlinked pages** (until the owner decides to link): no menu/footer/sitemap/llms.txt entry and
 `SeoHead … noindex` on every state. When linking later: remove `noindex` (keep it on the not-found state),
-add breadcrumbs, add to `public/sitemap.xml` and `content/shared/llms.txt`, and confirm with the owner that
+add breadcrumbs, drop `sitemap: false` from its `src/config/siteRoutes.js` entry (that adds it to
+`sitemap.xml` and the generated llms.txt page list), and confirm with the owner that
 the consent wording covers a public, search-indexed listing. If the page replaces an older one, serve it at
 the old address and redirect the new one (as `/pramaan-library` → `/pramaan/resource-centre`, which keeps
 ids and `?type=` links working).
@@ -199,7 +203,7 @@ both share one search + filter bar (`PublicationToolbar`, `usePublicationQuery`;
 `src/config/publications.js`, so a control appears only when the row count makes it useful. They have their
 own controls (`PublicationControls`, `usePublicationControls`) and use none of `src/components/listing/`,
 `useSidebarFits` or `abl/Pagination`; of the shared parts they use `listingFilters.js`, `focusRing` and
-`FOCUS_PILL`. Choose the layout from the data (row count, text length), not from the previous integration. The Partners page (third integration, 2026-11-21; 113 partners in 5 types) is one auto-advancing slider per type with previous / pause / next (WCAG 2.2.2) and a name search only — `src/components/partners/`, rules in `src/config/partners.js`. Two lessons from it: an absolutely positioned element (e.g. `sr-only` text) inside a horizontal scroller escapes the scroller unless an ancestor inside it is `position: relative` — the page got an 8000 px horizontal scrollbar; and when a Sheet is link-viewable, keep its id out of the public repository's docs.
+`FOCUS_PILL`. Choose the layout from the data (row count, text length), not from the previous integration. The Partners page (third integration, 2026-11-21; 113 partners in 5 types) is one slider per type that starts paused, with previous / play-pause / next (WCAG 2.2.2) and a name search only — `src/components/partners/`, rules in `src/config/partners.js`. Two lessons from it: an absolutely positioned element (e.g. `sr-only` text) inside a horizontal scroller escapes the scroller unless an ancestor inside it is `position: relative` — the page got an 8000 px horizontal scrollbar; and when a Sheet is link-viewable, keep its id out of the public repository's docs.
 
 **Uploaded images that are screenshots.** When people upload "thumbnails" of very different shapes
 (covers, slides with black bars, logos on wide margins, tall phone screenshots), a plain resize gives bars
@@ -227,10 +231,17 @@ filter/sort rules (`libraryFilters.js`, `publicationFilters.js`). Tests for the 
       on the Node side from `sync-runner.js` `createRedactor`), on both the Apps Script and the Node side.
 - [ ] Every Sheet string that reaches a file path is allowlist-validated; deletions are checked to stay
       inside the photo folder (`path.relative`).
-- [ ] Image bytes are decoded by `sharp` with a size cap; its pixel limits are left on.
+- [ ] Image bytes pass `assertSafeImage` (`scripts/lib/image-safety.js`: JPEG/PNG/WebP/GIF by magic bytes, ≤ 100 MP) before `sharp` decodes them; its pixel limits are left on (audit P4).
+- [ ] Every published URL passes `isHttpUrl` (and `withoutAccountId` for Google links) at ingest and
+      `safeHttpUrl` / `safeEmbedUrl` at render; text passes `cleanString*`; report lines go through
+      `reportText` (Sheet text is public input and is read by people and agents in the Issues).
+- [ ] JSON-LD built from Sheet text uses `jsonLdText` (the prerender saves it as HTML).
 - [ ] Every `UrlFetchApp`/`fetch` that matters checks the status code and has a timeout.
 - [ ] GitHub token is fine-grained, one repo, **Actions: Read and write** only, with an expiry in a calendar.
-- [ ] Workflow: no `pull_request` trigger; `permissions: {}` + minimal per-job grants; commits only bot paths.
+- [ ] Workflow: no `pull_request` trigger; `permissions: {}` + minimal per-job grants; commits only bot paths;
+      checkout `persist-credentials: false`; `GH_TOKEN` only on the steps that call `gh` or push (never on
+      the `Run sync` step), a `Let git push` step after it; `npm ci --ignore-scripts`. Add the file to
+      `src/test/scripts/workflowSecurity.test.js`'s expected list (it checks these rules).
 - [ ] Dispatch is debounced (2 min quiet, 10 min max wait) so edit bursts don't spam Actions.
 - [ ] Nothing about the integration is in the site bundle except the snapshot itself.
 
@@ -263,6 +274,7 @@ filter/sort rules (`libraryFilters.js`, `publicationFilters.js`). Tests for the 
 `CLAUDE.md` (tree, routes table, a short section), `AGENTS.md` (§2 data flows, tree, §8 subsection),
 `docs/OPERATIONS-INVENTORY.md`, `docs/OPERATIONS-RUNBOOK.md`, `docs/PLATFORM-LIMITS.md`,
 `docs/MIGRATION-OVERVIEW.md`, `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md` (one more token),
+`src/config/siteRoutes.js` + `e2e/site/` specs (the page is prerendered and tested in CI),
 **both** `docs/ARCHITECTURE.html` (a tab per integration) and `docs/ARCHITECTURE-DATAFLOW.html` (nodes +
 secrets table), `CONTENT-GUIDE.md` (the new YAML), and the cron/heartbeat "taken" list in §3 of this file.
 
@@ -270,4 +282,4 @@ secrets table), `CONTENT-GUIDE.md` (the new YAML), and the cron/heartbeat "taken
 
 | Shared (change with care — affects every integration) | Per integration |
 |---|---|
-| `scripts/ci/alert-issue.sh`, `deploy.yml`, `scripts/lib/snapshot-core.js` (`THRESHOLDS`, `isSafeId`, `serializeSnapshot`, `photoDeletionError`, `photosFromExport`, `contentHash`, `planPhotos`, `planListPhotos`, `asSingleTab`, `photoFileBase`, `cleanString`, `cleanStringCollapseSpaces`, `extractDriveFileId` (`/d/` only) and `extractDriveFileIdAnyLink` (also `?id=`); tests `src/test/scripts/snapshotCore.test.js`), `scripts/lib/sync-runner.js` (the sync scripts' I/O: env loader, redaction, fetch + retry, report, outputs, refusal, photo loops, file writes, failure exit — its wording appears in every sync's log and report; tests `src/test/scripts/syncRunner.test.js`), `src/test/scripts/helpers/fakeAppsScript.js` (the Apps Script tests' sandbox + fake Google services), `scripts/validate-content.js`, `src/components/abl/Pagination.jsx`, `src/components/listing/`, `src/utils/listingFilters.js`, `src/hooks/useSidebarFits.js`, `src/utils/focusRing.js`, `DriveImage`/`ImageLightbox` (take a `src`), `VideoLightbox`, their labels in `ui.yaml` `mediaLightbox.*`, `SeoHead`, `index.html` CSP, the repo variable `ALERT_ASSIGNEE` | Sheet, `Code.gs`, token, secrets, workflow + queue + cron, sync script (env prefix, paths, report title/guide/workflow name, stats line, `processPhoto`) + rules, snapshot + photos paths, page YAML, pages/components, setup guide + schema doc, issue titles |
+| `scripts/ci/alert-issue.sh`, `deploy.yml`, `scripts/lib/snapshot-core.js` (`THRESHOLDS`, `isSafeId`, `serializeSnapshot`, `photoDeletionError`, `photosFromExport`, `contentHash`, `planPhotos`, `planListPhotos`, `asSingleTab`, `photoFileBase`, `cleanString`, `cleanStringCollapseSpaces`, `isHttpUrl`, `withoutAccountId`, `reportText`, `extractDriveFileId` (`/d/` only) and `extractDriveFileIdAnyLink` (also `?id=`); tests `src/test/scripts/snapshotCore.test.js`), `scripts/lib/sync-runner.js` (the sync scripts' I/O: env loader, redaction, fetch + retry, report, outputs, refusal, photo loops, file writes, failure exit — its wording appears in every sync's log and report; tests `src/test/scripts/syncRunner.test.js`), `src/test/scripts/helpers/fakeAppsScript.js` (the Apps Script tests' sandbox + fake Google services), `scripts/lib/image-safety.js`, `src/utils/safeUrl.js`, `src/utils/jsonLd.js`, `scripts/validate-content.js`, `src/components/abl/Pagination.jsx`, `src/components/listing/`, `src/utils/listingFilters.js`, `src/hooks/useSidebarFits.js`, `src/utils/focusRing.js`, `DriveImage`/`ImageLightbox` (take a `src`), `VideoLightbox`, their labels in `ui.yaml` `mediaLightbox.*`, `SeoHead`, `index.html` CSP, the repo variable `ALERT_ASSIGNEE` | Sheet, `Code.gs`, token, secrets, workflow + queue + cron, sync script (env prefix, paths, report title/guide/workflow name, stats line, `processPhoto`) + rules, snapshot + photos paths, page YAML, pages/components, setup guide + schema doc, issue titles |

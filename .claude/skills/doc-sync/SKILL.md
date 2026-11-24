@@ -75,8 +75,10 @@ followup task that may or may not happen.
   `tide-foundation-image-audit.md`. These keep their original body for history; only their top
   STATUS banner needs to stay truthful. `WHATS-NEXT.md` is the live list of open items.
 - The `llms.txt` **template** `content/shared/llms.txt` (there is no `public/llms.txt` any more;
-  `scripts/siteDataPlugin.js` renders the template into `/llms.txt`), plus `public/sitemap.xml`
-  and `public/robots.txt`, which list pages by hand.
+  `scripts/siteDataPlugin.js` renders the template into `/llms.txt`). Its page list (`{{pages}}`),
+  `/sitemap.xml`, `/robots.txt` and `404.html` are generated at build (from `src/config/siteRoutes.js`,
+  page YAML `meta` and `site.yaml`) — there are no hand-kept copies in `public/` any more.
+- `docs/audits/2026-11-site-audit.md` (the audit ledger): append to it, don't rewrite earlier phases.
 - Any project skill files under `.claude/skills/` that describe the changed area.
 
 The `llms.txt` template needs review whenever a fact it states changes at the source — the Pramaan
@@ -124,15 +126,16 @@ repo docs.
    | `scripts/validate-content.js`, `scripts/contentConsistency.js` (what it errors or warns on) | `CONTENT-GUIDE.md` ("Validating Your Changes"), `CLAUDE.md`, `AGENTS.md`, `content-management.md`, `cms-integrity/SKILL.md` |
    | `content/shared/error.yaml`, `src/components/ErrorBoundary.jsx` | `CONTENT-GUIDE.md` (shared-text table + error-screen section), `AGENTS.md`, `content-management.md` |
    | `content/shared/footer.yaml` / `navigation.yaml` structure, `Footer.jsx` / `Header.jsx` | `CONTENT-GUIDE.md` (navigation and footer sections), `content-management.md`, `docs/specs/site-restructure-plan.md` |
-   | A new or renamed `content/pages/*.yaml`, or any page `meta` key (e.g. `breadcrumbName`) | `CONTENT-GUIDE.md` file tables, `content-management.md` file table, `CLAUDE.md` / `AGENTS.md` page tables, `public/sitemap.xml`, the llms template |
-   | Routes in `src/App.jsx` (a route added or removed; 24 today: 18 primary, 3 redirects, 3 system), the removed-route test `src/test/routing/removedRoutes.test.jsx`, the footer link columns | `CLAUDE.md`, `AGENTS.md`, `README.md`, `CONTENT-GUIDE.md` (page file table), `content-management.md` (page YAML table and the 17 / 9 / 29 counts), `docs/specs/site-restructure-plan.md`, `docs/specs/stranded-pages-review.md` (a historical review of the pages since removed), `public/sitemap.xml`, the llms template, `WHATS-NEXT.md` |
+   | A new or renamed `content/pages/*.yaml`, or any page `meta` key (e.g. `breadcrumbName`) | `CONTENT-GUIDE.md` file tables, `content-management.md` file table, `CLAUDE.md` / `AGENTS.md` page tables, `src/config/siteRoutes.js` (prerender + sitemap + llms page list), the llms template |
+   | Routes in `src/routes.js` (a route added or removed; 24 today: 18 primary, 3 redirects, 3 system; public ones also in `src/config/siteRoutes.js`), the removed-route test `src/test/routing/removedRoutes.test.jsx`, the footer link columns | `CLAUDE.md`, `AGENTS.md`, `README.md`, `CONTENT-GUIDE.md` (page file table), `content-management.md` (page YAML table and the 17 / 9 / 29 counts), `docs/specs/site-restructure-plan.md`, `docs/specs/stranded-pages-review.md` (a historical review of the pages since removed), `scripts/a11y-audit.cjs` `ROUTES`, the llms template, `WHATS-NEXT.md` |
    | A page deleted (component + YAML + generated JSON + its images) | All of the row above, plus `WHATS-NEXT.md` (images left unused by the removal), `cms-integrity/SKILL.md` examples, and a check that `src/data/` has no stale JSON (the sync never deletes it) |
    | `src/utils/imagePlaceholder.js` (installed in `src/main.jsx`), `placeholderImage` in `site.yaml`, the `data-no-placeholder` opt-out | `CONTENT-GUIDE.md` ("If an image is missing" and the validator note), `content-management.md` (Image Paths), `cms-integrity/SKILL.md` (checklist item 3), `AGENTS.md` |
-   | `eslint.config.js` (`react/jsx-no-literals`), `deploy.yml` / other workflows | `CLAUDE.md`, `AGENTS.md`, `cms-integrity/SKILL.md`, `WHATS-NEXT.md` (what CI runs: lint, validate, unit tests — not e2e) |
+   | `eslint.config.js` (`react/jsx-no-literals`, `CMS_TEXT_SELECTORS`), `deploy.yml` / other workflows (six today) | `CLAUDE.md`, `AGENTS.md` (§10, §12), `cms-integrity/SKILL.md`, `docs/OPERATIONS-*.md`, `docs/PLATFORM-LIMITS.md`, both architecture diagrams, `WHATS-NEXT.md` (what CI runs: lint, validate, unit tests, build + prerender, `check:dist`, built-site e2e) |
+   | `scripts/prerender.mjs`, `scripts/lib/prerender-check.js`, `src/config/siteRoutes.js`, `src/main.jsx` boot, the CSP in `index.html` / `siteDataPlugin.js` | `CLAUDE.md` (Tech Stack, Known Gotchas), `AGENTS.md` (§1, §10, §11), `content-management.md`, both architecture diagrams |
    | `src/config/abl.js`, `src/config/library.js`, the Resource Centre Sheet / Apps Script / sync (`sync-pramaan-library`, `scripts/lib/*-snapshot.js`, `snapshot-core.js`) | `docs/PRAMAAN-LIBRARY-*.md`, `docs/PRAMAAN-HARDENING-PLAN.md`, `docs/SHEET-INTEGRATION-PLAYBOOK.md`, `docs/OPERATIONS-*.md`, `docs/MIGRATION-*.md`, `docs/MAINTENANCE-GITHUB-PAT-REFRESH.md`, both architecture diagrams, `sheet-integration/SKILL.md`, `CLAUDE.md`, `AGENTS.md` |
    | A Sheet integration in snapshot mode (Pramaan Library or a new one): `apps-script/<slug>/`, `sync-<slug>.yml`, `scripts/sync-<slug>.js`, `scripts/lib/<slug>-snapshot.js`, its pages | the list in `docs/SHEET-INTEGRATION-PLAYBOOK.md` §8, plus the playbook itself when a principle, name, cron minute or lesson changes, and `sheet-integration/SKILL.md` |
    | Publications: `src/components/publications/*`, `src/config/publications.js` (page sizes, `HERO_CHART`, `TYPE_ICON_RULES`), `usePublicationControls.js`, `publicationFilters.js` / `publicationPhotos.js`, the `.pub-mat` classes in `src/index.css`, `tide-publications.yaml` / `thrive-publications.yaml` keys, or the Publications Sheet / Apps Script / sync (`apps-script/publications/`, `sync-publications.yml`, `scripts/sync-publications.js`, `scripts/lib/publications-*.js`) | `CLAUDE.md` (Publications), `AGENTS.md` (§4 Publications components, the utilities/hooks sections, §8 Publications, §10), `CONTENT-GUIDE.md` (Publications YAML), `docs/PUBLICATIONS-SETUP-GUIDE.md`, `docs/PUBLICATIONS-SHEET-SCHEMA.md`, both `docs/ARCHITECTURE*.html` diagrams, `docs/SHEET-INTEGRATION-PLAYBOOK.md` (if the pattern changed) |
-   | Test files / counts (`npx vitest run --config vitest.config.js`, `e2e/`) | `CLAUDE.md`, `AGENTS.md`, `README.md`, `content-management.md` |
+   | Test files / counts (`npx vitest run --config vitest.config.js`, `e2e/`, `e2e/site/`, the two Playwright configs) | `CLAUDE.md`, `AGENTS.md` (§12 table), `README.md`, `content-management.md` |
    | Design tokens (`tailwind.config.js`, `src/index.css`, e.g. the `:focus-visible` ring: 2px brand blue plus a white band) | `CLAUDE.md`, `AGENTS.md`, `content-management.md` |
 
 3. **Verify before writing, every time.** Never update a doc from memory of what the code
@@ -161,7 +164,7 @@ repo docs.
 6. **Sanity-check, then report — don't auto-commit.** Run `npm run lint`/`npm run build` if
    you touched anything besides pure prose (habit, not usually load-bearing for `.md` edits).
    Counts that docs like to quote (routes, pages, YAML files, generated JSON in `src/data`, test
-   files/tests) go stale fastest — recount them from the code (`grep -c "<Route " src/App.jsx`,
+   files/tests) go stale fastest — recount them from the code (the `ROUTES` entries in `src/routes.js`,
    `ls content/pages content/shared src/data`, `npm test`) rather than copying an old number.
    Documentation changes still follow the repo's normal commit policy — don't commit without
    being asked, even though this skill's job is to make the update, not to ship it unasked.

@@ -1,6 +1,6 @@
 # Stakeholder review — Publications and Partners pages (meeting 2026-11-28)
 
-Sections 1–6: Publications. Section 7: Partners (`/about/our-partners`, added 2026-11-21).
+Sections 1–6: Publications. Section 7: Partners (`/about/our-partners`, added 2026-11-21). Section 8: Past SCF. Section 9: pointer to the site-wide audit questions (2026-11-24).
 
 **Status:** parked until the owner's meeting with the stakeholder on 2026-11-28 (owner decision,
 2026-11-21). Until then, **no changes are made to the stakeholder's Sheet** ("TIDE THRIvE
@@ -197,3 +197,15 @@ project, or choose a batch.", "Search fellows", "Name or project", "Batch", "All
 - Until the photos arrive, could a frame from the testimonial video stand in for the portrait? (Not built; a video
   frame may be unflattering.)
 - Shorten the page intro to one sentence so the fellows appear sooner? (Not done — wording change.)
+
+---
+
+## 9. Site-wide questions from the 2026-11 audit (added 2026-11-24)
+
+The seven-phase audit of 2026-11-24 (branch `audit/2026-11-site-hardening`, not yet merged) collected its owner
+questions in one place: [`docs/audits/2026-11-site-audit.md` → "Owner decisions needed"](audits/2026-11-site-audit.md#owner-decisions-needed).
+They cover the whole site, not only the Sheets: the canonical web address and staging indexing, AAA contrast and
+target sizes, the Past SCF intro animation, link wording, video captions, the figures typed in `llms.txt`,
+moderation of public Form content, Sheet sharing, GitHub settings, and test/deploy policy. Two overlap with this
+document: moderation of the no-approval Publications/Partners Forms (§6, §7.1) and the Social Changemakers Sheet's
+"anyone with the link can edit" sharing (§8.2 d).

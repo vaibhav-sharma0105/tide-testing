@@ -64,7 +64,7 @@ transparency; small raster files sent as the original by `fetchImage`), `.github
 so the page order and the sync's "unknown priority" report agree). Reused `SearchField` + `useDebouncedSearch`.
 Its stakeholder notes named columns by letter wrongly — always map by the real header row.
 
-**Fourth implementation (2026-11-23, not live until the owner's setup):** Social Changemakers (Past SCF) —
+**Fourth implementation (2026-11-23, live since 2026-11-23, first sync commit `beb5ed0`):** Social Changemakers (Past SCF) —
 `apps-script/social-changemakers/Code.gs`, `scripts/sync-social-changemakers.js`,
 `scripts/lib/social-changemakers-snapshot.js`, `scripts/lib/social-changemakers-images.js`,
 `.github/workflows/sync-social-changemakers.yml`, `checkSocialChangemakersSnapshot()`, `src/components/changemakers/`,
@@ -107,19 +107,30 @@ Follow the playbook's §4 build order; the checkpoints below are where integrati
    photo loops) and the shared pure helpers from `snapshot-core.js` — only paths, names, messages,
    the stats line and `processPhoto` are written per integration (playbook §4.4–4.5, §9). Prove them against a **fake Apps Script server**
    with made-up rows: publish, no-change run, refusal on mass removal, token never printed, and
-   the photo cap continuing on the next run.
+   the photo cap continuing on the next run. Since audit P4 (2026-11-24) the shared rules are
+   mandatory, not optional: URLs through `isHttpUrl` (+ `withoutAccountId` for Google links), text
+   through `cleanString*` (strips bidi/control characters), report lines through `reportText`, and
+   every downloaded image through `assertSafeImage` (`scripts/lib/image-safety.js`) before sharp.
+   The workflow copies the token pattern of the existing syncs: `persist-credentials: false` on the
+   checkout, `GH_TOKEN` only on the steps that call `gh` or push (never on `Run sync`), a
+   `Let git push` step after the sync; `src/test/scripts/workflowSecurity.test.js` checks this
+   (update its expected workflow list).
 4. **Page** per playbook §5: toolbar (search + sort) above the cards; filter card/drawer;
    faceted counts; option order "All" → A→Z → "Other"; URL state; fixed page size; empty and
    no-match states; detail page that hides empty sections. All text in
    `content/pages/<slug>.yaml` (run the `cms-integrity` skill). Add embed hosts to the CSP
-   `frame-src`. If this is the **second** page that needs the library's listing UI, extract the
+   `frame-src`. Render every Sheet URL through `safeHttpUrl` / `safeEmbedUrl`
+   (`src/utils/safeUrl.js`) and any JSON-LD through `jsonLdText` (`src/utils/jsonLd.js`). Register
+   the route in `src/routes.js` **and** `src/config/siteRoutes.js` (prerender + sitemap; detail
+   pages per row need their own entry like `RESOURCE_ROUTE`); give each page exactly one `<h1>`. If this is the **second** page that needs the library's listing UI, extract the
    shared parts instead of copying them (playbook §5 "Reuse").
 5. **Security checklist** (playbook §6): go through every line and say which ones you verified.
 6. **Docs:** setup guide + the doc-sync list (playbook §8), including the "taken" cron/heartbeat
    list in playbook §3. Then run the `doc-sync` skill.
 7. **Verify:** `npm run lint`, `npm test`, `npm run content:validate`,
-   `GITHUB_ACTIONS=true npm run build`; check the page at phone, tablet and laptop sizes, portrait
-   and landscape (no horizontal overflow).
+   `GITHUB_ACTIONS=true npm run build` (the prerender fails on a broken page), `npm run check:dist`
+   and `npm run test:e2e:site` (add the page to `e2e/site/` specs); check the page at phone, tablet
+   and laptop sizes, portrait and landscape (no horizontal overflow).
 8. **Go-live with the owner** (playbook §7), one step at a time in plain words:
    token → Script Properties → `setup` + "Notify me immediately" → GitHub secrets → confirm
    `ALERT_ASSIGNEE` → (user approves) push → `testDispatch` (HTTP 204) → watch the first run with

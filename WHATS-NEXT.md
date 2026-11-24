@@ -1,6 +1,8 @@
 # What's Next — Open Items
 
-> Last verified against the code: 2026-10-27; the Publications item (2) re-checked 2026-11-21; the Pramaan items (3, 4, 6 under "Content and data issues") and the Resolved list re-checked 2026-11-19. Nothing is listed from memory. The "Archive" section further down is a finished 2026-04-12 audit, kept for history only.
+> Last verified against the code: 2026-10-27; the Publications item (2) re-checked 2026-11-21; the Pramaan items (3, 4, 6 under "Content and data issues") and the Resolved list re-checked 2026-11-19; item 1 closed by audit P1 (2026-11-24). Nothing is listed from memory. The "Archive" section further down is a finished 2026-04-12 audit, kept for history only.
+>
+> **The 2026-11 audit (branch `audit/2026-11-site-hardening`) keeps its own list of open items and owner decisions:** `docs/audits/2026-11-site-audit.md` ("Owner decisions needed" and "Deferred / out of scope"). Read it alongside this file.
 
 ## Open items
 
@@ -30,7 +32,7 @@
 
 ### Content and data issues
 
-1. **Bare-filename images are not validated.** `npm run content:validate` checks only leading-slash values under a fixed key list, so a wrong name in a list of bare filenames is not caught; a missing file shows the grey placeholder from `src/utils/imagePlaceholder.js`. (The main such list, `logoGallery.images` on Our Partners, was replaced by the Partners Sheet on 2026-11-21.)
+1. ~~**Bare-filename images are not validated.**~~ — **Done 2026-11-24 (audit P1):** `npm run content:validate` now checks every YAML value that is a local file path, whatever its key, and warns on a missing file or a bare file name with no folder. A missing file is still only a warning (the page shows the grey placeholder).
 2. ~~`about-publications.yaml` (renamed `tide-publications.yaml` on 2026-11-21) empty research list and links~~ — **superseded 2026-11-20:** that content was removed; `/tide/publications` and the new `/thrive/publications` now list rows from the "TIDE THRIvE Publications (Responses)" Sheet. **Done 2026-11-20:** the owner's setup is complete; the first sync (`f524770`) published 16 TIDE + 49 THRIvE rows. Open Sheet questions are parked for 2026-11-28: `docs/STAKEHOLDER-REVIEW-2026-11-28.md`. (`meta.subtitle` in `thrive-publications.yaml` now has text; whether the owner approved that wording is not recorded.)
 3. **Resource Centre Sheet rows (owner to fix in the Sheet):** the open `sheet-needs-attention` issue (#6) lists them (checked with `gh issue view 6` on 2026-11-19: duplicate ids W52 and W62). Details: `docs/PRAMAAN-HARDENING-PLAN.md` §12. (The older Pramaan Sheet items noted here on 2026-11-02 — the `Gmes` typo and the flashcard concept line — went away with that Sheet's retirement on 2026-11-19.)
 4. **Contribute form link:** done 2026-11-19 — the link is now `formUrl` in `content/pages/abl-contribute.yaml` (no GitHub secret or re-run needed); steps in `docs/MAINTENANCE-CONTRIBUTE-FORM-LINK.md`.
@@ -67,7 +69,7 @@
 > | 9 | "Step N" prefix | Done. `common.step` in `common.yaml`. |
 > | 10 | Saral Kadam booklet mailto | Done. `data.booklets.bookletRequestHref` in `resources-saral-kadam.yaml`. |
 >
-> **How this is guarded now:** `eslint.config.js` sets `react/jsx-no-literals` to `error` for `src/pages/**` and `src/components/**`, so bare visible text in JSX fails `npm run lint`. The rule ignores props (`ignoreProps: true`), so literal `aria-label`/`alt` text is not caught by it. `npm run lint` is also run by CI (`.github/workflows/deploy.yml`), so a violation stops the deploy. The `cms-integrity` skill (`.claude/skills/cms-integrity/SKILL.md`) is the other safeguard.
+> **How this is guarded now:** `eslint.config.js` sets `react/jsx-no-literals` to `error` for `src/pages/**` and `src/components/**`, so bare visible text in JSX fails `npm run lint`. The rule ignores props (`ignoreProps: true`), but since 2026-11-24 a second rule (`no-restricted-syntax`, `CMS_TEXT_SELECTORS`) catches words in text props such as `aria-label`/`alt`/`title` and template-literal text in JSX. `npm run lint` is also run by CI (`.github/workflows/deploy.yml`), so a violation stops the deploy. The `cms-integrity` skill (`.claude/skills/cms-integrity/SKILL.md`) is the other safeguard.
 
 > UI elements currently not covered by YAML/JSON, found during content audit on 2026-04-12.
 > Ordered by priority.

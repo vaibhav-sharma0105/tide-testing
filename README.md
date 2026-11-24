@@ -23,7 +23,7 @@ npm run dev            # syncs content, then starts Vite on http://localhost:517
 
 ### Environment variables
 
-None are needed to run or build the site: every page, including the Pramaan Resource Centre, reads committed data. `.env.development` is gitignored; `.env.example` lists the only variables, which are used just to run the three Sheet syncs locally (`npm run content:sync-pramaan-library`, `npm run content:sync-publications`, `npm run content:sync-partners`):
+None are needed to run or build the site: every page, including the Pramaan Resource Centre, reads committed data. `.env.development` is gitignored; `.env.example` lists the only variables, which are used just to run the four Sheet syncs locally (`npm run content:sync-pramaan-library`, `npm run content:sync-publications`, `npm run content:sync-partners`, `npm run content:sync-social-changemakers`):
 
 | Variable | Purpose |
 |---|---|
@@ -37,18 +37,22 @@ The Contribute page's Google Form link is not a variable: it is `formUrl` in `co
 | Command | What it does |
 |---|---|
 | `npm run dev` | Dev server (runs `content:sync` first via `predev`) |
-| `npm run build` | Production build into `dist/` (runs `content:sync` first via `prebuild`) |
-| `npm run preview` | Serve the built `dist/` locally |
-| `npm run lint` | ESLint (includes a `react/jsx-no-literals` rule that blocks hardcoded visible text in `src/pages` and `src/components`) |
-| `npm test` | Vitest unit tests (`src/test/`) |
-| `npm run test:e2e` | Playwright specs in `e2e/` (starts the dev server on port 5173 if none is running) |
-| `npm run test:all` | Unit tests, then e2e |
+| `npm run build` | Production build into `dist/` (runs `content:sync` first via `prebuild`), then prerenders every public page to HTML with headless Chromium (`scripts/prerender.mjs`; needs `npx playwright install chromium` once) |
+| `npm run preview` | Serve the built `dist/` locally (for a base-path build set `GITHUB_ACTIONS=true` here too) |
+| `npm run check:dist` | Check that links, assets and sitemap entries in `dist/` resolve, and the bundle-size budget |
+| `npm run lint` | ESLint (includes the CMS guards that block hardcoded visible text, also in `aria-label`/`alt`/`title` props, in `src/pages` and `src/components`) |
+| `npm test` | Vitest unit tests (`src/test/`; 46 files / 524 tests on 2026-11-24) |
+| `npm run test:e2e` | Playwright specs in `e2e/` against the dev server (starts it on port 5173 if none is running) |
+| `npm run test:e2e:site` | Playwright against the built base-path site (`GITHUB_ACTIONS=true` build first), Chromium — what CI runs |
+| `npm run test:e2e:full` / `test:e2e:visual` | Same in Chromium, Firefox and WebKit with the full screen-size matrix (nightly CI) / screenshot baselines (local, Windows; see `e2e/visual/README.md`) |
+| `npm run test:all` | Unit tests, then dev-server e2e |
 | `npm run content:sync` | Convert `content/**/*.yaml` into `src/data/*.json` |
-| `npm run content:validate` | Check YAML syntax and that referenced image files exist (a missing image is a warning); fails if any email or lives-impacted total in `content/` differs from `content/shared/site.yaml`, if the Resource Centre, Publications or Partners snapshot or its photo list is malformed, or if the Contribute `formUrl` is not a Google Forms link |
+| `npm run content:validate` | Check YAML syntax and that referenced image files exist (a missing image is a warning); fails if any email or lives-impacted total in `content/` differs from `content/shared/site.yaml`, if the Resource Centre, Publications, Partners or Social Changemakers snapshot or its photo list is malformed, or if the Contribute `formUrl` is not a Google Forms link |
 | `npm run content:bootstrap` | Write starter navigation/footer YAML if absent (safe to re-run) |
 | `npm run content:sync-pramaan-library` | Refresh the Resource Centre snapshot and photos from its Sheet (normally run by CI; needs the two variables above) |
 | `npm run content:sync-publications` | Refresh the Publications snapshot and thumbnails from its Sheet (normally run by CI; needs `PUBLICATIONS_API_URL` and `PUBLICATIONS_SYNC_TOKEN` in `.env.development`) |
 | `npm run content:sync-partners` | Refresh the Partners snapshot and logos from its Sheet (normally run by CI; needs `PARTNERS_API_URL` and `PARTNERS_SYNC_TOKEN` in `.env.development`) |
+| `npm run content:sync-social-changemakers` | Refresh the Past Social Changemakers snapshot and photos from its Sheet (normally run by CI; needs `SOCIAL_CHANGEMAKERS_API_URL` and `SOCIAL_CHANGEMAKERS_SYNC_TOKEN`) |
 | `node scripts/a11y-audit.cjs [port]` | axe accessibility scan of every route; needs a dev server already running on that port (default 5175, e.g. `npx vite --port 5175`); the report is written to the OS temp folder as `a11y-report.json` |
 
 ## Where content lives
@@ -64,7 +68,7 @@ public/assets/           images
 
 `npm run content:sync` (run automatically before `dev` and `build`) turns the YAML into the JSON that the React components import. Non-developers should start with [CONTENT-GUIDE.md](CONTENT-GUIDE.md).
 
-`content/shared/site.yaml` is the single source for the site name, URL, contact email and lives-impacted figure. `scripts/siteDataPlugin.js` (a Vite plugin) uses it to generate the page title, `og:site_name` and the JSON-LD blocks in `index.html`, and to render `content/shared/llms.txt` to `/llms.txt` at build and in dev. `npm run content:validate` fails if an email or lives-impacted total elsewhere in `content/` disagrees with it.
+`content/shared/site.yaml` is the single source for the site name, URL, contact email and lives-impacted figure. `scripts/siteDataPlugin.js` (a Vite plugin) uses it to generate the page title, `og:site_name` and the JSON-LD blocks in `index.html`, to render `content/shared/llms.txt` to `/llms.txt`, and to generate `/robots.txt` and `/sitemap.xml` (page list: `src/config/siteRoutes.js`), at build and in dev. `npm run content:validate` fails if an email or lives-impacted total elsewhere in `content/` disagrees with it.
 
 Any image that fails to load is replaced at runtime by `public/assets/images/shared/placeholder.svg` (`placeholderImage` in `site.yaml`; installed once from `src/main.jsx` by `src/utils/imagePlaceholder.js`; an `<img data-no-placeholder>` opts out). The old `/projects/*`, `/resources/*` and similar URLs were removed and show the NotFound page.
 
@@ -76,7 +80,7 @@ The site is English only. Page text comes straight from the YAML-generated JSON.
 
 ## Deployment
 
-Pushing to `main` (or running the workflow manually) triggers `.github/workflows/deploy.yml`: `npm ci`, `npm run build`, upload `dist/`, deploy to GitHub Pages. The build sets the Vite base path to `/tide-testing/` when `GITHUB_ACTIONS` is set (see `vite.config.js`). Before building it runs `npm run lint`, `npm run content:validate` and `npm test` (a failure stops the deploy); it does not run the Playwright e2e specs. The three Sheet sync workflows (Resource Centre, Publications, Partners) start this one themselves after committing new data. The build needs no secrets.
+Pushing to `main` (or running the workflow manually) triggers `.github/workflows/deploy.yml`: `npm ci`, `npm run lint`, `npm run content:validate`, `npm test`, `npm run build` (with the prerender), `npm run check:dist`, `npm run test:e2e:site` (Playwright on the built site), then upload `dist/` and deploy to GitHub Pages. Any failure stops the deploy. The build sets the Vite base path to `/tide-testing/` when `GITHUB_ACTIONS` is set (see `vite.config.js`). The four Sheet sync workflows (Resource Centre, Publications, Partners, Social Changemakers) start this one themselves after committing new data. `.github/workflows/e2e-nightly.yml` runs the full three-browser e2e suite every night (no deploy). The build needs no secrets.
 
 Repository secrets used by the workflows:
 
@@ -88,10 +92,12 @@ Repository secrets used by the workflows:
 | `PUBLICATIONS_SYNC_TOKEN` | `sync-publications.yml` |
 | `PARTNERS_API_URL` | `sync-partners.yml` |
 | `PARTNERS_SYNC_TOKEN` | `sync-partners.yml` |
+| `SOCIAL_CHANGEMAKERS_API_URL` | `sync-social-changemakers.yml` |
+| `SOCIAL_CHANGEMAKERS_SYNC_TOKEN` | `sync-social-changemakers.yml` |
 
-Deep links and reloads on GitHub Pages work through `public/404.html` plus a restore script at the top of `index.html`. `404.html` assumes the site is served under a single path segment (the project-site URL `/<repo>/`); serving from a domain root would need that script changed.
+Deep links and reloads on GitHub Pages work because every public page is a prerendered file (`about/why-tide.html`, one per Resource Centre row); any other address gets the generated `404.html` (the NotFound page, HTTP 404), on top of which the app renders the matching route. A restore script at the top of `index.html` still handles old `/?/path` links. Serving from a domain root instead of `/tide-testing/` would need the base in `vite.config.js` changed and `SITE_ORIGIN` set for the prerender (absolute `og:image` URLs).
 
-A second workflow, `.github/workflows/sync-pramaan-library.yml`, feeds the Pramaan Resource Centre (`/pramaan/resource-centre`): every 6 hours, when its Sheet changes (the Sheet's Apps Script asks GitHub to run it), or manually, it copies the consented rows and their photos into `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json` and `public/assets/images/pramaan-library/`, then starts the deploy. A third workflow, `.github/workflows/sync-publications.yml`, does the same for the Publications pages (`/tide/publications` for TIDE rows, `/thrive/publications` for THRIvE rows) from the "TIDE THRIvE Publications (Responses)" Sheet, every 6 hours at :27 and on Sheet change; live since 2026-11-20 (setup: `docs/PUBLICATIONS-SETUP-GUIDE.md`). Its thumbnails are trimmed and shaped by `scripts/lib/publications-images.js`. A fourth, `.github/workflows/sync-partners.yml`, feeds `/about/our-partners` from the "TIDE/THRIvE Partners (Responses)" Sheet (every 6 hours at :07 and on Sheet change; not set up yet on 2026-11-21 — setup: `docs/PARTNERS-SETUP-GUIDE.md`). No page calls Google at runtime.
+A second workflow, `.github/workflows/sync-pramaan-library.yml`, feeds the Pramaan Resource Centre (`/pramaan/resource-centre`): every 6 hours, when its Sheet changes (the Sheet's Apps Script asks GitHub to run it), or manually, it copies the consented rows and their photos into `src/data/sheets/pramaan-library.json`, `src/data/pramaan-library-photos.json` and `public/assets/images/pramaan-library/`, then starts the deploy. A third workflow, `.github/workflows/sync-publications.yml`, does the same for the Publications pages (`/tide/publications` for TIDE rows, `/thrive/publications` for THRIvE rows) from the "TIDE THRIvE Publications (Responses)" Sheet, every 6 hours at :27 and on Sheet change; live since 2026-11-20 (setup: `docs/PUBLICATIONS-SETUP-GUIDE.md`). Its thumbnails are trimmed and shaped by `scripts/lib/publications-images.js`. A fourth, `.github/workflows/sync-partners.yml`, feeds `/about/our-partners` from the "TIDE/THRIvE Partners (Responses)" Sheet (every 6 hours at :07 and on Sheet change; not connected yet — a static preview is published until the owner's setup: `docs/PARTNERS-SETUP-GUIDE.md`). A fifth, `.github/workflows/sync-social-changemakers.yml`, feeds the Past Social Changemakers profiles (every 6 hours at :17; live since 2026-11-23 — setup: `docs/SOCIAL-CHANGEMAKERS-SETUP-GUIDE.md`). No page calls Google at runtime.
 
 ## Documentation map
 

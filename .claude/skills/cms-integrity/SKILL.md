@@ -9,8 +9,9 @@ description: >
   editor following CONTENT-GUIDE.md cannot change it — the page silently becomes partially
   uneditable. Hardcoded JSX text is perfectly valid React, so the build and tests never catch
   it; `npm run lint` catches bare JSX text (react/jsx-no-literals is an error in
-  src/pages and src/components) but NOT a literal in an aria-label/alt/title prop, a template
-  literal, JSON-LD, or a breadcrumb name — so this skill is still needed. A 2026-06-21 audit of
+  src/pages and src/components) and, since 2026-11-24, words in text props (aria-label/alt/title…)
+  and template-literal text in JSX, but NOT text built in plain JS away from the JSX, JSON-LD,
+  a breadcrumb name or an image path — so this skill is still needed. A 2026-06-21 audit of
   all 24 pages (the site had more pages then) found 22 real instances of this across 14 files,
   including one case (a publications page's type-label map, since removed) that looked
   structurally identical to an adjacent,
@@ -93,7 +94,11 @@ checklist below. Don't silence the rule with `eslint-disable`; move the text to 
 5. **JSON-LD / SEO** — site-wide facts (name, url, logo, email, lives-impacted figure,
    description, founding year) live in `content/shared/site.yaml` and reach `index.html`
    JSON-LD, `<title>`, `og:site_name` and `/llms.txt` through `scripts/siteDataPlugin.js`; pages
-   take SEO strings from `data.meta.seoTitle` / `seoDescription`. Don't hardcode them.
+   take SEO strings from `data.meta.seoTitle` / `seoDescription`. Don't hardcode them. Write any
+   `<script type="application/ld+json">` with `jsonLdText()` (`src/utils/jsonLd.js`), never plain
+   `JSON.stringify`: pages are prerendered to HTML, and Sheet text with `</script>` would break out.
+   A Sheet URL rendered as `href` / iframe `src` goes through `safeHttpUrl` / `safeEmbedUrl`
+   (`src/utils/safeUrl.js`) — the Sheet text is public input (audit P4).
 6. **Facts that must match `site.yaml`** — if a page YAML states the contact e-mail or the
    lives-impacted total, it must equal `site.yaml` (`tidefoundation@gmail.com`, `52,500+`).
    `npm run content:validate` fails otherwise.
@@ -148,7 +153,7 @@ checklist below. Don't silence the rule with `eslint-disable`; move the text to 
 # 1. The lint guard — bare visible text in JSX fails here
 npm run lint
 
-# 2. Hardcoded visible attributes (lint ignores props)
+# 2. Hardcoded visible attributes (lint catches most of these since 2026-11-24; this also covers files outside its scope)
 grep -rnE "(aria-label|alt|title|placeholder)=\{?['\"][A-Za-z]" src/pages src/components
 
 # 3. Hardcoded image paths in JSX (should come from YAML)

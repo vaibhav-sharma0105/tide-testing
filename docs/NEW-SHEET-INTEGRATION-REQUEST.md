@@ -72,6 +72,8 @@ GitHub Actions sync with safety rules → committed snapshot + self-hosted image
    owner setup (Apps Script, token, secrets) one step at a time.
 5. Security: token-gated Apps Script, no public listing, field allowlist, personal columns
    never read, http(s) links only, safety limits on mass removals, alerts as GitHub Issues.
+   Use the shared sanitisers (isHttpUrl, cleanString, reportText, assertSafeImage at ingest;
+   safeHttpUrl/safeEmbedUrl and jsonLdText at render) and the sync workflows' token pattern.
 6. UI/UX: reuse the Publications building blocks where they fit (PublicationMedia-style
    fixed frames with the whole image, the shared search + filter bar with counts, URL state,
    numbered pages). Filters and counts come from the data, never hard-coded. All visible
@@ -80,7 +82,8 @@ GitHub Actions sync with safety rules → committed snapshot + self-hosted image
 8. Commit and push only when I ask.
 
 ## Done means
-- npm run lint, content:validate, npm test, build, test:e2e and scripts/a11y-audit.cjs all pass.
+- npm run lint, content:validate, npm test, build (with the prerender; the page is listed in
+  src/config/siteRoutes.js), check:dist, test:e2e, test:e2e:site and scripts/a11y-audit.cjs all pass.
 - Owner setup guide + Sheet schema doc written; OPERATIONS/MIGRATION docs, CLAUDE.md,
   AGENTS.md and both docs/ARCHITECTURE*.html diagrams updated (doc-sync).
 - A subagent audits the code against best practices and the docs against the code;

@@ -1,4 +1,4 @@
-// Pure rules for scripts/prerender.mjs (unit-tested in src/test/scripts/prerender.test.js).
+// Pure rules for scripts/prerender.mjs (unit-tested in src/test/scripts/seoBuild.test.js).
 import { createHash } from 'node:crypto'
 
 const scriptSha = (js) => createHash('sha256').update(js, 'utf8').digest('base64')

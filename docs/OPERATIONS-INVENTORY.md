@@ -34,7 +34,8 @@ handover). Last full review: 2026-11-15.
 |---|---|---|---|
 | Repository | `vaibhav-sharma0105/tide-testing` — **must stay public** (free GitHub Pages requires it) | Owner: `vaibhav-sharma0105` | 2026-11-15 |
 | GitHub Pages | Settings → Pages; source **GitHub Actions**; live at https://vaibhav-sharma0105.github.io/tide-testing/ | Environment `github-pages` | 2026-11-15 |
-| Workflow `deploy.yml` | `.github/workflows/deploy.yml` | Builds + deploys on every push to `main`; opens an `automation-alert` issue on failure | 2026-11-15 |
+| Workflow `deploy.yml` | `.github/workflows/deploy.yml` | Builds (with the prerender), checks the built site (`check:dist`, built-site browser tests) and deploys on every push to `main` and every sync; opens an `automation-alert` issue "Website deploy failed" on failure | 2026-11-24 (steps read from the file; not yet run on GitHub with the new steps) |
+| Workflow `e2e-nightly.yml` | `.github/workflows/e2e-nightly.yml` | 02:41 UTC daily + manual: full browser tests in Chromium, Firefox and WebKit; no secrets, never deploys; issue "Nightly end-to-end tests failed" on failure | 2026-11-24 (added by the audit; first scheduled run only after merge) |
 | Workflow `sync-pramaan-library.yml` | `.github/workflows/sync-pramaan-library.yml` — **keep this file name** (the Apps Script calls it by name) | Every 6 h at :47 + when the library Sheet changes; own concurrency group `pramaan-library-sync`. Skipped quietly only while its secrets are missing **and** the committed snapshot has no rows — once rows are committed, missing secrets fail loudly (alert issue every run), so add the secrets before pushing. First green run 2026-11-16 (`43867768722`); after the owner's Sheet update, **243 resources published** (run `43874559074`, 2026-11-16) | 2026-11-16 |
 | Secrets `PRAMAAN_LIBRARY_API_URL`, `PRAMAAN_LIBRARY_SYNC_TOKEN` | Settings → Secrets and variables → Actions | Set 2026-11-16 (`gh secret list`, names only) | 2026-11-16 |
 | Workflow `sync-publications.yml` | `.github/workflows/sync-publications.yml` — **keep this file name** (the Publications Apps Script calls it by name) | Every 6 h at :27 + when the Publications Sheet changes; own concurrency group `publications-sync`. Skipped quietly while its secrets are missing **and** the committed snapshot (`src/data/sheets/publications.json`) has no rows; the snapshot has had rows since 2026-11-20 (`f524770`), so a missing secret now fails loudly | 2026-11-21 (runs green, `gh run list`) |
@@ -66,8 +67,8 @@ handover). Last full review: 2026-11-15.
 |---|---|---|
 | PAT expiry, one date per token (`pramaan-library-sheet` ⚠️ fill in; `publications-sheet` ⚠️ fill in; `partners-sheet` once created) | GitHub token stops working | Renew 2 weeks before (`MAINTENANCE-GITHUB-PAT-REFRESH.md`) |
 | Yearly | Health review | `docs/OPERATIONS-RUNBOOK.md` → yearly checklist |
-| 2028-04 | Node.js 24 end of life | Bump `node-version` in all four workflows (`deploy.yml`, `sync-pramaan-library.yml`, `sync-publications.yml`, `sync-partners.yml`) |
-| ~2029 | `ubuntu-24.04` runner retirement (GitHub announces dates) | Bump `runs-on` in all four workflows |
+| 2028-04 | Node.js 24 end of life | Bump `node-version` in all six workflows (`deploy.yml`, `e2e-nightly.yml`, `sync-pramaan-library.yml`, `sync-publications.yml`, `sync-partners.yml`, `sync-social-changemakers.yml`) |
+| ~2029 | `ubuntu-24.04` runner retirement (GitHub announces dates) | Bump `runs-on` in all six workflows |
 
 ## Retired — no longer used by the website (since 2026-11-19)
 
