@@ -57,7 +57,7 @@ export default function LibraryDropdown({ value, options, onChange, ariaLabel, p
         aria-label={`${ariaLabel}: ${selected?.label ?? ''}`}
         onClick={() => (open ? setOpen(false) : openList())}
         onKeyDown={onTriggerKeyDown}
-        className={`inline-flex items-center gap-1.5 rounded-full text-sm font-body transition-colors ${FOCUS_PILL} ${triggerClassName}`}
+        className={`hit-44 relative inline-flex items-center gap-1.5 rounded-full text-sm font-body transition-colors ${FOCUS_PILL} ${triggerClassName}`}
       >
         {prefix && <span className="text-tide-muted">{prefix}</span>}
         <span className="font-semibold text-tide-text">{selected?.label}</span>

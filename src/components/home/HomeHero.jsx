@@ -3,6 +3,7 @@ import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTran
 import { ArrowRight } from 'lucide-react'
 import Button from '../ui/Button'
 import CountUpText from '../ui/CountUpText'
+import { useLoopWindow } from '../../hooks/useLoopWindow'
 
 // Homepage banner. Reading order is the story in five seconds: who (badge) → what (headline, with
 // "holistic education" underlined by a stroke that draws itself) → how (one line) → what to do
@@ -22,6 +23,7 @@ export default function HomeHero({ hero, site }) {
   const heroRef = useRef(null)
   const heroImgRef = useRef(null)
   const reduce = useReducedMotion()
+  const cueLooping = useLoopWindow()   // the scroll cue bobs for 5 s, then rests (WCAG 2.2.2)
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const photoY = useTransform(scrollYProgress, [0, 1], reduce ? ['0%', '0%'] : ['0%', '22%'])
   // The copy stays fully opaque for the first stretch of scroll, so a small nudge doesn't dim it.
@@ -181,7 +183,7 @@ export default function HomeHero({ hero, site }) {
         <span className="flex h-9 w-5 justify-center rounded-full border border-white/35 pt-1.5">
           <motion.span
             className="h-1.5 w-1 rounded-full bg-white/80"
-            animate={reduce ? undefined : { y: [0, 12, 0], opacity: [1, 0.2, 1] }}
+            animate={reduce ? undefined : cueLooping ? { y: [0, 12, 0], opacity: [1, 0.2, 1] } : { y: 0, opacity: 1 }}
             transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
           />
         </span>

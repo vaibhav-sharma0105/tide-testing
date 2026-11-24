@@ -32,7 +32,7 @@ function BankRow({ label, value, large = false }) {
         type="button"
         onClick={copy}
         aria-label={data.bank.copyAria.replace('{label}', label)}
-        className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors ${copied ? 'text-primary bg-primary-light' : 'text-tide-muted hover:text-primary hover:bg-primary-light'}`}
+        className={`hit-44 relative shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors ${copied ? 'text-primary bg-primary-light' : 'text-tide-muted hover:text-primary hover:bg-primary-light'}`}
       >
         {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
         <span className="sr-only" aria-live="polite">{copied ? data.bank.copiedLabel : ''}</span>
@@ -115,13 +115,13 @@ export default function Donate() {
           <div className="mt-10 flex justify-center">
             <a href="#give" className="flex flex-col items-center font-body text-sm font-medium text-primary hover:text-primary-dark transition-colors">
               <span>{data.cue.label}</span>
-              <ChevronDown className="w-5 h-5 mt-0.5 motion-safe:animate-bounce" aria-hidden="true" />
+              <ChevronDown className="w-5 h-5 mt-0.5 motion-safe:animate-bounce [animation-iteration-count:5]" aria-hidden="true" />
             </a>
           </div>
         </div>
       </section>
 
-      <section id="give" className="relative scroll-mt-20 bg-gradient-to-br from-primary to-primary-dark text-white px-4 md:px-8 lg:px-16 pt-24 pb-20 md:pt-28 md:pb-24">
+      <section id="give" className="relative bg-gradient-to-br from-primary to-primary-dark text-white px-4 md:px-8 lg:px-16 pt-24 pb-20 md:pt-28 md:pb-24">
         <WaveDivider className="text-tide-bg" />
         <div className="max-w-3xl mx-auto text-center">
           <Heart className="w-8 h-8 text-accent mx-auto mb-4" aria-hidden="true" />

@@ -58,7 +58,7 @@ export default function FellowCard({ fellow, text, index = 0, onOpen }) {
             </button>
           </h3>
           <p className="mt-1 line-clamp-2 min-h-10 font-body text-sm leading-5 text-tide-muted">{fellow.project}</p>
-          <span aria-hidden="true" className="mt-3 inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full bg-primary-faint px-4 font-body text-sm font-semibold text-primary-dark ring-1 ring-primary/15 transition-colors duration-300 group-hover:bg-primary group-hover:text-white group-hover:ring-primary group-has-[:focus-visible]:bg-primary group-has-[:focus-visible]:text-white">
+          <span aria-hidden="true" className="mt-3 inline-flex min-h-9 max-w-full items-center gap-1.5 rounded-full bg-primary-faint px-4 py-1.5 font-body text-sm font-semibold text-primary-dark ring-1 ring-primary/15 transition-colors duration-300 group-hover:bg-primary group-hover:text-white group-hover:ring-primary group-has-[:focus-visible]:bg-primary group-has-[:focus-visible]:text-white">
             {text.cta}
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
           </span>

@@ -7,7 +7,17 @@
     position: relative;         /* Framer Motion's useScroll (Home hero, THRIvE parallax) measures against <html> and warns if it is static */
     scroll-behavior: smooth;
     scrollbar-gutter: stable;   /* locking the body behind a modal must not shift the page sideways */
+    /* Anything scrolled into view (keyboard focus, #anchors, scrollIntoView) stops below the fixed
+       70px header, never under it (WCAG 2.4.11/2.4.12). Sections no longer need their own scroll-mt-*. */
+    scroll-padding-top: 5.5rem;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  /* A page with a second sticky bar under the header (Pramaan tabs, Partners index bar) needs room
+     for both. The Pramaan tabs scroll away on short screens (max-height 500px), so only the header. */
+  html:has([data-sticky-subnav]) { scroll-padding-top: 150px; }
+  @media (max-height: 500px) {
+    html:has([data-sticky-subnav="tall-only"]) { scroll-padding-top: 5.5rem; }
   }
 
   body {
@@ -178,6 +188,26 @@
   outline-offset: 2px;
   box-shadow: 0 0 0 2px #fff;
   border-radius: 4px;
+}
+
+/* WCAG 2.5.5 (AAA): a 44 x 44 px pointer target around a smaller control, without changing how it
+   looks. Use on a positioned control (relative/absolute) whose parent doesn't clip, and only where
+   there is room around it, so the enlarged areas of neighbours never overlap. */
+.hit-44::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
+}
+
+/* Focus targets that are not controls — <main> after the skip link, a page's <h1> after a page
+   change (Layout) — take focus only so the reading position moves; they draw no ring. */
+main[tabindex="-1"]:focus, h1[tabindex="-1"]:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 /* Remove outline for mouse users while keeping for keyboard */

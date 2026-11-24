@@ -10,7 +10,7 @@ const SOCIAL_ICONS = {
 }
 
 // One text style for everything in the main row; Donate is the only coloured element.
-const quietLink = 'py-2 font-body text-sm text-white/70 hover:text-white transition-colors'
+const quietLink = 'hit-44 relative py-2 font-body text-sm text-white/70 hover:text-white transition-colors'
 
 export default function Footer() {
   // Evaluated in the visitor's browser on every render, so the static build never shows a stale year
@@ -35,7 +35,7 @@ export default function Footer() {
               <span className="block font-body text-sm font-semibold text-white">
                 {footerData.brandName} {footerData.brandSuffix}
               </span>
-              <span className="mt-0.5 block font-body text-xs text-white/55">{footerData.tagline}</span>
+              <span className="mt-0.5 block font-body text-xs text-white/70">{footerData.tagline}</span>
             </span>
           </Link>
 
@@ -67,7 +67,7 @@ export default function Footer() {
 
               <Link
                 to={footerData.donateHref}
-                className="rounded-full bg-accent px-5 py-2 font-body text-sm font-semibold text-navy hover:brightness-110 transition-[filter]"
+                className="hit-44 relative rounded-full bg-accent px-5 py-2 font-body text-sm font-semibold text-navy hover:brightness-110 transition-[filter]"
               >
                 {footerData.donateLabel}
               </Link>
@@ -76,7 +76,7 @@ export default function Footer() {
         </div>
 
         {/* ── Bottom line ── */}
-        <div className="flex flex-col gap-1 border-t border-white/[0.08] py-5 font-body text-xs text-white/55 sm:flex-row sm:justify-between">
+        <div className="flex flex-col gap-1 border-t border-white/[0.08] py-5 font-body text-xs text-white/70 sm:flex-row sm:justify-between">
           <p>{rights}</p>
           <p>{footerData.madeWithLove}</p>
         </div>

@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import LangText from '../ui/LangText'
+import { textLang } from '../../utils/scriptLang'
 import { Play } from 'lucide-react'
 import DriveImage from '../abl/DriveImage'
 import LibraryTypeBadge from './LibraryTypeBadge'
@@ -30,6 +32,7 @@ export default function LibraryCard({ resource }) {
         <DriveImage
           src={getLibraryPhoto(resource.id, 'thumb')}
           alt={resource.name ?? data.card.imageAltFallback}
+          lang={textLang(resource.name)}
           imgClassName="group-hover/card:scale-105"
         />
         <div className="absolute left-3 top-4">
@@ -49,9 +52,9 @@ export default function LibraryCard({ resource }) {
         {resource.subject && (
           <p className={`text-[11px] font-body font-bold uppercase tracking-widest ${colors.eyebrow}`}>{resource.subject}</p>
         )}
-        <h3 className={`font-display text-base font-semibold text-tide-text leading-snug line-clamp-2 transition-colors ${colors.titleHover.replace('group-hover:', 'group-hover/card:')}`}>
-          {resource.name}
-        </h3>
+        <h2 className={`font-display text-base font-semibold text-tide-text leading-snug line-clamp-2 transition-colors ${colors.titleHover.replace('group-hover:', 'group-hover/card:')}`}>
+          <LangText text={resource.name} />
+        </h2>
         {resource.description && (
           <p className="text-sm font-body text-tide-muted leading-relaxed line-clamp-3">{resource.description}</p>
         )}

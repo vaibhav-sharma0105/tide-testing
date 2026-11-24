@@ -15,6 +15,11 @@
 
 export const EASE_OUT = [0.22, 1, 0.36, 1]
 
+/* Decorative loops (a floating logo, a bouncing cue, a drifting wave) start by themselves, so WCAG
+   2.2.2 wants them to stop within five seconds: they run for LOOP_BUDGET_MS and then rest
+   (hooks/useLoopWindow.js; CSS loops use 5 iterations of a 1 s animation). */
+export const LOOP_BUDGET_MS = 5000
+
 export const REVEAL = {
   y: 10,
   duration: 0.45,

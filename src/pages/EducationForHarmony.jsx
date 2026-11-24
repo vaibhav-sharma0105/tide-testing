@@ -279,7 +279,7 @@ function Video() {
   const { video } = data
   const [playing, setPlaying] = useState(false)
   return (
-    <section id="glimpses" className="section-padding scroll-mt-20 bg-tide-warm">
+    <section id="glimpses" className="section-padding bg-tide-warm">
       <div className="max-w-4xl mx-auto">
         <motion.h2 {...fadeUp()} className="mb-10 text-center font-display text-3xl md:text-4xl font-semibold leading-tight text-tide-text text-balance">
           {video.title}

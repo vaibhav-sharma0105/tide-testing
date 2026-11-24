@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import LangText from '../../components/ui/LangText'
+import { textLang } from '../../utils/scriptLang'
 import { useParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, BookOpen, Expand, ExternalLink, Play } from 'lucide-react'
@@ -126,7 +128,7 @@ export default function PramaanLibraryDetail() {
           { name: resource.name, path: `/pramaan/resource-centre/${encodeURIComponent(resource.id)}` },
         ]}
       />
-      <PageHero badge={resource.subject ? `${data.meta.badge} · ${resource.subject}` : data.meta.badge} badgeClassName={accent.heroBadge} title={resource.name} />
+      <PageHero badge={resource.subject ? `${data.meta.badge} · ${resource.subject}` : data.meta.badge} badgeClassName={accent.heroBadge} title={<LangText text={resource.name} />} />
       <AblNavBar />
 
       <section className="section-padding bg-gradient-to-b from-tide-bg to-white">
@@ -140,7 +142,7 @@ export default function PramaanLibraryDetail() {
                 <div className="relative rounded-md bg-white p-2 shadow-[0_14px_36px_rgba(13,33,55,0.16)] ring-1 ring-tide-border">
                   <span className={`absolute left-1/2 -top-2 z-10 h-4 w-4 -translate-x-1/2 rounded-full ${accent.solid} shadow-[0_2px_3px_rgba(0,0,0,0.35)]`} aria-hidden="true" />
                   <div className="relative aspect-[3/4] rounded-sm overflow-hidden">
-                    <DriveImage src={photoFull} alt={resource.name} />
+                    <DriveImage src={photoFull} alt={resource.name} lang={textLang(resource.name)} />
                     {photoFull && (
                       <button type="button" onClick={() => setLightboxOpen(true)} className="group/img absolute inset-0 w-full h-full cursor-zoom-in" aria-label={d.viewFullImageLabel}>
                         <span className="absolute inset-0 bg-black/0 group-hover/img:bg-black/15 transition-colors duration-300" />

@@ -3,7 +3,7 @@ import { BookOpen } from 'lucide-react'
 
 // A resource photo (self-hosted by the library sync; see utils/libraryPhotos) with a shimmer while it
 // loads and a book icon when there is no photo or it fails to load. `src` null → the icon.
-export default function DriveImage({ src, alt, className = '', imgClassName = '' }) {
+export default function DriveImage({ src, alt, lang, className = '', imgClassName = '' }) {
   const [loaded,  setLoaded]  = useState(false)
   const [errored, setErrored] = useState(false)
 
@@ -22,6 +22,7 @@ export default function DriveImage({ src, alt, className = '', imgClassName = ''
         <img
           src={src}
           alt={alt}
+          lang={lang}
           data-no-placeholder
           loading="lazy"
           onLoad={() => setLoaded(true)}

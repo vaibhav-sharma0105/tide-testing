@@ -282,7 +282,7 @@ export function ResultsBar({ q, pg, t, r, className = '' }) {
     .replace('{publications}', () => noun)
   return (
     <div className={`flex items-center justify-between gap-4 border-b border-tide-border pb-3 ${className}`}>
-      <p ref={resultsRef} tabIndex={-1} className="scroll-mt-28 rounded-sm font-body text-sm text-tide-muted outline-none" aria-live="polite">{text}</p>
+      <p ref={resultsRef} tabIndex={-1} className="rounded-sm font-body text-sm text-tide-muted outline-none" aria-live="polite">{text}</p>
       <button
         type="button"
         onClick={() => change({ ...params, dir: newest ? 'asc' : DEFAULT_DIR, page: 1 })}

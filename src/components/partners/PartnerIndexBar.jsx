@@ -72,7 +72,7 @@ export default function PartnerIndexBar({ groups, activeKey, onJump, headingId, 
   const closeSearch = () => { search.setInput(''); setMobileSearch(false) }
 
   return (
-    <div ref={barRef} className={`sticky top-[70px] z-30 border-b border-tide-border/80 ${stuck ? "bg-tide-bg before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-[70px] before:bg-tide-bg before:content-['']" : 'bg-tide-bg/90 backdrop-blur-md'}`}>
+    <div ref={barRef} data-sticky-subnav className={`sticky top-[70px] z-30 border-b border-tide-border/80 ${stuck ? "bg-tide-bg before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-[70px] before:bg-tide-bg before:content-['']" : 'bg-tide-bg/90 backdrop-blur-md'}`}>
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 md:px-8 lg:px-0">
         {/* While searching, the results are one grid — the tabs have nothing to point at. */}
         {searching ? <div className="hidden flex-1 sm:block" /> : (

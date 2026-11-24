@@ -51,7 +51,7 @@ describe('Pramaan Library pages', () => {
     renderAt('/pramaan/resource-centre?sort=owner')
     const trigger = screen.getByRole('button', { name: 'Sort by: Ownership' })
     expect(trigger).toHaveAttribute('aria-haspopup', 'listbox')
-    const names = () => screen.getAllByRole('heading', { level: 3 }).map(h => h.textContent)
+    const names = () => screen.getAllByRole('heading', { level: 2 }).map(h => h.textContent)
     expect(names().indexOf('Test worksheet')).toBeLessThan(names().indexOf('Test game'))
     fireEvent.click(trigger)
     const list = screen.getByRole('listbox', { name: 'Sort by' })

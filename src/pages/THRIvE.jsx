@@ -34,11 +34,11 @@ function ResearchArea({ area, index }) {
     <section
       ref={ref}
       id={AREA_ID(index)}
-      className={`scroll-mt-28 px-4 py-16 md:px-8 md:py-24 lg:px-16 ${tinted ? 'bg-white' : 'bg-tide-bg'}`}
+      className={`px-4 py-16 md:px-8 md:py-24 lg:px-16 ${tinted ? 'bg-white' : 'bg-tide-bg'}`}
     >
       <div className="mx-auto grid max-w-5xl gap-10 lg:grid-cols-2 lg:gap-16">
         <motion.div {...fadeUp()} className="self-start lg:sticky lg:top-40">
-          <span className="block font-display text-6xl font-semibold leading-none text-primary/20" aria-hidden="true">{pad(index)}</span>
+          <span className="block font-display text-6xl font-semibold leading-none text-primary/20" aria-hidden="true" data-a11y-decorative>{pad(index)}</span>
           <h3 className="mt-3 font-display text-2xl font-semibold leading-snug text-tide-text md:text-3xl">{area.title}</h3>
           <div className="mt-4 mb-5 h-1 w-12 rounded-full bg-accent" aria-hidden="true" />
           <p className="font-body text-lg leading-relaxed text-primary-dark">{area.overview}</p>
@@ -106,7 +106,7 @@ function AreaNav({ items, label, heading }) {
                   aria-label={area.title}
                   title={area.title}
                   aria-current={active === i ? 'true' : undefined}
-                  className={`flex h-9 w-9 items-center justify-center rounded-full border font-body text-xs font-semibold transition-colors ${active === i ? 'border-primary bg-primary text-white' : 'border-tide-border bg-white text-primary hover:border-primary'}`}
+                  className={`hit-44 relative flex h-9 w-9 items-center justify-center rounded-full border font-body text-xs font-semibold transition-colors ${active === i ? 'border-primary bg-primary text-white' : 'border-tide-border bg-white text-primary hover:border-primary'}`}
                 >
                   {pad(i)}
                 </a>

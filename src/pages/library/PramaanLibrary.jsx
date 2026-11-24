@@ -123,12 +123,15 @@ export default function PramaanLibrary() {
             </div>
           ) : (
             <div className="flex gap-7">
-              <aside className="hidden lg:block w-72 flex-shrink-0">
+              {/* A labelled section, not an <aside>: a complementary landmark must not sit inside <main>.
+                  Outline: h1 page > h2 Filters (hidden) > h3 filter groups; each resource card is an h2. */}
+              <section aria-labelledby="library-filters-heading" className="hidden lg:block w-72 flex-shrink-0">
+                <h2 id="library-filters-heading" className="sr-only">{data.page.filtersButton}</h2>
                 {/* No inner scroll box: pinned while it fits the screen, otherwise it scrolls with the page. */}
                 <div ref={sidebarRef} className={sidebarSticky ? 'sticky top-[130px]' : ''}>
                   <LibraryFilters {...filterProps} />
                 </div>
-              </aside>
+              </section>
 
               <div className="flex-1 min-w-0">
                 {/* Toolbar: find (search) and order (sort) sit right above what they act on. Phone: search on its own row, Filters + Sort below. Tablet: one row. Laptop with sidebar (lg): search row, sort below on the right. Wide (xl): one row. */}
@@ -136,6 +139,8 @@ export default function PramaanLibrary() {
                     <button
                       type="button"
                       onClick={() => setDrawerOpen(true)}
+                      aria-haspopup="dialog"
+                      aria-expanded={drawerOpen}
                       className={`order-2 sm:order-1 lg:hidden inline-flex flex-shrink-0 items-center gap-2 px-4 py-2.5 rounded-full border border-tide-border bg-white text-sm font-body font-semibold text-tide-text hover:border-primary/40 transition-colors shadow-sm ${FOCUS_PILL}`}
                     >
                       <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
@@ -167,7 +172,7 @@ export default function PramaanLibrary() {
                       type="button"
                       onClick={() => change({ ...filters, dir: filters.dir === 'desc' ? 'asc' : 'desc' })}
                       aria-label={data.sort.directionLabelTemplate.replace('{dir}', () => (filters.dir === 'desc' ? data.sort.descending : data.sort.ascending))}
-                      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-body font-semibold text-tide-text hover:bg-tide-subtle transition-colors ${FOCUS_PILL}`}
+                      className={`hit-44 relative inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-body font-semibold text-tide-text hover:bg-tide-subtle transition-colors ${FOCUS_PILL}`}
                     >
                       {filters.dir === 'desc' ? <ArrowUpZA className="w-4 h-4" aria-hidden="true" /> : <ArrowDownAZ className="w-4 h-4" aria-hidden="true" />}
                       <span className="hidden sm:inline">{filters.dir === 'desc' ? data.sort.descending : data.sort.ascending}</span>

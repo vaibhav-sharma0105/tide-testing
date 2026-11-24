@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion'
+import { useLoopWindow } from '../hooks/useLoopWindow'
 import { Helmet } from 'react-helmet-async'
 import Button from '../components/ui/Button'
 import PageHero from '../components/ui/PageHero'
 import data from '../data/not-found.json'
 
 export default function NotFound() {
+  const flying = useLoopWindow()   // the kite sways for 5 s, then hangs still (WCAG 2.2.2)
   return (
     <>
       <Helmet>
@@ -53,7 +55,7 @@ export default function NotFound() {
                 uniform sway. */}
             <motion.g
               initial={{ opacity: 0, y: 8, rotate: -6 }}
-              animate={{ opacity: 1, y: [0, -6, 0], rotate: [-8, 8, -8] }}
+              animate={flying ? { opacity: 1, y: [0, -6, 0], rotate: [-8, 8, -8] } : { opacity: 1, y: 0, rotate: 0 }}
               transition={{
                 opacity: { duration: 0.5, delay: 0.4 },
                 y: { duration: 2.4, delay: 0.9, repeat: Infinity, ease: 'easeInOut' },
@@ -65,7 +67,7 @@ export default function NotFound() {
               {/* tail, with its own independent flutter */}
               <motion.g
                 initial={{ rotate: -10 }}
-                animate={{ rotate: [-10, 14, -10] }}
+                animate={flying ? { rotate: [-10, 14, -10] } : { rotate: 0 }}
                 transition={{ duration: 1.7, delay: 0.9, repeat: Infinity, ease: 'easeInOut' }}
                 style={{ transformOrigin: '118px 49px' }}
               >

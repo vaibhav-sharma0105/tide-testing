@@ -243,13 +243,14 @@ function PlaceholderProfiles() {
   const [beat, setBeat] = useState(0)
 
   useEffect(() => {
-    if (reduce || !inView) return undefined
-    const id = setInterval(() => setBeat((b) => b + 1), SHEEN_MS)
-    return () => clearInterval(id)
-  }, [reduce, inView])
+    // One beat, not a loop: motion that starts by itself must not go on past five seconds (WCAG 2.2.2).
+    if (reduce || !inView || beat > 0) return undefined
+    const id = setTimeout(() => setBeat(1), SHEEN_MS)
+    return () => clearTimeout(id)
+  }, [reduce, inView, beat])
 
   return (
-    <section id="profiles" className="section-padding scroll-mt-16 border-t border-tide-border bg-tide-warm">
+    <section id="profiles" className="section-padding border-t border-tide-border bg-tide-warm">
       <div className="max-w-6xl mx-auto">
         <motion.div {...fadeUp()} className="mb-10 text-center md:mb-12">
           <span className="mb-4 inline-block rounded-full border border-accent-dark/40 bg-accent-faint px-3 py-1 font-body text-xs font-semibold uppercase tracking-widest text-accent-deeper">
@@ -339,7 +340,7 @@ function Profiles({ batches }) {
   }
 
   return (
-    <section id="profiles" className="section-padding scroll-mt-16 border-t border-tide-border bg-tide-warm">
+    <section id="profiles" className="section-padding border-t border-tide-border bg-tide-warm">
       <div className="mx-auto max-w-6xl">
         <motion.header {...fadeUp()} className="mb-8 max-w-2xl md:mb-10">
           <h2 className="font-display text-3xl font-semibold leading-tight text-tide-text md:text-4xl">{text.list.heading}</h2>
@@ -363,7 +364,7 @@ function Profiles({ batches }) {
           <ActiveFilters chips={chips} removeTemplate={text.list.removeFilter} clearAllLabel={text.list.clearAll} onClearAll={clearAll} className="mt-3" />
         </div>
 
-        <p id="fellows" tabIndex={-1} role="status" aria-live="polite" className="mb-6 mt-6 scroll-mt-28 font-body text-sm font-semibold text-tide-mutedOnLight focus:outline-none">
+        <p id="fellows" tabIndex={-1} role="status" aria-live="polite" className="mb-6 mt-6 font-body text-sm font-semibold text-tide-mutedOnLight focus:outline-none">
           {resultsLine}
         </p>
 

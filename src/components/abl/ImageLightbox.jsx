@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
+import { textLang } from '../../utils/scriptLang'
 import { X } from 'lucide-react'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { useModalBehavior } from '../../hooks/useModalBehavior'
@@ -57,6 +58,7 @@ export default function ImageLightbox({ id, alt, onClose, src }) {
               <img
                 src={src}
                 alt={alt ?? ''}
+                lang={textLang(alt)}
                 className="max-h-[82vh] w-auto max-w-full rounded-xl object-contain shadow-2xl ring-1 ring-white/10"
               />
             ) : (

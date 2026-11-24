@@ -10,7 +10,7 @@ import { activeTopIndex, activeLeaf } from '../../utils/navActive'
 // A button that opens a small sub-menu to the right. Mouse: hover opens. Keyboard: Enter, Space
 // or → opens it and focuses the first link; ↑ ↓ Home End move; ← or Esc closes it and returns
 // focus to the button (Esc does not also close the outer dropdown); leaving it closes it.
-function SubGroup({ item, onClose }) {
+function SubGroup({ item, onClose, currentLeaf }) {
   const [open, setOpen] = useState(false)
   const timer = useRef(null)
   const buttonRef = useRef(null)
@@ -97,6 +97,7 @@ function SubGroup({ item, onClose }) {
                 to={sub.to}
                 onClick={onClose}
                 role="menuitem"
+                aria-current={sub.to === currentLeaf ? 'page' : undefined}
                 className="group flex items-start gap-3 px-4 py-3 mx-2 rounded-xl hover:bg-primary-faint transition-colors duration-150"
               >
                 <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
@@ -118,11 +119,12 @@ function SubGroup({ item, onClose }) {
 }
 
 /* ── Dropdown ──────────────────────────────────────────────────────────── */
-function Dropdown({ id, items, onClose }) {
+// A disclosure list of links (not an ARIA menu: these are page links reached with Tab). The nested
+// "Our Publications" group inside it is a small menu of its own (SubGroup, with arrow keys).
+function Dropdown({ id, items, onClose, currentLeaf }) {
   return (
     <motion.div
       id={id}
-      role="menu"
       initial={{ opacity: 0, y: 10, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 10, scale: 0.97 }}
@@ -134,12 +136,13 @@ function Dropdown({ id, items, onClose }) {
 
       {items.map((item) =>
         item.subItems ? (
-          <SubGroup key={item.label} item={item} onClose={onClose} />
+          <SubGroup key={item.label} item={item} onClose={onClose} currentLeaf={currentLeaf} />
         ) : (
           <Link
             key={item.to}
             to={item.to}
             onClick={onClose}
+            aria-current={item.to === currentLeaf ? 'page' : undefined}
             className="group flex items-start gap-3 px-4 py-3 mx-2 rounded-xl hover:bg-primary-faint transition-colors duration-150"
           >
             <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
@@ -265,7 +268,7 @@ export default function Header() {
                 <Link
                   to={item.to}
                   aria-current={isActive(item) ? 'page' : undefined}
-                  className={`relative px-3.5 py-2 text-sm font-body font-medium rounded-lg flex items-center gap-1 transition-colors duration-200 ${
+                  className={`hit-44 relative px-3.5 py-2 text-sm font-body font-medium rounded-lg flex items-center gap-1 transition-colors duration-200 ${
                     isActive(item)
                       ? scrolled ? 'text-primary' : 'text-white font-semibold'
                       : scrolled ? 'text-tide-muted hover:text-tide-text' : 'text-white/80 hover:text-white'
@@ -284,9 +287,8 @@ export default function Header() {
                   type="button"
                   onClick={() => toggleDropdown(idx)}
                   aria-expanded={openDropdown === idx}
-                  aria-haspopup="true"
                   aria-controls={`dropdown-${idx}`}
-                  className={`relative px-3.5 py-2 text-sm font-body font-medium rounded-lg flex items-center gap-1 transition-colors duration-200 ${
+                  className={`hit-44 relative px-3.5 py-2 text-sm font-body font-medium rounded-lg flex items-center gap-1 transition-colors duration-200 ${
                     isActive(item)
                       ? scrolled ? 'text-primary' : 'text-white font-semibold'
                       : scrolled ? 'text-tide-muted hover:text-tide-text' : 'text-white/80 hover:text-white'
@@ -304,7 +306,7 @@ export default function Header() {
               )}
               <AnimatePresence>
                 {item.children && openDropdown === idx && (
-                  <Dropdown id={`dropdown-${idx}`} items={item.children} onClose={() => setOpenDropdown(null)} />
+                  <Dropdown id={`dropdown-${idx}`} items={item.children} onClose={() => setOpenDropdown(null)} currentLeaf={currentLeaf} />
                 )}
               </AnimatePresence>
             </div>

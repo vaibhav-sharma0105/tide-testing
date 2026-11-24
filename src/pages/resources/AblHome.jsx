@@ -110,7 +110,7 @@ export default function AblHome() {
           {formatDate(snapshot.lastUpdated) && (
             <motion.p {...fadeUp(0.3)} className="mt-8 flex items-center justify-center gap-2 text-center font-body text-xs text-tide-muted">
               <span className="relative flex h-2 w-2" aria-hidden="true">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500/50 motion-reduce:animate-none" />
+                <span className="absolute inline-flex h-full w-full animate-ping [animation-iteration-count:5] rounded-full bg-emerald-500/50 motion-reduce:animate-none" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600" />
               </span>
               <span>{ablData.stats.lastSynced} {formatDate(snapshot.lastUpdated)}</span>

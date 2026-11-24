@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { getPartnerLogo } from '../../utils/partnerPhotos'
+import { useLoopWindow } from '../../hooks/useLoopWindow'
 
 // The banner graphic: the highest-priority partners' logos as discs joined by faint lines — a
 // network, not a list. Being up here is how the most important partners are honoured, without
@@ -46,6 +47,8 @@ export default function PartnerConstellation({ partners }) {
   const inView = useInView(ref, { margin: '0px 0px -10% 0px' })
   const items = partners.slice(0, SLOTS.length).map((p, i) => ({ p, slot: SLOTS[i], logo: getPartnerLogo(p.id) }))
   const reduce = useReducedMotion()
+  // Floating, the breathing ring and the travelling lights run for 5 s once in view, then rest (WCAG 2.2.2).
+  const looping = useLoopWindow(inView)
   const threads = items.slice(1).map((_, k) => ({ i: k + 1, ...threadPath(k + 1) }))
 
   return (
@@ -81,7 +84,7 @@ export default function PartnerConstellation({ partners }) {
             transition={{ duration: 0.9, delay: 0.25 + Math.min(n, 6) * 0.04, ease: [0.16, 1, 0.3, 1] }}
           />
         ))}
-        {!reduce && inView && threads.map(({ i, d }, n) => (
+        {!reduce && inView && looping && threads.map(({ i, d }, n) => (
           // A soft point of light that travels outwards now and then (each thread on its own rhythm).
           <circle key={`spark-${i}`} r="1.6" fill="url(#partner-spark)" opacity="0">
             <animateMotion dur={`${3.2 + (n % 3) * 0.7}s`} begin={`${2 + n * 1.3}s`} repeatCount="indefinite" path={d} keyPoints="0;1" keyTimes="0;1" calcMode="spline" keySplines="0.4 0 0.2 1" />
@@ -100,7 +103,7 @@ export default function PartnerConstellation({ partners }) {
         >
           <motion.div
             className="relative aspect-square w-full overflow-hidden rounded-full bg-white shadow-[0_18px_40px_-12px_rgba(0,0,0,0.55)] ring-1 ring-white/40"
-            animate={inView ? { y: [0, i % 2 ? 7 : -7, 0] } : { y: 0 }}
+            animate={inView && looping ? { y: [0, i % 2 ? 7 : -7, 0] } : { y: 0 }}
             transition={{ duration: 5.5 + (i % 3) * 1.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.35 }}
           >
             {logo && (
@@ -119,7 +122,7 @@ export default function PartnerConstellation({ partners }) {
             // A slow ring that breathes out from the centre disc.
             <motion.span
               className="absolute inset-0 rounded-full ring-2 ring-white/30"
-              animate={inView ? { scale: [1, 1.35], opacity: [0.6, 0] } : { opacity: 0 }}
+              animate={inView && looping ? { scale: [1, 1.35], opacity: [0.6, 0] } : { opacity: 0 }}
               transition={{ duration: 3.2, repeat: Infinity, ease: 'easeOut', delay: 1.4 }}
             />
           )}

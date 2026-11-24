@@ -245,10 +245,11 @@ function PastSessions() {
   const [beat, setBeat] = useState(0)
 
   useEffect(() => {
-    if (reduce || !inView) return undefined
-    const id = setInterval(() => setBeat((b) => b + 1), PLUCK_MS)
-    return () => clearInterval(id)
-  }, [reduce, inView])
+    // One beat, not a loop: motion that starts by itself must not go on past five seconds (WCAG 2.2.2).
+    if (reduce || !inView || beat > 0) return undefined
+    const id = setTimeout(() => setBeat(1), PLUCK_MS)
+    return () => clearTimeout(id)
+  }, [reduce, inView, beat])
 
   return (
     <section className="section-padding overflow-hidden border-t border-tide-border bg-tide-warm">

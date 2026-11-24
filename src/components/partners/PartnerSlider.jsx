@@ -157,7 +157,7 @@ export default function PartnerSlider({ group, index, text, suspended = false, h
       <div className="mb-5 flex items-end justify-between gap-4">
         <div className="min-w-0">
           <p aria-hidden="true" className="mb-1 font-body text-xs font-bold tabular-nums tracking-[0.2em] text-accent-deeper lg:hidden">{number}</p>
-          <h2 id={headingId} tabIndex={-1} className="scroll-mt-[150px] font-display text-2xl font-semibold leading-tight text-tide-text focus:outline-none md:text-[1.75rem]">
+          <h2 id={headingId} tabIndex={-1} className="font-display text-2xl font-semibold leading-tight text-tide-text focus:outline-none md:text-[1.75rem]">
             {group.label}
           </h2>
           <p className="mt-1 font-body text-sm text-tide-muted">
