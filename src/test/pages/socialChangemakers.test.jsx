@@ -92,6 +92,13 @@ describe('Past SCF list', () => {
     expect(within(pages).getByRole('link', { name: L.pagination.pageLabelTemplate.replace('{n}', '1') }).getAttribute('href')).toContain('batch=23-24')
   })
 
+  it('reads a fractional ?page= as a whole page (P5: ?page=1.5 showed rows 7–18)', async () => {
+    const many = Array.from({ length: FELLOWS_PAGE_SIZE + 2 }, (_, i) => fellow({ id: `SC-m${i}`, order: i + 1, name: `Person ${String(i).padStart(2, '0')}` }))
+    await renderPage(many, '/education-for-harmony/social-changemakers?page=1.5')
+    expect(cardNames()).toHaveLength(FELLOWS_PAGE_SIZE)
+    expect(cardNames()[0]).toBe('Person 00')
+  })
+
   it('shows a still photo on the card (no switch button) and opens the profile with a click anywhere on it', async () => {
     await renderPage()
     const card = screen.getByRole('heading', { level: 3, name: new RegExp('Bina Shah') }).closest('article')

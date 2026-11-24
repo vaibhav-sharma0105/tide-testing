@@ -311,7 +311,7 @@ function Profiles({ batches }) {
   const shown = inBatch.filter(fl => matchesFellow(fl, query))
   const options = batches.map(g => ({ value: g.label, label: fill(text.batchHeading, { batch: g.label }), count: g.fellows.filter(fl => matchesFellow(fl, query)).length }))
   const pages = Math.max(1, Math.ceil(shown.length / FELLOWS_PAGE_SIZE))
-  const page = Math.min(pages, Math.max(1, Number(params.get('page')) || 1))
+  const page = Math.min(pages, Math.max(1, Math.floor(Number(params.get('page'))) || 1))
   const pageRows = shown.slice((page - 1) * FELLOWS_PAGE_SIZE, page * FELLOWS_PAGE_SIZE)
   const filtering = !!(batch || query.trim())
   const chips = [
