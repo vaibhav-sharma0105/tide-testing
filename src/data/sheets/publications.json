@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-21T10:31:10.753Z",
-  "contentHash": "sha256:619bc8e6a608024ce4c3baa621572ffb8f5992e31be1ccee599a08c4f0577e06",
+  "lastUpdated": "2026-11-24T09:41:40.009Z",
+  "contentHash": "sha256:34180a99d77bfbff1c836e5220ebd5952d678e51a0757caf7d6716f72a87794c",
   "resources": [
     {
       "id": "P-6bdd242cfb",
@@ -169,20 +169,6 @@
       "photoUrl": "https://drive.google.com/open?id=1AfmuWk2t97bB91XxzX1yXMXbkeK9KVr3"
     },
     {
-      "id": "P-8a9379dbc2",
-      "org": "THRIvE",
-      "date": "2025-07-25",
-      "title": "Rewilding education",
-      "type": "Book",
-      "fields": [
-        "Holistic Education"
-      ],
-      "description": "Hilary Cremin argues that education should move away from rigid, standardized, test-driven systems toward more flexible, community- and nature-connected approaches that foster creativity, well-being, social relationships, and ecological responsibility. The book presents \"rewilding\" as a vision for transforming schools into environments that better prepare young people for the challenges of the 21st century while supporting both human and environmental flourishing.",
-      "citation": "Cremin, H. (2025), Rewilding education. https://doi.org/10.4324/9781003627807",
-      "link": "https://doi.org/10.4324/9781003627807",
-      "photoUrl": "https://drive.google.com/open?id=1xnze5_Dv0PK3q0vmsnct10PJfCqZYc4_"
-    },
-    {
       "id": "P-c3d0b37b0a",
       "org": "THRIvE",
       "date": "2025-07-25",
@@ -201,7 +187,7 @@
       "org": "THRIvE",
       "date": "2025-07-25",
       "title": "Valuing wisdom",
-      "type": "Book",
+      "type": "Book Chapter",
       "fields": [
         "Holistic Education",
         "Social emotional learning"
@@ -891,10 +877,10 @@
     }
   ],
   "meta": {
-    "total": 65,
+    "total": 64,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 49
+      "THRIvE": 48
     }
   }
 }
