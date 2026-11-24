@@ -7,6 +7,7 @@
 
 import { normKey, cleanLabel, optionsFor, optionsForMany } from './listingFilters'
 import { TYPE_ICON_RULES, SCHEMA_TYPE_BY_ICON } from '../config/publications'
+import { safeHttpUrl } from './safeUrl'
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const hasDate = (r) => typeof r?.date === 'string' && ISO_DATE.test(r.date)
@@ -289,7 +290,7 @@ export function isNew(date, now, days) {
 }
 
 /** Only http(s) links are rendered (the sync already enforces this; checked again here). */
-export const safeLink = (url) => (typeof url === 'string' && /^https?:\/\//i.test(url.trim()) ? url.trim() : null)
+export const safeLink = safeHttpUrl
 
 /**
  * Where a link goes, read from the URL alone (a credibility cue, never a guess about content):

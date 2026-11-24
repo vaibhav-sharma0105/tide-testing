@@ -12,7 +12,13 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/assets/images/shared/tide-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-src https://www.google.com https://padlet.com https://www.youtube.com https://www.youtube-nocookie.com https://docs.google.com https://drive.google.com https://script.google.com https://forms.gle; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;" />
+    <!-- CSP: the build (scripts/siteDataPlugin.js) swaps the scripts' 'unsafe-inline' for the hash of
+         the one inline script above, so built pages run no inline script they didn't ship with; the
+         dev server keeps 'unsafe-inline' (Vite's React refresh needs it). frame-src = the embeds the
+         pages use: Google Maps (Contact), YouTube / youtube-nocookie and Drive previews (videos),
+         script.google.com (Education for Harmony dashboard), docs.google.com (Drive previews of Google
+         Docs). frame-ancestors and HSTS can't be set from a meta tag (see docs/audits, P4). -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-src https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com https://docs.google.com https://drive.google.com https://script.google.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';" />
     <!-- title/description/canonical/OG/Twitter are intentionally NOT set
          here — every page sets its own correct, specific values via
          SeoHead (src/components/ui/SeoHead.jsx) + react-helmet-async.

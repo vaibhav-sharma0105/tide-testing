@@ -10,6 +10,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { execFileSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import yaml from 'js-yaml'
 import { PRIMARY_ROUTES, RESOURCE_ROUTE, resourcePath } from '../src/config/siteRoutes.js'
 
@@ -108,6 +109,40 @@ export function transformHtml(html, site, facts = {}) {
       /(<meta\s+property="og:site_name"\s+content=")[^"]*(")/,
       (_, a, b) => `${a}${escapeAttr(site.name)}${b}`,
     )
+}
+
+// ── Content-Security-Policy for built pages ──────────────────────────────────────────────────────
+
+/** CSP source for an inline script's text, as the browser hashes it (after the parser turns CR LF into LF). */
+export const scriptHash = (text) =>
+  `'sha256-${createHash('sha256').update(String(text).replace(/\r\n?/g, '\n'), 'utf8').digest('base64')}'`
+
+/** Hashes of the inline scripts that run (no src, not a JSON / JSON-LD data block). */
+export function inlineScriptHashes(html) {
+  const out = []
+  for (const m of html.matchAll(/<script(\s[^>]*)?>([\s\S]*?)<\/script>/gi)) {
+    const attrs = m[1] || ''
+    if (/\ssrc\s*=/i.test(attrs) || /\stype\s*=\s*["']?application\/(ld\+)?json/i.test(attrs)) continue
+    out.push(scriptHash(m[2]))
+  }
+  return out
+}
+
+/**
+ * Built pages only: script-src loses 'unsafe-inline' and lists the hash of each inline script instead,
+ * so a script injected into a saved page (e.g. through Sheet text) would not run. Throws if the CSP
+ * meta or its script-src is missing, so the build can't silently ship without it.
+ */
+export function strictScriptSrc(html) {
+  const hashes = inlineScriptHashes(html)
+  let found = false
+  const out = html.replace(/(<meta\s+http-equiv="Content-Security-Policy"\s+content="[^"]*?script-src)([^;"]*)/i, (_, head, list) => {
+    found = true
+    const sources = list.trim().split(/\s+/).filter((t) => t && t !== "'unsafe-inline'")
+    return `${head} ${[...sources, ...hashes].join(' ')}`
+  })
+  if (!found) throw new Error('index.html: no Content-Security-Policy meta with a script-src')
+  return out
 }
 
 // ── robots.txt, sitemap.xml and the llms.txt page list ─────────────────────────────────────────
@@ -226,18 +261,25 @@ export default function siteDataPlugin() {
     buildSitemap(readSite(), sitemapEntries(loadResources(root), (files) => gitLastmod(files, root)))
   const served = { '/llms.txt': [readLlms, 'text/plain'], '/robots.txt': [readRobots, 'text/plain'], '/sitemap.xml': [readSitemap, 'application/xml'] }
 
+  let isBuild = false
   return {
     name: 'tide-site-data',
     configResolved(config) {
       root = config.root
       base = config.base || '/'
+      isBuild = config.command === 'build'
     },
     buildStart() {
       this.addWatchFile(path.join(root, SITE_YAML))
       this.addWatchFile(path.join(root, LLMS_TEMPLATE))
     },
-    transformIndexHtml(html) {
-      return transformHtml(html, readSite(), loadOrgFacts(root))
+    transformIndexHtml: {
+      // 'post': after Vite's own changes, so the hashed scripts are exactly what is shipped.
+      order: 'post',
+      handler(html) {
+        const out = transformHtml(html, readSite(), loadOrgFacts(root))
+        return isBuild ? strictScriptSrc(out) : out
+      },
     },
     generateBundle() {
       for (const [file, [read]] of Object.entries(served)) {

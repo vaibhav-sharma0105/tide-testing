@@ -17,6 +17,8 @@ import LibraryTypeBadge from '../../components/library/LibraryTypeBadge'
 import { libraryTypeColors } from '../../config/library'
 import { getLibraryPhoto } from '../../utils/libraryPhotos'
 import { getVideoEmbedUrl } from '../../utils/videoLinks'
+import { jsonLdText } from '../../utils/jsonLd'
+import { safeHttpUrl } from '../../utils/safeUrl'
 import { LIBRARY_GRADES, gradeLabel, linkParts } from '../../utils/libraryFilters'
 import { imgSrc } from '../../utils/imgSrc'
 import snapshot from '../../data/sheets/pramaan-library.json'
@@ -115,6 +117,9 @@ export default function PramaanLibraryDetail() {
   const accent = libraryTypeColors(resource.type)
   const photoFull = getLibraryPhoto(resource.id, 'full')
   const embedUrl = getVideoEmbedUrl(resource.videoUrl)
+  // Sheet links: shown only when they are plain http(s) web links (checked again here, after the sync).
+  const fileUrl = safeHttpUrl(resource.photoUrl)
+  const videoLink = safeHttpUrl(resource.videoUrl)
   const extra = linkParts(resource.additionalInfo)
 
   return (
@@ -131,7 +136,7 @@ export default function PramaanLibraryDetail() {
         ]}
       />
       <Helmet>
-        <script type="application/ld+json">{JSON.stringify(libraryResourceJsonLd(resource, {
+        <script type="application/ld+json">{jsonLdText(libraryResourceJsonLd(resource, {
           url: `${site.url}/pramaan/resource-centre/${encodeURIComponent(resource.id)}`,
           collectionUrl: `${site.url}/pramaan/resource-centre`,
           collectionName: site.breadcrumbs.resourceCentre,
@@ -162,15 +167,15 @@ export default function PramaanLibraryDetail() {
                     )}
                   </div>
                 </div>
-                {(resource.photoUrl || (resource.videoUrl && !embedUrl)) && (
+                {(fileUrl || (videoLink && !embedUrl)) && (
                   <div className="flex gap-3 mt-5 flex-wrap">
-                    {resource.photoUrl && (
-                      <Button href={resource.photoUrl} external variant="accent">
+                    {fileUrl && (
+                      <Button href={fileUrl} external variant="accent">
                         {d.openFile} <ExternalLink className="w-4 h-4" />
                       </Button>
                     )}
-                    {resource.videoUrl && !embedUrl && (
-                      <Button href={resource.videoUrl} external variant="secondary">
+                    {videoLink && !embedUrl && (
+                      <Button href={videoLink} external variant="secondary">
                         {d.openVideo} <ExternalLink className="w-4 h-4" />
                       </Button>
                     )}

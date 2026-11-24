@@ -5,6 +5,7 @@ import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { useModalBehavior } from '../../hooks/useModalBehavior'
 import { getFellowPhotos } from '../../utils/changemakersPhotos'
 import { firstName, personInitials, posterIndex } from '../../utils/changemakers'
+import { safeEmbedUrl } from '../../utils/safeUrl'
 
 // A fellow's full profile, opened from the grid (the address keeps ?fellow=<id>, so a profile can be
 // shared or reloaded; Escape / Back / the close button shut it and focus returns to the card).
@@ -335,7 +336,7 @@ export default function FellowProfile({ fellow, prev, next, text, onClose, onGo,
                           {fellow.videoUrl && <WorkTile poster={photos.video} label={text.work.videoLabel} verb={text.work.watch} onClick={() => onPlay(fellow.videoUrl, fill(text.videoTitle, { project: fellow.project ?? fellow.name }))} />}
                           {fellow.testimonialUrl && <WorkTile poster={photos.testimonial} label={fill(text.work.testimonialLabel, { firstName: firstName(fellow.name) })} verb={text.work.watch} onClick={() => onPlay(fellow.testimonialUrl, fill(text.testimonialTitle, { name: fellow.name }))} />}
                           {/* The write-up opens straight in a new tab (Drive's own viewer). */}
-                          {fellow.writeupUrl && <WorkTile label={text.work.writeupLabel} verb={text.work.read} href={fellow.writeupUrl.replace(/\/preview$/, '/view')} sr={text.work.opensInNewTab} />}
+                          {safeEmbedUrl(fellow.writeupUrl) && <WorkTile label={text.work.writeupLabel} verb={text.work.read} href={safeEmbedUrl(fellow.writeupUrl).replace(/\/preview$/, '/view')} sr={text.work.opensInNewTab} />}
                         </div>
                       </section>
                     )}

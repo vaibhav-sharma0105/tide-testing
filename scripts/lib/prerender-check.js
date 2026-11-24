@@ -1,4 +1,7 @@
 // Pure rules for scripts/prerender.mjs (unit-tested in src/test/scripts/prerender.test.js).
+import { createHash } from 'node:crypto'
+
+const scriptSha = (js) => createHash('sha256').update(js, 'utf8').digest('base64')
 
 /** Output file(s) for a route path. A path that is also a folder of other routes gets both forms. */
 export function outputFiles(routePath, allPaths) {
@@ -41,6 +44,8 @@ const text = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
 export function redirectHtml({ to, base, siteUrl, siteName }) {
   const target = `${base.replace(/\/+$/, '')}${to}`
   const canonical = `${siteUrl.replace(/\/+$/, '')}${to}`
+  // The page's one script, allowed by its hash alone (CSP): nothing else can run or load here.
+  const script = `location.replace(${JSON.stringify(target).replace(/</g, '\\u003c')} + location.search + location.hash)`
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -48,7 +53,8 @@ export function redirectHtml({ to, base, siteUrl, siteName }) {
   <title>${text(siteName)}</title>
   <meta name="robots" content="noindex">
   <link rel="canonical" href="${attr(canonical)}">
-  <script>location.replace(${JSON.stringify(target).replace(/</g, '\\u003c')} + location.search + location.hash)</script>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-${scriptSha(script)}'; base-uri 'none'; form-action 'none'">
+  <script>${script}</script>
   <meta http-equiv="refresh" content="0; url=${attr(target)}">
 </head>
 <body></body>

@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 import site from '../../data/site.json'
+import { jsonLdText } from '../../utils/jsonLd'
 
 // The intended production domain (content/shared/site.yaml `url`) — this is a
 // rebuild of the live site, not a placeholder. Canonical/OG/breadcrumb URLs
@@ -45,7 +46,7 @@ export default function SeoHead({ title, description, path, breadcrumbs, noindex
       <meta name="twitter:description" content={description} />
       {(noindex || site.indexable === false) && <meta name="robots" content="noindex" />}
       {breadcrumbs && breadcrumbs.length > 0 && (
-        <script type="application/ld+json">{JSON.stringify({
+        <script type="application/ld+json">{jsonLdText({
           '@context': 'https://schema.org',
           '@type': 'BreadcrumbList',
           itemListElement: breadcrumbs.map((b, i) => ({

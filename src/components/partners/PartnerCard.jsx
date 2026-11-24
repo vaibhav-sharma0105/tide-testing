@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { getPartnerLogo } from '../../utils/partnerPhotos'
 import { partnerInitials, websiteLabel } from '../../utils/partnerFilters'
+import { safeHttpUrl } from '../../utils/safeUrl'
 import { tiltHandler, settleTilt } from '../../utils/tilt'
 
 // One partner: the whole logo on a white tile (fixed 3:2), then the name and — when the Sheet has a
@@ -37,8 +38,9 @@ const tiltTowards = tiltHandler(9, 7)
 export default function PartnerCard({ partner, text, caption, tier = '', order = 0 }) {
   const [failed, setFailed] = useState(false)
   const logo = failed ? null : getPartnerLogo(partner.id)
-  const linked = !!partner.website
-  const domain = linked ? websiteLabel(partner.website) : ''
+  const website = safeHttpUrl(partner.website) // the Sheet's link, re-checked at render (http/https only)
+  const linked = !!website
+  const domain = linked ? websiteLabel(website) : ''
   const inset = tier === 'feature' ? 'inset-[10%] h-[80%] w-[80%]' : 'inset-[13%] h-[74%] w-[74%]'
 
   return (
@@ -90,7 +92,7 @@ export default function PartnerCard({ partner, text, caption, tier = '', order =
       <figcaption className="mt-3 px-0.5 font-body">
         {linked ? (
           <a
-            href={partner.website}
+            href={website}
             target="_blank"
             rel="noopener noreferrer"
             title={partner.name}

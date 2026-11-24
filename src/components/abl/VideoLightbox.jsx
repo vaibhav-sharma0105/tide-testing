@@ -3,13 +3,16 @@ import { X } from 'lucide-react'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
 import { useModalBehavior } from '../../hooks/useModalBehavior'
 import ui from '../../data/ui.json'
+import { safeEmbedUrl } from '../../utils/safeUrl'
 
 const CLEAR = { background: 'rgba(8,16,32,0)', backdropFilter: 'blur(0px) saturate(100%)', WebkitBackdropFilter: 'blur(0px) saturate(100%)' }
 const TRANSLUCENT = { background: 'rgba(8,16,32,0.66)', backdropFilter: 'blur(24px) saturate(150%)', WebkitBackdropFilter: 'blur(24px) saturate(150%)' }
 const DARK = { background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }
 
 // translucent: a see-through, blurred backdrop and a larger player (the promo video on /pramaan)
-export default function VideoLightbox({ src, title, onClose, translucent = false }) {
+export default function VideoLightbox({ src: rawSrc, title, onClose, translucent = false }) {
+  // Only the Drive preview and YouTube embed players are ever framed (the links come from the Sheets).
+  const src = safeEmbedUrl(rawSrc)
   const containerRef = useFocusTrap(!!src)
   useModalBehavior({ active: src, onClose })
 
