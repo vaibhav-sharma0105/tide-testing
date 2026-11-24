@@ -71,6 +71,9 @@ describe('prerender rules', () => {
     expect(outputFiles('/contact', all)).toEqual(['contact.html'])
     expect(outputFiles('/pramaan', all)).toEqual(['pramaan.html', 'pramaan/index.html'])
     expect(outputFiles('/pramaan/resource-centre/W1', all)).toEqual(['pramaan/resource-centre/W1.html'])
+    // Ids with spaces or brackets (snapshot: "F22 repeat", "K 31", "K32 (26 in Gujarati)") arrive URL-encoded;
+    // a static host decodes the request, so the file must have the decoded name (P6: found by check-dist).
+    expect(outputFiles('/pramaan/resource-centre/K32%20(26%20in%20Gujarati)', all)).toEqual(['pramaan/resource-centre/K32 (26 in Gujarati).html'])
   })
 
   const good = { title: 'Why TIDE? — TIDE Foundation', h1Count: 1, h1Text: 'Why TIDE?', mainTextLength: 900, canonical: 'https://x.org/about/why-tide', noindex: false, errors: [] }

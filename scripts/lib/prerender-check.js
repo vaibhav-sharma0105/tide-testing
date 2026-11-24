@@ -7,7 +7,9 @@ const scriptSha = (js) => createHash('sha256').update(js, 'utf8').digest('base64
 export function outputFiles(routePath, allPaths) {
   if (routePath === '/') return ['index.html']
   if (routePath === '/404') return ['404.html']
-  const rel = routePath.replace(/^\/+/, '')
+  // The route is URL-encoded (resourcePath: "K 31" → "K%2031"); a static host decodes a request
+  // before looking for the file, so the file gets the decoded name ("K 31.html").
+  const rel = decodeURIComponent(routePath.replace(/^\/+/, ''))
   const files = [`${rel}.html`]
   // GitHub Pages serves /x from x.html; if a folder x/ exists too it may answer /x with a redirect to
   // /x/ instead (not verified which wins), so the folder gets the same page as x/index.html.
