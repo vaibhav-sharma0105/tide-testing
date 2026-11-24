@@ -26,7 +26,7 @@ import path from 'node:path'
 import { chromium } from '@playwright/test'
 import { loadSite, loadResources } from './siteDataPlugin.js'
 import { PRIMARY_ROUTES, REDIRECT_ROUTES, resourcePath } from '../src/config/siteRoutes.js'
-import { checkPage, outputFiles, redirectHtml } from './lib/prerender-check.js'
+import { checkPage, outputFiles, redirectHtml, relativePreloads } from './lib/prerender-check.js'
 
 const ROOT = process.cwd()
 const DIST = path.join(ROOT, 'dist')
@@ -102,7 +102,8 @@ async function render(context, routePath) {
         mainTextLength: main ? main.innerText.trim().length : 0,
       }
     })
-    return { ...info, errors }
+    // Code preloads point at this origin; make them work on any host (see relativePreloads).
+    return { ...info, html: relativePreloads(info.html, ORIGIN), errors }
   } finally {
     await page.close()
   }

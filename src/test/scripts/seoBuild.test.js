@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import fs from 'node:fs'
 import path from 'node:path'
 import { loadSite, buildRobots, buildSitemap, sitemapEntries, loadResources } from '../../../scripts/siteDataPlugin.js'
-import { checkPage, outputFiles, redirectHtml } from '../../../scripts/lib/prerender-check.js'
+import { checkPage, outputFiles, redirectHtml, relativePreloads } from '../../../scripts/lib/prerender-check.js'
 import { PRIMARY_ROUTES, REDIRECT_ROUTES, resourcePath } from '../../config/siteRoutes.js'
 
 // Audit P3 (2026-11-24): robots.txt, sitemap.xml and the prerendered pages are built, not hand-typed.
@@ -96,5 +96,28 @@ describe('prerender rules', () => {
     expect(html).toContain('<link rel="canonical" href="https://x.org/tide/publications">')
     expect(html).toContain('location.replace("/tide-testing/tide/publications" + location.search + location.hash)')
     expect(html).toContain('<title>A&lt;B</title>')
+  })
+})
+
+describe('relativePreloads (P5: saved pages work on any host)', () => {
+  const html = [
+    '<link rel="modulepreload" crossorigin="" href="/tide-testing/assets/vendor-react-x.js">',
+    '<link rel="modulepreload" as="script" crossorigin="" href="https://owner.github.io/tide-testing/assets/WhyTide-a.js">',
+    '<link rel="modulepreload" as="script" href="https://cdn.example.org/x.js">',
+    '<meta property="og:image" content="https://owner.github.io/tide-testing/assets/images/shared/tide-logo.png">',
+    '<link rel="canonical" href="https://owner.github.io/tide-testing/about">',
+  ].join('\n')
+  const out = relativePreloads(html, 'https://owner.github.io/')
+
+  it('makes same-origin module preloads root-relative, keeping the base path', () => {
+    expect(out).toContain('href="/tide-testing/assets/WhyTide-a.js"')
+    expect(out).toContain('href="/tide-testing/assets/vendor-react-x.js"')
+    expect(out).not.toMatch(/modulepreload[^>]*owner\.github\.io/)
+  })
+
+  it('leaves other hosts, og:image and canonical absolute', () => {
+    expect(out).toContain('href="https://cdn.example.org/x.js"')
+    expect(out).toContain('content="https://owner.github.io/tide-testing/assets/images/shared/tide-logo.png"')
+    expect(out).toContain('<link rel="canonical" href="https://owner.github.io/tide-testing/about">')
   })
 })

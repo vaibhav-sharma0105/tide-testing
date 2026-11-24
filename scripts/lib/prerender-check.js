@@ -61,3 +61,16 @@ export function redirectHtml({ to, base, siteUrl, siteName }) {
 </html>
 `
 }
+
+/**
+ * Vite's runtime loader adds <link rel="modulepreload"> tags for a page's code with ABSOLUTE
+ * addresses (the prerender's origin, e.g. http://localhost:4173/assets/…). Saved as they are, a
+ * page served from any other origin (a custom domain, another port) asks for its code from the
+ * wrong host, and the CSP (script-src 'self') blocks it with console errors. This turns those
+ * same-origin preload addresses into root-relative ones (/tide-testing/assets/…), which work on
+ * any host. Other absolute URLs (og:image, canonical) are left alone: they must stay absolute.
+ */
+export function relativePreloads(html, origin) {
+  const prefix = `href="${origin.replace(/\/+$/, '')}/`
+  return html.replace(/<link [^>]*rel="modulepreload"[^>]*>/g, (tag) => tag.split(prefix).join('href="/'))
+}
