@@ -6,6 +6,8 @@ import {
   buildJsonLd,
   transformHtml,
   renderLlms,
+  llmsPages,
+  loadOrgFacts,
   JSONLD_MARKER,
   LLMS_TEMPLATE,
 } from '../../../scripts/siteDataPlugin.js'
@@ -56,6 +58,21 @@ describe('JSON-LD generated from site.yaml', () => {
     })
     // key order is preserved too (matters for readability of the served JSON)
     expect(Object.keys(ngo)).toEqual(Object.keys(OLD_NGO))
+  })
+
+  it('fills {foundingYear} in the description from site.yaml (audit P3)', () => {
+    expect(ngo.description).toContain(`since ${site.foundingYear}.`)
+    expect(ngo.description).not.toContain('{')
+  })
+
+  it('adds the address (contact.yaml) and social profiles (footer.yaml) when given', () => {
+    const facts = loadOrgFacts(ROOT)
+    expect(facts.sameAs.length).toBeGreaterThan(0)
+    expect(facts.sameAs.every((u) => u.startsWith('https://'))).toBe(true)
+    expect(typeof facts.address).toBe('string')
+    const [withFacts] = buildJsonLd(site, facts)
+    expect(withFacts.sameAs).toEqual(facts.sameAs)
+    expect(withFacts.address).toBe(facts.address)
   })
 
   it('WebSite block equals the old block except inLanguage is now ["en"]', () => {
@@ -129,7 +146,7 @@ describe('grade range', () => {
 
 describe('llms.txt rendering', () => {
   const template = fs.readFileSync(path.join(ROOT, LLMS_TEMPLATE), 'utf8')
-  const out = renderLlms(template, site)
+  const out = renderLlms(template, site, llmsPages(site, ROOT))
   const count = (s, needle) => s.split(needle).length - 1
 
   it('leaves no unreplaced {{ tokens', () => {
@@ -153,6 +170,14 @@ describe('llms.txt rendering', () => {
     expect(out).not.toMatch(/Hindi|Gujarati/)
     expect(out).toContain(`[Home](${site.url}/)`)
     expect(out).toContain(`${site.url}/pramaan/resource-centre`)
+  })
+
+  it('lists every sitemap page once, with its description from YAML, and not Social Changemakers', () => {
+    for (const p of llmsPages(site, ROOT)) {
+      expect(p.description, p.path).not.toBe('')
+      expect(count(out, `](${site.url}${p.path})`), p.path).toBe(1)
+    }
+    expect(out).not.toContain('/education-for-harmony/social-changemakers')
   })
 
   it('fails loudly on an unknown token', () => {

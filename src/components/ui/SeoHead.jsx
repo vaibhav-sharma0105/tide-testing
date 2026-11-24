@@ -43,7 +43,7 @@ export default function SeoHead({ title, description, path, breadcrumbs, noindex
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      {noindex && <meta name="robots" content="noindex" />}
+      {(noindex || site.indexable === false) && <meta name="robots" content="noindex" />}
       {breadcrumbs && breadcrumbs.length > 0 && (
         <script type="application/ld+json">{JSON.stringify({
           '@context': 'https://schema.org',

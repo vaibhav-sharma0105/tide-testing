@@ -4,7 +4,9 @@ import { textLang } from '../../utils/scriptLang'
 import { useParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, BookOpen, Expand, ExternalLink, Play } from 'lucide-react'
+import { Helmet } from 'react-helmet-async'
 import SeoHead from '../../components/ui/SeoHead'
+import { libraryResourceJsonLd } from '../../utils/libraryJsonLd'
 import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import Button from '../../components/ui/Button'
@@ -128,6 +130,13 @@ export default function PramaanLibraryDetail() {
           { name: resource.name, path: `/pramaan/resource-centre/${encodeURIComponent(resource.id)}` },
         ]}
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(libraryResourceJsonLd(resource, {
+          url: `${site.url}/pramaan/resource-centre/${encodeURIComponent(resource.id)}`,
+          collectionUrl: `${site.url}/pramaan/resource-centre`,
+          collectionName: site.breadcrumbs.resourceCentre,
+        }))}</script>
+      </Helmet>
       <PageHero badge={resource.subject ? `${data.meta.badge} · ${resource.subject}` : data.meta.badge} badgeClassName={accent.heroBadge} title={<LangText text={resource.name} />} />
       <AblNavBar />
 

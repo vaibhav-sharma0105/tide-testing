@@ -5,7 +5,14 @@
 # (npm run content:validate checks this).
 name: "TIDE Foundation"
 alternateName: "Together in Development and Education Foundation"
+# The site's address for search engines: every canonical link, the breadcrumb and organisation
+# structured data, sitemap.xml, robots.txt's Sitemap line and llms.txt are built from this one value.
+# Write it without a trailing slash. (Which host should be canonical while the new site is only on
+# GitHub Pages is an open owner question: docs/audits/2026-11-site-audit.md.)
 url: "https://tideinternational.org"
+# false = every page tells search engines not to index it (<meta name="robots" content="noindex">),
+# e.g. for a test copy of the site. true = normal.
+indexable: true
 logo: "/assets/images/shared/tide-logo.png"
 # Shown in place of any image that fails to load (see src/utils/imagePlaceholder.js).
 placeholderImage: "/assets/images/shared/placeholder.svg"
@@ -21,9 +28,19 @@ foundingYear: "2014"
 location: "Ahmedabad, Gujarat, India"
 country: "India"
 language: "en"
-description: "TIDE Foundation is an NGO based in Ahmedabad, India working to bring sustainable, systemic change to India's education landscape since 2014. We have impacted {livesImpacted} lives across Gujarat."
+description: "TIDE Foundation is an NGO based in Ahmedabad, India working to bring sustainable, systemic change to India's education landscape since {foundingYear}. We have impacted {livesImpacted} lives across Gujarat."
 websiteDescription: "Official website of TIDE Foundation — Together in Development and Education"
 keywords: "education NGO India, activity-based learning, holistic education, Gujarat education, TIDE Foundation"
+
+# robots.txt is built from this list (scripts/siteDataPlugin.js). Every crawler may read every page;
+# the named groups only matter if one is ever turned off.
+crawlers:
+  # Search engines and AI answer engines that fetch pages to show, link or cite them.
+  search: ["Googlebot", "Bingbot", "Applebot", "DuckDuckBot", "OAI-SearchBot", "ChatGPT-User", "Claude-SearchBot", "Claude-User", "PerplexityBot", "Perplexity-User"]
+  # Crawlers that collect pages to train AI models. allowTraining: false asks them to stay away
+  # (an owner decision; they were all allowed before 2026-11-24, and still are).
+  training: ["GPTBot", "ClaudeBot", "anthropic-ai", "Google-Extended", "Applebot-Extended", "CCBot", "Bytespider", "cohere-ai", "meta-externalagent"]
+  allowTraining: true
 
 # Names of the parent steps in each page's breadcrumb trail (the last step is
 # the page's own `meta.breadcrumbName` in its YAML).
