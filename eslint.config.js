@@ -21,7 +21,7 @@ const CMS_TEXT_SELECTORS = [
 ].map(selector => ({ selector, message: CMS_MESSAGE }))
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'coverage', 'playwright-report*', 'test-results*']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [
@@ -62,7 +62,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['vite.config.js', 'vitest.config.js', 'playwright.config.js', 'scripts/**/*.js'],
+    files: ['vite.config.js', 'vitest.config.js', 'playwright.config.js', 'playwright.site.config.js', 'scripts/**/*.js', 'e2e/**/*.js'],
     languageOptions: {
       globals: globals.node,
     },

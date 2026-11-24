@@ -37,3 +37,6 @@ dist-ssr
 TIDE_Website_Tracker.xlsx
 playwright-report/
 test-results/
+playwright-report-site/
+test-results-site/
+coverage/
