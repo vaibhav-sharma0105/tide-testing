@@ -5,7 +5,10 @@ import data from '../data/error.json'
    It sits outside <BrowserRouter>, so the home link is a plain <a> rather
    than a <Link>. The error itself is logged to the console for developers;
    visitors never see the message or stack — only a dev build (import.meta.env.DEV)
-   appends them below the friendly text. */
+   appends them below the friendly text.
+   `inline` (P5): the same screen as a <div> for use inside the page's <main> — Layout wraps each
+   page in one (keyed by address), so a crash in one page keeps the header and footer, and moving to
+   another page clears it. The outer boundary in App.jsx still catches anything outside a page. */
 export default class ErrorBoundary extends Component {
   constructor(props) {
     super(props)
@@ -23,9 +26,10 @@ export default class ErrorBoundary extends Component {
   render() {
     const { error } = this.state
     if (!error) return this.props.children
+    const Wrapper = this.props.inline ? 'div' : 'main'
 
     return (
-      <main className="min-h-screen flex items-center justify-center bg-tide-bg px-4 py-16">
+      <Wrapper className={`${this.props.inline ? 'min-h-[60vh] pt-28' : 'min-h-screen'} flex items-center justify-center bg-tide-bg px-4 py-16`}>
         <div role="alert" className="max-w-lg w-full text-center">
           <h1 className="font-display text-3xl md:text-4xl font-bold text-tide-text mb-4">
             {data.heading}
@@ -55,7 +59,7 @@ export default class ErrorBoundary extends Component {
             </pre>
           )}
         </div>
-      </main>
+      </Wrapper>
     )
   }
 }

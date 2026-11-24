@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import Header from './Header'
 import Footer from './Footer'
+import ErrorBoundary from '../ErrorBoundary'
 import navData from '../../data/navigation.json'
 import { EASE_OUT } from '../../utils/motionPresets'
 
@@ -81,7 +82,8 @@ export default function Layout({ children }) {
           exit="exit"
           className="flex-1"
         >
-          {children}
+          {/* One boundary per page (this <main> is keyed by address): a crash keeps the header. */}
+          <ErrorBoundary inline>{children}</ErrorBoundary>
         </motion.main>
       </AnimatePresence>
       <Footer />
