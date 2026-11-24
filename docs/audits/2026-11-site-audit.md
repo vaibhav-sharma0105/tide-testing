@@ -785,7 +785,7 @@ Run by the orchestrator, 2026-11-25 (local Windows 11), on `4de8719` from a clea
 | `npm run test:e2e` (dev) | 27 passed | **1st run: 61 passed / 1 failed** (`a11y.spec.js` "axe: interactive states › photo lightbox and promo video"; re-run alone, it passed; the error text was lost when the re-run cleared `test-results/`); **2nd full run: 62 passed** |
 | `CI=1 npm run test:e2e:site` | n/a | 170 passed (3.5 min) |
 | `npm run test:e2e:full` (Chromium + Firefox + WebKit) | n/a | **948 passed, 0 failed, 2 skipped** (20.8 min). Exit code 1 only because WebKit workers did not exit within 300 s after the run and were force-killed (P6-12, local Windows). |
-| `node scripts/a11y-audit.cjs` (dev on 5175) | 0 AA on 19 URLs | **0 AA violations on 21 URLs**; AAA `color-contrast-enhanced` hits remain on every route (owner item 2) |
+| `node scripts/a11y-audit.cjs` (dev on 5175) | not run at baseline | **0 AA violations on 21 URLs**; AAA `color-contrast-enhanced` hits remain on every route (owner item 2) |
 
 Not run in the final gate: `test:e2e:visual` (Windows-only baselines, not a required gate).
 
