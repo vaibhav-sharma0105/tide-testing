@@ -1,3 +1,6 @@
+import site from '../../data/site.json'
+import { imgSrc } from '../../utils/imgSrc'
+
 // The banner is static: it is the first thing on the page, so it never waits to appear (motion
 // rules in utils/motionPresets.js).
 // `badgeClassName` (optional) replaces the badge's colour classes (e.g. a resource type's colour).
@@ -8,7 +11,7 @@ export default function PageHero({ badge, badgeClassName = 'bg-white/15 text-whi
       {/* Background texture */}
       <div
         className="absolute inset-0 opacity-[0.06] pointer-events-none"
-        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}assets/images/shared/page-banner-bg.png)`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        style={{ backgroundImage: `url(${imgSrc(site.pageBannerTexture)})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       />
       {/* Subtle decorative blobs */}
       <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-white/5 blur-3xl pointer-events-none" />

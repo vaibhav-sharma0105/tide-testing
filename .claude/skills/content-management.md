@@ -201,11 +201,11 @@ photo: /assets/images/about-our-team/jane-smith.jpg   # convention; slash stripp
 photo: assets/images/about-our-team/jane-smith.jpg    # works, but `content:validate` will not check it
 ```
 
-`scripts/validate-content.js` only checks values that start with `/` and sit under these key names: `photo, src, logo, coverImage, image, poster, img, heroPhoto, mainPhoto, diagramPhoto, backgroundImage, donorPoster`. Other keys (e.g. `photo1`), bare-filename lists and slash-less paths are not validated, and a missing image is only a warning. CI runs it before the build, so an error stops the deploy.
+`scripts/validate-content.js` checks every string value that is a local file path (starts with `/assets/` or `assets/`, or ends in an image/media extension), whatever its key, in objects and lists; a missing file or a bare file name with no folder is a warning (since 2026-11-24). CI runs it before the build, so an error stops the deploy.
 
 In components, resolve a data image with `imgSrc(path)` from `src/utils/imgSrc.js` (handles `BASE_URL` on GitHub Pages). `imgSrc` is not idempotent under `/tide-testing/`, and `Lightbox` already applies it to every `src` it receives, so never pre-apply it to lightbox images. A few spots build `${import.meta.env.BASE_URL}…` by hand (Header, Footer, `PageHero` banner texture, `SeoHead` default OG image, `Home`, `ErrorBoundary`) — that works because the leading slash was stripped.
 
-**Missing-image fallback.** `src/utils/imagePlaceholder.js` (installed once in `src/main.jsx`) listens for failed `<img>` loads site-wide and swaps the source for the `placeholderImage` in `content/shared/site.yaml` (`public/assets/images/shared/placeholder.svg`). So a missing or mistyped file shows a grey placeholder rather than a broken icon, which hides the mistake: still check the filename. An `<img>` opts out with the `data-no-placeholder` attribute (`DriveImage.jsx` does, because it draws its own icon). Bare-filename lists (file names whose folder the component adds) are not covered by `content:validate`.
+**Missing-image fallback.** `src/utils/imagePlaceholder.js` (installed once in `src/main.jsx`) listens for failed `<img>` loads site-wide and swaps the source for the `placeholderImage` in `content/shared/site.yaml` (`public/assets/images/shared/placeholder.svg`). So a missing or mistyped file shows a grey placeholder rather than a broken icon, which hides the mistake: still check the filename. An `<img>` opts out with the `data-no-placeholder` attribute (`DriveImage.jsx` does, because it draws its own icon).
 
 ## Non-Serializable Values (YAML Workaround)
 
@@ -236,7 +236,7 @@ npm run content:validate
 # Visible-text guard (react/jsx-no-literals) + other lint rules — also run in CI
 npm run lint
 
-# Unit tests (32 files / 369 tests as of 2026-11-24) and Playwright e2e (3 specs; not run in CI)
+# Unit tests (33 files / 391 tests as of 2026-11-24) and Playwright e2e (3 specs; not run in CI)
 npm test
 npm run test:e2e
 

@@ -23,7 +23,7 @@ npm run dev          # auto-syncs content, then starts dev server at localhost:5
 npm run build        # auto-syncs content, then builds to dist/
 npm run content:validate   # YAML syntax, image paths, Resource Centre + Publications snapshots, formUrl, email / lives-impacted consistency
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — run in CI (deploy.yml)
-npm test             # Vitest unit/component tests (32 files, 369 tests) — run in CI (deploy.yml)
+npm test             # Vitest unit/component tests (33 files, 391 tests) — run in CI (deploy.yml)
 ```
 
 **Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
@@ -840,7 +840,7 @@ npm run content:bootstrap  # Writes starter shared/navigation.yaml + footer.yaml
 
 ### What `scripts/validate-content.js` checks (and doesn't)
 
-Walks all of `content/`; a YAML parse error is an error (exit 1), a missing image is only a warning (exit 0). Images are checked only for values under the keys `photo, src, logo, coverImage, image, poster, img, heroPhoto, mainPhoto, diagramPhoto, backgroundImage, donorPoster` **and** only when the value starts with `/` and isn't http(s). So values without a leading slash, other keys (e.g. `photo1`/`photo2`), and image arrays of bare strings are not checked. It does not check hrefs/routes.
+Walks all of `content/`; a YAML parse error is an error (exit 1), a missing image is only a warning (exit 0). Every string value (object field or list item, any key) that is a local file path is checked: it starts with `/assets/` or `assets/`, or ends in an image/media extension (`png jpg jpeg webp avif gif svg ico mp4 webm pdf`), and is not http(s)/`mailto:`/`tel:`/`data:`. A missing file, or a bare file name with no folder, is a warning (since 2026-11-24, audit P1; before that only a fixed list of keys with a leading `/` was checked). It does not check hrefs/routes.
 
 **Consistency errors (exit 1):** via `scripts/contentConsistency.js`, every string in every YAML (plus the `llms.txt` template) is scanned. Any email address that differs from `site.yaml` `email` is an error, and so is any lives-impacted total (a `NN,NNN+` / `NNNNN+` figure in the same sentence as "lives / people / impacted / changed", or a bare figure whose sibling fields say so) that differs from `site.yaml` `livesImpacted`. Other metrics such as "15,000+ students" are deliberately not flagged. To change the email or the figure, edit `site.yaml` and then every page string that quotes it. CI (`deploy.yml`) runs the validator before building, so an error stops the deploy. It also checks the Resource Centre snapshot (`checkLibrarySnapshot()`: shape, unique ids, allowlisted fields only, no e-mail addresses, `meta.total`, photo manifest paths/files), the Publications snapshot (`checkPublicationsSnapshot()`: the same checks plus `org` TIDE/THRIvE, `date` `YYYY-MM-DD` or null, `fields` a list, http(s)-only `link`/`photoUrl`, `meta.counts` per org), the Partners snapshot (`checkPartnersSnapshot()`: shape with `section: "partners"`, id/name/type present, unique ids, allowlisted fields, http(s)-only `website`/`photoUrl`, no e-mail address, `meta.total`, logo paths inside `assets/images/partners/` with their files) and `abl-contribute.yaml` `formUrl` (empty → warning; anything but a Google Forms link → error).
 
@@ -897,13 +897,13 @@ import ui from '../../data/ui.json'                // Lightbox.jsx
 
 ### Lint guard (`react/jsx-no-literals`)
 
-`eslint.config.js` makes `react/jsx-no-literals` an **error** in `src/pages/**/*.jsx` and `src/components/**/*.jsx` (`noStrings: false`, `ignoreProps: true`; allowed bare strings are punctuation/glyphs: `— – · → ↗ … | / - : . , & + ( ) % " ' “ ” ’`). Text typed straight into JSX therefore fails `npm run lint`. What it does **not** catch: string-literal props and attributes (`aria-label`, `alt`, `title`, …) and text in `{'…'}` expressions — review those by hand. JSON-LD and breadcrumb names are no longer hardcoded (they come from `site.yaml` / `meta.breadcrumbName`). CI runs lint too (a failure stops the deploy); run it locally first. Also see `.claude/skills/cms-integrity/SKILL.md`.
+`eslint.config.js` makes `react/jsx-no-literals` an **error** in `src/pages/**/*.jsx` and `src/components/**/*.jsx` (`noStrings: false`, `ignoreProps: true`; allowed bare strings are punctuation/glyphs: `— – · → ↗ … | / - : . , & + ( ) % " ' “ ” ’`). Text typed straight into JSX therefore fails `npm run lint`. A second rule in the same block, `no-restricted-syntax` with the `CMS_TEXT_SELECTORS` list (2026-11-24), fails on a word (any string with a letter) typed into a text prop — `alt, title, placeholder, label, aria-label, aria-description, aria-roledescription, aria-valuetext, aria-placeholder, badge, subtitle, heading, eyebrow, caption, tooltip, description` — directly, in `{…}`, in a `?:` / `||` / `&&` / `+`, or in a template literal; and on the same in JSX children (`{'Text'}`, `{a ? 'Text' : b}`, `` {`${n} results`} ``). Strings with no letter (`alt=""`, `` `${a}: ${b}` ``) pass. Tests: `src/test/scripts/cmsGuard.test.js`. Still not caught: text built in plain JS away from the JSX (a `const label = '…'` used later), and a string used as a lookup key inside a text prop's ternary would be a false positive (compute the key outside the JSX). JSON-LD and breadcrumb names are no longer hardcoded (they come from `site.yaml` / `meta.breadcrumbName`). CI runs lint too (a failure stops the deploy); run it locally first. Also see `.claude/skills/cms-integrity/SKILL.md`.
 
 ### Image paths in YAML
 
 Images live in `public/assets/`. Both spellings work because the sync script strips a leading `/` from `/assets/…` values, and the repo overwhelmingly uses the leading-slash form (≈165 values vs 5 without):
 ```yaml
-photo: /assets/team/jane-smith.jpg   # dominant style; also the only form `content:validate` checks
+photo: /assets/team/jane-smith.jpg   # dominant style
 photo: assets/team/jane-smith.jpg    # also works, but is invisible to the validator
 ```
 The one hard rule: components must pass YAML image values through `imgSrc()` (or prefix `import.meta.env.BASE_URL`), never use them raw (§6, §11). `CONTENT-GUIDE.md` tells editors the leading-slash form.
@@ -1293,7 +1293,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Smaller known issues (reported, not fixed)
 
 - The 16 former stranded routes were removed with no redirects; they now render `NotFound` (§1 Routing). The 97 images only those pages used were deleted too (recover with `git checkout a4126d1 -- public/assets/images/<folder>`); The old one-off downloader `scripts/download-images.mjs` (a hard-coded list of the original WordPress URLs) was deleted on 2026-10-26; recover it with `git checkout a4126d1 -- scripts/download-images.mjs`.
-- `content:validate` doesn't check bare filenames in YAML (lists whose folder a component adds); a missing one shows the placeholder image, so check those by eye. (The former `logoGallery.images` list on Our Partners was replaced by the Partners Sheet on 2026-11-21; its 42 logos are in git history.)
+- `content:validate` checks every local file path in YAML whatever its key (missing file or bare file name → warning, since 2026-11-24); a path the validator can't recognise as a file still shows the placeholder image when wrong, so check by eye. (The former `logoGallery.images` list on Our Partners was replaced by the Partners Sheet on 2026-11-21; its 42 logos are in git history.)
 - Deleted 2026-10-25 with the owner's approval: `ui/Badge.jsx`, `WhatsAppIcon`, `TodoPlaceholder`, `getDriveDownloadUrl` (and its tests), `src/App.css`, `src/assets/*`, `public/icons.svg`, `public/favicon.svg`, and 91 unreferenced images under `public/assets/images/` (recover with `git checkout a4126d1 -- <path>`). The Devanagari font families deliberately stay loaded.
 
 ---
@@ -1303,7 +1303,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 32 files, 369 tests (jsdom, src/test/**)
+npm test               # vitest run — 33 files, 391 tests (jsdom, src/test/**)
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```

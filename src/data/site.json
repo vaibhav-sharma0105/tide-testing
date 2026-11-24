@@ -4,6 +4,7 @@
   "url": "https://tideinternational.org",
   "logo": "assets/images/shared/tide-logo.png",
   "placeholderImage": "assets/images/shared/placeholder.svg",
+  "pageBannerTexture": "assets/images/shared/page-banner-bg.png",
   "email": "tidefoundation@gmail.com",
   "livesImpacted": "52,500+",
   "gradeRange": "1–5",

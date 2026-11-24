@@ -63,10 +63,13 @@ wired (verify they're *used* correctly, don't re-litigate their existing wiring)
 `src/components/**/*.jsx` (`ignoreProps: true`; only punctuation/glyphs such as `— – · → ↗ … | / -
 : . , & + ( ) %` and quote characters are allowed as bare text). So visible text typed between JSX
 tags fails `npm run lint`. CI also runs lint (a failure stops the deploy), but run it
-yourself before reporting done. The guard does *not* see: `aria-label` / `alt` / `title` /
-`placeholder` props (`ignoreProps`), other string attributes, template literals, strings built
-in JS variables, JSON-LD / breadcrumb names, or image paths — those still need the checklist
-below. Don't silence the rule with `eslint-disable`; move the text to YAML instead.
+yourself before reporting done. Since 2026-11-24 a second rule in the same block
+(`no-restricted-syntax`, `CMS_TEXT_SELECTORS`) also fails on a word typed into a text prop
+(`alt`, `aria-label`, `title`, `placeholder`, `label`, `badge`, `heading`, `description`, …) or
+into JSX children as `{'…'}`, a ternary/`||`/`&&`/`+` branch or a template literal
+(`src/test/scripts/cmsGuard.test.js`). Neither rule sees: other string attributes, strings built
+in plain JS away from the JSX, JSON-LD / breadcrumb names, or image paths — those still need the
+checklist below. Don't silence the rule with `eslint-disable`; move the text to YAML instead.
 
 ## Checklist (what to verify for every change)
 
@@ -82,8 +85,8 @@ below. Don't silence the rule with `eslint-disable`; move the text to YAML inste
    `imgSrc` to images handed to `Lightbox` — it applies it itself.
    A failed `<img>` is swapped for the `placeholderImage` from `site.yaml` by
    `src/utils/imagePlaceholder.js`, so a wrong path never looks broken: check the file exists.
-   Bare-filename lists (a YAML list of file names whose folder is added in the component) are not
-   covered by `content:validate`.
+   Since 2026-11-24 `content:validate` checks every local file path in YAML whatever its key
+   (a missing file or a bare file name with no folder is a warning).
 4. **Breadcrumb names** — the last breadcrumb step is the page's `meta.breadcrumbName` in its
    YAML; the parent steps are `site.breadcrumbs.*` from `content/shared/site.yaml`
    (`import site from '../data/site.json'`). Never type `{ name: 'Home' }` in JSX.
@@ -155,10 +158,9 @@ grep -rnE "assets/images" src/pages src/components
 grep -rnE "name: '[A-Z]" src/pages
 ```
 
-As of 2026-11-19, check (2) and check (4) return nothing, and `npm run lint` is clean. Check (3) matches one
-structural image path still built in code: the `PageHero` banner texture (the `BASE` constant in
-`OurPartners.jsx` went with its logo gallery on 2026-11-21). Don't treat it as a new
-finding, and don't copy it as precedent. None of the checks is exhaustive (multi-line JSX,
+As of 2026-11-24 (audit P1), checks (2), (3) and (4) return nothing in `src/pages` and
+`src/components`, and `npm run lint` is clean. (The `PageHero` banner texture, once the one image
+path built in code, is now `site.yaml` `pageBannerTexture`.) None of the checks is exhaustive (multi-line JSX,
 template literals and conditional ternaries inside `{}` won't match) — they're a fast first
 pass, not a substitute for reading the file.
 
