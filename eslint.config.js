@@ -5,6 +5,21 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
+// Props that carry text a visitor sees or a screen reader announces (DOM attributes and this
+// repo's own components' text props).
+const TEXT_PROP = 'JSXAttribute[name.name=/^(alt|title|placeholder|label|aria-label|aria-description|aria-roledescription|aria-valuetext|aria-placeholder|badge|subtitle|heading|eyebrow|caption|tooltip|description)$/]'
+const HAS_LETTER = '[value=/[A-Za-z]/]'
+const CMS_MESSAGE = 'Visible text must come from content/*.yaml (data.*, common.*, ui.*), not code. See the cms-integrity skill.'
+const CMS_TEXT_SELECTORS = [
+  `${TEXT_PROP} > Literal${HAS_LETTER}`,
+  `${TEXT_PROP} > JSXExpressionContainer > Literal${HAS_LETTER}`,
+  `${TEXT_PROP} > JSXExpressionContainer :matches(ConditionalExpression, LogicalExpression, BinaryExpression[operator='+']) > Literal${HAS_LETTER}`,
+  `${TEXT_PROP} > JSXExpressionContainer > TemplateLiteral > TemplateElement[value.raw=/[A-Za-z]/]`,
+  `:matches(JSXElement, JSXFragment) > JSXExpressionContainer > Literal${HAS_LETTER}`,
+  `:matches(JSXElement, JSXFragment) > JSXExpressionContainer > :matches(ConditionalExpression, LogicalExpression, BinaryExpression[operator='+']) > Literal${HAS_LETTER}`,
+  `:matches(JSXElement, JSXFragment) > JSXExpressionContainer > TemplateLiteral > TemplateElement[value.raw=/[A-Za-z]/]`,
+].map(selector => ({ selector, message: CMS_MESSAGE }))
+
 export default defineConfig([
   globalIgnores(['dist']),
   {
@@ -39,6 +54,11 @@ export default defineConfig([
         ignoreProps: true,
         allowedStrings: ['—', '–', '·', '→', '↗', '…', '|', '/', '-', ':', '.', ',', '&', '+', '(', ')', '%', '"', "'", '“', '”', '’'],
       }],
+      // What jsx-no-literals can't see (it ignores props and {'…'} text): a word typed into a
+      // text prop (alt, aria-label, title, placeholder, label, …) or into JSX text as a JS string
+      // or template literal. Strings with no letter (alt="", ": ") are allowed. Tested in
+      // src/test/scripts/cmsGuard.test.js.
+      'no-restricted-syntax': ['error', ...CMS_TEXT_SELECTORS],
     },
   },
   {

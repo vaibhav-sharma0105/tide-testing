@@ -16,27 +16,34 @@ const parsedDocs = []   // { file, data } for the consistency check below
 function warn(file, msg)  { console.warn(`  ⚠  ${file}: ${msg}`);  warnings++ }
 function error(file, msg) { console.error(`  ✗  ${file}: ${msg}`); errors++ }
 
+// Any string value that is a local file path — it starts with /assets/ or assets/, or ends in an
+// image/media extension — whatever its key, with or without the leading slash. A failed image is
+// swapped for site.placeholderImage on the page, so a typo here would otherwise go unnoticed.
+const MEDIA_EXT = /\.(png|jpe?g|webp|avif|gif|svg|ico|mp4|webm|pdf)$/i
 function checkImagePath(file, key, value) {
   if (typeof value !== 'string') return
-  if (value.startsWith('http://') || value.startsWith('https://')) return
-  if (!value.startsWith('/')) return
-  const localPath = path.join(PUBLIC_DIR, value)
-  if (!fs.existsSync(localPath)) {
+  if (/^(https?:|mailto:|tel:|data:)/i.test(value)) return
+  if (!/^\/?assets\//.test(value) && !MEDIA_EXT.test(value)) return
+  const rel = value.replace(/^\/+/, '')
+  if (!rel.includes('/')) {
+    warn(file, `file name without its folder: ${key} = "${value}" (write the full path, e.g. /assets/images/…)`)
+    return
+  }
+  if (!fs.existsSync(path.join(PUBLIC_DIR, rel))) {
     warn(file, `image not found on disk: ${key} = "${value}"`)
   }
 }
 
 function walkObject(file, obj, parentKey = '') {
   if (Array.isArray(obj)) {
-    obj.forEach((item, i) => walkObject(file, item, `${parentKey}[${i}]`))
+    obj.forEach((item, i) => {
+      if (typeof item === 'string') checkImagePath(file, `${parentKey}[${i}]`, item)
+      walkObject(file, item, `${parentKey}[${i}]`)
+    })
   } else if (obj && typeof obj === 'object') {
     for (const [k, v] of Object.entries(obj)) {
       const fullKey = parentKey ? `${parentKey}.${k}` : k
-      if (['photo', 'src', 'logo', 'coverImage', 'image', 'poster', 'img',
-           'heroPhoto', 'mainPhoto', 'diagramPhoto', 'backgroundImage',
-           'donorPoster'].includes(k)) {
-        checkImagePath(file, fullKey, v)
-      }
+      if (typeof v === 'string') checkImagePath(file, fullKey, v)
       walkObject(file, v, fullKey)
     }
   }
