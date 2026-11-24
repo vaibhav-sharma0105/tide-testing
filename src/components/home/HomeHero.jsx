@@ -97,7 +97,7 @@ export default function HomeHero({ hero, site }) {
             <span className="badge-white">{hero.badge}</span>
           </div>
 
-          <h1 className="font-display text-[2.6rem] font-bold leading-[1.04] tracking-tight text-white text-balance sm:text-6xl lg:text-[5.25rem]">
+          <h1 className="font-display text-[2.25rem] min-[360px]:text-[2.6rem] font-bold leading-[1.04] tracking-tight text-white text-balance sm:text-6xl lg:text-[5.25rem]">
             {hero.tagline}{' '}
             <span className="relative inline-block whitespace-nowrap text-accent">
               {hero.taglineHighlight}
