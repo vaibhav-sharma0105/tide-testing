@@ -23,7 +23,7 @@ npm run dev          # auto-syncs content, then starts dev server at localhost:5
 npm run build        # auto-syncs content, then builds to dist/
 npm run content:validate   # YAML syntax, image paths, Resource Centre + Publications snapshots, formUrl, email / lives-impacted consistency
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — run in CI (deploy.yml)
-npm test             # Vitest unit/component tests (33 files, 383 tests) — run in CI (deploy.yml)
+npm test             # Vitest unit/component tests (32 files, 369 tests) — run in CI (deploy.yml)
 ```
 
 **Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
@@ -190,10 +190,9 @@ tide-new/
 │   │   │   ├── SectionHeader.jsx    ← badge + h2 + subtitle block
 │   │   │   ├── PageHero.jsx         ← dark banner + h1 for inner pages (optional `aside` slot and `badgeClassName`)
 │   │   │   ├── HeroStats.jsx        ← figures line under a PageHero title (Publications + Partners); withValue.jsx sets the {n} in white
-│   │   │   ├── CountUp.jsx          ← a number counting up once in view (final value for screen readers / reduced motion)
+│   │   │   ├── CountUpText.jsx      ← the ONE count-up: the main figure of a page settles from 80% to its value once in view (width reserved; < 100 shown as is)
 │   │   │   ├── Highlight.jsx        ← amber highlighter underline over listed words in a sentence
 │   │   │   ├── SeoHead.jsx          ← title/description/canonical/OG/Twitter + BreadcrumbList JSON-LD
-│   │   │   ├── AnimatedCounter.jsx  ← scroll-triggered number animation
 │   │   │   ├── CreativeLoader.jsx   ← open book + growing sprout SVG; gate behind useDelayedVisible
 │   │   │   ├── Lightbox.jsx         ← full-screen image gallery with keyboard nav; optional `translucent` backdrop; never shows a caption
 │   │   │   ├── ComingSoonGraphic.jsx ← /coming-soon illustration: block-drop springs, then endless ambient loops + random gust/nudge events; static under prefers-reduced-motion
@@ -273,7 +272,6 @@ tide-new/
 │   │       └── ThrivePublications.jsx   ← /thrive/publications (THRIvE rows → ResearchArchive, thrive-publications.yaml)
 │   │
 │   ├── hooks/
-│   │   ├── useScrollAnimation.js ← IntersectionObserver → [ref, isVisible] (only AnimatedCounter uses it)
 │   │   ├── useLightbox.js        ← gallery open/close/prev/next state — takes the image count
 │   │   ├── useModalBehavior.js   ← Escape-to-close + body scroll lock for overlays (Lightbox/ImageLightbox/VideoLightbox)
 │   │   ├── useDelayedVisible.js  ← gates a loading UI behind a threshold so fast loads never flash it
@@ -289,7 +287,7 @@ tide-new/
 │   │
 │   ├── utils/
 │   │   ├── imgSrc.js             ← imgSrc(path): prefixes BASE_URL (NOT idempotent — see §11)
-│   │   ├── motionPresets.js      ← makeFadeUp(opts) / default fadeUp — shared scroll-in animation props
+│   │   ├── motionPresets.js      ← the one motion system: fadeUp(delay), revealDelay(i), REVEAL, EASE_OUT
 │   │   ├── imagePlaceholder.js   ← installImagePlaceholder(): global swap of failed <img> for the site placeholder (called in main.jsx)
 │   │   ├── listingFilters.js     ← generic: normKey, cleanLabel, optionsFor, optionsForMany, orderFilterOptions (pinned, A→Z, Other last)
 │   │   ├── libraryFilters.js     ← Resource Centre: LIBRARY_GRADES (Foundational first), sortGrades, applyLibraryFilters (sort subject|type|owner, dir asc|desc), facetOptions (counts follow the other filters), OWNER_PINNED (TIDE Foundation first), typeParamKey, linkParts; re-exports normKey/optionsFor/orderFilterOptions
@@ -425,15 +423,15 @@ Max content widths: `max-w-5xl` for text-heavy pages, `max-w-7xl` for grid pages
 
 ### Scroll animation pattern
 
-Page sections share the presets in `src/utils/motionPresets.js` instead of redefining a local `fadeUp`:
+Every scroll reveal on the site uses `src/utils/motionPresets.js` (motion rules, 2026-11-24):
 ```jsx
-import { fadeUp, makeFadeUp } from '../utils/motionPresets'
+import { fadeUp, revealDelay, REVEAL, EASE_OUT } from '../utils/motionPresets'
 
-<motion.div {...fadeUp()} />            // default: y 24, 0.6s, viewport { once: true }
-<motion.div {...fadeUp(0.1)} />         // argument = delay (seconds); stagger with i * 0.08
-const fadeUp = makeFadeUp({ y: 20, duration: 0.55, margin: '-60px' })  // page-specific variant
+<motion.div {...fadeUp()} />       // 10px rise, 0.45s, fast-start curve EASE_OUT, once, starts 32px into the window
+<motion.div {...fadeUp(0.1)} />    // argument = delay; older delays are scaled ×0.4 and capped at REVEAL.maxDelay (0.2s)
+transition={{ delay: revealDelay(i) }} // a row: 0.05s apart, the whole row done within 0.2s
 ```
-`makeFadeUp({ y = 24, duration = 0.6, margin })` returns `(delay = 0) => ({ initial, whileInView, viewport, transition })` with ease `[0.4, 0, 0.2, 1]`. `SectionHeader` and a few one-off blocks still inline their own `initial`/`whileInView`/`viewport` props — same shape, `once: true`, ease `[0.4, 0, 0.2, 1]`. `useScrollAnimation` is only used by `AnimatedCounter`.
+The rules (keep them): **nothing on the first screen waits to appear** — `PageHero` and the homepage banner text are static; page changes fade in over 0.2s with no exit wait and the first page of a visit has no fade (`Layout`, `AnimatePresence initial={false}`). Things coming in start fast and settle (never the slow-start `[0.4, 0, 0.2, 1]`); small distances (≤ 12px); one fade per group rather than one per element; no bouncy springs on content (the pinned "print" frames keep their own swing, with short delays). **Count-ups: at most one per page, only the page's main figure**, via `CountUpText` — homepage: lives impacted; Partners: the partner total; Pramaan: the number of resources. Never a year, a phone number, a small number (< 100, shown as is) or a number inside a sentence. `<MotionConfig reducedMotion="user">` in `App.jsx` drops movement under "reduce motion".
 
 ### Non-serialisable values (Tailwind + icons in YAML)
 
@@ -514,19 +512,13 @@ Every page except `ComingSoon` and `NotFound` (which use `<Helmet>` directly wit
 />
 ```
 
-### AnimatedCounter
+### CountUpText
 
 ```jsx
-<AnimatedCounter
-  value="50,500+"   // string — parses the digits + suffix automatically; renders locale-formatted (e.g. "50500+" → "50,500+")
-  label="Students"
-  duration={2000}   // ms, default 2000
-  light             // white text variant
-  numClassName=""   // extra classes on the number element
-/>
+<CountUpText text="52,500+" className="…" />   // also text={String(n)}; optional duration (0.9) / delay (0.1)
 ```
 
-Shows `0` until it scrolls into view (via `useScrollAnimation`, threshold 0.3), then counts up.
+The site's only count-up (`AnimatedCounter` and `CountUp` were removed 2026-11-24). Counts from 80% of the value to the value once in view; the final text holds the width (nothing around it moves); numbers below 100 and text without a number are shown as they are; final text for screen readers and under reduced motion. Use it once per page at most (§3 "Scroll animation pattern").
 
 ### Lightbox (gallery — for non-ABL pages)
 
@@ -653,7 +645,7 @@ Each page has its own layout. Both pages (`src/pages/publications/`) render `Seo
 
 - `PublicationsHero({ data, rows, chart })` — `PageHero` (`data.meta.badge/title/subtitle`) plus one line of figures: count, number of distinct types, "since {year}" (`publicationStats`, templates `data.stats.*`), and — when `data.socialProofTypes` is set and `countOfTypes(rows, data.socialProofTypes) > 0` — `data.stats.socialProofTemplate` / `socialProofSingular`. `chart` (optional node) is shown beside the text on large screens, below it on small ones. Nothing shown for 0 rows. `PublicationsEmpty({ meta })` — `meta.emptyTitle` / `meta.emptyHint`.
 - `YearChart({ counts, selected = '', onSelect, labels, noun })` — single-series column chart for the dark banner, from `yearCounts(rows)` (every year from first to last, 0 included). With `onSelect`, each column is an `aria-pressed` toggle button; years with 0 are not buttons. Only the tallest and the hovered/selected column print their number; every column's number is in its accessible label (`labels.barLabelTemplate`, plus `labels.filterAction`). `labels` = `data.chart`; `noun(n)` gives the singular/plural word. Wired only on THRIvE (`ThrivePublications.jsx`), shown only when `HERO_CHART.THRIvE` is true and there is more than one year — false today, so it is not rendered; selecting a year would navigate to `?year=` (page 1) with router state `focusResults`.
-- `TideCollection({ rows, data })` — TIDE body, two parts that never swap: (1) `Spotlight`: `latestOfType(rows, data.featuredType)` (latest by the report period in the title) — large `PublicationCover` (full-size image), title, type + date, description, `data.featured.read` button, `NewBadge`, and — when the type has 2+ rows — a `data.featured.seeAllTemplate` button that sets `?type=` to that type (other filters cleared) and moves focus to the library's results line (`q.change(next, { focus: true })`); (2) `Library`: every TIDE row (the spotlighted one included) as identical 4:3 cards (`PublicationMedia`, type + date, title, 3-line description, `data.library.open`), under `PublicationToolbar` with `filters={['type', 'year']}` (`usePublicationQuery`, labels `data.toolbar`), `ResultsBar` (`data.results`, newest/oldest) and numbered pages of `TIDE_PAGE_SIZE` (12); `NoResults` when nothing matches. Filters narrow only the library. No source line on this page.
+- `TideCollection({ rows, data })` — TIDE body, two parts that never swap: (1) `Spotlight`: `latestOfType(rows, data.featuredType)` (latest by the report period in the title) — large `PublicationCover` (full-size image), title, type + date, description, `data.featured.read` button, `NewBadge`, and — when the type has 2+ rows — a `data.featured.seeAllTemplate` button that sets `?type=` to that type (other filters cleared) and moves focus to the library's results line (`q.change(next, { focus: true })`); (2) `Library`: every TIDE row (the spotlighted one included) as identical 5:6 cards in 2 / 3 / 4 columns (sm / lg / xl; `PublicationMedia`, type + date, title clamped to 3 lines, 2-line description, `data.library.open`; a row fits a 1366×768 screen), under `PublicationToolbar` with `filters={['type', 'year']}` (`usePublicationQuery`, labels `data.toolbar`), `ResultsBar` (`data.results`, newest/oldest) and numbered pages of `TIDE_PAGE_SIZE` (12); `NoResults` when nothing matches. Filters narrow only the library. No source line on this page.
 - `ResearchArchive({ rows, data })` — THRIvE body: one reading column. Toolbar: `SearchBox` (debounced, `/` shortcut) + three `FilterMenu`s (Type of material, Field of work, Year; faceted counts from `facetPublicationOptions`, types/fields ordered by `orderFilterOptions`; 0-count options disabled unless chosen); `ActiveFilters` chips + "Clear all"; a result line (`data.results.countTemplate`, or `rangeTemplate` when there is more than one page; `aria-live`) and a newest/oldest toggle. Entries grouped under year headings (`groupByYear`; undated last as `data.results.undatedHeading`; a year that started on the previous page gets "(`data.results.continuedLabel`)"). `THRIVE_PAGE_SIZE` (12) per page with `PublicationsPagination`; a filter change returns to page 1; a page change or a chart selection scrolls to and focuses the result line (`focusResults`).
 - `ResearchEntry({ row, data, terms })` — thumbnail (`PublicationMedia`, 4:3 with `sizes`; on top on phones, a sticky left column from `sm`); a top line of type (`TypeIcon`, coloured by family) · date (+ `NewBadge`) · compact `SourceLine`, with the field-of-work tags (family colours) under it; the title (links out when `safeLink(row.link)` is set; search words highlighted); the APA citation panel (`data.entry.citationHeading`, with "Copy citation" — `copyText`; `data.entry.copied` / `copyFailed`, announced through an `aria-live` region with `copiedAnnouncement`); the summary (`data.entry.summaryHeading`, clamped to 3 lines with `data.entry.showMore/showLess` only when it overflows); a "Read" link (hidden without a link).
 - `PublicationCover({ thumb, type, title, period, size = 'md', priority = false, className })` — `PublicationMedia` in the portrait 3:4 frame (`size 'lg'` uses the full-size file); without a thumbnail (or on a load error) a typeset stand-in on navy (period large, title small, an amber rule). Used only by the TIDE spotlight. `thumb` = `getPublicationThumb(id)`. Decorative (`aria-hidden`).
@@ -671,17 +663,17 @@ Each page has its own layout. Both pages (`src/pages/publications/`) render `Seo
 - `HomeHero({ hero, site })` — full-height photo banner (parallax via `useScroll`; photo revealed only once decoded), headline with an SVG stroke under `taglineHighlight` that draws itself (`pathLength`), two `Button`s, a figures strip (`CountUpText` for `site.livesImpacted`, each `hero.pills[].value`, `site.foundingYear`; labels `hero.floatLives`, `pills[].label`, `hero.floatFounded`), two floating photos (xl) moved by the mouse at two depths (`useMotionValue` + `useSpring`), a scroll cue.
 - `HomeMission({ mission, founded })` — text + pull quote (accent bar scales in) + "learn more" link; two photos with scroll-linked drift at different speeds; the founding chip (`founded` = `{ value: site.foundingYear, label: hero.floatFounded }`).
 - `HomePrograms({ programs })` — three numbered cards joined by a line that scales in (md+); each card a `Link` with `tiltHandler`/`settleTilt` (`src/utils/tilt.js`), `.tilt-3d` + `.tilt-3d-glare`, text layer at `translateZ(30px)`; icons from `iconKey` (`ICONS`), accent gradients by index (`ACCENTS`); "Explore" always visible.
-- `HomeJourney({ journey })` — `<ol>` timeline; track filled by `useScroll` progress (`useSpring`), horizontal md+, vertical on phones; `CountUpText` for `phases[].lives`; the last phase styled as a plan (hollow dashed marker, lighter figure).
-- `HomePartners({ text })` — reads `src/data/sheets/partners.json`: up to 10 real logos sorted by `comparePartners` as small tilt tiles (reusing `.partner-3d*`), the partner count (`text.count` / `countOne`, `{n}` → `CountUp`), a link (`text.linkLabel` → `text.linkHref`); renders nothing below `CONSTELLATION_MIN` logos.
+- `HomeJourney({ journey })` — `<ol>` timeline; track filled by `useScroll` progress (`useSpring`), horizontal md+, vertical on phones; `phases[].lives` shown as they are (the filling track is the motion); the last phase styled as a plan (hollow dashed marker, lighter figure).
+- `HomePartners({ text })` — reads `src/data/sheets/partners.json`: up to 10 real logos sorted by `comparePartners` as small tilt tiles (reusing `.partner-3d*`), the partner count (`text.count` / `countOne`, plain number), the logos fading in as one group, a link (`text.linkLabel` → `text.linkHref`); renders nothing below `CONSTELLATION_MIN` logos.
 - `HomeCta({ cta })` — photo band; volunteer / donate as two large tilt cards (`Door`), donate in the accent colour.
 Shared tilt: `src/utils/tilt.js` — `tiltHandler(maxY, maxX)`, `settleTilt`, `tiltProps(maxY, maxX)` (both handlers; they move the hover area itself when it has `.tilt-3d`, else its `.tilt-3d` child); `TiltGlare` (`src/components/ui/`) is the glare layer; CSS `.tilt-3d`, `.tilt-lift` (rise on hover/focus via `--lift`), `.tilt-3d-glare`. Used by every hover-reactive tile on the site and by `Button` (`md`/`lg`); see CLAUDE.md "Tiles and buttons" for the list and the exceptions.
 Shared: `CountUpText({ text })` (`src/components/ui/`) counts the number inside a text figure once in view, keeping the words and the grouping (`src/utils/figures.js`: `splitFigure`, `formatFigure` — commas → Indian grouping, none → plain, so "2014" stays "2014"); final text for screen readers and under reduced motion. `withValue(template, token, value, strongClass)` now takes the number's colour classes (default white).
 
 ### Partners components (`src/components/partners/`)
 
-Used by `src/pages/about/OurPartners.jsx`: `PageHero` with `HeroStats` (`CountUp` figures; `meta.stats`) and `aside` = `PartnerConstellation` (top-priority real logos, sorted by `comparePartners`); then `PartnerIndexBar` (sticky); then the list — one `PartnerSlider` per section from `groupPartners` (§6) inside `SliderConductorContext`, on a spine (wide screens: a line whose fill is `useScroll` progress of the list) — or, while searching, one flat grid of `PartnerCard`s (`caption` = section name) from `filterGroups`; then a navy band with two `Button`s (`cta`). The section "being read" (`activeKey`) is the last heading above `READ_LINE` (170px: header + bar), updated on scroll (rAF); tabs jump with `scrollIntoView` (instant under reduced motion) and focus the heading. Text: `about-our-partners.json` `meta`, `directory`, `cta`.
+Used by `src/pages/about/OurPartners.jsx`: `PageHero` with `HeroStats` (`meta.stats`; only the partner total counts up, via `CountUpText`) and `aside` = `PartnerConstellation` (top-priority real logos, sorted by `comparePartners`); then `PartnerIndexBar` (sticky); then the list — one `PartnerSlider` per section from `groupPartners` (§6) inside `SliderConductorContext`, on a spine (wide screens: a line whose fill is `useScroll` progress of the list) — or, while searching, one flat grid of `PartnerCard`s (`caption` = section name) from `filterGroups`; then a navy band with two `Button`s (`cta`). The section "being read" (`activeKey`) is the last heading above `READ_LINE` (170px: header + bar), updated on scroll (rAF); tabs jump with `scrollIntoView` (instant under reduced motion) and focus the heading. Text: `about-our-partners.json` `meta`, `directory`, `cta`.
 - `PartnerConstellation({ partners })` — `aria-hidden`; up to 9 discs at fixed slots (biggest = first in priority order) joined by curved threads (quadratic paths in a 100×90 viewBox, bending left/right in turn, gradient-stroked so they fade into the discs) that draw in (`pathLength`), with small lights travelling outwards along them (SVG `animateMotion`; not drawn under reduced motion or off screen); discs pop in (spring), then float gently while the banner is in view (`useInView`); a slow ring breathes from the centre disc. Hidden below `sm`. Reduced motion: still (MotionConfig).
-- `PartnerIndexBar({ groups, activeKey, onJump, headingId, search, text, searching })` — `sticky top-[70px] z-30`, translucent with blur; `<nav aria-label={text.jumpLabel}>` of tabs (label + count; `aria-current="location"` + a `layoutId` underline on the active one; the row scrolls sideways with edge fades and keeps the active tab in view without scrolling the page); not rendered while searching. `search` = `{ input, setInput, inputRef }` → `listing/SearchField` (now takes `inputRef`); on phones it folds into an icon button (`text.searchOpen`) with a close button (`text.searchClose`) that clears it.
+- `PartnerIndexBar({ groups, activeKey, onJump, headingId, search, text, searching })` — `sticky top-[70px] z-30`, translucent with blur over the banner; once locked (measured on scroll) solid, with a `before:` strip of the same colour behind the see-through header (stops logos flashing through the header); `<nav aria-label={text.jumpLabel}>` of tabs (label + count; `aria-current="location"` + a `layoutId` underline on the active one; the row scrolls sideways with edge fades and keeps the active tab in view without scrolling the page); not rendered while searching. `search` = `{ input, setInput, inputRef }` → `listing/SearchField` (now takes `inputRef`); on phones it folds into an icon button (`text.searchOpen`) with a close button (`text.searchClose`) that clears it.
 - `sliderConductor.js` — `useSliderConductor(intervalMs)` (page; one `setInterval`; each tick advances only the registered slider that may move, is ≥ 60% on screen and is nearest the window's middle; nothing while `document.hidden`) and `useConductedSlider(key, memberRef)` (slider; `memberRef.current` = `{ el, canMove(), advance() }`). Without a provider, sliders never move on their own.
 - `PartnerSlider({ group, index, text, suspended, headingId, active })` — `group` = `{ key, label, partners }`; a `motion.section` (fade-up once in view) with a spine node (wide screens; filled when `active`) or a small amber `01` eyebrow (phones), the heading (`tabIndex=-1`, `scroll-mt-[150px]`), "{count} partners", and — when the row overflows — one control pill: previous / next (a screenful, `scrollBy` 85% + snapping; disabled at the ends), the visible range (`text.slider.position`, "1–5 of 23", hidden on phones) and play/pause (`aria-label` from `text.slider.*`; its own look: a 44px target around a 36px disc — filled blue when paused (grows and glows on hover), white with a circling blue arc while playing (arc hidden under reduced motion); the icons cross-fade and rotate into each other). The `<ul>` hides the native scrollbar; a slim `aria-hidden` track below it shows the visible share and position and can be clicked or dragged (pointer capture); edges fade with `mask-image` (20px on phones, 56px wider; fixed class strings), except while focus is inside. Starts paused (`SLIDES_START_PAUSED`); when playing, the conductor may advance it one card (wrapping) while not hovered, no focus inside, not `suspended`, overflowing and no manual move in the last `SLIDE_RESUME_MS`. Cards slide in from the right (inner `motion.div`, never the `<li>` — a transformed `<li>` shifts its snap point). Each `<li>` is `relative` (keeps `sr-only` text and the stretched link inside the scroller). `w-[40%]` on phones so a third card peeks in.
 - `PartnerCard({ partner, text, caption, tier, order })` — a 3:2 tile built as a 3D object (`.partner-3d` frame / `-face` / `-float` logo at `translateZ` / `-glare` / `-ground` shadow in `src/index.css`): a mouse over the card tilts it towards the pointer (CSS variables `--rx/--ry/--mx/--my` set by the figure's pointer handlers, no re-render; none on touch or under reduced motion) and linked cards rise (`--lift`). A 1px frame whose look depends on `tier` (`partnerTier`): `feature` = blue gradient halo + glow + larger logo + a light sweep once in view (`order` staggers it); `high` = faint blue ring; `''` = plain border. The logo (`getPartnerLogo`, `object-contain`, `alt=""`) or the initials (`partnerInitials`, `aria-hidden`) when there is no logo, it failed to load, or it is a `placeholder`. Caption: the name (left-aligned, `line-clamp-2` with 2 lines always reserved, full name in `title`) and, with a website, its domain (`websiteLabel`) + ↗; the line is reserved without one, so captions align. With `partner.website` the link is stretched over the card (`after:absolute after:inset-0`; focus ring on the card), opens in a new tab (`rel="noopener noreferrer"`, `text.opensInNewTab`), and the card lifts / the name turns blue on hover; cards without a website don't react. `caption` = a small pill with the section name (search results).
@@ -703,16 +695,6 @@ Helpers in `src/utils/changemakers.js`: `personInitials`, `firstName`, `posterIn
 ---
 
 ## 5. Hook Reference
-
-### useScrollAnimation
-
-```js
-const [ref, isVisible] = useScrollAnimation({ threshold: 0.15, rootMargin: '0px 0px -60px 0px', once: true })
-// Attach ref to any DOM element
-// isVisible flips to true when the element enters the viewport and never flips back
-```
-
-Only `AnimatedCounter` uses it (on the Pramaan home page and Education for Harmony); all other scroll animation is Framer `whileInView`.
 
 ### useLightbox
 
@@ -788,7 +770,7 @@ Use it for any image path that comes from YAML/JSON so it works on both `/` (dev
 
 ### motionPresets.js
 
-`makeFadeUp({ y = 24, duration = 0.6, margin })` → `(delay = 0) => motionProps`, and the default-parameter instance `fadeUp`. Spread onto a `motion.*` element: `<motion.div {...fadeUp(0.1)}>`. See §3 "Scroll animation pattern".
+`fadeUp(delay = 0)` → motion props (10px, 0.45s, `EASE_OUT`, once, margin `REVEAL.margin`; delay ×0.4, capped at `REVEAL.maxDelay`); `revealDelay(i)` → a row's stagger; `REVEAL` and `EASE_OUT` for one-off animations. See §3 "Scroll animation pattern".
 
 ### config/abl.js and config/library.js
 
@@ -1321,20 +1303,19 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 33 files, 383 tests (jsdom, src/test/**)
+npm test               # vitest run — 32 files, 369 tests (jsdom, src/test/**)
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```
 
 | File (under `src/test/`) | Tests | Covers |
 |---|---|---|
-| `components/AnimatedCounter.test.jsx` | 11 | parsing, suffix/commas, classes, 0 before the observer fires |
-| `components/Button.test.jsx` | 16 | variants/sizes, button vs `<a>` vs `<Link>`, external target/rel |
+| `components/Button.test.jsx` | 17 | variants/sizes (lg 48px, md 44px minimums), button vs `<a>` vs `<Link>`, external target/rel |
 | `components/ErrorBoundary.test.jsx` | 5 | children pass-through, friendly screen + actions, console logging, message/stack hidden unless DEV |
 | `components/Header.test.jsx` | 5 | nested "Our Publications" group (keyboard), THRIvE dropdown, mobile nested list + current page, `navActive` most-specific match |
 | `hooks/useLightbox.test.js` | 13 | open/close/prev/next wrap |
 | `utils/imgSrc.test.js` | 8 | path forms, passthrough, base prefix |
-| `utils/motionPresets.test.js` | 10 | `makeFadeUp` / `fadeUp` shape |
+| `utils/motionPresets.test.jsx` | 6 | `fadeUp` values, delay scaling + cap, `revealDelay`; `CountUpText`: width reserved, counts from 80%, small numbers / text shown as they are |
 | `utils/libraryFilters.test.js` | 17 | Resource Centre filters, sort, faceted counts, picker order |
 | `utils/reloadOnStaleChunk.test.js` | 5 | `importWithReload`: success passes through; a failed page import reloads once and never settles (loader, no crash screen); a second failure within the window is re-thrown; reload allowed again after the window; no reload when storage is blocked |
 | `pages/pramaanLibrary.test.jsx` | 10 | Resource Centre list + detail: filters, sort, search, tab bar, old `?type=` names, card links |
@@ -1415,6 +1396,6 @@ Only `deploy.yml` (lint, `content:validate`, unit tests, build, deploy), `sync-p
 | `docs/ARCHITECTURE-DATAFLOW.html` | Companion diagram for technical readers — organized by system layer/dataflow direction, with request/response contracts, caching, trust boundaries, and a secrets reference table. Keep both diagrams in sync. |
 | `content/pages/home.yaml` | Reference example of a full page YAML |
 | `src/pages/Home.jsx` | Reference example of a full page component |
-| `src/pages/get-involved/Volunteer.jsx` | Reference for `SeoHead` + `makeFadeUp` |
+| `src/pages/get-involved/Volunteer.jsx` | Reference for `SeoHead` + `fadeUp` |
 | `src/pages/library/PramaanLibrary.jsx` | Reference for faceted filters + URL-param sync + phone filter drawer |
 | `eslint.config.js` | The `react/jsx-no-literals` CMS guard and other lint rules |

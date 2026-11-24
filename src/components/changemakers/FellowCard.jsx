@@ -4,6 +4,7 @@ import FellowPhotos from './FellowPhotos'
 import TiltGlare from '../ui/TiltGlare'
 import { getFellowPhotos } from '../../utils/changemakersPhotos'
 import { tiltProps } from '../../utils/tilt'
+import { REVEAL, EASE_OUT, revealDelay } from '../../utils/motionPresets'
 
 // One fellow in the Past SCF list. The person leads: the photo (a still picture — switching to the
 // field-work photo is in the profile), a small batch label on the photo, then the NAME as the card's
@@ -29,10 +30,10 @@ export default function FellowCard({ fellow, text, index = 0, onOpen }) {
 
   return (
     <motion.li
-      initial={{ opacity: 0, y: 18 }}
+      initial={{ opacity: 0, y: REVEAL.y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.55, delay: Math.min(index * 0.05, 0.3), ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: REVEAL.margin }}
+      transition={{ duration: REVEAL.duration, delay: revealDelay(index % 4), ease: EASE_OUT }}
       {...TILT}
       className="group"
     >
@@ -57,7 +58,7 @@ export default function FellowCard({ fellow, text, index = 0, onOpen }) {
             </button>
           </h3>
           <p className="mt-1 line-clamp-2 min-h-10 font-body text-sm leading-5 text-tide-muted">{fellow.project}</p>
-          <span aria-hidden="true" className="mt-3 inline-flex min-h-[36px] items-center gap-1.5 rounded-full bg-primary-faint px-3.5 font-body text-sm font-semibold text-primary-dark ring-1 ring-primary/15 transition-colors duration-300 group-hover:bg-primary group-hover:text-white group-hover:ring-primary group-has-[:focus-visible]:bg-primary group-has-[:focus-visible]:text-white">
+          <span aria-hidden="true" className="mt-3 inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full bg-primary-faint px-4 font-body text-sm font-semibold text-primary-dark ring-1 ring-primary/15 transition-colors duration-300 group-hover:bg-primary group-hover:text-white group-hover:ring-primary group-has-[:focus-visible]:bg-primary group-has-[:focus-visible]:text-white">
             {text.cta}
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
           </span>

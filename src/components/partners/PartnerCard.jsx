@@ -79,7 +79,7 @@ export default function PartnerCard({ partner, text, caption, tier = '', order =
                   initial={{ x: '-150%' }}
                   whileInView={{ x: '300%' }}
                   viewport={{ once: true, amount: 0.6 }}
-                  transition={{ duration: 1.3, delay: 0.55 + Math.min(order, 6) * 0.12, ease: [0.4, 0, 0.2, 1] }}
+                  transition={{ duration: 0.9, delay: 0.3 + Math.min(order, 4) * 0.08, ease: [0.22, 1, 0.36, 1] }}
                 />
               )}
             </span>

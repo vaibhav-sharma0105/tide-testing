@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, BookOpen, Globe, GraduationCap, Heart, Lightbulb, Users } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { makeFadeUp } from '../../utils/motionPresets'
+import { fadeUp } from '../../utils/motionPresets'
 import { tiltHandler, settleTilt } from '../../utils/tilt'
 
 // "Three approaches. One vision." — three doors into the work.
@@ -16,7 +16,6 @@ import { tiltHandler, settleTilt } from '../../utils/tilt'
 const B = import.meta.env.BASE_URL
 const ICONS = { Globe, BookOpen, GraduationCap, Heart, Lightbulb, Users }
 const ACCENTS = ['from-sky-500 to-primary', 'from-emerald-500 to-teal-600', 'from-violet-500 to-purple-600']
-const fadeUp = makeFadeUp({ y: 32, duration: 0.7, margin: '-60px' })
 const tilt = tiltHandler(6, 5)
 
 export default function HomePrograms({ programs }) {
@@ -37,14 +36,14 @@ export default function HomePrograms({ programs }) {
             className="absolute left-[16.66%] right-[16.66%] top-0 hidden h-px origin-left bg-gradient-to-r from-sky-400 via-emerald-400 to-violet-400 md:block"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 1.2, delay: 0.3, ease: [0.65, 0, 0.35, 1] }}
+            viewport={{ once: true, margin: '0px 0px -32px 0px' }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           />
           <ul className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
             {programs.items.map((p, i) => {
               const Icon = ICONS[p.iconKey] || Globe
               return (
-                <motion.li key={p.to} {...fadeUp(0.1 + i * 0.12)} className="relative flex flex-col items-center">
+                <motion.li key={p.to} {...fadeUp(0)} className="relative flex flex-col items-center">
                   <span aria-hidden="true" className="relative z-10 mb-6 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-tide-border bg-white font-display text-sm font-semibold tabular-nums text-tide-text shadow-sm max-md:hidden">
                     {String(i + 1).padStart(2, '0')}
                   </span>
@@ -67,7 +66,7 @@ export default function HomePrograms({ programs }) {
                         </span>
                         <h3 className="font-display text-xl font-bold leading-tight text-white md:text-[1.4rem]">{p.title}</h3>
                         <p className="mt-2 font-body text-sm leading-relaxed text-white/80">{p.desc}</p>
-                        <span className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-1.5 font-body text-sm font-semibold text-white ring-1 ring-white/20 transition-colors duration-300 group-hover:bg-white group-hover:text-primary-dark">
+                        <span className="mt-5 inline-flex h-9 items-center gap-1.5 whitespace-nowrap rounded-full bg-white/10 px-4 font-body text-sm font-semibold text-white ring-1 ring-white/20 transition-colors duration-300 group-hover:bg-white group-hover:text-primary-dark">
                           {programs.explore}
                           <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
                         </span>

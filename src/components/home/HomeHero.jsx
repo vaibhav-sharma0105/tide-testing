@@ -3,20 +3,20 @@ import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTran
 import { ArrowRight } from 'lucide-react'
 import Button from '../ui/Button'
 import CountUpText from '../ui/CountUpText'
-import { makeFadeUp } from '../../utils/motionPresets'
 
 // Homepage banner. Reading order is the story in five seconds: who (badge) → what (headline, with
 // "holistic education" underlined by a stroke that draws itself) → how (one line) → what to do
-// (two buttons) → proof (one strip of figures that count up: lives, years, partners, founding year).
+// (two buttons) → proof (one strip of figures: lives, years, partners, founding year). The text is
+// visible at once (nothing on the first screen waits to appear — motion rules in utils/motionPresets.js);
+// the underline is the one flourish, and only the lives figure counts (CountUpText rules).
 // Depth: the photo drifts slower than the page (parallax); on wide screens two photos of the work
 // float beside the text and shift with the mouse at different depths, like layers. The photo is
 // revealed only once fully decoded (never painted in strips). "Reduce motion": no parallax, no
-// drift, figures shown at once.
+// drift, no counting.
 // `hero` = home YAML `hero`; `site` = site.yaml (single source of the lives figure and founding year).
 
 const B = import.meta.env.BASE_URL
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1]
-const fadeUp = makeFadeUp({ y: 28, duration: 0.8 })
 
 export default function HomeHero({ hero, site }) {
   const heroRef = useRef(null)
@@ -81,7 +81,7 @@ export default function HomeHero({ hero, site }) {
           decoding="async"
           initial={false}
           animate={ready ? { opacity: 1, scale: 1 } : { opacity: 0, scale: reduce ? 1 : 1.06 }}
-          transition={{ duration: reduce ? 0.4 : 1.6, ease: EASE_OUT_EXPO }}
+          transition={{ duration: reduce ? 0.3 : 0.9, ease: EASE_OUT_EXPO }}
           className="h-full w-full object-cover object-center"
         />
       </motion.div>
@@ -91,11 +91,11 @@ export default function HomeHero({ hero, site }) {
 
       <motion.div style={{ opacity: copyOpacity }} className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-28 pt-32 md:px-8 md:pb-32 md:pt-40 lg:px-16">
         <div className="max-w-3xl">
-          <motion.div {...fadeUp(0.1)} className="mb-6">
+          <div className="mb-6">
             <span className="badge-white">{hero.badge}</span>
-          </motion.div>
+          </div>
 
-          <motion.h1 {...fadeUp(0.2)} className="font-display text-[2.6rem] font-bold leading-[1.04] tracking-tight text-white text-balance sm:text-6xl lg:text-[5.25rem]">
+          <h1 className="font-display text-[2.6rem] font-bold leading-[1.04] tracking-tight text-white text-balance sm:text-6xl lg:text-[5.25rem]">
             {hero.tagline}{' '}
             <span className="relative inline-block whitespace-nowrap text-accent">
               {hero.taglineHighlight}
@@ -109,45 +109,48 @@ export default function HomeHero({ hero, site }) {
                   strokeLinecap="round"
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 0.9 }}
-                  transition={{ duration: 1.1, delay: 0.9, ease: [0.65, 0, 0.35, 1] }}
+                  transition={{ duration: 0.6, delay: 0.3, ease: EASE_OUT_EXPO }}
                 />
               </svg>
             </span>
-          </motion.h1>
+          </h1>
 
-          <motion.p {...fadeUp(0.32)} className="mt-8 max-w-xl text-lg leading-relaxed text-white/80 md:text-xl">
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/80 md:text-xl">
             {hero.description}
-          </motion.p>
+          </p>
 
-          <motion.div {...fadeUp(0.42)} className="mt-10 flex flex-wrap gap-4">
-            <Button to={hero.ctaHref} size="lg" variant="white" className="group/cta px-8 py-4 shadow-float">
+          <div className="mt-10 flex flex-wrap gap-4">
+            <Button to={hero.ctaHref} size="lg" variant="white" className="group/cta shadow-float">
               {hero.ctaLabel}
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/cta:translate-x-1" />
             </Button>
-            <Button to={hero.ctaSecondaryHref} size="lg" className="gradient-accent border-none px-8 py-4 text-tide-text shadow-float">
+            <Button to={hero.ctaSecondaryHref} size="lg" className="gradient-accent border-none text-tide-text shadow-float">
               {hero.ctaSecondaryLabel}
             </Button>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Proof: one strip, figures counting up. Solid tint (no backdrop blur over the moving photo). */}
-        <motion.ul {...fadeUp(0.55)} className="mt-14 grid max-w-3xl grid-cols-2 overflow-hidden rounded-2xl border border-white/15 bg-navy/45 sm:grid-cols-4">
+        {/* Proof: one strip of figures (only the lives figure counts). Solid tint (no backdrop blur over the moving photo). */}
+        <ul className="mt-14 grid max-w-3xl grid-cols-2 overflow-hidden rounded-2xl border border-white/15 bg-navy/45 sm:grid-cols-4">
           {figures.map((f, i) => (
             <li key={f.label} className={`px-5 py-4 md:px-6 md:py-5 ${i % 2 ? 'border-l border-white/10' : ''} ${i > 1 ? 'border-t border-white/10 sm:border-t-0' : ''} ${i > 0 ? 'sm:border-l sm:border-white/10' : ''}`}>
-              <CountUpText text={f.value} delay={0.7 + i * 0.12} className="block font-display text-2xl font-bold leading-none text-white md:text-3xl" />
+              {/* Only the lives figure (the main proof) counts; the others are shown as they are. */}
+              {i === 0
+                ? <CountUpText text={f.value} delay={0.2} className="block font-display text-2xl font-bold leading-none text-white md:text-3xl" />
+                : <span className="block font-display text-2xl font-bold leading-none text-white md:text-3xl">{f.value}</span>}
               <span className="mt-1.5 block font-body text-xs leading-snug text-white/65 md:text-[13px]">{f.label}</span>
             </li>
           ))}
-        </motion.ul>
+        </ul>
 
         {/* Floating photos of the work (wide screens), moving with the mouse at two depths. */}
         <div aria-hidden="true" className="absolute right-16 top-1/2 hidden -translate-y-1/2 xl:block">
           <div className="relative h-[420px] w-[300px]">
             <motion.div style={{ x: farX, y: farY }} className="absolute right-0 top-0 h-64 w-52">
               <motion.div
-                initial={{ opacity: 0, x: 40, rotate: 4 }}
+                initial={{ opacity: 0, x: 12, rotate: 3 }}
                 animate={{ opacity: 1, x: 0, rotate: 3 }}
-                transition={{ delay: 0.6, duration: 1, ease: EASE_OUT_EXPO }}
+                transition={{ delay: 0.15, duration: 0.5, ease: EASE_OUT_EXPO }}
                 className="relative h-full w-full overflow-hidden rounded-2xl border-2 border-white/25 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)]"
               >
                 <img src={`${B}${hero.floatPhotos[0].src}`} alt="" className="h-full w-full object-cover" />
@@ -155,9 +158,9 @@ export default function HomeHero({ hero, site }) {
             </motion.div>
             <motion.div style={{ x: nearX, y: nearY }} className="absolute bottom-0 left-0 h-56 w-44">
               <motion.div
-                initial={{ opacity: 0, x: -30, rotate: -5 }}
+                initial={{ opacity: 0, x: -10, rotate: -4 }}
                 animate={{ opacity: 1, x: 0, rotate: -4 }}
-                transition={{ delay: 0.85, duration: 1, ease: EASE_OUT_EXPO }}
+                transition={{ delay: 0.25, duration: 0.5, ease: EASE_OUT_EXPO }}
                 className="relative h-full w-full overflow-hidden rounded-2xl border-2 border-white/25 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.7)]"
               >
                 <img src={`${B}${hero.floatPhotos[1].src}`} alt="" className="h-full w-full object-cover" />
@@ -172,7 +175,7 @@ export default function HomeHero({ hero, site }) {
         aria-hidden="true"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.8 }}
+        transition={{ delay: 0.6, duration: 0.4 }}
         className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
       >
         <span className="flex h-9 w-5 justify-center rounded-full border border-white/35 pt-1.5">

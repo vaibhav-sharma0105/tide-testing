@@ -4,11 +4,15 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Header from './Header'
 import Footer from './Footer'
 import navData from '../../data/navigation.json'
+import { EASE_OUT } from '../../utils/motionPresets'
 
+// Changing page: the new page fades in quickly (0.2s) and the old one leaves almost at once, so a
+// click never waits on an animation. The first page of a visit appears without any fade
+// (AnimatePresence initial={false}) — motion rules in utils/motionPresets.js.
 const pageVariants = {
-  initial: { opacity: 0, y: 12 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -8 },
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.2, ease: EASE_OUT } },
+  exit: { opacity: 0, transition: { duration: 0.06 } },
 }
 
 export default function Layout({ children }) {
@@ -27,7 +31,7 @@ export default function Layout({ children }) {
         {navData.skipLink}
       </a>
       <Header />
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         <motion.main
           id="main-content"
           role="main"
@@ -37,7 +41,6 @@ export default function Layout({ children }) {
           initial="initial"
           animate="animate"
           exit="exit"
-          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
           className="flex-1"
         >
           {children}

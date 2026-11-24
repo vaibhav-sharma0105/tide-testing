@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, Heart, Users } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { makeFadeUp } from '../../utils/motionPresets'
+import { fadeUp } from '../../utils/motionPresets'
 import { tiltHandler, settleTilt } from '../../utils/tilt'
 
 // "Be part of the change": the page's closing invitation. The two ways to help are two large doors,
@@ -10,7 +10,6 @@ import { tiltHandler, settleTilt } from '../../utils/tilt'
 // `cta` = home YAML `cta`.
 
 const B = import.meta.env.BASE_URL
-const fadeUp = makeFadeUp({ y: 28, duration: 0.7, margin: '-60px' })
 const tilt = tiltHandler(6, 5)
 
 function Door({ to, label, icon: Icon, accent, delay }) {

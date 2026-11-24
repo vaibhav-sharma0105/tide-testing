@@ -1,12 +1,10 @@
 import { motion } from 'framer-motion'
+import { fadeUp } from '../../utils/motionPresets'
 
 export default function SectionHeader({ badge, title, subtitle, center = false, light = false, className = '' }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+      {...fadeUp()}
       className={`mb-12 md:mb-16 ${center ? 'text-center' : ''} ${className}`}
     >
       {badge && (

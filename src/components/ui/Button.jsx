@@ -24,10 +24,17 @@ const variants = {
 const TILT_SIZES = new Set(['md', 'lg'])
 const tilt = tiltProps(6, 8)
 
+// The site's one button scale (2026-11-24). Heights are minimums, so a bordered button (secondary)
+// is exactly as tall as a filled one beside it, and a long label can still wrap on a phone.
+//   lg — a section's main call to action: 48px, 15px text
+//   md — everything else (default): 44px (the touch-target size), 14px text
+//   sm — compact, inside dense UI: 36px
+// Hand-made pill buttons elsewhere (TideCollection, ErrorBoundary, …) follow the same numbers; don't
+// add size overrides (px-8 py-4 …) in className.
 const sizes = {
-  sm: 'px-4 py-2 text-sm',
-  md: 'px-6 py-3 text-sm',
-  lg: 'px-8 py-4 text-base',
+  sm: 'min-h-9 px-4 py-1.5 text-sm',
+  md: 'min-h-11 px-5 py-2 text-sm',
+  lg: 'min-h-12 px-6 py-2.5 text-[15px]',
 }
 
 export default function Button({
@@ -41,7 +48,7 @@ export default function Button({
   ...props
 }) {
   const base =
-    'inline-flex items-center gap-2 font-body font-semibold rounded-full transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
+    'inline-flex items-center justify-center gap-2 font-body font-semibold leading-tight rounded-full transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
   const tilts = TILT_SIZES.has(size)
   const cls = `${base} ${variants[variant]} ${sizes[size]} ${tilts ? 'tilt-3d tilt-lift relative overflow-hidden' : ''} ${className}`
   const extra = tilts ? tilt : {}

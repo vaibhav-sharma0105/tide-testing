@@ -6,7 +6,7 @@ import PageHero from '../../components/ui/PageHero'
 import AblNavBar from '../../components/abl/AblNavBar'
 import PromoVideo from '../../components/abl/PromoVideo'
 import PhotoStrip from '../../components/abl/PhotoStrip'
-import AnimatedCounter from '../../components/ui/AnimatedCounter'
+import CountUpText from '../../components/ui/CountUpText'
 import Button from '../../components/ui/Button'
 import Highlight from '../../components/ui/Highlight'
 import ResourceTypeBadge from '../../components/abl/ResourceTypeBadge'
@@ -80,8 +80,15 @@ export default function AblHome() {
         <div className="max-w-5xl mx-auto px-4 md:px-8 lg:px-16">
           <div className="mx-auto grid max-w-3xl grid-cols-3 gap-4 text-center md:gap-6">
             {[
-                <AnimatedCounter key="t" value={resources.length} label={ablData.stats.totalResources} />,
-                <AnimatedCounter key="r" value={TYPES.length} label={ablData.stats.resourceTypes} />,
+                // Only the main figure (the number of resources) counts — motion rules in utils/motionPresets.js.
+                <div key="t" className="text-center">
+                  <CountUpText text={String(resources.length)} className="block font-display text-4xl md:text-5xl font-bold leading-none text-primary" />
+                  <div className="mt-2.5 text-xs font-body font-semibold uppercase tracking-widest text-tide-muted">{ablData.stats.totalResources}</div>
+                </div>,
+                <div key="r" className="text-center">
+                  <div className="font-display text-4xl md:text-5xl font-bold leading-none text-primary tabular-nums">{TYPES.length}</div>
+                  <div className="mt-2.5 text-xs font-body font-semibold uppercase tracking-widest text-tide-muted">{ablData.stats.resourceTypes}</div>
+                </div>,
                 <div key="g" className="text-center">
                   <div className="font-display text-4xl md:text-5xl font-bold leading-none text-primary">{ablData.stats.gradeRange}</div>
                   <div className="mt-2.5 text-xs font-body font-semibold uppercase tracking-widest text-tide-muted">{ablData.stats.gradeCovered}</div>
@@ -143,7 +150,7 @@ export default function AblHome() {
                   <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary-light text-primary" aria-hidden="true">
                     <Icon className="h-5 w-5" />
                   </span>
-                  <AnimatedCounter value={r.value} numClassName="font-display text-3xl md:text-4xl font-bold leading-none text-primary" />
+                  <div className="font-display text-3xl md:text-4xl font-bold leading-none text-primary tabular-nums">{r.value}</div>
                   <div className="mt-2 font-body text-sm font-medium text-tide-muted">{r.label}</div>
                 </motion.div>
               )

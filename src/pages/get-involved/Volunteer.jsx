@@ -8,7 +8,7 @@ import Button from '../../components/ui/Button'
 import data from '../../data/get-involved-volunteer.json'
 import site from '../../data/site.json'
 import { imgSrc } from '../../utils/imgSrc'
-import { makeFadeUp } from '../../utils/motionPresets'
+import { fadeUp } from '../../utils/motionPresets'
 
 const ICONS = {
   BookOpen:  <BookOpen className="w-5 h-5" />,
@@ -16,7 +16,6 @@ const ICONS = {
   Briefcase: <Briefcase className="w-5 h-5" />,
 }
 
-const fadeUp = makeFadeUp({ y: 20, duration: 0.55 })
 
 // Resting position of each print in the collage: width, placement (% of the frame) and tilt.
 const PRINTS = [
@@ -142,7 +141,7 @@ function Collage({ images, stat, statLabel }) {
             key={item.src}
             tilt={p.tilt}
             kick={i % 2 ? -16 : 16}
-            delay={0.1 + i * 0.2}
+            delay={0.05 + i * 0.08}
             reduce={reduce}
             className={`absolute ${p.box} bg-white p-2 pb-2 rounded-md shadow-float`}
             style={{ zIndex: i + 1 }}
@@ -153,7 +152,7 @@ function Collage({ images, stat, statLabel }) {
         )
       })}
       {/* Paper tag: threaded through a punched hole on a pin, swings like the prints */}
-      <Swing tilt={4} kick={-20} delay={0.9} reduce={reduce} className="absolute right-[3%] -top-[4%] z-20 w-36">
+      <Swing tilt={4} kick={-20} delay={0.3} reduce={reduce} className="absolute right-[3%] -top-[4%] z-20 w-36">
         <Pin color="bg-primary" />
         <span className="absolute left-1/2 top-[7px] h-[29px] w-0.5 -translate-x-1/2 bg-accent-dark" aria-hidden="true" />
         <div className="mt-[22px]" style={{ filter: 'drop-shadow(0 6px 8px rgba(13,31,60,0.22))' }}>
@@ -221,7 +220,7 @@ function PhotoWall({ images }) {
         const img = <img src={imgSrc(item.src)} alt={item.label} className="w-full aspect-square object-cover object-top rounded-sm" />
         if (p.pinned) {
           return (
-            <Swing as="figure" key={item.src} tilt={p.tilt} kick={i % 2 ? -16 : 16} delay={0.1 + i * 0.2} reduce={reduce} className={className}>
+            <Swing as="figure" key={item.src} tilt={p.tilt} kick={i % 2 ? -16 : 16} delay={0.05 + i * 0.08} reduce={reduce} className={className}>
               {img}
               <Pin color={p.pin} pinRef={(el) => { pinRefs.current[i] = el }} />
             </Swing>
@@ -236,7 +235,7 @@ function PhotoWall({ images }) {
             initial={reduce ? false : { opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.5, delay: 0.1 + i * 0.2 }}
+            transition={{ duration: 0.4, delay: 0.05 + i * 0.08 }}
           >
             {img}
             <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 rotate-[-3deg] w-14 h-5 bg-amber-200/80 border-x border-dashed border-amber-300/70 shadow-sm" aria-hidden="true" />

@@ -4,7 +4,6 @@ import { ArrowRight, ArrowUpRight, ExternalLink, Mail, Maximize2, Play, Sprout }
 import SeoHead from '../components/ui/SeoHead'
 import PageHero from '../components/ui/PageHero'
 import Button from '../components/ui/Button'
-import AnimatedCounter from '../components/ui/AnimatedCounter'
 import data from '../data/education-for-harmony.json'
 import site from '../data/site.json'
 import { imgSrc } from '../utils/imgSrc'
@@ -212,7 +211,7 @@ function EcoRow({ item, last, index, reduce }) {
           {item.stat ? (
             <>
               <div className="w-fit">
-                <AnimatedCounter value={item.stat} numClassName="font-display text-5xl md:text-6xl font-bold leading-none text-primary" />
+                <div className="font-display text-5xl md:text-6xl font-bold leading-none text-primary tabular-nums">{item.stat}</div>
               </div>
               <p className="mt-2.5 max-w-[14rem] font-body text-sm font-medium leading-snug text-tide-muted">{item.statLabel}</p>
             </>
@@ -289,7 +288,7 @@ function Video() {
           initial={{ opacity: 0, y: 24, rotate: -1.5 }}
           whileInView={{ opacity: 1, y: 0, rotate: -0.8 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="relative rounded-md bg-white p-2 md:p-3 shadow-float"
         >
           <span className={`absolute left-1/2 -top-2 z-10 h-4 w-4 -translate-x-1/2 rounded-full bg-primary ${PIN_SHADOW}`} aria-hidden="true" />
@@ -365,7 +364,7 @@ function Screen({ url, title, reduce, still }) {
               initial={reduce || still ? false : { scaleY: 0 }}
               whileInView={{ scaleY: 1 }}
               viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1], delay: 0.2 + i * 0.08 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 + Math.min(i, 4) * 0.05 }}
             />
           ))}
         </div>
@@ -400,7 +399,7 @@ function Dashboard() {
               canHover ? 'opacity-0 transition-opacity duration-300 hover:opacity-100 focus-visible:opacity-100' : ''
             }`}
           >
-            <span className="inline-flex items-center gap-2 rounded-full bg-navy px-6 py-3 font-body text-sm font-semibold text-white shadow-float">
+            <span className="inline-flex min-h-11 items-center gap-2 rounded-full bg-navy px-5 font-body text-sm font-semibold text-white shadow-float">
               {canHover ? dashboard.ctaLabel : dashboard.fullScreenLabel}
               {canHover ? <ArrowUpRight className="h-4 w-4" aria-hidden="true" /> : <Maximize2 className="h-4 w-4" aria-hidden="true" />}
             </span>

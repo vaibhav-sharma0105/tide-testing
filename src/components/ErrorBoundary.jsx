@@ -37,13 +37,13 @@ export default class ErrorBoundary extends Component {
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full font-body font-semibold text-sm gradient-accent text-tide-text shadow-sm hover:shadow-glow-amber transition-all duration-200"
+              className="inline-flex min-h-11 items-center justify-center px-5 rounded-full font-body font-semibold text-sm gradient-accent text-tide-text shadow-sm hover:shadow-glow-amber transition-all duration-200"
             >
               {data.reloadLabel}
             </button>
             <a
               href={import.meta.env.BASE_URL}
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full font-body font-semibold text-sm border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
+              className="inline-flex min-h-11 items-center justify-center px-5 rounded-full font-body font-semibold text-sm border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
             >
               {data.homeLabel}
             </a>

@@ -2,16 +2,15 @@ import { useRef } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { makeFadeUp } from '../../utils/motionPresets'
+import { fadeUp } from '../../utils/motionPresets'
 
 // "Our Mission": the idea first, then the belief behind it as a pull quote, then where to read more.
 // The two photos sit at different depths and drift at different speeds as the page scrolls (the
-// large one slower, the small one faster) — depth you feel rather than see. The founding chip pops
+// large one slower, the small one faster) — depth you feel rather than see. The founding chip fades
 // in once. The quote's accent bar grows as it comes into view. "Reduce motion": no drift.
 // `mission` = home YAML `mission`; `founded` = { value: site.foundingYear, label }.
 
 const B = import.meta.env.BASE_URL
-const fadeUp = makeFadeUp({ y: 28, duration: 0.7, margin: '-60px' })
 
 export default function HomeMission({ mission, founded }) {
   const ref = useRef(null)
@@ -36,8 +35,8 @@ export default function HomeMission({ mission, founded }) {
                 style={{ height: '100%' }}
                 initial={{ scaleY: 0 }}
                 whileInView={{ scaleY: 1 }}
-                viewport={{ once: true, margin: '-80px' }}
-                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: '0px 0px -32px 0px' }}
+                transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               />
               <blockquote className="font-display text-xl italic leading-snug text-tide-text md:text-[1.4rem]">
                 {`“${mission.quote}”`}
@@ -62,10 +61,7 @@ export default function HomeMission({ mission, founded }) {
                 <img src={`${B}${mission.image2}`} alt={mission.image2Alt} loading="lazy" decoding="async" className="h-full w-full object-cover" />
               </motion.div>
               <motion.div
-                initial={{ opacity: 0, scale: 0.85, y: 10 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.35, type: 'spring', stiffness: 220, damping: 16 }}
+                {...fadeUp(0.3)}
                 className="absolute left-4 top-6 rounded-2xl px-4 py-3 text-tide-text shadow-float gradient-accent sm:left-6"
               >
                 <div className="font-display text-2xl font-bold leading-none">{founded.value}</div>

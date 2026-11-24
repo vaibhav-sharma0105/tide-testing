@@ -18,9 +18,9 @@ export default function PromoVideo() {
   return (
     <>
       <motion.figure
-        initial={reduce ? false : { opacity: 0, y: 20 }}
+        initial={reduce ? false : { opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        transition={{ duration: 0.4, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
         whileHover={reduce ? undefined : { y: -4, transition: { type: 'spring', stiffness: 90, damping: 14 } }}
         className="relative mx-auto w-full max-w-xl rounded-md bg-white p-2 shadow-[0_18px_50px_rgba(0,0,0,0.35)] md:p-3 lg:max-w-none"
       >
@@ -40,7 +40,7 @@ export default function PromoVideo() {
                 <span className="block font-display text-2xl font-semibold leading-[1.05] text-white md:text-4xl lg:text-[2.6rem]">{promo.posterTitle}</span>
                 <span className="mt-2 block font-body text-xs font-medium leading-snug text-white/70 md:mt-3 md:text-base">{promo.posterSub}</span>
               </span>
-              <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-3.5 py-2 font-body text-xs font-semibold text-white ring-1 ring-white/25 transition-colors duration-300 group-hover:bg-white/20 md:px-4 md:text-sm">
+              <span className="inline-flex h-9 w-fit items-center gap-2 whitespace-nowrap rounded-full bg-white/10 px-4 font-body text-sm font-semibold text-white ring-1 ring-white/25 transition-colors duration-300 group-hover:bg-white/20">
                 {promo.playText}
               </span>
             </span>

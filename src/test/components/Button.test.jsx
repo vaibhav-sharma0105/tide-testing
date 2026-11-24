@@ -55,9 +55,15 @@ describe('Button', () => {
     expect(screen.getByRole('button').className).toContain('px-4')
   })
 
-  it('applies lg size classes', () => {
+  it('applies lg size classes (48px minimum, so filled and bordered buttons match)', () => {
     renderButton({ children: 'Lg', size: 'lg' })
-    expect(screen.getByRole('button').className).toContain('px-8')
+    expect(screen.getByRole('button').className).toContain('min-h-12')
+    expect(screen.getByRole('button').className).toContain('px-6')
+  })
+
+  it('gives md (the default) the 44px touch-target minimum', () => {
+    renderButton({ children: 'Md' })
+    expect(screen.getByRole('button').className).toContain('min-h-11')
   })
 
   // --- click handler ---

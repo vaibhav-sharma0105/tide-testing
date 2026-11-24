@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
 import PartnerCard from './PartnerCard'
 import { useConductedSlider } from './sliderConductor'
-import { makeFadeUp } from '../../utils/motionPresets'
+import { fadeUp as reveal } from '../../utils/motionPresets'
 import { partnerTier } from '../../utils/partnerFilters'
 import { SLIDE_RESUME_MS, SLIDES_START_PAUSED } from '../../config/partners'
 
@@ -28,7 +28,6 @@ import { SLIDE_RESUME_MS, SLIDES_START_PAUSED } from '../../config/partners'
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
-const reveal = makeFadeUp({ y: 16, duration: 0.5, margin: '-40px' })
 const EASE_OUT = [0.16, 1, 0.3, 1]
 
 // Fixed class strings (Tailwind can't see class names built at runtime).
@@ -229,10 +228,10 @@ export default function PartnerSlider({ group, index, text, suspended = false, h
           <li key={p.id} className="relative w-[40%] flex-none snap-start sm:w-44 lg:w-[11.5rem]">
             <motion.div
               className="h-full"
-              initial={{ opacity: 0, x: 40 }}
+              initial={{ opacity: 0, x: 16 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.05 }}
-              transition={{ duration: 0.7, ease: EASE_OUT, delay: Math.min(i, 6) * 0.06 }}
+              transition={{ duration: 0.45, ease: EASE_OUT, delay: Math.min(i, 4) * 0.05 }}
             >
               <PartnerCard partner={p} text={text} tier={partnerTier(p.priority)} order={i} />
             </motion.div>

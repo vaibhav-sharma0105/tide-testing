@@ -95,7 +95,7 @@ export default function AblContribute() {
               </Button>
             ) : (
               <div className="inline-flex flex-col items-center gap-2">
-                <span className="cursor-not-allowed rounded-full border border-white/20 bg-white/10 px-6 py-3.5 font-body text-sm font-semibold text-white/70">
+                <span className="inline-flex min-h-12 cursor-not-allowed items-center rounded-full border border-white/20 bg-white/10 px-6 font-body text-[15px] font-semibold text-white/70">
                   {ablContributeData.cta}
                 </span>
                 <span className="font-body text-xs font-semibold text-accent">{ablContributeData.ctaPending}</span>

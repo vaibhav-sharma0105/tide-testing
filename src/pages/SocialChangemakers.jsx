@@ -15,7 +15,6 @@ import { tiltProps } from '../utils/tilt'
 import FellowCard from '../components/changemakers/FellowCard'
 import FellowProfile from '../components/changemakers/FellowProfile'
 import HeroStats from '../components/ui/HeroStats'
-import CountUp from '../components/ui/CountUp'
 import VideoLightbox from '../components/abl/VideoLightbox'
 import withValue from '../components/ui/withValue'
 import { groupByBatch, fellowsInOrder, matchesFellow } from '../utils/changemakers'
@@ -407,9 +406,9 @@ export default function SocialChangemakers() {
   const films = batches.reduce((n, b) => n + b.fellows.filter(f => f.videoUrl).length, 0)
   const st = data.profiles.stats
   const heroItems = total > 0 ? [
-    withValue(total === 1 ? st.fellowsOne : st.fellows, 'n', <CountUp value={total} />),
-    withValue(batches.length === 1 ? st.batchesOne : st.batches, 'n', <CountUp value={batches.length} />),
-    films > 0 && withValue(films === 1 ? st.filmsOne : st.films, 'n', <CountUp value={films} />),
+    withValue(total === 1 ? st.fellowsOne : st.fellows, 'n', total),
+    withValue(batches.length === 1 ? st.batchesOne : st.batches, 'n', batches.length),
+    films > 0 && withValue(films === 1 ? st.filmsOne : st.films, 'n', films),
   ] : []
   return (
     <>

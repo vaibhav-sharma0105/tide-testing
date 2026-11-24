@@ -1,26 +1,24 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import CountUp from '../ui/CountUp'
 import withValue from '../ui/withValue'
 import { getPartnerLogo } from '../../utils/partnerPhotos'
 import { comparePartners } from '../../utils/partnerFilters'
 import { tiltHandler, settleTilt } from '../../utils/tilt'
-import { makeFadeUp } from '../../utils/motionPresets'
+import { fadeUp } from '../../utils/motionPresets'
 import { CONSTELLATION_MIN } from '../../config/partners'
 import snapshot from '../../data/sheets/partners.json'
 
 // "In good company": the homepage's proof by association, placed just before the invitation to
 // get involved — the moment a visitor decides whether to trust TIDE. It shows the logos of the
 // highest-priority partners (same order as the Partners page: priority, then A→Z; real logos only)
-// as small 3D tiles that tilt with the mouse, the number of partners counting up, and one link to
+// as small 3D tiles that tilt with the mouse, the number of partners (shown as it is), and one link to
 // the full list. Built from the Partners Sheet snapshot; hidden while it has fewer than
 // CONSTELLATION_MIN logos (e.g. before the first sync). Logos are decorative (alt=""): the link
 // leads to the named list.
 // `text` = home YAML `partners`.
 
 const MAX_LOGOS = 10
-const fadeUp = makeFadeUp({ y: 24, duration: 0.7, margin: '-60px' })
 const tilt = tiltHandler(10, 8)
 
 export default function HomePartners({ text }) {
@@ -36,7 +34,7 @@ export default function HomePartners({ text }) {
           <span className="badge-primary mb-4 block w-fit">{text.sectionBadge}</span>
           <h2 className="display-md text-tide-text text-balance">{text.title}</h2>
           <p className="mt-4 font-body text-lg text-tide-muted">
-            {withValue(total === 1 ? text.countOne : text.count, 'n', <CountUp value={total} />, 'font-display text-2xl text-primary-dark')}
+            {withValue(total === 1 ? text.countOne : text.count, 'n', total, 'font-display text-2xl text-primary-dark')}
           </p>
           <Link
             to={text.linkHref}
@@ -47,16 +45,13 @@ export default function HomePartners({ text }) {
           </Link>
         </motion.div>
 
-        <ul aria-hidden="true" className="grid grid-cols-3 gap-3 sm:grid-cols-5 sm:gap-4">
+        {/* The logos arrive as one group (one fade), not one by one. */}
+        <motion.ul {...fadeUp(0.1)} aria-hidden="true" className="grid grid-cols-3 gap-3 sm:grid-cols-5 sm:gap-4">
           {logos.map((p, i) => {
             const logo = getPartnerLogo(p.id)
             return (
-              <motion.li
+              <li
                 key={p.id}
-                initial={{ opacity: 0, y: 18, scale: 0.94 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.6, delay: 0.1 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
                 onPointerMove={tilt}
                 onPointerLeave={settleTilt}
                 className={`group ${i >= 6 ? 'max-sm:hidden' : ''}`}
@@ -67,10 +62,10 @@ export default function HomePartners({ text }) {
                     <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-[15px]"><span className="tilt-3d-glare absolute inset-0" /></span>
                   </div>
                 </div>
-              </motion.li>
+              </li>
             )
           })}
-        </ul>
+        </motion.ul>
       </div>
     </section>
   )

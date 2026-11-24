@@ -78,7 +78,7 @@ export default function PartnerConstellation({ partners }) {
             strokeLinecap="round"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 1.4, delay: 0.6 + n * 0.08, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.9, delay: 0.25 + Math.min(n, 6) * 0.04, ease: [0.16, 1, 0.3, 1] }}
           />
         ))}
         {!reduce && inView && threads.map(({ i, d }, n) => (
@@ -96,7 +96,7 @@ export default function PartnerConstellation({ partners }) {
           style={{ left: `${slot.x}%`, top: `${slot.y}%`, width: `${slot.s * 30}%` }}
           initial={{ opacity: 0, scale: 0.6 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', stiffness: 160, damping: 18, delay: 0.25 + i * 0.08 }}
+          transition={{ type: 'spring', stiffness: 160, damping: 18, delay: 0.05 + Math.min(i, 6) * 0.04 }}
         >
           <motion.div
             className="relative aspect-square w-full overflow-hidden rounded-full bg-white shadow-[0_18px_40px_-12px_rgba(0,0,0,0.55)] ring-1 ring-white/40"

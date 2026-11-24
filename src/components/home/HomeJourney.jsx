@@ -1,17 +1,15 @@
 import { useRef } from 'react'
 import { motion, useScroll, useSpring } from 'framer-motion'
-import CountUpText from '../ui/CountUpText'
-import { makeFadeUp } from '../../utils/motionPresets'
+import { fadeUp } from '../../utils/motionPresets'
 
 // "Our Journey": the phases as one timeline instead of three loose columns.
 //   - A track runs through the phase markers and fills as the visitor scrolls through the section
 //     (horizontal on wide screens, vertical on phones) — progress you can feel.
-//   - Each phase's lives figure counts up when it appears.
+//   - Each phase's lives figure is shown as it is (the filling track is the motion here).
 //   - The last phase is a plan, not a result: its marker is hollow and dashed and its figure lighter,
 //     so a target never reads as an achievement. Which phase is "the plan" is the last one in YAML.
 // `journey` = home YAML `journey`.
 
-const fadeUp = makeFadeUp({ y: 24, duration: 0.7, margin: '-60px' })
 
 export default function HomeJourney({ journey }) {
   const ref = useRef(null)
@@ -53,11 +51,8 @@ export default function HomeJourney({ journey }) {
                     <span className="mx-2 text-tide-border" aria-hidden="true">{'/'}</span>
                     <span className="text-tide-mutedOnLight">{ph.period}</span>
                   </p>
-                  <CountUpText
-                    text={ph.lives}
-                    delay={0.2 + i * 0.15}
-                    className={`mt-3 block font-display text-2xl font-semibold leading-tight md:text-[1.7rem] ${plan ? 'text-tide-text/70' : 'text-tide-text'}`}
-                  />
+                  {/* Shown as they are: the timeline filling on scroll is the motion here. */}
+                  <span className={`mt-3 block font-display text-2xl font-semibold leading-tight tabular-nums md:text-[1.7rem] ${plan ? 'text-tide-text/70' : 'text-tide-text'}`}>{ph.lives}</span>
                   <p className="mt-3 max-w-xs font-body text-sm leading-relaxed text-tide-muted">{ph.desc}</p>
                 </motion.li>
               )

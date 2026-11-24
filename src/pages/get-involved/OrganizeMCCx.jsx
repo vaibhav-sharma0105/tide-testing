@@ -48,7 +48,7 @@ function PinnedPrint({ photo, spec, index, reduce }) {
       initial={reduce ? { rotate: spec.tilt } : { opacity: 0, rotate: spec.tilt + kick }}
       whileInView={{ opacity: 1, rotate: spec.tilt }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={reduce ? undefined : { ...SOFT_SWING, delay: 0.1 + index * 0.2, opacity: { duration: 0.5, delay: 0.1 + index * 0.2 } }}
+      transition={reduce ? undefined : { ...SOFT_SWING, delay: 0.05 + index * 0.08, opacity: { duration: 0.35, delay: 0.05 + index * 0.08 } }}
       animate={controls}
       onTap={(e) => swing(e)}
       whileHover={reduce ? undefined : { rotate: 0, transition: SOFT_STRAIGHTEN }}
@@ -165,16 +165,16 @@ function Steps() {
             aria-hidden="true"
             initial={{ clipPath: 'inset(0 0 100% 0)' }}
             whileInView={{ clipPath: 'inset(0 0 0% 0)' }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 1.1, ease: 'easeInOut' }}
+            viewport={{ once: true, margin: '0px 0px -32px 0px' }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           />
           <motion.span
             className="absolute left-[12.5%] right-[12.5%] top-[21px] hidden h-0.5 bg-accent-dark/60 lg:block"
             aria-hidden="true"
             initial={{ clipPath: 'inset(0 100% 0 0)' }}
             whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 1.2, ease: 'easeInOut' }}
+            viewport={{ once: true, margin: '0px 0px -32px 0px' }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           />
           <ol className="relative grid gap-6 lg:grid-cols-4 lg:gap-5">
             {steps.items.map((s, i) => (
@@ -217,7 +217,7 @@ function SessionPrint({ spec, index, beat, reduce }) {
       initial={reduce ? { rotate: spec.tilt } : { opacity: 0, rotate: spec.tilt + kick }}
       whileInView={{ opacity: 1, rotate: spec.tilt }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={reduce ? undefined : { ...SOFT_SWING, delay: 0.2 + index * 0.2, opacity: { duration: 0.5, delay: 0.2 + index * 0.2 } }}
+      transition={reduce ? undefined : { ...SOFT_SWING, delay: 0.1 + index * 0.08, opacity: { duration: 0.35, delay: 0.1 + index * 0.08 } }}
       animate={controls}
       tabIndex={-1}   // a tap handler makes the figure focusable, and the whole row is aria-hidden
       onTap={(e) => { if (!reduce && e?.pointerType !== 'mouse') swing() }}
@@ -269,7 +269,7 @@ function PastSessions() {
             initial={reduce ? false : { clipPath: 'inset(0 100% 0 0)' }}
             whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 1.1, ease: 'easeInOut' }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           />
           <div className="relative grid grid-cols-3 gap-4 md:grid-cols-4 md:gap-8">
             {SESSION_PRINTS.map((p, i) => (

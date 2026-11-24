@@ -76,9 +76,9 @@ function Spotlight({ row, data, sameType, onSeeAll }) {
       )}
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] md:gap-16 lg:grid-cols-[minmax(0,23rem)_minmax(0,1fr)] lg:gap-24">
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 24 }}
+          initial={reduce ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="w-64 sm:w-72 md:w-full"
         >
           {link
@@ -104,7 +104,7 @@ function Spotlight({ row, data, sameType, onSeeAll }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={openLabel(data, data.featured.read, row.title)}
-                className={`inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-6 font-body text-base font-semibold text-white shadow-md shadow-primary/25 transition-colors hover:bg-primary-dark ${FOCUS_PILL}`}
+                className={`inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-6 font-body text-[15px] font-semibold text-white shadow-md shadow-primary/25 transition-colors hover:bg-primary-dark ${FOCUS_PILL}`}
               >
                 {data.featured.read}
                 <ExternalLink className="h-4 w-4" aria-hidden="true" />
@@ -114,7 +114,7 @@ function Spotlight({ row, data, sameType, onSeeAll }) {
               <button
                 type="button"
                 onClick={onSeeAll}
-                className={`inline-flex min-h-12 items-center gap-2 rounded-full border border-tide-border bg-white px-5 font-body text-base font-semibold text-tide-text transition-colors hover:border-primary/40 hover:text-primary-dark ${FOCUS_PILL}`}
+                className={`inline-flex min-h-12 items-center gap-2 rounded-full border border-tide-border bg-white px-6 font-body text-[15px] font-semibold text-tide-text transition-colors hover:border-primary/40 hover:text-primary-dark ${FOCUS_PILL}`}
               >
                 {data.featured.seeAllTemplate.replace('{n}', String(sameType))}
                 <ArrowDown className="h-4 w-4" aria-hidden="true" />
@@ -135,18 +135,18 @@ function PublicationCard({ row, data, terms }) {
   const link = safeLink(row.link)
   const media = <PublicationMedia thumb={getPublicationThumb(row.id)} type={row.type} shape="card" className="rounded-xl" />
   return (
-    <article {...TILT} className="tilt-3d tilt-lift group/media relative flex h-full flex-col rounded-3xl border border-tide-border bg-white p-3 shadow-card hover:shadow-card-hover">
+    <article {...TILT} className="tilt-3d tilt-lift group/media relative flex h-full flex-col rounded-3xl border border-tide-border bg-white p-2.5 shadow-card hover:shadow-card-hover">
       <TiltGlare />
       {link
         ? <a href={link} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true" className="block">{media}</a>
         : media}
-      <div className="flex min-w-0 flex-1 flex-col px-2 pb-1 pt-4">
+      <div className="flex min-w-0 flex-1 flex-col px-1.5 pb-0.5 pt-3.5">
         <MetaLine row={row} data={data} />
-        <h3 className="mt-2 font-display text-lg font-semibold leading-snug text-tide-text text-pretty break-words">
+        <h3 title={row.title} className="mt-1.5 line-clamp-3 font-display text-lg font-semibold leading-snug text-tide-text text-pretty break-words">
           <Highlight text={row.title} terms={terms} />
         </h3>
         {row.description && (
-          <p className="mt-2 font-body text-sm leading-relaxed text-tide-muted line-clamp-3 break-words">
+          <p className="mt-1.5 font-body text-sm leading-relaxed text-tide-muted line-clamp-2 break-words">
             <Highlight text={row.description} terms={terms} />
           </p>
         )}
@@ -185,7 +185,7 @@ function Library({ q, rows, data }) {
         <PublicationToolbar q={q} t={data.toolbar} filters={['type', 'year']} className="mt-8" />
         <ResultsBar q={q} pg={pg} t={data.toolbar} r={data.results} className="mt-6" />
         {filtered.length === 0 ? <NoResults r={data.results} /> : (
-          <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {pg.items.map(r => <li key={r.id} className="min-w-0"><PublicationCard row={r} data={data} terms={terms} /></li>)}
           </ul>
         )}

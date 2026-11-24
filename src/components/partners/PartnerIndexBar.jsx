@@ -10,7 +10,11 @@ import { FOCUS_PILL } from '../library/LibraryDropdown'
 //   - a tab jumps to its section;
 //   - any number of sections fit: the tabs scroll sideways (fading at the edge) instead of
 //     wrapping into uneven rows, and the marked tab is kept in view;
-//   - on phones the search folds into an icon so the tabs keep the row.
+//   - on phones the search folds into an icon so the tabs keep the row;
+//   - once it locks under the header it turns solid, and a strip of the same colour fills the space
+//     behind the (see-through) header. Without it, logos that slid under this bar reappeared through
+//     the header as blurred, colour-boosted smears while scrolling — a flicker. Over the banner it
+//     stays translucent.
 // `text` = the page YAML's `directory` block.
 
 const FADE = {
@@ -19,8 +23,23 @@ const FADE = {
   both: '[mask-image:linear-gradient(to_right,transparent,#000_40px,#000_calc(100%_-_40px),transparent)]',
 }
 
+const HEADER_PX = 70 // the site header's height; the bar sticks at top-[70px]
+
 export default function PartnerIndexBar({ groups, activeKey, onJump, headingId, search, text, searching }) {
   const listRef = useRef(null)
+  const barRef = useRef(null)
+  const [stuck, setStuck] = useState(false)
+  useEffect(() => {
+    const el = barRef.current
+    if (!el) return undefined
+    // Checked on every scroll event (one cheap measurement; React skips unchanged state), so the
+    // switch happens on the same frame the bar locks or unlocks.
+    const check = () => setStuck(el.getBoundingClientRect().top <= HEADER_PX + 0.5)
+    check()
+    window.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', check)
+    return () => { window.removeEventListener('scroll', check); window.removeEventListener('resize', check) }
+  }, [])
   const [edges, setEdges] = useState({ left: false, right: false })
   const [mobileSearch, setMobileSearch] = useState(false)
   const searchOpen = mobileSearch || searching
@@ -53,7 +72,7 @@ export default function PartnerIndexBar({ groups, activeKey, onJump, headingId, 
   const closeSearch = () => { search.setInput(''); setMobileSearch(false) }
 
   return (
-    <div className="sticky top-[70px] z-30 border-b border-tide-border/80 bg-tide-bg/90 backdrop-blur-md">
+    <div ref={barRef} className={`sticky top-[70px] z-30 border-b border-tide-border/80 ${stuck ? "bg-tide-bg before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-[70px] before:bg-tide-bg before:content-['']" : 'bg-tide-bg/90 backdrop-blur-md'}`}>
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 md:px-8 lg:px-0">
         {/* While searching, the results are one grid — the tabs have nothing to point at. */}
         {searching ? <div className="hidden flex-1 sm:block" /> : (

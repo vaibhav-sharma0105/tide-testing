@@ -5,7 +5,7 @@ import SeoHead from '../../components/ui/SeoHead'
 import PageHero from '../../components/ui/PageHero'
 import HeroStats from '../../components/ui/HeroStats'
 import withValue from '../../components/ui/withValue'
-import CountUp from '../../components/ui/CountUp'
+import CountUpText from '../../components/ui/CountUpText'
 import SectionHeader from '../../components/ui/SectionHeader'
 import Button from '../../components/ui/Button'
 import PartnerSlider from '../../components/partners/PartnerSlider'
@@ -23,7 +23,7 @@ import snapshot from '../../data/sheets/partners.json'
 
 // /about/our-partners — built at build time from the Sheet snapshot (src/data/sheets/partners.json,
 // written only by the partners sync). Top to bottom:
-//   1. banner: title, the figures (counting up) and — beside it — the highest-priority partners'
+//   1. banner: title, the figures (only the partner total counts up) and — beside it — the highest-priority partners'
 //      logos as a floating network (PartnerConstellation);
 //   2. a bar that sticks under the site header: one tab per section (the one being read is marked)
 //      + the name search (PartnerIndexBar);
@@ -110,8 +110,8 @@ export default function OurPartners() {
   }
 
   const heroItems = total > 0 ? [
-    withValue(total === 1 ? stats.partnersOne : stats.partners, 'n', <CountUp value={total} />),
-    withValue(groups.length === 1 ? stats.groupsOne : stats.groups, 'n', <CountUp value={groups.length} delay={0.35} duration={0.8} />),
+    withValue(total === 1 ? stats.partnersOne : stats.partners, 'n', <CountUpText text={String(total)} />),
+    withValue(groups.length === 1 ? stats.groupsOne : stats.groups, 'n', groups.length),
   ] : []
 
   return (
