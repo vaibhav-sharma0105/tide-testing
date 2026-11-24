@@ -11,25 +11,8 @@
 import { render, screen, cleanup } from '@testing-library/react'
 import App from '../../App'
 import notFound from '../../data/not-found.json'
+import { REMOVED_PATHS } from './removedPaths'
 
-const REMOVED_PATHS = [
-  '/about/our-results',
-  '/projects/block-eti',
-  '/projects/bettered',
-  '/projects/empowered',
-  '/projects/completed',
-  '/projects/other-projects',
-  '/projects/sdg-drives',
-  '/get-involved/work-with-us',
-  '/get-involved/mccx',
-  '/resources/saral-kadam',
-  '/resources/annual-reports',
-  '/resources/publications',
-  '/resources/abl-resources',
-  '/resources/abl-resources/resource-center',
-  '/resources/abl-resources/resource-center/W1',
-  '/resources/abl-resources/contribute',
-]
 
 async function renderAppAt(path) {
   window.history.pushState({}, '', path)

@@ -1,6 +1,6 @@
 // The CMS lint guard (eslint.config.js): visible text typed into JSX — as a text prop, a JS string
 // or a template literal — fails `npm run lint`; text read from YAML and strings with no letter pass.
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 import { ESLint } from 'eslint'
 
 const eslint = new ESLint()
@@ -13,6 +13,10 @@ async function cmsErrors(jsx, filePath = 'src/components/__cms_guard__.jsx') {
 }
 
 describe('CMS lint guard', () => {
+  // ESLint loads its config and plugins on the first call (seconds under a loaded machine, e.g. with
+  // --coverage): do that once here, with room, so no single case hits the 5 s test timeout.
+  beforeAll(() => cmsErrors('<p />'), 60000)
+
   it.each([
     ['bare JSX text', '<p>Hello world</p>'],
     ['alt literal', '<img src={a} alt="A child reading" />'],
