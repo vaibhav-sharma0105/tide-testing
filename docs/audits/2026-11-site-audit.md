@@ -385,7 +385,66 @@ CLS ≤ 0.026 everywhere, before and after. Lighthouse's SEO score was already 1
 
 ## P5 — Code review and architecture
 
-_Not started._
+**Method.** Mapped routes → pages → components → hooks/utils/config → data, and scripts → lib → workflows. Hotspots: by churn (`git log --name-only`, docs excluded: `AblDetail` (removed), `App.jsx`, `Header.jsx`, `Home.jsx`) and by size (`EducationForHarmony.jsx` 619 lines, `Header.jsx` 486, `SocialChangemakers.jsx` 433, `publicationFilters.js` 396, `FellowProfile.jsx` 368). Read every listener/observer/timer/rAF (grep `addEventListener|requestAnimationFrame|setInterval|*Observer(`: all cleaned up), the P2 hooks (`useFocusTrap`, `useModalBehavior`, `useLoopWindow`, `focusNewPage`), the P3 boot path (`main.jsx`, `routes.js`, `lazyPage`, `prerender.mjs`), the URL-state code of all four listings, the date helpers (`isNew`, `latestOfType`, `batchYear`) and the sync libs (`snapshot-core.js`, `sync-runner.js`). `npx knip@5` (not installed) for dead code, each hit checked by hand. Tests written **before** each fix and seen failing on the old code. Real-browser checks of the base-path build behind the GitHub-Pages-like server on **port 4190** (not the 4173 prerender origin). Long tasks and a CPU profile with Playwright (4× CPU throttle, 412 px mobile viewport; scratch scripts, not committed).
+
+| ID | Sev | Group | Location | Evidence | Status |
+|---|---|---|---|---|---|
+| P5-1 | High | Defect | `PramaanLibrary.jsx:62-63` (before) | Filters and page were copied from the address once (`useState(() => …)`) and never re-read. On `?type=games`, the header/tab-bar "Resource Centre" link cleared the address but kept the old filters (test: 1 card instead of 9). Back/Forward to another query: same | Fixed: re-read on any navigation that this page didn't make itself (its own writes carry router state `resourceCentreOwn`; "adjust state while rendering"). Browser 4190: tab-bar click after `?type=worksheet&page=99` → "Showing 1–9 of 241", 0 chips |
+| P5-2 | Medium | Defect | `PramaanLibrary.jsx:84` (before) | `?page=99` → empty "no results" list with "Showing 991–241"; `?page=-2` → `slice(-27,-18)` showed rows from the **end** of the list (test: 3 cards) | Fixed: `paginate()` (shared, already tested) clamps to 1…last. Browser: `?type=worksheet&page=99` → page 12, "Showing 100–101 of 101" |
+| P5-3 | Medium | Defect/SEO (P3-14) | `abl/Pagination.jsx` | Page numbers were buttons: no `href`, so crawlers saw page 1 only | Fixed: optional `hrefFor`; numbers and Previous/Next are `<Link>`s (`/tide-testing/pramaan/resource-centre?page=2` … `?page=27` in the prerendered file). A plain click still calls `onChange` (no history entry, as before); Ctrl/⌘-click opens a tab. Same look (36 px discs, zoom screenshot); keyboard Enter on "2" keeps focus on the same element (unit test + Chrome). Note: links activate on Enter, not Space |
+| P5-4 | Medium | Risk (lead 1) | `scripts/prerender.mjs` | 3,080 saved `<link rel="modulepreload" as="script">` had `href="http://localhost:4173/…"` (prerender origin) — blocked by `script-src 'self'` on any other host | Fixed: `relativePreloads()` (`scripts/lib/prerender-check.js`) makes same-origin preloads root-relative (`/tide-testing/assets/…`); og:image/canonical stay absolute. After: 0 absolute preloads in `dist/`; 4190: `/about/why-tide`, `/pramaan/resource-centre?…`, `/about/our-partners`, `/`, `/thrive/publications`: 0 console errors, 1 `<title>`, 0 broken images, 0 doubled base |
+| P5-5 | Medium | Risk | `App.jsx` `ErrorBoundary` (outside the router) | A render crash in any one page (e.g. an unexpected Sheet value) replaced the whole app, header included, until reload | Fixed: `Layout` wraps each page in `<ErrorBoundary inline>` inside the keyed `<main>`: same friendly screen (a `<div>`, no nested `<main>`), header/footer stay, moving to another page clears it (test seen failing without it). Outer boundary kept. The prerender still fails the build on a crashing page (console error) |
+| P5-6 | Medium | Performance (P3-15) | `site.yaml` `pageBannerTexture` | The LCP element on inner pages (6 % opacity texture) was a 356 KB PNG | Fixed: `page-banner-bg.webp` (q70, 1600×600, **24 KB**), path changed in `site.yaml`; PNG kept. Served at 4190 (computed `background-image` = the WebP). Lighthouse not re-run |
+| P5-7 | Low | Defect | `SocialChangemakers.jsx:314` | `?page=1.5` → rows 7–18 (overlapping pages), no current page marked | Fixed: `Math.floor`; test seen failing before |
+| P5-8 | Medium | Performance (P3 lead) | `/about/our-partners` | Same server, 3 runs: TBT (long tasks − 50 ms, 4 s after load) Partners **784–939 ms** vs Why TIDE 241–259 ms; longest task ~400 ms. CPU profile: JS ≈ 120 ms (react 53, motion 45, page 10); **"(program)" 669 ms** = native style/layout/paint/decode. Logos already `loading="lazy"` + width/height | Deferred: the cost is the page's visual layering (3D cards, masks, backdrop blur, 113 cards). Reducing it changes the look → owner question below. Not caused by P3 code |
+| P5-9 | Low | Maintainability | four listings | Four URL-state styles: Resource Centre (local state + manual sync, search writes the URL per keystroke, no debounce), Publications (`usePublicationQuery`, URL = truth), Partners (own debounce), SCF (`useSearchParams` + `useDebouncedSearch`). Two pagination components (`abl/Pagination` 36 px buttons → links, `PublicationsPagination` 44 px links) | Deferred: a shared `useQueryState` / one pagination is the abstraction trying to get out. Merging the two paginations changes target size, which is an open owner item (P2 2.5.5) |
+| P5-10 | Low | Maintainability | `scripts/sync-*.js` (126–156 lines each) | Same orchestration order in all four (fetch → plan → refuse → photos → delete → write); shared parts are already in `sync-runner.js` | Deferred: what is left is wiring per Sheet; a generic runner would hide the safety order. The mass-removal guard and `photoDeletionError` were read, not changed |
+| P5-11 | Low | Maintainability | knip | No unused component/page. Unused: `src/test/utils/renderWithProviders.jsx`, and 30 exports used only inside their own file or by tests (e.g. `setOutputs`, `TYPE_COLORS`, `SCHEMA_VERSION`); `@vitest/coverage-v8` referenced in `vitest.config.js` but not in `package.json` | Deferred (no risk; P6 may want the coverage package) |
+| P5-12 | Low | Risk | `utils/changemakers.js` `batchYear` | First 2- or 4-digit number wins: "Batch 12 (2023-24)" → 2012 | Deferred: today's batches are "23-24" (snapshot); documented rule. Revisit if labels change |
+| P5-13 | Info | Pass | `useFocusTrap`, `useModalBehavior`, `focusNewPage`, `useLoopWindow`, slider conductor, Partners scroll-spy (rAF-throttled, passive), `PartnerIndexBar`, `PhotoStrip`, `NextSteps` | Every listener/observer/timer/rAF has a cleanup; stacked dialogs handled (FellowProfile hands Escape/scroll-lock to the video via `videoOpen`); `isNew` / `formatPublicationDate` use calendar dates (no TZ shift); `writeResults` writes only on change, manifest keys sorted (stable diffs); a failed run is never committed | Pass |
+| P5-14 | Info | Performance | bundle | `vendor-motion` (149 kB) is on every page because `Layout` uses `motion.main`; 45 files use `motion.*` | Proposal (below), not done: `LazyMotion` + `m.*` is a 45-file change |
+
+**Changes made.**
+- Resource Centre URL state: `src/pages/library/PramaanLibrary.jsx` (P5-1/2) and `src/components/abl/Pagination.jsx` (P5-3; `Control` at module level, so focus survives re-renders).
+- Error boundary: `src/components/ErrorBoundary.jsx` (`inline` prop) and `src/components/layout/Layout.jsx` (P5-5).
+- `scripts/lib/prerender-check.js` `relativePreloads` and its use in `scripts/prerender.mjs` (P5-4).
+- Banner texture: `content/shared/site.yaml` and `public/assets/images/shared/page-banner-bg.webp` (new); `src/data/site.json` regenerated (P5-6).
+- `src/pages/SocialChangemakers.jsx` (P5-7).
+- Tests:
+  - new: `src/test/pages/pramaanLibraryUrlState.test.jsx` (6) and `src/test/components/pageErrorBoundary.test.jsx` (1);
+  - added to: `seoBuild.test.js` (+2) and `socialChangemakers.test.jsx` (+1).
+- No new dependency (knip ran via `npx`). No visible text added (cms greps: 0).
+
+**Gates (2026-11-24, after the changes).**
+- Lint: pass.
+- content:validate: 0 / 0.
+- `npm test`: **43 files / 486 tests** (was 41 / 476).
+- `npm run build`: pass (prerender 259 + 2 in 64.5 s).
+- Base-path build: pass (64.2 s).
+  - GitHub-Pages-like server on **4190**; Chrome on `/about/why-tide`, `/pramaan/resource-centre?type=worksheet&page=99`, `/about/our-partners`, `/`, `/thrive/publications`;
+  - 0 console errors, 0 broken images, 0 doubled base, 1 `<title>`.
+- e2e:
+  - first run: 61 passed, 1 failed (`a11y.spec.js` `/`, the known flaky test from P4);
+  - `a11y.spec.js` re-run: 35/35;
+  - full re-run: **62 passed** (2.0 min).
+- `node scripts/a11y-audit.cjs` (5175): 0 AA violations on 21 URLs.
+
+**Notes for next phases.**
+- Resource Centre: navigations the page makes itself carry router state `resourceCentreOwn`; any other navigation re-reads the address. Its search still writes the URL on every keystroke (as before).
+- `abl/Pagination` renders links only when `hrefFor` is passed.
+- P6: an e2e for "menu link clears Resource Centre filters" and for `?page=` out of range would lock P5-1/2 in a real browser; Partners' long tasks are a candidate perf budget.
+- Pages now sit inside a second (inline) error boundary; a test that expects the full-screen error for a page crash must look inside `<main>`.
+- The prerender writes root-relative preloads; og:image still uses the prerender origin (`SITE_ORIGIN`), as P3 decided.
+- P7 doc-sync: AGENTS.md §4 `Pagination` (`hrefFor`), the `ErrorBoundary` description (`inline`, per-page boundary in Layout) and §11's `focusNewPage`/routing text need a line each; CLAUDE.md test count (43 / 486).
+
+**Top 5 architectural recommendations (owner).**
+1. One URL-state hook for the four listings (`useQueryState`: parse/serialise/clamp/debounce) and one pagination component. This removes the class of bug in P5-1/2. Prerequisite: decide the pagination target size (P2 item).
+2. An e2e smoke run against the prerendered `dist/` behind the Pages-like server in CI. Today e2e covers only the dev server, and the base-path/CSP/preload bugs only show in the built output.
+3. Partners rendering budget: keep the design, but render the sliders far below the fold lazily (`content-visibility: auto` on each section, or mount on approach). Measure with the long-task script before and after; needs a visual check.
+4. `LazyMotion` + `m.*` (45 files) to cut ~100 kB of framer-motion from first load. Do it mechanically, with screenshots, in its own commit.
+5. Split the largest pages (`EducationForHarmony.jsx` 619 lines, `SocialChangemakers.jsx` 433, `Header.jsx` 486) into section components, as `components/home/` already does, but only alongside a feature change on that page with tests in place. A split for its own sake isn't worth the risk.
+
+**Commits.** None (the orchestrator commits).
 
 ## P6 — Quality engineering
 
@@ -439,6 +498,11 @@ _Not started._
   - Trade-off: one more service to run.
 - **(P4) EXIF in four hand-committed photos (P4-17).** There are no GPS coordinates. Strip the EXIF with an image editor if you want it gone; re-encoding by script would lose quality.
 
+- **(P5) Partners page weight vs its look (P5-8).**
+  - Facts: on a mid-range phone (4× CPU), the Partners page blocks the main thread ~0.8–0.9 s after load, against ~0.25 s for a plain inner page. The cost is the browser drawing the layered effects (3D logo tiles, edge masks, the blurred bar, 113 cards at once), not the code.
+  - Recommendation: keep the design, but let the browser skip drawing sections until they are near the screen (`content-visibility`). No visible change is intended, but it needs your visual sign-off.
+  - Trade-off: the scroll-spy and tab jumps must be re-checked.
+
 ## Deferred / out of scope
 
 - ~~P1-5/6 (→ P3)~~: done in P3 (404.html, robots.txt, sitemap.xml now generated).
@@ -448,7 +512,7 @@ _Not started._
 - P2-16 (rest): pagination, grade chips, Contact links, footer social icons and search inputs are under 44 px (AAA). Fixing them is a visible size change → owner item above.
 - P2-20: Escape pressed inside a cross-origin video iframe can't reach the page (browser limit).
 - P2-21: the Resource Centre card link's `aria-label` hides type, subject and "video available". Rethink as `aria-labelledby` or a fuller `card.viewTemplate` (copy).
-- P3-14: Resource Centre pagination is buttons, so only the first page's resources are linked in the HTML (the sitemap lists all 241). Make the page numbers `<a href="?page=n">` like THRIvE's.
+- ~~P3-14~~: done in P5 (page numbers are links).
 - P3-15: mobile LCP (banner texture as a CSS background is the LCP element on inner pages; no `fetchpriority`/preload), render-blocking fonts (owner item), 211 KiB unused JS (P5), `<img>` without width/height.
 - P3: `CollectionPage` markup on the listing pages, `VideoObject` (the Sheet has no upload dates), `DonateAction` (no facts in YAML) — not added.
 - P3: no e2e runs against the prerendered `dist/` (P6); the first real deploy must be checked with `curl -I` (P3-3).
@@ -459,6 +523,7 @@ _Not started._
   - Trusted Types: React DOM creates hoisted `<script>` elements via `innerHTML`, so it needs a policy and testing.
   - `<iframe sandbox>` on the Drive and YouTube players: fullscreen and pop-out would need testing per host.
   - Live checks of the GitHub and Google settings (they need the owner's accounts).
+- P5-8 Partners long tasks (owner item), P5-9 shared URL-state hook / one pagination, P5-10 sync orchestrators, P5-11 knip leftovers, P5-12 `batchYear` edge, P5-14 `LazyMotion`.
 - P4-9: the `ouid` ids in 4 links of the bot-owned `pramaan-library.json` stay until the next sync.
 
 ## Final gate results
