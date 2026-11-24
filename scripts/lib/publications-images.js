@@ -13,6 +13,7 @@
 //      wider ones are cropped to 16:9. Slides and spreads fall in between and are never cropped,
 //      so no words are cut off. The full-size file is never cropped.
 import sharp from 'sharp'
+import { assertSafeImage } from './image-safety.js'
 
 // clamp = [narrowest, widest] width÷height kept as-is (THRIvE): 3:4 … 16:9.
 export const THUMB = { TIDE: { width: 480 }, THRIvE: { width: 480, clamp: [3 / 4, 16 / 9] } }
@@ -32,7 +33,7 @@ export async function trimBorders(raw) {
 
 /** Returns { thumb: Buffer, full: Buffer } as WebP. Throws only if the image can't be decoded at all. */
 export async function renderPublicationImages(raw, org) {
-  await sharp(raw).metadata() // real decode check; sharp's default pixel limits stay on
+  await assertSafeImage(raw) // allowed format (by its bytes) and pixel limit, before anything decodes it
   const trimmed = await trimBorders(raw)
   const box = THUMB[org] ?? THUMB.TIDE
   let thumb

@@ -13,9 +13,9 @@ dist-ssr
 *.local
 
 # Environment variables (contain secrets — never commit)
-.env.development
-.env.production
-.env.local
+.env
+.env.*
+!.env.example
 
 # Windows installers / binaries
 *.exe

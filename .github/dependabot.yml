@@ -11,3 +11,22 @@ updates:
     groups:
       actions:
         patterns: ["*"]
+
+  # npm packages (package.json / package-lock.json). Security fixes are what matters most: sharp
+  # decodes Form uploads in the sync workflows, so its image-library fixes should land quickly.
+  # A new version is proposed only after it has been public for 7 days (a hijacked release is
+  # usually caught and pulled within that time). Production and development packages come as two
+  # grouped pull requests. No workflow runs on pull requests (deploy.yml runs on main only), so check
+  # the branch out and run lint, content:validate, test, build and test:e2e before merging.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    groups:
+      production:
+        dependency-type: production
+      development:
+        dependency-type: development

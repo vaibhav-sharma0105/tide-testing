@@ -19,6 +19,7 @@ import fs from 'fs/promises'
 import path from 'path'
 import os from 'os'
 import sharp from 'sharp'
+import { assertSafeImage } from './lib/image-safety.js'
 import {
   normalizeLibrary, buildLibrarySnapshot, serializeSnapshot, validateLibrary, planLibraryPhotos,
   photoDeletionError, photosFromExport, isSafeId, photoFileBase,
@@ -72,7 +73,7 @@ async function processPhoto({ id, fileId, modifiedTime }) {
   if (!imgRes?.success) throw new Error(imgRes?.error ?? 'no response')
   const raw = Buffer.from(imgRes.base64, 'base64')
   if (raw.length > MAX_RAW_BYTES) throw new Error(`image too large (${raw.length} bytes)`)
-  await sharp(raw).metadata() // real decode check; sharp's default pixel limits stay on
+  await assertSafeImage(raw) // allowed format (by its bytes) and pixel limit, before anything decodes it
   // Ids may contain spaces/brackets (allowed by isSafeId); file names use a URL-safe form.
   const fileBase = photoFileBase(id)
   await sharp(raw).resize({ width: THUMB_WIDTH, withoutEnlargement: true }).webp({ quality: 78 }).toFile(path.join(ASSETS_DIR, `${fileBase}-thumb.webp`))

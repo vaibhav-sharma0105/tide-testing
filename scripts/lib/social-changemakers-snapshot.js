@@ -6,7 +6,7 @@
 
 import {
   THRESHOLDS, isSafeId, isHttpUrl, contentHash, serializeSnapshot, photoFileBase,
-  cleanStringCollapseSpaces as cleanString, asSingleTab, planListPhotos,
+  cleanStringCollapseSpaces as cleanString, asSingleTab, planListPhotos, stripDisguiseChars,
 } from './snapshot-core.js'
 import { orderNumber, batchYear } from '../../src/utils/changemakers.js'
 
@@ -33,7 +33,7 @@ const VIDEO = /^https:\/\/(?:drive\.google\.com\/file\/d\/[A-Za-z0-9_-]{10,}\/pr
 const EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/
 // Paragraph breaks in the summary / next steps are kept; other runs of spaces are collapsed.
 const cleanText = (v) => (typeof v === 'string'
-  ? v.replace(/\r\n?/g, '\n').split(/\n\s*\n/).map(p => p.replace(/\s+/g, ' ').trim()).filter(Boolean).join('\n\n') || null
+  ? stripDisguiseChars(v).replace(/\r\n?/g, '\n').split(/\n\s*\n/).map(p => p.replace(/\s+/g, ' ').trim()).filter(Boolean).join('\n\n') || null
   : null)
 
 /**

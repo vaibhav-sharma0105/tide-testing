@@ -7,7 +7,7 @@
 // safety rules. Column rules for this Sheet: docs/PRAMAAN-LIBRARY-SHEET-SCHEMA.md.
 
 import {
-  THRESHOLDS, isSafeId, isHttpUrl, contentHash, serializeSnapshot, photoFileBase, cleanString,
+  THRESHOLDS, isSafeId, isHttpUrl, withoutAccountId, contentHash, serializeSnapshot, photoFileBase, cleanString,
   asSingleTab, planListPhotos,
 } from './snapshot-core.js'
 
@@ -76,6 +76,7 @@ export function normalizeLibrary(payload) {
         problems.push({ kind: 'bad-url', id, message: `${id}: ${field === 'photoUrl' ? 'photo' : 'video'} link is not a web link — removed` })
         out[field] = null
       }
+      out[field] = withoutAccountId(out[field])
     }
     for (const field of RESOURCE_FIELDS) {
       if (typeof out[field] === 'string' && EMAIL.test(out[field])) {

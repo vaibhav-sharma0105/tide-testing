@@ -8,12 +8,13 @@
 // The page shows each logo whole inside a fixed frame (object-contain).
 import sharp from 'sharp'
 import { trimBorders } from './publications-images.js'
+import { assertSafeImage } from './image-safety.js'
 
 export const LOGO_BOX = 400
 
 /** Returns the logo as a WebP Buffer. Throws only if the image can't be decoded at all. */
 export async function renderPartnerLogo(raw) {
-  await sharp(raw).metadata() // fails fast on non-images (header only; the full decode in toBuffer() also throws); sharp's pixel limits stay on
+  await assertSafeImage(raw) // allowed format (by its bytes) and pixel limit, before anything decodes it
   const trimmed = await trimBorders(raw)
   return sharp(trimmed)
     .resize({ width: LOGO_BOX, height: LOGO_BOX, fit: 'inside', withoutEnlargement: true })

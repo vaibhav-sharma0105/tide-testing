@@ -7,12 +7,13 @@
 // PHOTO_BOX × PHOTO_BOX (never enlarged) and saved as WebP. The page frames it (object-cover, the
 // portrait aligned to its upper part, where faces usually are).
 import sharp from 'sharp'
+import { assertSafeImage } from './image-safety.js'
 
 export const PHOTO_BOX = 1200
 
 /** Returns { buffer, width, height }. Throws only if the image can't be decoded at all. */
 export async function renderFellowPhoto(raw) {
-  await sharp(raw).metadata() // fails fast on non-images; sharp's pixel limits stay on
+  await assertSafeImage(raw) // allowed format (by its bytes) and pixel limit, before anything decodes it
   const { data, info } = await sharp(raw)
     .rotate()
     .resize({ width: PHOTO_BOX, height: PHOTO_BOX, fit: 'inside', withoutEnlargement: true })

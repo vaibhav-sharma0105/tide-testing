@@ -8,7 +8,7 @@
 // Shared building blocks (safe ids, hashing, photo plan, deletion limits, Drive-link reading, photo
 // file names, cell cleaning) come from snapshot-core.js.
 import {
-  THRESHOLDS, isSafeId, isHttpUrl, contentHash, serializeSnapshot, photoFileBase,
+  THRESHOLDS, isSafeId, isHttpUrl, withoutAccountId, contentHash, serializeSnapshot, photoFileBase,
   cleanStringCollapseSpaces as cleanString, asSingleTab, planListPhotos,
 } from './snapshot-core.js'
 
@@ -101,6 +101,7 @@ export function normalizePublications(payload) {
         problems.push({ kind: 'bad-url', id, message: `${id} ("${title}"): the ${field === 'link' ? 'publication link' : 'thumbnail link'} is not a web link — removed` })
         out[field] = null
       }
+      out[field] = withoutAccountId(out[field])
     }
     if (!out.link) problems.push({ kind: 'missing-link', id, message: `${id} ("${title}"): no working link to the publication — shown without an "open" button` })
     for (const field of RESOURCE_FIELDS) {

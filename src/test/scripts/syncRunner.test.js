@@ -6,7 +6,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import {
-  createRedactor, isInsideAssetsDir, loadLocalEnv, createReport, readJson,
+  createRedactor, isInsideAssetsDir, loadLocalEnv, createReport, readJson, SHEET_TEXT_NOTICE,
 } from '../../../scripts/lib/sync-runner.js'
 
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'sync-runner-'))
@@ -62,7 +62,7 @@ describe('createReport', () => {
     expect(md.startsWith('**Outcome:** ❌ Failed\n')).toBe(true)
     expect(md).toContain('See docs/X-SETUP-GUIDE.md → Troubleshooting.')
     expect(md).toContain('**Actions → Sync X → Run workflow**')
-    expect(md).toContain('### Rows that need attention in the Sheet (1)\n\n- row 2: bad')
+    expect(md).toContain(`### Rows that need attention in the Sheet (1)\n\n_${SHEET_TEXT_NOTICE}_\n\n- row 2: bad`)
     expect(md).toContain('### Notes\n\n- a note')
   })
 })

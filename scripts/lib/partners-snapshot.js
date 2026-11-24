@@ -4,7 +4,7 @@
 // Column rules: docs/PARTNERS-SHEET-SCHEMA.md. Page: /about/our-partners.
 
 import {
-  THRESHOLDS, isSafeId, isHttpUrl, contentHash, serializeSnapshot, photoFileBase,
+  THRESHOLDS, isSafeId, isHttpUrl, withoutAccountId, contentHash, serializeSnapshot, photoFileBase,
   cleanStringCollapseSpaces as cleanString, asSingleTab, planListPhotos,
 } from './snapshot-core.js'
 import { PRIORITY_ORDER } from '../../src/config/partners.js'
@@ -72,6 +72,7 @@ export function normalizePartners(payload) {
         problems.push({ kind: 'bad-url', id, message: `${label}: the ${field === 'website' ? 'website' : 'logo link'} is not a web link — removed` })
         out[field] = null
       }
+      out[field] = withoutAccountId(out[field])
     }
     if (isHttpUrl(out.name)) problems.push({ kind: 'name-is-link', id, message: `${label}: the partner name is a web address — type the name instead` })
     for (const field of RESOURCE_FIELDS) {

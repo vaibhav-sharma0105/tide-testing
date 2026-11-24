@@ -51,28 +51,79 @@ export function extractDriveFileIdAnyLink(url) {
  */
 export const photoFileBase = (id) => id.replace(/[^A-Za-z0-9_-]/g, '_')
 
+// Sheet text is typed by anyone who can fill in a Form (Publications and Partners publish with no
+// approval step), so it is untrusted. Invisible characters that only serve to disguise text are
+// removed: C0/C1 control characters (tab and line breaks are kept) and the bidirectional override /
+// isolate marks U+202A–U+202E, U+2066–U+2069 (they can make a name display reversed or hide part of
+// it). Zero-width joiners (U+200C/U+200D) stay: Gujarati and Devanagari spelling needs them.
+// eslint-disable-next-line no-control-regex
+const DISGUISE_CHARS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F\u202A-\u202E\u2066-\u2069]/g
+export const stripDisguiseChars = (s) => String(s).replace(DISGUISE_CHARS, '')
+
 /** Cell value → trimmed string, or null when empty. Inner whitespace is kept as typed. */
 export function cleanString(value) {
   if (value === null || value === undefined) return null
-  const s = String(value).trim()
+  const s = stripDisguiseChars(value).trim()
   return s === '' ? null : s
 }
 
 /** Like cleanString, but every run of whitespace (incl. line breaks) becomes one space. */
 export function cleanStringCollapseSpaces(value) {
   if (value === null || value === undefined) return null
-  const s = String(value).replace(/\s+/g, ' ').trim()
+  const s = stripDisguiseChars(value).replace(/\s+/g, ' ').trim()
   return s === '' ? null : s
 }
 
+/**
+ * The URL allow-list applied at ingest by every sync: a single absolute http(s) link to a named
+ * host, with no user name or password in it ("https://trusted.org@evil.example" style disguises)
+ * and no spaces or control characters (two links pasted into one cell are not one link). Anything
+ * else — javascript:, data:, vbscript:, file:, relative paths — is refused. The pages check again
+ * when rendering (src/utils/safeUrl.js).
+ */
+// eslint-disable-next-line no-control-regex
+const URL_FORBIDDEN_CHARS = /[\s\u0000-\u001F\u007F]/
 export function isHttpUrl(value) {
-  if (typeof value !== 'string') return false
+  if (typeof value !== 'string' || value === '' || URL_FORBIDDEN_CHARS.test(value)) return false
   try {
     const u = new URL(value)
-    return u.protocol === 'http:' || u.protocol === 'https:'
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') return false
+    if (u.username || u.password) return false
+    return u.hostname.includes('.')
   } catch {
     return false
   }
+}
+
+/**
+ * Google adds `ouid=<the sharer's Google account id>` to some "copy link" addresses
+ * (docs.google.com/…/edit?usp=sharing&ouid=…). The id identifies a person and the link works
+ * without it, so it is removed before a link is published. Other links are returned unchanged.
+ */
+export function withoutAccountId(url) {
+  if (typeof url !== 'string' || !/[?&]ouid=/.test(url)) return url
+  try {
+    const u = new URL(url)
+    if (!/(^|\.)google\.com$/i.test(u.hostname)) return url
+    u.searchParams.delete('ouid')
+    return u.toString()
+  } catch {
+    return url
+  }
+}
+
+/**
+ * Makes one line of report text (which quotes Sheet text) inert in GitHub Markdown: line breaks
+ * become spaces (no new headings, list items or blocks), HTML is shown as text (no hidden
+ * `<!-- … -->` comments or tags that a person can't see but an AI agent reading the issue would),
+ * and link / image / code / emphasis / table characters are escaped. "@" is handled by
+ * scripts/ci/alert-issue.sh.
+ */
+export function reportText(value) {
+  return String(value)
+    .replace(/[\r\n\u2028\u2029]+/g, ' ')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/[\\`*_[\]|~]/g, (c) => `\\${c}`)
 }
 
 function canonical(value) {
