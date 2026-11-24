@@ -7,7 +7,7 @@
     "predev": "node scripts/yaml-to-json.js",
     "dev": "vite",
     "prebuild": "node scripts/yaml-to-json.js",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
     "content:sync": "node scripts/yaml-to-json.js",

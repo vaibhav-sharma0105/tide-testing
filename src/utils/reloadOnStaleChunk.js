@@ -1,4 +1,4 @@
-import { lazy } from 'react'
+import { createElement, lazy, useState } from 'react'
 
 // After every deploy, GitHub Pages stops serving the previous build's hashed code files. A visitor
 // whose tab was opened before the deploy (or whose browser kept the old index.html) then fails to
@@ -37,7 +37,23 @@ export function importWithReload(factory, win = window) {
   })
 }
 
-/** React.lazy for a page whose code file may be gone after a deploy (see above). */
+/**
+ * React.lazy for a page whose code file may be gone after a deploy (see above), plus `preload()`.
+ *
+ * The build writes each page's HTML in advance (scripts/prerender.mjs). When the app starts on such
+ * a page, main.jsx calls preload() first, so the page renders at once instead of suspending — the
+ * pre-written HTML is then replaced by the same page, with no blank loading moment in between.
+ * Each mounted page keeps the form it started with (direct or lazy), so a later re-render never
+ * swaps the component type (which would remount the page and lose its state).
+ */
 export function lazyPage(factory) {
-  return lazy(() => importWithReload(factory))
+  let loaded = null
+  const load = () => importWithReload(factory).then(mod => { loaded = mod; return mod })
+  const Lazy = lazy(load)
+  function Page(props) {
+    const [Direct] = useState(() => loaded?.default ?? null)
+    return createElement(Direct ?? Lazy, props)
+  }
+  Page.preload = load
+  return Page
 }
