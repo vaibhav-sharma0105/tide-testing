@@ -2,9 +2,23 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-24T09:41:40.009Z",
-  "contentHash": "sha256:34180a99d77bfbff1c836e5220ebd5952d678e51a0757caf7d6716f72a87794c",
+  "lastUpdated": "2026-11-24T16:50:47.213Z",
+  "contentHash": "sha256:ef9c3102c265be06551e55a92f3e6e9eb0c1011108f0258b6418b1688e163cf3",
   "resources": [
+    {
+      "id": "P-b9159b0743",
+      "org": "THRIvE",
+      "date": "2026-11-21",
+      "title": "Stories Teachers are Made of-Narrative, identity and the boundaries of agency in government primary schools in Bihar, India",
+      "type": "Talk / Conference slides",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "This traces the grand stories teachers are told and juxtapose with the stories teachers resonate.",
+      "citation": "Jha, M., Diksha, M., Bhatt, S., Khanna, M., Patel, J., Nanda, M., & Nath, S. (2026, November 19–21). The stories teachers are made of: Narrative, identity and the boundaries of agency in government primary schools in Bihar, India [Conference presentation]. 16th Annual International Conference of CESI, Aligarh Muslim University, Aligarh, India.",
+      "link": null,
+      "photoUrl": "https://drive.google.com/open?id=1n2U1KMCATO7sK0RQSDdiQscHGp37Qlyv"
+    },
     {
       "id": "P-6bdd242cfb",
       "org": "TIDE",
@@ -877,10 +891,10 @@
     }
   ],
   "meta": {
-    "total": 64,
+    "total": 65,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 48
+      "THRIvE": 49
     }
   }
 }
