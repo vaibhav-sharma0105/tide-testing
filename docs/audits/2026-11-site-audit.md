@@ -770,4 +770,25 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 
 ## Final gate results
 
-_Not run yet._
+Run by the orchestrator, 2026-11-25 (local Windows 11), on `4de8719` from a clean state: dev servers on 5173/5175 stopped, leftover subagent processes stopped (two hung 3-browser Playwright runs from P6 and a `vite preview` on 4182 from P7; they held a native file open, so the first `npm ci` failed with EPERM). Then `Remove-Item -Recurse dist`, then `npm ci` (0 vulnerabilities). 39 `WebKitNetworkProcess.exe` left over from P6 could not be stopped (P6-12).
+
+| Gate | Baseline (`7998b1d`) | Final |
+|---|---|---|
+| `npm run lint` | pass | pass (exit 0) |
+| `npm run content:validate` | 0 warnings / 0 errors | 0 warnings / 0 errors |
+| `npm test` | 32 files / 369 tests | **46 files / 524 tests**, passed in 3 of 3 runs (46.0 s) |
+| `npm audit` | not recorded | 0 vulnerabilities |
+| `npm run build` (base `/`) | pass, 3.01 s (no prerender) | pass, 97 s (vite 7.4 s; prerender 259 pages + 2 redirects, 85.7 s) |
+| `GITHUB_ACTIONS=true npm run build` | pass, 2.87 s | pass, 95 s (prerender 83.6 s) |
+| `npm run check:dist` | n/a | OK: 265 pages, 454 site URLs, 257 sitemap entries; first-load JS 163.9 kB gz (budget 180); largest chunk 55.2 kB gz (budget 61) |
+| Base-path `vite preview` (`GITHUB_ACTIONS=true`), 6 routes | n/a | `/`, `/about/why-tide`, `/about/our-partners`, `/pramaan/resource-centre?type=worksheet`, `/thrive/publications`, `/education-for-harmony/social-changemakers`: right `<h1>`, 1 `<title>`, 0 broken images, 0 doubled base, 0 console errors |
+| `npm run test:e2e` (dev) | 27 passed | **1st run: 61 passed / 1 failed** (`a11y.spec.js` "axe: interactive states › photo lightbox and promo video"; re-run alone, it passed; the error text was lost when the re-run cleared `test-results/`); **2nd full run: 62 passed** |
+| `CI=1 npm run test:e2e:site` | n/a | 170 passed (3.5 min) |
+| `npm run test:e2e:full` (Chromium + Firefox + WebKit) | n/a | **948 passed, 0 failed, 2 skipped** (20.8 min). Exit code 1 only because WebKit workers did not exit within 300 s after the run and were force-killed (P6-12, local Windows). |
+| `node scripts/a11y-audit.cjs` (dev on 5175) | 0 AA on 19 URLs | **0 AA violations on 21 URLs**; AAA `color-contrast-enhanced` hits remain on every route (owner item 2) |
+
+Not run in the final gate: `test:e2e:visual` (Windows-only baselines, not a required gate).
+
+**Flaky (logged, not fixed):** the dev a11y lightbox state above (1 in 2 full runs), and `routes.smoke.test.jsx` "/ — Home" (3 failures in 7 runs during the P7 check, while the leftover processes were loading the machine; 0 in 3 runs in the final gate).
+
+Dev servers on 5173 and 5175 were restarted afterwards with `npx vite --port 517x --strictPort`. Nothing was pushed.
