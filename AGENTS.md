@@ -23,7 +23,7 @@ npm run dev          # auto-syncs content, then starts dev server at localhost:5
 npm run build        # auto-syncs content, then builds to dist/
 npm run content:validate   # YAML syntax, image paths, Resource Centre + Publications snapshots, formUrl, email / lives-impacted consistency
 npm run lint         # ESLint (includes the jsx-no-literals CMS guard) — run in CI (deploy.yml)
-npm test             # Vitest unit/component tests (33 files, 391 tests) — run in CI (deploy.yml)
+npm test             # Vitest unit/component tests (36 files, 408 tests) — run in CI (deploy.yml)
 ```
 
 **Run `npm run lint`, `npm test` and `npm run build` yourself before pushing — CI (`deploy.yml`) re-runs lint, `content:validate` and the unit tests before building (a failure stops the deploy), but not the Playwright e2e specs.**
@@ -410,6 +410,14 @@ Full token map (incl. `deeper`/all shade variants): `tailwind.config.js`. If thi
 
 The global `:focus-visible` rule in `src/index.css` draws a 2px outline in the brand blue (`theme('colors.primary.DEFAULT')`, `#1E6BAA`) with a 2px offset, plus a 2px white `box-shadow` band, so the ring stays visible on the dark navy sections (brand blue alone is only about 2.9:1 there). A few components (e.g. the `PhotoStrip` tiles and the Resource Centre filters) opt out with `focus:outline-none` and draw their own Tailwind `ring` instead.
 
+### Accessibility helpers (audit P2, 2026-11-24)
+
+- **Scroll padding:** `html { scroll-padding-top: 5.5rem }`, and `150px` when the page has a `[data-sticky-subnav]` bar (`AblNavBar` — `"tall-only"`, back to 5.5rem under `max-height: 500px` where it stops sticking — and `PartnerIndexBar`). Keyboard focus, `#anchors` and `scrollIntoView` stop below the bars (WCAG 2.4.11/2.4.12). Sections no longer carry `scroll-mt-*`; don't add it back (it would add to the padding).
+- **`.hit-44`** (`src/index.css`): an invisible `::after` that makes a small control's pointer target 44 x 44 px (2.5.5 AAA) without changing its look. The control must be positioned and have room around it (neighbours' areas must not overlap); used on header items, footer links + Donate, Pramaan tabs, Resource Centre sort controls, Donate copy buttons, THRIvE area links.
+- **`useLoopWindow(active)`** (`src/hooks/`): true for `LOOP_BUDGET_MS` (5 s, `motionPresets.js`) after `active` first turns true, then false for good. Every decorative loop that starts by itself uses it or an equivalent (CSS `[animation-iteration-count:5]` on 1 s animations, a single beat instead of an interval), WCAG 2.2.2. Exceptions: the loader (exempt) and the SCF intro dot (owner decision 2026-11-23; open owner question).
+- **`LangText` / `utils/scriptLang.js`:** wraps Gujarati-script runs of Sheet text in `<span lang="gu">` (`textLang()` for `alt`); used for Resource Centre titles. Devanagari alone is left unmarked (language not knowable from the data).
+- **`[data-a11y-decorative]`:** aria-hidden, purely decorative text excluded from the axe contrast check (e2e + `a11y-audit.cjs`); currently only the faint "01"–"04" on `/thrive`.
+
 ### Shadows and spacing
 
 | Class | Usage |
@@ -688,7 +696,7 @@ Helpers in `src/utils/changemakers.js`: `personInitials`, `firstName`, `posterIn
 
 ### Layout components
 
-- `Layout` — `{ children }`; skip link (text from `navigation.yaml` `skipLink`), `Header`, `AnimatePresence mode="wait"` around `motion.main` keyed by `pathname`, `Footer`; scrolls to top on pathname change (not on query-only changes). Does not move focus on navigation.
+- `Layout` — `{ children }`; skip link (text from `navigation.yaml` `skipLink`), `Header`, `AnimatePresence mode="wait"` around `motion.main` keyed by `pathname`, `Footer`; scrolls to top on pathname change (not on query-only changes). After a page change (not on the first page of a visit, not on query-only changes) it moves focus to the new page's `<h1>` (waits up to 3 s for the lazy page, then `<main>`; leaves focus alone if the visitor already moved it); `main`/`h1` with `tabindex=-1` draw no focus ring (`src/index.css`).
 - `Header` — no props; reads `navigation.json` (all labels, logo, aria strings). `position: fixed`, transparent with white text until `scrollY > 20`, then glass. Dropdown triggers are `<button>`s (aria-expanded/controls, Escape closes). A dropdown child with `subItems` is a nested group (`SubGroup`): on desktop a button that opens a sub-menu to the right (Enter/Space/→ open and focus the first link, ↑ ↓ Home End move, ← or Esc close only the sub-menu); on mobile a collapsible list (§7 "Navigation subItems"). The highlighted entry is the most specific match (`activeTopIndex` / `activeLeaf` in `src/utils/navActive.js`). There is no language switcher. Keep `overflow-visible` on the dropdown wrapper (§11).
 - `Footer` — no props; reads `footer.json` + `contact.json`. No link columns (removed by owner decision, 2026-11-14): one compact row — logo, name + tagline byline on the left; email, phone, social icons and a Donate button (`donateLabel` → `donateHref`) on the right — above a thin copyright strip; stacks on small screens. `rights` contains a `{year}` token replaced with `new Date().getFullYear()` at render, so the static build never shows a stale year.
 
@@ -721,7 +729,7 @@ Shared overlay behaviour: while `active` is truthy, Escape calls `onClose`, any 
 const containerRef = useFocusTrap(active = true)   // attach containerRef to the dialog element
 ```
 
-On activation stores `document.activeElement`, focuses the first focusable child (selector `button, a[href], iframe, [tabindex]:not([tabindex="-1"])`), traps Tab/Shift+Tab inside the container, and restores focus on deactivation/unmount (with `preventScroll`, so closing a dialog never scrolls or glides the page). For a conditionally *mounted* dialog, the default `true` is right; for an always-mounted one pass the open condition.
+On activation stores `document.activeElement`, focuses the first usable focusable child (selector `button, a[href], iframe, input, select, textarea, [tabindex]:not([tabindex="-1"])`, skipping disabled, `tabindex=-1`, `aria-hidden`/`inert` and unrendered ones); Tab/Shift+Tab wrap at the ends and also from a focused element outside that list (e.g. a heading focused on open); a `focusin` guard pulls focus back if it lands outside (Tab out of a cross-origin video iframe); open traps form a stack and only the topmost acts (VideoLightbox over FellowProfile). Tested in `src/test/hooks/useFocusTrap.test.jsx`. Escape pressed while focus is inside a cross-origin player iframe never reaches the page (browser limit): Shift+Tab back to Close. It restores focus on deactivation/unmount (with `preventScroll`, so closing a dialog never scrolls or glides the page). For a conditionally *mounted* dialog, the default `true` is right; for an always-mounted one pass the open condition.
 
 ### useDelayedVisible
 
@@ -1303,7 +1311,7 @@ Exit animations on conditionally-rendered elements only fire when the child has 
 ### Unit / component tests (Vitest)
 
 ```bash
-npm test               # vitest run — 33 files, 391 tests (jsdom, src/test/**)
+npm test               # vitest run — 36 files, 408 tests (jsdom, src/test/**)
 npm run test:watch     # watch mode
 npm run test:ui        # Vitest UI
 ```
@@ -1348,7 +1356,7 @@ npm run test:e2e       # playwright test — chromium only, workers 1
 npm run test:all       # unit + e2e
 ```
 
-`playwright.config.js` starts (or reuses, outside CI) `npm run dev` on `http://localhost:5173`. Specs live in `e2e/` (`home`, `navigation`, `pramaan`): `navigation.spec` loads 13 routes without page errors (incl. `/tide/publications` and `/thrive/publications`), `home.spec` and `pramaan.spec` check basic structure and links; there are no lightbox, filter, mobile-viewport or axe flows. The removed routes are covered only by the Vitest suite. `pramaan.spec` also opens a resource at `/pramaan/resource-centre/W1` and checks the `/pramaan-library` redirect. Requires `npx playwright install chromium` once.
+`playwright.config.js` starts (or reuses, outside CI) `npm run dev` on `http://localhost:5173`. Specs live in `e2e/` (`home`, `navigation`, `pramaan`, `a11y` — axe WCAG A/AA = 0 on 20 routes and 7 open states, AAA/best-practice reported as annotations; keyboard: skip link, focus to the new `<h1>` after a page change, each dialog's trap/Escape/focus return, the header dropdown, no sideways scroll at 320 px; `[data-a11y-decorative]` marks aria-hidden decorative text excluded from contrast): `navigation.spec` loads 13 routes without page errors (incl. `/tide/publications` and `/thrive/publications`), `home.spec` and `pramaan.spec` check basic structure and links; there are no lightbox, filter, mobile-viewport or axe flows. The removed routes are covered only by the Vitest suite. `pramaan.spec` also opens a resource at `/pramaan/resource-centre/W1` and checks the `/pramaan-library` redirect. Requires `npx playwright install chromium` once.
 
 ### Accessibility scan
 
@@ -1357,7 +1365,7 @@ npx vite --port 5175                      # terminal 1: dev server on the port t
 node scripts/a11y-audit.cjs [port]        # terminal 2 (port arg, or A11Y_PORT; default 5175)
 ```
 
-Uses `@playwright/test` (Chromium) + `@axe-core/playwright` (tags wcag2a/aa, 21a/aa, 22aa) over a hard-coded list of 19 URLs (all 18 primary routes, with `/pramaan/resource-centre/W1` standing in for `:id`, plus a made-up path that exercises the 404 page; **not** `/coming-soon` or `/404`). It scrolls each page fully and waits 1.2 s so `whileInView` animations settle before scanning — don't shorten that. The JSON report is written to the OS temp dir as `a11y-report.json` (override with `A11Y_REPORT`). Update `ROUTES` in the script when routes change.
+Uses `@playwright/test` (Chromium) + `@axe-core/playwright` (tags wcag2a/aa, 21a/aa, 22aa) over a hard-coded list of 21 URLs (all 18 primary routes, `/coming-soon`, `/404`, with `/pramaan/resource-centre/W1` standing in for `:id`, plus a made-up path that exercises the 404 page). AA results (the gate) are under `violations`, AAA + best-practice under `aaaAndBestPractice`; `[data-a11y-decorative]` is excluded. It scrolls each page fully and waits 1.2 s so `whileInView` animations settle before scanning — don't shorten that. The JSON report is written to the OS temp dir as `a11y-report.json` (override with `A11Y_REPORT`). Update `ROUTES` in the script when routes change.
 
 ### Lint
 

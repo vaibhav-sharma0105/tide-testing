@@ -33,8 +33,27 @@ const ROUTES = [
   '/thrive',
   '/thrive/publications',
   '/contact',
+  '/coming-soon',
+  '/404',
   '/this-route-does-not-exist-404-check',
 ]
+// Open dialogs, menus and filtered states are scanned by e2e/a11y.spec.js (npm run test:e2e).
+
+const AA_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
+// Reported separately (not the gate): WCAG AAA and axe best practices.
+const EXTRA_TAGS = ['wcag2aaa', 'best-practice']
+// Text that is pure decoration and aria-hidden (WCAG 1.4.3 "incidental"), e.g. /thrive's faint "01".
+const EXCLUDE = '[data-a11y-decorative]'
+
+const summarise = (violations) => violations.map(v => ({
+  id: v.id,
+  impact: v.impact,
+  help: v.help,
+  helpUrl: v.helpUrl,
+  tags: v.tags,
+  nodeCount: v.nodes.length,
+  nodes: v.nodes.slice(0, 50).map(n => ({ target: n.target, html: n.html.slice(0, 200), failureSummary: n.failureSummary })),
+}))
 
 ;(async () => {
   const browser = await chromium.launch()
@@ -61,22 +80,12 @@ const ROUTES = [
         window.scrollTo(0, 0)
       })
       await page.waitForTimeout(1200)
-      const results = await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
-        .analyze()
+      const results = await new AxeBuilder({ page }).exclude(EXCLUDE).withTags(AA_TAGS).analyze()
+      const extra = await new AxeBuilder({ page }).exclude(EXCLUDE).withTags(EXTRA_TAGS).analyze()
 
-      report[route] = {
-        violations: results.violations.map(v => ({
-          id: v.id,
-          impact: v.impact,
-          help: v.help,
-          helpUrl: v.helpUrl,
-          tags: v.tags,
-          nodeCount: v.nodes.length,
-          nodes: v.nodes.slice(0, 50).map(n => ({ target: n.target, html: n.html.slice(0, 200), failureSummary: n.failureSummary })),
-        })),
-      }
-      console.log(route, '->', results.violations.length, 'violation rule(s)')
+      report[route] = { violations: summarise(results.violations), aaaAndBestPractice: summarise(extra.violations) }
+      console.log(route, '->', results.violations.length, 'AA violation rule(s);',
+        extra.violations.map(v => `${v.id}(${v.nodes.length})`).join(' ') || 'no AAA/best-practice findings')
     } catch (err) {
       report[route] = { error: err.message }
       console.log(route, '-> ERROR:', err.message)

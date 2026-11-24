@@ -58,9 +58,100 @@ This file is the only shared memory between the phase subagents: read it first, 
 
 **Notes for next phases:** the new lint guard flags any string with a letter in the listed text props, so a P2 fix that adds an `aria-label` must take it from YAML (that is the point). A string *lookup key* inside a text prop's ternary (`label={t[a ? 'x' : 'y']}`) would be a false positive: compute the key outside the JSX. A missing image is still only a **warning** in `content:validate` (unchanged policy); promoting it to an error would stop a deploy on a broken path — P6 may want to propose that. `validate-content.js` has no unit tests (verified manually here) — P6. If P2/P3 add a `<noscript>` or any `index.html` text, take it from `site.yaml` through `siteDataPlugin`.
 
+**Orchestrator check (P1):**
+- Diff reviewed: no snapshot, threshold or owner-decision edits. `src/data/site.json` changed only because `content:sync` regenerated it.
+- Gates re-run independently: lint pass; content:validate 0/0; 33 files / 391 tests; build pass; e2e 27 passed (18.0 s).
+- Base-path preview: `/about/our-team`, `/thrive/publications` and `/contact` show the texture at `/tide-testing/assets/images/shared/page-banner-bg.png` (200 image/png), with 0 console errors.
+- Guard spot check: a planted `aria-label="Planted text"` in `PageHero.jsx` fails lint with `no-restricted-syntax` (then reverted).
+- Commits: `291bcae` (guards), `88166f4` (texture, docs, ledger).
+
 ## P2 — Accessibility
 
-_Not started._
+**Method.** (1) axe (`@axe-core/playwright`, tags wcag2a/aa, 21a/aa, 22aa, wcag2aaa, best-practice) on 20 URLs after scrolling + 1.2 s settle, then on 7 open states (header dropdown, mobile menu, fellow profile, photo lightbox + promo video, publications filter menu + an applied filter, Resource Centre drawer on a phone, Partners search). (2) Scratch Playwright probes (not committed): heading outline, landmarks, Gujarati/Devanagari text and its `lang`, every control's size, sideways overflow at 320 px, Shift+Tab through whole pages measuring focus against the fixed header and sticky bars, keyboard flows through each dialog (open, 15× Tab / Shift+Tab, Escape, focus return), text-spacing overrides (1.4.12) looking for clipped text, ambiguous link names, `aria-current`. (3) Code reading of every infinite animation and interval. Contrast ratios computed from the hex values. **Not done:** a real screen-reader session (NVDA/VoiceOver), so "what is heard" is inferred from the accessibility tree and focus; 400 % zoom covered by the 320 px reflow check only, no separate 200 % text-only zoom pass; reading level (3.1.5) not measured.
+
+**Baseline (before P2):** AA: `/thrive` color-contrast ×4, `/pramaan/resource-centre` heading-order ×1, plus best-practice `landmark-complementary-is-top-level`; AAA `color-contrast-enhanced` on every route (4–80 nodes). Manual findings in the table.
+
+| ID | Sev | Location | Evidence | Status |
+|---|---|---|---|---|
+| P2-1 | High | `src/hooks/useFocusTrap.js` (VideoLightbox, FellowProfile) | Probe: Tab left the promo video dialog through the cross-origin iframe (focus reached "About Pramaan" behind it), same on the resource video; in FellowProfile, Tab from the focused `<h2>` reached "Arth Patel: open profile" behind the dialog. The trap wrapped only when focus was exactly on the first/last item, and its list counted disabled/hidden buttons (2.1.2, 2.4.3) | Fixed: usable-only list, wrap from any element outside the list, `focusin` guard, trap stack (topmost acts). 7 unit tests; all 5 dialogs pass the e2e keyboard flow |
+| P2-2 | High | `/about/our-partners`, `/thrive/publications`, `/pramaan/resource-centre` | Shift+Tab probe: Partners 29 of 106 stops entirely under `PartnerIndexBar`; THRIvE pubs 4 hidden + 10 partly under the header; Resource Centre 2 hidden + 11 partly under `AblNavBar` (2.4.11 AA / 2.4.12 AAA). No `scroll-padding` anywhere | Fixed: `scroll-padding-top` 5.5rem, 150px with `[data-sticky-subnav]`; same probe → 0 hidden, 0 partial on 5 routes; 8 redundant `scroll-mt-*` removed |
+| P2-3 | Medium | `HomeHero.jsx:185`, `PartnerConstellation.jsx:104,123` + SVG lights, `WaveDivider.jsx:16`, `AblHome.jsx:113`, `Donate.jsx:118`, `OrganizeMCCx.jsx:249`, `SocialChangemakers.jsx:247`, `NotFound.jsx:59-69` | `repeat: Infinity`, `animate-ping`, `animate-bounce`, `setInterval` beats: decorative motion that starts by itself and never stops (2.2.2 AA; stopping only under OS reduce-motion is not enough) | Fixed: `useLoopWindow` (5 s, then rest), CSS loops 5 × 1 s, one beat instead of an interval, the wave drifts 5 s at its old speed |
+| P2-4 | Medium | `SocialChangemakers.jsx:41-56` intro dot | Loops forever while on screen; the loop is a recorded owner decision (2026-11-23) | Owner decision (below) |
+| P2-5 | Low | `ComingSoonGraphic.jsx` (`/coming-soon`) | Clouds, motes, flag and gusts loop forever (2.2.2); the page is linked from nowhere (grep) | Deferred |
+| P2-6 | Medium | Resource Centre cards + detail (`LibraryCard.jsx`, `PramaanLibraryDetail.jsx`) | 165 of 241 titles in Gujarati script rendered under `lang="en"` (3.1.2). The row's `language` column describes the material, not the title (15 "English" rows have Gujarati titles), so the script is the evidence | Fixed: `LangText` / `scriptLang.js` (`<span lang="gu">` per Gujarati run, `lang` on `alt`); 7 unit tests; seen under the base path (5 / 2 `[lang=gu]` nodes) |
+| P2-7 | Medium | `Layout.jsx` | After a page change focus stayed on the clicked link (or fell to `<body>`); AGENTS.md said "Does not move focus" — a screen reader announced nothing (2.4.3, 4.1.3 practice) | Fixed: focus moves to the new `<h1>`; not on first load, not on query changes (`?fellow=` keeps the dialog's focus); e2e test |
+| P2-8 | Medium | `Header.jsx` desktop dropdown | `role="menu"` holding plain links (no `menuitem`, no arrow keys) + `aria-haspopup="true"`; dropdown links had no `aria-current` while the mobile menu did (1.3.1, 4.1.2) | Fixed: a disclosure list (no menu role), `aria-current="page"` on the current link incl. the nested group; Header unit tests pass; e2e test |
+| P2-9 | Low | `/pramaan/resource-centre` | axe heading-order: h1 → h3 filter groups and h3 cards | Fixed: hidden `<h2>` "Filters" (existing `page.filtersButton`), card titles `<h2>` |
+| P2-10 | Low | `PramaanLibrary.jsx:126` | `<aside>` inside `<main>` (best practice) | Fixed: labelled `<section>` |
+| P2-11 | Low | `FellowCard.jsx:61` | 320 px: 16 px sideways scroll ("See their story" pill `whitespace-nowrap` in a 2-column grid) (1.4.10) | Fixed: wraps, keeps 36 px min; e2e checks all 20 routes at 320 px |
+| P2-12 | Low | `PramaanLibrary.jsx` phone "Filters" | Opens a dialog without `aria-haspopup` / `aria-expanded` | Fixed |
+| P2-13 | Info | `THRIvE.jsx:41` | axe 1.4.3: "01"–"04" at 1.32:1, `aria-hidden`, pure decoration (1.4.3 "incidental") | Pass; marked `data-a11y-decorative`, excluded by name in the axe checks |
+| P2-14 | Low (AAA) | `Footer.jsx:38,79` | `text-white/55` on navy = 5.78:1, 60 nodes (3 per page) | Fixed → `text-white/70` = 8.51:1 |
+| P2-15 | AAA | brand tokens, site-wide | 1.4.6: `#5A6A7E` 5.39 on `#FDFCF9` / 5.53 on white; `#1E6BAA` text 5.47 / 5.62; white on `#1E6BAA` 5.62; `#B45309` 4.89; `#4D5C6F` 6.65 (≈ 430 nodes) | Owner decision |
+| P2-16 | AAA | small targets (2.5.5) | Probe: header items 36 px tall, footer links/Donate 36, Pramaan tabs 40, sort 32, Donate copy 36, THRIvE links 36; pagination 36 (2–4 px apart), grade chips 30, `Button size="sm"` 36, Contact links 28 (stacked), footer social 40 (no gap), search inputs 42. All pass 2.5.8 AA (≥ 24 px or spaced) | Fixed for the roomy ones with `.hit-44` (checked with `elementFromPoint` 21.5 px out: 38/38 ok); rest Deferred / Owner |
+| P2-17 | AAA | `education-for-harmony.yaml:57,64`, `get-involved-volunteer.yaml:25,42` | 2.4.9: two "Find out more" and two "Apply via Google Form" links going to different places (2.4.4 AA passes from context) | Owner (copy) |
+| P2-18 | AAA | SCF, MCCx, ABL, THRIvE | 3.1.4: whether each page expands them on first use not verified | Owner (copy) |
+| P2-19 | — | YouTube/Drive videos (Pramaan promo, EFH, resource explanations, SCF films) | 1.2.2 / 1.2.3 / 1.2.5 captions and audio description: not checkable from the code (cross-origin players) | Owner / content |
+| P2-20 | Low | `VideoLightbox` | Escape is not heard while focus is inside the cross-origin player (browser limit); Shift+Tab reaches Close | Deferred (documented in AGENTS.md) |
+| P2-21 | Low | `LibraryCard.jsx:23,40` | The card link's `aria-label` ("View {name}") replaces its content, so the type, subject and the "video available" `aria-label` (on a role-less `<div>`) are never announced; the label mixes English and Gujarati, so it can't carry both languages | Deferred (label template = copy decision) |
+
+**Conformance matrix (WCAG 2.2; AA hard floor, AAA target).**
+
+| Criterion | Result | Evidence |
+|---|---|---|
+| 1.1.1 Non-text content | Pass | axe 0; Sheet images use the row name or YAML fallback (`card.imageAltFallback`); decorative `alt=""` |
+| 1.2.1–1.2.5 Media (A/AA) | Not verified → owner | P2-19 |
+| 1.2.6–1.2.9 Media (AAA) | Fail-owner | P2-19 |
+| 1.3.1 Info and relationships | Fail-fixed | P2-8, P2-9 |
+| 1.3.2–1.3.5 | Pass | axe 0; no orientation lock; contact/volunteer forms are external Google Forms |
+| 1.3.6 Identify purpose (AAA) | Pass | landmarks probe (banner, nav, main, contentinfo) |
+| 1.4.1 / 1.4.2 | Pass / N/A (no autoplaying audio) | |
+| 1.4.3 Contrast | Pass | axe 0 (P2-13 incidental) |
+| 1.4.4 Resize text | Pass (inferred from 1.4.10 and rem sizes; no separate 200 % pass) | |
+| 1.4.5 / 1.4.9 Images of text | Pass (logos only) | |
+| 1.4.6 Contrast enhanced (AAA) | Fail-owner (footer fixed) | P2-14, P2-15 |
+| 1.4.7 / 1.4.8 (AAA) | N/A / Not assessed | |
+| 1.4.10 Reflow | Fail-fixed | P2-11 |
+| 1.4.11 Non-text contrast | Pass | focus ring blue 5.47:1 on cream, white band on navy |
+| 1.4.12 Text spacing | Pass | probe: only `sr-only` text and decorative frames overflow; clamped titles link to the full text |
+| 1.4.13 Content on hover/focus | Pass | FellowProfile tooltips on hover/focus only; Escape closes |
+| 2.1.1 / 2.1.2 / 2.1.3 Keyboard | Fail-fixed | P2-1; e2e keyboard flows |
+| 2.1.4 Character shortcuts | Pass | "/" only focuses the THRIvE search |
+| 2.2.1 / 2.2.3 / 2.2.4 / 2.2.6 | N/A / Pass | no time limits or interruptions |
+| 2.2.2 Pause, stop, hide | Fail-fixed; one Fail-owner; one Deferred | P2-3, P2-4, P2-5; Partners rows start paused with a pause control |
+| 2.3.1 / 2.3.3 Animation from interactions (AAA) | Pass | `MotionConfig reducedMotion="user"`, CSS reduce rule; tilt, parallax, count-up off under reduce |
+| 2.4.1 Bypass blocks | Pass | skip link → `<main>` (e2e) |
+| 2.4.2 Page titled | Pass | Helmet titles per route |
+| 2.4.3 Focus order | Fail-fixed | P2-1, P2-7 |
+| 2.4.4 Link purpose (in context) | Pass | |
+| 2.4.5 / 2.4.6 / 2.4.7 | Pass | menu + in-page links; global focus ring |
+| 2.4.8 Location (AAA) | Pass | breadcrumbs + `aria-current` (now also in the desktop dropdown) |
+| 2.4.9 Link purpose, link only (AAA) | Fail-owner | P2-17 |
+| 2.4.10 Section headings (AAA) | Pass | one `<h1>` and no skipped levels on 20 routes after P2-9 |
+| 2.4.11 / 2.4.12 Focus not obscured | Fail-fixed | P2-2 |
+| 2.4.13 Focus appearance (AAA) | Pass | global ring 2 px outline + 2 px band, ≥ 3:1 change on cream and navy; components with their own `ring-4` spot-checked, not each measured |
+| 2.5.1–2.5.4, 2.5.6, 2.5.7 | Pass | photo strip and slider also have keyboard buttons; no motion actuation; e.g. "Copy citation for …" begins with the visible label |
+| 2.5.5 Target size (AAA) | Partly fixed; rest Deferred/Owner | P2-16 |
+| 2.5.8 Target size (minimum) | Pass | probe: < 24 px only inline links in text and spaced links |
+| 3.1.1 / 3.1.2 Language | Pass / Fail-fixed | P2-6 |
+| 3.1.3 / 3.1.4 / 3.1.5 / 3.1.6 (AAA) | Not assessed / Owner / Not measured / N/A | P2-18 |
+| 3.2.x / 3.3.x | Pass / N/A | forms are external Google Forms; site search fields are labelled |
+| 4.1.2 Name, role, value | Fail-fixed | P2-8, P2-12 |
+| 4.1.3 Status messages | Pass | result counts and copy confirmations are live regions |
+
+**Changes:** `src/hooks/useFocusTrap.js` + `src/test/hooks/useFocusTrap.test.jsx` (P2-1) · `src/index.css`: scroll padding, `.hit-44`, no ring on `main`/`h1` with `tabindex=-1` · `AblNavBar.jsx`, `PartnerIndexBar.jsx` (`data-sticky-subnav`); `scroll-mt-*` removed from `PartnerSlider`, `PublicationControls`, `EducationForHarmony`, `Donate`, `SocialChangemakers`, `THRIvE` (P2-2) · `src/hooks/useLoopWindow.js` + test, `motionPresets.js` `LOOP_BUDGET_MS`, `HomeHero`, `PartnerConstellation`, `WaveDivider`, `AblHome`, `Donate`, `OrganizeMCCx`, `SocialChangemakers`, `NotFound` (P2-3) · `src/utils/scriptLang.js` + test, `components/ui/LangText.jsx`, `LibraryCard`, `DriveImage` (`lang` prop), `ImageLightbox`, `PramaanLibraryDetail` (P2-6) · `Layout.jsx` (P2-7) · `Header.jsx` (P2-8) · `PramaanLibrary.jsx`, `LibraryCard.jsx`, `pramaanLibrary.test.jsx` (card titles h3 → h2) (P2-9/10/12) · `FellowCard.jsx` (P2-11) · `THRIvE.jsx` (P2-13) · `Footer.jsx` (P2-14) · `.hit-44` on `Header`, `Footer`, `Donate`, `THRIvE`, `AblNavBar`, `PramaanLibrary`, `LibraryDropdown` (P2-16) · `e2e/a11y.spec.js` (new, 35 tests) · `scripts/a11y-audit.cjs` (+`/coming-soon`, `/404`; AAA/best-practice reported apart from AA; decorative exclusion) · `CLAUDE.md`, `AGENTS.md` (§3 helpers, Layout, useFocusTrap, §12 counts/specs). No YAML changes, no new visible text, no new dependency.
+
+**Gates (2026-11-24, after the changes):** lint pass (exit 0) · content:validate 0 warnings / 0 errors · `npm test` **36 files / 408 tests** passed (P1: 33 / 391; +17: focus trap 7, loop window 3, scriptLang 7) · build pass (2.70 s; chunk sizes unchanged: vendor-react 181.90 kB, pramaan-library 147.25 kB) · base-path build pass (2.71 s) + preview on 4173: `/`, `/about/our-partners`, `/pramaan/resource-centre`, `/pramaan/resource-centre/W1`, `/get-involved/donate`, `/thrive/publications` under `/tide-testing/`: `<h1>` present, 0 broken images, 0 `tide-testing/tide-testing`, `[lang=gu]` 5 / 2 on the Resource Centre pages, scroll padding 88 px / 150 px, a keyboard page change lands on `<h1>`, 0 console errors · `node scripts/a11y-audit.cjs` (5175): **0 AA violations on all 21 URLs**; only `color-contrast-enhanced` left (owner) · e2e **62 passed** (27 + 35 new, 2.0 min; Playwright reused the dev server already on 5173, pid 67648, not started by P2).
+
+**Notes for next phases:**
+- `useFocusTrap` keeps a module-level stack and a document `focusin` guard: a new dialog must use the hook, not its own trap. Initial focus now also counts `input/select/textarea`.
+- Don't add `scroll-mt-*` to sections (the html padding does it); a new sticky bar under the header needs `data-sticky-subnav`.
+- `Layout` moves focus to the `<h1>` after a page change: every page needs exactly one `<h1>` (all 20 have one).
+- New looping decoration must stop within 5 s (`useLoopWindow`) unless it has a pause control.
+- `.hit-44` uses `::after`: not on an element that already uses `::after` or clips overflow.
+- Resource Centre card titles are `<h2>` (tests query level 2).
+- e2e now takes ~2 min (was ~20 s), ~1.7 min of it the a11y spec. CI still doesn't run e2e (P6 may want the a11y spec in CI).
+- P3: `<html lang="en">` stays; Gujarati is marked per run, not per page.
 
 ## P3 — Technical SEO and AI discoverability
 
@@ -85,12 +176,23 @@ _Not started._
 ## Owner decisions needed
 
 - **Resource Centre spelling:** `<h1>` "Resource Center" vs `<title>` "Resource Centre" (baseline observation). Which spelling?
+- **(P2) Contrast at AAA (1.4.6, 7:1).** Brand tokens fail 7:1 for normal-size text: `tide-muted #5A6A7E` 5.39 on `#FDFCF9` (about 200 nodes), `primary #1E6BAA` as text 5.47 (white on primary buttons 5.62), `accent-deeper #B45309` 4.89, `mutedOnLight #4D5C6F` 6.65. AA (4.5) passes everywhere. Recommendation, following the `accent-deeper` / `mutedOnLight` pattern (text-only; brand hues unchanged for fills): body-size `text-primary` → the existing `primary-dark #15538A` (7.76 on cream / 7.97 on white / 7.29 on `primary-faint`); a new `tide-mutedStrong #44515F` (7.91 / 8.11 / 7.43); a new amber text token `#843A0C` (7.90 / 8.10 / 7.81 on `#FFFBEB`); white-text buttons on `primary-dark` (7.97). Trade-off: the site reads darker and less "brand blue". Large text (≥ 24 px, or 19 px bold) already passes at 4.5. Not applied.
+- **(P2) SCF intro dot loops forever (2.2.2, AA).** The walk restarts at the first stop by owner decision (2026-11-23), so it is decorative motion with no stop. Recommendation: walk the three stops once or twice (≤ 5 s of motion), then rest on the finished thread (what reduced-motion visitors already see), or add a small pause button (needs copy). Trade-off: the "journey" plays only on arrival.
+- **(P2) Target size 2.5.5 (AAA, 44 px) vs the button scale (2026-11-24: `sm` = 36 px).** `Button size="sm"`, pagination numbers (36 px, 2–4 px apart), Resource Centre grade chips (30 px), Contact page links (28 px, stacked) and the search fields (42 px) stay under 44 px. All pass AA 2.5.8. Recommendation: `sm` → 44 px minimum (or retire `sm`), pagination and chips 44 px tall. Trade-off: denser rows grow, and pagination wraps sooner on phones.
+- **(P2) Link text (2.4.9) and abbreviations (3.1.4), AAA.** Two "Find out more" links (`education-for-harmony.yaml:57,64`) and two "Apply via Google Form" links to different forms (`get-involved-volunteer.yaml:25,42`): please supply distinct wording. Should SCF, MCCx, ABL and THRIvE be spelled out on first use on each page (wording needed)?
+- **(P2) Video captions (1.2.2 / 1.2.5).** The YouTube/Drive videos (Pramaan promo, Education for Harmony, resource explanation videos, SCF films) can't be checked from the code. Do they have accurate captions (not auto-generated) and, where the speech doesn't describe the visuals, a transcript? Transcripts would be the owner's content, not written by us.
+- **(P2) Devanagari text.** Only the word "भरो" appears, in three Gujarati titles (W65, W70, W72; possibly a typo for Gujarati "ભરો", a Sheet question). If stand-alone Devanagari titles appear, should they be marked Hindi (`lang="hi"`)? Without a rule they stay unmarked.
 
 ## Deferred / out of scope
 
 - P1-5/6 (→ P3): `public/404.html` `<title>`, `robots.txt` and `sitemap.xml` repeat the site name / domain from `site.yaml` by hand; generating them from `site.yaml` is an SEO-phase call.
 - P1-7: favicon path typed in `index.html` (works under the base path; moving it into `siteDataPlugin` needs hook-order work).
 - P1-8 (→ P3): `site.yaml` `description` says "since 2014" in text; `llms.txt` hand-typed figures ("100+ partner organisations", "12 years", "as of 2025", "15,000+ students") may drift from the pages/snapshots.
+- P2-5: the `/coming-soon` scene loops forever (2.2.2); the page is linked from nowhere. Apply `useLoopWindow` (or the static reduced scene after 5 s) if the page is ever used.
+- P2-16 (rest): pagination, grade chips, Contact links, footer social icons and search inputs are under 44 px (AAA). Fixing them is a visible size change → owner item above.
+- P2-20: Escape pressed inside a cross-origin video iframe can't reach the page (browser limit).
+- P2-21: the Resource Centre card link's `aria-label` hides type, subject and "video available". Rethink as `aria-labelledby` or a fuller `card.viewTemplate` (copy).
+- P2 not done: a screen-reader listening session (NVDA/VoiceOver), a separate 200 % text-only zoom pass, 3.1.5 reading level.
 
 ## Final gate results
 
