@@ -54,7 +54,14 @@ jobs:
 
       # The build opens every page in headless Chromium and saves it as real HTML (scripts/prerender.mjs),
       # so crawlers that don't run JavaScript see each page's text, title and links. Playwright is a dev
-      # dependency already; this downloads its browser (no secrets involved).
+      # dependency already; this downloads its browser (no secrets involved). The browser is cached per
+      # Playwright version (package-lock.json); `install --with-deps` still adds the system libraries.
+      - name: Cache the Playwright browser
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
       - name: Install the prerender browser
         run: npx playwright install --with-deps chromium
 
@@ -62,6 +69,28 @@ jobs:
         run: npm run build
         env:
           GITHUB_ACTIONS: true
+
+      # Every link, image and sitemap entry of the built site resolves to a file, and the JavaScript
+      # stays within its size budget (scripts/check-dist.mjs).
+      - name: Check the built site
+        run: npm run check:dist
+
+      # The shipped site (prerendered pages, CSP, /tide-testing/ base) in Chromium, served like GitHub
+      # Pages (scripts/serve-pages.mjs): routes, menus, listings, dialogs, a11y, the must-pass screen
+      # sizes. No network, no secrets. Firefox, WebKit and every screen size run nightly (e2e-nightly.yml).
+      - name: End-to-end tests (built site)
+        run: npm run test:e2e:site
+
+      - name: Keep the e2e report and traces
+        if: failure()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: e2e-report
+          path: |
+            playwright-report-site/
+            test-results-site/
+          retention-days: 14
+          if-no-files-found: ignore
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0

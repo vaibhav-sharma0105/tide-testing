@@ -29,8 +29,8 @@ const exprs = (s) => [...String(s).matchAll(/\$\{\{\s*([\s\S]*?)\s*\}\}/g)].map(
 const steps = (wf) => Object.entries(wf.jobs || {}).flatMap(([job, j]) => (j.steps || []).map((s) => ({ job, step: s })))
 
 describe('GitHub Actions workflows', () => {
-  it('finds the five workflows', () => {
-    expect(files.sort()).toEqual(['deploy.yml', 'sync-partners.yml', 'sync-pramaan-library.yml', 'sync-publications.yml', 'sync-social-changemakers.yml'])
+  it('finds the six workflows', () => {
+    expect(files.sort()).toEqual(['deploy.yml', 'e2e-nightly.yml', 'sync-partners.yml', 'sync-pramaan-library.yml', 'sync-publications.yml', 'sync-social-changemakers.yml'])
   })
 
   it('no run: script interpolates untrusted context (expression injection)', () => {
