@@ -446,9 +446,132 @@ CLS ≤ 0.026 everywhere, before and after. Lighthouse's SEO score was already 1
 
 **Commits.** None (the orchestrator commits).
 
+**Orchestrator check (P5):**
+- Diff reviewed: no snapshot, threshold, CSP or workflow edits.
+- New file `public/assets/images/shared/page-banner-bg.webp`: 1600×600, no alpha, same as the PNG.
+- Gates re-run: lint pass; content:validate 0/0; 43 files / 486 tests; build pass; e2e 62 passed (2.0 min, no flake this run).
+- `dist/about/why-tide.html` modulepreloads are root-relative (`/assets/…`), with 0 `http://localhost` hrefs.
+- Base-path build (prerendered at origin `localhost:4173`) served Pages-style on port **4191**:
+  - `/about/why-tide` loads the WebP texture at `/tide-testing/…`;
+  - `/pramaan/resource-centre?page=3` has `<a href>` page links;
+  - 0 console errors.
+- P5-1 in Chrome (dev): `?type=games` shows "Showing 9 of 32"; after the menu link, "Showing 9 of 241" with an empty query.
+- P5-2: `?page=-2` → "Showing 9 of 241" (page 1).
+- Commits: `5c5b7a6`, `b0bef5f`, `2943145`, `b7dc498`, `0a0f7c5`, `82605be`.
+
 ## P6 — Quality engineering
 
-_Not started._
+**Method.**
+- Coverage with `@vitest/coverage-v8` (added as a dev dependency; `vitest.config.js` already referenced it, P5-11). Before: `src/` 86.95 % lines / 72.4 % branches; `scripts/` was outside the coverage scope (measured separately: `sync-runner.js` 25.5 % lines).
+- Gaps ranked by risk, not by percentage: the sync publishing gates first, then whatever only shows in the built site.
+- New e2e config against the **shipped build** (`dist/`, base `/tide-testing/`, prerendered pages, strict CSP), served like GitHub Pages by `scripts/serve-pages.mjs`. Runs in Chromium, Firefox (Playwright build 1522) and WebKit 26.4 (build 2287). Other hosts are stubbed, so runs are offline and deterministic.
+- Responsive matrix: 14 viewports × 17 routes.
+- Real-browser spot-check: Chrome (claude-in-chrome, desktop: the window could not be narrowed below 1526 px). Phones and tablet via Playwright screenshots, each one looked at.
+- Every fix was seen failing first: the unit test for P6-2; the stricter overflow check against the old build for P6-1 and P6-3.
+
+| ID | Sev | Location | Evidence | Status |
+|---|---|---|---|---|
+| P6-1 | Medium | `HomeHero.jsx:100` (`/` at 320 px) | The no-wrap highlight "holistic education" ends at x=339 on a 320 px screen; the hero `<section>` (`overflow:hidden`) cut off ~19 px of "education" (screenshot). 360 px and up fit (span right = 339 ≤ 339). WCAG 1.4.10 | Fixed: `text-[2.25rem] min-[360px]:text-[2.6rem]` (36 px under 360 px only). Re-shot at 320: whole word visible; ≥ 360 px unchanged |
+| P6-2 | Medium | `scripts/lib/prerender-check.js` `outputFiles` | Resource ids with spaces or brackets ("F22 repeat", "K 31", "K32 (26 in Gujarati)") were written as files literally named `F22%20repeat.html`. A static host decodes `%20` before looking for the file, so these 3 sitemap URLs answered **404** (the app still painted the page over 404.html). Found by the new `check-dist` | Fixed: the file name is the decoded route. Unit test seen failing first; e2e deep-links each such id → 200 |
+| P6-3 | Medium | `PartnerSlider.jsx:157` (`/about/our-partners` ≤ ~360 px) | The heading column (`min-w-0`) shrank to 116 px, and the slider control pill covered the end of "Collaborators" and "Beneficiaries" (text right 164 / 156 px vs pill left 153 px; screenshot) | Fixed: the row wraps (`flex-wrap`, `gap-y-3`, column `max-w-full break-words`). The pill moves under a long heading on narrow phones. 1366 px layout unchanged (screenshot) |
+| P6-4 | Medium | flaky `e2e/a11y.spec.js` (P4/P5) | (1) `/` "Execution context destroyed": **not reproduced**. One run against a cold `vite --force` passed with no reload logged. (2) FilterMenu count-cell contrast mid-fade | Fixed: all 9 `waitForTimeout`s replaced by state waits (`still()`: opacity stable on two polls; listbox closed; focus polled). A dev warm-up `globalSetup` (`e2e/dev-warmup.js`) opens every route before the tests, in case (1) was the optimiser reload. Result of 3× runs below |
+| P6-5 | Low | `src/test/scripts/cmsGuard.test.js` | Under `--coverage` it timed out at 5 s (ESLint's first call loads config and plugins): `Test timed out in 5000ms` | Fixed: a `beforeAll` warm-up with a 60 s timeout |
+| P6-6 | Low | a11y on the built site | axe reported `aria-allowed-attr`, `aria-prohibited-attr` and `button-name` **inside the YouTube player iframe** (third-party markup) | Excluded cross-origin `iframe[src^="https://"]` from axe; the frame's focus and keyboard behaviour stay covered |
+| P6-7 | Info | folder vs `.html` (`/pramaan/resource-centre`) | `pramaan/resource-centre.html` and `pramaan/resource-centre/` both exist; `serve-pages.mjs` redirects folder-first, so the address gains a trailing slash (query kept). What GitHub Pages does is **not verified** (AGENTS.md §11) | Tests accept both; check on the first real deploy: `curl -I …/tide-testing/pramaan/resource-centre` |
+| P6-8 | Low | print | No print styles exist (`@media print` / `print:`: 0 hits). THRIvE citations and resource pages print with the header, menus and banners | Deferred → owner question |
+| P6-9 | Info | sync safety rules | The refuse/exit-1 path, retries + token redaction, version gate, photo-failure-keeps-previous, the per-run cap, the delete guard (outside dir / unsafe id), write-only-on-change, and sorted manifests all had **no** test | Covered: `syncRunnerSafety.test.js` (14). `sync-runner.js` 25.5 → 94.5 % lines; `scripts/lib` 95.7 % lines / 88.2 % branches |
+| P6-10 | Low | new suite, first 3-browser run (flakes found and fixed, none quarantined) | (a) `ERR_ABORTED` / `NS_BINDING_ABORTED` counted as failures: these are requests the browser cancels on reload or image swap. (b) axe `target-size` / contrast in the photo lightbox mid-transition: the dot strip animates its width (CSS transition); the settled state has 0 violations in 3 scans. (c) WebKit doesn't focus a button on mouse click, so focus-return after a click can't hold. (d) WebKit at 1024 px: the classic Windows scrollbar makes the media-query width < 1024, so the phone menu shows (correct). (e) the hover-opened nested menu sometimes didn't open under parallel load, and WebKit never reported the group button "stable". (f) WebKit loaded the Contact chunk after the reload without passing the route again | Fixed: (a) cancellations ignored; a missing file still fails via HTTP status. (b) `still()` also waits for finite running animations in scope. (c) SCF profile opened by keyboard. (d) desktop/phone decided by `matchMedia`. (e) the mouse starts outside the header, force-hover, `toPass` retry (24/24 in 3 browsers × 8). (f) assert the reload happened, request count ≥ 1 |
+| P6-11 | Medium | `src/components/ui/Lightbox.jsx:124-133` (dot strip; e.g. `/pramaan` photo viewer) | Dots are 6×6 px buttons with centres 12 px apart (measured: x 600 → 612). WCAG 2.5.8 (AA) spacing needs 24 px circles around undersized targets not to intersect, and these do. axe flags it only sometimes (`target-size` in 2 suite runs; 0 of 3 standalone scans), so P2's scan passed | Owner decision (visible change). Test quarantined: `target-size` disabled for this one state in `a11y.spec.js` (commented, annotated) |
+| P6-12 | Info | local Windows, WebKit | In every long 3-browser run, after **all tests passed**, Playwright logged `worker-N process did not exit within 300000ms after stop, force-killed it` (3–4 workers) and exited 1. 28 leftover `WebKitNetworkProcess.exe` were found and no other browser process: Playwright's WebKit on Windows leaves its network process running. Short WebKit runs exit at once (10 s); the Chromium-only CI set never showed it | Environment issue, not a test failure; costs ~5 min per long local run. CI runs Linux (not verified there). Workaround: run WebKit on its own, or end leftover `WebKitNetworkProcess.exe` |
+
+**Coverage matrix (feature → unit / e2e (built site) / visual).**
+
+| Feature | Unit (Vitest) | E2E built site | Visual |
+|---|---|---|---|
+| 17 primary routes: deep link, reload, 1 `<h1>`, no console/CSP/request errors, no broken first-screen image | routes.smoke, siteRoutes | `site/routes` (×3 browsers) | 4 banners |
+| Resource pages (`/:id`, incl. encoded ids) | seoBuild `outputFiles` | `site/routes` | RC card |
+| Forwarding pages keep query; `/?/path` restorer; 16 removed routes → HTTP 404 + NotFound | removedRoutes (shared list `removedPaths.js`) | `site/routes` | – |
+| 3-level desktop menu (mouse + keyboard), dropdown links, phone menu, current page | Header, listingEdgeCases (nav ↔ routes) | `site/menus` | header |
+| Resource Centre: filter, page links, reload, clamp, search, empty state, Gujarati, menu link clears (P5-1/2) | libraryFilters, pramaanLibrary(UrlState), listingEdgeCases | `site/listings`, `site/menus` | card |
+| TIDE / THRIvE Publications: See all editions, menus, chips, order, debounced search, `?page=`, clamp | publications (45), listingEdgeCases | `site/listings` | banner |
+| Partners: search ↔ URL, tab jump below sticky bars | ourPartners, listingEdgeCases | `site/listings` | card |
+| SCF: search, `?fellow=` share in a new visit, ←/→, Escape, focus back | socialChangemakers, listingEdgeCases | `site/listings`, a11y | card |
+| Lightboxes (photo under base path, video frame + CSP), Copy citation (clipboard on Chromium), Contribute `formUrl` | useLightbox, publications | `site/dialogs` | – |
+| Stale chunk → one reload; persistent failure → inline error, header kept | reloadOnStaleChunk, pageErrorBoundary | `site/quality` | – |
+| Reduced motion, forced colours, 200 % zoom | motionPresets | `site/quality` | (reduced motion) |
+| Responsive: 14 viewports × 17 routes | – | `site/responsive` (4 must-pass sizes + `@matrix`) | – |
+| a11y axe AA + keyboard | – | `a11y.spec` (dev **and** built site) | – |
+| Links/assets/sitemap resolve; bundle budget | checkDist | `npm run check:dist` (CI) | – |
+| Sync rules / safety plumbing | snapshot tests ×4, snapshotCore, syncRunner, **syncRunnerSafety** | – | – |
+| figures, navActive, imgSrc (with base), paginate/pageWindow, URL parsing, 0/1/500 rows, long/duplicate/Unicode titles | home, Header, imgSrc, **listingEdgeCases** | – | – |
+
+**Responsive results (route × viewport).** All 17 primary routes × 320, 360, 375, 390, 414, 768, 820, 1024, 1280, 1366, 1440, 1920, 844×390, 1180×820 (238 cases): **pass** after P6-1 and P6-3. Checks: no sideways scroll, `<h1>` below the fixed header, no stretched image (`object-fit: fill` + ratio off > 3 %), no heading or clipping control wider than its box, controls ≥ 24 px (2.5.8), the menu works (desktop nav ≥ 1024, phone menu opens and reaches its last link). Before the fixes: `/` at 320 (P6-1) and `/about/our-partners` at 320 (P6-3) failed. Under-44 px controls are reported per page, not failed (owner item P2): 1–6 per page on phones, 4–15 on desktops (the header chevron buttons, pagination, chips).
+
+**Changes made.**
+- Fixes: `src/components/home/HomeHero.jsx` (P6-1), `src/components/partners/PartnerSlider.jsx` (P6-3), `scripts/lib/prerender-check.js` (P6-2). Class names only in JSX; no text (cms-integrity greps: 0; lint clean).
+- E2E against the built site:
+  - `playwright.site.config.js`: projects chromium / firefox / webkit / visual; retries 1 in CI; trace `retain-on-failure`; `globalSetup` refuses a dist without the base.
+  - `scripts/serve-pages.mjs`: committed GitHub-Pages-like server; 127.0.0.1 only, no path traversal, HEAD support.
+  - `e2e/site/`: `fixtures.js` (stubs other hosts; fails a test on console/page errors, CSP violations or failed same-site requests; `go`, `ready` (waits for React over the prerendered HTML), `sitePath`, `still`), plus `routes`, `menus`, `listings`, `dialogs`, `quality` and `responsive` specs.
+- `e2e/visual/` (9 baselines, Windows, local only) + `README.md` on running and updating them.
+- `e2e/a11y.spec.js`: state waits instead of timeouts; base-agnostic paths; third-party frames excluded. `e2e/dev-warmup.js`. `playwright.config.js`: `E2E_DEV_URL`, ignores `site/` and `visual/`, CI retries 2 → 1.
+- `scripts/check-dist.mjs`: link, asset and sitemap crawl of `dist/` + bundle budget (first load ≤ 180 kB gz, largest chunk ≤ 61 kB gz; measured 163.9 / 55.2).
+- Unit tests: new `syncRunnerSafety` (14), `listingEdgeCases` (19), `checkDist` (5). `seoBuild` +1 assertion. `removedRoutes` now imports `removedPaths.js`. `cmsGuard` warm-up. `workflowSecurity` expects six workflows.
+- CI:
+  - `deploy.yml`: Playwright browser cache (`actions/cache` v5.1.0, SHA-pinned); after Build, `npm run check:dist` and `npm run test:e2e:site`; report and traces uploaded on failure (`actions/upload-artifact` v6.0.0, SHA-pinned).
+  - New `e2e-nightly.yml`: 02:41 UTC + manual; all three browsers + full matrix; alert issue via `alert-issue.sh update`.
+  - SHAs from `git ls-remote --tags` (lightweight tags).
+- `package.json`: `test:e2e:site`, `test:e2e:full`, `test:e2e:visual`, `check:dist`; dev dependency `@vitest/coverage-v8@4.1.12`.
+- `.gitignore`: `playwright-report-site/`, `test-results-site/`, `coverage/`. `eslint.config.js`: Node globals for `e2e/**` and the new config; ignores the test-output folders (a local CI-mode run had put 572 lint errors in the HTML report).
+- Browsers downloaded locally: Firefox 1522 (326 MB), WebKit 2287 (167 MB).
+
+**Gates (2026-11-24, after the changes).**
+- Lint: pass.
+- content:validate: 0 / 0.
+- `npm test`: **46 files / 524 tests** (was 43 / 486).
+- `npm run build`: pass (74 s; prerender 259 + 2). `npm run check:dist` (base `/` and `/tide-testing/`): OK; 265 pages, 454 site URLs, 257 sitemap entries; first-load JS 163.9 kB gz, largest chunk 55.2 kB gz.
+- Base-path build: pass (74–85 s).
+- `vite preview` (GITHUB_ACTIONS=true) on `/`, `/about/our-partners`, `/pramaan/resource-centre?type=worksheet`, `/thrive/publications`, `/education-for-harmony/social-changemakers`: right `<h1>`, 0 broken images, 0 doubled base, 0 console errors.
+- `npm run test:e2e` (dev server): **62 passed** (same count; now state-based).
+- `npm run test:e2e:site` (CI set, `CI=1`, 2 workers): **170 passed in 1.9 min** (114 s wall).
+- `npm run test:e2e:full`: **948 passed / 0 failed / 0 flaky / 2 skipped** (forced colours, Chromium-only by design); chromium 340, firefox 305, webkit 305 tests.
+- `npm run test:e2e:visual`: 9 baselines; `--repeat-each=2` → 18/18.
+- **Flakiness, 3 back-to-back runs, retries 0, on the final code:**
+  - full built-site suite: 948/948, 948/948, 948/948 (807 / 831 / 835 s, ~300 s of each is the WebKit teardown wait, P6-12; exit 1 from that alone);
+  - dev suite: 62/62, 62/62, 62/62 (161 / 181 / 160 s);
+  - **0 flaky, 1 quarantine** (axe `target-size` in the lightbox state, P6-11).
+- Earlier runs during the work found the flakes in P6-10, all fixed before these three.
+- a11y on the built site: 35/35 (Chromium).
+- `node scripts/a11y-audit.cjs`: not re-run (P6 changed two class lists; both covered by the e2e axe run).
+
+**Owner decisions needed (P6).**
+- **Lightbox dots vs WCAG 2.5.8 (P6-11, AA).** Recommendation: keep the 6 px dots as drawn, but make each a 24 × 24 px button (transparent padding), so the strip is 24 px per dot. Trade-off: the strip gets about twice as wide (10 dots: ~114 px → ~240 px). Alternative: hide the dots and keep the arrows plus a "2 / 10" counter (needs that text in `ui.yaml`). Then remove the quarantine in `a11y.spec.js`.
+- **Print styles (P6-8).** Recommendation: a small `@media print` that hides the header, footer, menus and banner photos, and prints link addresses after THRIvE citations. Trade-off: one more stylesheet to keep in step with the design. Only worth it if people print citations or resources.
+- **E2E failures block deploys.** `deploy.yml` now stops a deploy when the built-site e2e fails, including a deploy started by a Sheet sync. Expected numbers are counted from the snapshot, so data changes alone shouldn't break them, but a Sheet value that breaks the page now holds the data back (the old version stays live) and opens the usual alert issue. Recommendation: keep it blocking. The alternative (report-only) lets a broken page go live.
+
+**Deferred.**
+- Visual baselines in CI: they need Linux baselines (e.g. made in the Playwright Docker image). Local Windows only for now.
+- A real slow-3G throttle run: covered as "chunk fails", not as latency.
+- The CI time added is **estimated, not measured** on GitHub (the branch is not pushed). Local CI-mode run: `test:e2e:site` **170 passed in 1.9 min** (114 s, 2 workers); `check:dist` < 2 s; the browser cache saves the Chromium download on a hit. Watch the first `deploy.yml` run; if it adds more than ~4 min, move the a11y spec to the nightly.
+- The nightly workflow can only be proven on GitHub (first scheduled run after merge).
+
+**Notes for next phases (P7).**
+- Docs to sync: CLAUDE.md test counts and e2e line (six workflows; `test:e2e:site` runs in CI); AGENTS.md §10 (the CI steps), §12 (the two e2e configs, `serve-pages.mjs`, `check-dist.mjs`, the visual README, the new test files); `docs/PLATFORM-LIMITS.md` / OPERATIONS-RUNBOOK (nightly alert title "Nightly end-to-end tests failed").
+- Fragile:
+  - `e2e/site/fixtures.js` `ready()` relies on React's `__reactFiber` key on the `<h1>` (no hydration marker exists).
+  - The Partners tab test assumes the section heading text equals the tab text minus its count.
+  - The visual card picks are resource `W1`, the first partner with a website and the first fellow.
+- Building `dist/` without the base makes `test:e2e:site` stop at once with a clear message (global setup).
+- `dist/` is currently the **plain** (base `/`) build from the last gate: rebuild with `GITHUB_ACTIONS=true` before `test:e2e:site`.
+
+**Commits.** None (the orchestrator commits).
+
+**Orchestrator check (P6):**
+- Diff scope: no edits to `src/data/**`, the sync snapshots/manifests/images, the sync thresholds or owner decisions. Site code changed in three places only: class names in `HomeHero.jsx` and `PartnerSlider.jsx` (no new text) and `outputFiles` in `scripts/lib/prerender-check.js`. The decoded file name cannot leave `dist/`: resource ids are limited to letters, numbers, spaces and `- _ ( )` by `isSafeId` (`scripts/lib/library-snapshot.js:62`).
+- New actions in `deploy.yml` / `e2e-nightly.yml` are SHA-pinned; the nightly workflow has `contents: read`, gives `issues: write` to its alert job only, uses no secrets and does not deploy. `workflowSecurity.test.js` passes with six workflows.
+- Gates re-run by the orchestrator: lint pass; content:validate 0/0; `npm test` 46 files / 524 tests; `GITHUB_ACTIONS=true npm run build` pass (prerender 259 pages + 2 redirects, 66.9 s); `check:dist` OK (265 pages, 454 site URLs, 257 sitemap entries; first-load JS 163.9 kB gz); `CI=1 npm run test:e2e:site` 170 passed (1.9 min); `npm run test:e2e` 62 passed (2.5 min). Not re-run by the orchestrator: `test:e2e:full` (3 browsers), the visual set, the 3× flakiness runs (the subagent's figures).
+- Spot checks (`scripts/serve-pages.mjs` on the base-path build): `/pramaan/resource-centre/K%2031` and `/F22%20repeat` → 200 (P6-2); `/no-such-page`, `../package.json`, `%2e%2e/package.json` → 404. At 320 px the home headline highlight ends at x=296 and the document is not wider than the window (P6-1); Partners headings "Collaborators"/"Beneficiaries" end at 164/156 px with the pill wrapped below (P6-3, layout checked by the responsive spec).
+- Git Bash note: start `serve-pages.mjs` with `MSYS_NO_PATHCONV=1`, otherwise `/tide-testing/` is rewritten to a Windows path and every address answers 404.
 
 ## P7 — Documentation sync
 
@@ -503,6 +626,10 @@ _Not started._
   - Recommendation: keep the design, but let the browser skip drawing sections until they are near the screen (`content-visibility`). No visible change is intended, but it needs your visual sign-off.
   - Trade-off: the scroll-spy and tab jumps must be re-checked.
 
+- **(P6) Lightbox dots vs WCAG 2.5.8 (AA, P6-11).** `src/components/ui/Lightbox.jsx:124-133`: 6×6 px dots 12 px apart fail the AA target-spacing rule (axe flags it intermittently; quarantined in that one e2e state). Recommendation: make each dot a 24 px button with the 6 px dot drawn inside. Trade-off: the strip grows from ~114 to ~240 px. Alternative: arrows plus a "2 / 10" counter (needs new `ui.yaml` text).
+- **(P6) Print styles (P6-8).** None exist. Recommendation: a small `@media print` sheet only if people print citations or resources. Trade-off: one more stylesheet to keep in step with design changes.
+- **(P6) E2E failures now block deploys**, including deploys started by the sync bots, and add ~2 min (estimated) per deploy. Recommendation: keep blocking. Trade-off: a flaky test or a real regression holds back fresh Sheet data until fixed; report-only would let a broken page go live. If the repo is private, the nightly run (45-minute cap) counts against the plan's Actions minutes; standard runners are free on public repos.
+
 ## Deferred / out of scope
 
 - ~~P1-5/6 (→ P3)~~: done in P3 (404.html, robots.txt, sitemap.xml now generated).
@@ -515,7 +642,7 @@ _Not started._
 - ~~P3-14~~: done in P5 (page numbers are links).
 - P3-15: mobile LCP (banner texture as a CSS background is the LCP element on inner pages; no `fetchpriority`/preload), render-blocking fonts (owner item), 211 KiB unused JS (P5), `<img>` without width/height.
 - P3: `CollectionPage` markup on the listing pages, `VideoObject` (the Sheet has no upload dates), `DonateAction` (no facts in YAML) — not added.
-- P3: no e2e runs against the prerendered `dist/` (P6); the first real deploy must be checked with `curl -I` (P3-3).
+- ~~P3: no e2e runs against the prerendered `dist/`~~: done in P6 (`test:e2e:site`). The first real deploy must still be checked with `curl -I` (P3-3, P6-7).
 - P1-7 still open (favicon path typed in `index.html`).
 - P2 not done: a screen-reader listening session (NVDA/VoiceOver), a separate 200 % text-only zoom pass, 3.1.5 reading level.
 - P4-16: pinning the prerender browser download (cache or container image).
@@ -524,6 +651,8 @@ _Not started._
   - `<iframe sandbox>` on the Drive and YouTube players: fullscreen and pop-out would need testing per host.
   - Live checks of the GitHub and Google settings (they need the owner's accounts).
 - P5-8 Partners long tasks (owner item), P5-9 shared URL-state hook / one pagination, P5-10 sync orchestrators, P5-11 knip leftovers, P5-12 `batchYear` edge, P5-14 `LazyMotion`.
+- P6: visual baselines in CI (needs Linux baselines; the 9 committed ones are Windows-only); a real slow-network latency run; measuring the CI time and the nightly run (GitHub only).
+- P6-12: on local Windows, WebKit workers can hang ~300 s at teardown after a passing run (environment; Linux not verified).
 - P4-9: the `ouid` ids in 4 links of the bot-owned `pramaan-library.json` stay until the next sync.
 
 ## Final gate results
