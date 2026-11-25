@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion, useAnimation, useInView, useReducedMotion } from 'framer-motion'
-import { ArrowDown, ArrowLeft, CalendarDays, GraduationCap, Leaf, Lightbulb, Pause, Play, Sprout, User, Users } from 'lucide-react'
+import { ArrowDown, ArrowLeft, CalendarDays, GraduationCap, Leaf, Lightbulb, Pause, Play, RotateCcw, Sprout, User, Users } from 'lucide-react'
 import SeoHead from '../components/ui/SeoHead'
 import PageHero from '../components/ui/PageHero'
 import Button from '../components/ui/Button'
@@ -38,12 +38,12 @@ const DESC_LINES = [
 
 // ---- Intro: the text is the journey -------------------------------------------------------------
 // The three sentences are three stops on one thread, read top to bottom: who the fellows are, what
-// they did, where to look next. A dot walks the thread and rests at each stop in turn; the pin it
-// rests at swells and a trail fills in behind it. Always top to bottom: after the last stop the dot
-// and trail fade out and the walk starts again from the first stop (owner decision, 2026-11-23).
-// The text itself never moves or dims, so nothing competes with reading. The loop runs only while
-// on screen; a round pause / play button beside the heading stops and restarts it where it is
-// (WCAG 2.2.2, owner decision 2026-11-25); reduced motion gets the finished thread and no button.
+// they did, where to look next. A dot walks the thread once when it comes into view and rests at each
+// stop in turn; the pin it rests at swells and a trail fills in behind it. It ends on the last stop,
+// the finished thread (owner decision 2026-11-25; it looped before). A control above the first stop:
+// pause while the dot walks, play while paused, replay once it has
+// finished (WCAG 2.2.2). The text itself never moves or dims. Reduced motion gets the finished thread
+// and no control.
 const STOPS = [
   { Icon: Users, color: '#1E6BAA' },
   { Icon: Leaf, color: '#15803D' },
@@ -51,25 +51,20 @@ const STOPS = [
 ]
 const LEG = 1.5      // seconds walking between stops
 const REST = 3.4     // seconds resting at a stop: long enough to read the sentence beside it
-const FORWARD = STOPS.length * REST + (STOPS.length - 1) * LEG
+const FORWARD = STOPS.length * REST + (STOPS.length - 1) * LEG   // one walk, start to finish
 const ease = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x))
 
-const FADE = 0.6     // seconds to fade out at the last stop, then again to fade in at the first
-
-// Where the dot is `sec` seconds into the loop: `k` = the stop (0 to n-1, fractional while walking)
-// and `alpha` = how visible the dot and trail are (they fade out at the end and back in at the top).
+// Where the dot is `sec` seconds into the walk: `k` = the stop (0 to n-1, fractional while walking).
 function walkerAt(sec) {
-  let u = sec % (FORWARD + 2 * FADE)
-  if (u >= FORWARD + FADE) return { k: 0, alpha: ease((u - FORWARD - FADE) / FADE) }
-  if (u >= FORWARD) return { k: STOPS.length - 1, alpha: 1 - ease((u - FORWARD) / FADE) }
+  let u = Math.max(0, sec)
   for (let i = 0; i < STOPS.length; i += 1) {
-    if (u < REST) return { k: i, alpha: 1 }
+    if (u < REST) return { k: i }
     u -= REST
     if (i === STOPS.length - 1) break
-    if (u < LEG) return { k: i + ease(u / LEG), alpha: 1 }
+    if (u < LEG) return { k: i + ease(u / LEG) }
     u -= LEG
   }
-  return { k: STOPS.length - 1, alpha: 1 }
+  return { k: STOPS.length - 1 }
 }
 
 function Intro() {
@@ -82,8 +77,12 @@ function Intro() {
   const trailRef = useRef(null)
   const [ys, setYs] = useState(null)   // each pin's centre, measured from the top of the list
   const inView = useInView(listRef, { margin: '-80px' })
-  const [playing, setPlaying] = useState(true)
-  const elapsed = useRef(0)            // seconds into the loop, kept while paused
+  const [status, setStatus] = useState('playing')   // 'playing' | 'paused' | 'done'
+  const elapsed = useRef(0)            // seconds into the walk, kept while paused
+  const onControl = () => {
+    if (status === 'done') { elapsed.current = 0; setStatus('playing') }
+    else setStatus(status === 'playing' ? 'paused' : 'playing')
+  }
 
   useEffect(() => {
     const measure = () => {
@@ -99,14 +98,13 @@ function Intro() {
 
   useEffect(() => {
     if (!ys) return undefined
-    const paint = ({ k, alpha = 1 }) => {
+    const paint = ({ k }) => {
       const i = Math.min(Math.floor(k), STOPS.length - 2)
       const y = ys[i] + (ys[i + 1] - ys[i]) * (k - i)
       dotRef.current?.style.setProperty('transform', `translateY(${(y - ys[0]).toFixed(1)}px)`)
-      dotRef.current?.style.setProperty('opacity', alpha.toFixed(3))
-      if (trailRef.current) { trailRef.current.style.height = `${(y - ys[0]).toFixed(1)}px`; trailRef.current.style.opacity = alpha.toFixed(3) }
+      if (trailRef.current) trailRef.current.style.height = `${(y - ys[0]).toFixed(1)}px`
       STOPS.forEach((_, n) => {
-        const near = ease(Math.max(0, 1 - Math.abs(k - n) * 3)) * alpha
+        const near = ease(Math.max(0, 1 - Math.abs(k - n) * 3))
         const el = pinRefs.current[n]
         if (el) {
           el.style.transform = `scale(${(1 + 0.16 * near).toFixed(3)})`
@@ -116,13 +114,18 @@ function Intro() {
     }
     if (reduce) { paint({ k: STOPS.length - 1 }); return undefined }
     paint(walkerAt(elapsed.current))
-    if (!inView || !playing) return undefined
+    if (!inView || status !== 'playing') return undefined
     let raf = 0
     const t0 = performance.now() - elapsed.current * 1000
-    const frame = (now) => { elapsed.current = (now - t0) / 1000; paint(walkerAt(elapsed.current)); raf = requestAnimationFrame(frame) }
+    const frame = (now) => {
+      elapsed.current = Math.min((now - t0) / 1000, FORWARD)
+      paint(walkerAt(elapsed.current))
+      if (elapsed.current >= FORWARD) { setStatus('done'); return }
+      raf = requestAnimationFrame(frame)
+    }
     raf = requestAnimationFrame(frame)
     return () => cancelAnimationFrame(raf)
-  }, [ys, inView, reduce, playing])
+  }, [ys, inView, reduce, status])
 
   return (
     <section className="section-padding bg-tide-bg">
@@ -137,36 +140,37 @@ function Intro() {
           </Link>
         </motion.div>
 
-        <motion.header {...fadeUp()} className="mb-10 flex items-end justify-between gap-4 md:mb-12">
-          <div className="min-w-0">
-            <p className="mb-3 flex items-center gap-3 font-body text-xs font-bold uppercase tracking-[0.18em] text-accent-deeper">
-              <span aria-hidden="true" className="h-px w-8 bg-accent-deeper" />
-              {intro.eyebrow}
-            </p>
-            <h2 className="font-display text-3xl font-semibold leading-tight text-tide-text md:text-4xl">{intro.heading}</h2>
-          </div>
+        <motion.header {...fadeUp()} className="mb-10 md:mb-12">
+          <p className="mb-3 flex items-center gap-3 font-body text-xs font-bold uppercase tracking-[0.18em] text-accent-deeper">
+            <span aria-hidden="true" className="h-px w-8 bg-accent-deeper" />
+            {intro.eyebrow}
+          </p>
+          <h2 className="font-display text-3xl font-semibold leading-tight text-tide-text md:text-4xl">{intro.heading}</h2>
+        </motion.header>
+
+        <div className="relative">
           {!reduce && (
-            // Same look as the Partners rows' play / pause: paused = a filled blue disc that invites a
-            // press; playing = a white disc with a pause icon (no spinning arc: the dot is the motion).
+            // Above the first stop, centred on the line (not joined to it). While the dot walks it is a
+            // bare pause icon; paused (play) or finished (replay) it is a filled blue disc that invites
+            // a press, like the Partners rows' play button. A 44px target either way.
             <button
               type="button"
-              onClick={() => setPlaying((p) => !p)}
-              aria-label={playing ? intro.motion.pause : intro.motion.play}
-              className="group/play relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+              onClick={onControl}
+              aria-label={status === 'playing' ? intro.motion.pause : status === 'paused' ? intro.motion.play : intro.motion.replay}
+              className="group/play absolute left-[2px] top-0 z-10 flex h-11 w-11 items-center justify-center rounded-full focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
             >
               <span
-                className={`relative flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300 ease-out group-active/play:scale-90 ${playing
-                  ? 'bg-white text-primary-dark ring-1 ring-primary/25 group-hover/play:bg-primary-faint'
+                className={`relative flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300 ease-out group-active/play:scale-90 ${status === 'playing'
+                  ? 'text-primary-dark group-hover/play:text-primary-deeper'
                   : 'bg-primary-dark text-white shadow-[0_4px_10px_-4px_rgba(30,107,170,0.7)] group-hover/play:scale-[1.06]'}`}
               >
-                <Play aria-hidden="true" fill="currentColor" className={`absolute ml-0.5 h-3.5 w-3.5 transition-all duration-300 ${playing ? 'rotate-90 scale-50 opacity-0' : 'rotate-0 scale-100 opacity-100'}`} />
-                <Pause aria-hidden="true" fill="currentColor" className={`absolute h-3.5 w-3.5 transition-all duration-300 ${playing ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-50 opacity-0'}`} />
+                <Pause aria-hidden="true" fill="currentColor" className={`absolute h-3.5 w-3.5 transition-all duration-300 ${status === 'playing' ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-50 opacity-0'}`} />
+                <Play aria-hidden="true" fill="currentColor" className={`absolute ml-0.5 h-3.5 w-3.5 transition-all duration-300 ${status === 'paused' ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-50 opacity-0'}`} />
+                <RotateCcw aria-hidden="true" strokeWidth={2.5} className={`absolute h-4 w-4 transition-all duration-300 ${status === 'done' ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-50 opacity-0'}`} />
               </span>
             </button>
           )}
-        </motion.header>
-
-        <ol ref={listRef} className="relative">
+        <ol ref={listRef} className={`relative ${reduce ? '' : 'pt-16'}`}>
           {ys && (
             <>
               <span className="absolute left-[23px] w-0.5 bg-tide-border" style={{ top: ys[0], height: ys[ys.length - 1] - ys[0] }} aria-hidden="true" />
@@ -199,6 +203,7 @@ function Intro() {
             )
           })}
         </ol>
+        </div>
       </div>
     </section>
   )
