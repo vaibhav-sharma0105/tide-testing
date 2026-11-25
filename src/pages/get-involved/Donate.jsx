@@ -127,7 +127,7 @@ export default function Donate() {
           <Heart className="w-8 h-8 text-accent mx-auto mb-4" aria-hidden="true" />
           <h2 className="font-display text-2xl md:text-3xl font-semibold mb-3">{data.closing.heading}</h2>
           <div className="w-12 h-1 rounded-full bg-accent mx-auto mb-5" aria-hidden="true" />
-          <p className="font-body text-white/80 leading-relaxed mb-8">{data.closing.body}</p>
+          <p className="font-body text-white/95 leading-relaxed mb-8">{data.closing.body}</p>
           <div className="max-w-xl mx-auto grid grid-cols-1 min-[420px]:grid-cols-2 gap-3 text-left">
             <a
               href={`mailto:${data.hero.email}`}
@@ -137,7 +137,7 @@ export default function Donate() {
               <TiltGlare />
               <Mail className="w-6 h-6" />
               <span className="font-semibold text-sm">{data.hero.emailCta}</span>
-              <span className="text-xs text-navy/80 break-all">{data.hero.email}</span>
+              <span className="text-xs text-navy break-all">{data.hero.email}</span>
             </a>
             <a
               href={data.hero.whatsappUrl}
@@ -149,7 +149,7 @@ export default function Donate() {
               <TiltGlare />
               <MessageCircle className="w-6 h-6" />
               <span className="font-semibold text-sm">{data.hero.whatsappCta}</span>
-              <span className="text-xs text-white/80 break-all">{data.hero.whatsappText}</span>
+              <span className="text-xs text-white/95 break-all">{data.hero.whatsappText}</span>
             </a>
           </div>
         </div>

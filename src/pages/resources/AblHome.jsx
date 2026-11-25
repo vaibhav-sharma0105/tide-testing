@@ -123,7 +123,7 @@ export default function AblHome() {
       <section className="section-padding bg-tide-bg">
         <div className="max-w-6xl mx-auto grid items-start gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <motion.div {...fadeUp()}>
-            <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-primary-light text-primary-dark border border-primary/20">
+            <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-primary-faint text-primary-dark border border-primary/20">
               {ablData.about.badge}
             </span>
             <h2 className="mb-6 font-display text-3xl font-semibold leading-tight text-tide-text text-balance md:text-4xl">{ablData.about.title}</h2>
@@ -192,7 +192,7 @@ export default function AblHome() {
       <section className="section-padding bg-white border-t border-tide-border">
         <div className="max-w-5xl mx-auto">
           <motion.div {...fadeUp()} className="mb-12 text-center md:mb-14">
-            <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-primary-light text-primary-dark border border-primary/20">
+            <span className="inline-block mb-4 px-3 py-1 text-xs font-body font-semibold rounded-full tracking-widest uppercase bg-primary-faint text-primary-dark border border-primary/20">
               {ablData.resourceTypes.badge}
             </span>
             <h2 className="font-display text-3xl font-semibold leading-tight text-tide-text text-balance md:text-4xl lg:text-5xl">{ablData.resourceTypes.title}</h2>

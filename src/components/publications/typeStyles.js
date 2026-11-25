@@ -14,7 +14,7 @@ export const FAMILY_STYLE = {
   quote:        { tint: 'bg-accent-faint',  veil: 'bg-accent-light/50',  icon: 'text-accent-deeper' },
   megaphone:    { tint: 'bg-accent-faint',  veil: 'bg-accent-light/50',  icon: 'text-accent-deeper' },
   report:       { tint: 'bg-primary-faint', veil: 'bg-primary-light/60', icon: 'text-primary-dark' },
-  file:         { tint: 'bg-tide-subtle',   veil: 'bg-tide-subtle/80',   icon: 'text-tide-muted' },
+  file:         { tint: 'bg-tide-subtle',   veil: 'bg-tide-subtle/80',   icon: 'text-tide-text/80' },
 }
 
 // Frame shapes. One shape per component, so every row in a list lines up whatever the upload's

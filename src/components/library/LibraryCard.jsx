@@ -61,10 +61,10 @@ export default function LibraryCard({ resource }) {
         {grades.length > 0 && (
           <div className="flex flex-wrap gap-1 pt-1">
             {shown.map(g => (
-              <span key={g} className="bg-primary-light text-primary-dark text-[10px] font-bold px-2 py-0.5 rounded-full border border-primary/20">{gradeLabel(g)}</span>
+              <span key={g} className="bg-primary-faint text-primary-dark text-[10px] font-bold px-2 py-0.5 rounded-full border border-primary/20">{gradeLabel(g)}</span>
             ))}
             {grades.length > 3 && (
-              <span className="bg-tide-subtle text-tide-muted text-[10px] font-bold px-2 py-0.5 rounded-full border border-tide-border">
+              <span className="bg-tide-subtle text-tide-text/80 text-[10px] font-bold px-2 py-0.5 rounded-full border border-tide-border">
                 {data.card.moreGradesTemplate.replace('{n}', () => grades.length - 3)}
               </span>
             )}

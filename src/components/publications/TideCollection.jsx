@@ -178,7 +178,7 @@ function Library({ q, rows, data }) {
         <div className="max-w-2xl">
           <div className="flex items-baseline gap-3">
             <h2 id="library-heading" className="font-display text-2xl font-semibold text-tide-text md:text-3xl">{data.library.heading}</h2>
-            <span className="rounded-full bg-tide-subtle px-2.5 py-0.5 font-body text-xs font-semibold tabular-nums text-tide-muted">{rows.length}</span>
+            <span className="rounded-full bg-tide-subtle px-2.5 py-0.5 font-body text-xs font-semibold tabular-nums text-tide-text/80">{rows.length}</span>
           </div>
           {data.library.intro && <p className="mt-2 font-body text-[15px] leading-relaxed text-tide-muted">{data.library.intro}</p>}
         </div>

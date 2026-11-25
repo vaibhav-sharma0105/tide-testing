@@ -153,7 +153,7 @@ export function FilterMenu({ label, value, onChange, allLabel, total, options, a
         } ${value ? 'text-primary-dark' : 'text-tide-text'}`}
       >
         <span id={`${id}-value`} className={`min-w-0 flex-1 truncate ${value ? 'font-semibold' : ''}`}>{selected.label}</span>
-        <span aria-hidden="true" className={`min-w-[2.5rem] flex-shrink-0 rounded-full px-2 py-0.5 text-center text-xs font-semibold tabular-nums ${value ? 'bg-primary-faint text-primary-dark' : 'bg-tide-subtle text-tide-muted'}`}>
+        <span aria-hidden="true" className={`min-w-[2.5rem] flex-shrink-0 rounded-full px-2 py-0.5 text-center text-xs font-semibold tabular-nums ${value ? 'bg-primary-faint text-primary-dark' : 'bg-tide-subtle text-tide-text/80'}`}>
           {selected.count}
         </span>
         <ChevronDown className={`h-4 w-4 flex-shrink-0 text-tide-muted transition-transform duration-200 ${open ? 'rotate-180' : ''}`} aria-hidden="true" />

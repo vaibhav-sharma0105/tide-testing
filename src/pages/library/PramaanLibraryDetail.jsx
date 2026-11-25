@@ -74,7 +74,7 @@ function Coverage({ chapters, accent }) {
       <AnimatePresence mode="wait">
         {active && (
           <motion.div key={active.grade} initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.2 }} className="overflow-hidden">
-            <div className="mt-3 px-4 py-3 rounded-2xl bg-tide-subtle text-sm font-body text-tide-muted">
+            <div className="mt-3 px-4 py-3 rounded-2xl bg-tide-subtle text-sm font-body text-tide-text/80">
               <span className="font-semibold text-tide-text">{gradeLabel(active.grade)}</span>
               {d.chapterSeparator}{active.list.join(', ')}
             </div>
@@ -193,7 +193,7 @@ export default function PramaanLibraryDetail() {
                     <div className="flex flex-wrap items-center gap-2">
                       <LibraryTypeBadge type={resource.type} className="!px-3.5 !py-1.5 !text-sm" />
                       {resource.language && (
-                        <span className="inline-block rounded-full border border-tide-border bg-tide-subtle px-3.5 py-1 text-sm font-semibold text-tide-muted">{resource.language}</span>
+                        <span className="inline-block rounded-full border border-tide-border bg-tide-subtle px-3.5 py-1 text-sm font-semibold text-tide-text/80">{resource.language}</span>
                       )}
                     </div>
                     <dl className="grid gap-4 sm:grid-cols-2">
