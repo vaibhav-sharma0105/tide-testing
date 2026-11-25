@@ -280,10 +280,10 @@ Source of truth: `tailwind.config.js` and `src/index.css`.
 
 ```
 Primary:    #1E6BAA  (TIDE teal-blue; also primary-dark #15538A, primary-light #D4EBF8)
-Accent:     #F59E0B  (amber — CTAs; accent-deeper #B45309 for text on light backgrounds)
+Accent:     #F59E0B  (amber — CTAs; accent-deeper #843A0C for text on light backgrounds)
 Navy:       #0D2137  (navy, navy-mid #162E4D, navy-light #1E3A5F)
 Background: #FDFCF9  (tide-bg warm white; tide-subtle #F0EDE8, tide-surface #FFFFFF)
-Text:       #0D1F3C  (tide-text near-black; tide-muted #5A6A7E, tide-mutedOnLight #4D5C6F)
+Text:       #0D1F3C  (tide-text near-black; tide-muted / tide-mutedOnLight #44515F; blue text = primary-dark #15538A (AAA))
 Heading:    Playfair Display, with Noto Serif Devanagari / Noto Serif Gujarati as glyph fallbacks — font-display
 Body:       Plus Jakarta Sans, with Noto Sans Devanagari / Noto Sans Gujarati as glyph fallbacks — font-body
 ```

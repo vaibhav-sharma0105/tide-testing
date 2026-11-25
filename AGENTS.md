@@ -423,18 +423,18 @@ apps-script/social-changemakers/Code.gs ← the Past SCF Sheet's Apps Script v1 
 
 | Tailwind class | Hex | Usage |
 |---|---|---|
-| `text-primary` / `bg-primary` | `#1E6BAA` | Buttons, links, heading accents |
+| `bg-primary` | `#1E6BAA` | Brand fills, borders, dots, decorative shapes. **Not** as body-size text or behind white text (5.5:1; text is held to AAA 7:1 since 2026-11-25) |
 | `bg-primary-mid` | `#2E85C7` | Gradient buttons (paired with `primary-dark`) |
-| `bg-primary-dark` | `#15538A` | Gradient buttons, hover states |
+| `text-primary-dark` / `bg-primary-dark` | `#15538A` | Links and blue text (7.8:1 on cream), buttons and active tabs with white text (7.97:1); `Button` primary is flat `primary-dark`, hovers go darker (`primary-deeper` / `brightness-90`) |
 | `bg-primary-light` | `#D4EBF8` | Chip backgrounds, hover tints |
 | `bg-primary-faint` | `#EEF6FC` | Subtle backgrounds |
 | `text-accent` / `bg-accent` | `#F59E0B` | **Backgrounds/dark-backdrop text only** — see accessibility note below |
-| `text-accent-deeper` | `#B45309` | Accent-colored **text or icons on a light background** (cream/white) |
+| `text-accent-deeper` | `#843A0C` (AAA 7.9:1 on cream; was `#B45309` until 2026-11-25) | Accent-colored **text or icons on a light background** (cream/white) |
 | `bg-accent-dark` | `#D97706` | Gradient buttons, hover states |
 | `bg-navy` | `#0D2137` | Dark section/card backgrounds (Footer, EFH, WhyTide vision, Volunteer dark sections). **Not** `PageHero` — that banner is the literal `bg-[#1c314d]` |
 | `text-tide-text` | `#0D1F3C` | Body copy |
-| `text-tide-muted` | `#5A6A7E` | Secondary labels, captions — passes 4.5:1 on `tide-bg`/white, but NOT on `bg-primary-light` (4.49:1, borderline) |
-| `text-tide-mutedOnLight` | `#4D5C6F` | Same role as `tide-muted`, but for text sitting on `bg-primary-light` or `bg-tide-border` specifically |
+| `text-tide-muted` | `#44515F` | Secondary labels, captions — 7.9:1 on `tide-bg`, 8.1:1 on white (AAA; was `#5A6A7E` until 2026-11-25) |
+| `text-tide-mutedOnLight` | `#44515F` (same value as `tide-muted` since 2026-11-25) | Same role as `tide-muted`, but for text sitting on `bg-primary-light` or `bg-tide-border` specifically |
 | `bg-tide-bg` | `#FDFCF9` | Page section backgrounds |
 | `bg-tide-subtle` | `#F0EDE8` | Input fields, card inner areas |
 | `border-tide-border` | `#E2DDD7` | Card and input borders |
