@@ -2,9 +2,23 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-25T07:22:34.831Z",
-  "contentHash": "sha256:9cd544898115d56dc07a4b428edd00558e482cd7224b3416726f3e5298c84081",
+  "lastUpdated": "2026-11-25T08:16:34.224Z",
+  "contentHash": "sha256:b648e0f71c3304d1ac7ebb253b430da1abd82cb6964c11ee370e2c679ae5d2dc",
   "resources": [
+    {
+      "id": "P-1dfaa72e82",
+      "org": "THRIvE",
+      "date": "2026-11-21",
+      "title": "Bounded Freedom: Teacher Agency, Contested Narratives, and an Enabling Environment in Government Schools in Bihar, India",
+      "type": "Talk / Conference slides",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "This panel examines teacher agency in government schools in Bihar, drawing on a mixed-methods study with 79 surveyed teachers and 62 participants in participatory research across five districts, conducted with the Aga Khan Foundation's Schools2030 initiative in Bihar. Moving from how teachers use their agency to the stories that shape how teachers are perceived. The presentation also foregrounds the factors influencing teachers and how we can build enabling environments to foster teacher agency.",
+      "citation": "Khanna, M., Bhatt, S., Diksha, M., & Jha, M.(2026, November 21). Bounded freedom: Teacher agency, contested narratives, and an enabling environment in government schools in Bihar, India. 16th Annual International Conference of the Comparative Education Society of India, Aligarh Muslim University, Aligarh, India. https://docs.google.com/presentation/d/1JNWBMbynq6WQw-i79_EHbH_HK4K86a_Y/edit?usp=share_link&ouid=113633189525719312323&rtpof=true&sd=true",
+      "link": "https://docs.google.com/presentation/d/1JNWBMbynq6WQw-i79_EHbH_HK4K86a_Y/edit?usp=share_link&ouid=113633189525719312323&rtpof=true&sd=true",
+      "photoUrl": "https://drive.google.com/open?id=1Oh0r0OmKH5HmsFJTxMbIuERdSz9GYEKp"
+    },
     {
       "id": "P-b9159b0743",
       "org": "THRIvE",
@@ -905,10 +919,10 @@
     }
   ],
   "meta": {
-    "total": 66,
+    "total": 67,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 50
+      "THRIvE": 51
     }
   }
 }
