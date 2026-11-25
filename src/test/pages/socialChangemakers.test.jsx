@@ -163,3 +163,14 @@ describe('Past SCF list', () => {
     expect(screen.queryAllByRole('article')).toHaveLength(0)
   })
 })
+
+describe('Intro moving dot (WCAG 2.2.2)', () => {
+  it('has a pause / play button whose name comes from YAML and flips on press', async () => {
+    await renderPage()
+    const btn = screen.getByRole('button', { name: data.intro.motion.pause })
+    fireEvent.click(btn)
+    expect(btn).toHaveAccessibleName(data.intro.motion.play)
+    fireEvent.click(btn)
+    expect(btn).toHaveAccessibleName(data.intro.motion.pause)
+  })
+})

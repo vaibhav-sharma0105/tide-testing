@@ -16,6 +16,10 @@ intro:
   highlights: ["positive change", "environmental challenges", "social justice"]
   jumpLabel: "See the student profiles"
   jumpHref: "#profiles"
+  # Screen-reader names of the round button beside the heading that stops / restarts the moving dot.
+  motion:
+    pause: "Pause the moving dot"
+    play: "Play the moving dot"
   lead: "We are proud to showcase the incredible work of our team of passionate individuals dedicated to driving positive change in various aspects of society."
   body: "From addressing environmental challenges to advocating for social justice, they have embarked on impactful journeys, each contributing their unique skills and perspectives to create a better world. Explore their projects, learn about their inspiring stories, and join us in celebrating their commitment to making a difference!"
 

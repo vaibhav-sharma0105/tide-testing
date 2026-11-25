@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion, useAnimation, useInView, useReducedMotion } from 'framer-motion'
-import { ArrowDown, ArrowLeft, CalendarDays, GraduationCap, Leaf, Lightbulb, Sprout, User, Users } from 'lucide-react'
+import { ArrowDown, ArrowLeft, CalendarDays, GraduationCap, Leaf, Lightbulb, Pause, Play, Sprout, User, Users } from 'lucide-react'
 import SeoHead from '../components/ui/SeoHead'
 import PageHero from '../components/ui/PageHero'
 import Button from '../components/ui/Button'
@@ -42,7 +42,8 @@ const DESC_LINES = [
 // rests at swells and a trail fills in behind it. Always top to bottom: after the last stop the dot
 // and trail fade out and the walk starts again from the first stop (owner decision, 2026-11-23).
 // The text itself never moves or dims, so nothing competes with reading. The loop runs only while
-// on screen; reduced motion gets the finished thread.
+// on screen; a round pause / play button beside the heading stops and restarts it where it is
+// (WCAG 2.2.2, owner decision 2026-11-25); reduced motion gets the finished thread and no button.
 const STOPS = [
   { Icon: Users, color: '#1E6BAA' },
   { Icon: Leaf, color: '#15803D' },
@@ -81,6 +82,8 @@ function Intro() {
   const trailRef = useRef(null)
   const [ys, setYs] = useState(null)   // each pin's centre, measured from the top of the list
   const inView = useInView(listRef, { margin: '-80px' })
+  const [playing, setPlaying] = useState(true)
+  const elapsed = useRef(0)            // seconds into the loop, kept while paused
 
   useEffect(() => {
     const measure = () => {
@@ -112,13 +115,14 @@ function Intro() {
       })
     }
     if (reduce) { paint({ k: STOPS.length - 1 }); return undefined }
-    if (!inView) return undefined
+    paint(walkerAt(elapsed.current))
+    if (!inView || !playing) return undefined
     let raf = 0
-    const t0 = performance.now()
-    const frame = (now) => { paint(walkerAt((now - t0) / 1000)); raf = requestAnimationFrame(frame) }
+    const t0 = performance.now() - elapsed.current * 1000
+    const frame = (now) => { elapsed.current = (now - t0) / 1000; paint(walkerAt(elapsed.current)); raf = requestAnimationFrame(frame) }
     raf = requestAnimationFrame(frame)
     return () => cancelAnimationFrame(raf)
-  }, [ys, inView, reduce])
+  }, [ys, inView, reduce, playing])
 
   return (
     <section className="section-padding bg-tide-bg">
@@ -133,12 +137,33 @@ function Intro() {
           </Link>
         </motion.div>
 
-        <motion.header {...fadeUp()} className="mb-10 md:mb-12">
-          <p className="mb-3 flex items-center gap-3 font-body text-xs font-bold uppercase tracking-[0.18em] text-accent-deeper">
-            <span aria-hidden="true" className="h-px w-8 bg-accent-deeper" />
-            {intro.eyebrow}
-          </p>
-          <h2 className="font-display text-3xl font-semibold leading-tight text-tide-text md:text-4xl">{intro.heading}</h2>
+        <motion.header {...fadeUp()} className="mb-10 flex items-end justify-between gap-4 md:mb-12">
+          <div className="min-w-0">
+            <p className="mb-3 flex items-center gap-3 font-body text-xs font-bold uppercase tracking-[0.18em] text-accent-deeper">
+              <span aria-hidden="true" className="h-px w-8 bg-accent-deeper" />
+              {intro.eyebrow}
+            </p>
+            <h2 className="font-display text-3xl font-semibold leading-tight text-tide-text md:text-4xl">{intro.heading}</h2>
+          </div>
+          {!reduce && (
+            // Same look as the Partners rows' play / pause: paused = a filled blue disc that invites a
+            // press; playing = a white disc with a pause icon (no spinning arc: the dot is the motion).
+            <button
+              type="button"
+              onClick={() => setPlaying((p) => !p)}
+              aria-label={playing ? intro.motion.pause : intro.motion.play}
+              className="group/play relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+            >
+              <span
+                className={`relative flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300 ease-out group-active/play:scale-90 ${playing
+                  ? 'bg-white text-primary-dark ring-1 ring-primary/25 group-hover/play:bg-primary-faint'
+                  : 'bg-primary-dark text-white shadow-[0_4px_10px_-4px_rgba(30,107,170,0.7)] group-hover/play:scale-[1.06]'}`}
+              >
+                <Play aria-hidden="true" fill="currentColor" className={`absolute ml-0.5 h-3.5 w-3.5 transition-all duration-300 ${playing ? 'rotate-90 scale-50 opacity-0' : 'rotate-0 scale-100 opacity-100'}`} />
+                <Pause aria-hidden="true" fill="currentColor" className={`absolute h-3.5 w-3.5 transition-all duration-300 ${playing ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-50 opacity-0'}`} />
+              </span>
+            </button>
+          )}
         </motion.header>
 
         <ol ref={listRef} className="relative">
