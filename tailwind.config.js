@@ -15,7 +15,7 @@ export default {
         accent: {
           DEFAULT: '#F59E0B',
           dark:    '#D97706',
-          deeper:  '#B45309',
+          deeper:  '#843A0C', // amber text on light backgrounds: 7.9:1 on cream (AAA; was #B45309, owner decision 2026-11-25)
           light:   '#FEF3C7',
           faint:   '#FFFBEB',
         },
@@ -29,12 +29,12 @@ export default {
           warm:    '#F5F1EB',
           surface: '#FFFFFF',
           text:    '#0D1F3C',
-          muted:   '#5A6A7E',
+          muted:   '#44515F', // 7.9:1 on cream, 8.1:1 on white (AAA; was #5A6A7E, owner decision 2026-11-25)
           // Slightly darker than `muted` — for small/muted text sitting on a
           // light, low-contrast chip background (primary-light, tide-border),
           // where #5A6A7E's contrast ratio is borderline (4.10-4.49:1, under
           // WCAG AA's 4.5:1 minimum). #5A6A7E itself is fine on tide-bg/white.
-          mutedOnLight: '#4D5C6F',
+          mutedOnLight: '#44515F', // 7.4:1 on primary-faint (was #4D5C6F)
           subtle:  '#F0EDE8',
           border:  '#E2DDD7',
         },

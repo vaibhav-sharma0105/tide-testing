@@ -66,7 +66,7 @@ function SubGroup({ item, onClose, currentLeaf }) {
       >
         <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
         <div className="flex-1 min-w-0">
-          <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
+          <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary-dark transition-colors leading-tight">
             {item.label}
           </div>
           {item.desc && (
@@ -102,7 +102,7 @@ function SubGroup({ item, onClose, currentLeaf }) {
               >
                 <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
                 <div>
-                  <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
+                  <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary-dark transition-colors leading-tight">
                     {sub.label}
                   </div>
                   {sub.desc && (
@@ -147,7 +147,7 @@ function Dropdown({ id, items, onClose, currentLeaf }) {
           >
             <div className="mt-2 w-1.5 h-1.5 rounded-full bg-primary/30 group-hover:bg-primary flex-shrink-0 transition-colors" />
             <div>
-              <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary transition-colors leading-tight">
+              <div className="text-sm font-body font-semibold text-tide-text group-hover:text-primary-dark transition-colors leading-tight">
                 {item.label}
               </div>
               {item.desc && (
@@ -270,7 +270,7 @@ export default function Header() {
                   aria-current={isActive(item) ? 'page' : undefined}
                   className={`hit-44 relative px-3.5 py-2 text-sm font-body font-medium rounded-lg flex items-center gap-1 transition-colors duration-200 ${
                     isActive(item)
-                      ? scrolled ? 'text-primary' : 'text-white font-semibold'
+                      ? scrolled ? 'text-primary-dark' : 'text-white font-semibold'
                       : scrolled ? 'text-tide-muted hover:text-tide-text' : 'text-white/80 hover:text-white'
                   }`}
                 >
@@ -290,7 +290,7 @@ export default function Header() {
                   aria-controls={`dropdown-${idx}`}
                   className={`hit-44 relative px-3.5 py-2 text-sm font-body font-medium rounded-lg flex items-center gap-1 transition-colors duration-200 ${
                     isActive(item)
-                      ? scrolled ? 'text-primary' : 'text-white font-semibold'
+                      ? scrolled ? 'text-primary-dark' : 'text-white font-semibold'
                       : scrolled ? 'text-tide-muted hover:text-tide-text' : 'text-white/80 hover:text-white'
                   }`}
                 >
@@ -369,7 +369,7 @@ export default function Header() {
                       to={item.to}
                       className={`flex items-center px-4 py-3 rounded-xl text-sm font-body font-medium transition-colors ${
                         isActive(item)
-                          ? 'bg-primary-faint text-primary font-semibold'
+                          ? 'bg-primary-faint text-primary-dark font-semibold'
                           : 'text-tide-text hover:bg-tide-subtle'
                       }`}
                     >
@@ -406,7 +406,7 @@ export default function Header() {
                                         aria-expanded={mobileSubExpanded === child.label}
                                         className={`w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-body text-left transition-colors ${
                                           child.subItems.some(sub => sub.to === currentLeaf)
-                                            ? 'text-primary font-semibold'
+                                            ? 'text-primary-dark font-semibold'
                                             : 'text-tide-muted hover:text-tide-text hover:bg-tide-subtle'
                                         }`}
                                       >
@@ -431,7 +431,7 @@ export default function Header() {
                                                   aria-current={sub.to === currentLeaf ? 'page' : undefined}
                                                   className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-body transition-colors ${
                                                     sub.to === currentLeaf
-                                                      ? 'text-primary font-semibold bg-primary-faint'
+                                                      ? 'text-primary-dark font-semibold bg-primary-faint'
                                                       : 'text-tide-muted hover:text-tide-text hover:bg-tide-subtle'
                                                   }`}
                                                 >
@@ -450,7 +450,7 @@ export default function Header() {
                                       aria-current={child.to === currentLeaf ? 'page' : undefined}
                                       className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-body transition-colors ${
                                         child.to === currentLeaf
-                                          ? 'text-primary font-semibold bg-primary-faint'
+                                          ? 'text-primary-dark font-semibold bg-primary-faint'
                                           : 'text-tide-muted hover:text-tide-text hover:bg-tide-subtle'
                                       }`}
                                     >

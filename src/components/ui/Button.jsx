@@ -3,19 +3,17 @@ import TiltGlare from './TiltGlare'
 import { tiltProps } from '../../utils/tilt'
 
 const variants = {
-  // Gradient stops chosen so white text clears 4.5:1 at BOTH ends, not just
-  // the darker one — a gradient's lighter corner is exactly where automated
-  // contrast checkers tend to under-sample, so this was verified by hand
-  // (white on primary: 5.62:1, white on primary-dark: 7.97:1).
-  primary:   'bg-gradient-to-br from-primary to-primary-dark text-white shadow-[0_2px_8px_rgba(30,107,170,0.32)] hover:shadow-[0_4px_18px_rgba(30,107,170,0.46)] hover:brightness-110 active:brightness-95',
-  secondary: 'bg-primary-faint text-primary border-2 border-primary/25 hover:border-primary/60 hover:bg-primary-light active:bg-primary-light',
+  // Flat primary-dark so white text clears AAA 7:1 (7.97:1; owner decision
+  // 2026-11-25); hover darkens rather than lightens to stay above 7:1.
+  primary:   'bg-primary-dark text-white shadow-[0_2px_8px_rgba(30,107,170,0.32)] hover:shadow-[0_4px_18px_rgba(30,107,170,0.46)] hover:brightness-90 active:brightness-[0.85]',
+  secondary: 'bg-primary-faint text-primary-dark border-2 border-primary/25 hover:border-primary/60 hover:bg-primary-light active:bg-primary-light',
   // Dark text instead of white — amber/orange is a light-to-mid luminance
   // color, so white text never reliably clears 4.5:1 against it (was
   // 2.15:1-3.19:1 across this gradient's two stops). Dark navy text clears
   // 7.65:1 / 5.16:1 at the two stops instead, comfortably.
   accent:    'bg-gradient-to-br from-accent to-accent-dark text-tide-text shadow-[0_2px_8px_rgba(245,158,11,0.32)] hover:shadow-[0_4px_18px_rgba(245,158,11,0.46)] hover:brightness-95 active:brightness-90',
-  ghost:     'text-primary hover:bg-primary-faint',
-  white:     'bg-white text-primary border border-white/60 shadow-sm hover:bg-primary-faint hover:shadow-md',
+  ghost:     'text-primary-dark hover:bg-primary-faint',
+  white:     'bg-white text-primary-dark border border-white/60 shadow-sm hover:bg-primary-faint hover:shadow-md',
 }
 
 // Medium and large buttons are tactile like the site's tiles: they tilt towards the mouse, a glare

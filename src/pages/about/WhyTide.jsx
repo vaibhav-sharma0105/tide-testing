@@ -14,7 +14,7 @@ function Pillar({ icon: Icon, title, children }) {
   return (
     <div>
       <div className="flex items-center gap-4 mb-4">
-        <span className="w-12 h-12 rounded-full bg-primary-faint border border-primary/20 text-primary flex items-center justify-center shrink-0">
+        <span className="w-12 h-12 rounded-full bg-primary-faint border border-primary/20 text-primary-dark flex items-center justify-center shrink-0">
           <Icon aria-hidden="true" className="w-5 h-5" />
         </span>
         <h2 className="font-display text-2xl font-semibold text-tide-text leading-tight">{title}</h2>
@@ -78,7 +78,7 @@ export default function WhyTide() {
               return (
                 <li key={g.text} {...TILT} className="tilt-3d tilt-lift relative bg-tide-bg border border-tide-border rounded-2xl px-6 pt-10 pb-7 hover:shadow-card-hover">
                   <TiltGlare />
-                  <span className="absolute -top-6 left-6 w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center ring-4 ring-white">
+                  <span className="absolute -top-6 left-6 w-12 h-12 rounded-full bg-primary-dark text-white flex items-center justify-center ring-4 ring-white">
                     <Icon aria-hidden="true" className="w-5 h-5" />
                   </span>
                   <p className="font-display text-lg font-semibold leading-snug text-tide-text">{g.text}</p>

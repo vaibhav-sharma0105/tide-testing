@@ -173,18 +173,18 @@ function Collage({ images, stat, statLabel }) {
 function RoleRow({ role }) {
   const inner = (
     <>
-      <span className="w-11 h-11 shrink-0 rounded-full bg-primary text-white flex items-center justify-center">
+      <span className="w-11 h-11 shrink-0 rounded-full bg-primary-dark text-white flex items-center justify-center">
         {ICONS[role.iconKey] || <Users className="w-5 h-5" />}
       </span>
       <span className="flex-1">
         <span className="block font-display text-xl font-semibold text-tide-text">{role.title}</span>
         <span className="block text-sm font-body text-tide-muted leading-relaxed mt-1">{role.desc}</span>
         {role.linkLabel && (
-          <span className="inline-block mt-2 text-sm font-body font-semibold text-primary">{role.linkLabel}</span>
+          <span className="inline-block mt-2 text-sm font-body font-semibold text-primary-dark">{role.linkLabel}</span>
         )}
       </span>
       {role.to && (
-        <ArrowUpRight className="w-5 h-5 mt-1 text-primary shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+        <ArrowUpRight className="w-5 h-5 mt-1 text-primary-dark shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
       )}
     </>
   )
@@ -310,9 +310,9 @@ export default function Volunteer() {
               </Button>
             </div>
             <p className="flex flex-wrap items-center gap-x-2 text-sm font-body text-tide-muted">
-              <Mail className="w-4 h-4 text-primary" aria-hidden="true" />
+              <Mail className="w-4 h-4 text-primary-dark" aria-hidden="true" />
               <span>{join.contactLabel}</span>
-              <a href={`mailto:${join.contactEmail}`} className="font-semibold text-primary hover:underline">{join.contactEmail}</a>
+              <a href={`mailto:${join.contactEmail}`} className="font-semibold text-primary-dark hover:underline">{join.contactEmail}</a>
             </p>
           </motion.div>
 

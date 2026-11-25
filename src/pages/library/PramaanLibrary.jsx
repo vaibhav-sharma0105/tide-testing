@@ -165,7 +165,7 @@ export default function PramaanLibrary() {
                       <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
                       {data.page.filtersButton}
                       {activeCount > 0 && (
-                        <span className="w-5 h-5 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center">{activeCount}</span>
+                        <span className="w-5 h-5 rounded-full bg-primary-dark text-white text-[10px] font-bold flex items-center justify-center">{activeCount}</span>
                       )}
                     </button>
                     <SearchField

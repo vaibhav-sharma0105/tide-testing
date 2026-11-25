@@ -92,7 +92,7 @@ export default function PramaanLibraryDetail() {
   const resource = (snapshot.resources ?? []).find(r => r.id === id)
 
   const backLink = (
-    <Link to="/pramaan/resource-centre" className="group/back inline-flex min-h-[44px] items-center gap-2 py-2 text-sm font-body font-medium text-tide-muted hover:text-primary transition-colors mb-6">
+    <Link to="/pramaan/resource-centre" className="group/back inline-flex min-h-[44px] items-center gap-2 py-2 text-sm font-body font-medium text-tide-muted hover:text-primary-dark transition-colors mb-6">
       <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover/back:-translate-x-1" /> {d.backLabel}
     </Link>
   )
@@ -257,7 +257,7 @@ export default function PramaanLibraryDetail() {
                   <Eyebrow className={`${accent.eyebrow} mb-3`}>{d.additionalInfo}</Eyebrow>
                   <p className="font-body leading-relaxed text-tide-text break-words">
                     {extra.map((part, i) => part.href
-                      ? <a key={i} href={part.href} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary-dark">{part.text}</a>
+                      ? <a key={i} href={part.href} target="_blank" rel="noopener noreferrer" className="text-primary-dark underline underline-offset-2 hover:text-primary-deeper">{part.text}</a>
                       : <span key={i}>{part.text}</span>)}
                   </p>
                 </motion.div>

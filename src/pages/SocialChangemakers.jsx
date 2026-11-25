@@ -126,7 +126,7 @@ function Intro() {
         <motion.div {...fadeUp()} className="mb-10 md:mb-12">
           <Link
             to={meta.backHref}
-            className="group inline-flex items-center gap-2 font-body text-sm font-semibold text-tide-muted underline-offset-4 transition-colors hover:text-primary hover:underline"
+            className="group inline-flex items-center gap-2 font-body text-sm font-semibold text-tide-muted underline-offset-4 transition-colors hover:text-primary-dark hover:underline"
           >
             <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" aria-hidden="true" />
             {meta.backLabel}
@@ -372,7 +372,7 @@ function Profiles({ batches }) {
           <div className="rounded-2xl border border-dashed border-tide-border bg-white/60 px-6 py-14 text-center">
             <p className="font-display text-xl text-tide-text">{text.list.noMatch}</p>
             {filtering && (
-              <button type="button" onClick={clearAll} className="mt-5 inline-flex min-h-[44px] items-center rounded-full bg-primary px-5 font-body text-sm font-semibold text-white hover:bg-primary-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+              <button type="button" onClick={clearAll} className="mt-5 inline-flex min-h-[44px] items-center rounded-full bg-primary-dark px-5 font-body text-sm font-semibold text-white hover:bg-primary-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                 {text.list.noMatchClear}
               </button>
             )}

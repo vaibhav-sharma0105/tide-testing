@@ -120,7 +120,7 @@ export default function PickerField({ labelId, options, value, onSelect, allLabe
                 >
                   <span className="flex-1 min-w-0 break-words">{o.label}</span>
                   <span className="text-xs tabular-nums text-tide-muted">{o.count}</span>
-                  <span className="flex w-4 justify-center" aria-hidden="true">{isSelected && <Check className="h-4 w-4 text-primary" />}</span>
+                  <span className="flex w-4 justify-center" aria-hidden="true">{isSelected && <Check className="h-4 w-4 text-primary-dark" />}</span>
                 </li>
               )
             })}

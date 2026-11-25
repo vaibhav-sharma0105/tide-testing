@@ -62,7 +62,7 @@ export default function ArchPortrait({ name, role, suffix, photo, linkedin, inde
         {linkedin && (
           <span
             aria-hidden="true"
-            className={`absolute z-10 flex items-center justify-center rounded-full bg-primary text-white shadow-float transition duration-300 [@media(hover:hover)]:scale-75 [@media(hover:hover)]:opacity-0 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100 ${row ? 'bottom-1 right-1 h-7 w-7' : 'bottom-3 right-3 h-9 w-9'}`}
+            className={`absolute z-10 flex items-center justify-center rounded-full bg-primary-dark text-white shadow-float transition duration-300 [@media(hover:hover)]:scale-75 [@media(hover:hover)]:opacity-0 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100 ${row ? 'bottom-1 right-1 h-7 w-7' : 'bottom-3 right-3 h-9 w-9'}`}
           >
             <ArrowUpRight size={row ? 14 : 18} strokeWidth={2.25} />
           </span>

@@ -32,7 +32,7 @@ function BankRow({ label, value, large = false }) {
         type="button"
         onClick={copy}
         aria-label={data.bank.copyAria.replace('{label}', label)}
-        className={`hit-44 relative shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors ${copied ? 'text-primary bg-primary-light' : 'text-tide-muted hover:text-primary hover:bg-primary-light'}`}
+        className={`hit-44 relative shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors ${copied ? 'text-primary-dark bg-primary-light' : 'text-tide-muted hover:text-primary-dark hover:bg-primary-light'}`}
       >
         {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
         <span className="sr-only" aria-live="polite">{copied ? data.bank.copiedLabel : ''}</span>
@@ -74,7 +74,7 @@ export default function Donate() {
               </p>
 
               <div className="mt-10 flex items-end gap-4">
-                <span className="font-display text-5xl md:text-6xl font-semibold leading-none text-primary">{data.hero.impactValue}</span>
+                <span className="font-display text-5xl md:text-6xl font-semibold leading-none text-primary-dark">{data.hero.impactValue}</span>
                 <span className="font-body text-sm text-tide-muted pb-1">{data.hero.impactLabel}</span>
               </div>
 
@@ -83,7 +83,7 @@ export default function Donate() {
                   const Icon = HIGHLIGHT_ICONS[i]
                   return (
                     <li key={pt} className="flex items-center gap-3 py-3.5">
-                      {Icon && <Icon className="w-5 h-5 text-primary shrink-0" aria-hidden="true" />}
+                      {Icon && <Icon className="w-5 h-5 text-primary-dark shrink-0" aria-hidden="true" />}
                       <span className="font-body text-sm text-tide-text">{pt}</span>
                     </li>
                   )
@@ -94,7 +94,7 @@ export default function Donate() {
             <motion.div {...fadeUp(0.15)} className="rounded-3xl border border-tide-border bg-tide-bg p-3 sm:p-4">
               <div className="flex items-center gap-3 px-2 pt-1 pb-3">
                 <span className="w-10 h-10 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Landmark className="w-5 h-5 text-primary" aria-hidden="true" />
+                  <Landmark className="w-5 h-5 text-primary-dark" aria-hidden="true" />
                 </span>
                 <div className="min-w-0">
                   <h3 className="font-display text-xl font-semibold leading-snug text-tide-text">{data.bank.transferTitle}</h3>
@@ -113,7 +113,7 @@ export default function Donate() {
           </div>
 
           <div className="mt-10 flex justify-center">
-            <a href="#give" className="flex flex-col items-center font-body text-sm font-medium text-primary hover:text-primary-dark transition-colors">
+            <a href="#give" className="flex flex-col items-center font-body text-sm font-medium text-primary-dark hover:text-primary-dark transition-colors">
               <span>{data.cue.label}</span>
               <ChevronDown className="w-5 h-5 mt-0.5 motion-safe:animate-bounce [animation-iteration-count:5]" aria-hidden="true" />
             </a>
@@ -121,7 +121,7 @@ export default function Donate() {
         </div>
       </section>
 
-      <section id="give" className="relative bg-gradient-to-br from-primary to-primary-dark text-white px-4 md:px-8 lg:px-16 pt-24 pb-20 md:pt-28 md:pb-24">
+      <section id="give" className="relative bg-primary-dark text-white px-4 md:px-8 lg:px-16 pt-24 pb-20 md:pt-28 md:pb-24">
         <WaveDivider className="text-tide-bg" />
         <div className="max-w-3xl mx-auto text-center">
           <Heart className="w-8 h-8 text-accent mx-auto mb-4" aria-hidden="true" />

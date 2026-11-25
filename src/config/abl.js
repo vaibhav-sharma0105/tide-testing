@@ -64,7 +64,7 @@ export const TYPE_COLORS = {
     selectedTile: 'bg-tide-muted text-white border-tide-muted shadow-lg shadow-tide-muted/30',
     poster: 'from-tide-subtle via-white to-tide-subtle', heroBadge: 'bg-white/15 text-white/90 border-white/25',
     tileHover: 'group-hover:bg-tide-muted group-hover:text-white', cardHover: 'hover:border-primary/40 hover:bg-primary-faint',
-    titleHover: 'group-hover:text-primary',
+    titleHover: 'group-hover:text-primary-dark',
   },
 }
 

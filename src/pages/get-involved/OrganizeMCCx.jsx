@@ -86,7 +86,7 @@ function WhatIs() {
                 >
                   <div className="tilt-3d tilt-lift relative flex h-full items-center gap-3 rounded-2xl border border-tide-border bg-white p-4 shadow-card hover:border-primary/40 hover:bg-primary-faint hover:shadow-card-hover sm:flex-col sm:items-start sm:gap-4">
                   <TiltGlare />
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-light text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-light text-primary-dark transition-colors duration-300 group-hover:bg-primary-dark group-hover:text-white">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <span className="font-body text-sm font-semibold leading-snug text-tide-text">{h.label}</span>
@@ -142,7 +142,7 @@ function Step({ step, index, lit, onLight }) {
       </span>
 
       <div className={`h-full rounded-2xl border bg-white p-6 transition-all duration-300 ${lit ? '-translate-y-1 border-primary/40 shadow-card' : 'border-tide-border'}`}>
-        <span className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary-light text-primary">
+        <span className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-primary-light text-primary-dark">
           <Icon className="h-5 w-5" aria-hidden="true" />
         </span>
         <h3 className="mb-2 font-display text-xl font-semibold text-tide-text">{step.title}</h3>

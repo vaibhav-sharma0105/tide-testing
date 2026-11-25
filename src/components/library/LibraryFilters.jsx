@@ -49,7 +49,7 @@ function FilterSection({ title, children, open, onToggle, labelId }) {
 }
 
 const pill = (active) => `px-3.5 py-1.5 rounded-full text-xs font-body font-semibold border transition-all duration-150 ${focusRing('focus-visible:rounded-full')} ${
-  active ? 'bg-primary text-white border-primary shadow-md shadow-primary/25' : 'bg-primary-faint text-primary-dark border-primary/20 hover:border-primary/50 hover:bg-primary-light'
+  active ? 'bg-primary-dark text-white border-primary shadow-md shadow-primary/25' : 'bg-primary-faint text-primary-dark border-primary/20 hover:border-primary/50 hover:bg-primary-light'
 }`
 
 // Sidebar filters, broadest first: who made it (ownership), what it is (type of material), then
@@ -71,7 +71,7 @@ export default function LibraryFilters({ options, filters, onChange, onClear, ac
       <div className="flex items-center justify-between px-5 py-3 border-b border-tide-border">
         <span className="relative font-display text-base font-semibold text-tide-text after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-6 after:bg-accent">{f.heading}</span>
         {activeCount > 0 && (
-          <button type="button" onClick={onClear} className={`flex items-center gap-1.5 text-xs font-body text-tide-muted hover:text-primary transition-colors duration-150 ${focusRing('focus-visible:rounded-md')}`}>
+          <button type="button" onClick={onClear} className={`flex items-center gap-1.5 text-xs font-body text-tide-muted hover:text-primary-dark transition-colors duration-150 ${focusRing('focus-visible:rounded-md')}`}>
             <X className="w-3 h-3" aria-hidden="true" />
             {f.clear} ({activeCount})
           </button>
@@ -104,7 +104,7 @@ export default function LibraryFilters({ options, filters, onChange, onClear, ac
               onClick={() => set({ type: '' })}
               aria-pressed={!filters.type}
               className={`flex w-full items-center gap-2.5 rounded-2xl border px-3.5 py-2.5 font-body text-sm font-semibold transition-all duration-200 ${focusRing('focus-visible:rounded-2xl')} ${
-                !filters.type ? 'border-primary bg-primary text-white shadow-lg shadow-primary/25' : 'border-tide-border bg-white text-tide-muted hover:border-primary/40 hover:text-primary'
+                !filters.type ? 'border-primary bg-primary-dark text-white shadow-lg shadow-primary/25' : 'border-tide-border bg-white text-tide-muted hover:border-primary/40 hover:text-primary-dark'
               }`}
             >
               <LayoutGrid className="h-4 w-4" aria-hidden="true" />

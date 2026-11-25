@@ -39,7 +39,7 @@ export default function PastPrograms() {
               >
                 <div className="md:col-start-1 md:row-start-1">
                   <h2 className="font-display text-2xl font-semibold text-tide-text">{prog.name}</h2>
-                  <p className="mt-1 font-body text-sm text-primary font-semibold">{prog.tagline}</p>
+                  <p className="mt-1 font-body text-sm text-primary-dark font-semibold">{prog.tagline}</p>
                 </div>
 
                 <div className="md:col-start-2 md:row-start-1 md:row-span-2 self-start md:sticky md:top-28 rounded-2xl bg-navy text-white px-6 pt-5 pb-2">

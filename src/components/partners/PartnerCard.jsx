@@ -99,7 +99,7 @@ export default function PartnerCard({ partner, text, caption, tier = '', order =
             className="block after:absolute after:inset-0 after:rounded-2xl after:content-[''] focus:outline-none focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-primary focus-visible:after:ring-offset-4 focus-visible:after:ring-offset-tide-bg"
           >
             <span className="line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-tide-text transition-colors group-hover:text-primary-dark">{partner.name}</span>
-            <span className="mt-0.5 flex h-4 items-center gap-0.5 text-xs text-tide-muted transition-colors group-hover:text-primary">
+            <span className="mt-0.5 flex h-4 items-center gap-0.5 text-xs text-tide-muted transition-colors group-hover:text-primary-dark">
               <span className="truncate">{domain}</span>
               <ArrowUpRight className="h-3.5 w-3.5 flex-none transition-transform duration-200 group-hover:-translate-y-px group-hover:translate-x-px" aria-hidden="true" />
             </span>

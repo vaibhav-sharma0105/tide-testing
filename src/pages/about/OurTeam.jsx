@@ -56,7 +56,7 @@ function LinkBadge({ className = '' }) {
   return (
     <span
       aria-hidden="true"
-      className={`absolute z-10 flex items-center justify-center rounded-full bg-primary text-white shadow-float transition duration-300 [@media(hover:hover)]:scale-75 [@media(hover:hover)]:opacity-0 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100 ${className}`}
+      className={`absolute z-10 flex items-center justify-center rounded-full bg-primary-dark text-white shadow-float transition duration-300 [@media(hover:hover)]:scale-75 [@media(hover:hover)]:opacity-0 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100 ${className}`}
     >
       <ArrowUpRight size={18} strokeWidth={2.25} />
     </span>

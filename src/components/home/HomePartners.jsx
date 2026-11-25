@@ -38,7 +38,7 @@ export default function HomePartners({ text }) {
           </p>
           <Link
             to={text.linkHref}
-            className="group/link mt-8 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-primary-faint px-5 font-body text-sm font-semibold text-primary-dark ring-1 ring-primary/15 transition-colors hover:bg-primary hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            className="group/link mt-8 inline-flex min-h-[44px] items-center gap-2 rounded-full bg-primary-faint px-5 font-body text-sm font-semibold text-primary-dark ring-1 ring-primary/15 transition-colors hover:bg-primary-dark hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           >
             {text.linkLabel}
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-1" aria-hidden="true" />

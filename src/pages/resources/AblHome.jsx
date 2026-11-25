@@ -82,22 +82,22 @@ export default function AblHome() {
             {[
                 // Only the main figure (the number of resources) counts — motion rules in utils/motionPresets.js.
                 <div key="t" className="text-center">
-                  <CountUpText text={String(resources.length)} className="block font-display text-4xl md:text-5xl font-bold leading-none text-primary" />
+                  <CountUpText text={String(resources.length)} className="block font-display text-4xl md:text-5xl font-bold leading-none text-primary-dark" />
                   <div className="mt-2.5 text-xs font-body font-semibold uppercase tracking-widest text-tide-muted">{ablData.stats.totalResources}</div>
                 </div>,
                 <div key="r" className="text-center">
-                  <div className="font-display text-4xl md:text-5xl font-bold leading-none text-primary tabular-nums">{TYPES.length}</div>
+                  <div className="font-display text-4xl md:text-5xl font-bold leading-none text-primary-dark tabular-nums">{TYPES.length}</div>
                   <div className="mt-2.5 text-xs font-body font-semibold uppercase tracking-widest text-tide-muted">{ablData.stats.resourceTypes}</div>
                 </div>,
                 <div key="g" className="text-center">
-                  <div className="font-display text-4xl md:text-5xl font-bold leading-none text-primary">{ablData.stats.gradeRange}</div>
+                  <div className="font-display text-4xl md:text-5xl font-bold leading-none text-primary-dark">{ablData.stats.gradeRange}</div>
                   <div className="mt-2.5 text-xs font-body font-semibold uppercase tracking-widest text-tide-muted">{ablData.stats.gradeCovered}</div>
                 </div>,
               ].map((cell, i) => {
                 const Icon = STAT_ICONS[i]
                 return (
                   <motion.div key={cell.key} {...fadeUp(i * 0.08)} className="flex flex-col items-center">
-                    <span className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-primary-light text-primary" aria-hidden="true">
+                    <span className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-primary-light text-primary-dark" aria-hidden="true">
                       <Icon className="h-4 w-4" />
                     </span>
                     {cell}
@@ -147,10 +147,10 @@ export default function AblHome() {
               const Icon = REACH_ICONS[i] || School
               return (
                 <motion.div key={r.label} {...fadeUp(0.1 + i * 0.08)} className="flex flex-col items-center rounded-3xl border border-tide-border bg-white p-5 text-center shadow-card">
-                  <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary-light text-primary" aria-hidden="true">
+                  <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary-light text-primary-dark" aria-hidden="true">
                     <Icon className="h-5 w-5" />
                   </span>
-                  <div className="font-display text-3xl md:text-4xl font-bold leading-none text-primary tabular-nums">{r.value}</div>
+                  <div className="font-display text-3xl md:text-4xl font-bold leading-none text-primary-dark tabular-nums">{r.value}</div>
                   <div className="mt-2 font-body text-sm font-medium text-tide-muted">{r.label}</div>
                 </motion.div>
               )
@@ -165,7 +165,7 @@ export default function AblHome() {
                 const Icon = WHY_ICONS[i] || BookOpen
                 return (
                   <li key={point} className="group flex items-start gap-4 border-b border-tide-border py-4 last:border-b-0 last:pb-0">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-light text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-light text-primary-dark transition-colors duration-300 group-hover:bg-primary-dark group-hover:text-white">
                       <Icon className="h-5 w-5" aria-hidden="true" />
                     </span>
                     <p className="pt-1.5 font-body text-[15px] leading-snug text-tide-text transition-transform duration-300 group-hover:translate-x-1">{point}</p>

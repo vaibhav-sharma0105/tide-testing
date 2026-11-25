@@ -56,12 +56,12 @@ export default function AblContribute() {
               const Icon = STEP_ICONS[i] || BookOpen
               return (
                 <motion.li key={step.title} {...fadeUp(i * 0.12)} {...TILT} className="group relative">
-                  <div className="relative mx-auto mb-5 flex h-[4.2rem] w-[4.2rem] items-center justify-center rounded-full border-4 border-tide-bg bg-primary font-display text-2xl font-bold text-white shadow-card transition-transform duration-300 group-hover:scale-105">
+                  <div className="relative mx-auto mb-5 flex h-[4.2rem] w-[4.2rem] items-center justify-center rounded-full border-4 border-tide-bg bg-primary-dark font-display text-2xl font-bold text-white shadow-card transition-transform duration-300 group-hover:scale-105">
                     <span aria-hidden="true">{i + 1}</span>
                   </div>
                   <div className="tilt-3d tilt-lift relative h-[calc(100%-5.7rem)] rounded-3xl border border-tide-border bg-white p-6 text-center shadow-card group-hover:border-primary/40 group-hover:shadow-card-hover sm:min-h-[11rem]">
                     <TiltGlare />
-                    <span className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-primary-light text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white" aria-hidden="true">
+                    <span className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-primary-light text-primary-dark transition-colors duration-300 group-hover:bg-primary-dark group-hover:text-white" aria-hidden="true">
                       <Icon className="h-5 w-5" />
                     </span>
                     <h3 className="mb-2 font-display text-lg font-semibold text-tide-text">{step.title}</h3>

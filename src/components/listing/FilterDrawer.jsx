@@ -41,7 +41,7 @@ export default function FilterDrawer({ open, onClose, title, closeLabel, clearLa
             <div className="flex items-center gap-2 border-b border-tide-border px-5 py-3.5">
               <span className="flex-1 font-display text-lg font-semibold text-tide-text">{title}</span>
               {activeCount > 0 && (
-                <button type="button" onClick={onClear} className={`rounded-full px-3 py-1.5 text-xs font-body font-semibold text-primary hover:bg-primary-faint transition-colors ${FOCUS_PILL}`}>
+                <button type="button" onClick={onClear} className={`rounded-full px-3 py-1.5 text-xs font-body font-semibold text-primary-dark hover:bg-primary-faint transition-colors ${FOCUS_PILL}`}>
                   {clearLabel} ({activeCount})
                 </button>
               )}
@@ -61,7 +61,7 @@ export default function FilterDrawer({ open, onClose, title, closeLabel, clearLa
               <button
                 type="button"
                 onClick={onClose}
-                className={`w-full rounded-full bg-primary px-5 py-3 text-sm font-body font-semibold text-white shadow-lg shadow-primary/25 hover:bg-primary-dark transition-colors ${FOCUS_PILL}`}
+                className={`w-full rounded-full bg-primary-dark px-5 py-3 text-sm font-body font-semibold text-white shadow-lg shadow-primary/25 hover:bg-primary-dark transition-colors ${FOCUS_PILL}`}
               >
                 {showResultsLabel}
               </button>

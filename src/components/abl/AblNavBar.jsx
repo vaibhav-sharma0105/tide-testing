@@ -31,7 +31,7 @@ export default function AblNavBar() {
               aria-current={activeSlug === tab.activeSlug ? 'page' : undefined}
               className={`hit-44 relative flex min-h-[40px] items-center justify-center rounded-lg px-2 py-1.5 text-center text-[13px] leading-tight font-body font-medium transition-colors duration-150 sm:flex-shrink-0 sm:px-4 sm:py-2 sm:text-sm ${
                 activeSlug === tab.activeSlug
-                  ? 'bg-primary text-white shadow-sm'
+                  ? 'bg-primary-dark text-white shadow-sm'
                   : 'text-tide-muted hover:bg-tide-subtle hover:text-tide-text'
               }`}
             >

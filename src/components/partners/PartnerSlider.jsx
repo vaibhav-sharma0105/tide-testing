@@ -149,7 +149,7 @@ export default function PartnerSlider({ group, index, text, suspended = false, h
       {/* The spine node (wide screens): this section's number, filled while it is the one being read. */}
       <span
         aria-hidden="true"
-        className={`absolute -left-[4.75rem] top-0 hidden h-12 w-12 items-center justify-center rounded-full font-display text-base font-semibold tabular-nums transition-all duration-500 lg:flex ${active ? 'bg-primary text-white shadow-[0_8px_20px_-6px_rgba(30,107,170,0.6)] ring-4 ring-primary-faint' : 'border border-tide-border bg-white text-tide-muted'}`}
+        className={`absolute -left-[4.75rem] top-0 hidden h-12 w-12 items-center justify-center rounded-full font-display text-base font-semibold tabular-nums transition-all duration-500 lg:flex ${active ? 'bg-primary-dark text-white shadow-[0_8px_20px_-6px_rgba(30,107,170,0.6)] ring-4 ring-primary-faint' : 'border border-tide-border bg-white text-tide-muted'}`}
       >
         {number}
       </span>
@@ -189,8 +189,8 @@ export default function PartnerSlider({ group, index, text, suspended = false, h
             >
               <span
                 className={`relative flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300 ease-out group-active/play:scale-90 ${playing
-                  ? 'bg-white text-primary ring-1 ring-primary/25 group-hover/play:bg-primary-faint'
-                  : 'bg-gradient-to-br from-primary to-primary-dark text-white shadow-[0_4px_10px_-4px_rgba(30,107,170,0.7)] group-hover/play:scale-[1.06] group-hover/play:shadow-[0_8px_18px_-6px_rgba(30,107,170,0.75)]'}`}
+                  ? 'bg-white text-primary-dark ring-1 ring-primary/25 group-hover/play:bg-primary-faint'
+                  : 'bg-primary-dark text-white shadow-[0_4px_10px_-4px_rgba(30,107,170,0.7)] group-hover/play:scale-[1.06] group-hover/play:shadow-[0_8px_18px_-6px_rgba(30,107,170,0.75)]'}`}
               >
                 {playing && (
                   // "Live" arc: circles the disc while the row plays.

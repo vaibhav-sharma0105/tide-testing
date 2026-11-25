@@ -141,7 +141,7 @@ export default function PhotoStrip() {
     box.current.scrollLeft = 0
   }
 
-  const arrow = 'absolute top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white text-primary shadow-float transition-all duration-300 hover:scale-105 hover:bg-primary hover:text-white sm:flex'
+  const arrow = 'absolute top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white text-primary-dark shadow-float transition-all duration-300 hover:scale-105 hover:bg-primary-dark hover:text-white sm:flex'
 
   return (
     <div className="relative">

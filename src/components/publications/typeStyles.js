@@ -7,7 +7,7 @@
 //   reports) on a soft tint instead of muddy grey, with enough colour that a white page still
 //   stands out from it
 export const FAMILY_STYLE = {
-  article:      { tint: 'bg-primary-faint', veil: 'bg-primary-light/60', icon: 'text-primary' },
+  article:      { tint: 'bg-primary-faint', veil: 'bg-primary-light/60', icon: 'text-primary-dark' },
   book:         { tint: 'bg-tide-warm',     veil: 'bg-tide-warm/80',     icon: 'text-navy' },
   presentation: { tint: 'bg-accent-faint',  veil: 'bg-accent-light/50',  icon: 'text-accent-deeper' },
   newspaper:    { tint: 'bg-primary-faint', veil: 'bg-primary-light/60', icon: 'text-primary-dark' },

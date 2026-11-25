@@ -96,7 +96,7 @@ function AreaNav({ items, label, heading }) {
   return (
     <nav aria-label={label} className="sticky top-[68px] z-20 border-y border-tide-border bg-white/90 px-4 backdrop-blur-md md:px-8 lg:px-16">
       <div className="mx-auto flex max-w-5xl flex-col gap-1.5 py-2.5 md:flex-row md:items-center md:gap-5">
-        <p className="shrink-0 font-body text-[11px] font-semibold uppercase tracking-widest text-primary md:text-xs" aria-hidden="true">{heading}</p>
+        <p className="shrink-0 font-body text-[11px] font-semibold uppercase tracking-widest text-primary-dark md:text-xs" aria-hidden="true">{heading}</p>
         <div className="flex min-w-0 items-center gap-3 md:gap-4">
           <ol className="flex shrink-0 gap-2">
             {items.map((area, i) => (
@@ -106,7 +106,7 @@ function AreaNav({ items, label, heading }) {
                   aria-label={area.title}
                   title={area.title}
                   aria-current={active === i ? 'true' : undefined}
-                  className={`hit-44 relative flex h-9 w-9 items-center justify-center rounded-full border font-body text-xs font-semibold transition-colors ${active === i ? 'border-primary bg-primary text-white' : 'border-tide-border bg-white text-primary hover:border-primary'}`}
+                  className={`hit-44 relative flex h-9 w-9 items-center justify-center rounded-full border font-body text-xs font-semibold transition-colors ${active === i ? 'border-primary bg-primary-dark text-white' : 'border-tide-border bg-white text-primary-dark hover:border-primary'}`}
                 >
                   {pad(i)}
                 </a>

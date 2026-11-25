@@ -33,7 +33,7 @@ export default function PublicationsPagination({ page, totalPages, hrefFor, link
             {n === '…' ? (
               <span className="inline-flex h-11 w-6 items-center justify-center font-body text-sm text-tide-muted" aria-hidden="true">{n}</span>
             ) : n === page ? (
-              <span aria-current="page" className={`${ITEM} bg-primary px-3 text-white shadow-sm shadow-primary/25`}>
+              <span aria-current="page" className={`${ITEM} bg-primary-dark px-3 text-white shadow-sm shadow-primary/25`}>
                 <span className="sr-only">{pageLabel(n)}</span>
                 <span aria-hidden="true">{n}</span>
               </span>

@@ -211,7 +211,7 @@ function EcoRow({ item, last, index, reduce }) {
           {item.stat ? (
             <>
               <div className="w-fit">
-                <div className="font-display text-5xl md:text-6xl font-bold leading-none text-primary tabular-nums">{item.stat}</div>
+                <div className="font-display text-5xl md:text-6xl font-bold leading-none text-primary-dark tabular-nums">{item.stat}</div>
               </div>
               <p className="mt-2.5 max-w-[14rem] font-body text-sm font-medium leading-snug text-tide-muted">{item.statLabel}</p>
             </>
@@ -238,7 +238,7 @@ function EcoRow({ item, last, index, reduce }) {
                   key={l.href}
                   href={l.href}
                   {...(l.href.startsWith('#') ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
-                  className="inline-flex items-center gap-1.5 font-body text-sm font-semibold text-primary underline-offset-4 hover:underline"
+                  className="inline-flex items-center gap-1.5 font-body text-sm font-semibold text-primary-dark underline-offset-4 hover:underline"
                 >
                   {l.label}
                   <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />

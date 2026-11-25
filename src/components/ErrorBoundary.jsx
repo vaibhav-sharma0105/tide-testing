@@ -47,7 +47,7 @@ export default class ErrorBoundary extends Component {
             </button>
             <a
               href={import.meta.env.BASE_URL}
-              className="inline-flex min-h-11 items-center justify-center px-5 rounded-full font-body font-semibold text-sm border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200"
+              className="inline-flex min-h-11 items-center justify-center px-5 rounded-full font-body font-semibold text-sm border-2 border-primary text-primary-dark hover:bg-primary-dark hover:text-white transition-colors duration-200"
             >
               {data.homeLabel}
             </a>

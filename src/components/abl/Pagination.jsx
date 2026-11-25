@@ -48,7 +48,7 @@ export default function Pagination({ total, page, perPage = LIBRARY_PAGE_SIZE, o
           aria-disabled={page === 1 || undefined}
           aria-label={labels.previousLabel}
           className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-full text-sm font-body font-medium transition-colors ${
-            page === 1 ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-white hover:text-primary hover:shadow-sm'
+            page === 1 ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-white hover:text-primary-dark hover:shadow-sm'
           }`}
         >
           <ChevronLeft className="w-4 h-4" aria-hidden="true" /> <span className="hidden sm:inline">{labels.previousShort}</span>
@@ -66,8 +66,8 @@ export default function Pagination({ total, page, perPage = LIBRARY_PAGE_SIZE, o
               aria-current={p === page ? 'page' : undefined}
               className={`inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full text-sm font-body font-medium transition-all ${
                 p === page
-                  ? 'bg-gradient-to-br from-primary to-primary-dark text-white shadow-[0_2px_8px_rgba(30,107,170,0.32)]'
-                  : 'text-tide-muted hover:bg-white hover:text-primary hover:shadow-sm'
+                  ? 'bg-primary-dark text-white shadow-[0_2px_8px_rgba(30,107,170,0.32)]'
+                  : 'text-tide-muted hover:bg-white hover:text-primary-dark hover:shadow-sm'
               }`}
             >
               {p}
@@ -82,7 +82,7 @@ export default function Pagination({ total, page, perPage = LIBRARY_PAGE_SIZE, o
           aria-disabled={page === totalPages || undefined}
           aria-label={labels.next}
           className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-full text-sm font-body font-medium transition-colors ${
-            page === totalPages ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-white hover:text-primary hover:shadow-sm'
+            page === totalPages ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-white hover:text-primary-dark hover:shadow-sm'
           }`}
         >
           <span className="hidden sm:inline">{labels.next}</span> <ChevronRight className="w-4 h-4" aria-hidden="true" />

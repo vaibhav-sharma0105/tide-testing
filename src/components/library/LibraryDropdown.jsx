@@ -94,7 +94,7 @@ export default function LibraryDropdown({ value, options, onChange, ariaLabel, p
                   } ${isSelected ? 'font-semibold text-primary-dark' : 'text-tide-text'}`}
                 >
                   <span className="flex-1 whitespace-nowrap">{o.label}</span>
-                  {isSelected && <Check className="h-4 w-4 text-primary" aria-hidden="true" />}
+                  {isSelected && <Check className="h-4 w-4 text-primary-dark" aria-hidden="true" />}
                 </li>
               )
             })}

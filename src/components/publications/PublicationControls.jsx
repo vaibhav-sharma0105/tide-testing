@@ -120,10 +120,10 @@ export function FilterMenu({ label, value, onChange, allLabel, total, options, a
           isEnabled ? 'cursor-pointer' : 'cursor-not-allowed text-tide-muted/70'
         } ${i === active && isEnabled ? 'bg-primary-faint' : ''} ${isSelected ? 'font-semibold text-primary-dark' : isEnabled ? 'text-tide-text' : ''}`}
       >
-        <span className="flex h-5 items-center">{isSelected && <Check className="h-4 w-4 text-primary" aria-hidden="true" />}</span>
+        <span className="flex h-5 items-center">{isSelected && <Check className="h-4 w-4 text-primary-dark" aria-hidden="true" />}</span>
         <span className="min-w-0 break-words text-left">{o.label}</span>
         <span className={`min-w-[2.5rem] justify-self-end rounded-full px-2 py-0.5 text-center text-xs font-semibold tabular-nums ${
-          isSelected ? 'bg-primary text-white' : isEnabled ? 'bg-tide-subtle text-tide-text/80' : ''
+          isSelected ? 'bg-primary-dark text-white' : isEnabled ? 'bg-tide-subtle text-tide-text/80' : ''
         }`}>
           {o.count}
         </span>
@@ -223,7 +223,7 @@ export function ActiveFilters({ chips, removeTemplate, clearAllLabel, onClearAll
       <button
         type="button"
         onClick={onClearAll}
-        className={`min-h-11 rounded-full px-2 font-body text-sm font-semibold text-primary hover:text-primary-dark ${FOCUS_PILL}`}
+        className={`min-h-11 rounded-full px-2 font-body text-sm font-semibold text-primary-dark hover:text-primary-dark ${FOCUS_PILL}`}
       >
         {clearAllLabel}
       </button>

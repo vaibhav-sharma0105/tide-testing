@@ -15,12 +15,12 @@ const SOCIAL_ICONS = {
   linkedin:  <LinkedinIcon className="w-4 h-4" />,
 }
 
-const LINK = 'block py-1 -my-0.5 font-body text-sm text-tide-text hover:text-primary transition-colors'
+const LINK = 'block py-1 -my-0.5 font-body text-sm text-tide-text hover:text-primary-dark transition-colors'
 
 function InfoRow({ icon: Icon, label, children }) {
   return (
     <li className="flex gap-4 py-3">
-      <Icon className="w-5 h-5 text-primary shrink-0 mt-0.5" aria-hidden="true" />
+      <Icon className="w-5 h-5 text-primary-dark shrink-0 mt-0.5" aria-hidden="true" />
       <div className="min-w-0">
         <p className="font-body text-xs uppercase tracking-wider text-tide-muted mb-1">{label}</p>
         {children}
@@ -85,7 +85,7 @@ export default function Contact() {
               <p className="font-body text-sm font-semibold text-tide-text">{data.labels.followUs}</p>
               <div className="flex gap-2.5">
                 {data.social.map(s => (
-                  <a key={s.platform} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={data.labels.visitSocial.replace('{platform}', s.platform.charAt(0).toUpperCase() + s.platform.slice(1))} className="w-10 h-10 rounded-full border border-tide-border text-tide-muted hover:bg-primary hover:text-white hover:border-primary flex items-center justify-center transition-colors duration-200">
+                  <a key={s.platform} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={data.labels.visitSocial.replace('{platform}', s.platform.charAt(0).toUpperCase() + s.platform.slice(1))} className="w-10 h-10 rounded-full border border-tide-border text-tide-muted hover:bg-primary-dark hover:text-white hover:border-primary flex items-center justify-center transition-colors duration-200">
                     {SOCIAL_ICONS[s.platform]}
                   </a>
                 ))}
@@ -96,7 +96,7 @@ export default function Contact() {
           <motion.div {...fadeUp(0.15)} className="flex flex-col rounded-3xl border border-tide-border bg-tide-bg p-3 sm:p-4">
             <div className="flex items-center gap-3 px-2 pt-1 pb-3">
               <span className="w-10 h-10 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
-                <MapPin className="w-5 h-5 text-primary" aria-hidden="true" />
+                <MapPin className="w-5 h-5 text-primary-dark" aria-hidden="true" />
               </span>
               <div className="min-w-0">
                 <p className="font-body text-xs uppercase tracking-wider text-tide-muted">{data.map.eyebrow}</p>
@@ -116,7 +116,7 @@ export default function Contact() {
               href={data.map.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-3 mb-1 mx-2 inline-flex items-center gap-1.5 self-start min-h-[44px] font-body font-semibold text-sm text-primary-dark hover:text-primary underline-offset-4 hover:underline transition-colors"
+              className="group mt-3 mb-1 mx-2 inline-flex items-center gap-1.5 self-start min-h-[44px] font-body font-semibold text-sm text-primary-dark hover:text-primary-dark underline-offset-4 hover:underline transition-colors"
             >
               {data.map.mapsLabel}
               <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none" aria-hidden="true" />

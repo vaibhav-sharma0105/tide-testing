@@ -71,7 +71,7 @@ function Summary({ text, data }) {
           aria-expanded={expanded}
           aria-controls={id}
           onClick={() => setExpanded(e => !e)}
-          className={`-ml-1 mt-0.5 inline-flex min-h-11 items-center rounded-full px-1 font-body text-sm font-semibold text-primary hover:text-primary-dark ${FOCUS_PILL}`}
+          className={`-ml-1 mt-0.5 inline-flex min-h-11 items-center rounded-full px-1 font-body text-sm font-semibold text-primary-dark hover:text-primary-dark ${FOCUS_PILL}`}
         >
           {expanded ? data.entry.showLess : data.entry.showMore}
         </button>
@@ -98,7 +98,7 @@ function CopyCitation({ citation, title, data }) {
         onClick={onClick}
         aria-label={data.a11y.copyLabelTemplate.replace('{title}', () => title ?? '')}
         className={`-my-2 -mr-2 inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 font-body text-xs font-semibold transition-colors ${FOCUS_PILL} ${
-          copied ? 'text-primary-dark' : 'text-primary hover:bg-white hover:text-primary-dark'
+          copied ? 'text-primary-dark' : 'text-primary-dark hover:bg-white hover:text-primary-deeper'
         }`}
       >
         {copied ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
@@ -185,7 +185,7 @@ export default function ResearchEntry({ row, data, terms }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={openLabel}
-              className={`inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 font-body text-sm font-semibold text-white shadow-sm shadow-primary/25 transition-colors hover:bg-primary-dark ${FOCUS_PILL}`}
+              className={`inline-flex min-h-11 items-center gap-2 rounded-full bg-primary-dark px-5 font-body text-sm font-semibold text-white shadow-sm shadow-primary/25 transition-colors hover:bg-primary-dark ${FOCUS_PILL}`}
             >
               {data.entry.read}
               <ExternalLink className="h-4 w-4" aria-hidden="true" />

@@ -104,7 +104,7 @@ function Spotlight({ row, data, sameType, onSeeAll }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={openLabel(data, data.featured.read, row.title)}
-                className={`inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-6 font-body text-[15px] font-semibold text-white shadow-md shadow-primary/25 transition-colors hover:bg-primary-dark ${FOCUS_PILL}`}
+                className={`inline-flex min-h-12 items-center gap-2 rounded-full bg-primary-dark px-6 font-body text-[15px] font-semibold text-white shadow-md shadow-primary/25 transition-colors hover:bg-primary-dark ${FOCUS_PILL}`}
               >
                 {data.featured.read}
                 <ExternalLink className="h-4 w-4" aria-hidden="true" />
@@ -157,7 +157,7 @@ function PublicationCard({ row, data, terms }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={openLabel(data, data.library.open, row.title)}
-              className={`-ml-1 inline-flex min-h-11 items-center gap-1.5 rounded-full px-1 font-body text-sm font-semibold text-primary hover:text-primary-dark ${FOCUS_PILL}`}
+              className={`-ml-1 inline-flex min-h-11 items-center gap-1.5 rounded-full px-1 font-body text-sm font-semibold text-primary-dark hover:text-primary-dark ${FOCUS_PILL}`}
             >
               {data.library.open}
               <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />

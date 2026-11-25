@@ -89,7 +89,7 @@ export default function PartnerIndexBar({ groups, activeKey, onJump, headingId, 
                     className={`group relative flex h-16 items-center gap-1.5 whitespace-nowrap px-3 font-body text-sm font-semibold transition-colors focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/50 focus-visible:rounded-lg ${active ? 'text-tide-text' : 'text-tide-muted hover:text-tide-text'}`}
                   >
                     {g.label}
-                    <span className={`rounded-full px-1.5 py-px text-[11px] tabular-nums transition-colors ${active ? 'bg-primary text-white' : 'bg-tide-border/60 text-tide-mutedOnLight group-hover:bg-primary-light group-hover:text-primary-dark'}`}>
+                    <span className={`rounded-full px-1.5 py-px text-[11px] tabular-nums transition-colors ${active ? 'bg-primary-dark text-white' : 'bg-tide-border/60 text-tide-mutedOnLight group-hover:bg-primary-light group-hover:text-primary-dark'}`}>
                       {g.partners.length}
                     </span>
                     {active && (

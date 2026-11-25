@@ -31,10 +31,11 @@ describe('Button', () => {
   })
 
   // --- variants ---
-  it('renders primary variant with gradient class', () => {
+  it('renders primary variant on primary-dark (white text at AAA 7:1)', () => {
     renderButton({ children: 'Primary', variant: 'primary' })
     const el = screen.getByRole('button')
-    expect(el.className).toContain('bg-gradient-to-br')
+    expect(el.className).toContain('bg-primary-dark')
+    expect(el.className).not.toContain('from-primary ')
   })
 
   it('renders ghost variant with text-primary class', () => {

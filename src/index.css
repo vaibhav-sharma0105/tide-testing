@@ -61,7 +61,7 @@
   /* ── Badges ──────────────────────────────── */
   .badge-primary {
     @apply inline-flex items-center gap-1.5 px-3 py-1 text-xs font-body font-semibold rounded-full
-           bg-primary-faint text-primary border border-primary/20 tracking-widest uppercase;
+           bg-primary-faint text-primary-dark border border-primary/20 tracking-widest uppercase;
   }
   .badge-accent {
     /* text-accent-deeper, not text-accent-dark — verified by hand: accent-dark
