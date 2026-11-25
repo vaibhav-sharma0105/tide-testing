@@ -129,8 +129,8 @@ function Intro() {
 
   return (
     <section className="section-padding bg-tide-bg">
-      <div className="max-w-3xl mx-auto">
-        <motion.div {...fadeUp()} className="mb-10 md:mb-12">
+      <div className="max-w-5xl mx-auto">
+        <motion.div {...fadeUp()} className="mb-10 max-w-3xl md:mb-12">
           <Link
             to={meta.backHref}
             className="group inline-flex items-center gap-2 font-body text-sm font-semibold text-tide-muted underline-offset-4 transition-colors hover:text-primary-dark hover:underline"
@@ -140,7 +140,7 @@ function Intro() {
           </Link>
         </motion.div>
 
-        <motion.header {...fadeUp()} className="mb-10 md:mb-12">
+        <motion.header {...fadeUp()} className="mb-10 max-w-3xl md:mb-12">
           <p className="mb-3 flex items-center gap-3 font-body text-xs font-bold uppercase tracking-[0.18em] text-accent-deeper">
             <span aria-hidden="true" className="h-px w-8 bg-accent-deeper" />
             {intro.eyebrow}
@@ -148,7 +148,7 @@ function Intro() {
           <h2 className="font-display text-3xl font-semibold leading-tight text-tide-text md:text-4xl">{intro.heading}</h2>
         </motion.header>
 
-        <div className="relative">
+        <div className="relative max-w-3xl">
           {!reduce && (
             // Above the first stop, centred on the line (not joined to it): one filled blue disc whose
             // icon changes — pause while the dot walks, play when paused, replay when finished. A 44px
@@ -279,7 +279,7 @@ function PlaceholderProfiles() {
 
   return (
     <section id="profiles" className="section-padding border-t border-tide-border bg-tide-warm">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <motion.div {...fadeUp()} className="mb-10 text-center md:mb-12">
           <span className="mb-4 inline-block rounded-full border border-accent-dark/40 bg-accent-faint px-3 py-1 font-body text-xs font-semibold uppercase tracking-widest text-accent-deeper">
             {comingSoon.badge}
@@ -369,7 +369,7 @@ function Profiles({ batches }) {
 
   return (
     <section id="profiles" className="section-padding border-t border-tide-border bg-tide-warm">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-5xl">
         <motion.header {...fadeUp()} className="mb-8 max-w-2xl md:mb-10">
           <h2 className="font-display text-3xl font-semibold leading-tight text-tide-text md:text-4xl">{text.list.heading}</h2>
           <p className="mt-3 font-body text-base leading-relaxed text-tide-muted md:text-lg">{text.list.intro}</p>
