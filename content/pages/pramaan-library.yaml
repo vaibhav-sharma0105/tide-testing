@@ -8,7 +8,7 @@
 # Badge, titles and back label are the former Resource Centre's (owner decision, 2026-11-19).
 meta:
   badge: "Resources · ABL"
-  title: "Resource Center"
+  title: "Resource Centre"
   subtitle: "Browse all Activity-Based Learning resources. Filter by subject, type, grade and owner."
   seoTitle: "Resource Centre — Pramaan — TIDE Foundation"
   seoDescription: "Browse free Activity-Based Learning resources for Grades {gradeRange} — worksheets, games, kits and flashcards, filterable by subject, type, grade and owner."
@@ -73,7 +73,7 @@ card:
   moreGradesTemplate: "+{n} more"
 
 detail:
-  backLabel: "Back to Resource Center"
+  backLabel: "Back to Resource Centre"
   titleTemplate: "{name} — TIDE Pramaan"
   notFoundSeoTitle: "Resource Not Found — TIDE Pramaan"
   notFoundHeading: "Resource Not Found"
