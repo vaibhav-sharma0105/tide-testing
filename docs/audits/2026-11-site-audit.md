@@ -668,7 +668,7 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 | 1 | "Resource Center" vs "Resource Centre" | Copy | baseline |
 | 2 | AAA contrast: darker text tokens | **Done 2026-11-25** (`4939f3c`, `4c86040` + resource-type colours, chips, Donate): a11y-audit 0 AA and 0 AAA findings on 21 URLs | P2 |
 | 3 | SCF intro dot loops forever* (2.2.2) | **Done 2026-11-25**: the dot walks once, then rests; a control above the first stop pauses / plays / replays (one blue disc, icon changes) | P2 |
-| 4 | 44 px targets vs the `sm` button / pagination / chips | Decide | P2 |
+| 4 | 44 px targets vs the `sm` button / pagination / chips | **Done 2026-11-25**: invisible 44 px areas (`hit-44`, hover fires in the whole area) on header Donate, phone menu, footer + Contact social icons, grade chips, page numbers / Prev / Next (from 640 px up; phones keep one row, AA met); search fields, "All types", Filters, Contact rows to 44 px; no overlapping areas on 5 pages × 2 widths. Not changed: the Social Changemakers name button (the whole card opens the same profile) | P2 |
 | 5 | Distinct link wording; spell out SCF/MCCx/ABL/THRIvE | Copy | P2 |
 | 6 | Video captions / transcripts* | Action + Copy | P2 |
 | 7 | Devanagari titles: mark as Hindi? | Decide | P2 |

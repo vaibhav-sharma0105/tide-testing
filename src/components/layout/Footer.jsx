@@ -40,7 +40,7 @@ export default function Footer() {
           </Link>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8">
-            <div className="flex flex-col sm:flex-row sm:gap-8">
+            <div className="flex flex-col gap-2 sm:flex-row sm:gap-8">
               <a href={`mailto:${contactData.info.email}`} className={quietLink}>
                 {contactData.info.email}
               </a>
@@ -51,13 +51,13 @@ export default function Footer() {
 
             {/* social + donate share one row, even on phones */}
             <div className="flex items-center justify-between gap-6 sm:justify-start">
-              <div className="-mx-2.5 flex items-center">
+              <div className="-mx-2.5 flex items-center gap-1">
                 {footerData.social.map(({ href, platform, name }) => {
                   const Icon = SOCIAL_ICONS[platform]
                   return (
                     <a key={platform} href={href} target="_blank" rel="noopener noreferrer"
                       aria-label={footerData.socialAriaLabel.replace('{platform}', name)}
-                      className="flex h-10 w-10 items-center justify-center rounded-full text-white/60 hover:bg-white/10 hover:text-white transition-colors"
+                      className="hit-44 relative flex h-10 w-10 items-center justify-center rounded-full text-white/60 hover:bg-white/10 hover:text-white transition-colors"
                     >
                       <Icon className="h-[18px] w-[18px]" />
                     </a>

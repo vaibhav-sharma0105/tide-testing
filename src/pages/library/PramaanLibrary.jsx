@@ -160,7 +160,7 @@ export default function PramaanLibrary() {
                       onClick={() => setDrawerOpen(true)}
                       aria-haspopup="dialog"
                       aria-expanded={drawerOpen}
-                      className={`order-2 sm:order-1 lg:hidden inline-flex flex-shrink-0 items-center gap-2 px-4 py-2.5 rounded-full border border-tide-border bg-white text-sm font-body font-semibold text-tide-text hover:border-primary/40 transition-colors shadow-sm ${FOCUS_PILL}`}
+                      className={`order-2 sm:order-1 lg:hidden inline-flex min-h-11 flex-shrink-0 items-center gap-2 px-4 py-2.5 rounded-full border border-tide-border bg-white text-sm font-body font-semibold text-tide-text hover:border-primary/40 transition-colors shadow-sm ${FOCUS_PILL}`}
                     >
                       <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
                       {data.page.filtersButton}

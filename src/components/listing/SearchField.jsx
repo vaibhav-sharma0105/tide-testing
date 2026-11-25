@@ -15,7 +15,7 @@ export default function SearchField({ value, onChange, placeholder, label, clear
         onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
         aria-label={label}
-        className="w-full rounded-full border border-tide-border bg-white py-2.5 pl-11 pr-10 text-sm font-body text-tide-text shadow-sm placeholder:text-tide-muted transition-colors hover:border-primary/40 focus:border-primary focus:outline-none focus-visible:outline-none focus-visible:rounded-full focus:ring-2 focus:ring-primary/25 [&::-webkit-search-cancel-button]:appearance-none"
+        className="min-h-11 w-full rounded-full border border-tide-border bg-white py-2.5 pl-11 pr-10 text-sm font-body text-tide-text shadow-sm placeholder:text-tide-muted transition-colors hover:border-primary/40 focus:border-primary focus:outline-none focus-visible:outline-none focus-visible:rounded-full focus:ring-2 focus:ring-primary/25 [&::-webkit-search-cancel-button]:appearance-none"
       />
       {value && (
         <button

@@ -40,14 +40,14 @@ export default function Pagination({ total, page, perPage = LIBRARY_PAGE_SIZE, o
       <p className="text-sm font-body text-tide-muted">
         {labels.showing} {startItem}–{endItem} {labels.of} {total} {labels.resources}
       </p>
-      <div className="flex flex-wrap items-center justify-center gap-0.5 sm:gap-1">
+      <div className="flex flex-wrap items-center justify-center gap-0.5 sm:gap-2.5">
         <Control
           hrefFor={hrefFor}
           to={page > 1 ? page - 1 : null}
           onActivate={() => page > 1 && onChange(page - 1)}
           aria-disabled={page === 1 || undefined}
           aria-label={labels.previousLabel}
-          className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-full text-sm font-body font-medium transition-colors ${
+          className={`sm:hit-44 relative flex items-center gap-1 px-2 sm:px-4 py-2 rounded-full text-sm font-body font-medium transition-colors ${
             page === 1 ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-white hover:text-primary-dark hover:shadow-sm'
           }`}
         >
@@ -64,7 +64,7 @@ export default function Pagination({ total, page, perPage = LIBRARY_PAGE_SIZE, o
               to={p}
               onActivate={() => onChange(p)}
               aria-current={p === page ? 'page' : undefined}
-              className={`inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full text-sm font-body font-medium transition-all ${
+              className={`sm:hit-44 relative inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full text-sm font-body font-medium transition-all ${
                 p === page
                   ? 'bg-primary-dark text-white shadow-[0_2px_8px_rgba(30,107,170,0.32)]'
                   : 'text-tide-muted hover:bg-white hover:text-primary-dark hover:shadow-sm'
@@ -81,7 +81,7 @@ export default function Pagination({ total, page, perPage = LIBRARY_PAGE_SIZE, o
           onActivate={() => page < totalPages && onChange(page + 1)}
           aria-disabled={page === totalPages || undefined}
           aria-label={labels.next}
-          className={`flex items-center gap-1 px-2 sm:px-4 py-2 rounded-full text-sm font-body font-medium transition-colors ${
+          className={`sm:hit-44 relative flex items-center gap-1 px-2 sm:px-4 py-2 rounded-full text-sm font-body font-medium transition-colors ${
             page === totalPages ? 'text-tide-border cursor-not-allowed' : 'text-tide-muted hover:bg-white hover:text-primary-dark hover:shadow-sm'
           }`}
         >

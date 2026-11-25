@@ -317,7 +317,7 @@ export default function Header() {
         <div className="flex items-center gap-2.5 flex-shrink-0">
           <Link
             to="/get-involved/donate"
-            className="hidden md:inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-body font-semibold rounded-full
+            className="hit-44 relative hidden md:inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-body font-semibold rounded-full
                        gradient-accent text-tide-text shadow-sm hover:shadow-glow-amber hover:scale-[1.03]
                        transition-all duration-200"
           >
@@ -328,7 +328,7 @@ export default function Header() {
           {/* Mobile hamburger */}
           <button
             ref={hamburgerRef}
-            className={`lg:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-tide-text hover:bg-tide-subtle' : 'text-white hover:bg-white/10'}`}
+            className={`hit-44 relative lg:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-tide-text hover:bg-tide-subtle' : 'text-white hover:bg-white/10'}`}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={navData.menuToggleLabel}
             aria-expanded={mobileOpen}

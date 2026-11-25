@@ -202,6 +202,20 @@
   height: max(100%, 44px);
   transform: translate(-50%, -50%);
 }
+/* The same from 640px up only (`sm:hit-44`), for rows that have no room for 44px spacing on phones
+   (the Resource Centre page numbers; AA 24px is met there). Hover fires anywhere in the area,
+   since the ::after box belongs to the control. */
+@media (min-width: 640px) {
+  .sm\:hit-44::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+}
 
 /* Focus targets that are not controls — <main> after the skip link, a page's <h1> after a page
    change (Layout) — take focus only so the reading position moves; they draw no ring. */

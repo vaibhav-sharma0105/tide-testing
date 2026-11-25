@@ -48,7 +48,7 @@ function FilterSection({ title, children, open, onToggle, labelId }) {
   )
 }
 
-const pill = (active) => `px-3.5 py-1.5 rounded-full text-xs font-body font-semibold border transition-all duration-150 ${focusRing('focus-visible:rounded-full')} ${
+const pill = (active) => `hit-44 relative px-3.5 py-1.5 rounded-full text-xs font-body font-semibold border transition-all duration-150 ${focusRing('focus-visible:rounded-full')} ${
   active ? 'bg-primary-dark text-white border-primary shadow-md shadow-primary/25' : 'bg-primary-faint text-primary-dark border-primary/20 hover:border-primary/50 hover:bg-primary-light'
 }`
 
@@ -103,7 +103,7 @@ export default function LibraryFilters({ options, filters, onChange, onClear, ac
               type="button"
               onClick={() => set({ type: '' })}
               aria-pressed={!filters.type}
-              className={`flex w-full items-center gap-2.5 rounded-2xl border px-3.5 py-2.5 font-body text-sm font-semibold transition-all duration-200 ${focusRing('focus-visible:rounded-2xl')} ${
+              className={`flex min-h-11 w-full items-center gap-2.5 rounded-2xl border px-3.5 py-2.5 font-body text-sm font-semibold transition-all duration-200 ${focusRing('focus-visible:rounded-2xl')} ${
                 !filters.type ? 'border-primary bg-primary-dark text-white shadow-lg shadow-primary/25' : 'border-tide-border bg-white text-tide-muted hover:border-primary/40 hover:text-primary-dark'
               }`}
             >
@@ -163,7 +163,7 @@ export default function LibraryFilters({ options, filters, onChange, onClear, ac
       )}
 
       <FilterSection title={f.gradesTitle} open={open.grades} onToggle={() => toggle('grades')}>
-        <div className="flex flex-wrap gap-2 px-1">
+        <div className="flex flex-wrap gap-x-2 gap-y-3.5 px-1 pt-1.5">
           {LIBRARY_GRADES.map(g => {
             const active = filters.grades.includes(g)
             return (

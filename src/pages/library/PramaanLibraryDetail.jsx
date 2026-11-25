@@ -58,7 +58,7 @@ function Coverage({ chapters, accent }) {
               aria-pressed={isActive}
               aria-label={`${gradeLabel(grade)}: ${list.length}`}
               onClick={() => setOpen(isActive ? null : grade)}
-              className="flex flex-col items-center gap-1.5 cursor-pointer"
+              className="flex min-w-11 flex-col items-center gap-1.5 cursor-pointer"
             >
               <span className={`w-full aspect-square rounded-xl border flex items-center justify-center text-base font-display font-semibold transition-all duration-200 ${
                 isActive ? `${accent.selectedTile} -translate-y-0.5` : `${accent.badge} hover:-translate-y-0.5 hover:shadow-card`

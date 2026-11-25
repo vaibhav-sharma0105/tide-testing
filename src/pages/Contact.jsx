@@ -15,7 +15,7 @@ const SOCIAL_ICONS = {
   linkedin:  <LinkedinIcon className="w-4 h-4" />,
 }
 
-const LINK = 'block py-1 -my-0.5 font-body text-sm text-tide-text hover:text-primary-dark transition-colors'
+const LINK = 'block min-h-11 py-3 font-body text-sm leading-5 text-tide-text hover:text-primary-dark transition-colors'
 
 function InfoRow({ icon: Icon, label, children }) {
   return (
@@ -85,7 +85,7 @@ export default function Contact() {
               <p className="font-body text-sm font-semibold text-tide-text">{data.labels.followUs}</p>
               <div className="flex gap-2.5">
                 {data.social.map(s => (
-                  <a key={s.platform} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={data.labels.visitSocial.replace('{platform}', s.platform.charAt(0).toUpperCase() + s.platform.slice(1))} className="w-10 h-10 rounded-full border border-tide-border text-tide-muted hover:bg-primary-dark hover:text-white hover:border-primary flex items-center justify-center transition-colors duration-200">
+                  <a key={s.platform} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={data.labels.visitSocial.replace('{platform}', s.platform.charAt(0).toUpperCase() + s.platform.slice(1))} className="hit-44 relative w-10 h-10 rounded-full border border-tide-border text-tide-muted hover:bg-primary-dark hover:text-white hover:border-primary flex items-center justify-center transition-colors duration-200">
                     {SOCIAL_ICONS[s.platform]}
                   </a>
                 ))}
