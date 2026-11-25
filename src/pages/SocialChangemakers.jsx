@@ -150,9 +150,9 @@ function Intro() {
 
         <div className="relative">
           {!reduce && (
-            // Above the first stop, centred on the line (not joined to it). While the dot walks it is a
-            // bare pause icon; paused (play) or finished (replay) it is a filled blue disc that invites
-            // a press, like the Partners rows' play button. A 44px target either way.
+            // Above the first stop, centred on the line (not joined to it): one filled blue disc whose
+            // icon changes — pause while the dot walks, play when paused, replay when finished. A 44px
+            // target; the icons cross-fade as in the Partners rows' play button.
             <button
               type="button"
               onClick={onControl}
@@ -160,9 +160,7 @@ function Intro() {
               className="group/play absolute left-[2px] top-0 z-10 flex h-11 w-11 items-center justify-center rounded-full focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
             >
               <span
-                className={`relative flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300 ease-out group-active/play:scale-90 ${status === 'playing'
-                  ? 'text-primary-dark group-hover/play:text-primary-deeper'
-                  : 'bg-primary-dark text-white shadow-[0_4px_10px_-4px_rgba(30,107,170,0.7)] group-hover/play:scale-[1.06]'}`}
+                className="relative flex h-9 w-9 items-center justify-center rounded-full bg-primary-dark text-white shadow-[0_4px_10px_-4px_rgba(30,107,170,0.7)] transition-all duration-300 ease-out group-hover/play:scale-[1.06] group-active/play:scale-90"
               >
                 <Pause aria-hidden="true" fill="currentColor" className={`absolute h-3.5 w-3.5 transition-all duration-300 ${status === 'playing' ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-50 opacity-0'}`} />
                 <Play aria-hidden="true" fill="currentColor" className={`absolute ml-0.5 h-3.5 w-3.5 transition-all duration-300 ${status === 'paused' ? 'rotate-0 scale-100 opacity-100' : 'rotate-90 scale-50 opacity-0'}`} />
