@@ -3,7 +3,7 @@ meta:
   # The banner leads with the programme name; the descriptor beneath keeps "ABL Resource Library".
   title: "Pramaan"
   descriptor: "ABL Resource Library"
-  subtitle: "A curated library of Activity-Based Learning resources for Grades {gradeRange}, developed and used by TIDE Foundation educators."
+  subtitle: "A curated library of Activity-Based Learning (ABL) resources for Grades {gradeRange}, developed and used by TIDE Foundation educators."
   seoTitle: "Pramaan — ABL Resource Library — TIDE Foundation"
   seoDescription: "Browse Activity-Based Learning resources for Grades {gradeRange} developed by TIDE Foundation educators."
   # Last crumb in the SEO breadcrumb trail (Home > ... > this page)

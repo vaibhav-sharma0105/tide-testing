@@ -22,7 +22,7 @@ volunteer:
       to: "/education-for-harmony/mccx"
       linkLabel: "About MCCx"
   statLabel: "lives impacted across Gujarat"
-  ctaLabel: "Apply via Google Form"
+  ctaLabel: "Apply to volunteer"
   ctaHref: "https://forms.gle/nrqP3qs5YvWnVv3C8"
   images:
     - src: "/assets/images/get-involved-volunteer/gallery-01.jpg"
@@ -39,7 +39,7 @@ join:
   jdIntro: "Our current open job descriptions and their details are in this shared folder."
   jdLabel: "View open job descriptions"
   jdHref: "https://drive.google.com/drive/folders/1xvubu6Xyzli9gWrHfSX9djPyBXrNpF9S?usp=drive_link"
-  ctaLabel: "Apply via Google Form"
+  ctaLabel: "Apply to work with TIDE"
   ctaHref: "https://forms.gle/yaKzPako68kc9b1x7"
   contactLabel: "Questions? Write to us at"
   contactEmail: "tidefoundation@gmail.com"

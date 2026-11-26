@@ -11,7 +11,7 @@ meta:
 # The three sentences are read in order, one per stop on the thread; the highlighted words are underlined.
 intro:
   # The small label and the heading above the three sentences.
-  eyebrow: "Social Changemakers' Fellowship"
+  eyebrow: "Social Changemakers' Fellowship (SCF)"
   heading: "Students driving positive change"
   highlights: ["positive change", "environmental challenges", "social justice"]
   jumpLabel: "See the student profiles"
