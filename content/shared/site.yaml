@@ -7,12 +7,14 @@ name: "TIDE Foundation"
 alternateName: "Together in Development and Education Foundation"
 # The site's address for search engines: every canonical link, the breadcrumb and organisation
 # structured data, sitemap.xml, robots.txt's Sitemap line and llms.txt are built from this one value.
-# Write it without a trailing slash. (Which host should be canonical while the new site is only on
-# GitHub Pages is an open owner question: docs/audits/2026-11-site-audit.md.)
+# Write it without a trailing slash. It stays the real domain: at go-live the domain is pointed at
+# this GitHub Pages site (owner decision 2026-11-25; checklist in docs/audits/2026-11-site-audit.md).
 url: "https://tideinternational.org"
 # false = every page tells search engines not to index it (<meta name="robots" content="noindex">),
 # e.g. for a test copy of the site. true = normal.
-indexable: true
+# Staging (github.io/tide-testing): false until the domain moves (owner decision 2026-11-25).
+# Set back to true on go-live day.
+indexable: false
 logo: "/assets/images/shared/tide-logo.png"
 # Shown in place of any image that fails to load (see src/utils/imagePlaceholder.js).
 placeholderImage: "/assets/images/shared/placeholder.svg"

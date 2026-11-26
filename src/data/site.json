@@ -2,7 +2,7 @@
   "name": "TIDE Foundation",
   "alternateName": "Together in Development and Education Foundation",
   "url": "https://tideinternational.org",
-  "indexable": true,
+  "indexable": false,
   "logo": "assets/images/shared/tide-logo.png",
   "placeholderImage": "assets/images/shared/placeholder.svg",
   "pageBannerTexture": "assets/images/shared/page-banner-bg.webp",

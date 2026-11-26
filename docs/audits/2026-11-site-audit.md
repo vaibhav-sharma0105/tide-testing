@@ -670,9 +670,9 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 | 3 | SCF intro dot loops forever* (2.2.2) | **Done 2026-11-25**: the dot walks once, then rests; a control above the first stop pauses / plays / replays (one blue disc, icon changes) | P2 |
 | 4 | 44 px targets vs the `sm` button / pagination / chips | **Done 2026-11-25**: invisible 44 px areas (`hit-44`, hover fires in the whole area) on header Donate, phone menu, footer + Contact social icons, grade chips, page numbers / Prev / Next (from 640 px up; phones keep one row, AA met); search fields, "All types", Filters, Contact rows to 44 px; no overlapping areas on 5 pages × 2 widths. Not changed: the Social Changemakers name button (the whole card opens the same profile) | P2 |
 | 5 | Distinct link wording; spell out SCF/MCCx/ABL/THRIvE | **Done 2026-11-25**: Volunteer forms "Apply to volunteer" / "Apply to work with TIDE"; "Activity-Based Learning (ABL)" at first use on the 3 Pramaan pages; "Social Changemakers' Fellowship (SCF)". Kept by owner decision: the Education for Harmony "Find out more" links, MCC / MCCx, THRIvE | P2 |
-| 6 | Video captions / transcripts* | **Decided 2026-11-25: not done** — the owner relies on YouTube's automatic captions (WCAG treats uncorrected automatic captions as not meeting 1.2.2; Drive videos not checked) | P2 |
+| 6 | Video captions / transcripts* | **Decided 2026-11-25: not done now** — Drive videos are being moved to YouTube, which adds captions; if some stay without captions that is accepted (WCAG treats uncorrected automatic captions as not meeting 1.2.2) | P2 |
 | 7 | Devanagari titles: mark as Hindi? | **Decided 2026-11-25: keep as is** (unmarked) | P2 |
-| 8 | Canonical host and staging indexing (`indexable`) | Decide | P3 |
+| 8 | Canonical host and staging indexing (`indexable`) | **Done 2026-11-25**: `site.yaml` `indexable: false` on staging (all 265 built pages carry `noindex`); `url` stays `https://tideinternational.org`. Production = the same GitHub Pages site with the TIDE domain (no WordPress) — see "Go-live checklist" | P3 |
 | 9 | Old WordPress addresses at cutover | Decide + list | P3 |
 | 10 | AI training crawlers (`allowTraining`) | Decide | P3 |
 | 11 | Figures typed in `llms.txt` / "12 yrs" / "six projects" | Copy | P3 |
@@ -741,6 +741,17 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 - **(P6) Lightbox dots vs WCAG 2.5.8 (AA, P6-11).** `src/components/ui/Lightbox.jsx:124-133`: 6×6 px dots 12 px apart fail the AA target-spacing rule (axe flags it intermittently; quarantined in that one e2e state). Recommendation: make each dot a 24 px button with the 6 px dot drawn inside. Trade-off: the strip grows from ~114 to ~240 px. Alternative: arrows plus a "2 / 10" counter (needs new `ui.yaml` text).
 - **(P6) Print styles (P6-8).** None exist. Recommendation: a small `@media print` sheet only if people print citations or resources. Trade-off: one more stylesheet to keep in step with design changes.
 - **(P6) E2E failures now block deploys**, including deploys started by the sync bots, and add ~2 min (estimated) per deploy. Recommendation: keep blocking. Trade-off: a flaky test or a real regression holds back fresh Sheet data until fixed; report-only would let a broken page go live. If the repo is private, the nightly run (45-minute cap) counts against the plan's Actions minutes; standard runners are free on public repos.
+
+## Go-live checklist (parked, owner decision 2026-11-25)
+
+Production will be this GitHub Pages site with the TIDE domain pointed at it; the WordPress site goes away. On go-live day, in this order:
+1. Base path: the build puts the site under `/tide-testing/` whenever `GITHUB_ACTIONS` is set (`vite.config.js:5`, and the same rule in `scripts/prerender.mjs`, `scripts/check-dist.mjs`, `scripts/serve-pages.mjs`, `playwright.site.config.js`). On the domain it lives at `/`: change that rule (one setting for all of them) and rebuild.
+2. Add `public/CNAME` with the domain (none exists yet), then in the repo's Settings → Pages set the custom domain.
+3. DNS at the domain registrar: point the domain to GitHub Pages (GitHub's documented A / CNAME records).
+4. Settings → Pages: turn on "Enforce HTTPS" once the certificate is issued.
+5. `content/shared/site.yaml`: `indexable: true`.
+6. Old WordPress addresses (owner item 9): decide which get forwarding pages before the switch.
+7. After the deploy: `curl -I` a few addresses (`/`, `/about/why-tide`, `/pramaan`, an unknown address) to confirm 200 / 404 and which of `x.html` / `x/` GitHub Pages serves (P3-3, P6-7); submit the sitemap in Google Search Console.
 
 ## Deferred / out of scope
 
