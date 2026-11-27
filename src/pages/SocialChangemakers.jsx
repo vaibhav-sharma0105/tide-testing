@@ -430,6 +430,10 @@ function Profiles({ batches }) {
 }
 
 export default function SocialChangemakers() {
+  // An open profile (?fellow=<id>) is never listed by search engines; the list page is (owner decision
+  // 2026-11-27: the list keeps the old Fellowship pages' search reputation, single students stay out).
+  const [searchParams] = useSearchParams()
+  const profileOpen = searchParams.has('fellow')
   const batches = groupByBatch(snapshot.resources)
   const total = batches.reduce((n, b) => n + b.fellows.length, 0)
   const films = batches.reduce((n, b) => n + b.fellows.filter(f => f.videoUrl).length, 0)
@@ -445,8 +449,7 @@ export default function SocialChangemakers() {
         title={data.meta.seoTitle}
         description={data.meta.seoDescription}
         path="/education-for-harmony/social-changemakers"
-        // Never listed by search or AI search: the fellows are students (owner decision 2026-11-27).
-        noindex
+        noindex={profileOpen}
         breadcrumbs={[
           { name: site.breadcrumbs.home, path: '/' },
           { name: site.breadcrumbs.educationForHarmony, path: '/education-for-harmony' },

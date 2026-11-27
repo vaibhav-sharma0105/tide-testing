@@ -62,7 +62,7 @@ Confidence: **High** = the old page is about what the new page shows; **Medium**
 |---|---|---|---|
 | `/exploring-the-happiness-curriculum/` | `/thrive/publications?search=happiness` | High | old page "Exploring the happiness curriculum" (Delhi Happiness Curriculum research + papers); search returns 7 THRIvE rows |
 | `/citizenship-education-through-contextualized-discussions-of-sustainability/` | `/education-for-harmony/mccx` | Medium | a dissertation on students in TIDE's Model City Council; no publication row matches; MCC page `get-involved-mccx.yaml` |
-| `/role-of-social-changemaking-projects-in-holistic-development/` | `/education-for-harmony` | Medium | article on social changemaking projects in holistic development; no publication row; `education-for-harmony.yaml` (Social Changemakers, holistic aims); the SCF page itself is noindex |
+| `/role-of-social-changemaking-projects-in-holistic-development/` | `/education-for-harmony` | Medium | article on social changemaking projects in holistic development; no publication row; `education-for-harmony.yaml` (Social Changemakers, holistic aims); the Social Changemakers list is an alternative |
 | `/researching-value-based-education/` | `/thrive` | High | "Researching Value Based Education" hub (research profiles, publications, happiness-curricula study) = the research centre |
 | `/help-us-bring-a-change/` | `/get-involved/donate` | High | old page title "Donate Now" |
 | `/apply-now/` | `/get-involved/volunteer` | High | internship "Apply Now!"; volunteer page covers "Volunteer or intern" |

@@ -41,9 +41,7 @@
       "meta-externalagent"
     ],
     "allowTraining": false,
-    "private": [
-      "/education-for-harmony/social-changemakers"
-    ]
+    "private": []
   },
   "breadcrumbs": {
     "home": "Home",

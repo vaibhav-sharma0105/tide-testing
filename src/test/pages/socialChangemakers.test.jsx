@@ -176,14 +176,24 @@ describe('Intro moving dot (WCAG 2.2.2)', () => {
 })
 
 describe('Search engines', () => {
-  it('asks not to be listed, whatever site.yaml indexable says: the fellows are students', async () => {
-    // Helmet is stubbed in src/test/setup.js, so read the props the page gives SeoHead.
+  // Helmet is stubbed in src/test/setup.js, so read the props the page gives SeoHead.
+  async function seoProps(path) {
     const seen = []
     vi.doMock('../../components/ui/SeoHead', () => ({ default: (props) => { seen.push(props); return null } }))
-    await renderPage()
+    await renderPage(ROWS, path)
     vi.doUnmock('../../components/ui/SeoHead')
     expect(seen.length).toBeGreaterThan(0)
-    expect(seen.at(-1).path).toBe('/education-for-harmony/social-changemakers')
-    expect(seen.at(-1).noindex).toBe(true)
+    return seen.at(-1)
+  }
+
+  it('the list may be listed (keeps the old Fellowship pages\' reputation)', async () => {
+    const p = await seoProps('/education-for-harmony/social-changemakers')
+    expect(p.path).toBe('/education-for-harmony/social-changemakers')
+    expect(p.noindex).toBe(false)
+  })
+
+  it('an open profile (?fellow=) is never listed: the fellows are students', async () => {
+    const p = await seoProps('/education-for-harmony/social-changemakers?fellow=SC-b')
+    expect(p.noindex).toBe(true)
   })
 })
