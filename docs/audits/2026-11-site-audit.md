@@ -684,12 +684,12 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 | 17 | GitHub settings (branch rule, secret scanning, CODEOWNERS, 2FA) | **Later (owner, 2026-11-27).** Checked read-only 2026-11-27: secret scanning + push protection ON; Pages deploys only from `main` ON; `main` not protected, 0 rulesets; Dependabot alerts and security updates OFF; no CODEOWNERS (1 collaborator); 2FA not checkable. To do: ruleset on `main` blocking force-push + deletion (no required PR: it would block the sync bots), enable Dependabot alerts + security updates, confirm 2FA | P4 |
 | 18 | Apps Script token out of the URL (`doPost`) | **Parked (owner, 2026-11-27): do it with the next Apps Script update.** Exposure is small: HTTPS, the sync redacts the token in logs, the site never calls the Apps Script; the token is reachable by someone who can push to the repo or into the Sheet owner's Google account, which moving to POST would not change (item 17 covers that). Partners will get it when it is set up | P4 |
 | 19 | Narrow local agent permissions | **Kept as is (owner, 2026-11-27)**: affects only the agent on the owner's laptop, not the site; the TIDE team sets its own when it takes over | P4 |
-| 20 | HTTPS / frame-ancestors at domain cutover | Action (later) | P4 |
-| 21 | EXIF in four hand-committed photos | Decide | P4 |
+| 20 | HTTPS / frame-ancestors at domain cutover | **Decided 2026-11-27**: GitHub Pages + "Enforce HTTPS" (free) at launch; no Cloudflare now (frame-ancestors / HSTS headers not possible on Pages; low risk for this site) | P4 |
+| 21 | EXIF in four hand-committed photos | **Decided 2026-11-27: no change** (no GPS data) | P4 |
 | 22 | Partners page drawing cost (`content-visibility`) | Decide | P5 |
 | 23 | Lightbox dots too close together* (2.5.8) | Decide | P6 |
 | 24 | Print styles | Decide | P6 |
-| 25 | Browser-test failures block deploys (incl. sync deploys) | Confirm | P6 |
+| 25 | Browser-test failures block deploys (incl. sync deploys) | **Confirmed 2026-11-27 (owner: standard practice)**: keep blocking | P6 |
 
 - **Resource Centre spelling:** `<h1>` "Resource Center" vs `<title>` "Resource Centre" (baseline observation). Which spelling?
 - **(P2) Contrast at AAA (1.4.6, 7:1).** Brand tokens fail 7:1 for normal-size text: `tide-muted #5A6A7E` 5.39 on `#FDFCF9` (about 200 nodes), `primary #1E6BAA` as text 5.47 (white on primary buttons 5.62), `accent-deeper #B45309` 4.89, `mutedOnLight #4D5C6F` 6.65. AA (4.5) passes everywhere. Recommendation, following the `accent-deeper` / `mutedOnLight` pattern (text-only; brand hues unchanged for fills): body-size `text-primary` → the existing `primary-dark #15538A` (7.76 on cream / 7.97 on white / 7.29 on `primary-faint`); a new `tide-mutedStrong #44515F` (7.91 / 8.11 / 7.43); a new amber text token `#843A0C` (7.90 / 8.10 / 7.81 on `#FFFBEB`); white-text buttons on `primary-dark` (7.97). Trade-off: the site reads darker and less "brand blue". Large text (≥ 24 px, or 19 px bold) already passes at 4.5. Not applied.
