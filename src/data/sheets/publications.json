@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-27T11:19:41.234Z",
-  "contentHash": "sha256:7d236b336ef06f976ae5082cee654371573ef49aa85399c2fd1c71345d33ae7d",
+  "lastUpdated": "2026-11-27T11:39:00.550Z",
+  "contentHash": "sha256:7d315dd17edc4d7771e7afc75c0444039d5305a64f7730be9693cec8a06cffa4",
   "resources": [
     {
       "id": "P-f0fd6bc70f",
@@ -100,6 +100,20 @@
       "citation": null,
       "link": "https://drive.google.com/file/d/1tNF7EQSAhd5lWpk3DAnRcBFW94XaZgCI/view?usp=sharing",
       "photoUrl": "https://drive.google.com/open?id=1r42HsX_c2SU-rd_-kuhl4xx2QL2AxHp3"
+    },
+    {
+      "id": "P-c2acfb5024",
+      "org": "THRIvE",
+      "date": "2026-08-22",
+      "title": "Building Enabling Environments for Teachers Video Recommendations for Teachers and Headteachers",
+      "type": "Video",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "f we want every child to have a good teacher, we must also ensure that every teacher has an enabling, supportive, and trusting environment to work in. This video shares key recommendations from our policy brief, “Building Enabling Environments for Teachers: Voices from the Ground”, based on research with government school teachers in Bihar and their experiences of teacher agency, and the conditions that influence it. The brief argues that improving children’s learning is not only about changing what happens in classrooms, but also about transforming the systems around teachers — so that schools become places where teachers have professional trust, collaboration, autonomy, dialogue, and the support they need to thrive.",
+      "citation": "Khanna, M., Patel, J., Nanda, M., & Nath, S. [TIDE Foundation]. (2026, August 22). Building Enabling Environments for Teachers [Video]. YouTube. https://www.youtube.com/watch?v=h7xb0plyWSw&t=3s",
+      "link": "https://drive.google.com/file/d/1WdlJWBio7XAPLqwSNvD7_irUZzeait8P/view?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=172Yw2CbIcYcCgRkcmEu3bo_6BcoXLh-T"
     },
     {
       "id": "P-93a9bb4045",
@@ -975,10 +989,10 @@
     }
   ],
   "meta": {
-    "total": 71,
+    "total": 72,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 55
+      "THRIvE": 56
     }
   }
 }
