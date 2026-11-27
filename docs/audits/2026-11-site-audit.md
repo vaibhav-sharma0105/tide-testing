@@ -673,7 +673,7 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 | 6 | Video captions / transcripts* | **Decided 2026-11-25: not done now** — Drive videos are being moved to YouTube, which adds captions; if some stay without captions that is accepted (WCAG treats uncorrected automatic captions as not meeting 1.2.2) | P2 |
 | 7 | Devanagari titles: mark as Hindi? | **Decided 2026-11-25: keep as is** (unmarked) | P2 |
 | 8 | Canonical host and staging indexing (`indexable`) | **Done 2026-11-25**: `site.yaml` `indexable: false` on staging (all 265 built pages carry `noindex`); `url` stays `https://tideinternational.org`. Production = the same GitHub Pages site with the TIDE domain (no WordPress) — see "Go-live checklist" | P3 |
-| 9 | Old WordPress addresses at cutover | Decide + list | P3 |
+| 9 | Old WordPress addresses at cutover | **Draft ready 2026-11-27**: `docs/specs/wordpress-redirect-map.md` (58 pages + 1 category from the old sitemap); owner to approve the Check / Your call rows; applied at go-live | P3 |
 | 10 | AI training crawlers (`allowTraining`) | Decide | P3 |
 | 11 | Figures typed in `llms.txt` / "12 yrs" / "six projects" | Copy | P3 |
 | 12 | Fellow profiles stay out of search | Confirm | P3 |
@@ -750,7 +750,7 @@ Production will be this GitHub Pages site with the TIDE domain pointed at it; th
 3. DNS at the domain registrar: point the domain to GitHub Pages (GitHub's documented A / CNAME records).
 4. Settings → Pages: turn on "Enforce HTTPS" once the certificate is issued.
 5. `content/shared/site.yaml`: `indexable: true`.
-6. Old WordPress addresses (owner item 9): decide which get forwarding pages before the switch.
+6. Old WordPress addresses (owner item 9): approve `docs/specs/wordpress-redirect-map.md` (draft, 59 addresses), re-check its fellow ids against the snapshot, then add the rows as forwarding pages (`REDIRECT_ROUTES` in `src/config/siteRoutes.js`).
 7. After the deploy: `curl -I` a few addresses (`/`, `/about/why-tide`, `/pramaan`, an unknown address) to confirm 200 / 404 and which of `x.html` / `x/` GitHub Pages serves (P3-3, P6-7); submit the sitemap in Google Search Console.
 
 ## Deferred / out of scope
