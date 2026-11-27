@@ -41,9 +41,10 @@ crawlers:
   # Search engines and AI answer engines that fetch pages to show, link or cite them.
   search: ["Googlebot", "Bingbot", "Applebot", "DuckDuckBot", "OAI-SearchBot", "ChatGPT-User", "Claude-SearchBot", "Claude-User", "PerplexityBot", "Perplexity-User"]
   # Crawlers that collect pages to train AI models. allowTraining: false asks them to stay away
-  # (an owner decision; they were all allowed before 2026-11-24, and still are).
+  # (owner decision 2026-11-26: always off; search / answer engines stay allowed once the site is live).
+  # While indexable is false (staging) robots.txt shuts out every crawler, search ones included.
   training: ["GPTBot", "ClaudeBot", "anthropic-ai", "Google-Extended", "Applebot-Extended", "CCBot", "Bytespider", "cohere-ai", "meta-externalagent"]
-  allowTraining: true
+  allowTraining: false
 
 # Names of the parent steps in each page's breadcrumb trail (the last step is
 # the page's own `meta.breadcrumbName` in its YAML).

@@ -149,10 +149,23 @@ export function strictScriptSrc(html) {
 
 const xmlEscape = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
-/** robots.txt from site.yaml: everyone may crawl; training crawlers are named so they can be turned off. */
+/** robots.txt from site.yaml. indexable: false (staging) shuts every crawler out; otherwise search and
+ *  answer engines may crawl and the training crawlers follow allowTraining (owner decision 2026-11-26:
+ *  training always off, search on once live). */
 export function buildRobots(site) {
   const c = site.crawlers || {}
   const group = (agents, rule) => (agents || []).map((a) => `User-agent: ${a}\n${rule}\n`).join('\n')
+  if (site.indexable === false) {
+    return [
+      '# Built from content/shared/site.yaml by scripts/siteDataPlugin.js. Do not edit dist/robots.txt.',
+      '# indexable: false (staging, before the domain moves): no crawler is welcome. Set indexable: true at',
+      '# go-live; search engines are then allowed and the training crawlers follow allowTraining.',
+      '',
+      'User-agent: *',
+      'Disallow: /',
+      '',
+    ].join('\n')
+  }
   return [
     '# Built from content/shared/site.yaml (crawlers, url) by scripts/siteDataPlugin.js. Do not edit dist/robots.txt.',
     '# Note: crawlers read robots.txt only at the root of a host, so this file takes effect once the site is',

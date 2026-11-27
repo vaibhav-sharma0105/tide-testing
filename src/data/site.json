@@ -40,7 +40,7 @@
       "cohere-ai",
       "meta-externalagent"
     ],
-    "allowTraining": true
+    "allowTraining": false
   },
   "breadcrumbs": {
     "home": "Home",

@@ -1,16 +1,12 @@
 # WordPress → new site address map (draft for go-live)
 
-**Status:** DRAFT, 2026-11-27, for the owner to approve. Used at go-live (audit ledger → "Go-live checklist", step 6). Nothing in the site uses it yet.
+**Status:** agreed 2026-11-27 (owner: "if you're not sure where to redirect, move it to the homepage"). Used at go-live (audit ledger → "Go-live checklist", step 6). Nothing in the site uses it yet.
 
 **Source of the old addresses:** `https://tideinternational.org/page-sitemap.xml` and `testimonials_category-sitemap.xml`, fetched 2026-11-27. The sitemap index (`/sitemap.xml`, All in One SEO v5.0.0.1) lists only these two sitemaps: **58 pages + 1 testimonials category**. Posts, media pages and anything not in the sitemap are not covered. The robots.txt also names `/sitemap.rss`; it was fetched and its 52 addresses are all in the page sitemap (no extra pages).
 
 **How the forwarding works:** GitHub Pages can't send real 301 redirects. At go-live the build writes one small forwarding page per old address (the mechanism of `REDIRECT_ROUTES` in `src/config/siteRoutes.js`). The page is noindex, names the new address as canonical and forwards the visitor there.
 
-**How each row was matched:** only by the old address (its slug) and the names that appear on the new site (file cited). The old pages' contents were **not** read, so rows marked **Check** or **Your call** need the owner.
-
-- **Match:** the new site has a page for the same thing.
-- **Check:** a likely match from the slug; please confirm.
-- **Your call:** no clear equivalent; choose a page, or let it show "page not found".
+**How each row was matched:** only by the old address (its slug) and the names that appear on the new site (file cited); the old pages' contents were not read. A row goes to a specific page only when that page names the same thing; **every other old address goes to the homepage** (owner decision 2026-11-27).
 
 ## Same thing on the new site
 
@@ -32,9 +28,9 @@
 | `/social-changemakers-team/` | `/education-for-harmony/social-changemakers` | the Fellowship page |
 | `/prerak/` | `/about/past-programs` | "Prerak" on Past Programs (`about-past-programs.yaml:13`) |
 | `/bettered/` | `/about/past-programs` | "BetterEd" (`about-past-programs.yaml:29`) |
-| `/completed-2/` | `/about/past-programs` | "CompletEd" (`about-past-programs.yaml:47`); slug `completed-2` read as CompletEd: **Check** |
+| `/completed-2/` | `/about/past-programs` | "CompletEd" (`about-past-programs.yaml:47`) |
 | `/empowered/` | `/about/past-programs` | "EmpowerEd" (`about-past-programs.yaml:61`) |
-| `/empowered-sanand/` | `/about/past-programs` | EmpowerEd (Sanand), same programme: **Check** |
+| `/empowered-sanand/` | `/about/past-programs` | EmpowerEd (`about-past-programs.yaml:61`) |
 
 ## Fellow pages → that fellow's profile
 
@@ -49,36 +45,21 @@ The new page opens a profile with `?fellow=<id>`. The ids come from the Sheet sn
 | `/havisha-chokshi-sc-fellowship/` | `…?fellow=SC-6acc6e5769` |
 | `/samaya-bhowmick-sc-fellowship/` | `…?fellow=SC-9c6c76264f` |
 | `/yashvit-sancheti-mindful-futures/` | `…?fellow=SC-1a9635ce22` |
-| `/arav-gupta-and-prisha-arora-sc-fellowship/` | `…?fellow=SC-9d11843cf9` (Arav Gupta; Prisha Arora is `SC-b75123e2f2`, so one page has two people: **Check**) |
+| `/arav-gupta-and-prisha-arora-sc-fellowship/` | `/education-for-harmony/social-changemakers` (two fellows on one old page, so the list, where both are: Arav Gupta `SC-9d11843cf9`, Prisha Arora `SC-b75123e2f2`) |
 
 An id changes only if the Sheet row's Timestamp changes. Re-check this table against the snapshot on go-live day.
 
-## Likely match: please check
+## Named on the new site
 
-| Old address | Suggested new address | Why |
+| Old address | New address | Basis |
 |---|---|---|
-| `/mccxggis25/`, `/mccx-25-at-ggis/`, `/mccxau25/`, `/mccx-25-at-au/` | `/education-for-harmony/mccx` | MCCx event pages (slugs name 2025 MCCx events at GGIS / AU); the MCCx page lists past sessions |
-| `/disha/` | `/education-for-harmony` | "Disha camps" are described there (`education-for-harmony.yaml`, Workshops and camps) |
-| `/exploring-the-happiness-curriculum/` | `/thrive` | happiness-curriculum research is a THRIvE research area (`thrive.yaml`, research photo `research-happiness-curriculum.png`) |
-| `/citizenship-education-through-contextualized-discussions-of-sustainability/` | `/thrive/publications` | title reads like a research paper; not checked |
-| `/role-of-social-changemaking-projects-in-holistic-development/` | `/thrive/publications` | title reads like a research paper; not checked |
-| `/researching-value-based-education/` | `/thrive` | research topic; "value-based" also appears on Past Programs: **Check** |
-| `/help-us-bring-a-change/` | `/get-involved/donate` | slug reads like a donation appeal; not checked |
-| `/apply-now/` | `/get-involved/volunteer` | unclear what the application was for |
-| `/testimonials-category/home/` | `/` | a WordPress testimonials listing for the home page |
+| `/mccxggis25/`, `/mccx-25-at-ggis/`, `/mccxau25/`, `/mccx-25-at-au/` | `/education-for-harmony/mccx` | MCCx event pages (2025 sessions); the MCCx page lists past sessions (`get-involved-mccx.yaml`) |
+| `/disha/` | `/education-for-harmony` | "Disha camps" (`education-for-harmony.yaml`, Workshops and camps) |
 
-## No clear equivalent: your call
+## Everything else → the homepage `/`
 
-For each: pick a page, or leave it ("page not found"). A sensible default is shown.
+No page on the new site names these, so they go to `/` (owner decision 2026-11-27):
 
-| Old address | Default suggestion |
-|---|---|
-| `/miracleofideas/`, `/miracleofideas2017/`, `/moi2023/`, `/miracle-of-ideas-2024/`, `/miracle-of-ideas-2024-panel-talks/`, `/miracle-of-ideas-2024-mcc/`, `/miracle-of-ideas-exhibition-24/`, `/miracle-of-ideas-2024-interventions/` (8) | `/education-for-harmony` (the name "Miracle of Ideas" does not appear on the new site) |
-| `/sdg-drives/` | `/education-for-harmony` |
-| `/happiness-in-education-virtual-exhibition/` | `/thrive` |
-| `/saral-kadam-program/`, `/saral-kadam-materials/` | `/about/past-programs` ("Saral Kadam" does not appear on the new site) |
-| `/block-educational-transformation-intiative/` | `/about/past-programs` |
-| `/prabhav/`, `/tide-fellowship/`, `/twd/` | `/about/past-programs` |
-| `/other-project/`, `/portfolio/` | `/about/past-programs` |
-| `/our-results/` | `/about/why-tide` (the new site's own `/about/our-results` was removed by owner decision; this is the WordPress address) |
-| `/faqs/` | `/contact` (no FAQ page on the new site) |
+`/exploring-the-happiness-curriculum/` · `/citizenship-education-through-contextualized-discussions-of-sustainability/` · `/role-of-social-changemaking-projects-in-holistic-development/` · `/researching-value-based-education/` · `/help-us-bring-a-change/` · `/apply-now/` · `/testimonials-category/home/` · `/miracleofideas/` · `/miracleofideas2017/` · `/moi2023/` · `/miracle-of-ideas-2024/` · `/miracle-of-ideas-2024-panel-talks/` · `/miracle-of-ideas-2024-mcc/` · `/miracle-of-ideas-exhibition-24/` · `/miracle-of-ideas-2024-interventions/` · `/sdg-drives/` · `/happiness-in-education-virtual-exhibition/` · `/saral-kadam-program/` · `/saral-kadam-materials/` · `/block-educational-transformation-intiative/` · `/prabhav/` · `/tide-fellowship/` · `/twd/` · `/other-project/` · `/portfolio/` · `/our-results/` · `/faqs/`
+
+**Count:** 19 same page + 8 fellow pages + 5 named + 27 homepage = 59 (58 pages + 1 category).

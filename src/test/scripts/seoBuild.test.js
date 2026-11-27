@@ -46,17 +46,26 @@ describe('sitemap.xml', () => {
 })
 
 describe('robots.txt', () => {
-  it('points to the sitemap at the site.yaml address and allows crawling', () => {
-    const txt = buildRobots(site)
+  const live = { ...site, indexable: true }
+
+  it('on staging (indexable: false) shuts every crawler out', () => {
+    const txt = buildRobots({ ...site, indexable: false })
+    expect(txt).toMatch(/User-agent: \*\nDisallow: \//)
+    expect(txt).not.toMatch(/Allow: \//)
+    expect(txt).not.toContain('Sitemap:')
+  })
+
+  it('once live: points to the sitemap at the site.yaml address and allows crawling', () => {
+    const txt = buildRobots(live)
     expect(txt).toContain(`Sitemap: ${site.url}/sitemap.xml`)
     expect(txt).toMatch(/User-agent: \*\nAllow: \//)
     for (const a of site.crawlers.search) expect(txt).toContain(`User-agent: ${a}\nAllow: /`)
   })
 
   it('asks training crawlers to stay away only when allowTraining is false', () => {
-    const on = buildRobots(site)
-    for (const a of site.crawlers.training) expect(on).toContain(`User-agent: ${a}\n${site.crawlers.allowTraining === false ? 'Disallow' : 'Allow'}: /`)
-    const off = buildRobots({ ...site, crawlers: { ...site.crawlers, allowTraining: false } })
+    const on = buildRobots(live)
+    for (const a of live.crawlers.training) expect(on).toContain(`User-agent: ${a}\n${live.crawlers.allowTraining === false ? 'Disallow' : 'Allow'}: /`)
+    const off = buildRobots({ ...live, crawlers: { ...live.crawlers, allowTraining: false } })
     expect(off).toContain('User-agent: GPTBot\nDisallow: /')
     expect(off).toContain('User-agent: OAI-SearchBot\nAllow: /')
   })
