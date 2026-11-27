@@ -1,0 +1,242 @@
+{
+  "source": "https://tideinternational.org/page-sitemap.xml + testimonials_category-sitemap.xml, fetched 2026-11-27",
+  "doc": "docs/specs/wordpress-redirect-map.md",
+  "redirects": [
+    {
+      "from": "/",
+      "to": "/"
+    },
+    {
+      "from": "/about-us/",
+      "to": "/about/why-tide"
+    },
+    {
+      "from": "/anaya-patel-sc-fellowship/",
+      "to": "/education-for-harmony/social-changemakers?fellow=SC-799f00c393"
+    },
+    {
+      "from": "/anaya-zaveri-sc-fellowship/",
+      "to": "/education-for-harmony/social-changemakers?fellow=SC-f72c331b0f"
+    },
+    {
+      "from": "/annual-reports/",
+      "to": "/tide/publications"
+    },
+    {
+      "from": "/apply-now/",
+      "to": "/get-involved/volunteer"
+    },
+    {
+      "from": "/arav-gupta-and-prisha-arora-sc-fellowship/",
+      "to": "/education-for-harmony/social-changemakers"
+    },
+    {
+      "from": "/bettered/",
+      "to": "/about/past-programs"
+    },
+    {
+      "from": "/block-educational-transformation-intiative/",
+      "to": "/tide/publications?search=BETI"
+    },
+    {
+      "from": "/citizenship-education-through-contextualized-discussions-of-sustainability/",
+      "to": "/education-for-harmony/mccx"
+    },
+    {
+      "from": "/completed-2/",
+      "to": "/about/past-programs"
+    },
+    {
+      "from": "/contact-us/",
+      "to": "/contact"
+    },
+    {
+      "from": "/disha/",
+      "to": "/education-for-harmony"
+    },
+    {
+      "from": "/empowered-sanand/",
+      "to": "/about/past-programs"
+    },
+    {
+      "from": "/empowered/",
+      "to": "/about/past-programs"
+    },
+    {
+      "from": "/exploring-the-happiness-curriculum/",
+      "to": "/thrive/publications?search=happiness"
+    },
+    {
+      "from": "/faqs/",
+      "to": "/get-involved/volunteer"
+    },
+    {
+      "from": "/happiness-in-education-virtual-exhibition/",
+      "to": "/thrive/publications?search=happiness"
+    },
+    {
+      "from": "/havisha-chokshi-sc-fellowship/",
+      "to": "/education-for-harmony/social-changemakers?fellow=SC-6acc6e5769"
+    },
+    {
+      "from": "/help-us-bring-a-change/",
+      "to": "/get-involved/donate"
+    },
+    {
+      "from": "/hiya-patel-sc-fellowship/",
+      "to": "/education-for-harmony/social-changemakers?fellow=SC-dcb0da6dea"
+    },
+    {
+      "from": "/mccx-25-at-au/",
+      "to": "/education-for-harmony/mccx"
+    },
+    {
+      "from": "/mccx-25-at-ggis/",
+      "to": "/education-for-harmony/mccx"
+    },
+    {
+      "from": "/mccxau25/",
+      "to": "/education-for-harmony/mccx"
+    },
+    {
+      "from": "/mccxggis25/",
+      "to": "/education-for-harmony/mccx"
+    },
+    {
+      "from": "/miracle-of-ideas-2024-interventions/",
+      "to": "/education-for-harmony"
+    },
+    {
+      "from": "/miracle-of-ideas-2024-mcc/",
+      "to": "/education-for-harmony/mccx"
+    },
+    {
+      "from": "/miracle-of-ideas-2024-panel-talks/",
+      "to": "/education-for-harmony"
+    },
+    {
+      "from": "/miracle-of-ideas-2024/",
+      "to": "/education-for-harmony"
+    },
+    {
+      "from": "/miracle-of-ideas-exhibition-24/",
+      "to": "/education-for-harmony"
+    },
+    {
+      "from": "/miracleofideas/",
+      "to": "/tide/publications?search=miracle+of+ideas"
+    },
+    {
+      "from": "/miracleofideas2017/",
+      "to": "/tide/publications?search=miracle+of+ideas"
+    },
+    {
+      "from": "/model-city-council/",
+      "to": "/education-for-harmony/mccx"
+    },
+    {
+      "from": "/moi2023/",
+      "to": "/thrive/publications?search=happiness"
+    },
+    {
+      "from": "/other-project/",
+      "to": "/about/past-programs"
+    },
+    {
+      "from": "/our-partners/",
+      "to": "/about/our-partners"
+    },
+    {
+      "from": "/our-publications/",
+      "to": "/tide/publications"
+    },
+    {
+      "from": "/our-results/",
+      "to": "/about/past-programs"
+    },
+    {
+      "from": "/our-team/",
+      "to": "/about/our-team"
+    },
+    {
+      "from": "/portfolio/",
+      "to": "/"
+    },
+    {
+      "from": "/prabhav/",
+      "to": "/thrive/publications?search=teacher+agency"
+    },
+    {
+      "from": "/prerak/",
+      "to": "/about/past-programs"
+    },
+    {
+      "from": "/researching-value-based-education/",
+      "to": "/thrive"
+    },
+    {
+      "from": "/role-of-social-changemaking-projects-in-holistic-development/",
+      "to": "/education-for-harmony"
+    },
+    {
+      "from": "/samaya-bhowmick-sc-fellowship/",
+      "to": "/education-for-harmony/social-changemakers?fellow=SC-9c6c76264f"
+    },
+    {
+      "from": "/saral-kadam-materials/",
+      "to": "/pramaan/resource-centre?subject=mathematics"
+    },
+    {
+      "from": "/saral-kadam-program/",
+      "to": "/pramaan"
+    },
+    {
+      "from": "/sdg-drives/",
+      "to": "/get-involved/volunteer"
+    },
+    {
+      "from": "/social-changemakers-team/",
+      "to": "/education-for-harmony/social-changemakers"
+    },
+    {
+      "from": "/socialchangemakersfellowship/",
+      "to": "/education-for-harmony/social-changemakers"
+    },
+    {
+      "from": "/tanay-sanghvi-sc-fellowship/",
+      "to": "/education-for-harmony/social-changemakers?fellow=SC-8104649fd4"
+    },
+    {
+      "from": "/testimonials-category/home/",
+      "to": "/"
+    },
+    {
+      "from": "/thrive-research-centre/",
+      "to": "/thrive"
+    },
+    {
+      "from": "/tide-fellowship/",
+      "to": "/get-involved/volunteer"
+    },
+    {
+      "from": "/twd/",
+      "to": "/thrive/publications?search=disabilities"
+    },
+    {
+      "from": "/volunteer-with-us/",
+      "to": "/get-involved/volunteer"
+    },
+    {
+      "from": "/why-tide/",
+      "to": "/about/why-tide"
+    },
+    {
+      "from": "/workwithus/",
+      "to": "/get-involved/volunteer"
+    },
+    {
+      "from": "/yashvit-sancheti-mindful-futures/",
+      "to": "/education-for-harmony/social-changemakers?fellow=SC-1a9635ce22"
+    }
+  ]
+}
