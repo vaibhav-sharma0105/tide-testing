@@ -67,7 +67,8 @@ export default function HomeHero({ hero, site }) {
 
   const figures = [
     { value: site.livesImpacted, label: hero.floatLives },
-    ...hero.pills.map(p => ({ value: p.value, label: p.label })),
+    // {years}: years since site.foundingYear, so the pill never goes stale.
+    ...hero.pills.map(p => ({ value: p.value.replace('{years}', String(new Date().getFullYear() - Number(site.foundingYear))), label: p.label })),
     { value: site.foundingYear, label: hero.floatFounded },
   ]
 

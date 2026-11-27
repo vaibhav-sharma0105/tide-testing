@@ -41,7 +41,10 @@ describe('Home page', () => {
     await renderHome()
     const strip = screen.getByText(home.hero.floatLives).closest('ul')
     const text = strip.textContent
-    for (const v of [site.livesImpacted, site.foundingYear, ...home.hero.pills.map(p => p.value)]) expect(text).toContain(v)
+    // {years} in a pill = years since foundingYear (owner decision 2026-11-27: never typed, never stale).
+    const years = String(new Date().getFullYear() - Number(site.foundingYear))
+    for (const v of [site.livesImpacted, site.foundingYear, ...home.hero.pills.map(p => p.value.replace('{years}', years))]) expect(text).toContain(v)
+    expect(text).not.toContain('{years}')
     for (const l of [home.hero.floatLives, home.hero.floatFounded, ...home.hero.pills.map(p => p.label)]) expect(within(strip).getByText(l)).toBeTruthy()
   })
 

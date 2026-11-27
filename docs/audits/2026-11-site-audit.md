@@ -675,7 +675,7 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 | 8 | Canonical host and staging indexing (`indexable`) | **Done 2026-11-25**: `site.yaml` `indexable: false` on staging (all 265 built pages carry `noindex`); `url` stays `https://tideinternational.org`. Production = the same GitHub Pages site with the TIDE domain (no WordPress) — see "Go-live checklist" | P3 |
 | 9 | Old WordPress addresses at cutover | **Agreed 2026-11-27**: `docs/specs/wordpress-redirect-map.md` — 59 old addresses: 32 to the matching page or fellow profile, 27 with no named equivalent to the homepage (owner: when unsure, homepage); applied at go-live | P3 |
 | 10 | AI training crawlers (`allowTraining`) | **Done 2026-11-27**: training crawlers always blocked (`allowTraining: false`); search / answer engines allowed once live; staging (`indexable: false`) robots.txt blocks every crawler. Note: crawlers read robots.txt only at a host's root, so on the github.io project address the page-level noindex is what applies | P3 |
-| 11 | Figures typed in `llms.txt` / "12 yrs" / "six projects" | Copy | P3 |
+| 11 | Figures typed in `llms.txt` / "12 yrs" / "six projects" | **Done 2026-11-27**: removed from `llms.txt` "15,000+ students", "100+ current volunteers", "12 years", "as of 2025" (kept lives + founding year from site.yaml and "100+ partners" as on the home page); home "12 yrs" pill now `{years} yrs`, worked out from `foundingYear`; home search description names the three pillars | P3 |
 | 12 | Fellow profiles stay out of search | Confirm | P3 |
 | 13 | Address parts, phone, registration ids, 1200×630 share image | Copy | P3 |
 | 14 | Fewer font weights / scripts for speed | Decide | P3 |

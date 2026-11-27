@@ -2,7 +2,7 @@
   "meta": {
     "badge": "TIDE Foundation",
     "seoTitle": "TIDE Foundation — Holistic Education for India",
-    "seoDescription": "TIDE Foundation works to bring sustainable, systemic change to India's education landscape through six independent projects."
+    "seoDescription": "TIDE Foundation works to bring sustainable, systemic change to India's education landscape through three pillars: Education for Harmony, Pramaan and the THRIvE Research Centre."
   },
   "hero": {
     "backgroundImage": "assets/images/home/slider-1.jpg",
@@ -27,7 +27,7 @@
     "scroll": "Scroll",
     "pills": [
       {
-        "value": "12 yrs",
+        "value": "{years} yrs",
         "label": "of impact"
       },
       {

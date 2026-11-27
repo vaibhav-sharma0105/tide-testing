@@ -160,8 +160,10 @@ describe('llms.txt rendering', () => {
     expect(out).not.toContain('50,000+')
   })
 
-  it('keeps the different 15,000+ students metric; quotes no fixed resource count (it changes with every sync)', () => {
-    expect(out).toContain('15,000+ students')
+  it('quotes only figures the site shows: no 15,000+ students, volunteer count, fixed years or resource count', () => {
+    // Owner decision 2026-11-27: llms.txt must not state figures the site itself doesn't show.
+    expect(out).not.toContain('15,000+')
+    expect(out).not.toMatch(/current volunteers|12 years|as of 20\d\d/)
     expect(out).not.toContain('150+ ABL materials')
   })
 

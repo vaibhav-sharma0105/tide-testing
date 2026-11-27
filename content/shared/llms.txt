@@ -8,16 +8,14 @@ To bring about contextualized, systemic, sustainable changes in India's educatio
 
 ## Our Three Pillars
 
-- **Education for Harmony**: An ecosystem of educational interventions for self- and social-transformation, built on the CARES framework (Compassion & Empathy, Awareness & Consciousness, Reflect & Reimagine, Engage & Empower, Sense of responsibility). Interventions include Model City Councils and Parivartan Melas, workshops and Disha camps, Social Changemakers fellowships, and educator programs — reaching 15,000+ students.
+- **Education for Harmony**: An ecosystem of educational interventions for self- and social-transformation, built on the CARES framework (Compassion & Empathy, Awareness & Consciousness, Reflect & Reimagine, Engage & Empower, Sense of responsibility). Interventions include Model City Councils and Parivartan Melas, workshops and Disha camps, Social Changemakers fellowships, and educator programs.
 - **Pramaan**: Open-access Activity-Based Learning (ABL) resource library collating materials from teachers across India to inspire conceptual understanding. Available at /pramaan/resource-centre.
 - **THRIvE Research Centre**: Systems research to understand and empower educational systems, including the Happiness Curriculum — India's first school-based happiness program backed by rigorous research.
 
-## Impact (as of 2025)
+## Impact
 
 - {{livesImpacted}} lives impacted across Gujarat since {{foundingYear}}
-- 100+ partner organisations (schools, NGOs, institutions)
-- 12 years of continuous grassroots impact
-- 100+ current volunteers from universities across India
+- 100+ partners
 
 ## Key Pages
 
