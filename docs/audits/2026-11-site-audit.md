@@ -750,7 +750,7 @@ Production will be this GitHub Pages site with the TIDE domain pointed at it; th
 3. DNS at the domain registrar: point the domain to GitHub Pages (GitHub's documented A / CNAME records).
 4. Settings → Pages: turn on "Enforce HTTPS" once the certificate is issued.
 5. `content/shared/site.yaml`: `indexable: true` (robots.txt then allows search / answer engines; training crawlers stay blocked by `allowTraining: false`).
-6. Old WordPress addresses (owner item 9): `docs/specs/wordpress-redirects.json` (agreed, 59 rows; reasons in `wordpress-redirect-map.md`): re-check the fellow ids and the `?search=` results against the snapshots, make forwarding pages handle a query string in `to` (see the map's go-live notes), then add the rows as forwarding pages (`REDIRECT_ROUTES` in `src/config/siteRoutes.js`).
+6. Old WordPress addresses (owner item 9): `docs/specs/wordpress-redirects.json` (agreed, 59 rows; reasons in `wordpress-redirect-map.md`): re-check the `?search=` results against the snapshot, make forwarding pages handle a query string in `to` (see the map's go-live notes), then add the rows as forwarding pages (`REDIRECT_ROUTES` in `src/config/siteRoutes.js`).
 7. After the deploy: `curl -I` a few addresses (`/`, `/about/why-tide`, `/pramaan`, an unknown address) to confirm 200 / 404 and which of `x.html` / `x/` GitHub Pages serves (P3-3, P6-7); submit the sitemap in Google Search Console.
 
 ## Deferred / out of scope

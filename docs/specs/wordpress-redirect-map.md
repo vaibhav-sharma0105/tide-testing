@@ -32,22 +32,20 @@
 | `/empowered/` | `/about/past-programs` | "EmpowerEd" (`about-past-programs.yaml:61`) |
 | `/empowered-sanand/` | `/about/past-programs` | EmpowerEd (`about-past-programs.yaml:61`) |
 
-## Fellow pages → that fellow's profile
+## Fellow pages → the Social Changemakers list
 
-The new page opens a profile with `?fellow=<id>`. The ids come from the Sheet snapshot (`src/data/sheets/social-changemakers.json`, 2026-11-27) and are matched by name.
+Each old fellow page forwards to the list of fellows, never to one person's profile (owner decision 2026-11-27).
 
 | Old address | New address |
 |---|---|
-| `/tanay-sanghvi-sc-fellowship/` | `/education-for-harmony/social-changemakers?fellow=SC-8104649fd4` |
-| `/anaya-zaveri-sc-fellowship/` | `…?fellow=SC-f72c331b0f` |
-| `/anaya-patel-sc-fellowship/` | `…?fellow=SC-799f00c393` |
-| `/hiya-patel-sc-fellowship/` | `…?fellow=SC-dcb0da6dea` |
-| `/havisha-chokshi-sc-fellowship/` | `…?fellow=SC-6acc6e5769` |
-| `/samaya-bhowmick-sc-fellowship/` | `…?fellow=SC-9c6c76264f` |
-| `/yashvit-sancheti-mindful-futures/` | `…?fellow=SC-1a9635ce22` |
-| `/arav-gupta-and-prisha-arora-sc-fellowship/` | `/education-for-harmony/social-changemakers` (two fellows on one old page, so the list, where both are: Arav Gupta `SC-9d11843cf9`, Prisha Arora `SC-b75123e2f2`) |
-
-An id changes only if the Sheet row's Timestamp changes. Re-check this table against the snapshot on go-live day.
+| `/tanay-sanghvi-sc-fellowship/` | `/education-for-harmony/social-changemakers` |
+| `/anaya-zaveri-sc-fellowship/` | `/education-for-harmony/social-changemakers` |
+| `/anaya-patel-sc-fellowship/` | `/education-for-harmony/social-changemakers` |
+| `/hiya-patel-sc-fellowship/` | `/education-for-harmony/social-changemakers` |
+| `/havisha-chokshi-sc-fellowship/` | `/education-for-harmony/social-changemakers` |
+| `/samaya-bhowmick-sc-fellowship/` | `/education-for-harmony/social-changemakers` |
+| `/yashvit-sancheti-mindful-futures/` | `/education-for-harmony/social-changemakers` |
+| `/arav-gupta-and-prisha-arora-sc-fellowship/` | `/education-for-harmony/social-changemakers` |
 
 ## Named on the new site
 
@@ -95,6 +93,6 @@ Confidence: **High** = the old page is about what the new page shows; **Medium**
 ## Notes for go-live
 
 - **Addresses with `?search=` / `?subject=`** (8 rows): the publications pages read `search` (`src/utils/publicationFilters.js`), the Resource Centre reads `subject` (`src/pages/library/PramaanLibrary.jsx`). The forwarding page as built today (`redirectHtml`, `scripts/lib/prerender-check.js:46-60`) puts `to` into the canonical link as is and appends the visitor's own query string to it. Before adding these rows, make the canonical the path without the query, and join the two query strings with `&` when both exist. The search results come from the Sheet snapshot and change with each sync; re-run the searches on go-live day.
-- **Fellow pages and the Social Changemakers page** are noindex by owner decision (2026-11-27), so those forwards help visitors but carry no search reputation.
+- **Fellow pages** forward to the Social Changemakers list (no `?fellow=`), so no forward names one person.
 - **The two empty old pages** (`/testimonials-category/home/`, `/portfolio/`) have no content; the homepage is used.
 - Raw copies of the 27 researched pages (2026-11-27): the session scratchpad, not kept in the repo.
