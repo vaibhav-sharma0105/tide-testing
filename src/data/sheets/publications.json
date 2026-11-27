@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-27T09:45:05.104Z",
-  "contentHash": "sha256:9df824f65b0490469b8711a3781b9fe82894bfb79cfe0c471a5de51f50dff62e",
+  "lastUpdated": "2026-11-27T11:19:41.234Z",
+  "contentHash": "sha256:7d236b336ef06f976ae5082cee654371573ef49aa85399c2fd1c71345d33ae7d",
   "resources": [
     {
       "id": "P-f0fd6bc70f",
@@ -100,6 +100,20 @@
       "citation": null,
       "link": "https://drive.google.com/file/d/1tNF7EQSAhd5lWpk3DAnRcBFW94XaZgCI/view?usp=sharing",
       "photoUrl": "https://drive.google.com/open?id=1r42HsX_c2SU-rd_-kuhl4xx2QL2AxHp3"
+    },
+    {
+      "id": "P-93a9bb4045",
+      "org": "THRIvE",
+      "date": "2026-05-31",
+      "title": "Building Enabling Environments for Teachers: Voices from the Ground",
+      "type": "Policy brief",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "This policy brief, developed by the TIDE Foundation in collaboration with the Aga Khan Foundation under the Schools2030 programme, explores the importance of creating enabling environments that strengthen teachers’ professional agency, autonomy, and well-being. Drawing on a research study on teacher agency and a multistakeholder roundtable in Bihar, it highlights the everyday challenges teachers face and calls for a shift from viewing teachers as mere implementers of directives to recognising them as skilled, reflective professionals. It presents actionable recommendations for teachers, headteachers, civil society organisations, and education officers, focusing on strengthening professional autonomy, formalising teacher-led spaces for professional learning and dialogue, and cultivating supportive and inclusive school environments.",
+      "citation": "Khanna, M., Patel, J., Nanda, M., Jha, M., Diksha, M., Natha, S., & Bhatt, S. (2026). Building Enabling Environments for Teachers: Voices from the Ground [Policy Brief]. TIDE Foundation.",
+      "link": "https://drive.google.com/file/d/1rSL5CTSZErrAMwnSJ_3HuW3Iw7YrD8YS/view?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1e8ukYaNk3MrhGt3miU8yZavo4ClFw0RI"
     },
     {
       "id": "P-ff8c8392f7",
@@ -961,10 +975,10 @@
     }
   ],
   "meta": {
-    "total": 70,
+    "total": 71,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 54
+      "THRIvE": 55
     }
   }
 }
