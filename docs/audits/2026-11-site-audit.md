@@ -686,7 +686,7 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 | 19 | Narrow local agent permissions | **Kept as is (owner, 2026-11-27)**: affects only the agent on the owner's laptop, not the site; the TIDE team sets its own when it takes over | P4 |
 | 20 | HTTPS / frame-ancestors at domain cutover | **Decided 2026-11-27**: GitHub Pages + "Enforce HTTPS" (free) at launch; no Cloudflare now (frame-ancestors / HSTS headers not possible on Pages; low risk for this site) | P4 |
 | 21 | EXIF in four hand-committed photos | **Decided 2026-11-27: no change** (no GPS data) | P4 |
-| 22 | Partners page drawing cost (`content-visibility`) | Decide | P5 |
+| 22 | Partners page drawing cost (`content-visibility`) | **Done 2026-11-27**: phones — rows not drawn until near (`content-visibility`), flat cards (no 3D layers / blurred ground shadow); everywhere — a category's logos load only when its row is within 400 px. Phone (4× CPU, median of 5): blocking time 699 → 556 ms, longest freeze 323 → 294 ms, LCP 1240 → 956 ms, logos in the first 5 s 49 → 12. Visual check: desktop identical, phone shadows slightly softer. Built-site e2e 170 passed | P5 |
 | 23 | Lightbox dots too close together* (2.5.8) | Decide | P6 |
 | 24 | Print styles | Decide | P6 |
 | 25 | Browser-test failures block deploys (incl. sync deploys) | **Confirmed 2026-11-27 (owner: standard practice)**: keep blocking | P6 |

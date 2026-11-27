@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
 import PartnerCard from './PartnerCard'
 import { useConductedSlider } from './sliderConductor'
@@ -54,6 +54,10 @@ function visibleRange(el) {
 
 export default function PartnerSlider({ group, index, text, suspended = false, headingId, active = false }) {
   const trackRef = useRef(null)
+  // Logos of this category load only once the row is within 400px of the screen (Partners page speed,
+  // owner decision 2026-11-27); until then the cards show their frame and name.
+  const sectionRef = useRef(null)
+  const nearScreen = useInView(sectionRef, { once: true, margin: '400px 0px' })
   const holdUntil = useRef(0)
   const [playing, setPlaying] = useState(() => !SLIDES_START_PAUSED && !prefersReducedMotion())
   const [hovered, setHovered] = useState(false)
@@ -145,7 +149,7 @@ export default function PartnerSlider({ group, index, text, suspended = false, h
   const btn = 'group/btn flex h-11 w-11 items-center justify-center rounded-full text-tide-text transition duration-200 hover:bg-primary-faint hover:text-primary-dark active:scale-90 disabled:pointer-events-none disabled:opacity-30 focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60'
 
   return (
-    <motion.section aria-labelledby={headingId} className="relative" {...reveal()}>
+    <motion.section ref={sectionRef} aria-labelledby={headingId} className="partner-row relative" {...reveal()}>
       {/* The spine node (wide screens): this section's number, filled while it is the one being read. */}
       <span
         aria-hidden="true"
@@ -235,7 +239,7 @@ export default function PartnerSlider({ group, index, text, suspended = false, h
               viewport={{ once: true, amount: 0.05 }}
               transition={{ duration: 0.45, ease: EASE_OUT, delay: Math.min(i, 4) * 0.05 }}
             >
-              <PartnerCard partner={p} text={text} tier={partnerTier(p.priority)} order={i} />
+              <PartnerCard partner={p} text={text} tier={partnerTier(p.priority)} order={i} showLogo={nearScreen} />
             </motion.div>
           </li>
         ))}

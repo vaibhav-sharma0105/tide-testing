@@ -364,3 +364,17 @@ main[tabindex="-1"]:focus, h1[tabindex="-1"]:focus {
 @media (prefers-reduced-motion: reduce) {
   .partner-3d-float, .group:hover .partner-3d-float { transform: none; }
 }
+/* Phones (Partners page speed, owner decision 2026-11-27): rows far off screen are not drawn until
+   scrolled near (content-visibility), and the cards are flat — no 3D layers, no blurred ground
+   shadow, one soft shadow per tier. translateZ(16px) under perspective(900px) x scale(0.95) = 0.967,
+   so the logo keeps its size. */
+@media (max-width: 767px) {
+  .partner-row { content-visibility: auto; contain-intrinsic-size: auto 380px; }
+  .partner-3d.tilt-3d, .group:hover .partner-3d.tilt-3d { transform: none; transform-style: flat; transition: none; }
+  .partner-3d { box-shadow: 0 1px 2px rgba(13, 31, 60, 0.06), 0 6px 14px -8px rgba(13, 31, 60, 0.2); }
+  .partner-3d[data-tier='high'] { box-shadow: 0 1px 2px rgba(13, 31, 60, 0.05), 0 6px 14px -8px rgba(30, 107, 170, 0.3); }
+  .partner-3d[data-tier='feature'] { box-shadow: 0 1px 2px rgba(13, 31, 60, 0.05), 0 8px 18px -8px rgba(30, 107, 170, 0.45); }
+  .partner-3d-face { transform-style: flat; }
+  .partner-3d-float, .group:hover .partner-3d-float { transform: scale(0.967); transition: none; }
+  .partner-3d-ground { display: none; }
+}

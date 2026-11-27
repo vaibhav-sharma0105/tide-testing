@@ -35,7 +35,7 @@ const FRAME = {
 // Tilt towards the pointer (src/utils/tilt.js): at most 9° sideways, 7° up/down.
 const tiltTowards = tiltHandler(9, 7)
 
-export default function PartnerCard({ partner, text, caption, tier = '', order = 0 }) {
+export default function PartnerCard({ partner, text, caption, tier = '', order = 0, showLogo = true }) {
   const [failed, setFailed] = useState(false)
   const logo = failed ? null : getPartnerLogo(partner.id)
   const website = safeHttpUrl(partner.website) // the Sheet's link, re-checked at render (http/https only)
@@ -54,7 +54,7 @@ export default function PartnerCard({ partner, text, caption, tier = '', order =
           className={`tilt-3d partner-3d relative rounded-2xl p-px ${FRAME[tier] ?? FRAME['']}`}
         >
           <div className="partner-3d-face relative aspect-[3/2] w-full rounded-[15px]">
-            {logo ? (
+            {logo ? (showLogo && (
               <img
                 src={logo.src}
                 width={logo.width}
@@ -67,7 +67,7 @@ export default function PartnerCard({ partner, text, caption, tier = '', order =
                 onError={() => setFailed(true)}
                 className={`partner-3d-float absolute ${inset} object-contain`}
               />
-            ) : (
+            )) : (
               <span aria-hidden="true" className="absolute inset-0 flex items-center justify-center rounded-[15px] bg-[radial-gradient(120%_90%_at_30%_20%,theme(colors.primary.faint),theme(colors.primary.light))]">
                 <span className="partner-3d-float font-display text-[2rem] font-semibold tracking-wide text-primary-dark/80">{partnerInitials(partner.name)}</span>
               </span>
