@@ -62,6 +62,13 @@ describe('robots.txt', () => {
     for (const a of site.crawlers.search) expect(txt).toContain(`User-agent: ${a}\nAllow: /`)
   })
 
+  it('keeps every crawler, search ones included, off the private paths once live', () => {
+    const txt = buildRobots(live)
+    expect(live.crawlers.private).toContain('/education-for-harmony/social-changemakers')
+    expect(txt).toContain('User-agent: *\nAllow: /\nDisallow: /education-for-harmony/social-changemakers')
+    expect(txt).toContain('User-agent: OAI-SearchBot\nAllow: /\nDisallow: /education-for-harmony/social-changemakers')
+  })
+
   it('asks training crawlers to stay away only when allowTraining is false', () => {
     const on = buildRobots(live)
     for (const a of live.crawlers.training) expect(on).toContain(`User-agent: ${a}\n${live.crawlers.allowTraining === false ? 'Disallow' : 'Allow'}: /`)

@@ -445,6 +445,8 @@ export default function SocialChangemakers() {
         title={data.meta.seoTitle}
         description={data.meta.seoDescription}
         path="/education-for-harmony/social-changemakers"
+        // Never listed by search or AI search: the fellows are students (owner decision 2026-11-27).
+        noindex
         breadcrumbs={[
           { name: site.breadcrumbs.home, path: '/' },
           { name: site.breadcrumbs.educationForHarmony, path: '/education-for-harmony' },

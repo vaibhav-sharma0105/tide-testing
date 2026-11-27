@@ -80,7 +80,7 @@ Full annotated tree: AGENTS.md §2.
 | `/coming-soon` · `/404` and `*` | ComingSoon · NotFound | `coming-soon.json` · `not-found.json` |
 
 - The 16 pre-restructure routes (`/projects/*`, `/about/our-results`, `/get-involved/{work-with-us,mccx}`, `/resources/*`) were **removed with no redirects** (owner decision); they render NotFound (`src/test/routing/removedRoutes.test.jsx`). Don't re-add them.
-- `/education-for-harmony/social-changemakers` is deliberately **not** in the header/footer menus or `sitemap.xml` (linked only from `/education-for-harmony`) while it is a placeholder.
+- `/education-for-harmony/social-changemakers` is deliberately **not** in the header/footer menus or `sitemap.xml` (linked only from `/education-for-harmony`), is always `noindex` and, once live, `robots.txt` keeps every crawler off it (`site.yaml` `crawlers.private`) — the fellows are students (owner decision 2026-11-27).
 - Header menu has a third level: About Us → **Our Publications** is a nested group (`subItems` in `content/shared/navigation.yaml`: TIDE Publications, THRIvE Publications), and **THRIvE Research Centre** is a dropdown (About THRIvE, THRIvE Publications). Active state: `src/utils/navActive.js`.
 - Footer has **no link columns** (owner decision): one compact row with Donate as the only coloured element. Details: AGENTS.md §4.
 

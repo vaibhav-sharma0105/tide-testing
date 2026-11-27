@@ -45,6 +45,9 @@ crawlers:
   # While indexable is false (staging) robots.txt shuts out every crawler, search ones included.
   training: ["GPTBot", "ClaudeBot", "anthropic-ai", "Google-Extended", "Applebot-Extended", "CCBot", "Bytespider", "cohere-ai", "meta-externalagent"]
   allowTraining: false
+  # Paths every crawler is asked to stay off, even once live (owner decision 2026-11-27: the Social
+  # Changemakers profiles are students; the page is also noindex).
+  private: ["/education-for-harmony/social-changemakers"]
 
 # Names of the parent steps in each page's breadcrumb trail (the last step is
 # the page's own `meta.breadcrumbName` in its YAML).

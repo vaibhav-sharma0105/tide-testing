@@ -154,7 +154,9 @@ const xmlEscape = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').
  *  training always off, search on once live). */
 export function buildRobots(site) {
   const c = site.crawlers || {}
-  const group = (agents, rule) => (agents || []).map((a) => `User-agent: ${a}\n${rule}\n`).join('\n')
+  // Paths no crawler may read even when live (site.yaml crawlers.private), e.g. the students' profiles.
+  const keepOut = (c.private || []).map((p) => `\nDisallow: ${p}`).join('')
+  const group = (agents, rule) => (agents || []).map((a) => `User-agent: ${a}\n${rule}${rule === 'Allow: /' ? keepOut : ''}\n`).join('\n')
   if (site.indexable === false) {
     return [
       '# Built from content/shared/site.yaml by scripts/siteDataPlugin.js. Do not edit dist/robots.txt.',
@@ -172,7 +174,7 @@ export function buildRobots(site) {
     '# served from its own domain (on a GitHub Pages project address it is ignored).',
     '',
     'User-agent: *',
-    'Allow: /',
+    `Allow: /${keepOut}`,
     '',
     '# Search engines and AI answer engines (fetch pages to show, link or cite them)',
     group(c.search, 'Allow: /'),

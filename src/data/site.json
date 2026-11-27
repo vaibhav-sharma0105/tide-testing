@@ -40,7 +40,10 @@
       "cohere-ai",
       "meta-externalagent"
     ],
-    "allowTraining": false
+    "allowTraining": false,
+    "private": [
+      "/education-for-harmony/social-changemakers"
+    ]
   },
   "breadcrumbs": {
     "home": "Home",

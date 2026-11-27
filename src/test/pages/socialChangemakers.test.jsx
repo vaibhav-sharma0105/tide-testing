@@ -174,3 +174,16 @@ describe('Intro moving dot (WCAG 2.2.2)', () => {
     expect(btn).toHaveAccessibleName(data.intro.motion.pause)
   })
 })
+
+describe('Search engines', () => {
+  it('asks not to be listed, whatever site.yaml indexable says: the fellows are students', async () => {
+    // Helmet is stubbed in src/test/setup.js, so read the props the page gives SeoHead.
+    const seen = []
+    vi.doMock('../../components/ui/SeoHead', () => ({ default: (props) => { seen.push(props); return null } }))
+    await renderPage()
+    vi.doUnmock('../../components/ui/SeoHead')
+    expect(seen.length).toBeGreaterThan(0)
+    expect(seen.at(-1).path).toBe('/education-for-harmony/social-changemakers')
+    expect(seen.at(-1).noindex).toBe(true)
+  })
+})
