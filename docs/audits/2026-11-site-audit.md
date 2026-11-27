@@ -678,9 +678,9 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 | 11 | Figures typed in `llms.txt` / "12 yrs" / "six projects" | **Done 2026-11-27**: removed from `llms.txt` "15,000+ students", "100+ current volunteers", "12 years", "as of 2025" (kept lives + founding year from site.yaml and "100+ partners" as on the home page); home "12 yrs" pill now `{years} yrs`, worked out from `foundingYear`; home search description names the three pillars | P3 |
 | 12 | Fellow profiles stay out of search | **Done 2026-11-27 (option A)**: the Social Changemakers list may be listed (old Fellowship pages forward to it and keep their reputation); an open profile (`?fellow=`) is always `noindex` (unit tests); the old fellow pages forward to the list, never to one person; the page stays out of the sitemap, menus and `llms-full.txt` (earlier owner decision) | P3 |
 | 13 | Address parts, phone, registration ids, 1200×630 share image | **Decided 2026-11-27: not added** (kept out of search / AI search) | P3 |
-| 14 | Fewer font weights / scripts for speed | Decide | P3 |
-| 15 | Moderation of public Form content | Decide | P4 |
-| 16 | SCF Sheet "anyone with the link can edit" | Action | P4 |
+| 14 | Fewer font weights / scripts for speed | **Decided 2026-11-27: no change.** Measured (built site, phone, slow 4G, 4× CPU, median of 5): fonts add ~0.04 s to first text and 0.3–1.3 s to the main content; trimming weights saves 0.1 KB. First text takes 3.2–4.3 s even without fonts (cause not investigated; see Deferred) | P3 |
+| 15 | Moderation of public Form content | **Parked**: owner to raise with the stakeholder on 2026-11-28 for every Sheet without an approval step | P4 |
+| 16 | SCF Sheet "anyone with the link can edit" | **Parked**: owner will change the access later | P4 |
 | 17 | GitHub settings (branch rule, secret scanning, CODEOWNERS, 2FA) | Action | P4 |
 | 18 | Apps Script token out of the URL (`doPost`) | Decide | P4 |
 | 19 | Narrow local agent permissions | Action | P4 |
@@ -776,6 +776,7 @@ Production will be this GitHub Pages site with the TIDE domain pointed at it; th
 - P5-8 Partners long tasks (owner item), P5-9 shared URL-state hook / one pagination, P5-10 sync orchestrators, P5-11 knip leftovers, P5-12 `batchYear` edge, P5-14 `LazyMotion`.
 - P6: visual baselines in CI (needs Linux baselines; the 9 committed ones are Windows-only); a real slow-network latency run; measuring the CI time and the nightly run (GitHub only).
 - Flaky unit test: `src/test/routing/routes.smoke.test.jsx` "/ — Home renders without crashing" failed 3 of 7 full `npm test` runs during the P7 check (passes alone). The failure message was not captured; the likely cause is a timeout under load (not verified).
+- Phone first paint: on a simulated phone (slow 4G, 4× CPU) the first text appears after 3.2–4.3 s even with no web fonts (owner item 14 measurements, 2026-11-27). Cause not investigated.
 - P6-12: on local Windows, WebKit workers can hang ~300 s at teardown after a passing run (environment; Linux not verified).
 - P4-9: the `ouid` ids in 4 links of the bot-owned `pramaan-library.json` stay until the next sync.
 
