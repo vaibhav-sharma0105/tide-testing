@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-27T07:10:32.164Z",
-  "contentHash": "sha256:1243db4f3e7c3e67e0c2dd5cd75fc50c63698e87d9b0fb21b55be6f63d689e7f",
+  "lastUpdated": "2026-11-27T09:45:05.104Z",
+  "contentHash": "sha256:9df824f65b0490469b8711a3781b9fe82894bfb79cfe0c471a5de51f50dff62e",
   "resources": [
     {
       "id": "P-f0fd6bc70f",
@@ -32,6 +32,20 @@
       "citation": "Khanna, M., Bhatt, S., Diksha, M., & Jha, M.(2026, November 21). Bounded freedom: Teacher agency, contested narratives, and an enabling environment in government schools in Bihar, India. 16th Annual International Conference of the Comparative Education Society of India, Aligarh Muslim University, Aligarh, India. https://docs.google.com/presentation/d/1JNWBMbynq6WQw-i79_EHbH_HK4K86a_Y/edit?usp=share_link&ouid=113633189525719312323&rtpof=true&sd=true",
       "link": "https://docs.google.com/presentation/d/1JNWBMbynq6WQw-i79_EHbH_HK4K86a_Y/edit?usp=share_link&ouid=113633189525719312323&rtpof=true&sd=true",
       "photoUrl": "https://drive.google.com/open?id=1Oh0r0OmKH5HmsFJTxMbIuERdSz9GYEKp"
+    },
+    {
+      "id": "P-68f72d0398",
+      "org": "THRIvE",
+      "date": "2026-11-21",
+      "title": "Creating an Enabling Environment for Teachers: Voices from the Ground conveyed through a Policy Brief",
+      "type": "Talk / Conference slides",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "Presented as part of the symposium “Bounded Freedom: Teacher Agency, Contested Narratives, and an Enabling Environment in Government Schools in Bihar, India,” this presentation draws on research with government school teachers in Bihar to highlight the everyday realities, constraints, and factors shaping teacher agency. It discusses the need to move beyond viewing teachers as bureaucratic implementers and recognise them as skilled professionals with knowledge and judgement. Drawing on voices of teachers and other education stakeholders -- headteachers, civil society organisations working in the field of education, education officers, and academics, it presents recommendations for strengthening professional autonomy, formalising teacher-led spaces for professional learning and dialogue, and cultivating supportive and inclusive school environments. The presentation also highlights efforts to translate research findings into policy dialogue and collective action.",
+      "citation": "Khanna, M., Patel, J., Nanda, M., Jha, M., Diksha, M., Nath, S., & Bhatt, S. Creating an Enabling Environment for Teachers: Voices from the Ground conveyed through a Policy Brief [Paper presentation]. 16th Annual International Conference of the Comparative Education Society of India, Aligarh, Uttar Pradesh, India. https://docs.google.com/presentation/d/1JNWBMbynq6WQw-i79_EHbH_HK4K86a_Y/edit?usp=sharing&ouid=113633189525719312323&rtpof=true&sd=true",
+      "link": "https://docs.google.com/presentation/d/1JNWBMbynq6WQw-i79_EHbH_HK4K86a_Y/edit?usp=sharing&ouid=113633189525719312323&rtpof=true&sd=true",
+      "photoUrl": "https://drive.google.com/open?id=1LheKU5IXM93mp7FeS03hSiA0rDJlBO6j"
     },
     {
       "id": "P-45086b6306",
@@ -947,10 +961,10 @@
     }
   ],
   "meta": {
-    "total": 69,
+    "total": 70,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 53
+      "THRIvE": 54
     }
   }
 }
