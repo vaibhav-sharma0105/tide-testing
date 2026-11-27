@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-27T11:39:00.550Z",
-  "contentHash": "sha256:7d315dd17edc4d7771e7afc75c0444039d5305a64f7730be9693cec8a06cffa4",
+  "lastUpdated": "2026-11-27T12:26:02.910Z",
+  "contentHash": "sha256:fb41fe378551263b433981e08d2e02f0219d76a0202dc9950de6244af7948c6c",
   "resources": [
     {
       "id": "P-f0fd6bc70f",
@@ -88,6 +88,20 @@
       "citation": "Khanna, M. (2026, November 21). Access Interrupted: Voices of Teachers with Disabilities within the Ethico-political Architecture of Indian education system. Comparative Education Society of India, Aligarh. https://docs.google.com/presentation/d/11g8yR767oqb8gfCKbhTCHdz7xHFGbQCJ/edit?usp=share_link&ouid=113633189525719312323&rtpof=true&sd=true",
       "link": "https://docs.google.com/presentation/d/11g8yR767oqb8gfCKbhTCHdz7xHFGbQCJ/edit?usp=share_link&ouid=113633189525719312323&rtpof=true&sd=true",
       "photoUrl": "https://drive.google.com/open?id=1gucCNKlvrocABdp0xfUPXK_e10FDI96Z"
+    },
+    {
+      "id": "P-5bae10d435",
+      "org": "THRIvE",
+      "date": "2026-11-19",
+      "title": "Happiness from the Lens of Children",
+      "type": "Book",
+      "fields": [
+        "Social emotional learning"
+      ],
+      "description": "This flipbook explores a simple question: what brings happiness to children? Drawing on a study with 54 students from six government schools in Delhi, it uses Photovoice, a method in which children were given child-friendly cameras and invited to capture moments that make them happy. Accompanied by the children’s own captions, the photographs offer glimpses into their thoughts, memories, and experiences. They capture a range of feelings, from nostalgia to a sense of belonging to their school, relationships, and wider society. Alongside the photographs, children’s drawings offer insights into how they understand and express ideas explored in their Happiness classes, including kindness, mindfulness, friendship, and gratitude. More than a collection of images, this flipbook offers a window into children’s inner worlds, bringing their experiences and perspectives to life in their own words.",
+      "citation": "Nanda, M., Patel, J., Nath, S., Ravindranath, S., Khanna, M., Jha, M., & Bhatnagar, A. (2026). Happiness from the Lens of Children. White Falcon Publishing.",
+      "link": "https://drive.google.com/file/d/1gw5v4Axah9yeg-jUQBMC24hRHw-Z3J3j/view?usp=share_link",
+      "photoUrl": "https://drive.google.com/open?id=1LaMhu80Bi1L15t1Y0mwiT1--L0SAkbZZ"
     },
     {
       "id": "P-6bdd242cfb",
@@ -989,10 +1003,10 @@
     }
   ],
   "meta": {
-    "total": 72,
+    "total": 73,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 56
+      "THRIvE": 57
     }
   }
 }
