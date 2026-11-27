@@ -682,7 +682,7 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 | 15 | Moderation of public Form content | **Parked**: owner to raise with the stakeholder on 2026-11-28 for every Sheet without an approval step | P4 |
 | 16 | SCF Sheet "anyone with the link can edit" | **Parked**: owner will change the access later | P4 |
 | 17 | GitHub settings (branch rule, secret scanning, CODEOWNERS, 2FA) | **Later (owner, 2026-11-27).** Checked read-only 2026-11-27: secret scanning + push protection ON; Pages deploys only from `main` ON; `main` not protected, 0 rulesets; Dependabot alerts and security updates OFF; no CODEOWNERS (1 collaborator); 2FA not checkable. To do: ruleset on `main` blocking force-push + deletion (no required PR: it would block the sync bots), enable Dependabot alerts + security updates, confirm 2FA | P4 |
-| 18 | Apps Script token out of the URL (`doPost`) | Decide | P4 |
+| 18 | Apps Script token out of the URL (`doPost`) | **Parked (owner, 2026-11-27): do it with the next Apps Script update.** Exposure is small: HTTPS, the sync redacts the token in logs, the site never calls the Apps Script; the token is reachable by someone who can push to the repo or into the Sheet owner's Google account, which moving to POST would not change (item 17 covers that). Partners will get it when it is set up | P4 |
 | 19 | Narrow local agent permissions | Action | P4 |
 | 20 | HTTPS / frame-ancestors at domain cutover | Action (later) | P4 |
 | 21 | EXIF in four hand-committed photos | Decide | P4 |
