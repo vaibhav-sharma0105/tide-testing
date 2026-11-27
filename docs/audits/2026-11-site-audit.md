@@ -681,7 +681,7 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 | 14 | Fewer font weights / scripts for speed | **Decided 2026-11-27: no change.** Measured (built site, phone, slow 4G, 4× CPU, median of 5): fonts add ~0.04 s to first text and 0.3–1.3 s to the main content; trimming weights saves 0.1 KB. First text takes 3.2–4.3 s even without fonts (cause not investigated; see Deferred) | P3 |
 | 15 | Moderation of public Form content | **Parked**: owner to raise with the stakeholder on 2026-11-28 for every Sheet without an approval step | P4 |
 | 16 | SCF Sheet "anyone with the link can edit" | **Parked**: owner will change the access later | P4 |
-| 17 | GitHub settings (branch rule, secret scanning, CODEOWNERS, 2FA) | Action | P4 |
+| 17 | GitHub settings (branch rule, secret scanning, CODEOWNERS, 2FA) | **Later (owner, 2026-11-27).** Checked read-only 2026-11-27: secret scanning + push protection ON; Pages deploys only from `main` ON; `main` not protected, 0 rulesets; Dependabot alerts and security updates OFF; no CODEOWNERS (1 collaborator); 2FA not checkable. To do: ruleset on `main` blocking force-push + deletion (no required PR: it would block the sync bots), enable Dependabot alerts + security updates, confirm 2FA | P4 |
 | 18 | Apps Script token out of the URL (`doPost`) | Decide | P4 |
 | 19 | Narrow local agent permissions | Action | P4 |
 | 20 | HTTPS / frame-ancestors at domain cutover | Action (later) | P4 |
