@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-27T06:15:32.223Z",
-  "contentHash": "sha256:8a479deb23e6030b4a17aec5dfb40af9d4c586ec8e3111b0ba896a2e8b2e7246",
+  "lastUpdated": "2026-11-27T07:10:32.164Z",
+  "contentHash": "sha256:1243db4f3e7c3e67e0c2dd5cd75fc50c63698e87d9b0fb21b55be6f63d689e7f",
   "resources": [
     {
       "id": "P-f0fd6bc70f",
@@ -32,6 +32,20 @@
       "citation": "Khanna, M., Bhatt, S., Diksha, M., & Jha, M.(2026, November 21). Bounded freedom: Teacher agency, contested narratives, and an enabling environment in government schools in Bihar, India. 16th Annual International Conference of the Comparative Education Society of India, Aligarh Muslim University, Aligarh, India. https://docs.google.com/presentation/d/1JNWBMbynq6WQw-i79_EHbH_HK4K86a_Y/edit?usp=share_link&ouid=113633189525719312323&rtpof=true&sd=true",
       "link": "https://docs.google.com/presentation/d/1JNWBMbynq6WQw-i79_EHbH_HK4K86a_Y/edit?usp=share_link&ouid=113633189525719312323&rtpof=true&sd=true",
       "photoUrl": "https://drive.google.com/open?id=1Oh0r0OmKH5HmsFJTxMbIuERdSz9GYEKp"
+    },
+    {
+      "id": "P-45086b6306",
+      "org": "THRIvE",
+      "date": "2026-11-21",
+      "title": "The stories teachers are made of: Narrative, identity and the boundaries of agency in government primary schools in Bihar, India",
+      "type": "Talk / Conference slides",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "CESI Presentation",
+      "citation": "Jha, M., Diksha, M. Bhatt, S., Khanna, M., Patel, J., Nanda, M., Nath, S., & Alcott, B. (2026, November 19–21). The stories teachers are made of: Narrative, identity and the boundaries of agency in government primary schools in Bihar, India [Conference presentation]. 16th Annual International Conference of CESI, Aligarh Muslim University, Aligarh, India.",
+      "link": "https://drive.google.com/file/d/18NbEji2hlUaq3CXGlmY9GUR-ACcc1zsJ/view?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1hn2v3fp4tLeLY1FCqhc5pQsrdRezgkGH"
     },
     {
       "id": "P-b9159b0743",
@@ -933,10 +947,10 @@
     }
   ],
   "meta": {
-    "total": 68,
+    "total": 69,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 52
+      "THRIvE": 53
     }
   }
 }
