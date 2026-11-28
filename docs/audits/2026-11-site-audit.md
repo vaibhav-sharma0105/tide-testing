@@ -834,3 +834,5 @@ Still to watch: the first nightly run (`e2e-nightly.yml`, 02:41 UTC) and the nex
 
 **Dependabot PRs #12, #13, #14 (opened 2026-11-28 by the config change) closed by the owner, to be done later as planned work.** They held major versions (Tailwind 3 → 4, framer-motion 12 → 14, eslint 9 → 10, vitest 4 → 5, jsdom 29 → 31, js-yaml 4 → 5, jest-dom 6 → 8; actions/checkout, setup-node, cache, upload-artifact one major each) and ran no checks (workflows run on pushes to `main`, not on PRs). Later: the minor updates in one tested batch; Tailwind 4 and framer-motion 14 as separate projects; consider limiting Dependabot to minor / patch updates.
 
+**"TEST" Publications row (THRIvE, 2026-11-28): left live by the owner (2026-11-28).** The tests no longer depend on it (the "Copy citation" e2e picks an entry with a full citation; the Type menu is keyboard-reachable when it scrolls).
+
