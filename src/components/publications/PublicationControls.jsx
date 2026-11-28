@@ -61,7 +61,15 @@ export function SearchBox({ value, onChange, inputRef, labels, className = '' })
 // (skipping greyed rows), Enter/Space choose, Esc closes and returns focus.
 // All text from the page's YAML; counts from the data.
 //   options: [{ value, label, count }] · align: 'left' | 'right' (which edge the list hangs from)
-export function FilterMenu({ label, value, onChange, allLabel, total, options, align = 'left', className = '' }) {
+//
+// `multiple`: several values can be chosen (value = array). Each option then shows a checkbox and
+// toggles without closing the list (aria-multiselectable); the "all" row clears every choice and
+// closes it. `multiHint` (optional) is a quiet line under the list heading ("Choose one or
+// more"); `selectedTemplate` names the button when more than one value is chosen ("{n} selected").
+export function FilterMenu({
+  label, value, onChange, allLabel, total, options, align = 'left', className = '',
+  multiple = false, multiHint, selectedTemplate = '{n}',
+}) {
   const id = useId()
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(0)
@@ -69,9 +77,14 @@ export function FilterMenu({ label, value, onChange, allLabel, total, options, a
   const listRef = useRef(null)
   const buttonRef = useRef(null)
   const rows = [{ value: '', label: allLabel, count: total }, ...options]
-  const selectedIndex = Math.max(0, rows.findIndex(o => o.value === value))
+  const chosen = multiple ? (Array.isArray(value) ? value : []) : [value].filter(Boolean)
+  const isChosen = (i) => (i === 0 ? chosen.length === 0 : chosen.includes(rows[i].value))
+  const selectedIndex = Math.max(0, rows.findIndex(o => o.value && chosen.includes(o.value)))
   const selected = rows[selectedIndex]
-  const enabled = (i) => Boolean(rows[i]) && (i === 0 || rows[i].count > 0 || rows[i].value === value)
+  const hasValue = chosen.length > 0
+  const several = multiple && chosen.length > 1
+  const buttonLabel = several ? selectedTemplate.replace('{n}', String(chosen.length)) : selected.label
+  const enabled = (i) => Boolean(rows[i]) && (i === 0 || rows[i].count > 0 || chosen.includes(rows[i].value))
 
   useEffect(() => {
     if (!open) return undefined
@@ -86,7 +99,14 @@ export function FilterMenu({ label, value, onChange, allLabel, total, options, a
 
   const openList = () => { setActive(selectedIndex); setOpen(true) }
   const close = () => { setOpen(false); buttonRef.current?.focus() }
-  const choose = (i) => { if (!enabled(i)) return; onChange(rows[i].value); close() }
+  const choose = (i) => {
+    if (!enabled(i)) return
+    if (!multiple) { onChange(rows[i].value); close(); return }
+    if (i === 0) { onChange([]); close(); return }
+    const v = rows[i].value
+    onChange(chosen.includes(v) ? chosen.filter(x => x !== v) : [...chosen, v])
+    setActive(i)
+  }
   const step = (from, dir) => {
     for (let i = from + dir; i >= 0 && i < rows.length; i += dir) if (enabled(i)) return i
     return from
@@ -105,8 +125,17 @@ export function FilterMenu({ label, value, onChange, allLabel, total, options, a
   }
 
   const option = (o, i) => {
-    const isSelected = i === selectedIndex
+    const isSelected = isChosen(i)
     const isEnabled = enabled(i)
+    // Multi-select rows show a checkbox (the "all" row keeps the tick: it is a reset, not a value).
+    const box = multiple && i > 0
+    const mark = box ? (
+      <span className={`flex h-[18px] w-[18px] items-center justify-center rounded-[5px] border-[1.5px] transition-colors duration-150 ${
+        isSelected ? 'border-primary-dark bg-primary-dark text-white' : isEnabled ? 'border-tide-muted/60 bg-white' : 'border-tide-border bg-tide-subtle'
+      }`}>
+        {isSelected && <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" />}
+      </span>
+    ) : isSelected && <Check className="h-4 w-4 text-primary-dark" aria-hidden="true" />
     return (
       <li
         key={o.value || '__all'}
@@ -116,11 +145,11 @@ export function FilterMenu({ label, value, onChange, allLabel, total, options, a
         aria-disabled={isEnabled ? undefined : true}
         onPointerEnter={() => isEnabled && setActive(i)}
         onClick={() => choose(i)}
-        className={`grid grid-cols-[1rem_minmax(0,1fr)_auto] items-start gap-x-2.5 rounded-xl px-3 py-2.5 font-body text-sm leading-snug transition-colors ${
+        className={`grid ${multiple ? 'grid-cols-[1.125rem_minmax(0,1fr)_auto]' : 'grid-cols-[1rem_minmax(0,1fr)_auto]'} items-start gap-x-2.5 rounded-xl px-3 py-2.5 font-body text-sm leading-snug transition-colors ${
           isEnabled ? 'cursor-pointer' : 'cursor-not-allowed text-tide-muted/70'
         } ${i === active && isEnabled ? 'bg-primary-faint' : ''} ${isSelected ? 'font-semibold text-primary-dark' : isEnabled ? 'text-tide-text' : ''}`}
       >
-        <span className="flex h-5 items-center">{isSelected && <Check className="h-4 w-4 text-primary-dark" aria-hidden="true" />}</span>
+        <span className="flex h-5 items-center">{mark}</span>
         <span className="min-w-0 break-words text-left">{o.label}</span>
         <span className={`min-w-[2.5rem] justify-self-end rounded-full px-2 py-0.5 text-center text-xs font-semibold tabular-nums ${
           isSelected ? 'bg-primary-dark text-white' : isEnabled ? 'bg-tide-subtle text-tide-text/80' : ''
@@ -149,13 +178,15 @@ export function FilterMenu({ label, value, onChange, allLabel, total, options, a
         onClick={() => (open ? setOpen(false) : openList())}
         onKeyDown={onTriggerKeyDown}
         className={`flex w-full min-h-11 items-center gap-2 rounded-full border bg-white py-2 pl-4 pr-3 text-left font-body text-sm shadow-sm transition-colors hover:border-primary/40 ${FOCUS_PILL} ${
-          open ? 'border-primary ring-2 ring-primary/20' : value ? 'border-primary/40' : 'border-tide-border'
-        } ${value ? 'text-primary-dark' : 'text-tide-text'}`}
+          open ? 'border-primary ring-2 ring-primary/20' : hasValue ? 'border-primary/40' : 'border-tide-border'
+        } ${hasValue ? 'text-primary-dark' : 'text-tide-text'}`}
       >
-        <span id={`${id}-value`} className={`min-w-0 flex-1 truncate ${value ? 'font-semibold' : ''}`}>{selected.label}</span>
-        <span aria-hidden="true" className={`min-w-[2.5rem] flex-shrink-0 rounded-full px-2 py-0.5 text-center text-xs font-semibold tabular-nums ${value ? 'bg-primary-faint text-primary-dark' : 'bg-tide-subtle text-tide-text/80'}`}>
-          {selected.count}
-        </span>
+        <span id={`${id}-value`} className={`min-w-0 flex-1 truncate ${hasValue ? 'font-semibold' : ''}`}>{buttonLabel}</span>
+        {!several && (
+          <span aria-hidden="true" className={`min-w-[2.5rem] flex-shrink-0 rounded-full px-2 py-0.5 text-center text-xs font-semibold tabular-nums ${hasValue ? 'bg-primary-faint text-primary-dark' : 'bg-tide-subtle text-tide-text/80'}`}>
+            {selected.count}
+          </span>
+        )}
         <ChevronDown className={`h-4 w-4 flex-shrink-0 text-tide-muted transition-transform duration-200 ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
       </button>
 
@@ -176,13 +207,15 @@ export function FilterMenu({ label, value, onChange, allLabel, total, options, a
               // type made the Type menu scroll). Focus still lands here when the menu opens.
               tabIndex={0}
               aria-labelledby={`${id}-label`}
+              aria-multiselectable={multiple || undefined}
               aria-activedescendant={`${id}-opt-${active}`}
               onKeyDown={onListKeyDown}
               className="max-h-[min(32rem,70vh)] overflow-y-auto overscroll-contain p-1.5 outline-none"
             >
               {option(rows[0], 0)}
-              <li role="presentation" aria-hidden="true" className="mx-3 mb-1 mt-1.5 border-t border-tide-border pt-3 font-body text-[11px] font-semibold uppercase tracking-[0.12em] text-tide-muted">
-                {label}
+              <li role="presentation" aria-hidden="true" className="mx-3 mb-1 mt-1.5 flex flex-wrap items-baseline justify-between gap-x-3 border-t border-tide-border pt-3 font-body text-[11px] font-semibold uppercase tracking-[0.12em] text-tide-muted">
+                <span>{label}</span>
+                {multiple && multiHint && <span className="font-medium normal-case tracking-normal">{multiHint}</span>}
               </li>
               {rows.slice(1).map((o, k) => (
                 <Fragment key={o.value}>
@@ -241,7 +274,9 @@ const GRID = {
   2: 'grid-cols-2',
   3: 'grid-cols-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,11rem)]',
 }
-export function PublicationToolbar({ q, t, filters = ['type', 'field', 'year'], className = '' }) {
+// `multi`: the filters ('type' | 'field') whose menus take several values; the others take one
+// (type/field are lists in the URL either way — a single menu shows and sets the first).
+export function PublicationToolbar({ q, t, filters = ['type', 'field', 'year'], multi = [], className = '' }) {
   const { params, set, clearAll, input, setInput, inputRef, options, chips } = q
   const menus = {
     type: { label: t.typeLabel, allLabel: t.allTypes, total: options.totals.type, options: orderFilterOptions(options.types) },
@@ -254,17 +289,24 @@ export function PublicationToolbar({ q, t, filters = ['type', 'field', 'year'], 
     <div className={className}>
       <div className={`grid gap-x-3 gap-y-4 ${GRID[shown.length] ?? 'grid-cols-1'}`}>
         <SearchBox value={input} onChange={setInput} inputRef={inputRef} labels={searchLabels} className={shown.length === 3 ? 'col-span-2 sm:col-span-3' : shown.length === 2 ? 'col-span-2' : ''} />
-        {shown.map((key, i) => (
+        {shown.map((key, i) => {
+          const many = multi.includes(key)
+          const v = params[key]
+          return (
           <FilterMenu
             key={key}
             {...menus[key]}
-            value={params[key]}
+            multiple={many}
+            multiHint={t.multiHint}
+            selectedTemplate={t.selectedTemplate}
+            value={many ? v : (Array.isArray(v) ? v[0] ?? '' : v)}
             onChange={value => set({ [key]: value })}
             align={i === shown.length - 1 && i > 0 ? 'right' : 'left'}
             // Three menus on a phone: Type | Year on one row, the (long) Field list under them.
             className={shown.length === 3 && key === 'field' ? 'order-last col-span-2 sm:order-none sm:col-span-1' : ''}
           />
-        ))}
+          )
+        })}
       </div>
       <ActiveFilters chips={chips} removeTemplate={t.removeTemplate} clearAllLabel={t.clearAll} onClearAll={clearAll} className="mt-3" />
     </div>

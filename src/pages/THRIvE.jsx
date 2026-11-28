@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
-import { Microscope, BookOpen, TrendingUp, Lightbulb, Link2, Users } from 'lucide-react'
+import { Microscope, BookOpen, TrendingUp, Lightbulb, Link2, Users, ArrowRight } from 'lucide-react'
 import SeoHead from '../components/ui/SeoHead'
+import Button from '../components/ui/Button'
+import { safeHttpUrl } from '../utils/safeUrl'
 import PageHero from '../components/ui/PageHero'
 import SectionHeader from '../components/ui/SectionHeader'
 import ArchPortrait from '../components/ui/ArchPortrait'
@@ -22,8 +24,30 @@ const ICONS = {
 const AREA_ID = i => `area-${i + 1}`
 const pad = i => String(i + 1).padStart(2, '0')
 
+/* ── "Read more" under a research area. YAML readMoreUrl: a page of this site ("/…", in-app
+   link) or an http(s) address (new tab, through safeHttpUrl); empty or anything else → no button.
+   aria-label names the area, so four "Read more" buttons are still told apart. ── */
+function ReadMore({ url, label, aria }) {
+  const internal = typeof url === 'string' && url.startsWith('/') && !url.startsWith('//')
+  const external = internal ? null : safeHttpUrl(url)
+  if (!internal && !external) return null
+  const content = (
+    <>
+      {label}
+      <ArrowRight className="h-4 w-4 transition-transform duration-200 ease-out group-hover/rm:translate-x-1" aria-hidden="true" />
+    </>
+  )
+  return (
+    <div className="pt-2">
+      {internal
+        ? <Button to={url} variant="secondary" aria-label={aria} className="group/rm">{content}</Button>
+        : <Button href={external} external variant="secondary" aria-label={aria} className="group/rm">{content}</Button>}
+    </div>
+  )
+}
+
 /* ── One research area: its own full-width band, numeral, organic photo with gentle parallax ── */
-function ResearchArea({ area, index }) {
+function ResearchArea({ area, index, readMore }) {
   const ref = useRef(null)
   const reduce = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
@@ -67,6 +91,7 @@ function ResearchArea({ area, index }) {
               {para}
             </p>
           ))}
+          <ReadMore url={area.readMoreUrl} label={readMore.label} aria={readMore.template.replace('{title}', () => area.title)} />
         </motion.div>
       </div>
     </section>
@@ -120,6 +145,37 @@ function AreaNav({ items, label, heading }) {
   )
 }
 
+/* ── Core principles: the original layout (3-column grid, a rule above each item, icon tile,
+   title, line), on a light band now that it follows "About THRIvE" (2026-11-28). The rule carries
+   a short amber segment and the icon sits on a brand-blue tile, so the band keeps colour without
+   the old navy. ── */
+function Principles({ principles }) {
+  return (
+    <section className="relative overflow-hidden bg-white px-4 py-16 md:px-8 md:py-24 lg:px-16">
+      <div className="pointer-events-none absolute -left-32 top-10 h-96 w-96 rounded-full bg-primary-light/50 blur-3xl" aria-hidden="true" />
+      <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-accent-light/50 blur-3xl" aria-hidden="true" />
+      <div className="relative mx-auto max-w-5xl">
+        <SectionHeader badge={principles.sectionBadge} title={principles.sectionTitle} className="!mb-12 md:!mb-16" />
+        <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+          {principles.items.map((p, i) => {
+            const Icon = ICONS[p.iconKey] || BookOpen
+            return (
+              <motion.div key={p.title} {...fadeUp(i * 0.06)} className="relative border-t border-tide-border pt-6">
+                <span className="absolute -top-px left-0 h-0.5 w-10 rounded-full bg-accent" aria-hidden="true" />
+                <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-faint text-primary-dark ring-1 ring-primary/10">
+                  <Icon className="h-6 w-6" aria-hidden="true" />
+                </span>
+                <h3 className="font-display text-xl font-semibold text-tide-text">{p.title}</h3>
+                <p className="mt-2 font-body text-sm leading-relaxed text-tide-muted">{p.desc}</p>
+              </motion.div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default function THRIvE() {
   const blob = 'pointer-events-none absolute rounded-full blur-3xl'
   return (
@@ -135,15 +191,18 @@ export default function THRIvE() {
       />
       <PageHero badge={data.meta.badge} title={data.meta.title} subtitle={data.meta.fullName} />
 
-      {/* Statement — one idea, large */}
-      <section className="relative overflow-hidden bg-primary-light px-4 py-20 md:px-8 md:py-28">
-        <div className={`${blob} -left-24 -top-24 h-80 w-80 bg-white/70`} aria-hidden="true" />
-        <div className={`${blob} -bottom-28 -right-20 h-80 w-80 bg-accent/15`} aria-hidden="true" />
+      {/* Statement — a quiet line under the banner, never louder than it (owner request
+          2026-11-28): modest serif italic, a narrow measure, amber hanging quotes. */}
+      <section className="relative overflow-hidden bg-primary-faint px-4 py-12 md:px-8 md:py-16">
+        <div className={`${blob} -left-24 -top-32 h-72 w-72 bg-white/80`} aria-hidden="true" />
+        <div className={`${blob} -bottom-32 -right-24 h-72 w-72 bg-accent/10`} aria-hidden="true" />
         <motion.p
           {...fadeUp()}
-          className="relative mx-auto max-w-4xl text-center font-display text-3xl font-medium italic leading-snug text-primary-dark text-balance md:text-5xl"
+          className="relative mx-auto max-w-xl text-center font-display text-xl font-normal italic leading-relaxed tracking-[-0.005em] text-primary-dark text-balance md:text-2xl"
         >
-          “{data.meta.tagline}”
+          <span className="font-semibold not-italic text-accent-deeper" aria-hidden="true">“</span>
+          {data.meta.tagline}
+          <span className="font-semibold not-italic text-accent-deeper" aria-hidden="true">”</span>
         </motion.p>
       </section>
 
@@ -157,8 +216,11 @@ export default function THRIvE() {
         </motion.div>
       </section>
 
+      {/* Core principles — how THRIvE works, read before meeting the people who do it */}
+      <Principles principles={data.principles} />
+
       {/* Leadership — the people come first, so the portraits are big */}
-      <section className="relative overflow-hidden bg-white px-4 py-16 md:px-8 md:py-24 lg:px-16">
+      <section className="relative overflow-hidden bg-tide-bg px-4 pt-16 pb-10 md:px-8 md:pt-24 md:pb-12 lg:px-16">
         <div className={`${blob} -left-24 top-10 h-96 w-96 bg-accent/10`} aria-hidden="true" />
         <div className={`${blob} -right-24 bottom-0 h-96 w-96 bg-primary-light`} aria-hidden="true" />
         <div className="relative mx-auto max-w-5xl">
@@ -172,7 +234,7 @@ export default function THRIvE() {
       </section>
 
       {/* Research Associates */}
-      <section className="relative overflow-hidden bg-tide-bg px-4 py-14 md:px-8 md:py-20 lg:px-16">
+      <section className="relative overflow-hidden bg-tide-bg px-4 pt-6 pb-16 md:px-8 md:pt-8 md:pb-24 lg:px-16">
         <div className="relative mx-auto max-w-5xl">
           <h2 className="sr-only">{data.researchTeam.sectionBadge}</h2>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-12 md:gap-x-8">
@@ -189,37 +251,20 @@ export default function THRIvE() {
         </div>
       </section>
 
-      {/* Core principles — dark band, one focus per item */}
-      <section className="relative overflow-hidden bg-navy px-4 py-16 md:px-8 md:py-24 lg:px-16">
-        <div className={`${blob} -left-32 top-10 h-96 w-96 bg-primary/25`} aria-hidden="true" />
-        <div className="relative mx-auto max-w-5xl">
-          <SectionHeader badge={data.principles.sectionBadge} title={data.principles.sectionTitle} light className="!mb-12 md:!mb-16" />
-          <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {data.principles.items.map((p, i) => {
-              const Icon = ICONS[p.iconKey] || BookOpen
-              return (
-                <motion.div key={p.title} {...fadeUp(i * 0.06)} className="border-t border-white/15 pt-6">
-                  <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-accent">
-                    <Icon className="h-6 w-6" aria-hidden="true" />
-                  </span>
-                  <h3 className="font-display text-xl font-semibold text-white">{p.title}</h3>
-                  <p className="mt-2 font-body text-sm leading-relaxed text-white/75">{p.desc}</p>
-                </motion.div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Research areas — each a full-width band */}
-      <section className="bg-tide-bg px-4 pt-16 pb-10 md:px-8 md:pt-24 md:pb-12 lg:px-16">
+      <section className="bg-white px-4 pt-16 pb-10 md:px-8 md:pt-24 md:pb-12 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <SectionHeader badge={data.researchAreas.sectionBadge} title={data.researchAreas.sectionTitle} className="!mb-0" />
         </div>
       </section>
       <AreaNav items={data.researchAreas.items} label={data.researchAreas.navLabel} heading={data.researchAreas.sectionTitle} />
       {data.researchAreas.items.map((area, i) => (
-        <ResearchArea key={area.title} area={area} index={i} />
+        <ResearchArea
+          key={area.title}
+          area={area}
+          index={i}
+          readMore={{ label: data.researchAreas.readMore, template: data.researchAreas.readMoreLabelTemplate ?? '{title}' }}
+        />
       ))}
     </>
   )

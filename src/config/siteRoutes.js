@@ -34,6 +34,10 @@ export const PRIMARY_ROUTES = [
   { path: '/thrive', sources: [page('thrive')] },
   { path: '/thrive/publications', sources: [page('thrive-publications'), PUBLICATIONS] },
   { path: '/contact', sources: [page('contact')] },
+  // A real file for the "Coming soon" placeholder, so links to it (the /thrive research areas'
+  // "Read more", 2026-11-28) open it rather than the 404 page. noindex (its own robots tag), not in
+  // the sitemap.
+  { path: '/coming-soon', sources: ['content/shared/coming-soon.yaml'], sitemap: false },
 ]
 
 // One page per Resource Centre row (/pramaan/resource-centre/:id), listed from the snapshot.

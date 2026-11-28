@@ -64,14 +64,14 @@ describe('paginate / pageWindow over many sizes', () => {
 describe('Publications URL state', () => {
   it('round-trips search text with Gujarati, Devanagari, spaces and symbols', () => {
     for (const search of [GU, HI, 'teacher & agency', 'a+b=c?', '100% "quoted"']) {
-      const f = { search, type: 'book', field: 'education', year: '2024', dir: 'asc', page: 3 }
+      const f = { search, type: ['book', 'blog'], field: ['education'], year: '2024', dir: 'asc', page: 3 }
       expect(parsePublicationParams(publicationParamsToSearch(f))).toEqual(f)
     }
   })
 
   it('ignores hand-edited nonsense and leaves defaults out of the address', () => {
     expect(parsePublicationParams('?year=24&page=-1&dir=sideways&type=%20BOOK%20&utm=x')).toEqual({
-      search: '', type: 'book', field: '', year: '', dir: 'desc', page: 1,
+      search: '', type: ['book'], field: [], year: '', dir: 'desc', page: 1,
     })
     expect(publicationParamsToSearch(parsePublicationParams(''))).toBe('')
   })

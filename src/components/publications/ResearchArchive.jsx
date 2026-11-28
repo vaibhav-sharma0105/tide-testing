@@ -29,7 +29,7 @@ export default function ResearchArchive({ rows, data }) {
   return (
     <section className="bg-tide-bg px-4 pt-10 pb-20 md:px-8 md:pt-14 md:pb-28">
       <div className="mx-auto max-w-6xl">
-        <PublicationToolbar q={q} t={t} filters={['type', 'field', 'year']} />
+        <PublicationToolbar q={q} t={t} filters={['type', 'field', 'year']} multi={['type', 'field']} />
         <ResultsBar q={q} pg={pg} t={t} r={r} className="mt-6" />
 
         {filtered.length === 0 ? <NoResults r={r} /> : (

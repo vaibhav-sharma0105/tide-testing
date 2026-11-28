@@ -16,13 +16,14 @@ describe('sitemap.xml', () => {
   const xml = buildSitemap(site, entries)
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
 
-  it('lists every primary page except Social Changemakers (owner decision), at the site.yaml address', () => {
+  it('lists every primary page except Social Changemakers (owner decision) and Coming soon (noindex placeholder), at the site.yaml address', () => {
+    const hidden = new Set([SCF, '/coming-soon'])
     for (const r of PRIMARY_ROUTES) {
       const url = `${site.url}${r.path}`
-      if (r.path === SCF) expect(locs, r.path).not.toContain(url)
+      if (hidden.has(r.path)) expect(locs, r.path).not.toContain(url)
       else expect(locs, r.path).toContain(url)
     }
-    expect(PRIMARY_ROUTES.find((r) => r.path === SCF).sitemap).toBe(false)
+    for (const path of hidden) expect(PRIMARY_ROUTES.find((r) => r.path === path).sitemap).toBe(false)
   })
 
   it('lists one page per Resource Centre row, and no redirect or removed address', () => {

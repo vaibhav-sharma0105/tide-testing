@@ -8,14 +8,18 @@ import { countOfTypes, publicationStats } from '../../utils/publicationFilters'
 // from the snapshot rows: count, distinct types, earliest year and — when the page's YAML lists
 // `socialProofTypes` and at least one row has one of them — how many pieces by others there are.
 // `chart` (optional) is shown beside the text on large screens, below it on small ones.
+// Each optional figure shows only when the page's YAML has its text: the types figure needs
+// `stats.typePlural` (THRIvE dropped it, owner request 2026-11-28), the social-proof line needs
+// `socialProofTypes` + `stats.socialProofTemplate` (THRIvE dropped it too).
 // Nothing is shown for 0 rows.
 export function PublicationsHero({ data, rows, chart }) {
   const s = publicationStats(rows)
   const t = data.stats
   const others = countOfTypes(rows, data.socialProofTypes)
+  const typeTemplate = s.types === 1 ? t.typeSingular : t.typePlural
   const items = s.count > 0 ? [
     withValue(s.count === 1 ? t.publicationSingular : t.publicationPlural, 'n', s.count),
-    s.types > 0 && withValue(s.types === 1 ? t.typeSingular : t.typePlural, 'n', s.types),
+    s.types > 0 && typeTemplate && withValue(typeTemplate, 'n', s.types),
     s.firstYear && withValue(t.since, 'year', s.firstYear),
   ].filter(Boolean) : []
   const proofTemplate = others === 1 ? t.socialProofSingular : t.socialProofTemplate

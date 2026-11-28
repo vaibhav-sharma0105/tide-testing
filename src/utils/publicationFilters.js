@@ -56,16 +56,26 @@ export function matchesSearch(row, terms) {
 const yearKey = (r) => (hasDate(r) ? r.date.slice(0, 4) : UNDATED)
 
 /**
+ * A filter value as a list of normalised keys: type and field can hold several choices (the
+ * THRIvE page's menus are multi-select; a single-select menu passes one string). '' / null → [].
+ */
+export const filterList = (v) => (Array.isArray(v) ? v : [v]).map(normKey).filter(Boolean)
+
+/**
  * @param {object[]} rows one organisation's rows
- * @param {{search?:string, type?:string, field?:string, year?:string, dir?:string}} filters
- *   type/field hold normalised keys (see optionsFor/optionsForMany); year is 'YYYY' or UNDATED.
- *   A row matches `field` if any of its fields matches. Order: comparePublications(dir).
+ * @param {{search?:string, type?:string|string[], field?:string|string[], year?:string, dir?:string}} filters
+ *   type/field hold normalised keys (see optionsFor/optionsForMany), one or several; year is
+ *   'YYYY' or UNDATED. Several values of one filter widen it (any of them); different filters
+ *   narrow each other. A row matches `field` if any of its fields is chosen.
+ *   Order: comparePublications(dir).
  */
 export function applyPublicationFilters(rows, filters = {}) {
   const terms = searchTerms(filters.search)
+  const types = filterList(filters.type)
+  const fields = filterList(filters.field)
   return rows
-    .filter(r => !filters.type || normKey(r.type) === filters.type)
-    .filter(r => !filters.field || (r.fields ?? []).some(f => normKey(f) === filters.field))
+    .filter(r => !types.length || types.includes(normKey(r.type)))
+    .filter(r => !fields.length || (r.fields ?? []).some(f => fields.includes(normKey(f))))
     .filter(r => !filters.year || yearKey(r) === filters.year)
     .filter(r => matchesSearch(r, terms))
     .sort(comparePublications(filters.dir))
@@ -97,14 +107,16 @@ function withCounts(all, pool) {
  * as label, so the page shows it and it can be cleared. totals = the "All …" count per filter.
  */
 export function facetPublicationOptions(rows, filters = {}, undatedLabel = 'Undated') {
-  const typePool = applyPublicationFilters(rows, { ...filters, type: '' })
-  const fieldPool = applyPublicationFilters(rows, { ...filters, field: '' })
+  const typePool = applyPublicationFilters(rows, { ...filters, type: [] })
+  const fieldPool = applyPublicationFilters(rows, { ...filters, field: [] })
   const yearPool = applyPublicationFilters(rows, { ...filters, year: '' })
   const types = withCounts(optionsFor(rows, 'type'), optionsFor(typePool, 'type'))
   const fields = withCounts(optionsForMany(rows, 'fields'), optionsForMany(fieldPool, 'fields'))
   const years = withCounts(yearOptionsFor(rows, undatedLabel), yearOptionsFor(yearPool, undatedLabel))
   const keep = (list, value) => {
-    if (value && !list.some(o => o.value === value)) list.push({ value, label: value, count: 0, missing: true })
+    for (const v of filterList(value)) {
+      if (!list.some(o => o.value === v)) list.push({ value: v, label: v, count: 0, missing: true })
+    }
   }
   keep(types, filters.type)
   keep(fields, filters.field)
@@ -118,6 +130,8 @@ const YEAR_PARAM = /^(\d{4}|undated)$/
  * Reads the page's filters from a query string. Robust to old or hand-edited links: values are
  * normalised; an impossible year (not 4 digits / 'undated') and unknown params are ignored;
  * page is a whole number ≥ 1 (anything else → 1; the caller clamps it to the last page).
+ * type and field are lists (repeated params: ?type=book&type=blog; duplicates dropped), so a
+ * one-value link from before multi-select reads the same.
  */
 export function parsePublicationParams(search) {
   const p = new URLSearchParams(search)
@@ -125,8 +139,8 @@ export function parsePublicationParams(search) {
   const page = Number.parseInt(p.get('page') ?? '', 10)
   return {
     search: p.get('search') ?? '',
-    type: normKey(p.get('type')),
-    field: normKey(p.get('field')),
+    type: [...new Set(filterList(p.getAll('type')))],
+    field: [...new Set(filterList(p.getAll('field')))],
     year: YEAR_PARAM.test(year) ? year : '',
     dir: p.get('dir') === 'asc' ? 'asc' : DEFAULT_DIR,
     page: Number.isFinite(page) && page >= 1 ? page : 1,
@@ -137,8 +151,8 @@ export function parsePublicationParams(search) {
 export function publicationParamsToSearch(f) {
   const p = new URLSearchParams()
   if (f.search) p.set('search', f.search)
-  if (f.type) p.set('type', f.type)
-  if (f.field) p.set('field', f.field)
+  for (const v of filterList(f.type)) p.append('type', v)
+  for (const v of filterList(f.field)) p.append('field', v)
   if (f.year) p.set('year', f.year)
   if (f.dir && f.dir !== DEFAULT_DIR) p.set('dir', f.dir)
   if (f.page && f.page > 1) p.set('page', String(f.page))

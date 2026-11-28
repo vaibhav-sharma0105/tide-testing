@@ -12,16 +12,8 @@
   "stats": {
     "publicationSingular": "{n} publication",
     "publicationPlural": "{n} publications",
-    "typeSingular": "{n} type",
-    "typePlural": "{n} types",
-    "since": "since {year}",
-    "socialProofTemplate": "{n} pieces by others citing or featuring our work",
-    "socialProofSingular": "{n} piece by others citing or featuring our work"
+    "since": "since {year}"
   },
-  "socialProofTypes": [
-    "Published by others (TIDE acknowledged)",
-    "Mass media coverage"
-  ],
   "chart": {
     "title": "Publications per year",
     "hint": "Select a year to show only its publications.",
@@ -42,6 +34,8 @@
     "newest": "Newest first",
     "oldest": "Oldest first",
     "directionLabelTemplate": "Order by date: {dir}. Click to reverse.",
+    "multiHint": "Choose one or more",
+    "selectedTemplate": "{n} selected",
     "clearAll": "Clear all",
     "searchChipTemplate": "“{q}”",
     "removeTemplate": "Remove filter: {name}"
@@ -96,6 +90,16 @@
   },
   "entry": {
     "read": "Read",
+    "actions": {
+      "article": "Read article",
+      "book": "View book",
+      "report": "Read report",
+      "presentation": "View",
+      "newspaper": "Read",
+      "quote": "Read",
+      "megaphone": "Read",
+      "file": "Open"
+    },
     "citationHeading": "APA reference",
     "summaryHeading": "About this work",
     "copyCitation": "Copy citation",

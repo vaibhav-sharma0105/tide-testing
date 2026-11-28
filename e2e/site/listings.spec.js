@@ -102,6 +102,9 @@ test.describe('THRIvE Publications', () => {
     const option = page.getByRole('listbox').locator('[role="option"]:not([aria-disabled="true"])').nth(1)
     await option.click()
     await expect.poll(() => sitePath(page)).toMatch(/[?&]type=/)
+    // Type is multi-select: the list stays open for more choices; Escape closes it.
+    await page.keyboard.press('Escape')
+    await expect(page.getByRole('listbox')).toHaveCount(0)
     const removeLabel = thriveText.toolbar.removeTemplate
     await page.getByRole('button', { name: new RegExp(`^${removeLabel.split('{name}')[0]}`) }).first().click()
     await expect.poll(() => sitePath(page)).toBe('/thrive/publications')
@@ -116,7 +119,7 @@ test.describe('THRIvE Publications', () => {
     await expect(page.getByRole('searchbox')).toHaveValue('teacher')
     const want = thrive.filter((r) => [r.title, r.citation, r.description, r.type, ...(r.fields ?? [])].map(norm).join('\n').includes('teacher')).length
     if (want > 12) expect(await showingTotal(page)).toBe(want)
-    else await expect(page.locator('main [aria-label^="Copy citation"]')).toHaveCount(want)
+    else await expect(page.locator('main article')).toHaveCount(want)
   })
 
   test('numbered page links (?page=) and the clamp of a too-high page', async ({ page }) => {

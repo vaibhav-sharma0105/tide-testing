@@ -6,7 +6,8 @@
 #
 # Page layout: one reading column grouped by year (newest first), 12 per page, with search,
 # type, field-of-work and year filters and a newest/oldest switch above it. Each entry: the
-# thumbnail, then the APA reference and the summary as two separate blocks.
+# thumbnail, the summary, then a Read button and "Show more", which opens the full summary and
+# the APA reference (with "Copy citation").
 
 meta:
   # Last crumb in the SEO breadcrumb trail (Home > THRIvE Research Centre > this page)
@@ -21,20 +22,14 @@ meta:
   emptyHint: "Publications appear here as soon as they are added."
 
 # Short line of figures under the title, counted from the Sheet.
+# (The "{n} types" figure and the "pieces by others citing or featuring our work" line were taken
+# off this page on 2026-11-28. To bring them back, add `typeSingular` / `typePlural` here, or
+# `socialProofTemplate` / `socialProofSingular` here plus a `socialProofTypes:` list — see
+# tide-publications.yaml and CONTENT-GUIDE.md.)
 stats:
   publicationSingular: "{n} publication"
   publicationPlural: "{n} publications"
-  typeSingular: "{n} type"
-  typePlural: "{n} types"
   since: "since {year}"
-  # Counted from rows whose "Type of material" is one of `socialProofTypes` (hidden when 0)
-  socialProofTemplate: "{n} pieces by others citing or featuring our work"
-  socialProofSingular: "{n} piece by others citing or featuring our work"
-
-# Types counted by `stats.socialProofTemplate` (exactly as written in the Sheet; case ignored)
-socialProofTypes:
-  - "Published by others (TIDE acknowledged)"
-  - "Mass media coverage"
 
 # "Publications per year" chart in the banner (switched off: src/config/publications.js HERO_CHART)
 chart:
@@ -60,6 +55,10 @@ toolbar:
   newest: "Newest first"
   oldest: "Oldest first"
   directionLabelTemplate: "Order by date: {dir}. Click to reverse."
+  # Type of material and Field of work take several choices: a quiet hint in the open list, and
+  # the button's text when more than one is chosen ({n} = how many)
+  multiHint: "Choose one or more"
+  selectedTemplate: "{n} selected"
   clearAll: "Clear all"
   # The removable chip for the words searched; {q} = those words
   searchChipTemplate: "“{q}”"
@@ -127,7 +126,20 @@ source:
 
 entry:
   read: "Read"
-  # Small headings of the two blocks under each title
+  # The button that opens a publication, by the kind of work (its "Type of material" family:
+  # article = journal articles · book = books, chapters · report = reports · presentation = talks,
+  # slides, posters · newspaper = blogs, magazines · quote = published by others · megaphone =
+  # media coverage · file = anything else). A family left out uses `read` above.
+  actions:
+    article: "Read article"
+    book: "View book"
+    report: "Read report"
+    presentation: "View"
+    newspaper: "Read"
+    quote: "Read"
+    megaphone: "Read"
+    file: "Open"
+  # Small headings: the summary under each title, and the APA reference that "Show more" opens
   citationHeading: "APA reference"
   summaryHeading: "About this work"
   copyCitation: "Copy citation"

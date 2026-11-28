@@ -267,13 +267,45 @@ describe('THRIvE publications (research archive)', () => {
     expect(screen.queryByText(/pieces? by others/)).not.toBeInTheDocument()
   })
 
-  it('social proof counts rows of the listed types', async () => {
+  it('hero figures: count and first year only — no types figure, no social-proof line (taken off 2026-11-28)', async () => {
     const others = [
       row({ id: 'O1', org: 'THRIvE', date: '2024-01-01', title: 'Cited us', type: 'Published by others (TIDE acknowledged)' }),
       row({ id: 'O2', org: 'THRIvE', date: '2024-01-02', title: 'News', type: 'mass media coverage' }),
     ]
     await renderAt('/thrive/publications', snap([...THRIVE_ROWS, ...others]))
-    expect(screen.getByText((_, el) => el?.tagName === 'P' && el.textContent === '2 pieces by others citing or featuring our work')).toBeInTheDocument()
+    const hero = screen.getByRole('heading', { level: 1 }).closest('section')
+    expect(within(hero).getAllByRole('listitem').map(li => li.textContent)).toEqual(['7 publications', 'since 2021'])
+    expect(screen.queryByText(/pieces? by others/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/\d+ types?$/)).not.toBeInTheDocument()
+  })
+
+  it('Type and Field are multi-select: options toggle with checkboxes, values widen within a menu and narrow across', async () => {
+    await renderAt('/thrive/publications')
+    const list = openMenu('Type of material')
+    expect(list).toHaveAttribute('aria-multiselectable', 'true')
+    expect(within(list).getByText('Choose one or more')).toBeInTheDocument()
+    const opt = (name) => within(screen.getByRole('listbox', { name: 'Type of material' })).getAllByRole('option').find(o => optionCells(o)[0] === name)
+    fireEvent.click(opt('Book'))
+    // The list stays open for the next choice.
+    fireEvent.click(opt('Blog'))
+    expect(search()).toBe('?type=book&type=blog')
+    expect(titles()).toEqual(['Second brief', 'Other work', 'Undated note'])
+    expect(opt('Book')).toHaveAttribute('aria-selected', 'true')
+    expect(menuValue('Type of material')).toBe('2 selected')
+    fireEvent.click(opt('Book')) // toggles off
+    expect(search()).toBe('?type=blog')
+    fireEvent.keyDown(screen.getByRole('listbox', { name: 'Type of material' }), { key: 'Escape' })
+    choose('Field of work', 'Curriculum')
+    fireEvent.click(within(screen.getByRole('listbox', { name: 'Field of work' })).getAllByRole('option').find(o => optionCells(o)[0] === 'Other'))
+    expect(search()).toBe('?type=blog&field=curriculum&field=other')
+    expect(titles()).toEqual(['Other work'])
+    // One chip per value; removing one keeps the rest.
+    fireEvent.click(screen.getByRole('button', { name: 'Remove filter: Curriculum' }))
+    expect(search()).toBe('?type=blog&field=other')
+    expect(titles()).toEqual(['Other work'])
+    // "All types" clears that menu's choices.
+    choose('Type of material', 'All types')
+    expect(search()).toBe('?field=other')
   })
 
   it('date toggle: oldest first keeps undated last and is kept in the URL', async () => {
@@ -354,20 +386,29 @@ describe('THRIvE publications (research archive)', () => {
     expect(menuValue('Field of work')).toBe('Assessment')
   })
 
-  it('APA citation under the title, then the summary, as two labelled blocks; field tags; source; Read hidden without a link', async () => {
+  it('summary under the title; "Show more" opens the APA citation; field tags; source; Read named by type, hidden without a link', async () => {
     const { container } = await renderAt('/thrive/publications')
     const card = screen.getAllByRole('article').find(a => within(a).queryByText('Teacher study'))
     const heading = within(card).getByRole('heading', { level: 3 })
-    const citation = heading.nextElementSibling
-    expect(within(citation).getByRole('heading', { level: 4 })).toHaveTextContent('APA reference')
-    expect(within(citation).getByRole('blockquote').textContent).toBe('Citation: Doe, J. (2023). Teacher study. Journal of Tests.')
-    const summary = citation.nextElementSibling
+    const summary = heading.nextElementSibling
     expect(within(summary).getByRole('heading', { level: 4 })).toHaveTextContent('About this work')
     expect(summary).toHaveTextContent('About teachers')
+    // The citation waits behind "Show more" (in the page but inert), which opens it.
+    const citation = summary.nextElementSibling
+    expect(citation).toHaveAttribute('inert')
+    expect(within(citation).getByRole('heading', { level: 4, hidden: true })).toHaveTextContent('APA reference')
+    expect(within(citation).getByRole('blockquote', { hidden: true }).textContent).toBe('Citation: Doe, J. (2023). Teacher study. Journal of Tests.')
+    const more = within(card).getByRole('button', { name: 'Show more' })
+    expect(more.getAttribute('aria-controls').split(' ')).toContain(citation.id)
+    fireEvent.click(more)
+    expect(citation).not.toHaveAttribute('inert')
+    expect(within(card).getByRole('button', { name: 'Show less' })).toHaveAttribute('aria-expanded', 'true')
     expect(within(card).getByText(TEACHER_FIELD)).toBeInTheDocument()
     expect(within(card).queryByRole('link')).not.toBeInTheDocument()
     const linked = screen.getAllByRole('article').find(a => within(a).queryByText('Assessment brief'))
-    const read = within(linked).getByRole('link', { name: 'Read: Assessment brief (opens in a new tab)' })
+    // A journal article: the button says what you'll do ("Read article", YAML entry.actions).
+    const read = within(linked).getByRole('link', { name: 'Read article: Assessment brief (opens in a new tab)' })
+    expect(read).toHaveTextContent('Read article')
     expect(read).toHaveAttribute('href', 'https://example.org/a')
     expect(read).toHaveAttribute('target', '_blank')
     expect(read).toHaveAttribute('rel', 'noopener noreferrer')
@@ -386,6 +427,8 @@ describe('THRIvE publications (research archive)', () => {
     const writeText = vi.fn().mockResolvedValue(undefined)
     Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
     await renderAt('/thrive/publications')
+    const card = screen.getAllByRole('article').find(a => within(a).queryByText('Teacher study'))
+    fireEvent.click(within(card).getByRole('button', { name: 'Show more' }))
     const btn = screen.getByRole('button', { name: 'Copy citation for Teacher study' })
     await act(async () => { fireEvent.click(btn) })
     expect(writeText).toHaveBeenCalledWith('Doe, J. (2023). Teacher study. Journal of Tests.')
@@ -394,16 +437,27 @@ describe('THRIvE publications (research archive)', () => {
     delete navigator.clipboard
   })
 
-  it('description gets "Show more" only when it overflows 3 lines', async () => {
+  it('"Show more" appears when there is a citation or the summary overflows 3 lines', async () => {
     vi.spyOn(HTMLElement.prototype, 'scrollHeight', 'get').mockImplementation(function () {
-      return this.textContent === 'About teachers' ? 200 : 0
+      return this.textContent === 'Other work summary' ? 200 : 0
     })
     vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockReturnValue(72)
-    await renderAt('/thrive/publications')
-    const buttons = screen.getAllByRole('button', { name: 'Show more' })
-    expect(buttons).toHaveLength(1)
-    fireEvent.click(buttons[0])
-    expect(screen.getByRole('button', { name: 'Show less' })).toHaveAttribute('aria-expanded', 'true')
+    const rows = THRIVE_ROWS.map(r => (r.id === 'H-d' ? { ...r, description: 'Other work summary' } : r))
+    await renderAt('/thrive/publications', snap(rows))
+    const withMore = screen.getAllByRole('article').filter(a => within(a).queryByRole('button', { name: 'Show more' }))
+    // H-a, H-b, H-c have citations; H-d's summary is cut; H-e (no citation, no summary) has none.
+    expect(withMore.map(a => within(a).getByRole('heading', { level: 3 }).textContent.replace(' (opens in a new tab)', '')))
+      .toEqual(['Second brief', 'Assessment brief', 'Teacher study', 'Other work'])
+    const other = withMore.at(-1)
+    fireEvent.click(within(other).getByRole('button', { name: 'Show more' }))
+    expect(within(other).getByRole('button', { name: 'Show less' })).toHaveAttribute('aria-expanded', 'true')
+    expect(within(other).getByText('Other work summary')).not.toHaveClass('line-clamp-3')
+  })
+
+  it('a search that matches only a citation opens that entry so the match shows', async () => {
+    await renderAt('/thrive/publications?search=journal%20of%20tests')
+    const card = screen.getAllByRole('article').find(a => within(a).queryByText('Teacher study'))
+    expect(within(card).getByRole('button', { name: 'Show less' })).toHaveAttribute('aria-expanded', 'true')
   })
 
   it(`numbered pages of ${THRIVE_PAGE_SIZE}: page in the URL, "continued" year heading, focus to results`, async () => {
@@ -521,8 +575,12 @@ describe('publication utilities', () => {
 
   it('URL params: robust parsing and a minimal round trip', () => {
     expect(parsePublicationParams('?type=Journal%20Article&year=2024&page=2&dir=asc&x=1')).toEqual({
-      search: '', type: 'journal article', field: '', year: '2024', dir: 'asc', page: 2,
+      search: '', type: ['journal article'], field: [], year: '2024', dir: 'asc', page: 2,
     })
+    // Several values: repeated params, normalised, duplicates dropped; written back the same way.
+    const many = parsePublicationParams('?type=Book&type=blog&type=BOOK&field=Assessment')
+    expect(many).toMatchObject({ type: ['book', 'blog'], field: ['assessment'] })
+    expect(publicationParamsToSearch(many)).toBe('?type=book&type=blog&field=assessment')
     expect(parsePublicationParams('?year=24&page=abc')).toMatchObject({ year: '', page: 1 })
     expect(parsePublicationParams('?page=0').page).toBe(1)
     expect(parsePublicationParams('?year=undated').year).toBe('undated')

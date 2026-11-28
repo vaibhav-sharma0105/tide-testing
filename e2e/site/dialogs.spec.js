@@ -36,11 +36,16 @@ test('Copy citation copies the APA reference and says so', async ({ page, browse
   // Use an entry with a full citation: the Sheet can hold short or test rows (a "TEST" row went live on
   // 2026-11-28), and what this checks is the copy, not the Sheet's content.
   const prefix = thriveText.a11y.copyLabelTemplate.split('{title}')[0]
-  const labels = await page.getByRole('button', { name: new RegExp(`^${prefix}`) }).evaluateAll((bs) => bs.map((b) => b.getAttribute('aria-label')))
+  // The citation sits behind each entry's "Show more" (inert until opened), so find the buttons by
+  // their label attribute, then open that entry first.
+  const labels = await page.locator('main button[aria-label]').evaluateAll((bs, p) => bs.map((b) => b.getAttribute('aria-label')).filter((l) => l.startsWith(p)), prefix)
   const full = new Set(publications.resources.filter((r) => (r.citation || '').length > 20).map((r) => `${prefix}${r.title}`))
   const label = labels.find((l) => full.has(l))
   test.skip(!label, 'no entry with a full citation on the first page')
-  const button = page.getByRole('button', { name: label, exact: true })
+  const entry = page.locator('main article').filter({ has: page.getByLabel(label, { exact: true }) })
+  const button = entry.getByLabel(label, { exact: true })
+  await entry.getByRole('button', { name: thriveText.entry.showMore, exact: true }).click()
+  await expect(button).toBeVisible()
   await button.click()
   await expect(button).toContainText(thriveText.entry.copied)
   await expect(page.getByText(thriveText.entry.copiedAnnouncement)).toBeAttached()

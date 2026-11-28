@@ -123,14 +123,16 @@ different sections:
     list — their lists and counts come from the Sheet, so a new type or year appears on its own) and `results:`
     (the count line above the list and the "no results" message).
 - `thrive-publications.yaml` (THRIvE) — a list grouped by year, 12 per page, with search and
-  filters; each publication shows its image, its APA reference and a short summary:
+  filters ("Type of material" and "Field of work" take several choices); each publication shows its image,
+  a short summary, a button named for the kind of work (`entry.actions`, e.g. "Read article", "View book") and
+  "Show more", which opens the whole summary and the APA reference:
   - `source:` (THRIvE only) — `label` (the "Source" tooltip), the words shown for DOI and Google Drive links
     (`doi`, `driveFile`, `driveFolder`), and `names`: a list of web addresses with the name to show instead
     (e.g. `tandfonline.com: "Taylor & Francis Online"`); an address not listed shows as it is.
-  - `socialProofTypes:` — a list of "Type of material" names (exactly as in the Sheet; capital letters don't
-    matter) counted in the extra figure under the title, `stats.socialProofTemplate` ("{n} pieces by others
-    citing or featuring our work"). That figure is hidden when no publication has one of these types. Today:
-    "Published by others (TIDE acknowledged)" and "Mass media coverage".
+  - The figures under the title are "{n} publications" and "since {year}". The "{n} types" figure and the
+    "pieces by others citing or featuring our work" line were taken off on 2026-11-28; to bring one back add
+    `stats.typeSingular` / `typePlural`, or `stats.socialProofTemplate` / `socialProofSingular` plus a
+    `socialProofTypes:` list of "Type of material" names (exactly as in the Sheet; capitals don't matter).
   - `chart:` (the chart's title, hint and the label read for each bar), `toolbar:` (search box, "Type of
     material", "Field of work" and "Year" lists, newest/oldest button, "Clear all"), `results:` (the count
     line, "Showing {from}–{to} of {total} …" when there are several pages, the "no results" message, the
@@ -302,15 +304,24 @@ leaders:                      # the "Our team" co-directors (large portraits)
       photo: "/assets/images/thrive/team-jane-smith.jpg"   # null shows initials
       linkedin: "https://www.linkedin.com/in/jane-smith/"  # optional; whole portrait links
 researchTeam:                 # the Research Associates (same fields, shown in this order)
+principles:                   # "Core Principles" (a grid of six, after "About THRIvE")
+  items:
+    - iconKey: "BookOpen"     # BookOpen, Microscope, TrendingUp, Lightbulb, Link2, Users
+      title: "..."
+      desc: "..."
 researchAreas:                # the four numbered areas
+  readMore: "Read more"       # the button under each area
   items:
     - title: "..."
       overview: "..."         # the short line under the title
       photo: "/assets/images/projects-bettered/gallery-04.jpg"
+      readMoreUrl: "/coming-soon"   # where "Read more" goes: a site page ("/…") or https://…; "" hides it
       paragraphs:             # the write-up; the first is highlighted
         - "..."
         - "..."
 ```
+
+`readMoreUrl` points to the "Coming soon" page until each area has its own page or document — replace it then.
 
 The area photos are shown at about 16:10, so use landscape pictures. The "Research team" and "Our team" headings: `leaders.sectionTitle` is visible; `researchTeam.sectionBadge` is read aloud by screen readers but not shown.
 

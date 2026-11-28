@@ -28,7 +28,7 @@ export function usePublicationQuery({ rows, shortcutKey, undatedHeading, searchC
     { replace: true, state: focus ? { focusResults: true } : undefined },
   ), [navigate])
   const set = (patch) => change({ ...params, ...patch, page: 1 })
-  const clearAll = () => change({ search: '', type: '', field: '', year: '', dir: params.dir, page: 1 })
+  const clearAll = () => change({ search: '', type: [], field: [], year: '', dir: params.dir, page: 1 })
 
   // The search box updates at once; the URL (and so the results) after a short pause.
   const commitSearch = useCallback((search) => {
@@ -51,10 +51,14 @@ export function usePublicationQuery({ rows, shortcutKey, undatedHeading, searchC
   }, [location.key, location.state])
 
   const labelOf = (list, value) => list.find(o => o.value === value)?.label ?? value
+  // One chip per chosen value (type and field can hold several); removing one keeps the others.
+  const listChips = (key, list) => params[key].map(v => ({
+    key: `${key}:${v}`, label: labelOf(list, v), onRemove: () => set({ [key]: params[key].filter(x => x !== v) }),
+  }))
   const chips = [
     params.search && { key: 'search', label: searchChipTemplate.replace('{q}', () => params.search), onRemove: () => set({ search: '' }) },
-    params.type && { key: 'type', label: labelOf(options.types, params.type), onRemove: () => set({ type: '' }) },
-    params.field && { key: 'field', label: labelOf(options.fields, params.field), onRemove: () => set({ field: '' }) },
+    ...listChips('type', options.types),
+    ...listChips('field', options.fields),
     params.year && { key: 'year', label: labelOf(options.years, params.year), onRemove: () => set({ year: '' }) },
   ].filter(Boolean)
   const active = chips.length > 0
