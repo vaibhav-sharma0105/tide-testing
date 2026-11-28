@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-28T11:50:11.919Z",
-  "contentHash": "sha256:67d56a69a100ef71123ab8b9fa5ab128c1d353f2997f572ce213aa6b2bde1a2a",
+  "lastUpdated": "2026-11-28T11:58:25.019Z",
+  "contentHash": "sha256:5b66ed76b811fad252b263859a426b3f612b4c1c8abbbb26d353f79e976b1e5b",
   "resources": [
     {
       "id": "P-ed53d1e06b",
@@ -76,20 +76,6 @@
       "citation": "Jha, M., Diksha, M. Bhatt, S., Khanna, M., Patel, J., Nanda, M., Nath, S., & Alcott, B. (2026, November 19–21). The stories teachers are made of: Narrative, identity and the boundaries of agency in government primary schools in Bihar, India [Conference presentation]. 16th Annual International Conference of CESI, Aligarh Muslim University, Aligarh, India.",
       "link": "https://drive.google.com/file/d/18NbEji2hlUaq3CXGlmY9GUR-ACcc1zsJ/view?usp=sharing",
       "photoUrl": "https://drive.google.com/open?id=1hn2v3fp4tLeLY1FCqhc5pQsrdRezgkGH"
-    },
-    {
-      "id": "P-b9159b0743",
-      "org": "THRIvE",
-      "date": "2026-11-21",
-      "title": "Stories Teachers are Made of-Narrative, identity and the boundaries of agency in government primary schools in Bihar, India",
-      "type": "Talk / Conference slides",
-      "fields": [
-        "Teacher agency, wellbeing, motivation, and professional development"
-      ],
-      "description": "This traces the grand stories teachers are told and juxtapose with the stories teachers resonate.",
-      "citation": "Jha, M., Diksha, M., Bhatt, S., Khanna, M., Patel, J., Nanda, M., & Nath, S. (2026, November 19–21). The stories teachers are made of: Narrative, identity and the boundaries of agency in government primary schools in Bihar, India [Conference presentation]. 16th Annual International Conference of CESI, Aligarh Muslim University, Aligarh, India.",
-      "link": null,
-      "photoUrl": "https://drive.google.com/open?id=1n2U1KMCATO7sK0RQSDdiQscHGp37Qlyv"
     },
     {
       "id": "P-efc1c3010f",
@@ -192,7 +178,9 @@
       "title": "The sound of equity: Teachers' school journeys captured through soundscapes",
       "type": "Blog",
       "fields": [
-        "People with disability"
+        "Teacher agency, wellbeing, motivation, and professional development",
+        "People with disability",
+        "Research methods"
       ],
       "description": "The THRIvE research centre conducted research on the expirences of teachers with visual impairments using sound based research.",
       "citation": "Singal, N., Khanna, M., & Diksha, M. (2026, May 5). The sound of equity: Teachers’ school journeys captured through soundscapes. The Education and Development Forum (UKFIET). https://www.ukfiet.org/2026/the-sound-of-equity-teachers-school-journeys-captured-through-soundscapes/",
@@ -206,7 +194,9 @@
       "title": "Teaching against the odds: Teachers with disabilities in Indian mainstream schools",
       "type": "Blog",
       "fields": [
-        "People with disability"
+        "Teacher agency, wellbeing, motivation, and professional development",
+        "People with disability",
+        "Research methods"
       ],
       "description": "A pan-India study of 25 teachers with disabilities reveals the barriers they face in training, hiring, and daily practice, and calls for greater accessibility, rights, and recognition in Indian schools.",
       "citation": "Wijesinghe, T., & Singal, N. (2026, March 23). Teaching against the odds: Teachers with disabilities in Indian mainstream schools. The Education and Development Forum (UKFIET). https://www.ukfiet.org/2026/teaching-against-the-odds-teachers-with-disabilities-in-indian-mainstream-schools/",
@@ -246,7 +236,7 @@
       "org": "THRIvE",
       "date": "2025-12-06",
       "title": "Beyond bureaucratic cogs: Reimagining teacher agency in the Indian education system",
-      "type": "Conference slides",
+      "type": "Talk / Conference slides",
       "fields": [
         "Teacher agency, wellbeing, motivation, and professional development"
       ],
@@ -372,7 +362,8 @@
       "title": "Happiness in education from the lens of children: Photovoice of students in government run schools in India",
       "type": "Journal article",
       "fields": [
-        "Social emotional learning"
+        "Social emotional learning",
+        "Research methods"
       ],
       "description": "This study uses photovoice to explore how children in Indian government schools experience happiness, emphasizing relationships, self-awareness, and holistic well-being.",
       "citation": "Nanda, M., Patel, J., Nath, S., & Ravindranath, S. (2025). Happiness in education from the lens of children: Photovoice of students in government-run schools in India. Social Sciences & Humanities Open, 11, Article 101244. https://doi.org/10.1016/j.ssaho.2025.101244",
@@ -1019,10 +1010,10 @@
     }
   ],
   "meta": {
-    "total": 74,
+    "total": 73,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 58
+      "THRIvE": 57
     }
   }
 }
