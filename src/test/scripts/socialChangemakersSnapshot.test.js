@@ -18,6 +18,8 @@ const ids = n => Array.from({ length: n }, (_, i) => `SC-${String(i).padStart(10
 describe('ordering helpers', () => {
   it('reads the first year of a batch label and the order number', () => {
     expect(['23-24', '2023-24', 'SCF 24–25', 'Batch two'].map(batchYear)).toEqual([2023, 2023, 2024, null])
+    // A range or a 4-digit year beats any other 2-digit number (audit P5-12).
+    expect(['Batch 12 (2023-24)', 'Cohort 3, 2025', '2023/2024', 'Batch 7 of 24-25'].map(batchYear)).toEqual([2023, 2025, 2023, 2024])
     expect(['3', ' 3 ', '3.', 'first', '', '0', '2.5', 4].map(orderNumber)).toEqual([3, 3, 3, null, null, null, null, 4])
   })
 

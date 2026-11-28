@@ -7,7 +7,10 @@
  * "SCF 24–25" → 2024. Null when there is no year in it.
  */
 export function batchYear(batch) {
-  const m = /(\d{4}|\d{2})/.exec(String(batch ?? ''))
+  const s = String(batch ?? '')
+  // A range's first year ("2023-24", "23-24", "2023/2024"), else a 4-digit year, else the first 2-digit
+  // number — so "Batch 12 (2023-24)" is 2023, not 2012 (audit P5-12).
+  const m = /(\d{4}|\d{2})\s*[-–/]\s*\d{2,4}/.exec(s) || /\b((?:19|20)\d{2})\b/.exec(s) || /(\d{4}|\d{2})/.exec(s)
   if (!m) return null
   const y = Number(m[1])
   return m[1].length === 2 ? 2000 + y : y

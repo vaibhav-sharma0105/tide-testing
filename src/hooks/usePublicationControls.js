@@ -6,7 +6,7 @@ import {
 
 // Hooks and helpers for the Publications pages' controls (components/publications).
 
-const SEARCH_DEBOUNCE_MS = 150
+export const SEARCH_DEBOUNCE_MS = 150
 
 /**
  * Everything both Publications pages share about search + filters, kept in the URL query string

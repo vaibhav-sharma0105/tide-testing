@@ -774,7 +774,13 @@ Production will be this GitHub Pages site with the TIDE domain pointed at it; th
   - Trusted Types: React DOM creates hoisted `<script>` elements via `innerHTML`, so it needs a policy and testing.
   - `<iframe sandbox>` on the Drive and YouTube players: fullscreen and pop-out would need testing per host.
   - Live checks of the GitHub and Google settings (they need the owner's accounts).
-- P5-8 Partners long tasks (owner item), P5-9 shared URL-state hook / one pagination, P5-10 sync orchestrators, P5-11 knip leftovers, P5-12 `batchYear` edge, P5-14 `LazyMotion`.
+- Item 6 (owner, 2026-11-28) — P5 tidy-ups:
+  - P5-8 done as owner item 22.
+  - P5-9 part done: the Resource Centre search filters on every keystroke and writes the address after a 150 ms pause (`SEARCH_DEBOUNCE_MS`, shared with Publications); test added. Not done: one shared URL-state hook and one pagination component (the two paginations differ in size and style; merging them is a visible change).
+  - P5-10 kept on purpose: each sync script spells out its safety order (refuse mass removals, never delete photos on a Drive failure); shared I/O is already in `sync-runner.js`.
+  - P5-11 done: unused `src/test/utils/renderWithProviders.jsx` removed; `@vitest/coverage-v8` was added in P6. Exports used only by their own file or tests left as they are.
+  - P5-12 done: `batchYear` prefers a year range or a 4-digit year ("Batch 12 (2023-24)" → 2023); test added.
+  - P5-14 not done: `layoutId` (header and Partners index-bar underlines) needs Framer Motion's full feature set, so `LazyMotion` would save little for a 48-file change.
 - P6: visual baselines in CI (needs Linux baselines; the 9 committed ones are Windows-only); a real slow-network latency run; measuring the CI time and the nightly run (GitHub only).
 - ~~Flaky unit tests~~ fixed 2026-11-28: the first test to import a page timed out at the 5 s default on a busy machine (reproduced: 3 suites in parallel → "Test timed out in 5000ms" in `siteRoutes.test.jsx`). Global `testTimeout: 30000` in `vitest.config.js`, per-file 15 s overrides and 5 s waits raised, Home warmed in `routes.smoke`. After: 3 suites in parallel, twice, 531/531 each. The dev e2e lightbox flake (1 failure, 2026-11-25) was **not reproduced** in 18 runs (10 alone, 8 under load); no change made, watch it.
 - Phone first paint: on a simulated phone (slow 4G, 4× CPU) the first text appears after 3.2–4.3 s even with no web fonts (owner item 14 measurements, 2026-11-27). Cause not investigated.

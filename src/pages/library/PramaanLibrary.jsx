@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef } from 'react'
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { SlidersHorizontal, BookOpen, ArrowUpDown, ArrowDownAZ, ArrowUpZA } from 'lucide-react'
@@ -10,6 +10,7 @@ import LibraryCard from '../../components/library/LibraryCard'
 import LibraryDropdown, { FOCUS_PILL } from '../../components/library/LibraryDropdown'
 import Pagination from '../../components/abl/Pagination'
 import SearchField from '../../components/listing/SearchField'
+import { SEARCH_DEBOUNCE_MS } from '../../hooks/usePublicationControls'
 import FilterChips from '../../components/listing/FilterChips'
 import FilterDrawer from '../../components/listing/FilterDrawer'
 import { LIBRARY_PAGE_SIZE } from '../../config/library'
@@ -85,13 +86,22 @@ export default function PramaanLibrary() {
   const options = useMemo(() => facetOptions(resources, filters), [filters])
   const [sidebarRef, sidebarSticky] = useSidebarFits(STICKY_TOP)
 
+  // The list follows every keystroke; the address is written after a pause while typing in the
+  // search box (as on Publications), and at once for any other change (audit P5-9).
+  const urlTimer = useRef(0)
+  useEffect(() => () => clearTimeout(urlTimer.current), [])
   const change = useCallback((next) => {
     setFilters(next)
     setPage(1)
-    navigate({ search: filtersToSearch(next, 1) }, { replace: true, state: OWN_STATE })
-  }, [navigate])
+    clearTimeout(urlTimer.current)
+    const write = () => navigate({ search: filtersToSearch(next, 1) }, { replace: true, state: OWN_STATE })
+    const onlySearch = Object.keys(DEFAULT_FILTERS).every(k => k === 'search' || JSON.stringify(next[k]) === JSON.stringify(filters[k]))
+    if (onlySearch && next.search !== filters.search) urlTimer.current = setTimeout(write, SEARCH_DEBOUNCE_MS)
+    else write()
+  }, [navigate, filters])
   const clear = useCallback(() => change({ ...DEFAULT_FILTERS, sort: filters.sort, dir: filters.dir }), [change, filters.sort, filters.dir])
   const changePage = useCallback((p) => {
+    clearTimeout(urlTimer.current)
     setPage(p)
     navigate({ search: filtersToSearch(filters, p) }, { replace: true, state: OWN_STATE })
     gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })

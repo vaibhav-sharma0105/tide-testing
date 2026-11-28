@@ -92,3 +92,15 @@ describe('Resource Centre address state', () => {
     expect(screen.queryByRole('button', { name: /^Remove filter/ })).not.toBeInTheDocument()
   })
 })
+
+describe('search box and the address (audit P5-9)', () => {
+  it('filters on every keystroke but writes the address only after a pause', async () => {
+    renderAt('/pramaan/resource-centre')
+    const box = screen.getByRole('searchbox')
+    fireEvent.change(box, { target: { value: 'G01' } })
+    expect(cardNames()).toEqual(['Item G01'])                       // the list follows at once
+    expect(screen.getByTestId('where').textContent).not.toContain('search=')
+    await screen.findByText(/search=G01/)                            // the address follows after the pause
+    expect(screen.getByTestId('where').textContent).toBe('/pramaan/resource-centre?search=G01')
+  })
+})
