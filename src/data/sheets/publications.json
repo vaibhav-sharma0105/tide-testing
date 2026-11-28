@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-27T12:26:02.910Z",
-  "contentHash": "sha256:fb41fe378551263b433981e08d2e02f0219d76a0202dc9950de6244af7948c6c",
+  "lastUpdated": "2026-11-28T09:55:19.254Z",
+  "contentHash": "sha256:556e65d7bb9ca262274e6397ce707be985a16343cd0ac3f8af3675048379ac9b",
   "resources": [
     {
       "id": "P-f0fd6bc70f",
@@ -580,7 +580,7 @@
       "description": "Annual report for years 2022-23",
       "citation": null,
       "link": "https://drive.google.com/file/d/1iZuRRaaJWkwOVt222uKbzdyE7Wq8pBbY/view?usp=drive_link",
-      "photoUrl": "https://drive.google.com/open?id=1gCMY5TREy_yIOqVTs1tUtfY2xPoC0ME6"
+      "photoUrl": null
     },
     {
       "id": "P-5b25da68c9",
