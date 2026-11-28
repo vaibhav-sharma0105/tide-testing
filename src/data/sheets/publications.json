@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-28T15:53:15.535Z",
-  "contentHash": "sha256:c03213d6fd91916ddbc6b865f5c5641fd725bbb580fa9626a4fab5c32691450e",
+  "lastUpdated": "2026-11-28T16:08:30.943Z",
+  "contentHash": "sha256:bbca34710052219f31043a7249c8b8f7e484b69bcba76ce1019095a8d67f7f4a",
   "resources": [
     {
       "id": "P-ed53d1e06b",
@@ -249,7 +249,7 @@
       "id": "P-55f87debde",
       "org": "THRIvE",
       "date": "2025-12-03",
-      "title": "A missing link for inclusive education: The importance of supporting teachers with disabilities to ensure learning for all by Nidhi Singal and Katie Godwin",
+      "title": "A missing link for inclusive education: The importance of supporting teachers with disabilities to ensure learning for all",
       "type": "Published by others (TIDE acknowledged)",
       "fields": [
         "People with disability"
@@ -264,7 +264,7 @@
       "org": "THRIvE",
       "date": "2025-11-10",
       "title": "Global Citizenship Education for Harmony and Social Justice",
-      "type": "Book",
+      "type": "Book Chapter",
       "fields": [
         "Holistic Education",
         "Social emotional learning"
@@ -334,7 +334,7 @@
       "org": "THRIvE",
       "date": "2025-07-15",
       "title": "Exploring the Crossroads of Ecological Civilization and Peace Education: Interdisciplinary Dialogues on Sustainable Development",
-      "type": "Book",
+      "type": "Book Chapter",
       "fields": [
         "Holistic Education"
       ],
@@ -380,37 +380,9 @@
         "Holistic Education"
       ],
       "description": "This article discusses the opportunities and limitations of mass education systems, which are influenced by materialism, modernism, reductionism, and anthropocentrism.",
-      "citation": "Srikantaiah, Deepa and Patel, Jwalin (2025) \"Holistic and Decolonial Approaches to Mass Education,\" Journal of Contemplative and Holistic Education: Vol. 2: Iss. 2, Article 5. DOI: https://doi.org/10.25035/jche.02.02.05",
-      "link": "http://scholarworks.bgsu.edu/cgi/viewcontent.cgi?article=1055&context=jche",
+      "citation": "Srikantaiah, D. and Patel, J. (2025) Holistic and Decolonial Approaches to Mass Education, Journal of Contemplative and Holistic Education: Vol. 2: Iss. 2, Article 5. https://doi.org/10.25035/jche.02.02.05",
+      "link": "https://doi.org/10.25035/jche.02.02.05",
       "photoUrl": "https://drive.google.com/open?id=1zPnMT_My9ErBFkIWjR8pFvwAOmqUgh4J"
-    },
-    {
-      "id": "P-9d1875858f",
-      "org": "THRIvE",
-      "date": "2024-12-27",
-      "title": "Fostering Flourishing Through Happiness Curriculum: Perspectives of stakeholders from Delhi Government Schools",
-      "type": "Talk / Conference slides",
-      "fields": [
-        "Social emotional learning"
-      ],
-      "description": "The poster presented at Templeton Foundation’s Global Flourishing Conference showcases findings from the research project on the Happiness Curriculum in Delhi government schools, emphasizing children’s perceptions of happiness.",
-      "citation": "Patel, J. N., Nath, S., & Nanda, M. (2024, December 27). “Gussa Kamm Aata Hai” (I feel less angry): Exploring how happiness education can be a catalyst for change. Retrieved from osf.io/7cdfk",
-      "link": "https://osf.io/d5ncr",
-      "photoUrl": "https://drive.google.com/open?id=1gQyoAxYEtiHUX_VT65qEDkDR5rirIqsJ"
-    },
-    {
-      "id": "P-854ae846f0",
-      "org": "THRIvE",
-      "date": "2024-12-27",
-      "title": "Capturing Children’s Voices: Exploring Perceptions of Happiness through Photovoicein Delhi Government Schools, India.",
-      "type": "Poster presentation",
-      "fields": [
-        "Social emotional learning"
-      ],
-      "description": "This study uses photovoice to explore how students in Delhi government schools understand happiness through the Happiness Curriculum.",
-      "citation": "Patel, J. N., Nanda, M., & Nath, S. (2024, December 27). Capturing Children’s Voices: Exploring Perceptions of Happiness through Photovoicein Delhi Government Schools, India. Retrieved from osf.io/ap72d",
-      "link": "https://osf.io/ap72d/overview",
-      "photoUrl": "https://drive.google.com/open?id=1YttqxzTcYI2JMZWSJvz2upIaXVVX8sad"
     },
     {
       "id": "P-9a5466ddc6",
@@ -454,7 +426,7 @@
       "id": "P-0eb8f9e2dd",
       "org": "THRIvE",
       "date": "2024-09-05",
-      "title": "Episode 10 :Eco peace and Reimagining Interconnected Peace Education",
+      "title": "Episode 10: Eco peace and Reimagining Interconnected Peace Education",
       "type": "Published by others (TIDE acknowledged)",
       "fields": [
         "Holistic Education"
@@ -521,6 +493,20 @@
       "photoUrl": "https://drive.google.com/open?id=1rZmGS-Rsr9c6TSb68tPlsciI7LOCDO3E"
     },
     {
+      "id": "P-854ae846f0",
+      "org": "THRIvE",
+      "date": "2024-03-01",
+      "title": "Capturing Children’s Voices: Exploring Perceptions of Happiness through Photovoicein Delhi Government Schools, India.",
+      "type": "Poster presentation",
+      "fields": [
+        "Social emotional learning"
+      ],
+      "description": "This study uses photovoice to explore how students in Delhi government schools understand happiness through the Happiness Curriculum.",
+      "citation": "Patel, J. N., Nanda, M., & Nath, S. (2024, December 27). Capturing Children’s Voices: Exploring Perceptions of Happiness through Photovoicein Delhi Government Schools, India. Retrieved from osf.io/ap72d",
+      "link": "https://osf.io/ap72d/overview",
+      "photoUrl": "https://drive.google.com/open?id=1YttqxzTcYI2JMZWSJvz2upIaXVVX8sad"
+    },
+    {
       "id": "P-4295cc70ac",
       "org": "THRIvE",
       "date": "2024-01-01",
@@ -549,18 +535,18 @@
       "photoUrl": "https://drive.google.com/open?id=1l55wevnfa_lAGO-Fd1_zjnbLKKFqekwr"
     },
     {
-      "id": "P-96b55ecf67",
+      "id": "P-9d1875858f",
       "org": "THRIvE",
-      "date": "2023-10-16",
-      "title": "Nature as a peace educator; Towards social justice and inner peace through learning and being in natural environments.",
-      "type": "Journal article",
+      "date": "2023-11-27",
+      "title": "Fostering Flourishing Through Happiness Curriculum: Perspectives of stakeholders from Delhi Government Schools",
+      "type": "Talk / Conference slides",
       "fields": [
-        "Holistic Education"
+        "Social emotional learning"
       ],
-      "description": "This article explores how learning in and with nature can foster inner peace, social justice, and harmonious relationships with others and the environment.",
-      "citation": "Patel, J. & Ehrenzeller, C. (2023). Nature as a peace educator; Towards social justice and inner peace through learning and being in natural environments. Journal of Environmental Education (online first). www.doi.org/10.1080/00958964.2023.2261389",
-      "link": "https://www.doi.org/10.1080/00958964.2023.2261389",
-      "photoUrl": "https://drive.google.com/open?id=13L0njYIGI15BZ0ahYvZsitC0SujN1Fq_"
+      "description": "The poster presented at Templeton Foundation’s Global Flourishing Conference showcases findings from the research project on the Happiness Curriculum in Delhi government schools, emphasizing children’s perceptions of happiness.",
+      "citation": "Patel, J. N., Nath, S., & Nanda, M. (2024, December 27). “Gussa Kamm Aata Hai” (I feel less angry): Exploring how happiness education can be a catalyst for change. Retrieved from osf.io/7cdfk",
+      "link": "https://osf.io/d5ncr",
+      "photoUrl": "https://drive.google.com/open?id=1gQyoAxYEtiHUX_VT65qEDkDR5rirIqsJ"
     },
     {
       "id": "P-3512bd729c",
@@ -614,8 +600,22 @@
       ],
       "description": "Introduction to a journal special issue",
       "citation": "Bai, H., Campbell, C., Scott, C. & Patel, J. (2023). Inaugural Special Issue on Contemplative and Holistic Education. Journal of Contemplative and Holistic Education 1(2). https://scholarworks.bgsu.edu/jche/vol1/iss2/",
-      "link": "https://scholarworks.bgsu.edu/jche/vol1/iss2/",
+      "link": "https://scholarworks.bgsu.edu/jche/vol1/iss2/11",
       "photoUrl": "https://drive.google.com/open?id=1__KDF3-PuJLbOSb1C38SD1OEMDbvx74Q"
+    },
+    {
+      "id": "P-818baf8696",
+      "org": "THRIvE",
+      "date": "2023-05-01",
+      "title": "Inaugural Special Issue on Contemplative and Holistic Education.",
+      "type": "Book",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "The interview explores the contributors’ personal and professional journeys into contemplative and holistic education, highlighting themes of mindfulness, interconnectedness, self-awareness, compassion, and transformative learning.",
+      "citation": "Bai, H., Campbell, C., Scott, C. & Patel, J. (2023). Inaugural Special Issue on Contemplative and Holistic Education. Journal of Contemplative and Holistic Education 1(2). https://scholarworks.bgsu.edu/jche/vol1/iss2/",
+      "link": "https://scholarworks.bgsu.edu/jche/vol1/iss2/",
+      "photoUrl": "https://drive.google.com/open?id=1ttfa9VEYxhpgZknO4g3QYI9WH9FzRCsO"
     },
     {
       "id": "P-944254c031",
