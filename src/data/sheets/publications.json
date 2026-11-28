@@ -2,9 +2,109 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-21T10:31:10.753Z",
-  "contentHash": "sha256:619bc8e6a608024ce4c3baa621572ffb8f5992e31be1ccee599a08c4f0577e06",
+  "lastUpdated": "2026-11-28T11:58:25.019Z",
+  "contentHash": "sha256:5b66ed76b811fad252b263859a426b3f612b4c1c8abbbb26d353f79e976b1e5b",
   "resources": [
+    {
+      "id": "P-ed53d1e06b",
+      "org": "THRIvE",
+      "date": "2026-11-28",
+      "title": "TEST",
+      "type": "Test",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development",
+        "People with disability",
+        "Research methods"
+      ],
+      "description": "Test",
+      "citation": "Test",
+      "link": null,
+      "photoUrl": "https://drive.google.com/open?id=1yyv7A0vd3yu4QgHUA7gcJEaHQgwNbZ_q"
+    },
+    {
+      "id": "P-f0fd6bc70f",
+      "org": "THRIvE",
+      "date": "2026-11-27",
+      "title": "What Shapes Teacher Agency? Teachers’ Perceptions of Interconnected Influences in Government Schools in Bihar, India",
+      "type": "Talk / Conference slides",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "The talk examines the factors that shape teacher agency in government middle schools in Bihar, with a focus on how different influences act as enablers and constraints. It draws on a research study conducted with government middle school teachers and school leaders. The study uses data from card sorting, influence mapping, teacher interviews, and a modified Delphi process. The collected data have been analysed using both quantitative and qualitative analytical approaches.",
+      "citation": "Bhatt, S., Khanna, M., Nanda, M., Patel, J., & Nath, S. (2026, November 19–21). What shapes teacher agency? Teachers’ perceptions of interconnected influences in government schools in Bihar, India [Paper presentation]. 16th Annual International Conference of the Comparative Education Society of India, Aligarh, Uttar Pradesh, India.",
+      "link": "https://docs.google.com/presentation/d/1z3fT48SWN25uX6s4Z4wvEaTYXGh-ehCL/edit?usp=sharing&ouid=114861089715879517475&rtpof=true&sd=true",
+      "photoUrl": "https://drive.google.com/open?id=10sYFQmOiOFfSQD859p5ajcv5bUN-WChU"
+    },
+    {
+      "id": "P-1dfaa72e82",
+      "org": "THRIvE",
+      "date": "2026-11-21",
+      "title": "Bounded Freedom: Teacher Agency, Contested Narratives, and an Enabling Environment in Government Schools in Bihar, India",
+      "type": "Talk / Conference slides",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "This panel examines teacher agency in government schools in Bihar, drawing on a mixed-methods study with 79 surveyed teachers and 62 participants in participatory research across five districts, conducted with the Aga Khan Foundation's Schools2030 initiative in Bihar. Moving from how teachers use their agency to the stories that shape how teachers are perceived. The presentation also foregrounds the factors influencing teachers and how we can build enabling environments to foster teacher agency.",
+      "citation": "Khanna, M., Bhatt, S., Diksha, M., & Jha, M.(2026, November 21). Bounded freedom: Teacher agency, contested narratives, and an enabling environment in government schools in Bihar, India. 16th Annual International Conference of the Comparative Education Society of India, Aligarh Muslim University, Aligarh, India. https://docs.google.com/presentation/d/1JNWBMbynq6WQw-i79_EHbH_HK4K86a_Y/edit?usp=share_link&ouid=113633189525719312323&rtpof=true&sd=true",
+      "link": "https://docs.google.com/presentation/d/1JNWBMbynq6WQw-i79_EHbH_HK4K86a_Y/edit?usp=share_link&ouid=113633189525719312323&rtpof=true&sd=true",
+      "photoUrl": "https://drive.google.com/open?id=1Oh0r0OmKH5HmsFJTxMbIuERdSz9GYEKp"
+    },
+    {
+      "id": "P-68f72d0398",
+      "org": "THRIvE",
+      "date": "2026-11-21",
+      "title": "Creating an Enabling Environment for Teachers: Voices from the Ground conveyed through a Policy Brief",
+      "type": "Talk / Conference slides",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "Presented as part of the symposium “Bounded Freedom: Teacher Agency, Contested Narratives, and an Enabling Environment in Government Schools in Bihar, India,” this presentation draws on research with government school teachers in Bihar to highlight the everyday realities, constraints, and factors shaping teacher agency. It discusses the need to move beyond viewing teachers as bureaucratic implementers and recognise them as skilled professionals with knowledge and judgement. Drawing on voices of teachers and other education stakeholders -- headteachers, civil society organisations working in the field of education, education officers, and academics, it presents recommendations for strengthening professional autonomy, formalising teacher-led spaces for professional learning and dialogue, and cultivating supportive and inclusive school environments. The presentation also highlights efforts to translate research findings into policy dialogue and collective action.",
+      "citation": "Khanna, M., Patel, J., Nanda, M., Jha, M., Diksha, M., Nath, S., & Bhatt, S. Creating an Enabling Environment for Teachers: Voices from the Ground conveyed through a Policy Brief [Paper presentation]. 16th Annual International Conference of the Comparative Education Society of India, Aligarh, Uttar Pradesh, India. https://docs.google.com/presentation/d/1JNWBMbynq6WQw-i79_EHbH_HK4K86a_Y/edit?usp=sharing&ouid=113633189525719312323&rtpof=true&sd=true",
+      "link": "https://docs.google.com/presentation/d/1JNWBMbynq6WQw-i79_EHbH_HK4K86a_Y/edit?usp=sharing&ouid=113633189525719312323&rtpof=true&sd=true",
+      "photoUrl": "https://drive.google.com/open?id=1LheKU5IXM93mp7FeS03hSiA0rDJlBO6j"
+    },
+    {
+      "id": "P-45086b6306",
+      "org": "THRIvE",
+      "date": "2026-11-21",
+      "title": "The stories teachers are made of: Narrative, identity and the boundaries of agency in government primary schools in Bihar, India",
+      "type": "Talk / Conference slides",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "CESI Presentation",
+      "citation": "Jha, M., Diksha, M. Bhatt, S., Khanna, M., Patel, J., Nanda, M., Nath, S., & Alcott, B. (2026, November 19–21). The stories teachers are made of: Narrative, identity and the boundaries of agency in government primary schools in Bihar, India [Conference presentation]. 16th Annual International Conference of CESI, Aligarh Muslim University, Aligarh, India.",
+      "link": "https://drive.google.com/file/d/18NbEji2hlUaq3CXGlmY9GUR-ACcc1zsJ/view?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1hn2v3fp4tLeLY1FCqhc5pQsrdRezgkGH"
+    },
+    {
+      "id": "P-efc1c3010f",
+      "org": "THRIvE",
+      "date": "2026-11-21",
+      "title": "Access Interrupted: Voices of Teachers with Disabilities within the Ethico-political Architecture of Indian education system",
+      "type": "Talk / Conference slides",
+      "fields": [
+        "People with disability"
+      ],
+      "description": "The presentation draws on a study of 32 teachers with disabilities (15 women, 17 men) across ten states, working in mainstream and special schools. Using semi-structured interviews, photovoice, and audionotes, it shows how access is interrupted at every stage: before they access the profession, and when they are within the profession. It also highlights how teachers navigate the challenges when support fails, and implications of the study.",
+      "citation": "Khanna, M. (2026, November 21). Access Interrupted: Voices of Teachers with Disabilities within the Ethico-political Architecture of Indian education system. Comparative Education Society of India, Aligarh. https://docs.google.com/presentation/d/11g8yR767oqb8gfCKbhTCHdz7xHFGbQCJ/edit?usp=share_link&ouid=113633189525719312323&rtpof=true&sd=true",
+      "link": "https://docs.google.com/presentation/d/11g8yR767oqb8gfCKbhTCHdz7xHFGbQCJ/edit?usp=share_link&ouid=113633189525719312323&rtpof=true&sd=true",
+      "photoUrl": "https://drive.google.com/open?id=1gucCNKlvrocABdp0xfUPXK_e10FDI96Z"
+    },
+    {
+      "id": "P-5bae10d435",
+      "org": "THRIvE",
+      "date": "2026-11-19",
+      "title": "Happiness from the Lens of Children",
+      "type": "Book",
+      "fields": [
+        "Social emotional learning"
+      ],
+      "description": "This flipbook explores a simple question: what brings happiness to children? Drawing on a study with 54 students from six government schools in Delhi, it uses Photovoice, a method in which children were given child-friendly cameras and invited to capture moments that make them happy. Accompanied by the children’s own captions, the photographs offer glimpses into their thoughts, memories, and experiences. They capture a range of feelings, from nostalgia to a sense of belonging to their school, relationships, and wider society. Alongside the photographs, children’s drawings offer insights into how they understand and express ideas explored in their Happiness classes, including kindness, mindfulness, friendship, and gratitude. More than a collection of images, this flipbook offers a window into children’s inner worlds, bringing their experiences and perspectives to life in their own words.",
+      "citation": "Nanda, M., Patel, J., Nath, S., Ravindranath, S., Khanna, M., Jha, M., & Bhatnagar, A. (2026). Happiness from the Lens of Children. White Falcon Publishing.",
+      "link": "https://drive.google.com/file/d/1gw5v4Axah9yeg-jUQBMC24hRHw-Z3J3j/view?usp=share_link",
+      "photoUrl": "https://drive.google.com/open?id=1LaMhu80Bi1L15t1Y0mwiT1--L0SAkbZZ"
+    },
     {
       "id": "P-6bdd242cfb",
       "org": "TIDE",
@@ -16,6 +116,34 @@
       "citation": null,
       "link": "https://drive.google.com/file/d/1tNF7EQSAhd5lWpk3DAnRcBFW94XaZgCI/view?usp=sharing",
       "photoUrl": "https://drive.google.com/open?id=1r42HsX_c2SU-rd_-kuhl4xx2QL2AxHp3"
+    },
+    {
+      "id": "P-c2acfb5024",
+      "org": "THRIvE",
+      "date": "2026-08-22",
+      "title": "Building Enabling Environments for Teachers Video Recommendations for Teachers and Headteachers",
+      "type": "Video",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "f we want every child to have a good teacher, we must also ensure that every teacher has an enabling, supportive, and trusting environment to work in. This video shares key recommendations from our policy brief, “Building Enabling Environments for Teachers: Voices from the Ground”, based on research with government school teachers in Bihar and their experiences of teacher agency, and the conditions that influence it. The brief argues that improving children’s learning is not only about changing what happens in classrooms, but also about transforming the systems around teachers — so that schools become places where teachers have professional trust, collaboration, autonomy, dialogue, and the support they need to thrive.",
+      "citation": "Khanna, M., Patel, J., Nanda, M., & Nath, S. [TIDE Foundation]. (2026, August 22). Building Enabling Environments for Teachers [Video]. YouTube. https://www.youtube.com/watch?v=h7xb0plyWSw&t=3s",
+      "link": "https://drive.google.com/file/d/1WdlJWBio7XAPLqwSNvD7_irUZzeait8P/view?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=172Yw2CbIcYcCgRkcmEu3bo_6BcoXLh-T"
+    },
+    {
+      "id": "P-93a9bb4045",
+      "org": "THRIvE",
+      "date": "2026-05-31",
+      "title": "Building Enabling Environments for Teachers: Voices from the Ground",
+      "type": "Policy brief",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development"
+      ],
+      "description": "This policy brief, developed by the TIDE Foundation in collaboration with the Aga Khan Foundation under the Schools2030 programme, explores the importance of creating enabling environments that strengthen teachers’ professional agency, autonomy, and well-being. Drawing on a research study on teacher agency and a multistakeholder roundtable in Bihar, it highlights the everyday challenges teachers face and calls for a shift from viewing teachers as mere implementers of directives to recognising them as skilled, reflective professionals. It presents actionable recommendations for teachers, headteachers, civil society organisations, and education officers, focusing on strengthening professional autonomy, formalising teacher-led spaces for professional learning and dialogue, and cultivating supportive and inclusive school environments.",
+      "citation": "Khanna, M., Patel, J., Nanda, M., Jha, M., Diksha, M., Natha, S., & Bhatt, S. (2026). Building Enabling Environments for Teachers: Voices from the Ground [Policy Brief]. TIDE Foundation.",
+      "link": "https://drive.google.com/file/d/1rSL5CTSZErrAMwnSJ_3HuW3Iw7YrD8YS/view?usp=sharing",
+      "photoUrl": "https://drive.google.com/open?id=1e8ukYaNk3MrhGt3miU8yZavo4ClFw0RI"
     },
     {
       "id": "P-ff8c8392f7",
@@ -50,7 +178,9 @@
       "title": "The sound of equity: Teachers' school journeys captured through soundscapes",
       "type": "Blog",
       "fields": [
-        "People with disability"
+        "Teacher agency, wellbeing, motivation, and professional development",
+        "People with disability",
+        "Research methods"
       ],
       "description": "The THRIvE research centre conducted research on the expirences of teachers with visual impairments using sound based research.",
       "citation": "Singal, N., Khanna, M., & Diksha, M. (2026, May 5). The sound of equity: Teachers’ school journeys captured through soundscapes. The Education and Development Forum (UKFIET). https://www.ukfiet.org/2026/the-sound-of-equity-teachers-school-journeys-captured-through-soundscapes/",
@@ -64,7 +194,9 @@
       "title": "Teaching against the odds: Teachers with disabilities in Indian mainstream schools",
       "type": "Blog",
       "fields": [
-        "People with disability"
+        "Teacher agency, wellbeing, motivation, and professional development",
+        "People with disability",
+        "Research methods"
       ],
       "description": "A pan-India study of 25 teachers with disabilities reveals the barriers they face in training, hiring, and daily practice, and calls for greater accessibility, rights, and recognition in Indian schools.",
       "citation": "Wijesinghe, T., & Singal, N. (2026, March 23). Teaching against the odds: Teachers with disabilities in Indian mainstream schools. The Education and Development Forum (UKFIET). https://www.ukfiet.org/2026/teaching-against-the-odds-teachers-with-disabilities-in-indian-mainstream-schools/",
@@ -104,7 +236,7 @@
       "org": "THRIvE",
       "date": "2025-12-06",
       "title": "Beyond bureaucratic cogs: Reimagining teacher agency in the Indian education system",
-      "type": "Conference slides",
+      "type": "Talk / Conference slides",
       "fields": [
         "Teacher agency, wellbeing, motivation, and professional development"
       ],
@@ -169,20 +301,6 @@
       "photoUrl": "https://drive.google.com/open?id=1AfmuWk2t97bB91XxzX1yXMXbkeK9KVr3"
     },
     {
-      "id": "P-8a9379dbc2",
-      "org": "THRIvE",
-      "date": "2025-07-25",
-      "title": "Rewilding education",
-      "type": "Book",
-      "fields": [
-        "Holistic Education"
-      ],
-      "description": "Hilary Cremin argues that education should move away from rigid, standardized, test-driven systems toward more flexible, community- and nature-connected approaches that foster creativity, well-being, social relationships, and ecological responsibility. The book presents \"rewilding\" as a vision for transforming schools into environments that better prepare young people for the challenges of the 21st century while supporting both human and environmental flourishing.",
-      "citation": "Cremin, H. (2025), Rewilding education. https://doi.org/10.4324/9781003627807",
-      "link": "https://doi.org/10.4324/9781003627807",
-      "photoUrl": "https://drive.google.com/open?id=1xnze5_Dv0PK3q0vmsnct10PJfCqZYc4_"
-    },
-    {
       "id": "P-c3d0b37b0a",
       "org": "THRIvE",
       "date": "2025-07-25",
@@ -201,7 +319,7 @@
       "org": "THRIvE",
       "date": "2025-07-25",
       "title": "Valuing wisdom",
-      "type": "Book",
+      "type": "Book Chapter",
       "fields": [
         "Holistic Education",
         "Social emotional learning"
@@ -244,7 +362,8 @@
       "title": "Happiness in education from the lens of children: Photovoice of students in government run schools in India",
       "type": "Journal article",
       "fields": [
-        "Social emotional learning"
+        "Social emotional learning",
+        "Research methods"
       ],
       "description": "This study uses photovoice to explore how children in Indian government schools experience happiness, emphasizing relationships, self-awareness, and holistic well-being.",
       "citation": "Nanda, M., Patel, J., Nath, S., & Ravindranath, S. (2025). Happiness in education from the lens of children: Photovoice of students in government-run schools in India. Social Sciences & Humanities Open, 11, Article 101244. https://doi.org/10.1016/j.ssaho.2025.101244",
@@ -468,7 +587,7 @@
       "description": "Annual report for years 2022-23",
       "citation": null,
       "link": "https://drive.google.com/file/d/1iZuRRaaJWkwOVt222uKbzdyE7Wq8pBbY/view?usp=drive_link",
-      "photoUrl": "https://drive.google.com/open?id=1gCMY5TREy_yIOqVTs1tUtfY2xPoC0ME6"
+      "photoUrl": "https://drive.google.com/file/d/1Z5XAC4pbegSVM2ckGAzKtRtxvnletE4g/view?usp=sharing"
     },
     {
       "id": "P-5b25da68c9",
@@ -643,7 +762,7 @@
       "title": "Annual Report 2021-2022",
       "type": "Annual report",
       "fields": [],
-      "description": "Annual report for years 2022-23",
+      "description": "Annual report for years 2021-22",
       "citation": null,
       "link": "https://drive.google.com/file/d/1TYFfVpK1D-8w_sdSe3MWa0qodFxxq-fW/view?usp=drive_link",
       "photoUrl": "https://drive.google.com/file/d/1T3x6tjX_n78jzHrESxoHlrefdIv1Nlrp/view?usp=sharing"
@@ -767,10 +886,10 @@
       "title": "Annual Report 2020-2021",
       "type": "Annual report",
       "fields": [],
-      "description": "Annual report for years 2022-23",
+      "description": "Annual report for years 2020-21",
       "citation": null,
       "link": "https://drive.google.com/file/d/1zZugsaRYkvfZUTWKqFr1euDzyDkCDUtp/view?usp=drive_link",
-      "photoUrl": "https://drive.google.com/file/d/1FIfaxAbzLJWGBdjd7LaRUkLr5UGGCRTx/view?usp=sharing"
+      "photoUrl": "https://drive.google.com/file/d/1XcyQewSZWX3zG377ZracUBIPcUPeTOZC/view?usp=sharing"
     },
     {
       "id": "P-28d8a4e591",
@@ -822,7 +941,7 @@
       "title": "Annual Report 2019-2020",
       "type": "Annual report",
       "fields": [],
-      "description": "Annual report for years 2022-23",
+      "description": "Annual report for years 2019-20",
       "citation": null,
       "link": "https://drive.google.com/file/d/1-5z8jhA6NUAQII33lMSpVcIat8aDWSYT/view?usp=drive_link",
       "photoUrl": "https://drive.google.com/file/d/1FIfaxAbzLJWGBdjd7LaRUkLr5UGGCRTx/view?usp=sharing"
@@ -891,10 +1010,10 @@
     }
   ],
   "meta": {
-    "total": 65,
+    "total": 73,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 49
+      "THRIvE": 57
     }
   }
 }
