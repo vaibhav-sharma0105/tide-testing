@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-28T15:32:21.621Z",
-  "contentHash": "sha256:73c00f3f110d78d0847b877d28a68771d5f6671cb1097126b32c6277bca4ac7e",
+  "lastUpdated": "2026-11-28T15:38:56.562Z",
+  "contentHash": "sha256:3fbdbd07e0a35d051503997d58c3957756d482811f0402d2e43cdc75f826685d",
   "resources": [
     {
       "id": "P-ed53d1e06b",
@@ -698,7 +698,7 @@
       ],
       "description": "A blog written for MIND & LIFE Institute, celebrating Dr. Seema Nath and Dr. Jwalin Patel, recipients of the Mind & Life PEACE Grant 2021, to explore how the Happiness Curriculum fosters social-emotional well-being in students.",
       "citation": "Kinkade, S. (2023, February 8). Happiness education in India: Two researchers set out to ask what students and teachers think. Mind & Life Institute. https://www.mindandlife.org/media/happiness-education-in-india/",
-      "link": null,
+      "link": "https://www.mindandlife.org/media/happiness-education-in-india/",
       "photoUrl": "https://drive.google.com/open?id=1eNqfCfqRMB6JJBvI0xihPOYW0tXgD7yU"
     },
     {
