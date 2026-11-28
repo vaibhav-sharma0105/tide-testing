@@ -759,7 +759,7 @@ Production will be this GitHub Pages site with the TIDE domain pointed at it; th
 - ~~P1-5/6 (→ P3)~~: done in P3 (404.html, robots.txt, sitemap.xml now generated).
 - ~~P1-7~~: done 2026-11-27 (owner): `site.yaml` `favicon` → `<!-- site-favicon -->` marker in `index.html`, filled by `siteDataPlugin` `faviconTag()` with the base added by hand (unit tests; built pages carry `/tide-testing/assets/…`).
 - P1-8: "since 2014" fixed in P3; the `llms.txt` figures are an owner item (P3).
-- P2-5: the `/coming-soon` scene loops forever (2.2.2); the page is linked from nowhere. Apply `useLoopWindow` (or the static reduced scene after 5 s) if the page is ever used.
+- P2-5 (**kept by design**, owner 2026-11-27): the `/coming-soon` scene loops forever (2.2.2); the page is linked from nowhere. Apply `useLoopWindow` (or the static reduced scene after 5 s) if the page is ever used.
 - P2-16 (rest): pagination, grade chips, Contact links, footer social icons and search inputs are under 44 px (AAA). Fixing them is a visible size change → owner item above.
 - P2-20: Escape pressed inside a cross-origin video iframe can't reach the page (browser limit).
 - P2-21: the Resource Centre card link's `aria-label` hides type, subject and "video available". Rethink as `aria-labelledby` or a fuller `card.viewTemplate` (copy).
