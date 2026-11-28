@@ -126,7 +126,11 @@ export default function Lightbox({ images, currentIndex, onClose, onPrev, onNext
             <button
               key={i}
               onClick={e => { e.stopPropagation(); onGoTo ? onGoTo(i) : onClose() }}
-              className={`rounded-full transition-all duration-200 ${i === currentIndex ? 'w-5 h-1.5 bg-white/80' : 'w-1.5 h-1.5 bg-white/25 hover:bg-white/50'}`}
+              // Looks unchanged; the tap area is 24px tall and fills half the gap on each side, so a
+              // near miss still lands on the right dot without overlapping a neighbour (owner decision
+              // 2026-11-27). The 44px Previous / Next buttons and the arrow keys reach every photo too
+              // (WCAG 2.5.8 "equivalent" exception for these small dots).
+              className={`relative rounded-full transition-all duration-200 after:absolute after:-inset-x-[3px] after:-inset-y-[9px] after:content-[''] ${i === currentIndex ? 'w-5 h-1.5 bg-white/80' : 'w-1.5 h-1.5 bg-white/25 hover:bg-white/50'}`}
               aria-label={ui.lightbox.goTo.replace('{n}', i + 1)}
             />
           ))}

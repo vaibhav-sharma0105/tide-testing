@@ -98,9 +98,10 @@ test.describe('axe: interactive states', () => {
     await page.keyboard.press('Enter')
     await expect(page.getByRole('dialog')).toBeVisible()
     await still(page, '[role="dialog"]')
-    // QUARANTINED (ledger P6-11): the Lightbox dot strip (6 px dots, centres 12 px apart) fails WCAG 2.5.8
-    // spacing, but axe reports it only now and then. Owner decision pending (visible change). Remove
-    // `quarantine` when the dots are fixed.
+    // QUARANTINED on purpose (ledger P6-11, owner decision 2026-11-27): the Lightbox dots stay 6 px with
+    // centres 12 px apart (no visual change). They meet WCAG 2.5.8 through its "equivalent" exception —
+    // the 44 px Previous / Next buttons and the arrow keys reach every photo — and each dot's invisible
+    // tap area is 24 px tall. axe can't see either, so its target-size rule stays quarantined here.
     await expectNoAA(page, testInfo, { quarantine: ['target-size'] })
     await page.keyboard.press('Escape')
     await expect(page.getByRole('dialog')).toHaveCount(0)

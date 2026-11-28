@@ -687,8 +687,8 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 | 20 | HTTPS / frame-ancestors at domain cutover | **Decided 2026-11-27**: GitHub Pages + "Enforce HTTPS" (free) at launch; no Cloudflare now (frame-ancestors / HSTS headers not possible on Pages; low risk for this site) | P4 |
 | 21 | EXIF in four hand-committed photos | **Decided 2026-11-27: no change** (no GPS data) | P4 |
 | 22 | Partners page drawing cost (`content-visibility`) | **Done 2026-11-27**: phones — rows not drawn until near (`content-visibility`), flat cards (no 3D layers / blurred ground shadow); everywhere — a category's logos load only when its row is within 400 px. Phone (4× CPU, median of 5): blocking time 699 → 556 ms, longest freeze 323 → 294 ms, LCP 1240 → 956 ms, logos in the first 5 s 49 → 12. Visual check: desktop identical, phone shadows slightly softer. Built-site e2e 170 passed | P5 |
-| 23 | Lightbox dots too close together* (2.5.8) | Decide | P6 |
-| 24 | Print styles | Decide | P6 |
+| 23 | Lightbox dots too close together* (2.5.8) | **Done 2026-11-27, no visual change**: each dot's invisible tap area is 24 px tall and fills half the gap to its neighbours (taps 8 px above or in a gap now land on the nearest dot; before they hit nothing); 2.5.8 met through the "equivalent" exception (44 px Previous / Next + arrow keys). axe `target-size` stays quarantined in `e2e/a11y.spec.js` with that reason | P6 |
+| 24 | Print styles | **Parked until go-live (owner, 2026-11-27)**: go-live checklist step 7 (about an hour) | P6 |
 | 25 | Browser-test failures block deploys (incl. sync deploys) | **Confirmed 2026-11-27 (owner: standard practice)**: keep blocking | P6 |
 
 - **Resource Centre spelling:** `<h1>` "Resource Center" vs `<title>` "Resource Centre" (baseline observation). Which spelling?
@@ -751,7 +751,8 @@ Production will be this GitHub Pages site with the TIDE domain pointed at it; th
 4. Settings → Pages: turn on "Enforce HTTPS" once the certificate is issued.
 5. `content/shared/site.yaml`: `indexable: true` (robots.txt then allows search / answer engines; training crawlers stay blocked by `allowTraining: false`).
 6. Old WordPress addresses (owner item 9): `docs/specs/wordpress-redirects.json` (agreed, 59 rows; reasons in `wordpress-redirect-map.md`): re-check the `?search=` results against the snapshot, make forwarding pages handle a query string in `to` (see the map's go-live notes), then add the rows as forwarding pages (`REDIRECT_ROUTES` in `src/config/siteRoutes.js`).
-7. After the deploy: `curl -I` a few addresses (`/`, `/about/why-tide`, `/pramaan`, an unknown address) to confirm 200 / 404 and which of `x.html` / `x/` GitHub Pages serves (P3-3, P6-7); submit the sitemap in Google Search Console.
+7. Before the switch: print styles (owner item 24): one `@media print` block in `src/index.css` (hide header, menus, footer, buttons, sliders; black on white; link addresses after links; no card split across pages), checked with Save as PDF on a resource, a publication, Contact and Why TIDE.
+8. After the deploy: `curl -I` a few addresses (`/`, `/about/why-tide`, `/pramaan`, an unknown address) to confirm 200 / 404 and which of `x.html` / `x/` GitHub Pages serves (P3-3, P6-7); submit the sitemap in Google Search Console.
 
 ## Deferred / out of scope
 
