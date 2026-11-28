@@ -2,9 +2,25 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-28T10:08:29.661Z",
-  "contentHash": "sha256:48b6b31e17f1b28c3288925b323c863d09bfc78e483fecb1b6674a796293314b",
+  "lastUpdated": "2026-11-28T11:50:11.919Z",
+  "contentHash": "sha256:67d56a69a100ef71123ab8b9fa5ab128c1d353f2997f572ce213aa6b2bde1a2a",
   "resources": [
+    {
+      "id": "P-ed53d1e06b",
+      "org": "THRIvE",
+      "date": "2026-11-28",
+      "title": "TEST",
+      "type": "Test",
+      "fields": [
+        "Teacher agency, wellbeing, motivation, and professional development",
+        "People with disability",
+        "Research methods"
+      ],
+      "description": "Test",
+      "citation": "Test",
+      "link": null,
+      "photoUrl": "https://drive.google.com/open?id=1yyv7A0vd3yu4QgHUA7gcJEaHQgwNbZ_q"
+    },
     {
       "id": "P-f0fd6bc70f",
       "org": "THRIvE",
@@ -1003,10 +1019,10 @@
     }
   ],
   "meta": {
-    "total": 73,
+    "total": 74,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 57
+      "THRIvE": 58
     }
   }
 }
