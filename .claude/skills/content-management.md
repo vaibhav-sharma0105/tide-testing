@@ -240,7 +240,7 @@ npm run content:validate
 # Visible-text guards (react/jsx-no-literals + no-restricted-syntax on text props) + other lint rules — also run in CI
 npm run lint
 
-# Unit tests (46 files / 524 tests as of 2026-11-24); Playwright against the dev server (local only)
+# Unit tests (46 files / 532 tests as of 2026-11-28); Playwright against the dev server (local only)
 npm test
 npm run test:e2e
 # Playwright against the built base-path site (CI runs this after the build): $env:GITHUB_ACTIONS='true'; npm run build first

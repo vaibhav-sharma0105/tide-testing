@@ -41,7 +41,7 @@ The Contribute page's Google Form link is not a variable: it is `formUrl` in `co
 | `npm run preview` | Serve the built `dist/` locally (for a base-path build set `GITHUB_ACTIONS=true` here too) |
 | `npm run check:dist` | Check that links, assets and sitemap entries in `dist/` resolve, and the bundle-size budget |
 | `npm run lint` | ESLint (includes the CMS guards that block hardcoded visible text, also in `aria-label`/`alt`/`title` props, in `src/pages` and `src/components`) |
-| `npm test` | Vitest unit tests (`src/test/`; 46 files / 524 tests on 2026-11-24) |
+| `npm test` | Vitest unit tests (`src/test/`; 46 files / 532 tests on 2026-11-28) |
 | `npm run test:e2e` | Playwright specs in `e2e/` against the dev server (starts it on port 5173 if none is running) |
 | `npm run test:e2e:site` | Playwright against the built base-path site (`GITHUB_ACTIONS=true` build first), Chromium — what CI runs |
 | `npm run test:e2e:full` / `test:e2e:visual` | Same in Chromium, Firefox and WebKit with the full screen-size matrix (nightly CI) / screenshot baselines (local, Windows; see `e2e/visual/README.md`) |
