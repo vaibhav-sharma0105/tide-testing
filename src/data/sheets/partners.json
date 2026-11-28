@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "partners",
   "success": true,
-  "lastUpdated": "2026-11-28T13:38:31.031Z",
-  "contentHash": "sha256:0d8c6c5212dd1c155c9c58da7af241d3fe802986f193eab428dc26f1d26fec6b",
+  "lastUpdated": "2026-11-28T16:31:48.689Z",
+  "contentHash": "sha256:9c65cd5aed27e73048a9180e9380eb9e62f18ad2023f5f1a56b6ec8ce4fdeb89",
   "resources": [
     {
       "id": "PA-0ada61a0ef",
@@ -529,7 +529,7 @@
       "id": "PA-11196b1e37",
       "type": "Volunteer partners",
       "priority": "High",
-      "name": "https://ahduni.edu.in/",
+      "name": "Ahmedabad University",
       "website": "https://ahduni.edu.in/",
       "photoUrl": "https://drive.google.com/open?id=1qS-A9LbpA7m5WT6PmOgNX8Pg9yMeJAON"
     },
@@ -556,14 +556,6 @@
       "name": "Sultan Ahmed Zanana",
       "website": null,
       "photoUrl": "https://drive.google.com/open?id=17oGGlu88pAxYXgvFmyXQttHYOwrI218o"
-    },
-    {
-      "id": "PA-540497d417",
-      "type": "Beneficiaries",
-      "priority": "Medium",
-      "name": "Childrens Home Paldi",
-      "website": null,
-      "photoUrl": "https://drive.google.com/open?id=1L6FFlV6GFfWuLIWTFjt1-rYmX52gTS62"
     },
     {
       "id": "PA-687351f414",
@@ -911,6 +903,6 @@
     }
   ],
   "meta": {
-    "total": 113
+    "total": 112
   }
 }
