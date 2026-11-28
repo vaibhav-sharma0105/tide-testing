@@ -109,26 +109,6 @@
     "thumb": "assets/images/publications/P-1dfaa72e82-thumb.webp",
     "full": "assets/images/publications/P-1dfaa72e82-full.webp"
   },
-  "P-1fa0424cb7": {
-    "fileId": "1MgkhW0kcwaIdxexUSucIOD2KdoZmw_r6",
-    "modifiedTime": "2026-06-24T07:51:28.882Z",
-    "thumbWidth": 480,
-    "thumbHeight": 327,
-    "fullWidth": 1200,
-    "fullHeight": 818,
-    "thumb": "assets/images/publications/P-1fa0424cb7-thumb.webp",
-    "full": "assets/images/publications/P-1fa0424cb7-full.webp"
-  },
-  "P-216cfd2d12": {
-    "fileId": "1XkjRnPquCH3wNjLI9kbffIFGaroQqZdc",
-    "modifiedTime": "2026-06-20T04:34:14.406Z",
-    "thumbWidth": 480,
-    "thumbHeight": 640,
-    "fullWidth": 971,
-    "fullHeight": 1372,
-    "thumb": "assets/images/publications/P-216cfd2d12-thumb.webp",
-    "full": "assets/images/publications/P-216cfd2d12-full.webp"
-  },
   "P-28d8a4e591": {
     "fileId": "1EwX2jeK6Kb4cPw5-AEdWYwVpB_MDa5L0",
     "modifiedTime": "2026-07-24T07:35:09.208Z",
@@ -228,16 +208,6 @@
     "fullHeight": 412,
     "thumb": "assets/images/publications/P-4295cc70ac-thumb.webp",
     "full": "assets/images/publications/P-4295cc70ac-full.webp"
-  },
-  "P-43d9a5039d": {
-    "fileId": "1eNqfCfqRMB6JJBvI0xihPOYW0tXgD7yU",
-    "modifiedTime": "2026-06-19T11:46:59.842Z",
-    "thumbWidth": 480,
-    "thumbHeight": 640,
-    "fullWidth": 1134,
-    "fullHeight": 1592,
-    "thumb": "assets/images/publications/P-43d9a5039d-thumb.webp",
-    "full": "assets/images/publications/P-43d9a5039d-full.webp"
   },
   "P-45086b6306": {
     "fileId": "1hn2v3fp4tLeLY1FCqhc5pQsrdRezgkGH",
@@ -538,26 +508,6 @@
     "fullHeight": 1600,
     "thumb": "assets/images/publications/P-b104efe293-thumb.webp",
     "full": "assets/images/publications/P-b104efe293-full.webp"
-  },
-  "P-b842cf7791": {
-    "fileId": "1ln48Tq6e9yDUwClDP5pAXywxYYSJNydp",
-    "modifiedTime": "2026-06-23T05:51:03.477Z",
-    "thumbWidth": 480,
-    "thumbHeight": 456,
-    "fullWidth": 714,
-    "fullHeight": 679,
-    "thumb": "assets/images/publications/P-b842cf7791-thumb.webp",
-    "full": "assets/images/publications/P-b842cf7791-full.webp"
-  },
-  "P-bb217f72be": {
-    "fileId": "1ln-izxhIs6RDEl-EwJrknYOa0zWCjXDw",
-    "modifiedTime": "2026-06-23T09:11:53.401Z",
-    "thumbWidth": 480,
-    "thumbHeight": 270,
-    "fullWidth": 725,
-    "fullHeight": 128,
-    "thumb": "assets/images/publications/P-bb217f72be-thumb.webp",
-    "full": "assets/images/publications/P-bb217f72be-full.webp"
   },
   "P-bdaa6c8501": {
     "fileId": "1FIfaxAbzLJWGBdjd7LaRUkLr5UGGCRTx",

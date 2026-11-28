@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "publications",
   "success": true,
-  "lastUpdated": "2026-11-28T15:38:56.562Z",
-  "contentHash": "sha256:3fbdbd07e0a35d051503997d58c3957756d482811f0402d2e43cdc75f826685d",
+  "lastUpdated": "2026-11-28T15:53:15.535Z",
+  "contentHash": "sha256:c03213d6fd91916ddbc6b865f5c5641fd725bbb580fa9626a4fab5c32691450e",
   "resources": [
     {
       "id": "P-ed53d1e06b",
@@ -172,20 +172,6 @@
       "photoUrl": "https://drive.google.com/open?id=1jvnqmdtf2NFbn8YrJPyZiIuoYgywrgWu"
     },
     {
-      "id": "P-1fa0424cb7",
-      "org": "THRIvE",
-      "date": "2026-03-26",
-      "title": "Teaching against the odds: Teachers with disabilities in Indian mainstream schools",
-      "type": "Published by others (TIDE acknowledged)",
-      "fields": [
-        "People with disability"
-      ],
-      "description": "This work examines the experiences of teachers with disabilities in Indian mainstream schools, highlighting the barriers they face in teacher training, recruitment, and everyday school life.",
-      "citation": "Wijesinghe, T., & Singal, N. (2026, March 23). Teaching against the odds: Teachers with disabilities in Indian mainstream schools. The Education and Development Forum (UKFIET). https://www.ukfiet.org/2026/teaching-against-the-odds-teachers-with-disabilities-in-indian-mainstream-schools/",
-      "link": "https://www.ukfiet.org/2026/teaching-against-the-odds-teachers-with-disabilities-in-indian-mainstream-schools/",
-      "photoUrl": "https://drive.google.com/open?id=1MgkhW0kcwaIdxexUSucIOD2KdoZmw_r6"
-    },
-    {
       "id": "P-7d395d573f",
       "org": "THRIvE",
       "date": "2026-03-23",
@@ -206,13 +192,13 @@
       "org": "THRIvE",
       "date": "2026-03-23",
       "title": "Teaching against the odds: Teachers with disabilities in Indian mainstream schools",
-      "type": "Blog",
+      "type": "Published by others (TIDE acknowledged)",
       "fields": [
         "Teacher agency, wellbeing, motivation, and professional development",
         "People with disability",
         "Research methods"
       ],
-      "description": "A pan-India study of 25 teachers with disabilities reveals the barriers they face in training, hiring, and daily practice, and calls for greater accessibility, rights, and recognition in Indian schools.",
+      "description": "This work examines the experiences of teachers with disabilities in Indian mainstream schools, highlighting the barriers they face in teacher training, recruitment, and everyday school life.",
       "citation": "Wijesinghe, T., & Singal, N. (2026, March 23). Teaching against the odds: Teachers with disabilities in Indian mainstream schools. The Education and Development Forum (UKFIET). https://www.ukfiet.org/2026/teaching-against-the-odds-teachers-with-disabilities-in-indian-mainstream-schools/",
       "link": "https://www.ukfiet.org/2026/teaching-against-the-odds-teachers-with-disabilities-in-indian-mainstream-schools/",
       "photoUrl": "https://drive.google.com/open?id=1YHrxdZVhK9KwqYzeNfFRrPXxQul-Hpj3"
@@ -430,7 +416,7 @@
       "id": "P-9a5466ddc6",
       "org": "THRIvE",
       "date": "2024-12-14",
-      "title": "Learning to live together harmoniously: spiritual perspectives from Indian classrooms",
+      "title": "Book review: Learning to live together harmoniously: spiritual perspectives from Indian classrooms",
       "type": "Published by others (TIDE acknowledged)",
       "fields": [
         "Holistic Education"
@@ -524,7 +510,7 @@
       "id": "P-e6caf1e323",
       "org": "THRIvE",
       "date": "2024-03-27",
-      "title": "Learning to Live Together Harmoniously: Spiritual Perspectives from Indian Classrooms",
+      "title": "Book review: Learning to Live Together Harmoniously: Spiritual Perspectives from Indian Classrooms",
       "type": "Published by others (TIDE acknowledged)",
       "fields": [
         "Holistic Education"
@@ -588,7 +574,7 @@
       ],
       "description": "This article shows how nature can act as a powerful peace educator by fostering inner peace, wellbeing, empathy, and a sense of connection with others and the environment.",
       "citation": "Patel, J. & Ehrenzeller, C. (2023). Nature as a peace educator; Towards social justice and inner peace through learning and being in natural environments. Journal of Environmental Education 54(5), 294–305. www.doi.org/10.1080/00958964.2023.2261389",
-      "link": "https://www.tandfonline.com/doi/full/10.1080/00958964.2023.2261389",
+      "link": "https://www.doi.org/10.1080/00958964.2023.2261389",
       "photoUrl": "https://drive.google.com/open?id=1fmAIaarCp7szqGFlXKH-qxhUijj4RnNa"
     },
     {
@@ -607,7 +593,7 @@
       "id": "P-5b25da68c9",
       "org": "THRIvE",
       "date": "2023-08-17",
-      "title": "Learning to live together harmoniously (book review)",
+      "title": "Book review: Learning to live together harmoniously",
       "type": "Published by others (TIDE acknowledged)",
       "fields": [
         "Holistic Education"
@@ -618,24 +604,10 @@
       "photoUrl": "https://drive.google.com/open?id=15-HNmTATZFAyb7LlvME4aXMwaLLwnFli"
     },
     {
-      "id": "P-b842cf7791",
-      "org": "THRIvE",
-      "date": "2023-05-09",
-      "title": "Contemplative and Holistic Education as Inside-Out Work for Healing, Peace, Justice, and Equity",
-      "type": "Journal article",
-      "fields": [
-        "Holistic Education"
-      ],
-      "description": "This work introduces a special issue on contemplative and holistic education, arguing that meaningful social change begins with inner transformation.",
-      "citation": "Bai, Heesoon; Scott, Charles; Campbell, Cary L.; and Patel, Jwalin (2023) \"EDITORIAL INTRODUCTION: Contemplative and Holistic Education as Inside-Out Work for Healing, Peace, Justice, and Equity,\" Journal of Contemplative and Holistic Education: Vol. 1: Iss. 2, Article 11. DOI: https://doi.org/10.25035/jche.01.02.11",
-      "link": "https://scholarworks.bgsu.edu/jche/vol1/iss2/11/",
-      "photoUrl": "https://drive.google.com/open?id=1ln48Tq6e9yDUwClDP5pAXywxYYSJNydp"
-    },
-    {
       "id": "P-3f896e4d09",
       "org": "THRIvE",
       "date": "2023-05-01",
-      "title": "EDITORIAL INTRODUCTION: Contemplative and Holistic Education as Inside-Out Work for Healing, Peace, Justice, and Education as Inside-Out Work for Healing, Peace, Justice, and Equity",
+      "title": "Contemplative and Holistic Education as Inside-Out Work for Healing, Peace, Justice, and Equity",
       "type": "Journal article",
       "fields": [
         "Holistic Education"
@@ -688,20 +660,6 @@
       "photoUrl": "https://drive.google.com/open?id=1sCSBr1PEURtZEwe78voETDYXMnLKfMg3"
     },
     {
-      "id": "P-43d9a5039d",
-      "org": "THRIvE",
-      "date": "2023-02-08",
-      "title": "Happiness Education in India: Two Researchers Set out to Ask What Students and Teachers Think",
-      "type": "Published by others (TIDE acknowledged)",
-      "fields": [
-        "Social emotional learning"
-      ],
-      "description": "A blog written for MIND & LIFE Institute, celebrating Dr. Seema Nath and Dr. Jwalin Patel, recipients of the Mind & Life PEACE Grant 2021, to explore how the Happiness Curriculum fosters social-emotional well-being in students.",
-      "citation": "Kinkade, S. (2023, February 8). Happiness education in India: Two researchers set out to ask what students and teachers think. Mind & Life Institute. https://www.mindandlife.org/media/happiness-education-in-india/",
-      "link": "https://www.mindandlife.org/media/happiness-education-in-india/",
-      "photoUrl": "https://drive.google.com/open?id=1eNqfCfqRMB6JJBvI0xihPOYW0tXgD7yU"
-    },
-    {
       "id": "P-ffa05bbb22",
       "org": "THRIvE",
       "date": "2023-02-08",
@@ -748,7 +706,7 @@
       "org": "THRIvE",
       "date": "2023-01-01",
       "title": "Refective Research in Peace Education Theory and Practice",
-      "type": "Book",
+      "type": "Book Chapter",
       "fields": [
         "Research methods"
       ],
@@ -824,20 +782,6 @@
       "photoUrl": "https://drive.google.com/open?id=10N5upuBXXRLnjJYYBjVXcsk1g2y_cwyq"
     },
     {
-      "id": "P-216cfd2d12",
-      "org": "THRIvE",
-      "date": "2022-05-24",
-      "title": "GUIDANCE NOTE Teacher Wellbeing in Emergency Settings",
-      "type": "Book",
-      "fields": [
-        "Teacher agency, wellbeing, motivation, and professional development"
-      ],
-      "description": "This Guidance Note gives you advice on how to support teacher wellbeing in the five domains of INEE’s (2010) Minimum Standards. It explains how to: promote mental health and psychosocial support (MHPSS) for teachers; create more enabling work environments for teachers; and enhance teacher voice, agency, and leadership in crises. ​We also offer you resources and tools and examples of these standards in action.",
-      "citation": "D’ Angelo, S., Sule, R., Mansour, S., & Patel, J. (2022). Guidance Note on teacher wellbeing in emergency settings. Interagency Network for Education in Emergencies (INEE). www.inee.org/resources/guidance-note-teacher-wellbeing-emergency-settings",
-      "link": "https://www.inee.org/resources/guidance-note-teacher-wellbeing-emergency-settings",
-      "photoUrl": "https://drive.google.com/open?id=1XkjRnPquCH3wNjLI9kbffIFGaroQqZdc"
-    },
-    {
       "id": "P-6862cdfb09",
       "org": "TIDE",
       "date": "2022-01-07",
@@ -856,7 +800,6 @@
       "title": "The role of dissent, conflict, and open dialogue in learning to live together harmoniously",
       "type": "Journal article",
       "fields": [
-        "Teacher agency, wellbeing, motivation, and professional development",
         "Holistic Education"
       ],
       "description": "Conflict, disagreement, and dissent are not obstacles to harmony but essential parts of learning to live together in diverse societies. The article emphasizes the importance of open dialogue, critical reflection, and respectful engagement with differing perspectives, suggesting that education should help students navigate conflict constructively rather than avoid it.",
@@ -904,35 +847,6 @@
       "citation": null,
       "link": "https://drive.google.com/file/d/1zZugsaRYkvfZUTWKqFr1euDzyDkCDUtp/view?usp=drive_link",
       "photoUrl": "https://drive.google.com/file/d/1XcyQewSZWX3zG377ZracUBIPcUPeTOZC/view?usp=sharing"
-    },
-    {
-      "id": "P-28d8a4e591",
-      "org": "THRIvE",
-      "date": "2021-06-28",
-      "title": "A vision for Indian Education System.",
-      "type": "Teacher magazine",
-      "fields": [
-        "Holistic Education"
-      ],
-      "description": "**Short summary:** This article presents a vision for an Indian education system that prioritizes holistic learning, equity, and the development of socially responsible citizens.",
-      "citation": "Patel, J. (2017). A vision for Indian Education System. Kedavani Vimarsh, 1(1), 27-28. www.osf.io/yfgpw/",
-      "link": "https://osf.io/yfgpw/files/8ftdh",
-      "photoUrl": "https://drive.google.com/open?id=1EwX2jeK6Kb4cPw5-AEdWYwVpB_MDa5L0"
-    },
-    {
-      "id": "P-bb217f72be",
-      "org": "THRIvE",
-      "date": "2021-01-18",
-      "title": "Learning to Live Together Harmoniously;Spiritual Perspectives from Indian Classrooms",
-      "type": "Book",
-      "fields": [
-        "Holistic Education",
-        "Social emotional learning"
-      ],
-      "description": "This book develops the idea of “Learning to Live Together Harmoniously (LTLTH)”, arguing that education should move beyond knowledge and skills to focus on inner transformation and harmonious living.",
-      "citation": "Patel, J. (2023). Education for togetherness and harmony: Spiritual perspectives from Indian classrooms. Palgrave Macmillan. https://doi.org/10.1007/978-3-031-23539-9",
-      "link": "https://osf.io/9bwdh/overview",
-      "photoUrl": "https://drive.google.com/open?id=1ln-izxhIs6RDEl-EwJrknYOa0zWCjXDw"
     },
     {
       "id": "P-1667140d56",
@@ -1021,13 +935,27 @@
       "citation": null,
       "link": "https://drive.google.com/drive/folders/1p-YgdobKy7M-D4EF-AUOo5EXwOpj6q_59yhTlSL71nztjw7PYJfT8IkJklyPFlZ3bkamc58y?usp=sharing",
       "photoUrl": "https://drive.google.com/open?id=1vC1fbASiCMRlt0ZRFaY8KAYpLvJZSvM8"
+    },
+    {
+      "id": "P-28d8a4e591",
+      "org": "THRIvE",
+      "date": "2017-06-28",
+      "title": "A vision for Indian Education System.",
+      "type": "Teacher magazine",
+      "fields": [
+        "Holistic Education"
+      ],
+      "description": "**Short summary:** This article presents a vision for an Indian education system that prioritizes holistic learning, equity, and the development of socially responsible citizens.",
+      "citation": "Patel, J. (2017). A vision for Indian Education System. Kedavani Vimarsh, 1(1), 27-28. www.osf.io/yfgpw/",
+      "link": "https://osf.io/yfgpw/files/8ftdh",
+      "photoUrl": "https://drive.google.com/open?id=1EwX2jeK6Kb4cPw5-AEdWYwVpB_MDa5L0"
     }
   ],
   "meta": {
-    "total": 74,
+    "total": 69,
     "counts": {
       "TIDE": 16,
-      "THRIvE": 58
+      "THRIvE": 53
     }
   }
 }
