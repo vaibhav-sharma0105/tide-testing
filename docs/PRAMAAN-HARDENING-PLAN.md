@@ -1,5 +1,7 @@
 # Pramaan Hardening + Snapshot Mode — Work Plan and Checklist
 
+> **Historical document (banner added 2026-11-28).** It describes the code as it was on the dates it states; file names, counts and steps may be out of date — e.g. routes are now listed in `src/routes.js` and `src/config/siteRoutes.js` (not `src/App.jsx`), and every page is prerendered. Current facts: `CLAUDE.md` and `AGENTS.md`; 2026-11 audit: `docs/audits/2026-11-site-audit.md`.
+
 > **Start here in a new conversation.** This file is self-contained: it records why this work
 > exists, the evidence, every decision, the detailed design, and a checklist of what is done and
 > what is left. Update the checklist (section 9) as items are completed — tick the box and add

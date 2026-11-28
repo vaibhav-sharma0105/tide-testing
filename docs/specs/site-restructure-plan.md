@@ -1,5 +1,7 @@
 # Site Restructure Plan — site_updates.docx Review
 
+> **Historical document (banner added 2026-11-28).** It describes the code as it was on the dates it states; file names, counts and steps may be out of date — e.g. routes are now listed in `src/routes.js` and `src/config/siteRoutes.js` (not `src/App.jsx`), and every page is prerendered. Current facts: `CLAUDE.md` and `AGENTS.md`; 2026-11 audit: `docs/audits/2026-11-site-audit.md`.
+
 > ## Status as of 2026-10-25 (re-checked against `src/App.jsx`, `content/`, `index.html`)
 > The body below is the original 2026-06 plan and is kept as history; the "DRAFT" line under it is out of date. Most of the restructure has been built. **Q2 (what to do with the orphaned/"stranded" pages) was resolved on 2026-10-25 as: removed entirely, no redirects.** All 16 stranded routes, their page components, YAML and generated JSON were deleted; those URLs now render the NotFound page (`src/test/routing/removedRoutes.test.jsx`). The Orphaned Pages Tracker, C3, Q2-Q5 and Q10 below describe the pre-removal state and are history. The deleted files can be recovered with `git checkout a4126d1 -- <path>`. What the code shows today:
 >

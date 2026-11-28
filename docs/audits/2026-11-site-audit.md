@@ -646,7 +646,7 @@ It also found three stale code comments, fixed (comments only): `scripts/serve-p
 **Owner decisions needed (P7).** None new. The consolidated list below now starts with an index; P7 added no item.
 
 **Deferred.**
-- Historical docs (`docs/specs/*`, `PRAMAAN-HARDENING-PLAN.md` dated sections, `CONTENT-MANAGEMENT-PLAN.md`) still mention `src/App.jsx` and old counts as history; their status banners already date them. Not rewritten.
+- ~~Historical docs~~ done 2026-11-28 (owner item 8): a "historical document" banner pointing to CLAUDE.md / AGENTS.md / this ledger added to `docs/specs/site-restructure-plan.md` and `docs/PRAMAAN-HARDENING-PLAN.md`; `stranded-pages-review.md`, `multilingual-i18n-spec.md` and `CONTENT-MANAGEMENT-PLAN.md` already had one (the last has no stale references). Bodies not rewritten.
 - `CLAUDE.md` still restates some AGENTS.md detail in its integration sections (pre-existing); trimming them is a separate editorial pass.
 
 **Notes for whoever comes next.**
