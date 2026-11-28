@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "partners",
   "success": true,
-  "lastUpdated": "2026-11-28T16:31:48.689Z",
-  "contentHash": "sha256:9c65cd5aed27e73048a9180e9380eb9e62f18ad2023f5f1a56b6ec8ce4fdeb89",
+  "lastUpdated": "2026-11-28T16:41:46.447Z",
+  "contentHash": "sha256:f8e47b6a3b2434a42c9d8cdd81b746e79a7096727a487246a4a95041ef550f7e",
   "resources": [
     {
       "id": "PA-0ada61a0ef",
@@ -16,7 +16,7 @@
     {
       "id": "PA-0b44fb6411",
       "type": "Volunteer partners",
-      "priority": "Mediun",
+      "priority": "Medium",
       "name": "Alps Institute",
       "website": null,
       "photoUrl": "https://drive.google.com/open?id=1rj8T9rIOLSCcVXwuX6Vj9bs1ekjNR7-j"
@@ -226,7 +226,7 @@
       "type": "Knowledge, Research and Funding",
       "priority": "Medium",
       "name": "Adventure Pvt ltd",
-      "website": "https://www.actual-adventure.com/?srsltid=AfmBOop4SSQXRBkq04Oz3PwR0IhKRX6Xpkp9FS7DthrwTMgF18MFPoaz",
+      "website": "http://adventureoverseas.com/",
       "photoUrl": "https://drive.google.com/open?id=1U8-Q1S0uZThhlali_TvctkgZcB-C2NyW"
     },
     {
@@ -250,7 +250,7 @@
       "type": "Knowledge, Research and Funding",
       "priority": "Low",
       "name": "Decathlon",
-      "website": "https://www.decathlon.com/?srsltid=AfmBOorlS74y7Ot9tqrjiIWFKJYVXndfXEA5X88zOoo1nXmEd3uHKACC",
+      "website": "https://www.decathlon.com",
       "photoUrl": "https://drive.google.com/open?id=1jkWqi4qM5v4xX0YEiYy_B4tbDimFs6gn"
     },
     {
@@ -268,14 +268,6 @@
       "name": "Ivy Prep",
       "website": "https://www.ivyprepindia.co.in/",
       "photoUrl": "https://drive.google.com/open?id=1IAsL0bZ6DNr4jTF5DrOOxUqwnKcCM1m7"
-    },
-    {
-      "id": "PA-37e8aa56d8",
-      "type": "Others",
-      "priority": "Medium",
-      "name": "Global Schools Forum",
-      "website": "https://www.globalschoolsforum.org/",
-      "photoUrl": "https://drive.google.com/open?id=15I0XPaJ_GgIEG-jQSc1sjPC9PkVWsaoP"
     },
     {
       "id": "PA-41b19c338a",
@@ -306,7 +298,7 @@
       "type": "Collaborators",
       "priority": "Medium",
       "name": "Bharat Youth Convention",
-      "website": "http://mybharat.gov.in/mega_events/youth-for-viksit-bharat-my-bharat-youth-convention",
+      "website": null,
       "photoUrl": "https://drive.google.com/open?id=1GJyDEBO_Je-fPrmjN_tpTVsvS2xS8CHm"
     },
     {
@@ -386,7 +378,7 @@
       "type": "Volunteer partners",
       "priority": "Medium",
       "name": "UPES university",
-      "website": "https://www.upes.ac.in/?srsltid=AfmBOopQvccmDgXZpZMFztxeKlGzMo2MYMqpylMw79BajN5WXIN59-d3",
+      "website": "https://www.upes.ac.in/",
       "photoUrl": "https://drive.google.com/open?id=19tDU-b9pd7MjD7bZ_qN5NxaykxIl4I4i"
     },
     {
@@ -818,7 +810,7 @@
       "type": "Volunteer partners",
       "priority": "Low",
       "name": "IITs Bombay Student Council",
-      "website": "http://www.et.iitb.ac.in/about-us/whos-who/student-council",
+      "website": "https://www.et.iitb.ac.in/about-us/whos-who/student-council",
       "photoUrl": "https://drive.google.com/open?id=1aKtXPe5lhpzeXLjV_a1TQGSc8-VoVWmJ"
     },
     {
@@ -834,7 +826,7 @@
       "type": "Others",
       "priority": "Medium",
       "name": "Pratham Education Foundation",
-      "website": "https://www.google.com/aclk?sa=L&ai=DChsSEwiAuKaAvsmWAxVWckcBHR9_HEoYACICCAEQABoCcXU&ae=2&aspm=1&co=1&ase=2&gclid=CjwKCAjwqc_UBhBKEiwAWbl25oaee4Ax_NYgn4qoS9aP3HF3KUVpKg4wQ4TXxirj6qdxNxHJp8IsYxoCnjwQAvD_BwE&cid=CAAS0gHkaPgLkb8CwooUulLZrXOrON_AdIpzUD30kYMqPMhHf66S6CfKld6txU9HT-D_horD6h_aeqRIIzaLhDePULser1Hf_sQtVftt8vqlrI1sSjqUBvvSi5-VIj8IDm9ylYdd1BMmTgkx1XZyIMruuEbcDaGuVCdvQzN0aLfOoFlFfafOb-A8AnLo4dBo06fspClhwiS8pD5KXKYoj1a4YCO0qs7GgC7KRdF1EusKKomJOq4m7fWob8XT_pA4EB7pU8zxz8CPJulYn-hvPhBS17DJSBk&cce=2&category=acrcp_v1_35&sig=AOD64_12Ql6Xhv_dR_0cgg-5XODulWCXDA&q&nis=4&adurl&ved=2ahUKEwjQ-J-AvsmWAxXlF2IAHd8cCosQ0Qx6BAgQEAE",
+      "website": "https://www.pratham.org/",
       "photoUrl": "https://drive.google.com/open?id=1s0fxojDFIQfPlVjMzWKIUYCV40U4Hq9p"
     },
     {
@@ -903,6 +895,6 @@
     }
   ],
   "meta": {
-    "total": 112
+    "total": 111
   }
 }
