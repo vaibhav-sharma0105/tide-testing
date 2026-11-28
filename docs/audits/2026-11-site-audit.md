@@ -757,7 +757,7 @@ Production will be this GitHub Pages site with the TIDE domain pointed at it; th
 ## Deferred / out of scope
 
 - ~~P1-5/6 (→ P3)~~: done in P3 (404.html, robots.txt, sitemap.xml now generated).
-- P1-7: favicon path typed in `index.html` (works under the base path; moving it into `siteDataPlugin` needs hook-order work).
+- ~~P1-7~~: done 2026-11-27 (owner): `site.yaml` `favicon` → `<!-- site-favicon -->` marker in `index.html`, filled by `siteDataPlugin` `faviconTag()` with the base added by hand (unit tests; built pages carry `/tide-testing/assets/…`).
 - P1-8: "since 2014" fixed in P3; the `llms.txt` figures are an owner item (P3).
 - P2-5: the `/coming-soon` scene loops forever (2.2.2); the page is linked from nowhere. Apply `useLoopWindow` (or the static reduced scene after 5 s) if the page is ever used.
 - P2-16 (rest): pagination, grade chips, Contact links, footer social icons and search inputs are under 44 px (AAA). Fixing them is a visible size change → owner item above.
@@ -767,7 +767,7 @@ Production will be this GitHub Pages site with the TIDE domain pointed at it; th
 - P3-15: mobile LCP (banner texture as a CSS background is the LCP element on inner pages; no `fetchpriority`/preload), render-blocking fonts (owner item), 211 KiB unused JS (P5), `<img>` without width/height.
 - P3: `CollectionPage` markup on the listing pages, `VideoObject` (the Sheet has no upload dates), `DonateAction` (no facts in YAML) — not added.
 - ~~P3: no e2e runs against the prerendered `dist/`~~: done in P6 (`test:e2e:site`). The first real deploy must still be checked with `curl -I` (P3-3, P6-7).
-- P1-7 still open (favicon path typed in `index.html`).
+- ~~P1-7~~ done 2026-11-27 (see above).
 - P2 not done: a screen-reader listening session (NVDA/VoiceOver), a separate 200 % text-only zoom pass, 3.1.5 reading level.
 - P4-16: pinning the prerender browser download (cache or container image).
 - P4 not done:

@@ -16,6 +16,8 @@ url: "https://tideinternational.org"
 # Set back to true on go-live day.
 indexable: false
 logo: "/assets/images/shared/tide-logo.png"
+# The small icon in the browser tab (PNG, SVG or ICO). Put the file under public/.
+favicon: "/assets/images/shared/tide-logo.png"
 # Shown in place of any image that fails to load (see src/utils/imagePlaceholder.js).
 placeholderImage: "/assets/images/shared/placeholder.svg"
 # Faint texture behind the dark banner at the top of every inner page (PageHero).

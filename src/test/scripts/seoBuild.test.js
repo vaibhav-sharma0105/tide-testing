@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import fs from 'node:fs'
 import path from 'node:path'
-import { loadSite, buildRobots, buildSitemap, sitemapEntries, loadResources } from '../../../scripts/siteDataPlugin.js'
+import { loadSite, buildRobots, buildSitemap, sitemapEntries, loadResources, faviconTag } from '../../../scripts/siteDataPlugin.js'
 import { checkPage, outputFiles, redirectHtml, relativePreloads } from '../../../scripts/lib/prerender-check.js'
 import { PRIMARY_ROUTES, REDIRECT_ROUTES, resourcePath } from '../../config/siteRoutes.js'
 
@@ -42,6 +42,21 @@ describe('sitemap.xml', () => {
   it('is not also kept as a hand-typed file in public/', () => {
     expect(fs.existsSync(path.join(ROOT, 'public', 'sitemap.xml'))).toBe(false)
     expect(fs.existsSync(path.join(ROOT, 'public', 'robots.txt'))).toBe(false)
+  })
+})
+
+describe('favicon (site.yaml favicon)', () => {
+  it('comes from site.yaml, under the base path, with its type', () => {
+    expect(site.favicon).toBeTruthy()
+    expect(faviconTag(site, '/tide-testing/')).toBe(`<link rel="icon" type="image/png" href="/tide-testing/${site.favicon.replace(/^\//, '')}" />`)
+    expect(faviconTag({ favicon: 'x/icon.svg' }, '/')).toBe('<link rel="icon" type="image/svg+xml" href="/x/icon.svg" />')
+    expect(faviconTag({ logo: '/logo.png' }, '/')).toContain('href="/logo.png"')
+  })
+
+  it('index.html has the marker, not a typed icon path', () => {
+    const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')
+    expect(html).toContain('<!-- site-favicon')
+    expect(html).not.toMatch(/rel="icon"/)
   })
 })
 

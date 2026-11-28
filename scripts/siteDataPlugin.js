@@ -149,6 +149,18 @@ export function strictScriptSrc(html) {
 
 const xmlEscape = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
+const ICON_TYPES = { '.png': 'image/png', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.webp': 'image/webp' }
+
+/** The browser-tab icon from site.yaml `favicon` (falls back to `logo`), under the site's base path.
+ *  Done here, after Vite's own HTML changes, so the base is added by hand (Vite won't see this tag). */
+export function faviconTag(site, base = '/') {
+  const file = String(site.favicon || site.logo || '').replace(/^\/+/, '')
+  if (!file) return ''
+  const type = ICON_TYPES[(file.match(/\.[a-z0-9]+$/i) || [''])[0].toLowerCase()]
+  const href = `${base.replace(/\/*$/, '/')}${file}`.replace(/"/g, '&quot;')
+  return `<link rel="icon"${type ? ` type="${type}"` : ''} href="${href}" />`
+}
+
 /** robots.txt from site.yaml. indexable: false (staging) shuts every crawler out; otherwise search and
  *  answer engines may crawl and the training crawlers follow allowTraining (owner decision 2026-11-26:
  *  training always off, search on once live). */
@@ -292,7 +304,9 @@ export default function siteDataPlugin() {
       // 'post': after Vite's own changes, so the hashed scripts are exactly what is shipped.
       order: 'post',
       handler(html) {
-        const out = transformHtml(html, readSite(), loadOrgFacts(root))
+        const site = readSite()
+        const out = transformHtml(html, site, loadOrgFacts(root))
+          .replace(/<!-- site-favicon[^>]*-->/, faviconTag(site, base))
         return isBuild ? strictScriptSrc(out) : out
       },
     },

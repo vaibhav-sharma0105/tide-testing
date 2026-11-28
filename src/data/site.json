@@ -4,6 +4,7 @@
   "url": "https://tideinternational.org",
   "indexable": false,
   "logo": "assets/images/shared/tide-logo.png",
+  "favicon": "assets/images/shared/tide-logo.png",
   "placeholderImage": "assets/images/shared/placeholder.svg",
   "pageBannerTexture": "assets/images/shared/page-banner-bg.webp",
   "email": "tidefoundation@gmail.com",
