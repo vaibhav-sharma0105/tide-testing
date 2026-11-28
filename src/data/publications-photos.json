@@ -718,5 +718,15 @@
     "fullHeight": 722,
     "thumb": "assets/images/publications/P-ffa05bbb22-thumb.webp",
     "full": "assets/images/publications/P-ffa05bbb22-full.webp"
+  },
+  "P-ffed7fca3e": {
+    "fileId": "1Z5XAC4pbegSVM2ckGAzKtRtxvnletE4g",
+    "modifiedTime": "2026-11-28T10:00:21.826Z",
+    "thumbWidth": 427,
+    "thumbHeight": 694,
+    "fullWidth": 427,
+    "fullHeight": 694,
+    "thumb": "assets/images/publications/P-ffed7fca3e-thumb.webp",
+    "full": "assets/images/publications/P-ffed7fca3e-full.webp"
   }
 }
