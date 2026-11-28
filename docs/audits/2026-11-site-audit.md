@@ -824,3 +824,11 @@ Then `origin/main` was merged in (`93ff7c9`: 16 sync-bot commits, Publications +
 
 After the fixes: lint pass · `npm test` 532 · `test:e2e:site` 170 passed · `npm run test:e2e` 62 passed. Noted: the prerendered Partners HTML now holds 66 of the logos (logos load per row since owner item 22); visitors are unaffected.
 
+### First deploy with the new CI (2026-11-28, `46c042e`, run 46146624386)
+
+Pushed by the owner's request. **Success in 4 min 48 s:** lint 6 s, content 1 s, unit tests 24 s, prerender browser install 33 s (first run, cache empty), build 68 s, `check:dist` < 1 s, built-site e2e 98 s, deploy 10 s; the alert job closed (nothing open). The 3 Dependabot runs started by the changed config succeeded (the config, incl. `cooldown`, is accepted).
+
+Live checks on `vaibhav-sharma0105.github.io/tide-testing` after the deploy (`curl -I`): `/`, `/about/why-tide`, `/pramaan`, `/pramaan/`, `/pramaan/resource-centre`, `/pramaan/resource-centre/W1`, `/pramaan/resource-centre/K%2031`, `/pramaan-library`, robots.txt, sitemap.xml, llms.txt → 200; `/no-such-page` → 404. **GitHub Pages answers `/pramaan` (file + folder) with 200 directly, no redirect** (closes P3-3 / P6-7). Pages carry `noindex`, robots.txt is `Disallow: /`, the favicon is under `/tide-testing/`. Five pages in Chromium: right `<h1>`, 0 broken images, 0 console errors.
+
+Still to watch: the first nightly run (`e2e-nightly.yml`, 02:41 UTC) and the next run of each sync workflow (token-handling changes).
+
