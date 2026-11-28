@@ -787,6 +787,8 @@ Production will be this GitHub Pages site with the TIDE domain pointed at it; th
 - P6-12: on local Windows, WebKit workers can hang ~300 s at teardown after a passing run (environment; Linux not verified).
 - P4-9: the `ouid` ids in 4 links of the bot-owned `pramaan-library.json` stay until the next sync.
 
+**Dropped by the owner (2026-11-28):** screen-reader listening session and 200 % zoom pass; Trusted Types and `<iframe sandbox>`; pinning the prerender browser download; visual baselines in CI and a slow-network run.
+
 ## Final gate results
 
 Run by the orchestrator, 2026-11-25 (local Windows 11), on `4de8719` from a clean state: dev servers on 5173/5175 stopped, leftover subagent processes stopped (two hung 3-browser Playwright runs from P6 and a `vite preview` on 4182 from P7; they held a native file open, so the first `npm ci` failed with EPERM). Then `Remove-Item -Recurse dist`, then `npm ci` (0 vulnerabilities). 39 `WebKitNetworkProcess.exe` left over from P6 could not be stopped (P6-12).
