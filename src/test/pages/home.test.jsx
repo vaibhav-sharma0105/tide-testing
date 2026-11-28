@@ -7,7 +7,6 @@ import { splitFigure, formatFigure } from '../../utils/figures'
 import home from '../../data/home.json'
 import site from '../../data/site.json'
 
-vi.setConfig({ testTimeout: 15000 })
 
 // Made-up partner rows (not real Sheet data); logos come from a mocked manifest.
 const rows = ['PA-1', 'PA-2', 'PA-3', 'PA-4'].map((id, i) => ({ id, type: 'Collaborators', priority: 'High', name: `Partner ${i + 1}`, website: null, photoUrl: null }))

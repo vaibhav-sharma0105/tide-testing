@@ -35,7 +35,7 @@ describe('Removed (formerly stranded) routes', () => {
   it('a live route does not render the NotFound page (control)', async () => {
     await renderAppAt('/contact')
     // Wait for the lazy Contact page to settle, then confirm NotFound is absent.
-    await screen.findAllByRole('heading', {}, { timeout: 5000 })
+    await screen.findAllByRole('heading', {}, { timeout: 20000 })
     expect(screen.queryByText(notFound.title)).not.toBeInTheDocument()
   })
 })

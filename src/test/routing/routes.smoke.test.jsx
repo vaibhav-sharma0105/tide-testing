@@ -15,6 +15,11 @@ import { render, waitFor } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
 
+// The first page imported in a run pays for transforming its whole module tree; under a busy machine that
+// took longer than the 5 s defaults and failed the first test ("/ — Home", 3 of 7 runs on 2026-11-24/25).
+// Warm the heaviest page once and allow more time; what each test checks is unchanged.
+beforeAll(async () => { await import('../../pages/Home') }, 60000)
+
 // ── Helper ────────────────────────────────────────────────────────────────────
 
 async function renderRoute(importFn, path, routePath) {
@@ -39,7 +44,7 @@ async function renderRoute(importFn, path, routePath) {
     () => {
       expect(container.textContent).not.toBe('Loading')
     },
-    { timeout: 5000 }
+    { timeout: 20000 }
   )
 
   return container

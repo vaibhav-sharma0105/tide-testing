@@ -776,7 +776,7 @@ Production will be this GitHub Pages site with the TIDE domain pointed at it; th
   - Live checks of the GitHub and Google settings (they need the owner's accounts).
 - P5-8 Partners long tasks (owner item), P5-9 shared URL-state hook / one pagination, P5-10 sync orchestrators, P5-11 knip leftovers, P5-12 `batchYear` edge, P5-14 `LazyMotion`.
 - P6: visual baselines in CI (needs Linux baselines; the 9 committed ones are Windows-only); a real slow-network latency run; measuring the CI time and the nightly run (GitHub only).
-- Flaky unit test: `src/test/routing/routes.smoke.test.jsx` "/ — Home renders without crashing" failed 3 of 7 full `npm test` runs during the P7 check (passes alone). The failure message was not captured; the likely cause is a timeout under load (not verified).
+- ~~Flaky unit tests~~ fixed 2026-11-28: the first test to import a page timed out at the 5 s default on a busy machine (reproduced: 3 suites in parallel → "Test timed out in 5000ms" in `siteRoutes.test.jsx`). Global `testTimeout: 30000` in `vitest.config.js`, per-file 15 s overrides and 5 s waits raised, Home warmed in `routes.smoke`. After: 3 suites in parallel, twice, 531/531 each. The dev e2e lightbox flake (1 failure, 2026-11-25) was **not reproduced** in 18 runs (10 alone, 8 under load); no change made, watch it.
 - Phone first paint: on a simulated phone (slow 4G, 4× CPU) the first text appears after 3.2–4.3 s even with no web fonts (owner item 14 measurements, 2026-11-27). Cause not investigated.
 - P6-12: on local Windows, WebKit workers can hang ~300 s at teardown after a passing run (environment; Linux not verified).
 - P4-9: the `ouid` ids in 4 links of the bot-owned `pramaan-library.json` stay until the next sync.

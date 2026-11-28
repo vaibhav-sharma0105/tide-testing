@@ -14,7 +14,6 @@ import {
 
 // Each page test resets modules and imports both pages fresh (to mock the snapshot); a cold import
 // can pass Vitest's 5s default on a busy machine (seen 2026-11-21), so this file allows 15s.
-vi.setConfig({ testTimeout: 15000 })
 
 // Test rows only (made up, not real Sheet data). The real snapshot is never written by tests.
 const TEACHER_FIELD = 'Teacher agency, wellbeing, motivation, and professional development'

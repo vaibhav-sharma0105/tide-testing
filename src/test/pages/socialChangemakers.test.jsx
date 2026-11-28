@@ -8,7 +8,6 @@ import data from '../../data/social-changemakers.json'
 import { personInitials, firstName, posterIndex, matchesFellow } from '../../utils/changemakers'
 import { FELLOWS_PAGE_SIZE } from '../../config/changemakers'
 
-vi.setConfig({ testTimeout: 15000 })
 const t = data.profiles
 const L = t.list
 const fellow = (o) => ({ id: 'SC-x', batch: '23-24', order: 1, name: 'Fellow', project: 'Project', summary: null, nextSteps: null, videoUrl: null, testimonialUrl: null, writeupUrl: null, ...o })

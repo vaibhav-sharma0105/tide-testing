@@ -23,7 +23,7 @@ describe('siteRoutes.js agrees with App.jsx', () => {
   it.each(PATHS)('%s renders a page with one <h1>, not NotFound', async (path) => {
     window.history.pushState({}, '', path)
     render(<App />)
-    await screen.findAllByRole('heading', { level: 1 }, { timeout: 5000 })
+    await screen.findAllByRole('heading', { level: 1 }, { timeout: 20000 })
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
     expect(screen.queryByText(notFound.title)).not.toBeInTheDocument()
   })
@@ -31,7 +31,7 @@ describe('siteRoutes.js agrees with App.jsx', () => {
   it.each(REDIRECT_ROUTES)('$from forwards to $to', async ({ from, to }) => {
     window.history.pushState({}, '', `${from}?q=1`)
     render(<App />)
-    await screen.findAllByRole('heading', { level: 1 }, { timeout: 5000 })
+    await screen.findAllByRole('heading', { level: 1 }, { timeout: 20000 })
     expect(window.location.pathname + window.location.search).toBe(`${to}?q=1`)
   })
 })

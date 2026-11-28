@@ -6,7 +6,6 @@ import { groupPartners, filterGroups, priorityRank, matchesPartner, partnerIniti
 import { PRIORITY_ORDER } from '../../config/partners'
 import data from '../../data/about-our-partners.json'
 
-vi.setConfig({ testTimeout: 15000 })
 
 // Test rows only (made up, not real Sheet data). The real snapshot is never written by tests.
 const p = (id, type, priority, name, website = null) => ({ id, type, priority, name, website, photoUrl: null })
