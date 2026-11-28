@@ -813,3 +813,14 @@ Not run in the final gate: `test:e2e:visual` (Windows-only baselines, not a requ
 **Flaky (logged, not fixed):** the dev a11y lightbox state above (1 in 2 full runs), and `routes.smoke.test.jsx` "/ — Home" (3 failures in 7 runs during the P7 check, while the leftover processes were loading the machine; 0 in 3 runs in the final gate).
 
 Dev servers on 5173 and 5175 were restarted afterwards with `npx vite --port 517x --strictPort`. Nothing was pushed.
+
+### Re-run 2026-11-28 (after the owner-decision work, 32 commits after `414c8c2`)
+
+From a clean state on `427e345` (dev server stopped, `Remove-Item -Recurse dist`, `npm ci`: 0 vulnerabilities): lint pass · content:validate 0/0 · `npm test` 46 files / 532 tests (twice) · `npm audit` 0 · plain build pass (259 pages + 2 redirects) · `npm run test:e2e` 62 passed · `a11y-audit.cjs` 21 URLs, 0 AA and 0 AAA findings · base-path build pass · `check:dist` OK (first-load JS 164.0 kB gz) · all 265 built pages noindex, robots.txt `Disallow: /`, favicon under `/tide-testing/` · base-path `vite preview`, 6 routes: right `<h1>`, 1 `<title>`, 0 broken images, 0 doubled base, 0 console errors · `test:e2e:site` 170 passed · `test:e2e:full` **948 passed, 0 failed, 2 skipped** (13.6 min; exit 1 only from the WebKit worker teardown, P6-12).
+
+Then `origin/main` was merged in (`93ff7c9`: 16 sync-bot commits, Publications + one Resource Centre data update, bot-owned files only). With the new data, 2 of 170 built-site tests failed:
+- **A Form entry titled "TEST"** (THRIvE, type "Test", citation "Test", dated 2026-11-28) went live (no approval step, owner items 15 / P4). Owner action: set "Hide from website" = Yes on that Sheet row; the snapshot is not edited by hand. The "Copy citation" test assumed the newest entry has a real citation; it now picks an entry with a full citation and compares the title case-insensitively (APA uses sentence case).
+- **Real bug exposed by it:** the new type made the Type menu scroll, and its listbox had `tabIndex={-1}` (axe `scrollable-region-focusable`, AA). Now `tabIndex={0}` (`PublicationControls.jsx`).
+
+After the fixes: lint pass · `npm test` 532 · `test:e2e:site` 170 passed · `npm run test:e2e` 62 passed. Noted: the prerendered Partners HTML now holds 66 of the logos (logos load per row since owner item 22); visitors are unaffected.
+

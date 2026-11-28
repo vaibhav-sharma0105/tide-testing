@@ -4,6 +4,7 @@
 import { test, expect, go } from './fixtures.js'
 import thriveText from '../../src/data/thrive-publications.json' with { type: 'json' }
 import contribute from '../../src/data/abl-contribute.json' with { type: 'json' }
+import publications from '../../src/data/sheets/publications.json' with { type: 'json' }
 
 test('photo lightbox: the full photo loads under the base path; Escape closes and focus returns', async ({ page }) => {
   await go(page, '/pramaan')
@@ -32,7 +33,14 @@ test('promo video lightbox: the player frame points at the video host and the CS
 test('Copy citation copies the APA reference and says so', async ({ page, browserName, context }) => {
   if (browserName === 'chromium') await context.grantPermissions(['clipboard-read', 'clipboard-write'])
   await go(page, '/thrive/publications')
-  const button = page.getByRole('button', { name: new RegExp(`^${thriveText.a11y.copyLabelTemplate.split('{title}')[0]}`) }).first()
+  // Use an entry with a full citation: the Sheet can hold short or test rows (a "TEST" row went live on
+  // 2026-11-28), and what this checks is the copy, not the Sheet's content.
+  const prefix = thriveText.a11y.copyLabelTemplate.split('{title}')[0]
+  const labels = await page.getByRole('button', { name: new RegExp(`^${prefix}`) }).evaluateAll((bs) => bs.map((b) => b.getAttribute('aria-label')))
+  const full = new Set(publications.resources.filter((r) => (r.citation || '').length > 20).map((r) => `${prefix}${r.title}`))
+  const label = labels.find((l) => full.has(l))
+  test.skip(!label, 'no entry with a full citation on the first page')
+  const button = page.getByRole('button', { name: label, exact: true })
   await button.click()
   await expect(button).toContainText(thriveText.entry.copied)
   await expect(page.getByText(thriveText.entry.copiedAnnouncement)).toBeAttached()
@@ -40,7 +48,7 @@ test('Copy citation copies the APA reference and says so', async ({ page, browse
     const copied = await page.evaluate(() => navigator.clipboard.readText())
     expect(copied.length).toBeGreaterThan(20)
     const title = (await button.getAttribute('aria-label')).slice(thriveText.a11y.copyLabelTemplate.indexOf('{title}'))
-    expect(copied).toContain(title.slice(0, 20))
+    expect(copied.toLowerCase()).toContain(title.slice(0, 20).toLowerCase()) // APA uses sentence case
   }
 })
 

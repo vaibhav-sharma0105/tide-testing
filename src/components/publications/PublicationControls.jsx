@@ -171,7 +171,10 @@ export function FilterMenu({ label, value, onChange, allLabel, total, options, a
             <ul
               ref={listRef}
               role="listbox"
-              tabIndex={-1}
+              // 0, not -1: when the options overflow, the list scrolls, and a scrolling area must be
+              // reachable by keyboard (axe scrollable-region-focusable; seen 2026-11-28 when a new
+              // type made the Type menu scroll). Focus still lands here when the menu opens.
+              tabIndex={0}
               aria-labelledby={`${id}-label`}
               aria-activedescendant={`${id}-opt-${active}`}
               onKeyDown={onListKeyDown}
