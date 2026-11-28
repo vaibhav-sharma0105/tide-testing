@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "section": "pramaan-library",
   "success": true,
-  "lastUpdated": "2026-11-21T05:59:57.425Z",
-  "contentHash": "sha256:e630e0d27979d071a6fa3e69a65960a1d5aa07067d92929824713a79ec0caf7a",
+  "lastUpdated": "2026-11-28T09:27:49.520Z",
+  "contentHash": "sha256:82acdcdcc6287693324fd0db6507cfc90de8231cb0f17e3a02336935dc3a43c0",
   "resources": [
     {
       "id": "F1",
@@ -3194,7 +3194,7 @@
       "type": "Kit",
       "concept": "Arrangement of numerical values in hexagon shapes",
       "language": "Gujarati",
-      "ownership": "TIDE, Other",
+      "ownership": "TIDE Foundation",
       "description": "This a fun and playful kit where on an hexagonal sheet numbers are given and we have to match them with other hexagonal sheets",
       "photoUrl": "https://drive.google.com/file/d/1f40E-Qe96kMvlv-qTcQjpYVYaAl9fcp0/view?usp=drive_link",
       "videoUrl": "https://youtu.be/VtccqluYVis",
